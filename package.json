@@ -45,7 +45,7 @@
   "main": "index.js",
   "devDependencies": {},
   "publishConfig": {
-  "registry": "https://npm.pkg.github.com"
+    "@thuno:registry": "https://npm.pkg.github.com"
   },
   "repository": {
     "type": "git",
