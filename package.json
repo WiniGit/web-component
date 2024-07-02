@@ -45,7 +45,7 @@
   "main": "index.js",
   "devDependencies": {},
   "publishConfig": {
-    "@thuno:registry": "https://npm.pkg.github.com"
+    "@WiniGit:registry": "https://npm.pkg.github.com"
   },
   "repository": {
     "type": "git",
