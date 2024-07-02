@@ -1,0 +1,16 @@
+.comp-text {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: var(--max-line);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: start;
+}
+
+.comp-text[class*="subtitle"] {
+    color: #00204D99;
+}
+
+.comp-text.type-button {
+    cursor: pointer;
+}
