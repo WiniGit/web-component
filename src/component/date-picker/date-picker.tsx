@@ -2,7 +2,7 @@
 import React, { CSSProperties } from 'react'
 import ReactDOM from 'react-dom'
 import './date-picker.css'
-import { CalendarType, Calendar } from '../export-component'
+import { CalendarType, Calendar } from '../../index'
 import { endDate, inRangeTime, startDate, today } from '../calendar/calendar'
 import { differenceInCalendarDays } from 'date-fns'
 

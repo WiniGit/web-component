@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { CSSProperties } from 'react'
 import ReactDOM from 'react-dom'
 import './input-multi-select.css'
-import { Checkbox, Text } from '../export-component'
+import { Checkbox, Text } from '../../index'
 
 interface SelectMultipleProps {
     value?: Array<string | number>,

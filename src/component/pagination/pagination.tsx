@@ -1,7 +1,7 @@
 import React, { CSSProperties } from "react";
 import ReactPaginate from "react-paginate";
 import './pagination.css';
-import { Select1, Text } from "../export-component";
+import { Select1, Text } from '../../index';
 
 export function Pagination({ currentPage, itemPerPage, totalItem, onChangePage, hiddenPageSize = false, hiddenTotal = false, style }: { currentPage: number, itemPerPage: number, totalItem: number, onChangePage: Function, hiddenPageSize: boolean, hiddenTotal: boolean, style: CSSProperties }) {
     if (currentPage > 1 && (totalItem === 0 || (Math.floor(totalItem / itemPerPage) + (totalItem % itemPerPage === 0 ? 0 : 1)) < currentPage)) {

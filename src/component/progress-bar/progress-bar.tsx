@@ -3,7 +3,7 @@ import './progress-bar.css'
 import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons'
-import { ComponentStatus, getStatusIcon } from '../export-component'
+import { ComponentStatus, getStatusIcon } from '../../index'
 
 export function ProgressBar({ status = ComponentStatus.INFOR, percent = 100, titleText, title, hideTitle = false, progressBarOnly = false, fullColor = 'var(--background)', percentColor = 'var(--infor-color)', style, progressBarStyle }: {
     percent: number,
