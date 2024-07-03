@@ -9,8 +9,11 @@ module.exports = (env, argv) => {
     output: {
       path: path.resolve(__dirname, 'dist'),
       filename: 'index.js',
-      library: 'wini-web-components',
-      libraryTarget: 'umd',
+      library: {
+        name: 'MyComponent',
+        type: 'umd',
+      },
+      globalObject: 'this',
     },
     resolve: {
       extensions: ['.ts', '.tsx', '.js'],
@@ -29,8 +32,18 @@ module.exports = (env, argv) => {
       ],
     },
     externals: {
-      react: 'react',
-      'react-dom': 'react-dom',
+      react: {
+        commonjs: 'react',
+        commonjs2: 'react',
+        amd: 'react',
+        root: 'React',
+      },
+      'react-dom': {
+        commonjs: 'react-dom',
+        commonjs2: 'react-dom',
+        amd: 'react-dom',
+        root: 'ReactDOM',
+      },
     },
   };
 };
