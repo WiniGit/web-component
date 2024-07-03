@@ -1,7 +1,8 @@
 {
   "name": "wini-web-components",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "dependencies": {
     "@fortawesome/free-solid-svg-icons": "^6.5.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
@@ -16,7 +17,8 @@
   },
   "scripts": {
     "build": "webpack --mode development",
-    "build:prod": "webpack --mode production"
+    "build:prod": "webpack --mode production",
+    "build:types": "tsc"
   },
   "eslintConfig": {
     "extends": [
