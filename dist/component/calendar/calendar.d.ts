@@ -4,7 +4,7 @@ export declare const today: Date;
 export declare const startDate: Date;
 export declare const endDate: Date;
 export declare const inRangeTime: (date: Date, startDate: Date, endDate: Date) => boolean;
-export declare const enum CalendarType {
+export declare enum CalendarType {
     DATE = 0,
     MONTH = 1,
     YEAR = 2,

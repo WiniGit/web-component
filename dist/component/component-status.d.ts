@@ -1,5 +1,5 @@
 import React from "react";
-export declare const enum ComponentStatus {
+export declare enum ComponentStatus {
     INFOR = 1,
     ERROR = 2,
     WARNING = 3,
