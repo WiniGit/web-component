@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ToastMessage = void 0;
 var react_toastify_1 = require("react-toastify");
+require("./toast-noti.css");
 var ToastMessage = /** @class */ (function () {
     function ToastMessage() {
     }

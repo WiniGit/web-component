@@ -1,5 +1,4 @@
 import React, { CSSProperties, ReactNode } from 'react';
-import 'react-awesome-slider/dist/styles.css';
 import './slider.css';
 interface SliderProps {
     children?: Array<ReactNode>;

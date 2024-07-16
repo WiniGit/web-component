@@ -21,7 +21,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CustomSlider = void 0;
 var react_1 = __importDefault(require("react"));
 var react_awesome_slider_1 = __importDefault(require("react-awesome-slider"));
-require("react-awesome-slider/dist/styles.css");
 require("./slider.css");
 var react_fontawesome_1 = require("@fortawesome/react-fontawesome");
 var free_solid_svg_icons_1 = require("@fortawesome/free-solid-svg-icons");
