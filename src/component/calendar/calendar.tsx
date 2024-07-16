@@ -19,12 +19,11 @@ export const endDate = new Date(
 export const inRangeTime = (date: Date, startDate: Date, endDate: Date) => (differenceInCalendarDays(date, startDate) > -1 && differenceInCalendarDays(endDate, date) > -1)
 
 export const enum CalendarType {
-    DATE,
-    MONTH,
-    YEAR,
-    DATETIME,
+    DATE = 0,
+    MONTH = 1,
+    YEAR = 2,
+    DATETIME = 3
 }
-
 interface CalendarProps {
     value?: Date,
     min?: Date,
