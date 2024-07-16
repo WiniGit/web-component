@@ -139,12 +139,12 @@ var DatePicker = /** @class */ (function (_super) {
             var params = (_b = value !== null && value !== void 0 ? value : (_a = _this.state) === null || _a === void 0 ? void 0 : _a.value) !== null && _b !== void 0 ? _b : '';
             if ((_c = params.trim()) === null || _c === void 0 ? void 0 : _c.length) {
                 switch (_this.props.pickerType) {
-                    case 2 /* CalendarType.YEAR */:
+                    case index_1.CalendarType.YEAR:
                         return new Date(parseInt(params), 1, 1);
-                    case 1 /* CalendarType.MONTH */:
+                    case index_1.CalendarType.MONTH:
                         var splitParams = params.includes('/') ? params.split('/') : params.split('-');
                         return new Date(parseInt((_d = splitParams[1]) !== null && _d !== void 0 ? _d : "".concat(calendar_1.today.getFullYear())), parseInt((_e = splitParams[0]) !== null && _e !== void 0 ? _e : "".concat(calendar_1.today.getMonth())), 1);
-                    case 3 /* CalendarType.DATETIME */:
+                    case index_1.CalendarType.DATETIME:
                         return stringToDate(params, (_f = _this.props.formatDate) !== null && _f !== void 0 ? _f : 'dd/mm/yyyy hh:mm');
                     default:
                         return stringToDate(params);
@@ -202,13 +202,13 @@ var DatePicker = /** @class */ (function (_super) {
         var _a, _b, _c, _d, _e, _f, _g;
         var maxLength = 10;
         switch (this.props.pickerType) {
-            case 2 /* CalendarType.YEAR */:
+            case index_1.CalendarType.YEAR:
                 maxLength = 4;
                 break;
-            case 1 /* CalendarType.MONTH */:
+            case index_1.CalendarType.MONTH:
                 maxLength = 7;
                 break;
-            case 3 /* CalendarType.DATETIME */:
+            case index_1.CalendarType.DATETIME:
                 maxLength = 19;
                 break;
             default:
@@ -220,7 +220,7 @@ var DatePicker = /** @class */ (function (_super) {
                         var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v;
                         var inputValue = ev.target.value.trim();
                         switch (_this.props.pickerType) {
-                            case 2 /* CalendarType.YEAR */:
+                            case index_1.CalendarType.YEAR:
                                 var minYear = ((_a = _this.props.min) !== null && _a !== void 0 ? _a : calendar_1.startDate).getFullYear();
                                 var maxYear = ((_b = _this.props.min) !== null && _b !== void 0 ? _b : calendar_1.endDate).getFullYear();
                                 if (!isNaN(parseInt(inputValue)) && parseInt(inputValue) <= maxYear && parseInt(inputValue) >= minYear) {
@@ -234,7 +234,7 @@ var DatePicker = /** @class */ (function (_super) {
                                         _this.props.onChange(undefined);
                                 }
                                 break;
-                            case 1 /* CalendarType.MONTH */:
+                            case index_1.CalendarType.MONTH:
                                 if (inputValue.match(/[0-9]{1,2}(\/|-)[0-9]{4}/g)) {
                                     var dateValue_1 = stringToDate("1/".concat(inputValue), 'dd/MM/yyyy', '/');
                                     if ((0, calendar_1.inRangeTime)(dateValue_1, (_d = (_c = _this.props.min) !== null && _c !== void 0 ? _c : calendar_1.startDate) !== null && _d !== void 0 ? _d : calendar_1.startDate, (_f = (_e = _this.props.min) !== null && _e !== void 0 ? _e : calendar_1.endDate) !== null && _f !== void 0 ? _f : calendar_1.endDate)) {
@@ -254,7 +254,7 @@ var DatePicker = /** @class */ (function (_super) {
                                         _this.props.onChange(undefined);
                                 }
                                 break;
-                            case 3 /* CalendarType.DATETIME */:
+                            case index_1.CalendarType.DATETIME:
                                 var dateTimeValue = undefined;
                                 if (inputValue.match(/[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{4}/g)) {
                                     dateTimeValue = stringToDate(inputValue, (_g = _this.props.formatDate) !== null && _g !== void 0 ? _g : 'dd/mm/yyyy hh:mm', '/');
@@ -310,21 +310,21 @@ var DatePicker = /** @class */ (function (_super) {
                         if (ev.target.classList.contains('popup-overlay'))
                             _this.setState(__assign(__assign({}, _this.state), { isOpen: false }));
                     } },
-                    react_1.default.createElement(index_1.Calendar, { value: this.getNewValue(), type: (_f = this.props.pickerType) !== null && _f !== void 0 ? _f : 0 /* CalendarType.DATE */, className: 'date-picker-popup-container', style: (_g = this.state.style) !== null && _g !== void 0 ? _g : { top: this.state.offset.y + this.state.offset.height + 2 + 'px', left: this.state.offset.x + 'px', border: 'none', boxShadow: '-20px 20px 40px -4px rgba(145, 158, 171, 0.24), 0px 0px 2px 0px rgba(145, 158, 171, 0.24)' }, onSelect: function (dateValue) {
+                    react_1.default.createElement(index_1.Calendar, { value: this.getNewValue(), type: (_f = this.props.pickerType) !== null && _f !== void 0 ? _f : index_1.CalendarType.DATE, className: 'date-picker-popup-container', style: (_g = this.state.style) !== null && _g !== void 0 ? _g : { top: this.state.offset.y + this.state.offset.height + 2 + 'px', left: this.state.offset.x + 'px', border: 'none', boxShadow: '-20px 20px 40px -4px rgba(145, 158, 171, 0.24), 0px 0px 2px 0px rgba(145, 158, 171, 0.24)' }, onSelect: function (dateValue) {
                             var _a;
                             switch (_this.props.pickerType) {
-                                case 2 /* CalendarType.YEAR */:
+                                case index_1.CalendarType.YEAR:
                                     _this.setState(__assign(__assign({}, _this.state), { value: dateValue.getFullYear().toString(), isOpen: false }));
                                     if (_this.props.onChange)
                                         _this.props.onChange(dateValue.getFullYear().toString());
                                     break;
-                                case 1 /* CalendarType.MONTH */:
+                                case index_1.CalendarType.MONTH:
                                     var newValue = dateToString(dateValue);
                                     _this.setState(__assign(__assign({}, _this.state), { value: newValue.split('/').slice(1).join('/'), isOpen: false }));
                                     if (_this.props.onChange)
                                         _this.props.onChange(newValue.split('/').slice(1).join('/'));
                                     break;
-                                case 3 /* CalendarType.DATETIME */:
+                                case index_1.CalendarType.DATETIME:
                                     var newValue = dateToString(dateValue, (_a = _this.props.formatDate) !== null && _a !== void 0 ? _a : 'dd/mm/yyyy hh:mm');
                                     _this.setState(__assign(__assign({}, _this.state), { value: newValue }));
                                     break;
@@ -335,16 +335,16 @@ var DatePicker = /** @class */ (function (_super) {
                                         _this.props.onChange(newValue);
                                     break;
                             }
-                        }, footer: (this.props.pickerType === 3 /* CalendarType.DATETIME */ || !this.props.hideButtonToday) && react_1.default.createElement("div", { className: 'row picker-popup-footer' },
-                            this.props.pickerType === undefined || this.props.pickerType === 0 /* CalendarType.DATE */ || this.props.pickerType === 3 /* CalendarType.DATETIME */ ?
+                        }, footer: (this.props.pickerType === index_1.CalendarType.DATETIME || !this.props.hideButtonToday) && react_1.default.createElement("div", { className: 'row picker-popup-footer' },
+                            this.props.pickerType === undefined || this.props.pickerType === index_1.CalendarType.DATE || this.props.pickerType === index_1.CalendarType.DATETIME ?
                                 react_1.default.createElement("button", { type: 'button', className: 'row button-text-3', style: { color: 'var(--infor-color)', width: 'fit-content' }, onClick: function () {
                                         var _a;
-                                        var format = (_a = _this.props.formatDate) !== null && _a !== void 0 ? _a : (_this.props.pickerType === 3 /* CalendarType.DATETIME */ ? 'dd/mm/yyyy hh:mm' : 'dd/mm/yyyy');
+                                        var format = (_a = _this.props.formatDate) !== null && _a !== void 0 ? _a : (_this.props.pickerType === index_1.CalendarType.DATETIME ? 'dd/mm/yyyy hh:mm' : 'dd/mm/yyyy');
                                         _this.setState(__assign(__assign({}, _this.state), { isOpen: false, value: dateToString(calendar_1.today, format) }));
                                         if (_this.props.onChange)
                                             _this.props.onChange(dateToString(calendar_1.today, format));
                                     } }, "Today") : null,
-                            this.props.pickerType === 3 /* CalendarType.DATETIME */ ? react_1.default.createElement(react_1.default.Fragment, null,
+                            this.props.pickerType === index_1.CalendarType.DATETIME ? react_1.default.createElement(react_1.default.Fragment, null,
                                 react_1.default.createElement("div", { style: { flex: 1 } }),
                                 react_1.default.createElement("button", { type: 'button', className: 'row button-primary', style: { padding: '0.6rem 0.8rem' }, onClick: function () {
                                         _this.setState(__assign(__assign({}, _this.state), { isOpen: false }));

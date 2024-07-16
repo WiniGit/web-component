@@ -44,7 +44,7 @@ var showDialog = function (_a) {
     var ref = _a.ref, title = _a.title, status = _a.status, content = _a.content, onSubmit = _a.onSubmit, submitTitle = _a.submitTitle, alignment = _a.alignment;
     ref.current.showDialogNoti({
         title: title !== null && title !== void 0 ? title : '',
-        status: status !== null && status !== void 0 ? status : 1 /* ComponentStatus.INFOR */,
+        status: status !== null && status !== void 0 ? status : index_1.ComponentStatus.INFOR,
         content: content !== null && content !== void 0 ? content : '',
         onSubmit: onSubmit !== null && onSubmit !== void 0 ? onSubmit : (function () { }),
         submitTitle: submitTitle,
@@ -59,7 +59,7 @@ var Dialog = /** @class */ (function (_super) {
         _this.state = {
             open: false,
             title: '',
-            status: 1 /* ComponentStatus.INFOR */,
+            status: index_1.ComponentStatus.INFOR,
             content: '',
             onSubmit: function () { }
         };

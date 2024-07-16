@@ -29,7 +29,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Calendar = exports.inRangeTime = exports.endDate = exports.startDate = exports.today = void 0;
+exports.Calendar = exports.CalendarType = exports.inRangeTime = exports.endDate = exports.startDate = exports.today = void 0;
 var react_1 = __importDefault(require("react"));
 require("./calendar.css");
 var react_fontawesome_1 = require("@fortawesome/react-fontawesome");
@@ -40,6 +40,13 @@ exports.startDate = new Date(exports.today.getFullYear() - 100, exports.today.ge
 exports.endDate = new Date(exports.today.getFullYear() + 100, exports.today.getMonth(), exports.today.getDate());
 var inRangeTime = function (date, startDate, endDate) { return ((0, date_fns_1.differenceInCalendarDays)(date, startDate) > -1 && (0, date_fns_1.differenceInCalendarDays)(endDate, date) > -1); };
 exports.inRangeTime = inRangeTime;
+var CalendarType;
+(function (CalendarType) {
+    CalendarType[CalendarType["DATE"] = 0] = "DATE";
+    CalendarType[CalendarType["MONTH"] = 1] = "MONTH";
+    CalendarType[CalendarType["YEAR"] = 2] = "YEAR";
+    CalendarType[CalendarType["DATETIME"] = 3] = "DATETIME";
+})(CalendarType = exports.CalendarType || (exports.CalendarType = {}));
 var Calendar = /** @class */ (function (_super) {
     __extends(Calendar, _super);
     function Calendar() {
@@ -51,7 +58,7 @@ var Calendar = /** @class */ (function (_super) {
             selectDate: (_b = _this.props.value) !== null && _b !== void 0 ? _b : exports.today,
             selectMonth: ((_c = _this.props.value) !== null && _c !== void 0 ? _c : exports.today).getMonth(),
             selectYear: ((_d = _this.props.value) !== null && _d !== void 0 ? _d : exports.today).getFullYear(),
-            type: 0 /* CalendarType.DATE */,
+            type: CalendarType.DATE,
             selectHours: (_f = (_e = _this.props.value) === null || _e === void 0 ? void 0 : _e.getHours()) !== null && _f !== void 0 ? _f : 0,
             selectMinutes: (_h = (_g = _this.props.value) === null || _g === void 0 ? void 0 : _g.getMinutes()) !== null && _h !== void 0 ? _h : 0,
             selectSeconds: (_k = (_j = _this.props.value) === null || _j === void 0 ? void 0 : _j.getSeconds()) !== null && _k !== void 0 ? _k : 0,
@@ -188,13 +195,13 @@ var Calendar = /** @class */ (function (_super) {
                 selected = true;
             }
             return react_1.default.createElement("button", __assign({ type: "button", key: timeValue.toString(), className: "month-picker-circle body-3 row ".concat(selected ? 'selected' : ''), style: style }, additionProps, { onClick: function () {
-                    if (_this.props.type === 1 /* CalendarType.MONTH */) {
+                    if (_this.props.type === CalendarType.MONTH) {
                         _this.setState(__assign(__assign({}, _this.state), { value: timeValue }));
                         if (_this.props.onSelect)
                             _this.props.onSelect(timeValue);
                     }
                     else {
-                        _this.setState(__assign(__assign({}, _this.state), { selectMonth: i, type: 0 /* CalendarType.DATE */ }));
+                        _this.setState(__assign(__assign({}, _this.state), { selectMonth: i, type: CalendarType.DATE }));
                     }
                 } }), monthTitle);
         }));
@@ -218,23 +225,23 @@ var Calendar = /** @class */ (function (_super) {
                 selected = true;
             }
             return react_1.default.createElement("button", __assign({ type: "button", key: yearNumber.toString(), className: "year-picker-circle body-3 row ".concat(selected ? 'selected' : ''), style: style }, additionProps, { onClick: function () {
-                    if (_this.props.type === 2 /* CalendarType.YEAR */) {
+                    if (_this.props.type === CalendarType.YEAR) {
                         _this.setState(__assign(__assign({}, _this.state), { value: new Date(yearNumber) }));
                         if (_this.props.onSelect)
                             _this.props.onSelect(new Date(yearNumber));
                     }
                     else {
-                        _this.setState(__assign(__assign({}, _this.state), { type: 1 /* CalendarType.MONTH */, selectYear: yearNumber }));
+                        _this.setState(__assign(__assign({}, _this.state), { type: CalendarType.MONTH, selectYear: yearNumber }));
                     }
                 } }), yearNumber);
         }));
     };
     Calendar.prototype.getTitle = function () {
         switch (this.state.type) {
-            case 2 /* CalendarType.YEAR */:
+            case CalendarType.YEAR:
                 var firstYearInTable = this.state.selectYear - ((this.state.selectYear - exports.startDate.getFullYear()) % 12);
                 return "".concat(firstYearInTable, "-").concat(firstYearInTable + 11);
-            case 1 /* CalendarType.MONTH */:
+            case CalendarType.MONTH:
                 return this.state.selectYear;
             default:
                 switch (this.state.selectMonth) {
@@ -295,7 +302,7 @@ var Calendar = /** @class */ (function (_super) {
                         react_1.default.createElement("div", { className: 'picker-date-header row' },
                             react_1.default.createElement("button", { type: 'button', onClick: function () {
                                     switch (_this.state.type) {
-                                        case 2 /* CalendarType.YEAR */:
+                                        case CalendarType.YEAR:
                                             if (_this.state.selectYear - 20 < exports.startDate.getFullYear()) {
                                                 _this.setState(__assign(__assign({}, _this.state), { selectYear: exports.startDate.getFullYear() }));
                                             }
@@ -303,7 +310,7 @@ var Calendar = /** @class */ (function (_super) {
                                                 _this.setState(__assign(__assign({}, _this.state), { selectYear: _this.state.selectYear - 20 }));
                                             }
                                             break;
-                                        case 1 /* CalendarType.MONTH */:
+                                        case CalendarType.MONTH:
                                             if (_this.state.selectYear - 10 < exports.startDate.getFullYear()) {
                                                 _this.setState(__assign(__assign({}, _this.state), { selectYear: exports.startDate.getFullYear() }));
                                             }
@@ -319,7 +326,7 @@ var Calendar = /** @class */ (function (_super) {
                                 react_1.default.createElement(react_fontawesome_1.FontAwesomeIcon, { icon: free_solid_svg_icons_1.faAngleDoubleLeft })),
                             react_1.default.createElement("button", { type: 'button', onClick: function () {
                                     switch (_this.state.type) {
-                                        case 2 /* CalendarType.YEAR */:
+                                        case CalendarType.YEAR:
                                             if (_this.state.selectYear - 10 < exports.startDate.getFullYear()) {
                                                 _this.setState(__assign(__assign({}, _this.state), { selectYear: exports.startDate.getFullYear() }));
                                             }
@@ -327,7 +334,7 @@ var Calendar = /** @class */ (function (_super) {
                                                 _this.setState(__assign(__assign({}, _this.state), { selectYear: _this.state.selectYear - 10 }));
                                             }
                                             break;
-                                        case 1 /* CalendarType.MONTH */:
+                                        case CalendarType.MONTH:
                                             if (_this.state.selectYear - 1 >= exports.startDate.getFullYear()) {
                                                 _this.setState(__assign(__assign({}, _this.state), { selectYear: _this.state.selectYear - 1 }));
                                             }
@@ -340,12 +347,12 @@ var Calendar = /** @class */ (function (_super) {
                                 } },
                                 react_1.default.createElement(react_fontawesome_1.FontAwesomeIcon, { icon: free_solid_svg_icons_1.faAngleLeft })),
                             react_1.default.createElement("span", { className: "heading-7", onClick: function () {
-                                    if (_this.state.type !== 2 /* CalendarType.YEAR */)
-                                        _this.setState(__assign(__assign({}, _this.state), { type: _this.state.type === 0 /* CalendarType.DATE */ ? 1 /* CalendarType.MONTH */ : 2 /* CalendarType.YEAR */ }));
+                                    if (_this.state.type !== CalendarType.YEAR)
+                                        _this.setState(__assign(__assign({}, _this.state), { type: _this.state.type === CalendarType.DATE ? CalendarType.MONTH : CalendarType.YEAR }));
                                 } }, this.getTitle()),
                             react_1.default.createElement("button", { type: 'button', onClick: function () {
                                     switch (_this.state.type) {
-                                        case 2 /* CalendarType.YEAR */:
+                                        case CalendarType.YEAR:
                                             if (_this.state.selectYear + 10 > exports.endDate.getFullYear()) {
                                                 _this.setState(__assign(__assign({}, _this.state), { selectYear: exports.endDate.getFullYear() }));
                                             }
@@ -353,7 +360,7 @@ var Calendar = /** @class */ (function (_super) {
                                                 _this.setState(__assign(__assign({}, _this.state), { selectYear: _this.state.selectYear + 10 }));
                                             }
                                             break;
-                                        case 1 /* CalendarType.MONTH */:
+                                        case CalendarType.MONTH:
                                             if (_this.state.selectYear + 1 <= exports.endDate.getFullYear()) {
                                                 _this.setState(__assign(__assign({}, _this.state), { selectYear: _this.state.selectYear + 1 }));
                                             }
@@ -367,7 +374,7 @@ var Calendar = /** @class */ (function (_super) {
                                 react_1.default.createElement(react_fontawesome_1.FontAwesomeIcon, { icon: free_solid_svg_icons_1.faAngleRight })),
                             react_1.default.createElement("button", { type: 'button', onClick: function () {
                                     switch (_this.state.type) {
-                                        case 2 /* CalendarType.YEAR */:
+                                        case CalendarType.YEAR:
                                             if (_this.state.selectYear + 20 > exports.endDate.getFullYear()) {
                                                 _this.setState(__assign(__assign({}, _this.state), { selectYear: exports.endDate.getFullYear() }));
                                             }
@@ -375,7 +382,7 @@ var Calendar = /** @class */ (function (_super) {
                                                 _this.setState(__assign(__assign({}, _this.state), { selectYear: _this.state.selectYear + 20 }));
                                             }
                                             break;
-                                        case 1 /* CalendarType.MONTH */:
+                                        case CalendarType.MONTH:
                                             if (_this.state.selectYear + 10 < exports.endDate.getFullYear()) {
                                                 _this.setState(__assign(__assign({}, _this.state), { selectYear: exports.endDate.getFullYear() }));
                                             }
@@ -389,8 +396,8 @@ var Calendar = /** @class */ (function (_super) {
                                     }
                                 } },
                                 react_1.default.createElement(react_fontawesome_1.FontAwesomeIcon, { icon: free_solid_svg_icons_1.faAngleDoubleRight }))),
-                        react_1.default.createElement("div", { className: 'picker-date-body row' }, this.state.type === 2 /* CalendarType.YEAR */ ? this.showYearInRange() : this.state.type === 1 /* CalendarType.MONTH */ ? this.showMonthInYear() : this.showDateInMonth())),
-                    this.props.type === 3 /* CalendarType.DATETIME */ ? react_1.default.createElement("div", { className: "picker-time-container col" },
+                        react_1.default.createElement("div", { className: 'picker-date-body row' }, this.state.type === CalendarType.YEAR ? this.showYearInRange() : this.state.type === CalendarType.MONTH ? this.showMonthInYear() : this.showDateInMonth())),
+                    this.props.type === CalendarType.DATETIME ? react_1.default.createElement("div", { className: "picker-time-container col" },
                         react_1.default.createElement("div", { className: "heading-7" },
                             this.state.selectHours < 10 ? "0".concat(this.state.selectHours) : this.state.selectHours,
                             ":",

@@ -3,15 +3,22 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getStatusIcon = void 0;
+exports.getStatusIcon = exports.ComponentStatus = void 0;
 var react_1 = __importDefault(require("react"));
+var ComponentStatus;
+(function (ComponentStatus) {
+    ComponentStatus[ComponentStatus["INFOR"] = 1] = "INFOR";
+    ComponentStatus[ComponentStatus["ERROR"] = 2] = "ERROR";
+    ComponentStatus[ComponentStatus["WARNING"] = 3] = "WARNING";
+    ComponentStatus[ComponentStatus["SUCCSESS"] = 4] = "SUCCSESS";
+})(ComponentStatus = exports.ComponentStatus || (exports.ComponentStatus = {}));
 var getStatusIcon = function (status) {
     switch (status) {
-        case 2 /* ComponentStatus.ERROR */:
+        case ComponentStatus.ERROR:
             return errorSvg;
-        case 3 /* ComponentStatus.WARNING */:
+        case ComponentStatus.WARNING:
             return warningSvg;
-        case 4 /* ComponentStatus.SUCCSESS */:
+        case ComponentStatus.SUCCSESS:
             return successSvg;
         default:
             return inforSvg;

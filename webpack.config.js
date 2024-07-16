@@ -16,7 +16,7 @@ module.exports = (env, argv) => {
       globalObject: 'this',
     },
     resolve: {
-      extensions: ['.ts', '.tsx', '.js'],
+      extensions: ['.tsx', '.ts', '.js', '.css']
     },
     module: {
       rules: [
@@ -28,6 +28,7 @@ module.exports = (env, argv) => {
         {
           test: /\.css$/,
           use: ['style-loader', 'css-loader'],
+          exclude: /node_modules/
         },
       ],
     },
