@@ -10,7 +10,7 @@ module.exports = (env, argv) => {
       path: path.resolve(__dirname, 'dist'),
       filename: 'index.js',
       library: {
-        name: 'MyComponent',
+        name: 'wini-web-components',
         type: 'umd',
       },
       globalObject: 'this',
@@ -22,7 +22,12 @@ module.exports = (env, argv) => {
       rules: [
         {
           test: /\.tsx?$/,
-          use: 'babel-loader',
+          use: {
+            loader: 'babel-loader',
+            options: {
+              presets: ['@babel/preset-env', '@babel/preset-react']
+            }
+          },
           exclude: /node_modules/,
         },
         {

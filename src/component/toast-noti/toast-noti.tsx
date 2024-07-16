@@ -1,4 +1,5 @@
 import { Slide, toast } from 'react-toastify';
+import './toast-noti.css';
 
 export class ToastMessage {
     static success(message: string) {

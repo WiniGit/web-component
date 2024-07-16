@@ -24,7 +24,6 @@ import { Rating } from './component/rating/rating'
 import { ProgressCircle } from './component/progress-circle/progress-circle'
 import { CustomSlider } from './component/slider/slider'
 import { ToastContainer } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css';
 
 export {
   Calendar, CalendarType,
