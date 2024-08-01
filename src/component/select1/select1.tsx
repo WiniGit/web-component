@@ -17,7 +17,7 @@ interface OptionsItem {
 interface Select1Props {
     value?: any,
     options: Required<Array<OptionsItem>>,
-    onChange?: (value?: OptionsItem) => void,
+    onChange?: Function,
     placeholder?: string,
     disabled?: boolean,
     className?: string,
@@ -143,7 +143,7 @@ export class Select1 extends React.Component<Select1Props, Select1State> {
             } else {
                 this.setState({
                     ...this.state,
-                    search: this.props.options.filter(e => typeof e.name === 'string' && e.name.toLowerCase().includes(ev.target.value.trim().toLowerCase()))
+                    search: this.props.options.filter(e => typeof e.name === "string" && e.name.toLowerCase().includes(ev.target.value.trim().toLowerCase()))
                 })
             }
         } else {
