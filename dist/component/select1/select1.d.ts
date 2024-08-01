@@ -8,7 +8,7 @@ interface OptionsItem {
 interface Select1Props {
     value?: any;
     options: Required<Array<OptionsItem>>;
-    onChange?: (value?: OptionsItem) => void;
+    onChange?: Function;
     placeholder?: string;
     disabled?: boolean;
     className?: string;

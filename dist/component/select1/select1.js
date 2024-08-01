@@ -128,7 +128,7 @@ var Select1 = /** @class */ (function (_super) {
                 });
             }
             else {
-                this.setState(__assign(__assign({}, this.state), { search: this.props.options.filter(function (e) { return typeof e.name === 'string' && e.name.toLowerCase().includes(ev.target.value.trim().toLowerCase()); }) }));
+                this.setState(__assign(__assign({}, this.state), { search: this.props.options.filter(function (e) { return typeof e.name === "string" && e.name.toLowerCase().includes(ev.target.value.trim().toLowerCase()); }) }));
             }
         }
         else {
