@@ -2,7 +2,7 @@ import './skin/color.css'
 import './skin/layout.css'
 import './skin/typography.css'
 import { Checkbox } from './component/checkbox/checkbox'
-import { Select1 } from './component/select1/select1'
+import { Select1, OptionsItem } from './component/select1/select1'
 import { Switch } from './component/switch/switch'
 import { showPopup, closePopup, Popup } from './component/popup/popup'
 import { showDialog, Dialog, DialogAlignment } from './component/dialog/dialog'
@@ -30,7 +30,7 @@ export {
   ComponentStatus,
   getStatusIcon,
   Checkbox,
-  Select1,
+  Select1,OptionsItem,
   Switch,
   Popup, showPopup, closePopup,
   Dialog, showDialog, DialogAlignment,

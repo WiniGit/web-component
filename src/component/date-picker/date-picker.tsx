@@ -98,8 +98,8 @@ const stringToDate = (_date: string, _format: string = "dd/MM/yyyy", _delimiter:
 
 interface DatePickerProps {
     value?: string,
-    min: Date,
-    max: Date,
+    min?: Date,
+    max?: Date,
     onChange?: (e?: string) => void,
     disabled?: boolean,
     helperText?: string,

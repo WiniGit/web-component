@@ -4,7 +4,7 @@ import './switch.css';
 interface SwitchProps {
     onChange?: (value: boolean) => void,
     value?: boolean,
-    disabled: false,
+    disabled?: boolean,
     style: CSSProperties,
     size?: number | string,
     dotColor?: string,

@@ -5,7 +5,7 @@ import { UseFormRegister } from 'react-hook-form';
 interface RadioButtonProps {
     onChange?: React.ChangeEventHandler<HTMLInputElement>,
     value?: string | number | readonly string[],
-    disabled: false,
+    disabled?: boolean,
     style: CSSProperties,
     size?: number | string,
     defaultChecked?: boolean,

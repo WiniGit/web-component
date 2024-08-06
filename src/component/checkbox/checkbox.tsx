@@ -5,7 +5,7 @@ interface CheckboxProps {
     onChange?: (value: boolean) => void,
     value?: boolean,
     checkColor?: string,
-    disabled?: false,
+    disabled?: boolean,
     style?: CSSProperties,
     /** default 2.4rem **/ 
     size?: number | string,

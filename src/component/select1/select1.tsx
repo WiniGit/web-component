@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import ReactDOM from 'react-dom'
 import './select1.css'
 
-interface OptionsItem {
+export interface OptionsItem {
     id: string | number,
     name: string | ReactNode,
     title?: string | ReactNode
@@ -17,7 +17,7 @@ interface OptionsItem {
 interface Select1Props {
     value?: any,
     options: Required<Array<OptionsItem>>,
-    onChange?: Function,
+    onChange?: (v?: OptionsItem) => void,
     placeholder?: string,
     disabled?: boolean,
     className?: string,

@@ -3,19 +3,19 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { CSSProperties } from 'react'
 import ReactDOM from 'react-dom'
 import './input-multi-select.css'
-import { Checkbox, Text } from '../../index'
+import { Checkbox, OptionsItem, Text } from '../../index'
 
 interface SelectMultipleProps {
     value?: Array<string | number>,
-    options: Required<Array<{ id: string | number, name: string }>>,
+    options: Required<Array<OptionsItem>>,
     onChange?: (value?: Array<string | number>) => void,
     placeholder?: string,
-    disabled: boolean,
+    disabled?: boolean,
     className?: string,
     helperText?: string,
     helperTextColor?: string,
     style?: CSSProperties,
-    handleSearch?: (e: string) => Promise<Array<{ id: string | number, name: string }>>
+    handleSearch?: (e: string) => Promise<Array<OptionsItem>>
 }
 
 interface SelectMultipleState {
@@ -23,7 +23,7 @@ interface SelectMultipleState {
     offset: DOMRect,
     isOpen: boolean,
     onSelect: any,
-    search?: Array<{ id: string | number, name: string }>,
+    search?: Array<OptionsItem>,
     style?: Object
 };
 
@@ -52,7 +52,7 @@ export class SelectMultiple extends React.Component<SelectMultipleProps, SelectM
         this.search = this.search.bind(this);
     }
 
-    private onCheck(item: { id: string | number, name: string }) {
+    private onCheck(item: OptionsItem) {
         let newValue: Array<string | number> = []
         if (this.state.value.includes(item.id)) {
             newValue = this.state.value.filter(vl => vl !== item.id)
@@ -77,7 +77,7 @@ export class SelectMultiple extends React.Component<SelectMultipleProps, SelectM
             } else {
                 this.setState({
                     ...this.state,
-                    search: this.props.options.filter(e => e.name.toLowerCase().includes(ev.target.value.trim().toLowerCase()))
+                    search: this.props.options.filter(e => typeof e.name === "string" && e.name.toLowerCase().includes(ev.target.value.trim().toLowerCase()))
                 })
             }
         } else {
