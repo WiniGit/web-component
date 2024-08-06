@@ -1,32 +1,24 @@
 import React, { CSSProperties } from 'react';
 import './input-multi-select.css';
+import { OptionsItem } from '../../index';
 interface SelectMultipleProps {
     value?: Array<string | number>;
-    options: Required<Array<{
-        id: string | number;
-        name: string;
-    }>>;
+    options: Required<Array<OptionsItem>>;
     onChange?: (value?: Array<string | number>) => void;
     placeholder?: string;
-    disabled: boolean;
+    disabled?: boolean;
     className?: string;
     helperText?: string;
     helperTextColor?: string;
     style?: CSSProperties;
-    handleSearch?: (e: string) => Promise<Array<{
-        id: string | number;
-        name: string;
-    }>>;
+    handleSearch?: (e: string) => Promise<Array<OptionsItem>>;
 }
 interface SelectMultipleState {
     value: Array<string | number>;
     offset: DOMRect;
     isOpen: boolean;
     onSelect: any;
-    search?: Array<{
-        id: string | number;
-        name: string;
-    }>;
+    search?: Array<OptionsItem>;
     style?: Object;
 }
 export declare class SelectMultiple extends React.Component<SelectMultipleProps, SelectMultipleState> {

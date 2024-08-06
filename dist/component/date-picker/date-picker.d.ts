@@ -3,8 +3,8 @@ import './date-picker.css';
 import { CalendarType } from '../../index';
 interface DatePickerProps {
     value?: string;
-    min: Date;
-    max: Date;
+    min?: Date;
+    max?: Date;
     onChange?: (e?: string) => void;
     disabled?: boolean;
     helperText?: string;

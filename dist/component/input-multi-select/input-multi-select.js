@@ -137,7 +137,7 @@ var SelectMultiple = /** @class */ (function (_super) {
                         this.setState(__assign(__assign({}, this.state), { search: res }));
                         return [3 /*break*/, 3];
                     case 2:
-                        this.setState(__assign(__assign({}, this.state), { search: this.props.options.filter(function (e) { return e.name.toLowerCase().includes(ev.target.value.trim().toLowerCase()); }) }));
+                        this.setState(__assign(__assign({}, this.state), { search: this.props.options.filter(function (e) { return typeof e.name === "string" && e.name.toLowerCase().includes(ev.target.value.trim().toLowerCase()); }) }));
                         _b.label = 3;
                     case 3: return [3 /*break*/, 5];
                     case 4:

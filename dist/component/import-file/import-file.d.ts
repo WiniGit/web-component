@@ -12,7 +12,7 @@ type ChangeFileFunction = (a?: File) => void;
 interface ImportFileProps {
     status?: ComponentStatus;
     value?: File | ObjWithKnownKeys;
-    buttonOnly: boolean;
+    buttonOnly?: boolean;
     onChange?: ChangeFileFunction;
     label?: string;
     className?: string;
