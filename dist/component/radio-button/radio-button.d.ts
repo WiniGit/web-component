@@ -5,7 +5,7 @@ interface RadioButtonProps {
     onChange?: React.ChangeEventHandler<HTMLInputElement>;
     value?: string | number | readonly string[];
     disabled?: boolean;
-    style: CSSProperties;
+    style?: CSSProperties;
     size?: number | string;
     defaultChecked?: boolean;
     name?: string;

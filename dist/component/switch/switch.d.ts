@@ -4,7 +4,7 @@ interface SwitchProps {
     onChange?: (value: boolean) => void;
     value?: boolean;
     disabled?: boolean;
-    style: CSSProperties;
+    style?: CSSProperties;
     size?: number | string;
     dotColor?: string;
     onBackground?: string;
