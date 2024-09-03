@@ -186,7 +186,7 @@ var DatePicker = /** @class */ (function (_super) {
                         right: document.body.offsetWidth - this.state.offset.left + 'px'
                     };
                 }
-                if ((thisPopupRect.bottom - 20) > document.body.offsetHeight) {
+                if ((thisPopupRect.bottom - 12) > document.body.offsetHeight) {
                     style = style ? __assign(__assign({}, style), { top: undefined, bottom: document.body.offsetHeight - this.state.offset.top + 'px' }) : {
                         left: this.state.offset.x + 'px',
                         bottom: document.body.offsetHeight - this.state.offset.top + 'px'
