@@ -19,6 +19,7 @@ export function Pagination({ currentPage, itemPerPage, totalItem, onChangePage, 
                         <Text className="regular2">Items/page</Text>
                         <div className="row">
                             <Select1
+                                hideSearch
                                 searchPlaceholder={'Search'}
                                 style={{ width: '8.6rem' }}
                                 placeholder={itemPerPage.toString()}
