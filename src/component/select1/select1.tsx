@@ -22,7 +22,8 @@ interface Select1Props {
     helperText?: string,
     helperTextColor?: string,
     style?: CSSProperties,
-    handleSearch?: (e: string) => Promise<Array<OptionsItem>>
+    handleSearch?: (e: string) => Promise<Array<OptionsItem>>,
+    hideClearValueButton?: boolean
 }
 
 interface Select1State {
@@ -155,12 +156,15 @@ export class Select1 extends React.Component<Select1Props, Select1State> {
             helper-text={this.props.helperText}
             style={this.props.style ? { ...({ '--helper-text-color': this.props.helperTextColor ?? '#e14337' } as CSSProperties), ...this.props.style } : ({ '--helper-text-color': this.props.helperTextColor ?? '#e14337' } as CSSProperties)}
             onClick={() => {
-                if (!this.state.isOpen) this.setState({
-                    ...this.state,
-                    isOpen: true,
-                    style: undefined,
-                    offset: this.containerRef?.current?.getBoundingClientRect() as any,
-                })
+                if (!this.state.isOpen) {
+                    this.setState({
+                        ...this.state,
+                        isOpen: true,
+                        style: undefined,
+                        offset: this.containerRef?.current?.getBoundingClientRect() as any,
+                    })
+                    this.inputRef.current?.focus()
+                }
             }}
         >
             <div className='row' style={{ flexWrap: 'wrap', flex: 1, width: '100%', gap: '0.6rem 0.4rem' }}>
@@ -171,12 +175,12 @@ export class Select1 extends React.Component<Select1Props, Select1State> {
                     }}
                 />
             </div>
-            <button type='button' className='row' style={{ padding: '0.4rem' }} onClick={(ev) => {
+            {this.props.hideClearValueButton && <button type='button' className='row' style={{ padding: '0.4rem' }} onClick={(ev) => {
                 ev.stopPropagation()
                 if (this.state.value) this.setState({ ...this.state, isOpen: true, value: undefined })
             }}>
                 <FontAwesomeIcon icon={faXmarkCircle} style={{ fontSize: '1.6rem', color: '#161C24' }} />
-            </button>
+            </button>}
             {this.state.isOpen &&
                 ReactDOM.createPortal(
                     <div className='select1-popup col'

@@ -17,7 +17,8 @@ interface SelectMultipleProps {
     helperText?: string,
     helperTextColor?: string,
     style?: CSSProperties,
-    handleSearch?: (e: string) => Promise<Array<OptionsItem>>
+    handleSearch?: (e: string) => Promise<Array<OptionsItem>>,
+    hideClearValueButton?: boolean
 }
 
 interface SelectMultipleState {
@@ -196,12 +197,12 @@ export class SelectMultiple extends React.Component<SelectMultipleProps, SelectM
                     }}
                 />}
             </div>
-            <button type='button' className='row' style={{ padding: '0.4rem' }} onClick={(ev) => {
+            {this.props.hideClearValueButton && <button type='button' className='row' style={{ padding: '0.4rem' }} onClick={(ev) => {
                 ev.stopPropagation()
                 if (this.state.value.length) this.setState({ ...this.state, isOpen: true, value: [] })
             }}>
                 <FontAwesomeIcon icon={faXmarkCircle} style={{ fontSize: '1.6rem', color: '#161C24' }} />
-            </button>
+            </button>}
             {this.state.isOpen &&
                 ReactDOM.createPortal(
                     <div className='select-multi-popup col'
