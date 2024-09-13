@@ -1,5 +1,5 @@
 import React, { CSSProperties, ReactNode } from 'react';
-import './inputDropSelect.css';
+import './select1.css';
 export interface OptionsItem {
     id: string | number;
     parentId?: string;
