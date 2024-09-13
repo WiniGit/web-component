@@ -99,8 +99,11 @@ var text_1 = require("../text/text");
 var Select1 = /** @class */ (function (_super) {
     __extends(Select1, _super);
     function Select1(props) {
-        var _this = _super.call(this, props) || this;
+        var _this = this;
+        var _a, _b;
+        _this = _super.call(this, props) || this;
         _this.containerRef = (0, react_1.createRef)();
+        _this.inputRef = (0, react_1.createRef)();
         _this.state = {
             value: props.value,
             options: props.options,
@@ -121,6 +124,8 @@ var Select1 = /** @class */ (function (_super) {
             onSelect: null,
         };
         _this.search = _this.search.bind(_this);
+        if (_this.inputRef.current)
+            _this.inputRef.current.value = "".concat((_b = (_a = _this.state.options.find(function (e) { return e.id === _this.state.value; })) === null || _a === void 0 ? void 0 : _a.name) !== null && _b !== void 0 ? _b : "");
         return _this;
     }
     Select1.prototype.search = function (ev) {
@@ -187,14 +192,17 @@ var Select1 = /** @class */ (function (_super) {
             react_1.default.createElement("div", { className: 'col', style: { display: item.isOpen ? "flex" : "none", width: '100%' } }, children.map(function (e) { return _this.renderOptions(e); })));
     };
     Select1.prototype.componentDidUpdate = function (prevProps, prevState) {
-        var _a, _b, _c, _d;
+        var _this = this;
+        var _a, _b, _c, _d, _e, _f;
         if (prevProps.options !== this.props.options)
             this.setState(__assign(__assign({}, this.state), { options: this.props.options }));
         if (prevProps.value !== this.props.value)
             this.setState(__assign(__assign({}, this.state), { value: this.props.value }));
+        if (prevState.value !== this.state.value && this.inputRef.current)
+            this.inputRef.current.value = "".concat((_b = (_a = this.state.options.find(function (e) { return e.id === _this.state.value; })) === null || _a === void 0 ? void 0 : _a.name) !== null && _b !== void 0 ? _b : "");
         //
         if (this.state.isOpen && prevState.isOpen !== this.state.isOpen) {
-            var thisPopupRect = (_a = document.body.querySelector('.select1-popup')) === null || _a === void 0 ? void 0 : _a.getBoundingClientRect();
+            var thisPopupRect = (_c = document.body.querySelector('.select1-popup')) === null || _c === void 0 ? void 0 : _c.getBoundingClientRect();
             if (thisPopupRect) {
                 var style = void 0;
                 if (thisPopupRect.right > document.body.offsetWidth) {
@@ -204,15 +212,15 @@ var Select1 = /** @class */ (function (_super) {
                     };
                 }
                 var _bottom = thisPopupRect.bottom - 8;
-                var thisContainerRect = (_b = this.containerRef.current) === null || _b === void 0 ? void 0 : _b.getBoundingClientRect();
+                var thisContainerRect = (_d = this.containerRef.current) === null || _d === void 0 ? void 0 : _d.getBoundingClientRect();
                 if (thisContainerRect) {
                     if (_bottom > document.body.offsetHeight) {
                         style = __assign(__assign({}, (style !== null && style !== void 0 ? style : {})), { top: "".concat(thisContainerRect.y - 2 - thisPopupRect.height, "px") });
                     }
                 }
                 if (style) {
-                    (_c = style.left) !== null && _c !== void 0 ? _c : (style.left = style.right ? undefined : "".concat(this.state.offset.x, "px"));
-                    (_d = style.width) !== null && _d !== void 0 ? _d : (style.width = "".concat(this.state.offset.width, "px"));
+                    (_e = style.left) !== null && _e !== void 0 ? _e : (style.left = style.right ? undefined : "".concat(this.state.offset.x, "px"));
+                    (_f = style.width) !== null && _f !== void 0 ? _f : (style.width = "".concat(this.state.offset.width, "px"));
                     this.setState(__assign(__assign({}, this.state), { style: style }));
                 }
             }
@@ -226,12 +234,13 @@ var Select1 = /** @class */ (function (_super) {
                 if (!_this.state.isOpen)
                     _this.setState(__assign(__assign({}, _this.state), { isOpen: true, style: undefined, offset: (_b = (_a = _this.containerRef) === null || _a === void 0 ? void 0 : _a.current) === null || _b === void 0 ? void 0 : _b.getBoundingClientRect() }));
             } },
-            react_1.default.createElement("div", { className: 'row', style: { flexWrap: 'wrap', flex: 1, width: '100%', gap: '0.6rem 0.4rem' } }, this.state.isOpen ? react_1.default.createElement("input", { autoFocus: true, defaultValue: this.state.value, onChange: this.search, placeholder: this.props.placeholder, onBlur: function (ev) {
-                    if (_this.state.onSelect)
-                        ev.target.focus();
-                    else
-                        _this.setState(__assign(__assign({}, _this.state), { isOpen: false, onSelect: null }));
-                } }) : react_1.default.createElement("input", { defaultValue: this.state.value, placeholder: this.props.placeholder, readOnly: true })),
+            react_1.default.createElement("div", { className: 'row', style: { flexWrap: 'wrap', flex: 1, width: '100%', gap: '0.6rem 0.4rem' } },
+                react_1.default.createElement("input", { ref: this.inputRef, onChange: this.search, placeholder: this.props.placeholder, onBlur: function (ev) {
+                        if (_this.state.onSelect)
+                            ev.target.focus();
+                        else
+                            _this.setState(__assign(__assign({}, _this.state), { isOpen: false, onSelect: null }));
+                    } })),
             react_1.default.createElement("button", { type: 'button', className: 'row', style: { padding: '0.4rem' }, onClick: function (ev) {
                     ev.stopPropagation();
                     if (_this.state.value)

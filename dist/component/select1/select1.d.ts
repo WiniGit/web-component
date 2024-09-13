@@ -29,6 +29,7 @@ interface Select1State {
 }
 export declare class Select1 extends React.Component<Select1Props, Select1State> {
     private containerRef;
+    private inputRef;
     constructor(props: Select1Props);
     private search;
     private onSelect;
