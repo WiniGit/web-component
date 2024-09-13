@@ -13,11 +13,12 @@ type TbCellProps = {
     className?: string,
     style?: CSSProperties,
     align?: CellAlignItems | string,
+    onClick?: React.MouseEventHandler<HTMLTableDataCellElement>
 }
 
 export class TbCell extends React.Component<TbCellProps> {
     render(): React.ReactNode {
-        return <td style={this.props.style} align-cell={this.props.align ?? CellAlignItems.start} className={`tb-cell ${this.props.className ?? ''} ${this.props.fixed ? 'tb-cell-fixed' : ''}`}>{this.props.children}</td>
+        return <td onClick={this.props.onClick} style={this.props.style} align-cell={this.props.align ?? CellAlignItems.start} className={`tb-cell ${this.props.className ?? ''} ${this.props.fixed ? 'tb-cell-fixed' : ''}`}>{this.props.children}</td>
     }
 }
 
@@ -45,6 +46,7 @@ export class TbRow extends React.Component<TbRowProps> {
                     align={e.props.align}
                     children={e.props.children}
                     fixed={e.props.fixed}
+                    onClick={e.props.onClick}
                     style={e.props.fixed ? (this.props.children && i === this.props.children.length - 1) ? { right: 0, ...(e.props.style ?? {}) } : { left: ox, ...(e.props.style ?? {}) } : e.props.style}
                     className={e.props.className} />;
             })}
@@ -65,6 +67,7 @@ export class TbHeader extends React.Component<TbRowProps> {
                         key={`tb-cell-${i}`}
                         align={e.props.align}
                         children={e.props.children}
+                        onClick={e.props.onClick}
                         fixed={e.props.fixed}
                         style={e.props.fixed ? (this.props.children && i === this.props.children.length - 1) ? { right: 0, ...(e.props.style ?? {}) } : { left: ox, ...(e.props.style ?? {}) } : e.props.style}
                         className={e.props.className} />;
