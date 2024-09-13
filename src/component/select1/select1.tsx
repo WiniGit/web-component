@@ -37,6 +37,7 @@ interface Select1State {
 
 export class Select1 extends React.Component<Select1Props, Select1State> {
     private containerRef = createRef<HTMLDivElement>()
+    private inputRef = createRef<HTMLInputElement>()
     constructor(props: Select1Props) {
         super(props)
         this.state = {
@@ -59,6 +60,7 @@ export class Select1 extends React.Component<Select1Props, Select1State> {
             onSelect: null,
         }
         this.search = this.search.bind(this)
+        if (this.inputRef.current) this.inputRef.current.value = `${this.state.options.find(e => e.id === this.state.value)?.name ?? ""}`
     }
 
     private async search(ev: React.ChangeEvent<HTMLInputElement>) {
@@ -118,6 +120,7 @@ export class Select1 extends React.Component<Select1Props, Select1State> {
     componentDidUpdate(prevProps: Select1Props, prevState: Select1State) {
         if (prevProps.options !== this.props.options) this.setState({ ...this.state, options: this.props.options })
         if (prevProps.value !== this.props.value) this.setState({ ...this.state, value: this.props.value })
+        if (prevState.value !== this.state.value && this.inputRef.current) this.inputRef.current.value = `${this.state.options.find(e => e.id === this.state.value)?.name ?? ""}`
         //
         if (this.state.isOpen && prevState.isOpen !== this.state.isOpen) {
             const thisPopupRect = document.body.querySelector('.select1-popup')?.getBoundingClientRect()
@@ -161,12 +164,12 @@ export class Select1 extends React.Component<Select1Props, Select1State> {
             }}
         >
             <div className='row' style={{ flexWrap: 'wrap', flex: 1, width: '100%', gap: '0.6rem 0.4rem' }}>
-                {this.state.isOpen ? <input autoFocus defaultValue={this.state.value} onChange={this.search} placeholder={this.props.placeholder}
+                <input ref={this.inputRef} onChange={this.search} placeholder={this.props.placeholder}
                     onBlur={ev => {
                         if (this.state.onSelect) ev.target.focus()
                         else this.setState({ ...this.state, isOpen: false, onSelect: null })
                     }}
-                /> : <input defaultValue={this.state.value} placeholder={this.props.placeholder} readOnly />}
+                />
             </div>
             <button type='button' className='row' style={{ padding: '0.4rem' }} onClick={(ev) => {
                 ev.stopPropagation()
