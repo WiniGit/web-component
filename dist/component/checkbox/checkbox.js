@@ -65,15 +65,16 @@ var Checkbox = /** @class */ (function (_super) {
             convertStyle = __assign(__assign({}, this.props.style), convertStyle);
         }
         return react_1.default.createElement("label", { className: "checkbox-container row", style: convertStyle, "is-null-value": "".concat(this.state.value == undefined) },
-            react_1.default.createElement("input", { type: "checkbox", checked: this.state.value, disabled: this.props.disabled, onChange: function () {
+            react_1.default.createElement("input", { type: "checkbox", checked: this.state.value, disabled: this.props.disabled, onChange: function (ev) {
+                    ev.stopPropagation();
                     var newValue = !_this.state.value;
                     _this.setState({ value: newValue });
                     if (_this.props.onChange)
                         _this.props.onChange(newValue);
                 } }),
             react_1.default.createElement("svg", { width: "100%", height: "100%", viewBox: "0 0 20 20", fill: "none", xmlns: "http://www.w3.org/2000/svg" }, this.state.value == undefined ?
-                react_1.default.createElement("path", { fillRule: "evenodd", clipRule: "evenodd", d: "M15.07 6.49317C15.2549 6.67808 15.2549 6.97787 15.07 7.16278L8.91467 13.3181C8.72977 13.503 8.42997 13.503 8.24507 13.3181L4.93067 10.0037C4.74577 9.81878 4.74577 9.51899 4.93067 9.33408C5.11558 9.14917 5.41537 9.14917 5.60028 9.33408L8.57987 12.3137L14.4004 6.49317C14.5853 6.30827 14.8851 6.30827 15.07 6.49317Z", fill: (_c = this.props.checkColor) !== null && _c !== void 0 ? _c : '#ffffff' }) :
-                react_1.default.createElement("path", { fillRule: "evenodd", clipRule: "evenodd", d: "M4.79199 9.95298C4.79199 9.69148 5.00398 9.47949 5.26548 9.47949H14.7352C14.9967 9.47949 15.2087 9.69148 15.2087 9.95298C15.2087 10.2145 14.9967 10.4265 14.7352 10.4265H5.26548C5.00398 10.4265 4.79199 10.2145 4.79199 9.95298Z", fill: (_d = this.props.checkColor) !== null && _d !== void 0 ? _d : '#ffffff' })));
+                react_1.default.createElement("path", { fillRule: "evenodd", clipRule: "evenodd", d: "M4.79199 9.95298C4.79199 9.69148 5.00398 9.47949 5.26548 9.47949H14.7352C14.9967 9.47949 15.2087 9.69148 15.2087 9.95298C15.2087 10.2145 14.9967 10.4265 14.7352 10.4265H5.26548C5.00398 10.4265 4.79199 10.2145 4.79199 9.95298Z", fill: (_c = this.props.checkColor) !== null && _c !== void 0 ? _c : '#ffffff' }) :
+                react_1.default.createElement("path", { fillRule: "evenodd", clipRule: "evenodd", d: "M15.07 6.49317C15.2549 6.67808 15.2549 6.97787 15.07 7.16278L8.91467 13.3181C8.72977 13.503 8.42997 13.503 8.24507 13.3181L4.93067 10.0037C4.74577 9.81878 4.74577 9.51899 4.93067 9.33408C5.11558 9.14917 5.41537 9.14917 5.60028 9.33408L8.57987 12.3137L14.4004 6.49317C14.5853 6.30827 14.8851 6.30827 15.07 6.49317Z", fill: (_d = this.props.checkColor) !== null && _d !== void 0 ? _d : '#ffffff' })));
     };
     return Checkbox;
 }(react_1.default.Component));

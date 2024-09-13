@@ -1,9 +1,10 @@
 import React, { CSSProperties, ReactNode } from 'react';
 import './select1.css';
 export interface OptionsItem {
-    id: string | number;
+    id: string;
+    parentId?: string;
     name: string | ReactNode;
-    title?: string | ReactNode;
+    title: string | ReactNode;
 }
 interface Select1Props {
     value?: any;
