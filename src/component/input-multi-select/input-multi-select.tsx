@@ -1,9 +1,11 @@
-import { faChevronDown, faChevronUp, faClose, faSearch } from '@fortawesome/free-solid-svg-icons'
+import { faCaretDown, faCaretRight, faClose, faXmarkCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { CSSProperties } from 'react'
+import React, { createRef, CSSProperties } from 'react'
 import ReactDOM from 'react-dom'
 import './input-multi-select.css'
-import { Checkbox, OptionsItem, Text } from '../../index'
+import { OptionsItem } from '../select1/select1'
+import { Checkbox } from '../checkbox/checkbox'
+import { Text } from '../text/text'
 
 interface SelectMultipleProps {
     value?: Array<string | number>,
@@ -20,6 +22,7 @@ interface SelectMultipleProps {
 
 interface SelectMultipleState {
     value: Array<string | number>,
+    options: Required<Array<OptionsItem>>,
     offset: DOMRect,
     isOpen: boolean,
     onSelect: any,
@@ -28,10 +31,12 @@ interface SelectMultipleState {
 };
 
 export class SelectMultiple extends React.Component<SelectMultipleProps, SelectMultipleState> {
+    private containerRef = createRef<HTMLDivElement>()
     constructor(props: SelectMultipleProps) {
         super(props)
         this.state = {
             value: props.value ?? [],
+            options: props.options,
             offset: {
                 x: 0,
                 y: 0,
@@ -49,20 +54,18 @@ export class SelectMultiple extends React.Component<SelectMultipleProps, SelectM
             onSelect: null,
         }
         this.onCheck = this.onCheck.bind(this)
-        this.search = this.search.bind(this);
+        this.search = this.search.bind(this)
+        this.onClickItem = this.onClickItem.bind(this)
     }
 
-    private onCheck(item: OptionsItem) {
+    private onCheck(value: boolean, list: Array<OptionsItem>) {
         let newValue: Array<string | number> = []
-        if (this.state.value.includes(item.id)) {
-            newValue = this.state.value.filter(vl => vl !== item.id)
+        if (value) {
+            newValue = [...this.state.value, ...list.map(e => e.id)]
         } else {
-            newValue = [...this.state.value, item.id]
+            newValue = this.state.value.filter(vl => list.every(e => vl !== e.id))
         }
-        this.setState({
-            ...this.state,
-            value: newValue
-        })
+        this.setState({ ...this.state, value: newValue })
         if (this.props.onChange) this.props.onChange(newValue)
     }
 
@@ -70,10 +73,7 @@ export class SelectMultiple extends React.Component<SelectMultipleProps, SelectM
         if (ev.target.value.trim().length) {
             if (this.props?.handleSearch) {
                 const res = await this.props.handleSearch(ev.target.value.trim())
-                this.setState({
-                    ...this.state,
-                    search: res
-                })
+                this.setState({ ...this.state, search: res })
             } else {
                 this.setState({
                     ...this.state,
@@ -81,142 +81,139 @@ export class SelectMultiple extends React.Component<SelectMultipleProps, SelectM
                 })
             }
         } else {
-            this.setState({
-                ...this.state,
-                search: undefined
-            })
+            this.setState({ ...this.state, search: undefined })
         }
     }
 
-    componentDidUpdate(prevProps: SelectMultipleProps, prevState: SelectMultipleState) {
-        if (prevProps.value !== this.props.value) {
-            this.setState({
-                ...this.state,
-                value: this.props.value ?? []
+    private onClickItem(ev: React.MouseEvent<HTMLDivElement>, item: string | number) {
+        ev.stopPropagation()
+        let newValue = this.state.value.filter(vl => vl !== item)
+        this.setState({
+            ...this.state,
+            value: newValue,
+            ...(this.state.isOpen ? {} : {
+                isOpen: true,
+                style: undefined,
+                offset: this.containerRef?.current?.getBoundingClientRect() as any,
             })
-        }
-        if (prevState.isOpen !== this.state.isOpen && this.state.isOpen) {
+        })
+        if (this.props.onChange) this.props.onChange(newValue)
+    }
+
+    private renderOptions(item: OptionsItem) {
+        let children: Array<OptionsItem> = []
+        if (!item.parentId) children = (this.state.search ?? this.state.options).filter(e => e.parentId === item.id)
+        // 
+        return <div key={item.id} className='col' style={{ width: '100%' }}>
+            <div className='select-tile row' style={{ paddingLeft: item.parentId ? '4.4rem' : undefined }} onClick={children.length ? () => {
+                if (this.state.search) {
+                    this.setState({
+                        ...this.state, search: this.state.search.map(e => {
+                            if (e.id === item.id) return { ...e, isOpen: !(item as any).isOpen } as any
+                            else return e
+                        })
+                    })
+                } else {
+                    this.setState({
+                        ...this.state, options: this.state.options.map(e => {
+                            if (e.id === item.id) return { ...e, isOpen: !(item as any).isOpen } as any
+                            else return e
+                        })
+                    })
+                }
+            } : undefined}>
+                {(this.state.search ?? this.state.options).some(e => e.parentId) && <div className='row' style={{ width: '1.4rem', height: '1.4rem' }}>
+                    {children.length ? <FontAwesomeIcon icon={(item as any).isOpen ? faCaretDown : faCaretRight} style={{ fontSize: '1.2rem', color: '#161C2499' }} /> : null}
+                </div>}
+                <Checkbox value={children.length ? (children.every((e) => this.state.value.includes(e.id)) ? true : children.some((e) => this.state.value.includes(e.id)) ? undefined : false) : this.state.value.includes(item.id)} onChange={(v) => { this.onCheck(v, [item, ...children]) }} size={'2rem'} />
+                <Text className='body-3'>{item.name}</Text>
+            </div>
+            <div className='col' style={{ display: (item as any).isOpen ? "flex" : "none", width: '100%' }}>{children.map(e => this.renderOptions(e))}</div>
+        </div>
+    }
+
+    componentDidUpdate(prevProps: SelectMultipleProps, prevState: SelectMultipleState) {
+        if (prevProps.options !== this.props.options) this.setState({ ...this.state, options: this.props.options })
+        if (prevProps.value !== this.props.value) this.setState({ ...this.state, value: this.props.value ?? [] })
+        //
+        if (this.state.isOpen && (prevState.isOpen !== this.state.isOpen || prevState.value.length !== this.state.value.length)) {
             const thisPopupRect = document.body.querySelector('.select-multi-popup')?.getBoundingClientRect()
             if (thisPopupRect) {
                 let style: { top?: string, left?: string, right?: string, bottom?: string, width?: string, height?: string } | undefined;
-                if (thisPopupRect.right > document.body.offsetWidth) {
+                if (prevState.isOpen !== this.state.isOpen && thisPopupRect.right > document.body.offsetWidth) {
                     style = {
                         top: this.state.offset.y + this.state.offset.height + 2 + 'px',
-                        width: `${this.state.offset.width}px`,
                         right: document.body.offsetWidth - this.state.offset.right + 'px'
                     }
                 }
-                if (thisPopupRect.bottom - 12 > document.body.offsetHeight) {
-                    style = style ? {
-                        ...style,
-                        top: undefined,
-                        bottom: document.body.offsetHeight - this.state.offset.bottom + 'px'
-                    } : {
-                        left: this.state.offset.x + 'px',
-                        width: `${this.state.offset.width}px`,
-                        bottom: document.body.offsetHeight - this.state.offset.bottom + 'px'
+                let _bottom = thisPopupRect.bottom - 8
+                const thisContainerRect = this.containerRef.current?.getBoundingClientRect()
+                if (thisContainerRect) {
+                    if (prevState.value.length !== this.state.value.length) {
+                        _bottom = thisContainerRect.bottom + 2 + thisPopupRect.height
+                        style = { ...(style ?? {}), top: `${thisContainerRect.bottom + 2}px` }
+                    }
+                    if (_bottom > document.body.offsetHeight) {
+                        style = { ...(style ?? {}), top: `${thisContainerRect.y - 2 - thisPopupRect.height}px` }
                     }
                 }
-                if (style) this.setState({
-                    ...this.state,
-                    style: style
-                })
+                if (style) {
+                    style.left ??= (style.right ? undefined : `${this.state.offset.x}px`)
+                    style.width ??= `${this.state.offset.width}px`
+                    this.setState({ ...this.state, style: style })
+                }
             }
         }
     }
 
     render() {
         return <div
-            className={`select-multi-container row ${this.props.disabled ? 'disabled' : ''} ${this.props.helperText?.length && 'helper-text'}`}
+            ref={this.containerRef}
+            className={`select-multi-container row ${this.props.disabled ? 'disabled' : ''} ${this.props.helperText?.length && 'helper-text'} ${this.props.className ?? 'body-3'}`}
             helper-text={this.props.helperText}
             style={this.props.style ? { ...({ '--helper-text-color': this.props.helperTextColor ?? '#e14337' } as CSSProperties), ...this.props.style } : ({ '--helper-text-color': this.props.helperTextColor ?? '#e14337' } as CSSProperties)}
-            onClick={ev => {
-                if (!this.state.isOpen) {
-                    this.setState({
-                        ...this.state,
-                        isOpen: true,
-                        style: undefined,
-                        offset: ((ev.target as HTMLElement).closest('.select-multi-container') ?? (ev.target as HTMLElement)).getBoundingClientRect(),
-                    })
-                }
+            onClick={() => {
+                if (!this.state.isOpen) this.setState({
+                    ...this.state,
+                    isOpen: true,
+                    style: undefined,
+                    offset: this.containerRef?.current?.getBoundingClientRect() as any,
+                })
             }}
         >
-            <div className='row' style={{ overflow: 'auto hidden', flex: 1, width: '100%', gap: '0.8rem' }}>
-                {this.state.value?.length ? (
-                    this.state.value.map(item => {
-                        const optionItem = this.props.options.find(e => e.id === item)
-                        return <div
-                            key={item}
-                            className='selected-item-value row'
-                            onClick={(ev) => {
-                                ev.stopPropagation()
-                                let newValue = this.state.value.filter(vl => vl !== item)
-                                this.setState({
-                                    ...this.state,
-                                    value: newValue,
-                                    isOpen: true,
-                                    style: undefined,
-                                    offset: ((ev.target as HTMLElement).closest('.select-multi-container') ?? (ev.target as HTMLElement)).getBoundingClientRect(),
-                                })
-                                if (this.props.onChange) this.props.onChange(newValue)
-                            }}
-                        >
-                            <div className='selected-value-title'>{optionItem?.name}</div>
-                            <FontAwesomeIcon icon={faClose} style={{ color: '#161D24E5', fontSize: '1.2rem' }} />
-                        </div>
-                    })
-                ) : (
-                    <div className='select-multi-placeholder'>
-                        {this.props.placeholder}
+            <div className='row' style={{ flexWrap: 'wrap', flex: 1, width: '100%', gap: '0.6rem 0.4rem' }}>
+                {this.state.value.map(item => {
+                    const optionItem = this.props.options.find(e => e.id === item)
+                    return <div key={item} className='selected-item-value row' onClick={(ev) => this.onClickItem(ev, item)}>
+                        <Text>{optionItem?.name}</Text>
+                        <FontAwesomeIcon icon={faClose} style={{ color: '#161D24E5', fontSize: '1.2rem' }} />
                     </div>
-                )}
+                })}
+                {(!this.state.value.length || this.state.isOpen) && <input autoFocus={this.state.isOpen} onChange={this.search} placeholder={this.state.value.length ? undefined : this.props.placeholder}
+                    onBlur={ev => {
+                        if (this.state.onSelect) ev.target.focus()
+                        else this.setState({ ...this.state, isOpen: false, onSelect: null })
+                    }}
+                />}
             </div>
-            <FontAwesomeIcon
-                icon={this.state.isOpen ? faChevronUp : faChevronDown}
-                style={{ fontSize: '1.2rem', color: '#888' }}
-            />
+            <button type='button' className='row' style={{ padding: '0.4rem' }} onClick={(ev) => {
+                ev.stopPropagation()
+                if (this.state.value.length) this.setState({ ...this.state, isOpen: true, value: [] })
+            }}>
+                <FontAwesomeIcon icon={faXmarkCircle} style={{ fontSize: '1.6rem', color: '#161C24' }} />
+            </button>
             {this.state.isOpen &&
                 ReactDOM.createPortal(
-                    <div
-                        className='select-multi-popup col'
+                    <div className='select-multi-popup col'
                         style={this.state.style ?? {
                             top: this.state.offset.y + this.state.offset.height + 2 + 'px',
                             left: this.state.offset.x + 'px',
                             width: this.state.offset.width,
                         }}
-                        onMouseOver={ev => {
-                            this.setState({
-                                ...this.state,
-                                onSelect: ev.target
-                            })
-                        }}
-                        onMouseOut={() =>
-                            this.setState({
-                                ...this.state,
-                                onSelect: null
-                            })
-                        }
+                        onMouseOver={ev => this.setState({ ...this.state, onSelect: ev.target })}
+                        onMouseOut={() => this.setState({ ...this.state, onSelect: null })}
                     >
-                        <div className='row header-search'>
-                            <input
-                                autoFocus={true}
-                                placeholder={'Tìm kiếm'}
-                                onChange={this.search}
-                                onBlur={ev => {
-                                    if (this.state.onSelect) {
-                                        ev.target.focus()
-                                    } else {
-                                        this.setState({
-                                            ...this.state,
-                                            isOpen: false,
-                                            onSelect: null
-                                        })
-                                    }
-                                }}
-                            />
-                            <FontAwesomeIcon icon={faSearch} style={{ fontSize: '1.2rem', color: '#161D24D9' }} />
-                        </div>
-                        <div style={{ padding: '1.2rem 1.6rem', width: '100%', borderTop: '1px solid #161D2414', borderBottom: '1px solid #161D2414' }}>
+                        <div style={{ padding: '1.2rem 1.6rem', width: '100%', borderBottom: '1px solid #161D2414' }}>
                             {(() => {
                                 const _list = (this.state.search ?? this.props.options ?? [])
                                 const isSelectedAll = _list.every(item => this.state.value.some(vl => vl === item.id))
@@ -231,24 +228,11 @@ export class SelectMultiple extends React.Component<SelectMultipleProps, SelectM
                                     }
                                     this.setState({ ...this.state, value: newValue })
                                     if (this.props.onChange) this.props.onChange(newValue)
-                                }} className='button-text-3' style={{ color: _list.length ? 'var(--primary-color)' : '#00204D99', }}>{_list.length && isSelectedAll ? 'Bỏ chọn tất cả' : 'Chọn tất cả'}</Text>
+                                }} className='button-text-3' style={{ color: _list.length ? 'var(--infor-color)' : '#00204D99', }}>{_list.length && isSelectedAll ? 'Bỏ chọn tất cả' : 'Chọn tất cả'}</Text>
                             })()}
                         </div>
                         <div className='col select-body'>
-                            {(this.state.search ?? this.props.options ?? []).map(
-                                item => (
-                                    <div key={item.id} className='select-tile row'>
-                                        <Checkbox
-                                            value={this.state.value.some(vl => vl === item.id)}
-                                            onChange={() => { this.onCheck(item) }}
-                                            size={'2rem'}
-                                        />
-                                        <div className='label-3'>
-                                            {item.name}
-                                        </div>
-                                    </div>
-                                )
-                            )}
+                            {(this.state.search ?? this.state.options).filter(e => !e.parentId).map(item => this.renderOptions(item))}
                             {(this.state.search?.length === 0 || this.props.options?.length === 0) && (
                                 <div className='no-results-found'>No result found</div>
                             )}
