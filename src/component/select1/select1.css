@@ -1,17 +1,18 @@
 .select1-container {
     border-radius: 0.8rem;
-    align-items: center;
-    justify-content: start;
     width: 100%;
-    height: 4rem;
     max-height: 100%;
     box-sizing: border-box;
-    padding: 0.8rem;
+    padding: 0.8rem 1.6rem;
+    border: 1px solid #00358033;
+    border-radius: 0.8rem;
     gap: 0.8rem;
-    width: 16rem;
     position: relative;
-    border: 0.5px solid #00358033;
     cursor: context-menu;
+}
+
+.select1-container:focus-within {
+    border-color: var(--infor-color);
 }
 
 .select1-container.disabled {
@@ -35,27 +36,8 @@
     transform: translate(-7.5%, 92.5%) scale(0.85);
 }
 
-.select1-container::-webkit-scrollbar {
-    display: none;
-}
-
-.selected-item-value>* {
-    pointer-events: none;
-}
-
-.select1-container>.select1-placeholder {
-    font: inherit;
-    font-size: inherit;
-    font-family: inherit;
-    font-weight: inherit;
-    line-height: inherit;
-    text-align: inherit;
-    text-overflow: inherit;
-    color: #c5c5c5 !important;
-    flex: 1;
-}
-
-.select1-container>.select1-value-name {
+.select1-container *:has(input),
+.select1-container input {
     font: inherit;
     color: inherit;
     font-size: inherit;
@@ -64,91 +46,59 @@
     line-height: inherit;
     text-align: inherit;
     text-overflow: inherit;
+}
+
+.select1-container input {
     flex: 1;
-}
-
-.select1-container>.selected-item-value {
-    border-radius: 4px;
-    padding: 4px 8px;
-    background-color: #c5c5c5;
-    column-gap: 4px;
-}
-
-.select1-container>.selected-item-value>.selected-value-title {
-    font: 400 1.2rem/1.6rem "Inter";
-    color: #1C2430;
+    min-width: 6rem;
+    border: none;
+    outline: none;
+    padding: 0;
+    background-color: transparent;
 }
 
 .select1-popup {
     position: absolute;
     z-index: 10;
     background-color: #fff;
-    border-radius: 8px;
+    border-radius: 0.8rem;
     height: fit-content;
     box-shadow: 0 0 12px 0 #00204d1f;
     align-items: center;
     padding: 0.8rem 0;
-    /* border: 0.5px solid #00358033; */
     box-shadow: -20px 20px 40px -4px rgba(145, 158, 171, 0.24), 0px 0px 2px 0px rgba(145, 158, 171, 0.24);
 }
 
-.select1-popup>.header-search {
-    width: 100%;
-    padding: 0.8rem 1.6rem;
-    box-sizing: border-box;
-    align-items: center;
-    border-bottom: var(--border-grey1);
-}
-
-.select1-popup>.header-search>input {
-    outline: none;
-    padding: 0;
-    border: 0;
-    font: 400 1.4rem/2.2rem "Inter";
-    color: #1C2430;
-    min-width: 0;
+.select1-popup>.select-body {
+    max-height: 100%;
     flex: 1;
-    max-width: 100%;
-}
-
-.select1-popup>.select1-body {
-    width: 100%;
     align-items: start;
-    row-gap: 2px;
-    overflow: hidden;
-}
-
-.select1-popup>.select1-body>.select1-scroll-view {
-    overflow: hidden auto;
-    max-height: 26rem;
+    max-height: 28rem;
     min-height: 8rem;
     width: 100%;
-    align-items: start;
+    padding: 0.6rem 0;
+    overflow: hidden auto;
 }
 
-.select1-popup>.select1-body .select1-tile * {
-    pointer-events: none;
-}
-
-.select1-popup>.select1-body .select1-tile {
+.select1-popup>.select-body .select-tile {
     justify-content: start;
     align-items: center;
-    padding: 1.2rem 1.6rem;
+    padding: 0.8rem 1.6rem;
     gap: 0.8rem;
     width: 100%;
-    border: none;
-    outline: none;
-    background-color: transparent;
-    text-align: start;
+    cursor: context-menu;
 }
 
-.select1-popup>.select1-body .select1-tile:hover {
-    background-color: var(--infor-color) !important;
-    color: white;
+.select1-popup>.select-body .select-tile:hover {
+    background-color: var(--hover-background);
+}
+
+.select1-popup>.select-body .select-tile:has(input:checked) {
+    background-color: var(--selected-background);
 }
 
 .no-results-found {
-    padding: 8px;
+    padding: 0.8rem;
     font: 400 1.4rem/2rem "Inter";
     color: #1C2430;
 }

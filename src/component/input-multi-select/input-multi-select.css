@@ -12,7 +12,7 @@
 }
 
 .select-multi-container:focus-within {
-    border-color: var(--primary-color);
+    border-color: var(--infor-color);
 }
 
 .select-multi-container.disabled {

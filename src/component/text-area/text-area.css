@@ -4,7 +4,7 @@
     gap: 0.8rem;
     border-radius: 0.8rem;
     border: 0.5px solid #00358033;
-    padding: 1.6rem;
+    padding: 0.8rem 1.6rem;
     align-items: start;
 }
 
@@ -13,8 +13,8 @@
     pointer-events: none !important;
 }
 
-.text-area-container:has(> textarea:focus) {
-    border-color: #366AE2;
+.text-area-container:focus-within {
+    border-color: var(--infor-color);
 }
 
 .text-area-container>textarea {

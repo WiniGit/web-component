@@ -1,8 +1,7 @@
 .text-field-container {
-    min-height: 4rem;
     position: relative;
     box-sizing: border-box;
-    padding: 0.6rem 1.4rem;
+    padding: 0.8rem 1.6rem;
     border: 1px solid #00358033;
     border-radius: 0.8rem;
 }
@@ -13,7 +12,7 @@
 }
 
 .text-field-container:focus-within {
-    border-color: var(--primary-color);
+    border-color: var(--infor-color);
 }
 
 .text-field-container>input {

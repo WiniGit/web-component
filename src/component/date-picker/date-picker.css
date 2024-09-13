@@ -6,11 +6,15 @@
     max-height: 100%;
     box-sizing: border-box;
     padding: 0.8rem;
-    column-gap: 6px;
+    gap: 0.8rem;
     width: 16rem;
     position: relative;
-    border: 0.5px solid #00358033;
-    border-radius: 4px;
+    border: 1px solid #00358033;
+    border-radius: 0.8rem;
+}
+
+.date-picker-container:focus-within {
+    border-color: var(--infor-color);
 }
 
 .date-picker-container>.input-field-value {
@@ -39,7 +43,7 @@
 
 .date-picker-container.helper-text::after {
     content: attr(helper-text);
-    color: #e14337;
+    color: var(--helper-text-color);
     position: absolute;
     left: 0;
     bottom: -0.4rem;

@@ -9,6 +9,7 @@ interface CheckboxProps {
     style?: CSSProperties,
     /** default 2.4rem **/
     size?: number | string,
+    onClick?: React.MouseEventHandler<HTMLLabelElement>
 }
 
 interface CheckboxState {
@@ -43,7 +44,7 @@ export class Checkbox extends React.Component<CheckboxProps, CheckboxState> {
                 ...convertStyle
             }
         }
-        return <label className="checkbox-container row" style={convertStyle} is-null-value={`${this.state.value == undefined}`}>
+        return <label className="checkbox-container row" style={convertStyle} is-null-value={`${this.state.value == undefined}`} onClick={this.props.onClick}>
             <input type="checkbox" checked={this.state.value} disabled={this.props.disabled}
                 onChange={(ev) => {
                     ev.stopPropagation()
