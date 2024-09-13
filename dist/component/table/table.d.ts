@@ -11,6 +11,7 @@ type TbCellProps = {
     className?: string;
     style?: CSSProperties;
     align?: CellAlignItems | string;
+    onClick?: React.MouseEventHandler<HTMLTableDataCellElement>;
 };
 export declare class TbCell extends React.Component<TbCellProps> {
     render(): React.ReactNode;
