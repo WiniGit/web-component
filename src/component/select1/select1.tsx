@@ -2,7 +2,7 @@ import { faCaretDown, faCaretRight, faXmarkCircle } from '@fortawesome/free-soli
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { createRef, CSSProperties, ReactNode } from 'react'
 import ReactDOM from 'react-dom'
-import './inputDropSelect.css'
+import './select1.css'
 import { Text } from '../text/text'
 
 export interface OptionsItem {
