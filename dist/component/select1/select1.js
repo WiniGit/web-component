@@ -25,22 +25,85 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Select1 = void 0;
-var react_1 = __importDefault(require("react"));
 var free_solid_svg_icons_1 = require("@fortawesome/free-solid-svg-icons");
 var react_fontawesome_1 = require("@fortawesome/react-fontawesome");
+var react_1 = __importStar(require("react"));
 var react_dom_1 = __importDefault(require("react-dom"));
-require("./select1.css");
+require("./inputDropSelect.css");
+var text_1 = require("../text/text");
+;
 var Select1 = /** @class */ (function (_super) {
     __extends(Select1, _super);
     function Select1(props) {
         var _this = _super.call(this, props) || this;
+        _this.containerRef = (0, react_1.createRef)();
         _this.state = {
-            value: _this.props.value,
+            value: props.value,
+            options: props.options,
             offset: {
                 x: 0,
                 y: 0,
@@ -57,126 +120,133 @@ var Select1 = /** @class */ (function (_super) {
             isOpen: false,
             onSelect: null,
         };
-        _this.parseValue = _this.parseValue.bind(_this);
-        _this.onChangeValue = _this.onChangeValue.bind(_this);
         _this.search = _this.search.bind(_this);
         return _this;
     }
-    Select1.prototype.parseValue = function (value) {
-        if (value === null || value === undefined || value === '') {
-            return null;
-        }
-        switch (typeof this.props.options[0].id) {
-            case 'number':
-                return parseFloat(value);
-            default:
-                return value;
-        }
+    Select1.prototype.search = function (ev) {
+        var _a;
+        return __awaiter(this, void 0, void 0, function () {
+            var res;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        if (!ev.target.value.trim().length) return [3 /*break*/, 4];
+                        if (!((_a = this.props) === null || _a === void 0 ? void 0 : _a.handleSearch)) return [3 /*break*/, 2];
+                        return [4 /*yield*/, this.props.handleSearch(ev.target.value.trim())];
+                    case 1:
+                        res = _b.sent();
+                        this.setState(__assign(__assign({}, this.state), { search: res }));
+                        return [3 /*break*/, 3];
+                    case 2:
+                        this.setState(__assign(__assign({}, this.state), { search: this.props.options.filter(function (e) { return typeof e.name === "string" && e.name.toLowerCase().includes(ev.target.value.trim().toLowerCase()); }) }));
+                        _b.label = 3;
+                    case 3: return [3 /*break*/, 5];
+                    case 4:
+                        this.setState(__assign(__assign({}, this.state), { search: undefined }));
+                        _b.label = 5;
+                    case 5: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    Select1.prototype.onSelect = function (item) {
+        this.setState(__assign(__assign({}, this.state), { isOpen: false, value: item.id }));
+        if (this.props.onChange)
+            this.props.onChange(item);
+    };
+    Select1.prototype.renderOptions = function (item) {
+        var _this = this;
+        var _a, _b;
+        var children = [];
+        if (!item.parentId)
+            children = ((_a = this.state.search) !== null && _a !== void 0 ? _a : this.state.options).filter(function (e) { return e.parentId === item.id; });
+        // 
+        return react_1.default.createElement("div", { key: item.id, className: 'col', style: { width: '100%' } },
+            react_1.default.createElement("div", { className: 'select-tile row', style: { paddingLeft: item.parentId ? '4.4rem' : undefined }, onClick: children.length ? function () {
+                    if (_this.state.search) {
+                        _this.setState(__assign(__assign({}, _this.state), { search: _this.state.search.map(function (e) {
+                                if (e.id === item.id)
+                                    return __assign(__assign({}, e), { isOpen: !item.isOpen });
+                                else
+                                    return e;
+                            }) }));
+                    }
+                    else {
+                        _this.setState(__assign(__assign({}, _this.state), { options: _this.state.options.map(function (e) {
+                                if (e.id === item.id)
+                                    return __assign(__assign({}, e), { isOpen: !item.isOpen });
+                                else
+                                    return e;
+                            }) }));
+                    }
+                } : function () {
+                    _this.onSelect(item);
+                } },
+                ((_b = this.state.search) !== null && _b !== void 0 ? _b : this.state.options).some(function (e) { return e.parentId; }) && react_1.default.createElement("div", { className: 'row', style: { width: '1.4rem', height: '1.4rem' } }, children.length ? react_1.default.createElement(react_fontawesome_1.FontAwesomeIcon, { icon: item.isOpen ? free_solid_svg_icons_1.faCaretDown : free_solid_svg_icons_1.faCaretRight, style: { fontSize: '1.2rem', color: '#161C2499' } }) : null),
+                react_1.default.createElement(text_1.Text, { className: 'body-3' }, item.name)),
+            react_1.default.createElement("div", { className: 'col', style: { display: item.isOpen ? "flex" : "none", width: '100%' } }, children.map(function (e) { return _this.renderOptions(e); })));
     };
     Select1.prototype.componentDidUpdate = function (prevProps, prevState) {
-        var _a;
-        if (prevProps.value !== this.props.value) {
+        var _a, _b, _c, _d;
+        if (prevProps.options !== this.props.options)
+            this.setState(__assign(__assign({}, this.state), { options: this.props.options }));
+        if (prevProps.value !== this.props.value)
             this.setState(__assign(__assign({}, this.state), { value: this.props.value }));
-        }
-        if (prevState.isOpen !== this.state.isOpen && this.state.isOpen) {
+        //
+        if (this.state.isOpen && prevState.isOpen !== this.state.isOpen) {
             var thisPopupRect = (_a = document.body.querySelector('.select1-popup')) === null || _a === void 0 ? void 0 : _a.getBoundingClientRect();
             if (thisPopupRect) {
                 var style = void 0;
                 if (thisPopupRect.right > document.body.offsetWidth) {
                     style = {
                         top: this.state.offset.y + this.state.offset.height + 2 + 'px',
-                        width: "".concat(this.state.offset.width, "px"),
                         right: document.body.offsetWidth - this.state.offset.right + 'px'
                     };
                 }
-                if (thisPopupRect.bottom > document.body.offsetHeight) {
-                    style = style ? __assign(__assign({}, style), { top: undefined, bottom: document.body.offsetHeight - this.state.offset.bottom + 'px' }) : {
-                        left: this.state.offset.x + 'px',
-                        width: "".concat(this.state.offset.width, "px"),
-                        bottom: document.body.offsetHeight - this.state.offset.bottom + 'px'
-                    };
+                var _bottom = thisPopupRect.bottom - 8;
+                var thisContainerRect = (_b = this.containerRef.current) === null || _b === void 0 ? void 0 : _b.getBoundingClientRect();
+                if (thisContainerRect) {
+                    if (_bottom > document.body.offsetHeight) {
+                        style = __assign(__assign({}, (style !== null && style !== void 0 ? style : {})), { top: "".concat(thisContainerRect.y - 2 - thisPopupRect.height, "px") });
+                    }
                 }
-                if (style)
+                if (style) {
+                    (_c = style.left) !== null && _c !== void 0 ? _c : (style.left = style.right ? undefined : "".concat(this.state.offset.x, "px"));
+                    (_d = style.width) !== null && _d !== void 0 ? _d : (style.width = "".concat(this.state.offset.width, "px"));
                     this.setState(__assign(__assign({}, this.state), { style: style }));
+                }
             }
-        }
-    };
-    Select1.prototype.onChangeValue = function (ev) {
-        var _this = this;
-        var _a, _b;
-        if ((_b = (_a = this.state.onSelect) === null || _a === void 0 ? void 0 : _a.classList) === null || _b === void 0 ? void 0 : _b.contains('select1-tile')) {
-            var item = this.props.options.find(function (e) { return e.id === _this.parseValue(_this.state.onSelect.id); });
-            this.setState(__assign(__assign({}, this.state), { isOpen: false, onSelect: null, value: item === null || item === void 0 ? void 0 : item.id }));
-            if (this.props.onChange)
-                this.props.onChange(item);
-        }
-        else if (this.state.onSelect) {
-            ev.target.focus();
-        }
-        else {
-            this.setState(__assign(__assign({}, this.state), { isOpen: false, onSelect: null }));
-        }
-    };
-    Select1.prototype.search = function (ev) {
-        var _this = this;
-        if (ev.target.value.trim().length) {
-            if (this.props.handleSearch) {
-                this.props.handleSearch(ev.target.value.trim()).then(function (res) {
-                    _this.setState(__assign(__assign({}, _this.state), { search: res }));
-                });
-            }
-            else {
-                this.setState(__assign(__assign({}, this.state), { search: this.props.options.filter(function (e) { return typeof e.name === "string" && e.name.toLowerCase().includes(ev.target.value.trim().toLowerCase()); }) }));
-            }
-        }
-        else {
-            this.setState(__assign(__assign({}, this.state), { search: undefined }));
         }
     };
     Select1.prototype.render = function () {
         var _this = this;
-        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
-        var selectedValue = ((_a = this.props.options) !== null && _a !== void 0 ? _a : []).find(function (e) { return e.id === _this.state.value; });
-        return react_1.default.createElement("div", { className: "select1-container row ".concat((_b = this.props.className) !== null && _b !== void 0 ? _b : 'placeholder-2', " ").concat(this.props.disabled ? 'disabled' : '', " ").concat(((_c = this.props.helperText) === null || _c === void 0 ? void 0 : _c.length) && 'helper-text'), "helper-text": this.props.helperText, style: this.props.style ? __assign(__assign({}, { '--helper-text-color': (_d = this.props.helperTextColor) !== null && _d !== void 0 ? _d : '#e14337' }), this.props.style) : { '--helper-text-color': (_e = this.props.helperTextColor) !== null && _e !== void 0 ? _e : '#e14337' }, onClick: function (ev) {
-                var _a;
-                if (!_this.state.isOpen) {
-                    var _offset = ((_a = ev.target.closest('.select1-container')) !== null && _a !== void 0 ? _a : ev.target).getBoundingClientRect();
-                    if (_offset.bottom + 32 > document.body.offsetHeight) {
-                        _this.setState(__assign(__assign({}, _this.state), { isOpen: true, offset: _offset, style: {
-                                left: _offset.x + 'px',
-                                bottom: (document.body.offsetHeight - _offset.y) + 'px',
-                                width: "".concat(_offset.width / 10, "rem")
-                            } }));
-                    }
-                    else {
-                        _this.setState(__assign(__assign({}, _this.state), { isOpen: true, offset: _offset, style: undefined }));
-                    }
-                }
+        var _a, _b, _c, _d, _e, _f, _g, _h;
+        return react_1.default.createElement("div", { ref: this.containerRef, className: "select1-container row ".concat(this.props.disabled ? 'disabled' : '', " ").concat(((_a = this.props.helperText) === null || _a === void 0 ? void 0 : _a.length) && 'helper-text', " ").concat((_b = this.props.className) !== null && _b !== void 0 ? _b : 'body-3'), "helper-text": this.props.helperText, style: this.props.style ? __assign(__assign({}, { '--helper-text-color': (_c = this.props.helperTextColor) !== null && _c !== void 0 ? _c : '#e14337' }), this.props.style) : { '--helper-text-color': (_d = this.props.helperTextColor) !== null && _d !== void 0 ? _d : '#e14337' }, onClick: function () {
+                var _a, _b;
+                if (!_this.state.isOpen)
+                    _this.setState(__assign(__assign({}, _this.state), { isOpen: true, style: undefined, offset: (_b = (_a = _this.containerRef) === null || _a === void 0 ? void 0 : _a.current) === null || _b === void 0 ? void 0 : _b.getBoundingClientRect() }));
             } },
-            (selectedValue === null || selectedValue === void 0 ? void 0 : selectedValue.name) ? (react_1.default.createElement("div", { className: 'select1-value-name' }, selectedValue.name)) : (react_1.default.createElement("div", { className: 'select1-placeholder' }, this.props.placeholder)),
-            react_1.default.createElement(react_fontawesome_1.FontAwesomeIcon, { icon: this.state.isOpen ? free_solid_svg_icons_1.faChevronUp : free_solid_svg_icons_1.faChevronDown, style: { fontSize: '1.2rem', color: '#888' } }),
+            react_1.default.createElement("div", { className: 'row', style: { flexWrap: 'wrap', flex: 1, width: '100%', gap: '0.6rem 0.4rem' } }, this.state.isOpen ? react_1.default.createElement("input", { autoFocus: true, defaultValue: this.state.value, onChange: this.search, placeholder: this.props.placeholder, onBlur: function (ev) {
+                    if (_this.state.onSelect)
+                        ev.target.focus();
+                    else
+                        _this.setState(__assign(__assign({}, _this.state), { isOpen: false, onSelect: null }));
+                } }) : react_1.default.createElement("input", { defaultValue: this.state.value, placeholder: this.props.placeholder, readOnly: true })),
+            react_1.default.createElement("button", { type: 'button', className: 'row', style: { padding: '0.4rem' }, onClick: function (ev) {
+                    ev.stopPropagation();
+                    if (_this.state.value)
+                        _this.setState(__assign(__assign({}, _this.state), { isOpen: true, value: undefined }));
+                } },
+                react_1.default.createElement(react_fontawesome_1.FontAwesomeIcon, { icon: free_solid_svg_icons_1.faXmarkCircle, style: { fontSize: '1.6rem', color: '#161C24' } })),
             this.state.isOpen &&
-                react_dom_1.default.createPortal(react_1.default.createElement("div", { className: 'select1-popup col', style: (_f = this.state.style) !== null && _f !== void 0 ? _f : {
+                react_dom_1.default.createPortal(react_1.default.createElement("div", { className: 'select1-popup col', style: (_e = this.state.style) !== null && _e !== void 0 ? _e : {
                         top: this.state.offset.y + this.state.offset.height + 2 + 'px',
                         left: this.state.offset.x + 'px',
                         width: this.state.offset.width,
-                    }, onMouseOver: function (ev) {
-                        _this.setState(__assign(__assign({}, _this.state), { onSelect: ev.target }));
-                    }, onMouseOut: function () {
-                        return _this.setState(__assign(__assign({}, _this.state), { onSelect: null }));
-                    } },
-                    react_1.default.createElement("div", { className: 'row header-search', style: this.props.hideSearch ? { marginTop: '-4rem' } : undefined },
-                        react_1.default.createElement("input", { autoFocus: true, placeholder: (_g = this.props.searchPlaceholder) !== null && _g !== void 0 ? _g : 'Tìm kiếm', onChange: this.search, onBlur: function (ev) {
-                                _this.onChangeValue(ev);
-                            } }),
-                        react_1.default.createElement(react_fontawesome_1.FontAwesomeIcon, { icon: free_solid_svg_icons_1.faSearch, style: { fontSize: '1.2rem', color: '#161D24D9' } })),
-                    react_1.default.createElement("div", { className: 'col select1-body' },
-                        react_1.default.createElement("div", { className: 'col select1-scroll-view' },
-                            ((_h = this.state.search) !== null && _h !== void 0 ? _h : this.props.options).map(function (item) {
-                                var _a;
-                                return (react_1.default.createElement("button", { type: 'button', key: item.id, className: 'select1-tile label-3 row', id: "".concat(item.id), style: { backgroundColor: (selectedValue === null || selectedValue === void 0 ? void 0 : selectedValue.id) === item.id ? 'var(--selected-background)' : '#00000000' } }, (_a = item.title) !== null && _a !== void 0 ? _a : item.name));
-                            }),
-                            (((_j = this.state.search) === null || _j === void 0 ? void 0 : _j.length) === 0 || ((_k = this.props.options) === null || _k === void 0 ? void 0 : _k.length) === 0) && (react_1.default.createElement("div", { className: 'no-results-found' }, "No result found"))))), document.body));
+                    }, onMouseOver: function (ev) { return _this.setState(__assign(__assign({}, _this.state), { onSelect: ev.target })); }, onMouseOut: function () { return _this.setState(__assign(__assign({}, _this.state), { onSelect: null })); } },
+                    react_1.default.createElement("div", { className: 'col select-body' },
+                        ((_f = this.state.search) !== null && _f !== void 0 ? _f : this.state.options).filter(function (e) { return !e.parentId; }).map(function (item) { return _this.renderOptions(item); }),
+                        (((_g = this.state.search) === null || _g === void 0 ? void 0 : _g.length) === 0 || ((_h = this.props.options) === null || _h === void 0 ? void 0 : _h.length) === 0) && (react_1.default.createElement("div", { className: 'no-results-found' }, "No result found")))), document.body));
     };
     return Select1;
 }(react_1.default.Component));

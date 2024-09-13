@@ -9,7 +9,7 @@ export interface OptionsItem {
     id: string | number,
     parentId?: string,
     name: string | ReactNode,
-    title: string | ReactNode,
+    title?: string | ReactNode,
 }
 
 interface Select1Props {

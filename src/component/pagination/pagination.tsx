@@ -19,8 +19,6 @@ export function Pagination({ currentPage, itemPerPage, totalItem, onChangePage, 
                         <Text className="regular2">Items/page</Text>
                         <div className="row">
                             <Select1
-                                hideSearch
-                                searchPlaceholder={'Search'}
                                 style={{ width: '8.6rem' }}
                                 placeholder={itemPerPage.toString()}
                                 options={[10, 20, 50, 100, 200].map((item, _) => { return { id: item, name: item } })}

@@ -1,13 +1,13 @@
 import React, { CSSProperties, ReactNode } from 'react';
-import './select1.css';
+import './inputDropSelect.css';
 export interface OptionsItem {
-    id: string;
+    id: string | number;
     parentId?: string;
     name: string | ReactNode;
     title: string | ReactNode;
 }
 interface Select1Props {
-    value?: any;
+    value?: string | number;
     options: Required<Array<OptionsItem>>;
     onChange?: (v?: OptionsItem) => void;
     placeholder?: string;
@@ -16,12 +16,11 @@ interface Select1Props {
     helperText?: string;
     helperTextColor?: string;
     style?: CSSProperties;
-    searchPlaceholder?: string;
-    hideSearch?: boolean;
     handleSearch?: (e: string) => Promise<Array<OptionsItem>>;
 }
 interface Select1State {
     value?: string | number;
+    options: Required<Array<OptionsItem>>;
     offset: DOMRect;
     isOpen: boolean;
     onSelect: any;
@@ -29,11 +28,12 @@ interface Select1State {
     style?: Object;
 }
 export declare class Select1 extends React.Component<Select1Props, Select1State> {
+    private containerRef;
     constructor(props: Select1Props);
-    private parseValue;
-    componentDidUpdate(prevProps: Select1Props, prevState: Select1State): void;
-    private onChangeValue;
     private search;
+    private onSelect;
+    private renderOptions;
+    componentDidUpdate(prevProps: Select1Props, prevState: Select1State): void;
     render(): React.JSX.Element;
 }
 export {};

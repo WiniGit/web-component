@@ -8,6 +8,7 @@ interface CheckboxProps {
     style?: CSSProperties;
     /** default 2.4rem **/
     size?: number | string;
+    onClick?: React.MouseEventHandler<HTMLLabelElement>;
 }
 interface CheckboxState {
     value?: boolean;

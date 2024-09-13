@@ -64,7 +64,7 @@ var Checkbox = /** @class */ (function (_super) {
             delete this.props.style.maxHeight;
             convertStyle = __assign(__assign({}, this.props.style), convertStyle);
         }
-        return react_1.default.createElement("label", { className: "checkbox-container row", style: convertStyle, "is-null-value": "".concat(this.state.value == undefined) },
+        return react_1.default.createElement("label", { className: "checkbox-container row", style: convertStyle, "is-null-value": "".concat(this.state.value == undefined), onClick: this.props.onClick },
             react_1.default.createElement("input", { type: "checkbox", checked: this.state.value, disabled: this.props.disabled, onChange: function (ev) {
                     ev.stopPropagation();
                     var newValue = !_this.state.value;
