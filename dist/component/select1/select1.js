@@ -35,8 +35,6 @@ var free_solid_svg_icons_1 = require("@fortawesome/free-solid-svg-icons");
 var react_fontawesome_1 = require("@fortawesome/react-fontawesome");
 var react_dom_1 = __importDefault(require("react-dom"));
 require("./select1.css");
-;
-;
 var Select1 = /** @class */ (function (_super) {
     __extends(Select1, _super);
     function Select1(props) {
