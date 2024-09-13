@@ -1,9 +1,5 @@
 import React, { CSSProperties, FocusEvent, ReactNode } from 'react'
-import {
-    faChevronDown,
-    faChevronUp,
-    faSearch,
-} from '@fortawesome/free-solid-svg-icons'
+import { faChevronDown, faChevronUp, faSearch, } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import ReactDOM from 'react-dom'
 import './select1.css'
@@ -27,7 +23,7 @@ interface Select1Props {
     searchPlaceholder?: string,
     hideSearch?: boolean,
     handleSearch?: (e: string) => Promise<Array<OptionsItem>>
-};
+}
 
 interface Select1State {
     value?: string | number,
@@ -36,7 +32,7 @@ interface Select1State {
     onSelect: any,
     search?: Array<OptionsItem>,
     style?: Object
-};
+}
 
 export class Select1 extends React.Component<Select1Props, Select1State> {
     constructor(props: Select1Props) {

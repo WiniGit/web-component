@@ -2,13 +2,9 @@
     position: relative;
     border-radius: 0.4rem;
     border: 1px solid #00358033;
-    background-color: var(--infor-color);
+    background-color: transparent;
     transition: border, background-color 0.5s;
     cursor: pointer;
-}
-
-.checkbox-container:not(*:has(> input:checked)) {
-    background-color: transparent !important;
 }
 
 .checkbox-container>input {
@@ -27,20 +23,23 @@
     transition: visibility, opacity 0.5s;
 }
 
-.checkbox-container>input:checked~svg {
+.checkbox-container>input:checked~svg,
+.checkbox-container[is-null-value="true"]>svg {
     visibility: visible;
     opacity: 1 !important;
 }
 
-.checkbox-container:has(> input:checked) {
+.checkbox-container:has(> input:checked),
+.checkbox-container[is-null-value="true"] {
+    background-color: var(--infor-color);
     border: none !important;
 }
 
-.checkbox-container:has(> input:disabled)  {
+.checkbox-container:has(> input:disabled) {
     background-color: var(--disabled-background) !important;
     border: 1px solid #00358033 !important;
 }
 
-.checkbox-container:has(> input:disabled) > svg > path {
+.checkbox-container:has(> input:disabled)>svg>path {
     stroke: #00204D40 !important;
 }

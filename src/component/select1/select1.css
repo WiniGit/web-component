@@ -82,13 +82,12 @@
 .select1-popup {
     position: absolute;
     z-index: 10;
-    background-color: white;
+    background-color: #fff;
     border-radius: 8px;
     height: fit-content;
     box-shadow: 0 0 12px 0 #00204d1f;
     align-items: center;
-    padding: 8px 0;
-    overflow: hidden;
+    padding: 0.8rem 0;
     /* border: 0.5px solid #00358033; */
     box-shadow: -20px 20px 40px -4px rgba(145, 158, 171, 0.24), 0px 0px 2px 0px rgba(145, 158, 171, 0.24);
 }
