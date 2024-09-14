@@ -108,7 +108,7 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
                 }
                 if (!inRangeTime(timeValue, startDate, endDate)) {
                     additionProps = { 'in-range': 'false' }
-                } else if (!inRangeTime(timeValue, this.props.min ?? startDate, this.props.min ?? endDate)) {
+                } else if (!inRangeTime(timeValue, this.props.min ?? startDate, this.props.max ?? endDate)) {
                     style = {
                         ...style,
                         color: 'var(--disabled-font-color)',
@@ -183,7 +183,7 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
                     style = { borderColor: 'var(--infor-color)' }
                 } if (!inRangeTime(timeValue, startDate, endDate)) {
                     additionProps = { 'in-range': 'false' }
-                } else if (!inRangeTime(new Date(this.state.selectYear, this.state.selectMonth), this.props.min ?? startDate, this.props.min ?? endDate)) {
+                } else if (!inRangeTime(new Date(this.state.selectYear, this.state.selectMonth), this.props.min ?? startDate, this.props.max ?? endDate)) {
                     if (this.state.selectYear === this.state.selectDate?.getFullYear() && this.state.selectDate.getMonth() === i) {
                         style = {
                             color: 'var(--disabled-font-color)',
@@ -220,7 +220,7 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
                 let selected = false
                 if (yearNumber === today.getFullYear()) {
                     style = { borderColor: 'var(--infor-color)' }
-                } else if (yearNumber < ((this.props.min ?? startDate).getFullYear()) || yearNumber > ((this.props.min ?? endDate).getFullYear())) {
+                } else if (yearNumber < ((this.props.min ?? startDate).getFullYear()) || yearNumber > ((this.props.max ?? endDate).getFullYear())) {
                     additionProps = { 'in-range': 'false' }
                 }
                 if (yearNumber === this.state.value.getFullYear()) {
