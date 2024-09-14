@@ -24,7 +24,7 @@ interface TextAreaProps {
 export class TextArea extends React.Component<TextAreaProps> {
     render(): React.ReactNode {
         return <div
-            className={`text-area-container row ${this.props.className ?? 'placeholder-2'} ${this.props.helperText?.length && 'helper-text'}`}
+            className={`text-area-container row ${this.props.className ?? 'body-3'} ${this.props.helperText?.length && 'helper-text'}`}
             style={this.props.style ? { ...({ '--helper-text-color': this.props.helperTextColor ?? '#e14337' } as CSSProperties), ...this.props.style } : ({ '--helper-text-color': this.props.helperTextColor ?? '#e14337' } as CSSProperties)}
         >
             {this.props.register ?

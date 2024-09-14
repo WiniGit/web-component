@@ -209,7 +209,7 @@ export class DatePicker extends React.Component<DatePickerProps, DatePickerState
             default:
                 break;
         }
-        return <label className={`date-picker-container row ${this.props.className ?? 'placeholder-2'} ${this.props.disabled ? 'disabled' : ''} ${this.props.helperText?.length && 'helper-text'}`}
+        return <label className={`date-picker-container row ${this.props.className ?? 'body-3'} ${this.props.disabled ? 'disabled' : ''} ${this.props.helperText?.length && 'helper-text'}`}
             helper-text={this.props.helperText}
             style={this.props.style ? { ...({ '--helper-text-color': this.props.helperTextColor ?? '#e14337' } as CSSProperties), ...this.props.style } : ({ '--helper-text-color': this.props.helperTextColor ?? '#e14337' } as CSSProperties)}
         >

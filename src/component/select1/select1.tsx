@@ -23,7 +23,8 @@ interface Select1Props {
     helperTextColor?: string,
     style?: CSSProperties,
     handleSearch?: (e: string) => Promise<Array<OptionsItem>>,
-    showClearValueButton?: boolean
+    showClearValueButton?: boolean,
+    readOnly?: boolean
 }
 
 interface Select1State {
@@ -153,6 +154,7 @@ export class Select1 extends React.Component<Select1Props, Select1State> {
     }
 
     render() {
+        const _value = this.state.options.find(e => e.id === this.state.value)
         return <div
             ref={this.containerRef}
             className={`select1-container row ${this.props.disabled ? 'disabled' : ''} ${this.props.helperText?.length && 'helper-text'} ${this.props.className ?? 'body-3'}`}
@@ -171,12 +173,12 @@ export class Select1 extends React.Component<Select1Props, Select1State> {
             }}
         >
             <div className='row' style={{ flexWrap: 'wrap', flex: 1, width: '100%', gap: '0.6rem 0.4rem' }}>
-                <input ref={this.inputRef} onChange={this.search} placeholder={this.props.placeholder}
+                {(!_value || typeof _value.name === "string") ? <input ref={this.inputRef} readOnly={this.props.readOnly} onChange={this.search} placeholder={this.props.placeholder}
                     onBlur={ev => {
                         if (this.state.onSelect) ev.target.focus()
                         else this.setState({ ...this.state, isOpen: false, onSelect: null })
                     }}
-                />
+                /> : _value.name}
             </div>
             {this.props.showClearValueButton && <button type='button' className='row' style={{ padding: '0.4rem' }} onClick={(ev) => {
                 ev.stopPropagation()
