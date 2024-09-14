@@ -197,7 +197,7 @@ var Select1 = /** @class */ (function (_super) {
         if (prevProps.options !== this.props.options) {
             this.setState(__assign(__assign({}, this.state), { options: this.props.options }));
             if (this.inputRef.current)
-                this.inputRef.current.value = "".concat((_b = (_a = this.state.options.find(function (e) { return e.id === _this.state.value; })) === null || _a === void 0 ? void 0 : _a.name) !== null && _b !== void 0 ? _b : "");
+                this.inputRef.current.value = "".concat((_b = (_a = this.props.options.find(function (e) { return e.id === _this.state.value; })) === null || _a === void 0 ? void 0 : _a.name) !== null && _b !== void 0 ? _b : "");
         }
         if (prevProps.value !== this.props.value)
             this.setState(__assign(__assign({}, this.state), { value: this.props.value }));
