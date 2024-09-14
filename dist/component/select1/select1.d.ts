@@ -18,6 +18,7 @@ interface Select1Props {
     style?: CSSProperties;
     handleSearch?: (e: string) => Promise<Array<OptionsItem>>;
     showClearValueButton?: boolean;
+    readOnly?: boolean;
 }
 interface Select1State {
     value?: string | number;

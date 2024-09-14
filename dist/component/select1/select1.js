@@ -232,6 +232,7 @@ var Select1 = /** @class */ (function (_super) {
     Select1.prototype.render = function () {
         var _this = this;
         var _a, _b, _c, _d, _e, _f, _g, _h;
+        var _value = this.state.options.find(function (e) { return e.id === _this.state.value; });
         return react_1.default.createElement("div", { ref: this.containerRef, className: "select1-container row ".concat(this.props.disabled ? 'disabled' : '', " ").concat(((_a = this.props.helperText) === null || _a === void 0 ? void 0 : _a.length) && 'helper-text', " ").concat((_b = this.props.className) !== null && _b !== void 0 ? _b : 'body-3'), "helper-text": this.props.helperText, style: this.props.style ? __assign(__assign({}, { '--helper-text-color': (_c = this.props.helperTextColor) !== null && _c !== void 0 ? _c : '#e14337' }), this.props.style) : { '--helper-text-color': (_d = this.props.helperTextColor) !== null && _d !== void 0 ? _d : '#e14337' }, onClick: function () {
                 var _a, _b, _c;
                 if (!_this.state.isOpen) {
@@ -239,13 +240,12 @@ var Select1 = /** @class */ (function (_super) {
                     (_c = _this.inputRef.current) === null || _c === void 0 ? void 0 : _c.focus();
                 }
             } },
-            react_1.default.createElement("div", { className: 'row', style: { flexWrap: 'wrap', flex: 1, width: '100%', gap: '0.6rem 0.4rem' } },
-                react_1.default.createElement("input", { ref: this.inputRef, onChange: this.search, placeholder: this.props.placeholder, onBlur: function (ev) {
-                        if (_this.state.onSelect)
-                            ev.target.focus();
-                        else
-                            _this.setState(__assign(__assign({}, _this.state), { isOpen: false, onSelect: null }));
-                    } })),
+            react_1.default.createElement("div", { className: 'row', style: { flexWrap: 'wrap', flex: 1, width: '100%', gap: '0.6rem 0.4rem' } }, (!_value || typeof _value.name === "string") ? react_1.default.createElement("input", { ref: this.inputRef, readOnly: this.props.readOnly, onChange: this.search, placeholder: this.props.placeholder, onBlur: function (ev) {
+                    if (_this.state.onSelect)
+                        ev.target.focus();
+                    else
+                        _this.setState(__assign(__assign({}, _this.state), { isOpen: false, onSelect: null }));
+                } }) : _value.name),
             this.props.showClearValueButton && react_1.default.createElement("button", { type: 'button', className: 'row', style: { padding: '0.4rem' }, onClick: function (ev) {
                     ev.stopPropagation();
                     if (_this.state.value)
