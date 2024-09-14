@@ -111,7 +111,7 @@ var Calendar = /** @class */ (function (_super) {
                 if (!(0, exports.inRangeTime)(timeValue, exports.startDate, exports.endDate)) {
                     additionProps = { 'in-range': 'false' };
                 }
-                else if (!(0, exports.inRangeTime)(timeValue, (_a = _this.props.min) !== null && _a !== void 0 ? _a : exports.startDate, (_b = _this.props.min) !== null && _b !== void 0 ? _b : exports.endDate)) {
+                else if (!(0, exports.inRangeTime)(timeValue, (_a = _this.props.min) !== null && _a !== void 0 ? _a : exports.startDate, (_b = _this.props.max) !== null && _b !== void 0 ? _b : exports.endDate)) {
                     style = __assign(__assign({}, style), { color: 'var(--disabled-font-color)', pointerEvents: 'none' });
                 }
                 else if (_this.state.value.valueOf() === timeValue.valueOf()) {
@@ -183,7 +183,7 @@ var Calendar = /** @class */ (function (_super) {
             if (!(0, exports.inRangeTime)(timeValue, exports.startDate, exports.endDate)) {
                 additionProps = { 'in-range': 'false' };
             }
-            else if (!(0, exports.inRangeTime)(new Date(_this.state.selectYear, _this.state.selectMonth), (_a = _this.props.min) !== null && _a !== void 0 ? _a : exports.startDate, (_b = _this.props.min) !== null && _b !== void 0 ? _b : exports.endDate)) {
+            else if (!(0, exports.inRangeTime)(new Date(_this.state.selectYear, _this.state.selectMonth), (_a = _this.props.min) !== null && _a !== void 0 ? _a : exports.startDate, (_b = _this.props.max) !== null && _b !== void 0 ? _b : exports.endDate)) {
                 if (_this.state.selectYear === ((_c = _this.state.selectDate) === null || _c === void 0 ? void 0 : _c.getFullYear()) && _this.state.selectDate.getMonth() === i) {
                     style = {
                         color: 'var(--disabled-font-color)',
@@ -218,7 +218,7 @@ var Calendar = /** @class */ (function (_super) {
             if (yearNumber === exports.today.getFullYear()) {
                 style = { borderColor: 'var(--infor-color)' };
             }
-            else if (yearNumber < (((_a = _this.props.min) !== null && _a !== void 0 ? _a : exports.startDate).getFullYear()) || yearNumber > (((_b = _this.props.min) !== null && _b !== void 0 ? _b : exports.endDate).getFullYear())) {
+            else if (yearNumber < (((_a = _this.props.min) !== null && _a !== void 0 ? _a : exports.startDate).getFullYear()) || yearNumber > (((_b = _this.props.max) !== null && _b !== void 0 ? _b : exports.endDate).getFullYear())) {
                 additionProps = { 'in-range': 'false' };
             }
             if (yearNumber === _this.state.value.getFullYear()) {
