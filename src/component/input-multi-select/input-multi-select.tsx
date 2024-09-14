@@ -18,7 +18,7 @@ interface SelectMultipleProps {
     helperTextColor?: string,
     style?: CSSProperties,
     handleSearch?: (e: string) => Promise<Array<OptionsItem>>,
-    hideClearValueButton?: boolean
+    showClearValueButton?: boolean
 }
 
 interface SelectMultipleState {
@@ -197,7 +197,7 @@ export class SelectMultiple extends React.Component<SelectMultipleProps, SelectM
                     }}
                 />}
             </div>
-            {this.props.hideClearValueButton && <button type='button' className='row' style={{ padding: '0.4rem' }} onClick={(ev) => {
+            {this.props.showClearValueButton && <button type='button' className='row' style={{ padding: '0.4rem' }} onClick={(ev) => {
                 ev.stopPropagation()
                 if (this.state.value.length) this.setState({ ...this.state, isOpen: true, value: [] })
             }}>

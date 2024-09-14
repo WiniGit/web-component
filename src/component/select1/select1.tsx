@@ -23,7 +23,7 @@ interface Select1Props {
     helperTextColor?: string,
     style?: CSSProperties,
     handleSearch?: (e: string) => Promise<Array<OptionsItem>>,
-    hideClearValueButton?: boolean
+    showClearValueButton?: boolean
 }
 
 interface Select1State {
@@ -119,7 +119,10 @@ export class Select1 extends React.Component<Select1Props, Select1State> {
     }
 
     componentDidUpdate(prevProps: Select1Props, prevState: Select1State) {
-        if (prevProps.options !== this.props.options) this.setState({ ...this.state, options: this.props.options })
+        if (prevProps.options !== this.props.options) {
+            this.setState({ ...this.state, options: this.props.options })
+            if (this.inputRef.current) this.inputRef.current.value = `${this.state.options.find(e => e.id === this.state.value)?.name ?? ""}`
+        }
         if (prevProps.value !== this.props.value) this.setState({ ...this.state, value: this.props.value })
         if (prevState.value !== this.state.value && this.inputRef.current) this.inputRef.current.value = `${this.state.options.find(e => e.id === this.state.value)?.name ?? ""}`
         //
@@ -175,7 +178,7 @@ export class Select1 extends React.Component<Select1Props, Select1State> {
                     }}
                 />
             </div>
-            {this.props.hideClearValueButton && <button type='button' className='row' style={{ padding: '0.4rem' }} onClick={(ev) => {
+            {this.props.showClearValueButton && <button type='button' className='row' style={{ padding: '0.4rem' }} onClick={(ev) => {
                 ev.stopPropagation()
                 if (this.state.value) this.setState({ ...this.state, isOpen: true, value: undefined })
             }}>
