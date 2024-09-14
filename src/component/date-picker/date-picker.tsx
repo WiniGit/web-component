@@ -304,6 +304,8 @@ export class DatePicker extends React.Component<DatePickerProps, DatePickerState
                             this.setState({ ...this.state, isOpen: false })
                     }}>
                         <Calendar
+                            min={this.props.min}
+                            max={this.props.max}
                             value={this.getNewValue()}
                             type={this.props.pickerType ?? CalendarType.DATE}
                             className='date-picker-popup-container'

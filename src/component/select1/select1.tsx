@@ -82,7 +82,8 @@ export class Select1 extends React.Component<Select1Props, Select1State> {
     }
 
     private onSelect(item: OptionsItem) {
-        this.setState({ ...this.state, isOpen: false, value: item.id })
+        this.setState({ ...this.state, isOpen: false, value: item.id, onSelect: undefined })
+        this.inputRef.current?.blur()
         if (this.props.onChange) this.props.onChange(item)
     }
 
