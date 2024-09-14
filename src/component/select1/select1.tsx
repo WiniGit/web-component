@@ -121,7 +121,7 @@ export class Select1 extends React.Component<Select1Props, Select1State> {
     componentDidUpdate(prevProps: Select1Props, prevState: Select1State) {
         if (prevProps.options !== this.props.options) {
             this.setState({ ...this.state, options: this.props.options })
-            if (this.inputRef.current) this.inputRef.current.value = `${this.state.options.find(e => e.id === this.state.value)?.name ?? ""}`
+            if (this.inputRef.current) this.inputRef.current.value = `${this.props.options.find(e => e.id === this.state.value)?.name ?? ""}`
         }
         if (prevProps.value !== this.props.value) this.setState({ ...this.state, value: this.props.value })
         if (prevState.value !== this.state.value && this.inputRef.current) this.inputRef.current.value = `${this.state.options.find(e => e.id === this.state.value)?.name ?? ""}`
