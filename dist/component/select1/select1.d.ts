@@ -17,7 +17,7 @@ interface Select1Props {
     helperTextColor?: string;
     style?: CSSProperties;
     handleSearch?: (e: string) => Promise<Array<OptionsItem>>;
-    hideClearValueButton?: boolean;
+    showClearValueButton?: boolean;
 }
 interface Select1State {
     value?: string | number;

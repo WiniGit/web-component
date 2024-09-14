@@ -193,16 +193,19 @@ var Select1 = /** @class */ (function (_super) {
     };
     Select1.prototype.componentDidUpdate = function (prevProps, prevState) {
         var _this = this;
-        var _a, _b, _c, _d, _e, _f;
-        if (prevProps.options !== this.props.options)
+        var _a, _b, _c, _d, _e, _f, _g, _h;
+        if (prevProps.options !== this.props.options) {
             this.setState(__assign(__assign({}, this.state), { options: this.props.options }));
+            if (this.inputRef.current)
+                this.inputRef.current.value = "".concat((_b = (_a = this.state.options.find(function (e) { return e.id === _this.state.value; })) === null || _a === void 0 ? void 0 : _a.name) !== null && _b !== void 0 ? _b : "");
+        }
         if (prevProps.value !== this.props.value)
             this.setState(__assign(__assign({}, this.state), { value: this.props.value }));
         if (prevState.value !== this.state.value && this.inputRef.current)
-            this.inputRef.current.value = "".concat((_b = (_a = this.state.options.find(function (e) { return e.id === _this.state.value; })) === null || _a === void 0 ? void 0 : _a.name) !== null && _b !== void 0 ? _b : "");
+            this.inputRef.current.value = "".concat((_d = (_c = this.state.options.find(function (e) { return e.id === _this.state.value; })) === null || _c === void 0 ? void 0 : _c.name) !== null && _d !== void 0 ? _d : "");
         //
         if (this.state.isOpen && prevState.isOpen !== this.state.isOpen) {
-            var thisPopupRect = (_c = document.body.querySelector('.select1-popup')) === null || _c === void 0 ? void 0 : _c.getBoundingClientRect();
+            var thisPopupRect = (_e = document.body.querySelector('.select1-popup')) === null || _e === void 0 ? void 0 : _e.getBoundingClientRect();
             if (thisPopupRect) {
                 var style = void 0;
                 if (thisPopupRect.right > document.body.offsetWidth) {
@@ -212,15 +215,15 @@ var Select1 = /** @class */ (function (_super) {
                     };
                 }
                 var _bottom = thisPopupRect.bottom - 8;
-                var thisContainerRect = (_d = this.containerRef.current) === null || _d === void 0 ? void 0 : _d.getBoundingClientRect();
+                var thisContainerRect = (_f = this.containerRef.current) === null || _f === void 0 ? void 0 : _f.getBoundingClientRect();
                 if (thisContainerRect) {
                     if (_bottom > document.body.offsetHeight) {
                         style = __assign(__assign({}, (style !== null && style !== void 0 ? style : {})), { top: "".concat(thisContainerRect.y - 2 - thisPopupRect.height, "px") });
                     }
                 }
                 if (style) {
-                    (_e = style.left) !== null && _e !== void 0 ? _e : (style.left = style.right ? undefined : "".concat(this.state.offset.x, "px"));
-                    (_f = style.width) !== null && _f !== void 0 ? _f : (style.width = "".concat(this.state.offset.width, "px"));
+                    (_g = style.left) !== null && _g !== void 0 ? _g : (style.left = style.right ? undefined : "".concat(this.state.offset.x, "px"));
+                    (_h = style.width) !== null && _h !== void 0 ? _h : (style.width = "".concat(this.state.offset.width, "px"));
                     this.setState(__assign(__assign({}, this.state), { style: style }));
                 }
             }
@@ -243,7 +246,7 @@ var Select1 = /** @class */ (function (_super) {
                         else
                             _this.setState(__assign(__assign({}, _this.state), { isOpen: false, onSelect: null }));
                     } })),
-            this.props.hideClearValueButton && react_1.default.createElement("button", { type: 'button', className: 'row', style: { padding: '0.4rem' }, onClick: function (ev) {
+            this.props.showClearValueButton && react_1.default.createElement("button", { type: 'button', className: 'row', style: { padding: '0.4rem' }, onClick: function (ev) {
                     ev.stopPropagation();
                     if (_this.state.value)
                         _this.setState(__assign(__assign({}, _this.state), { isOpen: true, value: undefined }));

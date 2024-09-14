@@ -12,7 +12,7 @@ interface SelectMultipleProps {
     helperTextColor?: string;
     style?: CSSProperties;
     handleSearch?: (e: string) => Promise<Array<OptionsItem>>;
-    hideClearValueButton?: boolean;
+    showClearValueButton?: boolean;
 }
 interface SelectMultipleState {
     value: Array<string | number>;

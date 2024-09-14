@@ -275,7 +275,7 @@ var SelectMultiple = /** @class */ (function (_super) {
                         else
                             _this.setState(__assign(__assign({}, _this.state), { isOpen: false, onSelect: null }));
                     } })),
-            this.props.hideClearValueButton && react_1.default.createElement("button", { type: 'button', className: 'row', style: { padding: '0.4rem' }, onClick: function (ev) {
+            this.props.showClearValueButton && react_1.default.createElement("button", { type: 'button', className: 'row', style: { padding: '0.4rem' }, onClick: function (ev) {
                     ev.stopPropagation();
                     if (_this.state.value.length)
                         _this.setState(__assign(__assign({}, _this.state), { isOpen: true, value: [] }));
