@@ -310,7 +310,7 @@ var DatePicker = /** @class */ (function (_super) {
                         if (ev.target.classList.contains('popup-overlay'))
                             _this.setState(__assign(__assign({}, _this.state), { isOpen: false }));
                     } },
-                    react_1.default.createElement(index_1.Calendar, { value: this.getNewValue(), type: (_f = this.props.pickerType) !== null && _f !== void 0 ? _f : index_1.CalendarType.DATE, className: 'date-picker-popup-container', style: (_g = this.state.style) !== null && _g !== void 0 ? _g : { top: this.state.offset.y + this.state.offset.height + 2 + 'px', left: this.state.offset.x + 'px', border: 'none', boxShadow: '-20px 20px 40px -4px rgba(145, 158, 171, 0.24), 0px 0px 2px 0px rgba(145, 158, 171, 0.24)' }, onSelect: function (dateValue) {
+                    react_1.default.createElement(index_1.Calendar, { min: this.props.min, max: this.props.max, value: this.getNewValue(), type: (_f = this.props.pickerType) !== null && _f !== void 0 ? _f : index_1.CalendarType.DATE, className: 'date-picker-popup-container', style: (_g = this.state.style) !== null && _g !== void 0 ? _g : { top: this.state.offset.y + this.state.offset.height + 2 + 'px', left: this.state.offset.x + 'px', border: 'none', boxShadow: '-20px 20px 40px -4px rgba(145, 158, 171, 0.24), 0px 0px 2px 0px rgba(145, 158, 171, 0.24)' }, onSelect: function (dateValue) {
                             var _a;
                             switch (_this.props.pickerType) {
                                 case index_1.CalendarType.YEAR:

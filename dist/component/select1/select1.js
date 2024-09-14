@@ -155,7 +155,9 @@ var Select1 = /** @class */ (function (_super) {
         });
     };
     Select1.prototype.onSelect = function (item) {
-        this.setState(__assign(__assign({}, this.state), { isOpen: false, value: item.id }));
+        var _a;
+        this.setState(__assign(__assign({}, this.state), { isOpen: false, value: item.id, onSelect: undefined }));
+        (_a = this.inputRef.current) === null || _a === void 0 ? void 0 : _a.blur();
         if (this.props.onChange)
             this.props.onChange(item);
     };
