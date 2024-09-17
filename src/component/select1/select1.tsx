@@ -208,7 +208,7 @@ export class Select1 extends React.Component<Select1Props, Select1State> {
                     onKeyDown={this.onKeyDown}
                     onBlur={ev => {
                         if (this.state.onSelect && !this.props.readOnly) ev.target.focus()
-                        else this.setState({ ...this.state, isOpen: false, onSelect: null })
+                        else if (!this.state.onSelect) this.setState({ ...this.state, isOpen: false, onSelect: null })
                     }}
                 /> : _value.name}
             </div>
