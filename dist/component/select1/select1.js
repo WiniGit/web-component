@@ -107,16 +107,16 @@ var Select1 = /** @class */ (function (_super) {
         _this.onKeyDown = function (ev) {
             var _a, _b, _c, _d, _e, _f, _g;
             console.log(ev.key);
-            debugger;
-            ev.preventDefault();
             if ((((_a = _this.state.options) === null || _a === void 0 ? void 0 : _a.length) || ((_b = _this.state.search) === null || _b === void 0 ? void 0 : _b.length)) && _this.state.isOpen) {
                 switch (ev.key.toLowerCase()) {
                     case "enter":
+                        ev.preventDefault();
                         var _selectItem = ((_c = _this.state.search) !== null && _c !== void 0 ? _c : _this.state.options).find(function (e) { return e.id === _this.state.selected; });
                         if (_selectItem)
                             _this.onSelect(_selectItem);
                         break;
                     case "arrowup":
+                        ev.preventDefault();
                         if (_this.state.selected) {
                             var _index = ((_d = _this.state.search) !== null && _d !== void 0 ? _d : _this.state.options).findIndex(function (e) { return e.id === _this.state.selected; });
                             _index = ((_index === 0) ? _this.props.options.length : _index) - 1;
@@ -124,6 +124,7 @@ var Select1 = /** @class */ (function (_super) {
                         }
                         break;
                     case "arrowdown":
+                        ev.preventDefault();
                         if (_this.state.selected) {
                             var _index = ((_f = _this.state.search) !== null && _f !== void 0 ? _f : _this.state.options).findIndex(function (e) { return e.id === _this.state.selected; });
                             _index = ((_index + 1 === _this.props.options.length) ? -1 : _index) + 1;
