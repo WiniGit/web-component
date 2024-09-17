@@ -107,6 +107,7 @@ var Select1 = /** @class */ (function (_super) {
         _this.onKeyDown = function (ev) {
             var _a, _b, _c, _d, _e, _f, _g;
             console.log(ev.key);
+            debugger;
             ev.preventDefault();
             if ((((_a = _this.state.options) === null || _a === void 0 ? void 0 : _a.length) || ((_b = _this.state.search) === null || _b === void 0 ? void 0 : _b.length)) && _this.state.isOpen) {
                 switch (ev.key.toLowerCase()) {
@@ -275,7 +276,7 @@ var Select1 = /** @class */ (function (_super) {
             react_1.default.createElement("div", { className: 'row', style: { flexWrap: 'wrap', flex: 1, width: '100%', gap: '0.6rem 0.4rem' } }, (!_value || typeof _value.name === "string" || typeof _value.name === "number") ? react_1.default.createElement("input", { ref: this.inputRef, readOnly: this.props.readOnly, onChange: this.search, placeholder: this.props.placeholder, onKeyDown: this.onKeyDown, onBlur: function (ev) {
                     if (_this.state.onSelect && !_this.props.readOnly)
                         ev.target.focus();
-                    else
+                    else if (!_this.state.onSelect)
                         _this.setState(__assign(__assign({}, _this.state), { isOpen: false, onSelect: null }));
                 } }) : _value.name),
             this.props.showClearValueButton && react_1.default.createElement("button", { type: 'button', className: 'row', style: { padding: '0.4rem' }, onClick: function (ev) {
