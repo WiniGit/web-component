@@ -123,6 +123,7 @@ export class Select1 extends React.Component<Select1Props, Select1State> {
 
     private onKeyDown = (ev: React.KeyboardEvent<HTMLInputElement>) => {
         console.log(ev.key)
+        debugger
         ev.preventDefault()
         if ((this.state.options?.length || this.state.search?.length) && this.state.isOpen) {
             switch (ev.key.toLowerCase()) {
