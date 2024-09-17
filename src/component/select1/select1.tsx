@@ -123,15 +123,15 @@ export class Select1 extends React.Component<Select1Props, Select1State> {
 
     private onKeyDown = (ev: React.KeyboardEvent<HTMLInputElement>) => {
         console.log(ev.key)
-        debugger
-        ev.preventDefault()
         if ((this.state.options?.length || this.state.search?.length) && this.state.isOpen) {
             switch (ev.key.toLowerCase()) {
                 case "enter":
+                    ev.preventDefault()
                     const _selectItem = (this.state.search ?? this.state.options).find(e => e.id === this.state.selected)
                     if (_selectItem) this.onSelect(_selectItem)
                     break;
                 case "arrowup":
+                    ev.preventDefault()
                     if (this.state.selected) {
                         let _index = (this.state.search ?? this.state.options).findIndex((e) => e.id === this.state.selected)
                         _index = ((_index === 0) ? this.props.options.length : _index) - 1
@@ -139,6 +139,7 @@ export class Select1 extends React.Component<Select1Props, Select1State> {
                     }
                     break;
                 case "arrowdown":
+                    ev.preventDefault()
                     if (this.state.selected) {
                         let _index = (this.state.search ?? this.state.options).findIndex((e) => e.id === this.state.selected)
                         _index = ((_index + 1 === this.props.options.length) ? -1 : _index) + 1
