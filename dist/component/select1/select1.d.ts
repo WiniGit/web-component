@@ -26,6 +26,7 @@ interface Select1State {
     offset: DOMRect;
     isOpen: boolean;
     onSelect: any;
+    selected?: string | number;
     search?: Array<OptionsItem>;
     style?: Object;
 }
@@ -36,6 +37,7 @@ export declare class Select1 extends React.Component<Select1Props, Select1State>
     private search;
     private onSelect;
     private renderOptions;
+    private onKeyDown;
     componentDidUpdate(prevProps: Select1Props, prevState: Select1State): void;
     render(): React.JSX.Element;
 }

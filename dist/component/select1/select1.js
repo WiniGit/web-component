@@ -104,6 +104,36 @@ var Select1 = /** @class */ (function (_super) {
         _this = _super.call(this, props) || this;
         _this.containerRef = (0, react_1.createRef)();
         _this.inputRef = (0, react_1.createRef)();
+        _this.onKeyDown = function (ev) {
+            var _a, _b, _c, _d, _e, _f, _g;
+            console.log(ev.key);
+            ev.preventDefault();
+            if ((((_a = _this.state.options) === null || _a === void 0 ? void 0 : _a.length) || ((_b = _this.state.search) === null || _b === void 0 ? void 0 : _b.length)) && _this.state.isOpen) {
+                switch (ev.key.toLowerCase()) {
+                    case "enter":
+                        var _selectItem = ((_c = _this.state.search) !== null && _c !== void 0 ? _c : _this.state.options).find(function (e) { return e.id === _this.state.selected; });
+                        if (_selectItem)
+                            _this.onSelect(_selectItem);
+                        break;
+                    case "arrowup":
+                        if (_this.state.selected) {
+                            var _index = ((_d = _this.state.search) !== null && _d !== void 0 ? _d : _this.state.options).findIndex(function (e) { return e.id === _this.state.selected; });
+                            _index = ((_index === 0) ? _this.props.options.length : _index) - 1;
+                            _this.setState(__assign(__assign({}, _this.state), { selected: (_e = _this.props.options[_index]) === null || _e === void 0 ? void 0 : _e.id }));
+                        }
+                        break;
+                    case "arrowdown":
+                        if (_this.state.selected) {
+                            var _index = ((_f = _this.state.search) !== null && _f !== void 0 ? _f : _this.state.options).findIndex(function (e) { return e.id === _this.state.selected; });
+                            _index = ((_index + 1 === _this.props.options.length) ? -1 : _index) + 1;
+                            _this.setState(__assign(__assign({}, _this.state), { selected: (_g = _this.props.options[_index]) === null || _g === void 0 ? void 0 : _g.id }));
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+        };
         _this.state = {
             value: props.value,
             options: props.options,
@@ -156,7 +186,7 @@ var Select1 = /** @class */ (function (_super) {
     };
     Select1.prototype.onSelect = function (item) {
         var _a;
-        this.setState(__assign(__assign({}, this.state), { isOpen: false, value: item.id, onSelect: undefined }));
+        this.setState(__assign(__assign({}, this.state), { isOpen: false, value: item.id, onSelect: undefined, selected: undefined }));
         (_a = this.inputRef.current) === null || _a === void 0 ? void 0 : _a.blur();
         if (this.props.onChange)
             this.props.onChange(item);
@@ -169,7 +199,7 @@ var Select1 = /** @class */ (function (_super) {
             children = ((_a = this.state.search) !== null && _a !== void 0 ? _a : this.state.options).filter(function (e) { return e.parentId === item.id; });
         // 
         return react_1.default.createElement("div", { key: item.id, className: 'col', style: { width: '100%' } },
-            react_1.default.createElement("div", { className: 'select-tile row', style: { paddingLeft: item.parentId ? '4.4rem' : undefined }, onClick: children.length ? function () {
+            react_1.default.createElement("div", { className: 'select-tile row', style: { paddingLeft: item.parentId ? '4.4rem' : undefined, backgroundColor: this.state.selected === item.id ? "var(--selected-background)" : undefined }, onClick: children.length ? function () {
                     if (_this.state.search) {
                         _this.setState(__assign(__assign({}, _this.state), { search: _this.state.search.map(function (e) {
                                 if (e.id === item.id)
@@ -242,8 +272,8 @@ var Select1 = /** @class */ (function (_super) {
                     (_c = _this.inputRef.current) === null || _c === void 0 ? void 0 : _c.focus();
                 }
             } },
-            react_1.default.createElement("div", { className: 'row', style: { flexWrap: 'wrap', flex: 1, width: '100%', gap: '0.6rem 0.4rem' } }, (!_value || typeof _value.name === "string") ? react_1.default.createElement("input", { ref: this.inputRef, readOnly: this.props.readOnly, onChange: this.search, placeholder: this.props.placeholder, onBlur: function (ev) {
-                    if (_this.state.onSelect)
+            react_1.default.createElement("div", { className: 'row', style: { flexWrap: 'wrap', flex: 1, width: '100%', gap: '0.6rem 0.4rem' } }, (!_value || typeof _value.name === "string" || typeof _value.name === "number") ? react_1.default.createElement("input", { ref: this.inputRef, readOnly: this.props.readOnly, onChange: this.search, placeholder: this.props.placeholder, onKeyDown: this.onKeyDown, onBlur: function (ev) {
+                    if (_this.state.onSelect && !_this.props.readOnly)
                         ev.target.focus();
                     else
                         _this.setState(__assign(__assign({}, _this.state), { isOpen: false, onSelect: null }));

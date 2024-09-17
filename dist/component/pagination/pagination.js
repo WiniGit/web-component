@@ -28,7 +28,7 @@ function Pagination(_a) {
                 hiddenPageSize ? null : react_1.default.createElement("div", { className: "row items-per-page-container" },
                     react_1.default.createElement(index_1.Text, { className: "regular2" }, "Items/page"),
                     react_1.default.createElement("div", { className: "row" },
-                        react_1.default.createElement(index_1.Select1, { style: { width: '8.6rem' }, placeholder: itemPerPage.toString(), options: [10, 20, 50, 100, 200].map(function (item, _) { return { id: item, name: item }; }), onChange: function (ev) {
+                        react_1.default.createElement(index_1.Select1, { readOnly: true, style: { width: '8.6rem' }, placeholder: itemPerPage.toString(), options: [10, 20, 50, 100, 200].map(function (item, _) { return { id: item, name: item }; }), onChange: function (ev) {
                                 onChangePage(currentPage, isNaN(parseInt(ev.id)) ? itemPerPage : parseInt(ev.id));
                             } }))),
                 react_1.default.createElement(react_paginate_1.default, { breakLabel: "...", nextLabel: "Next", onPageChange: function (ev) {
