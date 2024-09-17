@@ -33,6 +33,7 @@ interface Select1State {
     offset: DOMRect,
     isOpen: boolean,
     onSelect: any,
+    selected?: string | number,
     search?: Array<OptionsItem>,
     style?: Object
 };
@@ -82,7 +83,7 @@ export class Select1 extends React.Component<Select1Props, Select1State> {
     }
 
     private onSelect(item: OptionsItem) {
-        this.setState({ ...this.state, isOpen: false, value: item.id, onSelect: undefined })
+        this.setState({ ...this.state, isOpen: false, value: item.id, onSelect: undefined, selected: undefined })
         this.inputRef.current?.blur()
         if (this.props.onChange) this.props.onChange(item)
     }
@@ -92,7 +93,7 @@ export class Select1 extends React.Component<Select1Props, Select1State> {
         if (!item.parentId) children = (this.state.search ?? this.state.options).filter(e => e.parentId === item.id)
         // 
         return <div key={item.id} className='col' style={{ width: '100%' }}>
-            <div className='select-tile row' style={{ paddingLeft: item.parentId ? '4.4rem' : undefined }} onClick={children.length ? () => {
+            <div className='select-tile row' style={{ paddingLeft: item.parentId ? '4.4rem' : undefined, backgroundColor: this.state.selected === item.id ? "var(--selected-background)" : undefined }} onClick={children.length ? () => {
                 if (this.state.search) {
                     this.setState({
                         ...this.state, search: this.state.search.map(e => {
@@ -118,6 +119,35 @@ export class Select1 extends React.Component<Select1Props, Select1State> {
             </div>
             <div className='col' style={{ display: (item as any).isOpen ? "flex" : "none", width: '100%' }}>{children.map(e => this.renderOptions(e))}</div>
         </div>
+    }
+
+    private onKeyDown = (ev: React.KeyboardEvent<HTMLInputElement>) => {
+        console.log(ev.key)
+        ev.preventDefault()
+        if ((this.state.options?.length || this.state.search?.length) && this.state.isOpen) {
+            switch (ev.key.toLowerCase()) {
+                case "enter":
+                    const _selectItem = (this.state.search ?? this.state.options).find(e => e.id === this.state.selected)
+                    if (_selectItem) this.onSelect(_selectItem)
+                    break;
+                case "arrowup":
+                    if (this.state.selected) {
+                        let _index = (this.state.search ?? this.state.options).findIndex((e) => e.id === this.state.selected)
+                        _index = ((_index === 0) ? this.props.options.length : _index) - 1
+                        this.setState({ ...this.state, selected: this.props.options[_index]?.id })
+                    }
+                    break;
+                case "arrowdown":
+                    if (this.state.selected) {
+                        let _index = (this.state.search ?? this.state.options).findIndex((e) => e.id === this.state.selected)
+                        _index = ((_index + 1 === this.props.options.length) ? -1 : _index) + 1
+                        this.setState({ ...this.state, selected: this.props.options[_index]?.id })
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
     componentDidUpdate(prevProps: Select1Props, prevState: Select1State) {
@@ -174,9 +204,10 @@ export class Select1 extends React.Component<Select1Props, Select1State> {
             }}
         >
             <div className='row' style={{ flexWrap: 'wrap', flex: 1, width: '100%', gap: '0.6rem 0.4rem' }}>
-                {(!_value || typeof _value.name === "string") ? <input ref={this.inputRef} readOnly={this.props.readOnly} onChange={this.search} placeholder={this.props.placeholder}
+                {(!_value || typeof _value.name === "string" || typeof _value.name === "number") ? <input ref={this.inputRef} readOnly={this.props.readOnly} onChange={this.search} placeholder={this.props.placeholder}
+                    onKeyDown={this.onKeyDown}
                     onBlur={ev => {
-                        if (this.state.onSelect) ev.target.focus()
+                        if (this.state.onSelect && !this.props.readOnly) ev.target.focus()
                         else this.setState({ ...this.state, isOpen: false, onSelect: null })
                     }}
                 /> : _value.name}
