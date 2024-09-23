@@ -12,7 +12,7 @@
 }
 
 .select1-container:focus-within {
-    border-color: var(--infor-color);
+    border-color: var(--focus-border);
 }
 
 .select1-container.disabled {

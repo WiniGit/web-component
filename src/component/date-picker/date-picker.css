@@ -14,7 +14,7 @@
 }
 
 .date-picker-container:focus-within {
-    border-color: var(--infor-color);
+    border-color: var(--focus-border);
 }
 
 .date-picker-container>.input-field-value {

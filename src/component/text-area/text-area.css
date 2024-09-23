@@ -14,7 +14,7 @@
 }
 
 .text-area-container:focus-within {
-    border-color: var(--infor-color);
+    border-color: var(--focus-border);
 }
 
 .text-area-container>textarea {

@@ -13,7 +13,7 @@
 }
 
 .text-field-container:focus-within {
-    border-color: var(--infor-color);
+    border-color: var(--focus-border);
 }
 
 .text-field-container>input {
