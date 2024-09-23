@@ -195,7 +195,7 @@ var SelectMultiple = /** @class */ (function (_super) {
             children = ((_a = this.state.search) !== null && _a !== void 0 ? _a : this.state.options).filter(function (e) { return e.parentId === item.id; });
         // 
         return react_1.default.createElement("div", { key: item.id, className: 'col', style: { width: '100%' } },
-            react_1.default.createElement("div", { className: 'select-tile row', style: { paddingLeft: item.parentId ? '4.4rem' : undefined }, onClick: children.length ? function () {
+            react_1.default.createElement("div", { className: "select-tile row ".concat(item.disabled ? "disabled" : ""), style: { paddingLeft: item.parentId ? '4.4rem' : undefined }, onClick: children.length ? function () {
                     if (_this.state.search) {
                         _this.setState(__assign(__assign({}, _this.state), { search: _this.state.search.map(function (e) {
                                 if (e.id === item.id)
@@ -214,7 +214,7 @@ var SelectMultiple = /** @class */ (function (_super) {
                     }
                 } : undefined },
                 ((_b = this.state.search) !== null && _b !== void 0 ? _b : this.state.options).some(function (e) { return e.parentId; }) && react_1.default.createElement("div", { className: 'row', style: { width: '1.4rem', height: '1.4rem' } }, children.length ? react_1.default.createElement(react_fontawesome_1.FontAwesomeIcon, { icon: item.isOpen ? free_solid_svg_icons_1.faCaretDown : free_solid_svg_icons_1.faCaretRight, style: { fontSize: '1.2rem', color: '#161C2499' } }) : null),
-                react_1.default.createElement(checkbox_1.Checkbox, { value: children.length ? (children.every(function (e) { return _this.state.value.includes(e.id); }) ? true : children.some(function (e) { return _this.state.value.includes(e.id); }) ? undefined : false) : this.state.value.includes(item.id), onChange: function (v) { _this.onCheck(v, __spreadArray([item], children, true)); }, size: '2rem' }),
+                react_1.default.createElement(checkbox_1.Checkbox, { disabled: item.disabled, value: children.length ? (children.every(function (e) { return _this.state.value.includes(e.id); }) ? true : children.some(function (e) { return _this.state.value.includes(e.id); }) ? undefined : false) : this.state.value.includes(item.id), onChange: function (v) { _this.onCheck(v, __spreadArray([item], children, true)); }, size: '2rem' }),
                 react_1.default.createElement(text_1.Text, { className: 'body-3' }, item.name)),
             react_1.default.createElement("div", { className: 'col', style: { display: item.isOpen ? "flex" : "none", width: '100%' } }, children.map(function (e) { return _this.renderOptions(e); })));
     };

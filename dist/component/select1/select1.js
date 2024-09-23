@@ -187,9 +187,15 @@ var Select1 = /** @class */ (function (_super) {
         });
     };
     Select1.prototype.onSelect = function (item) {
-        var _a;
-        this.setState(__assign(__assign({}, this.state), { isOpen: false, value: item.id, onSelect: undefined, selected: undefined }));
-        (_a = this.inputRef.current) === null || _a === void 0 ? void 0 : _a.blur();
+        var _a, _b;
+        if (item.disabled) {
+            this.setState(__assign(__assign({}, this.state), { isOpen: false, onSelect: undefined, selected: undefined }));
+            (_a = this.inputRef.current) === null || _a === void 0 ? void 0 : _a.blur();
+        }
+        else {
+            this.setState(__assign(__assign({}, this.state), { isOpen: false, value: item.id, onSelect: undefined, selected: undefined }));
+            (_b = this.inputRef.current) === null || _b === void 0 ? void 0 : _b.blur();
+        }
         if (this.props.onChange)
             this.props.onChange(item);
     };
@@ -201,7 +207,7 @@ var Select1 = /** @class */ (function (_super) {
             children = ((_a = this.state.search) !== null && _a !== void 0 ? _a : this.state.options).filter(function (e) { return e.parentId === item.id; });
         // 
         return react_1.default.createElement("div", { key: item.id, className: 'col', style: { width: '100%' } },
-            react_1.default.createElement("div", { className: 'select-tile row', style: { paddingLeft: item.parentId ? '4.4rem' : undefined, backgroundColor: this.state.selected === item.id ? "var(--selected-background)" : undefined }, onClick: children.length ? function () {
+            react_1.default.createElement("div", { className: "select-tile row ".concat(item.disabled ? "disabled" : ""), style: { paddingLeft: item.parentId ? '4.4rem' : undefined, backgroundColor: this.state.selected === item.id ? "var(--selected-background)" : undefined }, onClick: children.length ? function () {
                     if (_this.state.search) {
                         _this.setState(__assign(__assign({}, _this.state), { search: _this.state.search.map(function (e) {
                                 if (e.id === item.id)

@@ -5,6 +5,7 @@ export interface OptionsItem {
     parentId?: string;
     name: string | ReactNode;
     title?: string | ReactNode;
+    disabled?: boolean;
 }
 interface Select1Props {
     value?: string | number;
