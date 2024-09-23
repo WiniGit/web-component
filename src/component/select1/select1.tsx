@@ -10,6 +10,7 @@ export interface OptionsItem {
     parentId?: string,
     name: string | ReactNode,
     title?: string | ReactNode,
+    disabled?: boolean
 }
 
 interface Select1Props {
@@ -83,8 +84,13 @@ export class Select1 extends React.Component<Select1Props, Select1State> {
     }
 
     private onSelect(item: OptionsItem) {
-        this.setState({ ...this.state, isOpen: false, value: item.id, onSelect: undefined, selected: undefined })
-        this.inputRef.current?.blur()
+        if (item.disabled) {
+            this.setState({ ...this.state, isOpen: false, onSelect: undefined, selected: undefined })
+            this.inputRef.current?.blur()
+        } else {
+            this.setState({ ...this.state, isOpen: false, value: item.id, onSelect: undefined, selected: undefined })
+            this.inputRef.current?.blur()
+        }
         if (this.props.onChange) this.props.onChange(item)
     }
 
@@ -93,7 +99,7 @@ export class Select1 extends React.Component<Select1Props, Select1State> {
         if (!item.parentId) children = (this.state.search ?? this.state.options).filter(e => e.parentId === item.id)
         // 
         return <div key={item.id} className='col' style={{ width: '100%' }}>
-            <div className='select-tile row' style={{ paddingLeft: item.parentId ? '4.4rem' : undefined, backgroundColor: this.state.selected === item.id ? "var(--selected-background)" : undefined }} onClick={children.length ? () => {
+            <div className={`select-tile row ${item.disabled ? "disabled" : ""}`} style={{ paddingLeft: item.parentId ? '4.4rem' : undefined, backgroundColor: this.state.selected === item.id ? "var(--selected-background)" : undefined }} onClick={children.length ? () => {
                 if (this.state.search) {
                     this.setState({
                         ...this.state, search: this.state.search.map(e => {

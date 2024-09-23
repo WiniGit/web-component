@@ -106,6 +106,14 @@
     background-color: var(--selected-background);
 }
 
+.select-multi-popup>.select-body .select-tile.disabled {
+    background-color: var(--disabled-background) !important;
+}
+
+.select-multi-popup>.select-body .select-tile.disabled * {
+    color: var(--disabled-font-color) !important;
+}
+
 .no-results-found {
     padding: 0.8rem;
     font: 400 1.4rem/2rem "Inter";

@@ -106,7 +106,7 @@ export class SelectMultiple extends React.Component<SelectMultipleProps, SelectM
         if (!item.parentId) children = (this.state.search ?? this.state.options).filter(e => e.parentId === item.id)
         // 
         return <div key={item.id} className='col' style={{ width: '100%' }}>
-            <div className='select-tile row' style={{ paddingLeft: item.parentId ? '4.4rem' : undefined }} onClick={children.length ? () => {
+            <div className={`select-tile row ${item.disabled ? "disabled" : ""}`} style={{ paddingLeft: item.parentId ? '4.4rem' : undefined }} onClick={children.length ? () => {
                 if (this.state.search) {
                     this.setState({
                         ...this.state, search: this.state.search.map(e => {
@@ -126,7 +126,7 @@ export class SelectMultiple extends React.Component<SelectMultipleProps, SelectM
                 {(this.state.search ?? this.state.options).some(e => e.parentId) && <div className='row' style={{ width: '1.4rem', height: '1.4rem' }}>
                     {children.length ? <FontAwesomeIcon icon={(item as any).isOpen ? faCaretDown : faCaretRight} style={{ fontSize: '1.2rem', color: '#161C2499' }} /> : null}
                 </div>}
-                <Checkbox value={children.length ? (children.every((e) => this.state.value.includes(e.id)) ? true : children.some((e) => this.state.value.includes(e.id)) ? undefined : false) : this.state.value.includes(item.id)} onChange={(v) => { this.onCheck(v, [item, ...children]) }} size={'2rem'} />
+                <Checkbox disabled={item.disabled} value={children.length ? (children.every((e) => this.state.value.includes(e.id)) ? true : children.some((e) => this.state.value.includes(e.id)) ? undefined : false) : this.state.value.includes(item.id)} onChange={(v) => { this.onCheck(v, [item, ...children]) }} size={'2rem'} />
                 <Text className='body-3'>{item.name}</Text>
             </div>
             <div className='col' style={{ display: (item as any).isOpen ? "flex" : "none", width: '100%' }}>{children.map(e => this.renderOptions(e))}</div>
