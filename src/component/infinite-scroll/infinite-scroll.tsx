@@ -2,6 +2,7 @@ import React, { CSSProperties, ReactNode } from 'react';
 
 
 interface InfiniteScrollProps {
+    id?: string,
     className?: string,
     style?: CSSProperties,
     handleScroll?: (onLoadMore: boolean, ev: React.UIEvent<HTMLDivElement, UIEvent>) => Promise<any> | null,
@@ -19,7 +20,7 @@ export class InfiniteScroll extends React.Component<InfiniteScrollProps, Infinit
     }
 
     render() {
-        return <div onScroll={async (ev) => {
+        return <div id={this.props.id} onScroll={async (ev) => {
             if (this.props.handleScroll) {
                 this.setState({ ...this.state, loading: true })
                 let scrollElement = ev.target as HTMLDivElement

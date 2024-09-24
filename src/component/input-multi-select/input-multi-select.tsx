@@ -8,6 +8,7 @@ import { Checkbox } from '../checkbox/checkbox'
 import { Text } from '../text/text'
 
 interface SelectMultipleProps {
+    id?: string,
     value?: Array<string | number>,
     options: Required<Array<OptionsItem>>,
     onChange?: (value?: Array<string | number>) => void,
@@ -169,6 +170,7 @@ export class SelectMultiple extends React.Component<SelectMultipleProps, SelectM
 
     render() {
         return <div
+            id={this.props.id}
             ref={this.containerRef}
             className={`select-multi-container row ${this.props.disabled ? 'disabled' : ''} ${this.props.helperText?.length && 'helper-text'} ${this.props.className ?? 'body-3'}`}
             helper-text={this.props.helperText}

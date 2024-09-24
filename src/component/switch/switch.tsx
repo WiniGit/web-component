@@ -2,6 +2,7 @@ import React, { CSSProperties } from 'react';
 import './switch.css';
 
 interface SwitchProps {
+    id?: string,
     onChange?: (value: boolean) => void,
     value?: boolean,
     disabled?: boolean,
@@ -53,7 +54,7 @@ export class Switch extends React.Component<SwitchProps, SwitchState> {
                 ...convertStyle,
             }
         }
-        return <label className={`switch-container row ${this.props.className ?? ''}`} style={convertStyle} >
+        return <label id={this.props.id} className={`switch-container row ${this.props.className ?? ''}`} style={convertStyle} >
             <input type="checkbox" checked={this.state.value} name={this.props.name} disabled={this.props.disabled}
                 onChange={() => {
                     const newValue = !this.state.value

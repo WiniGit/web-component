@@ -3,14 +3,14 @@ import ReactPaginate from "react-paginate";
 import './pagination.css';
 import { Select1, Text } from '../../index';
 
-export function Pagination({ currentPage, itemPerPage, totalItem, onChangePage, hiddenPageSize = false, hiddenTotal = false, style }: { currentPage: number, itemPerPage: number, totalItem: number, onChangePage: Function, hiddenPageSize: boolean, hiddenTotal: boolean, style: CSSProperties }) {
+export function Pagination({ id, currentPage, itemPerPage, totalItem, onChangePage, hiddenPageSize = false, hiddenTotal = false, style }: { id?: string, currentPage: number, itemPerPage: number, totalItem: number, onChangePage: Function, hiddenPageSize: boolean, hiddenTotal: boolean, style: CSSProperties }) {
     if (currentPage > 1 && (totalItem === 0 || (Math.floor(totalItem / itemPerPage) + (totalItem % itemPerPage === 0 ? 0 : 1)) < currentPage)) {
         onChangePage(1, itemPerPage);
         return <div></div>;
     }
     if (totalItem > 0) {
         return (
-            <div className="row custom-pagination" style={style}>
+            <div id={id} className="row custom-pagination" style={style}>
                 {hiddenTotal ? null : <Text className="regular2">
                     Hiển thị {itemPerPage * (currentPage - 1) + 1}-{((itemPerPage * (currentPage - 1) + itemPerPage) > totalItem) ? totalItem : (itemPerPage * (currentPage - 1) + itemPerPage)} trong tổng số {totalItem} bản ghi
                 </Text>}
@@ -57,7 +57,7 @@ export function Pagination({ currentPage, itemPerPage, totalItem, onChangePage, 
         )
     } else {
         return (
-            <div >
+            <div id={id}>
 
             </div>
         )

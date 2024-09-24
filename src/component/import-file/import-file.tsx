@@ -45,6 +45,7 @@ interface ImportFileState {
 type ChangeFileFunction = (a?: File) => void;
 
 interface ImportFileProps {
+    id?: string,
     status?: ComponentStatus,
     value?: File | ObjWithKnownKeys,
     buttonOnly?: boolean,
@@ -86,7 +87,7 @@ export class ImportFile extends React.Component<ImportFileProps, ImportFileState
         if (this.props.maxSize) {
             sizeTitle = this.props.maxSize > Math.pow(1024, 3) ? `${Math.round(this.props.maxSize / Math.pow(1024, 3))}TB` : this.props.maxSize > Math.pow(1024, 2) ? `${Math.round(this.props.maxSize / Math.pow(1024, 2))}GB` : this.props.maxSize > 1024 ? `${Math.round(this.props.maxSize / 1024)}MB` : `${this.props.maxSize}KB`
         }
-        return <div className={`import-file-container ${this.props.className ?? 'row'} ${this.props.buttonOnly ? 'button-only' : ''}`} style={this.state.preview ? this.props.style : { cursor: 'pointer', ...this.props.style }}
+        return <div id={this.props.id} className={`import-file-container ${this.props.className ?? 'row'} ${this.props.buttonOnly ? 'button-only' : ''}`} style={this.state.preview ? this.props.style : { cursor: 'pointer', ...this.props.style }}
             onClick={() => {
                 if (!this.state.preview && !this.props.buttonOnly) this.showFilePicker()
             }}

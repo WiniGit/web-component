@@ -2,6 +2,7 @@ import React, { CSSProperties } from 'react';
 import './checkbox.css';
 
 interface CheckboxProps {
+    id?: string,
     onChange?: (value: boolean) => void,
     value?: boolean,
     checkColor?: string,
@@ -44,7 +45,7 @@ export class Checkbox extends React.Component<CheckboxProps, CheckboxState> {
                 ...convertStyle
             }
         }
-        return <label className="checkbox-container row" style={convertStyle} is-null-value={`${this.state.value == undefined}`} onClick={this.props.onClick}>
+        return <label id={this.props.id} className="checkbox-container row" style={convertStyle} is-null-value={`${this.state.value == undefined}`} onClick={this.props.onClick}>
             <input type="checkbox" checked={this.state.value} disabled={this.props.disabled}
                 onChange={(ev) => {
                     ev.stopPropagation()

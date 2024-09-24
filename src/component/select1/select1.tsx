@@ -14,6 +14,7 @@ export interface OptionsItem {
 }
 
 interface Select1Props {
+    id?: string,
     value?: string | number,
     options: Required<Array<OptionsItem>>,
     onChange?: (v?: OptionsItem) => void,
@@ -195,6 +196,7 @@ export class Select1 extends React.Component<Select1Props, Select1State> {
     render() {
         const _value = this.state.options.find(e => e.id === this.state.value)
         return <div
+            id={this.props.id}
             ref={this.containerRef}
             className={`select1-container row ${this.props.disabled ? 'disabled' : ''} ${this.props.helperText?.length && 'helper-text'} ${this.props.className ?? 'body-3'}`}
             helper-text={this.props.helperText}

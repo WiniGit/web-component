@@ -2,6 +2,7 @@ import React, { CSSProperties } from "react"
 import './rating.css'
 
 interface RatingProps {
+    id?: string,
     /**
     value: 0-5
     */
@@ -32,7 +33,7 @@ export class Rating extends React.Component<RatingProps, RatingState> {
         }
     }
     render(): React.ReactNode {
-        return <div className={`row rating-container ${this.props.className ?? ''}`} style={this.props.style}>
+        return <div id={this.props.id} className={`row rating-container ${this.props.className ?? ''}`} style={this.props.style}>
             {Array.from({ length: 5 }).map((_, i) => {
                 let uniqueId = 'rating-star-grad-0'
                 let stopValue = 0

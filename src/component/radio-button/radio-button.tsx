@@ -3,6 +3,7 @@ import './radio-button.css';
 import { UseFormRegister } from 'react-hook-form';
 
 interface RadioButtonProps {
+    id?: string,
     onChange?: React.ChangeEventHandler<HTMLInputElement>,
     value?: string | number | readonly string[],
     disabled?: boolean,
@@ -37,7 +38,7 @@ export class RadioButton extends React.Component<RadioButtonProps> {
             }
         }
 
-        return <label className={`radio-btn-container row ${this.props.className ?? ''}`} style={convertStyle} >
+        return <label id={this.props.id} className={`radio-btn-container row ${this.props.className ?? ''}`} style={convertStyle} >
             {this.props.register ?
                 <input
                     {...this.props.register}

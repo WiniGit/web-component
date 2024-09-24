@@ -8,6 +8,7 @@ export enum CellAlignItems {
 }
 
 type TbCellProps = {
+    id?: string,
     fixed?: boolean,
     children?: ReactNode,
     className?: string,
@@ -18,11 +19,12 @@ type TbCellProps = {
 
 export class TbCell extends React.Component<TbCellProps> {
     render(): React.ReactNode {
-        return <td onClick={this.props.onClick} style={this.props.style} align-cell={this.props.align ?? CellAlignItems.start} className={`tb-cell ${this.props.className ?? ''} ${this.props.fixed ? 'tb-cell-fixed' : ''}`}>{this.props.children}</td>
+        return <td id={this.props.id} onClick={this.props.onClick} style={this.props.style} align-cell={this.props.align ?? CellAlignItems.start} className={`tb-cell ${this.props.className ?? ''} ${this.props.fixed ? 'tb-cell-fixed' : ''}`}>{this.props.children}</td>
     }
 }
 
 interface TbRowProps {
+    id?: string,
     children?: Array<TbCell>,
     className?: string,
     style?: CSSProperties,
@@ -32,7 +34,7 @@ interface TbRowProps {
 
 export class TbRow extends React.Component<TbRowProps> {
     render(): React.ReactNode {
-        return <tr style={this.props.style} className={`tb-row ${this.props.className ?? ""}`} onClick={this.props.onClick}>
+        return <tr id={this.props.id} style={this.props.style} className={`tb-row ${this.props.className ?? ""}`} onClick={this.props.onClick}>
             {(this.props.children ?? []).map((e: TbCell, i: number) => {
                 let ox: number | string = 0
                 if (this.props.children && i > 0 && i < (this.props.children.length - 1)) {
@@ -42,6 +44,7 @@ export class TbRow extends React.Component<TbRowProps> {
                     }).join(" + ")})`
                 }
                 return <TbCell
+                    id={e.props.id}
                     key={`tb-cell-${i}`}
                     align={e.props.align}
                     children={e.props.children}
@@ -64,6 +67,7 @@ export class TbHeader extends React.Component<TbRowProps> {
                         ox = `calc(${this.props.children.slice(0, i).map(tb => tb.props.style?.width ? typeof tb.props.style.width === 'number' ? `${tb.props.style.width}px` : tb.props.style.width : '60px').join(" + ")})`
                     }
                     return <TbCell
+                        id={e.props.id}
                         key={`tb-cell-${i}`}
                         align={e.props.align}
                         children={e.props.children}
@@ -78,6 +82,7 @@ export class TbHeader extends React.Component<TbRowProps> {
 }
 
 interface TbBodyProps {
+    id?: string,
     children?: Array<TbRow>,
     className?: string,
     style?: CSSProperties,
@@ -85,11 +90,12 @@ interface TbBodyProps {
 
 export class TbBody extends React.Component<TbBodyProps> {
     render(): React.ReactNode {
-        return <tbody>{this.props.children as ReactNode}</tbody>
+        return <tbody id={this.props.id}>{this.props.children as ReactNode}</tbody>
     }
 }
 
 interface TableProps {
+    id?: string,
     children?: Array<TbBody | TbHeader>,
     className?: string,
     style?: CSSProperties,
@@ -97,6 +103,6 @@ interface TableProps {
 
 export class Table extends React.Component<TableProps> {
     render(): React.ReactNode {
-        return <table className={`custom-table ${this.props.className}`} style={this.props.style}>{this.props.children as ReactNode}</table>
+        return <table id={this.props.id} className={`custom-table ${this.props.className}`} style={this.props.style}>{this.props.children as ReactNode}</table>
     }
 }
