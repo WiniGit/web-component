@@ -9,13 +9,13 @@ var react_paginate_1 = __importDefault(require("react-paginate"));
 require("./pagination.css");
 var index_1 = require("../../index");
 function Pagination(_a) {
-    var currentPage = _a.currentPage, itemPerPage = _a.itemPerPage, totalItem = _a.totalItem, onChangePage = _a.onChangePage, _b = _a.hiddenPageSize, hiddenPageSize = _b === void 0 ? false : _b, _c = _a.hiddenTotal, hiddenTotal = _c === void 0 ? false : _c, style = _a.style;
+    var id = _a.id, currentPage = _a.currentPage, itemPerPage = _a.itemPerPage, totalItem = _a.totalItem, onChangePage = _a.onChangePage, _b = _a.hiddenPageSize, hiddenPageSize = _b === void 0 ? false : _b, _c = _a.hiddenTotal, hiddenTotal = _c === void 0 ? false : _c, style = _a.style;
     if (currentPage > 1 && (totalItem === 0 || (Math.floor(totalItem / itemPerPage) + (totalItem % itemPerPage === 0 ? 0 : 1)) < currentPage)) {
         onChangePage(1, itemPerPage);
         return react_1.default.createElement("div", null);
     }
     if (totalItem > 0) {
-        return (react_1.default.createElement("div", { className: "row custom-pagination", style: style },
+        return (react_1.default.createElement("div", { id: id, className: "row custom-pagination", style: style },
             hiddenTotal ? null : react_1.default.createElement(index_1.Text, { className: "regular2" },
                 "Hi\u1EC3n th\u1ECB ",
                 itemPerPage * (currentPage - 1) + 1,
@@ -40,7 +40,7 @@ function Pagination(_a) {
                     }, renderOnZeroPageCount: null }))));
     }
     else {
-        return (react_1.default.createElement("div", null));
+        return (react_1.default.createElement("div", { id: id }));
     }
 }
 exports.Pagination = Pagination;

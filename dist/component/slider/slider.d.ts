@@ -1,6 +1,7 @@
 import React, { CSSProperties, ReactNode } from 'react';
 import './slider.css';
 interface SliderProps {
+    id?: string;
     children?: Array<ReactNode>;
     autoPlay?: boolean;
     /** default: 2000ms */

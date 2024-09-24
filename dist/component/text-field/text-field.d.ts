@@ -2,6 +2,7 @@ import React, { CSSProperties, ReactNode } from "react";
 import './text-field.css';
 import { UseFormRegister } from "react-hook-form";
 interface TextFieldProps {
+    id?: string;
     value?: string;
     maxLength?: number;
     defaultValue?: string;

@@ -1,7 +1,8 @@
 import { CSSProperties } from 'react';
 import './progress-circle.css';
 import React from 'react';
-export declare function ProgressCircle({ percent, style, fillColor, percentColor, strokeWidth, strokeColor, textStyle }: {
+export declare function ProgressCircle({ id, percent, style, fillColor, percentColor, strokeWidth, strokeColor, textStyle }: {
+    id?: string;
     /** value:  0 - 100 (%)*/
     percent?: number;
     style?: CSSProperties;

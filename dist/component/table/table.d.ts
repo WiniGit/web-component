@@ -6,6 +6,7 @@ export declare enum CellAlignItems {
     end = "end"
 }
 type TbCellProps = {
+    id?: string;
     fixed?: boolean;
     children?: ReactNode;
     className?: string;
@@ -17,6 +18,7 @@ export declare class TbCell extends React.Component<TbCellProps> {
     render(): React.ReactNode;
 }
 interface TbRowProps {
+    id?: string;
     children?: Array<TbCell>;
     className?: string;
     style?: CSSProperties;
@@ -29,6 +31,7 @@ export declare class TbHeader extends React.Component<TbRowProps> {
     render(): React.JSX.Element;
 }
 interface TbBodyProps {
+    id?: string;
     children?: Array<TbRow>;
     className?: string;
     style?: CSSProperties;
@@ -37,6 +40,7 @@ export declare class TbBody extends React.Component<TbBodyProps> {
     render(): React.ReactNode;
 }
 interface TableProps {
+    id?: string;
     children?: Array<TbBody | TbHeader>;
     className?: string;
     style?: CSSProperties;

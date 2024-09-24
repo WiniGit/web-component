@@ -2,6 +2,7 @@ import React, { CSSProperties } from "react";
 import './text-area.css';
 import { UseFormRegister } from "react-hook-form";
 interface TextAreaProps {
+    id?: string;
     value?: string;
     maxLength?: number;
     defaultValue?: string;

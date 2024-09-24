@@ -79,7 +79,7 @@ var InfiniteScroll = /** @class */ (function (_super) {
     InfiniteScroll.prototype.render = function () {
         var _this = this;
         var _a, _b;
-        return react_1.default.createElement("div", { onScroll: function (ev) { return __awaiter(_this, void 0, void 0, function () {
+        return react_1.default.createElement("div", { id: this.props.id, onScroll: function (ev) { return __awaiter(_this, void 0, void 0, function () {
                 var scrollElement;
                 return __generator(this, function (_a) {
                     switch (_a.label) {

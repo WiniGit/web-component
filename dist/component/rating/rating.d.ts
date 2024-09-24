@@ -1,6 +1,7 @@
 import React, { CSSProperties } from "react";
 import './rating.css';
 interface RatingProps {
+    id?: string;
     /**
     value: 0-5
     */

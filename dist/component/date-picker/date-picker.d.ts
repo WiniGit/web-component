@@ -2,6 +2,7 @@ import React, { CSSProperties } from 'react';
 import './date-picker.css';
 import { CalendarType } from '../../index';
 interface DatePickerProps {
+    id?: string;
     value?: string;
     min?: Date;
     max?: Date;

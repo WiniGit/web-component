@@ -45,7 +45,7 @@ var TbCell = /** @class */ (function (_super) {
     }
     TbCell.prototype.render = function () {
         var _a, _b;
-        return react_1.default.createElement("td", { onClick: this.props.onClick, style: this.props.style, "align-cell": (_a = this.props.align) !== null && _a !== void 0 ? _a : CellAlignItems.start, className: "tb-cell ".concat((_b = this.props.className) !== null && _b !== void 0 ? _b : '', " ").concat(this.props.fixed ? 'tb-cell-fixed' : '') }, this.props.children);
+        return react_1.default.createElement("td", { id: this.props.id, onClick: this.props.onClick, style: this.props.style, "align-cell": (_a = this.props.align) !== null && _a !== void 0 ? _a : CellAlignItems.start, className: "tb-cell ".concat((_b = this.props.className) !== null && _b !== void 0 ? _b : '', " ").concat(this.props.fixed ? 'tb-cell-fixed' : '') }, this.props.children);
     };
     return TbCell;
 }(react_1.default.Component));
@@ -58,7 +58,7 @@ var TbRow = /** @class */ (function (_super) {
     TbRow.prototype.render = function () {
         var _this = this;
         var _a, _b;
-        return react_1.default.createElement("tr", { style: this.props.style, className: "tb-row ".concat((_a = this.props.className) !== null && _a !== void 0 ? _a : ""), onClick: this.props.onClick }, ((_b = this.props.children) !== null && _b !== void 0 ? _b : []).map(function (e, i) {
+        return react_1.default.createElement("tr", { id: this.props.id, style: this.props.style, className: "tb-row ".concat((_a = this.props.className) !== null && _a !== void 0 ? _a : ""), onClick: this.props.onClick }, ((_b = this.props.children) !== null && _b !== void 0 ? _b : []).map(function (e, i) {
             var _a, _b;
             var ox = 0;
             if (_this.props.children && i > 0 && i < (_this.props.children.length - 1)) {
@@ -68,7 +68,7 @@ var TbRow = /** @class */ (function (_super) {
                     return wValue ? typeof wValue === 'number' ? "".concat(wValue, "px") : wValue : '60px';
                 }).join(" + "), ")");
             }
-            return react_1.default.createElement(TbCell, { key: "tb-cell-".concat(i), align: e.props.align, children: e.props.children, fixed: e.props.fixed, onClick: e.props.onClick, style: e.props.fixed ? (_this.props.children && i === _this.props.children.length - 1) ? __assign({ right: 0 }, ((_a = e.props.style) !== null && _a !== void 0 ? _a : {})) : __assign({ left: ox }, ((_b = e.props.style) !== null && _b !== void 0 ? _b : {})) : e.props.style, className: e.props.className });
+            return react_1.default.createElement(TbCell, { id: e.props.id, key: "tb-cell-".concat(i), align: e.props.align, children: e.props.children, fixed: e.props.fixed, onClick: e.props.onClick, style: e.props.fixed ? (_this.props.children && i === _this.props.children.length - 1) ? __assign({ right: 0 }, ((_a = e.props.style) !== null && _a !== void 0 ? _a : {})) : __assign({ left: ox }, ((_b = e.props.style) !== null && _b !== void 0 ? _b : {})) : e.props.style, className: e.props.className });
         }));
     };
     return TbRow;
@@ -89,7 +89,7 @@ var TbHeader = /** @class */ (function (_super) {
                 if (_this.props.children && i > 0 && i < (_this.props.children.length - 1)) {
                     ox = "calc(".concat(_this.props.children.slice(0, i).map(function (tb) { var _a; return ((_a = tb.props.style) === null || _a === void 0 ? void 0 : _a.width) ? typeof tb.props.style.width === 'number' ? "".concat(tb.props.style.width, "px") : tb.props.style.width : '60px'; }).join(" + "), ")");
                 }
-                return react_1.default.createElement(TbCell, { key: "tb-cell-".concat(i), align: e.props.align, children: e.props.children, onClick: e.props.onClick, fixed: e.props.fixed, style: e.props.fixed ? (_this.props.children && i === _this.props.children.length - 1) ? __assign({ right: 0 }, ((_a = e.props.style) !== null && _a !== void 0 ? _a : {})) : __assign({ left: ox }, ((_b = e.props.style) !== null && _b !== void 0 ? _b : {})) : e.props.style, className: e.props.className });
+                return react_1.default.createElement(TbCell, { id: e.props.id, key: "tb-cell-".concat(i), align: e.props.align, children: e.props.children, onClick: e.props.onClick, fixed: e.props.fixed, style: e.props.fixed ? (_this.props.children && i === _this.props.children.length - 1) ? __assign({ right: 0 }, ((_a = e.props.style) !== null && _a !== void 0 ? _a : {})) : __assign({ left: ox }, ((_b = e.props.style) !== null && _b !== void 0 ? _b : {})) : e.props.style, className: e.props.className });
             })));
     };
     return TbHeader;
@@ -101,7 +101,7 @@ var TbBody = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     TbBody.prototype.render = function () {
-        return react_1.default.createElement("tbody", null, this.props.children);
+        return react_1.default.createElement("tbody", { id: this.props.id }, this.props.children);
     };
     return TbBody;
 }(react_1.default.Component));
@@ -112,7 +112,7 @@ var Table = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     Table.prototype.render = function () {
-        return react_1.default.createElement("table", { className: "custom-table ".concat(this.props.className), style: this.props.style }, this.props.children);
+        return react_1.default.createElement("table", { id: this.props.id, className: "custom-table ".concat(this.props.className), style: this.props.style }, this.props.children);
     };
     return Table;
 }(react_1.default.Component));

@@ -10,6 +10,7 @@ interface ImportFileState {
 }
 type ChangeFileFunction = (a?: File) => void;
 interface ImportFileProps {
+    id?: string;
     status?: ComponentStatus;
     value?: File | ObjWithKnownKeys;
     buttonOnly?: boolean;

@@ -11,6 +11,7 @@ export declare enum CalendarType {
     DATETIME = 3
 }
 interface CalendarProps {
+    id?: string;
     value?: Date;
     min?: Date;
     max?: Date;

@@ -1,6 +1,7 @@
 import React, { CSSProperties, ReactNode } from 'react';
 import './text.css';
 interface TextProps {
+    id?: string;
     children?: ReactNode;
     style?: CSSProperties;
     className?: string;

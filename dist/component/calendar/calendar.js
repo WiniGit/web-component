@@ -290,7 +290,7 @@ var Calendar = /** @class */ (function (_super) {
     };
     Calendar.prototype.render = function () {
         var _this = this;
-        return react_1.default.createElement("div", { className: "row calendar-container ".concat(this.props.className), style: this.props.style },
+        return react_1.default.createElement("div", { id: this.props.id, className: "row calendar-container ".concat(this.props.className), style: this.props.style },
             this.props.showSidebar ? react_1.default.createElement("div", { className: "calendar-sidebar-options col" },
                 react_1.default.createElement("button", { type: "button", onClick: function () { }, className: "label-4 calendar-sidebar-option-buttton" }, "Yesterday"),
                 react_1.default.createElement("button", { type: "button", className: "label-4 calendar-sidebar-option-buttton" }, "Last week"),

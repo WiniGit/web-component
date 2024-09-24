@@ -8,6 +8,7 @@ export interface OptionsItem {
     disabled?: boolean;
 }
 interface Select1Props {
+    id?: string;
     value?: string | number;
     options: Required<Array<OptionsItem>>;
     onChange?: (v?: OptionsItem) => void;

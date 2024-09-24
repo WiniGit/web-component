@@ -70,7 +70,7 @@ var ImportFile = /** @class */ (function (_super) {
         if (this.props.maxSize) {
             sizeTitle = this.props.maxSize > Math.pow(1024, 3) ? "".concat(Math.round(this.props.maxSize / Math.pow(1024, 3)), "TB") : this.props.maxSize > Math.pow(1024, 2) ? "".concat(Math.round(this.props.maxSize / Math.pow(1024, 2)), "GB") : this.props.maxSize > 1024 ? "".concat(Math.round(this.props.maxSize / 1024), "MB") : "".concat(this.props.maxSize, "KB");
         }
-        return react_1.default.createElement("div", { className: "import-file-container ".concat((_a = this.props.className) !== null && _a !== void 0 ? _a : 'row', " ").concat(this.props.buttonOnly ? 'button-only' : ''), style: this.state.preview ? this.props.style : __assign({ cursor: 'pointer' }, this.props.style), onClick: function () {
+        return react_1.default.createElement("div", { id: this.props.id, className: "import-file-container ".concat((_a = this.props.className) !== null && _a !== void 0 ? _a : 'row', " ").concat(this.props.buttonOnly ? 'button-only' : ''), style: this.state.preview ? this.props.style : __assign({ cursor: 'pointer' }, this.props.style), onClick: function () {
                 if (!_this.state.preview && !_this.props.buttonOnly)
                     _this.showFilePicker();
             } },

@@ -44,7 +44,7 @@ var Rating = /** @class */ (function (_super) {
     Rating.prototype.render = function () {
         var _this = this;
         var _a;
-        return react_1.default.createElement("div", { className: "row rating-container ".concat((_a = this.props.className) !== null && _a !== void 0 ? _a : ''), style: this.props.style }, Array.from({ length: 5 }).map(function (_, i) {
+        return react_1.default.createElement("div", { id: this.props.id, className: "row rating-container ".concat((_a = this.props.className) !== null && _a !== void 0 ? _a : ''), style: this.props.style }, Array.from({ length: 5 }).map(function (_, i) {
             var _a, _b, _c, _d, _e;
             var uniqueId = 'rating-star-grad-0';
             var stopValue = 0;

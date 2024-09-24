@@ -67,7 +67,7 @@ var Switch = /** @class */ (function (_super) {
             delete this.props.style.maxHeight;
             convertStyle = __assign(__assign({}, this.props.style), convertStyle);
         }
-        return react_1.default.createElement("label", { className: "switch-container row ".concat((_e = this.props.className) !== null && _e !== void 0 ? _e : ''), style: convertStyle },
+        return react_1.default.createElement("label", { id: this.props.id, className: "switch-container row ".concat((_e = this.props.className) !== null && _e !== void 0 ? _e : ''), style: convertStyle },
             react_1.default.createElement("input", { type: "checkbox", checked: this.state.value, name: this.props.name, disabled: this.props.disabled, onChange: function () {
                     var newValue = !_this.state.value;
                     _this.setState({ value: newValue });

@@ -1,6 +1,7 @@
 import React, { CSSProperties } from 'react';
 import './switch.css';
 interface SwitchProps {
+    id?: string;
     onChange?: (value: boolean) => void;
     value?: boolean;
     disabled?: boolean;

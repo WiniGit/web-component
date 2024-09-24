@@ -43,7 +43,7 @@ var Text = /** @class */ (function (_super) {
         if (this.props.maxLine) {
             convertStyle = __assign(__assign({}, convertStyle), { '--max-line': this.props.maxLine });
         }
-        return react_1.default.createElement("div", { onMouseOver: this.props.onHover, onClick: this.props.onClick, className: "comp-text ".concat(this.props.onClick ? 'type-button' : '', " ").concat((_b = this.props.className) !== null && _b !== void 0 ? _b : ''), style: convertStyle }, this.props.children);
+        return react_1.default.createElement("div", { id: this.props.id, onMouseOver: this.props.onHover, onClick: this.props.onClick, className: "comp-text ".concat(this.props.onClick ? 'type-button' : '', " ").concat((_b = this.props.className) !== null && _b !== void 0 ? _b : ''), style: convertStyle }, this.props.children);
     };
     return Text;
 }(react_1.default.Component));
