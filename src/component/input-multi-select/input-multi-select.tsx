@@ -19,7 +19,8 @@ interface SelectMultipleProps {
     helperTextColor?: string,
     style?: CSSProperties,
     handleSearch?: (e: string) => Promise<Array<OptionsItem>>,
-    showClearValueButton?: boolean
+    showClearValueButton?: boolean,
+    popupClassName?: string
 }
 
 interface SelectMultipleState {
@@ -207,7 +208,7 @@ export class SelectMultiple extends React.Component<SelectMultipleProps, SelectM
             </button>}
             {this.state.isOpen &&
                 ReactDOM.createPortal(
-                    <div className='select-multi-popup col'
+                    <div className={`select-multi-popup col ${this.props.popupClassName??""}`}
                         style={this.state.style ?? {
                             top: this.state.offset.y + this.state.offset.height + 2 + 'px',
                             left: this.state.offset.x + 'px',

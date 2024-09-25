@@ -26,7 +26,8 @@ interface Select1Props {
     style?: CSSProperties,
     handleSearch?: (e: string) => Promise<Array<OptionsItem>>,
     showClearValueButton?: boolean,
-    readOnly?: boolean
+    readOnly?: boolean,
+    popupClassName?: string
 }
 
 interface Select1State {
@@ -230,7 +231,7 @@ export class Select1 extends React.Component<Select1Props, Select1State> {
             </button>}
             {this.state.isOpen &&
                 ReactDOM.createPortal(
-                    <div className='select1-popup col'
+                    <div className={`select1-popup col ${this.props.popupClassName ?? ""}`}
                         style={this.state.style ?? {
                             top: this.state.offset.y + this.state.offset.height + 2 + 'px',
                             left: this.state.offset.x + 'px',
