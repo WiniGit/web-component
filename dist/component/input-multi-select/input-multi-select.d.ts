@@ -14,6 +14,7 @@ interface SelectMultipleProps {
     style?: CSSProperties;
     handleSearch?: (e: string) => Promise<Array<OptionsItem>>;
     showClearValueButton?: boolean;
+    popupClassName?: string;
 }
 interface SelectMultipleState {
     value: Array<string | number>;

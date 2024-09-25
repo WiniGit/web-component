@@ -21,6 +21,7 @@ interface Select1Props {
     handleSearch?: (e: string) => Promise<Array<OptionsItem>>;
     showClearValueButton?: boolean;
     readOnly?: boolean;
+    popupClassName?: string;
 }
 interface Select1State {
     value?: string | number;
