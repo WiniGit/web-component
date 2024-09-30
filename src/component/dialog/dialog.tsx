@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import './dialog.css'
-import { ComponentStatus, getStatusIcon } from '../../index'
+import { ComponentStatus, getStatusIcon } from '../component-status'
 
 
 export enum DialogAlignment {
