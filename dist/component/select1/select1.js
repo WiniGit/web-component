@@ -233,21 +233,19 @@ var Select1 = /** @class */ (function (_super) {
     };
     Select1.prototype.componentDidUpdate = function (prevProps, prevState) {
         var _this = this;
-        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
+        var _a, _b, _c, _d, _e, _f, _g, _h;
         if (prevProps.options !== this.props.options) {
             this.setState(__assign(__assign({}, this.state), { options: this.props.options }));
             if (this.inputRef.current)
                 this.inputRef.current.value = "".concat((_b = (_a = this.props.options.find(function (e) { return e.id === _this.state.value; })) === null || _a === void 0 ? void 0 : _a.name) !== null && _b !== void 0 ? _b : "");
         }
-        if (prevProps.value !== this.props.value && this.inputRef.current) {
+        if (prevProps.value !== this.props.value)
             this.setState(__assign(__assign({}, this.state), { value: this.props.value }));
-            this.inputRef.current.value = "".concat((_d = (_c = this.state.options.find(function (e) { return e.id === _this.state.value; })) === null || _c === void 0 ? void 0 : _c.name) !== null && _d !== void 0 ? _d : "");
-        }
         if (prevState.value !== this.state.value && this.inputRef.current)
-            this.inputRef.current.value = "".concat((_f = (_e = this.state.options.find(function (e) { return e.id === _this.state.value; })) === null || _e === void 0 ? void 0 : _e.name) !== null && _f !== void 0 ? _f : "");
+            this.inputRef.current.value = "".concat((_d = (_c = this.state.options.find(function (e) { return e.id === _this.state.value; })) === null || _c === void 0 ? void 0 : _c.name) !== null && _d !== void 0 ? _d : "");
         //
         if (this.state.isOpen && prevState.isOpen !== this.state.isOpen) {
-            var thisPopupRect = (_g = document.body.querySelector('.select1-popup')) === null || _g === void 0 ? void 0 : _g.getBoundingClientRect();
+            var thisPopupRect = (_e = document.body.querySelector('.select1-popup')) === null || _e === void 0 ? void 0 : _e.getBoundingClientRect();
             if (thisPopupRect) {
                 var style = void 0;
                 if (thisPopupRect.right > document.body.offsetWidth) {
@@ -257,19 +255,25 @@ var Select1 = /** @class */ (function (_super) {
                     };
                 }
                 var _bottom = thisPopupRect.bottom - 8;
-                var thisContainerRect = (_h = this.containerRef.current) === null || _h === void 0 ? void 0 : _h.getBoundingClientRect();
+                var thisContainerRect = (_f = this.containerRef.current) === null || _f === void 0 ? void 0 : _f.getBoundingClientRect();
                 if (thisContainerRect) {
                     if (_bottom > document.body.offsetHeight) {
                         style = __assign(__assign({}, (style !== null && style !== void 0 ? style : {})), { top: "".concat(thisContainerRect.y - 2 - thisPopupRect.height, "px") });
                     }
                 }
                 if (style) {
-                    (_j = style.left) !== null && _j !== void 0 ? _j : (style.left = style.right ? undefined : "".concat(this.state.offset.x, "px"));
-                    (_k = style.width) !== null && _k !== void 0 ? _k : (style.width = "".concat(this.state.offset.width, "px"));
+                    (_g = style.left) !== null && _g !== void 0 ? _g : (style.left = style.right ? undefined : "".concat(this.state.offset.x, "px"));
+                    (_h = style.width) !== null && _h !== void 0 ? _h : (style.width = "".concat(this.state.offset.width, "px"));
                     this.setState(__assign(__assign({}, this.state), { style: style }));
                 }
             }
         }
+    };
+    Select1.prototype.componentDidMount = function () {
+        var _this = this;
+        var _a, _b;
+        if (this.inputRef.current)
+            this.inputRef.current.value = "".concat((_b = (_a = this.state.options.find(function (e) { return e.id === _this.state.value; })) === null || _a === void 0 ? void 0 : _a.name) !== null && _b !== void 0 ? _b : "");
     };
     Select1.prototype.render = function () {
         var _this = this;
