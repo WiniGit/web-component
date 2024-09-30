@@ -165,10 +165,7 @@ export class Select1 extends React.Component<Select1Props, Select1State> {
             this.setState({ ...this.state, options: this.props.options })
             if (this.inputRef.current) this.inputRef.current.value = `${this.props.options.find(e => e.id === this.state.value)?.name ?? ""}`
         }
-        if (prevProps.value !== this.props.value && this.inputRef.current) {
-            this.setState({ ...this.state, value: this.props.value })
-            this.inputRef.current.value = `${this.state.options.find(e => e.id === this.state.value)?.name ?? ""}`
-        }
+        if (prevProps.value !== this.props.value) this.setState({ ...this.state, value: this.props.value })
         if (prevState.value !== this.state.value && this.inputRef.current) this.inputRef.current.value = `${this.state.options.find(e => e.id === this.state.value)?.name ?? ""}`
         //
         if (this.state.isOpen && prevState.isOpen !== this.state.isOpen) {
@@ -195,6 +192,10 @@ export class Select1 extends React.Component<Select1Props, Select1State> {
                 }
             }
         }
+    }
+
+    componentDidMount(): void {
+        if (this.inputRef.current) this.inputRef.current.value = `${this.state.options.find(e => e.id === this.state.value)?.name ?? ""}`
     }
 
     render() {
