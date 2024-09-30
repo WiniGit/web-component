@@ -11,6 +11,12 @@
     overflow: hidden;
 }
 
+.col-rest {
+    width: auto !important;
+    min-width: auto !important;
+    flex: 1 !important;
+}
+
 .col {
     display: flex;
     flex-direction: column;
