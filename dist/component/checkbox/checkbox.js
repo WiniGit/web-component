@@ -79,5 +79,3 @@ var Checkbox = /** @class */ (function (_super) {
     return Checkbox;
 }(react_1.default.Component));
 exports.Checkbox = Checkbox;
-react_1.default.createElement("svg", { width: "20", height: "20", viewBox: "0 0 20 20", fill: "none", xmlns: "http://www.w3.org/2000/svg" },
-    react_1.default.createElement("rect", { width: "20", height: "20", rx: "4", fill: "#366AE2" }));

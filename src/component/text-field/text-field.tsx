@@ -1,4 +1,4 @@
-import React, { CSSProperties, ReactNode } from "react";
+import React, { createRef, CSSProperties, ReactNode } from "react";
 import './text-field.css'
 import { UseFormRegister } from "react-hook-form";
 
@@ -26,8 +26,15 @@ interface TextFieldProps {
 }
 
 export class TextField extends React.Component<TextFieldProps> {
+    private containerRef = createRef<HTMLDivElement>()
+
+    getInput = () => {
+        return this.containerRef.current?.querySelector("input")
+    }
+
     render(): React.ReactNode {
         return <div
+            ref={this.containerRef}
             id={this.props.id}
             className={`text-field-container row ${this.props.className ?? 'body-3'} ${this.props.helperText?.length && 'helper-text'}`}
             helper-text={this.props.helperText}

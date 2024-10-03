@@ -1,0 +1,23 @@
+.button-container {
+    padding: 0.5rem 1rem;
+    border-radius: 0.8rem;
+    gap: 0.8rem;
+    justify-content: center;
+    background-color: var(--primary-color);
+}
+
+.button-container > .button-label {
+    color: inherit;
+    font: inherit;
+    font-size: inherit;
+    font-family: inherit;
+    line-height: inherit;
+    font-weight: inherit;
+    text-align: inherit;
+    letter-spacing: inherit;
+}
+
+.button-container:disabled {
+    background-color: var(--disabled-background);
+    color: var(--disabled-font-color);
+}

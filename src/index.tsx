@@ -25,6 +25,7 @@ import { ProgressCircle } from './component/progress-circle/progress-circle'
 import { CustomSlider } from './component/slider/slider'
 import { ToastContainer } from 'react-toastify'
 import { CardInfo } from './component/card/card'
+import { Button } from './component/button/button'
 
 
 export {
@@ -52,5 +53,6 @@ export {
   ProgressCircle,
   CustomSlider,
   ToastContainer,
-  CardInfo
+  CardInfo,
+  Button
 }
