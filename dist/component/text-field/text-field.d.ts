@@ -24,6 +24,8 @@ interface TextFieldProps {
     register?: UseFormRegister<{}>;
 }
 export declare class TextField extends React.Component<TextFieldProps> {
+    private containerRef;
+    getInput: () => HTMLInputElement | null | undefined;
     render(): React.ReactNode;
 }
 export {};

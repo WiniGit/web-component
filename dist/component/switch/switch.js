@@ -31,7 +31,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Switch = void 0;
 var react_1 = __importDefault(require("react"));
-require("./switch.css");
+var switch_module_css_1 = __importDefault(require("./switch.module.css"));
 var Switch = /** @class */ (function (_super) {
     __extends(Switch, _super);
     function Switch() {
@@ -50,7 +50,7 @@ var Switch = /** @class */ (function (_super) {
     };
     Switch.prototype.render = function () {
         var _this = this;
-        var _a, _b, _c, _d, _e;
+        var _a, _b, _c, _d;
         var propStyle = {
             '--off-bg': (_a = this.props.offBackground) !== null && _a !== void 0 ? _a : 'var(--background)',
             '--on-bg': (_b = this.props.onBackground) !== null && _b !== void 0 ? _b : 'var(--infor-color)',
@@ -67,14 +67,14 @@ var Switch = /** @class */ (function (_super) {
             delete this.props.style.maxHeight;
             convertStyle = __assign(__assign({}, this.props.style), convertStyle);
         }
-        return react_1.default.createElement("label", { id: this.props.id, className: "switch-container row ".concat((_e = this.props.className) !== null && _e !== void 0 ? _e : ''), style: convertStyle },
+        return react_1.default.createElement("label", { id: this.props.id, className: "".concat(switch_module_css_1.default['switch-container'], " row"), style: convertStyle },
             react_1.default.createElement("input", { type: "checkbox", checked: this.state.value, name: this.props.name, disabled: this.props.disabled, onChange: function () {
                     var newValue = !_this.state.value;
                     _this.setState({ value: newValue });
                     if (_this.props.onChange)
                         _this.props.onChange(newValue);
                 } }),
-            react_1.default.createElement("span", { className: "slider" }));
+            react_1.default.createElement("span", { className: switch_module_css_1.default['slider'] }));
     };
     return Switch;
 }(react_1.default.Component));
