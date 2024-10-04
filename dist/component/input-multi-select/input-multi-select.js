@@ -266,7 +266,7 @@ var SelectMultiple = /** @class */ (function (_super) {
                 this.state.value.map(function (item) {
                     var optionItem = _this.props.options.find(function (e) { return e.id === item; });
                     return react_1.default.createElement("div", { key: item, className: 'selected-item-value row', onClick: function (ev) { return _this.onClickItem(ev, item); } },
-                        react_1.default.createElement(text_1.Text, null, optionItem === null || optionItem === void 0 ? void 0 : optionItem.name),
+                        react_1.default.createElement(text_1.Text, { style: { color: '#161D24E5', fontSize: '1.2rem', lineHeight: '1.4rem' } }, optionItem === null || optionItem === void 0 ? void 0 : optionItem.name),
                         react_1.default.createElement(react_fontawesome_1.FontAwesomeIcon, { icon: free_solid_svg_icons_1.faClose, style: { color: '#161D24E5', fontSize: '1.2rem' } }));
                 }),
                 (!this.state.value.length || this.state.isOpen) && react_1.default.createElement("input", { autoFocus: this.state.isOpen, onChange: this.search, placeholder: this.state.value.length ? undefined : this.props.placeholder, onBlur: function (ev) {
