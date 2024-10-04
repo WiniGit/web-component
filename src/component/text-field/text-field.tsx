@@ -8,6 +8,7 @@ interface TextFieldProps {
     maxLength?: number,
     defaultValue?: string,
     onChange?: React.ChangeEventHandler<HTMLInputElement>,
+    onComplete?: React.KeyboardEventHandler<HTMLInputElement>,
     onBlur?: React.FocusEventHandler<HTMLInputElement>,
     onFocus?: React.FocusEventHandler<HTMLInputElement>,
     placeholder?: string,
@@ -52,6 +53,19 @@ export class TextField extends React.Component<TextFieldProps> {
                     readOnly={this.props.readOnly}
                     disabled={this.props.disabled}
                     onFocus={this.props.onFocus}
+                    onKeyDown={this.props.onComplete ? (ev) => {
+                        if (this.props.onComplete) {
+                            ev.stopPropagation()
+                            ev.preventDefault()
+                            switch (ev.key.toLowerCase()) {
+                                case "enter":
+                                    this.props.onComplete(ev)
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    } : undefined}
                 /> : <input
                     autoFocus={this.props.autoFocus}
                     maxLength={this.props.maxLength}
@@ -65,6 +79,19 @@ export class TextField extends React.Component<TextFieldProps> {
                     onChange={this.props.onChange}
                     onFocus={this.props.onFocus}
                     onBlur={this.props.onBlur}
+                    onKeyDown={this.props.onComplete ? (ev) => {
+                        if (this.props.onComplete) {
+                            ev.stopPropagation()
+                            ev.preventDefault()
+                            switch (ev.key.toLowerCase()) {
+                                case "enter":
+                                    this.props.onComplete(ev)
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    } : undefined}
                 />}
             {this.props.suffix}
         </div>
