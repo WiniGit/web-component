@@ -55,8 +55,6 @@ export class TextField extends React.Component<TextFieldProps> {
                     onFocus={this.props.onFocus}
                     onKeyDown={this.props.onComplete ? (ev) => {
                         if (this.props.onComplete) {
-                            ev.stopPropagation()
-                            ev.preventDefault()
                             switch (ev.key.toLowerCase()) {
                                 case "enter":
                                     this.props.onComplete(ev)
@@ -81,8 +79,6 @@ export class TextField extends React.Component<TextFieldProps> {
                     onBlur={this.props.onBlur}
                     onKeyDown={this.props.onComplete ? (ev) => {
                         if (this.props.onComplete) {
-                            ev.stopPropagation()
-                            ev.preventDefault()
                             switch (ev.key.toLowerCase()) {
                                 case "enter":
                                     this.props.onComplete(ev)
