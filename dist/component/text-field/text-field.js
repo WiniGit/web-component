@@ -71,8 +71,6 @@ var TextField = /** @class */ (function (_super) {
             this.props.register ?
                 react_1.default.createElement("input", __assign({}, this.props.register, { autoFocus: this.props.autoFocus, maxLength: this.props.maxLength, name: this.props.name, type: (_e = this.props.type) !== null && _e !== void 0 ? _e : 'text', placeholder: this.props.placeholder, readOnly: this.props.readOnly, disabled: this.props.disabled, onFocus: this.props.onFocus, onKeyDown: this.props.onComplete ? function (ev) {
                         if (_this.props.onComplete) {
-                            ev.stopPropagation();
-                            ev.preventDefault();
                             switch (ev.key.toLowerCase()) {
                                 case "enter":
                                     _this.props.onComplete(ev);
@@ -83,8 +81,6 @@ var TextField = /** @class */ (function (_super) {
                         }
                     } : undefined })) : react_1.default.createElement("input", { autoFocus: this.props.autoFocus, maxLength: this.props.maxLength, name: this.props.name, type: (_f = this.props.type) !== null && _f !== void 0 ? _f : 'text', defaultValue: this.props.defaultValue, value: this.props.value, placeholder: this.props.placeholder, readOnly: this.props.readOnly, disabled: this.props.disabled, onChange: this.props.onChange, onFocus: this.props.onFocus, onBlur: this.props.onBlur, onKeyDown: this.props.onComplete ? function (ev) {
                     if (_this.props.onComplete) {
-                        ev.stopPropagation();
-                        ev.preventDefault();
                         switch (ev.key.toLowerCase()) {
                             case "enter":
                                 _this.props.onComplete(ev);
