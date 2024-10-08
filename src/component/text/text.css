@@ -1,10 +1,13 @@
 .comp-text {
-    display: -webkit-box;
+    display: inline-block;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: var(--max-line);
     overflow: hidden;
     text-overflow: ellipsis;
+    -webkit-box-pack: center;
     text-align: start;
+    vertical-align: middle;
+    display: -webkit-box;
 }
 
 .comp-text[class*="subtitle"] {

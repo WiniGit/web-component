@@ -11,9 +11,15 @@
     overflow: hidden;
 }
 
-.col-rest {
+.row>.remain {
     width: auto !important;
     min-width: auto !important;
+    flex: 1 !important;
+}
+
+.col>.remain {
+    height: auto !important;
+    min-height: auto !important;
     flex: 1 !important;
 }
 
@@ -105,7 +111,7 @@
         font-size: 6px !important;
     }
 
-    .row>.col-rest-min {
+    .row>.remain-min {
         width: auto !important;
         min-width: auto !important;
         flex: 1 !important;
@@ -196,7 +202,7 @@
         font-size: 6.8px !important;
     }
 
-    .row>.col-rest-sm {
+    .row>.remain-sm {
         width: auto !important;
         min-width: auto !important;
         flex: 1 !important;
@@ -286,7 +292,7 @@
         font-size: 7.6px !important;
     }
 
-    .row>.col-rest-md {
+    .row>.remain-md {
         width: auto !important;
         min-width: auto !important;
         flex: 1 !important;
@@ -377,7 +383,7 @@
         font-size: 8.4px !important;
     }
 
-    .row>.col-rest-lg {
+    .row>.remain-lg {
         width: auto !important;
         min-width: auto !important;
         flex: 1 !important;
@@ -468,7 +474,7 @@
         font-size: 8.8px !important;
     }
 
-    .row>.col-rest-xl {
+    .row>.remain-xl {
         width: auto !important;
         min-width: auto !important;
         flex: 1 !important;
@@ -559,7 +565,7 @@
         font-size: 10px !important;
     }
 
-    .row>.col-rest-xxl {
+    .row>.remain-xxl {
         width: auto !important;
         min-width: auto !important;
         flex: 1 !important;

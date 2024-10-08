@@ -1,5 +1,4 @@
 import React, { CSSProperties } from 'react';
-import './switch.css';
 interface SwitchProps {
     id?: string;
     onChange?: (value: boolean) => void;
@@ -11,7 +10,6 @@ interface SwitchProps {
     onBackground?: string;
     offBackground?: string;
     name?: string;
-    className?: string;
 }
 interface SwitchState {
     value?: boolean;

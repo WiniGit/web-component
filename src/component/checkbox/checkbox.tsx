@@ -1,5 +1,5 @@
 import React, { CSSProperties } from 'react';
-import './checkbox.css';
+import styles from './checkbox.module.css';
 
 interface CheckboxProps {
     id?: string,
@@ -45,7 +45,7 @@ export class Checkbox extends React.Component<CheckboxProps, CheckboxState> {
                 ...convertStyle
             }
         }
-        return <label id={this.props.id} className="checkbox-container row" style={convertStyle} is-null-value={`${this.state.value == undefined}`} onClick={this.props.onClick}>
+        return <label id={this.props.id} className={`${styles['checkbox-container']} row`} style={convertStyle} is-null-value={`${this.state.value == undefined}`} onClick={this.props.onClick}>
             <input type="checkbox" checked={this.state.value} disabled={this.props.disabled}
                 onChange={(ev) => {
                     ev.stopPropagation()
@@ -64,9 +64,6 @@ export class Checkbox extends React.Component<CheckboxProps, CheckboxState> {
         </label>
     }
 }
-<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <rect width="20" height="20" rx="4" fill="#366AE2" />
-</svg>
 
 
 

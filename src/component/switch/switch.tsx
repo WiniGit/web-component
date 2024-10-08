@@ -1,5 +1,5 @@
 import React, { CSSProperties } from 'react';
-import './switch.css';
+import styles from './switch.module.css';
 
 interface SwitchProps {
     id?: string,
@@ -12,7 +12,6 @@ interface SwitchProps {
     onBackground?: string,
     offBackground?: string,
     name?: string,
-    className?: string,
 }
 
 interface SwitchState {
@@ -54,7 +53,7 @@ export class Switch extends React.Component<SwitchProps, SwitchState> {
                 ...convertStyle,
             }
         }
-        return <label id={this.props.id} className={`switch-container row ${this.props.className ?? ''}`} style={convertStyle} >
+        return <label id={this.props.id} className={`${styles['switch-container']} row`} style={convertStyle} >
             <input type="checkbox" checked={this.state.value} name={this.props.name} disabled={this.props.disabled}
                 onChange={() => {
                     const newValue = !this.state.value
@@ -62,7 +61,7 @@ export class Switch extends React.Component<SwitchProps, SwitchState> {
                     if (this.props.onChange) this.props.onChange(newValue)
                 }}
             />
-            <span className="slider"></span>
+            <span className={styles['slider']}></span>
         </label>
     }
 }

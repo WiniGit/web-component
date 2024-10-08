@@ -189,7 +189,7 @@ export class SelectMultiple extends React.Component<SelectMultipleProps, SelectM
                 {this.state.value.map(item => {
                     const optionItem = this.props.options.find(e => e.id === item)
                     return <div key={item} className='selected-item-value row' onClick={(ev) => this.onClickItem(ev, item)}>
-                        <Text>{optionItem?.name}</Text>
+                        <Text style={{ color: '#161D24E5', fontSize: '1.2rem', lineHeight: '1.4rem' }} >{optionItem?.name}</Text>
                         <FontAwesomeIcon icon={faClose} style={{ color: '#161D24E5', fontSize: '1.2rem' }} />
                     </div>
                 })}
@@ -208,7 +208,7 @@ export class SelectMultiple extends React.Component<SelectMultipleProps, SelectM
             </button>}
             {this.state.isOpen &&
                 ReactDOM.createPortal(
-                    <div className={`select-multi-popup col ${this.props.popupClassName??""}`}
+                    <div className={`select-multi-popup col ${this.props.popupClassName ?? ""}`}
                         style={this.state.style ?? {
                             top: this.state.offset.y + this.state.offset.height + 2 + 'px',
                             left: this.state.offset.x + 'px',

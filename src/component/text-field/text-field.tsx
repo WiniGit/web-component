@@ -1,4 +1,4 @@
-import React, { CSSProperties, ReactNode } from "react";
+import React, { createRef, CSSProperties, ReactNode } from "react";
 import './text-field.css'
 import { UseFormRegister } from "react-hook-form";
 
@@ -8,6 +8,7 @@ interface TextFieldProps {
     maxLength?: number,
     defaultValue?: string,
     onChange?: React.ChangeEventHandler<HTMLInputElement>,
+    onComplete?: React.KeyboardEventHandler<HTMLInputElement>,
     onBlur?: React.FocusEventHandler<HTMLInputElement>,
     onFocus?: React.FocusEventHandler<HTMLInputElement>,
     placeholder?: string,
@@ -26,8 +27,15 @@ interface TextFieldProps {
 }
 
 export class TextField extends React.Component<TextFieldProps> {
+    private containerRef = createRef<HTMLDivElement>()
+
+    getInput = () => {
+        return this.containerRef.current?.querySelector("input")
+    }
+
     render(): React.ReactNode {
         return <div
+            ref={this.containerRef}
             id={this.props.id}
             className={`text-field-container row ${this.props.className ?? 'body-3'} ${this.props.helperText?.length && 'helper-text'}`}
             helper-text={this.props.helperText}
@@ -45,6 +53,17 @@ export class TextField extends React.Component<TextFieldProps> {
                     readOnly={this.props.readOnly}
                     disabled={this.props.disabled}
                     onFocus={this.props.onFocus}
+                    onKeyDown={this.props.onComplete ? (ev) => {
+                        if (this.props.onComplete) {
+                            switch (ev.key.toLowerCase()) {
+                                case "enter":
+                                    this.props.onComplete(ev)
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    } : undefined}
                 /> : <input
                     autoFocus={this.props.autoFocus}
                     maxLength={this.props.maxLength}
@@ -58,6 +77,17 @@ export class TextField extends React.Component<TextFieldProps> {
                     onChange={this.props.onChange}
                     onFocus={this.props.onFocus}
                     onBlur={this.props.onBlur}
+                    onKeyDown={this.props.onComplete ? (ev) => {
+                        if (this.props.onComplete) {
+                            switch (ev.key.toLowerCase()) {
+                                case "enter":
+                                    this.props.onComplete(ev)
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    } : undefined}
                 />}
             {this.props.suffix}
         </div>

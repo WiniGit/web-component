@@ -38,7 +38,6 @@
 
 .select-multi-container *:has(input),
 .select-multi-container *:has(.selected-item-value),
-.selected-item-value>.comp-text,
 .select-multi-container input {
     font: inherit;
     color: inherit;

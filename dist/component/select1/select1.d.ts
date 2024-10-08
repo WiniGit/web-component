@@ -42,6 +42,7 @@ export declare class Select1 extends React.Component<Select1Props, Select1State>
     private renderOptions;
     private onKeyDown;
     componentDidUpdate(prevProps: Select1Props, prevState: Select1State): void;
+    componentDidMount(): void;
     render(): React.JSX.Element;
 }
 export {};

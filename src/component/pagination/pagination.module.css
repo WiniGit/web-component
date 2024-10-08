@@ -1,0 +1,48 @@
+.custom-pagination {
+    width: 100%;
+    height: 100%;
+    justify-content: space-between;
+    gap: 1.6rem;
+}
+
+.custom-pagination>.row {
+    gap: 1.6rem;
+    height: 100%;
+}
+
+.items-per-page-container {
+    gap: 8px;
+    height: 100%;
+}
+
+.pagination {
+    gap: 0.8rem;
+}
+
+.pagination>li {
+    width: 2.4rem;
+    height: 2.4rem;
+    color: #161C2499;
+    justify-content: center;
+    border-radius: 0.4rem;
+    font-weight: 600;
+}
+
+.pagination>li * {
+    color: inherit;
+    font: inherit;
+    font-size: inherit;
+    font-family: inherit;
+    line-height: inherit;
+    font-weight: inherit;
+    text-align: inherit;
+    letter-spacing: inherit;
+}
+
+.pagination>li.active {
+    background-color: var(--infor-background);
+}
+
+.pagination>li.active {
+    color: var(--infor-color);
+}
