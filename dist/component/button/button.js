@@ -30,7 +30,9 @@ var Button = /** @class */ (function (_super) {
     Button.prototype.render = function () {
         var _a, _b;
         return react_1.default.createElement("button", { id: this.props.id, type: (_a = this.props.type) !== null && _a !== void 0 ? _a : "button", disabled: this.props.disabled, className: "".concat(button_module_css_1.default['button-container'], " row ").concat((_b = this.props.className) !== null && _b !== void 0 ? _b : "button-text-3"), style: this.props.style, onClick: this.props.onClick },
-            react_1.default.createElement(text_1.Text, { maxLine: 1, className: button_module_css_1.default['button-label'] }, this.props.label));
+            this.props.prefix,
+            react_1.default.createElement(text_1.Text, { maxLine: 1, className: button_module_css_1.default['button-label'] }, this.props.label),
+            this.props.suffix);
     };
     return Button;
 }(react_1.default.Component));
