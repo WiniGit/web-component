@@ -9,6 +9,10 @@
     --warning-background: #FFF3EB;
     --error-color: #E14337;
     --error-background: #FCEEED;
+    --neutral-text-color-title: #18181b;
+    --neutral-text-color-subtitle: #61616b;
+    --neutral-text-color-body: #313135;
+    --neutral-text-color-label: #313135;
     --background: #F2F5F8;
     --hover-background: #f1f1f1;
     --selected-background: #C0CBD83D;
