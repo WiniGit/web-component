@@ -4,7 +4,7 @@
     max-height: 100%;
     box-sizing: border-box;
     padding: 0.8rem 1.6rem;
-    border: 1px solid #00358033;
+    border: var(--neutral-border-color);
     border-radius: 0.8rem;
     gap: 0.8rem;
     position: relative;
