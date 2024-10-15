@@ -230,7 +230,7 @@ export class Select1 extends React.Component<Select1Props, Select1State> {
                 if (this.state.value) this.setState({ ...this.state, isOpen: true, value: undefined })
             }}>
                 <FontAwesomeIcon icon={faXmarkCircle} style={{ fontSize: '1.6rem', color: "var(--neutral-text-color-subtitle)" }} />
-            </button> : <div className='row' style={{ display: (this.containerRef.current && this.containerRef.current.getBoundingClientRect().width >= 120) ? "flex" : "none" }} >
+            </button> : <div className='row' style={{ display: (!this.containerRef.current || this.containerRef.current.getBoundingClientRect().width >= 120) ? "flex" : "none" }} >
                 <FontAwesomeIcon icon={this.state.isOpen ? faChevronUp : faChevronDown} style={{ fontSize: '1.1rem', color: "var(--neutral-text-color-subtitle)" }} />
             </div>}
             {this.state.isOpen &&
