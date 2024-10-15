@@ -218,15 +218,13 @@ export class Select1 extends React.Component<Select1Props, Select1State> {
                 }
             }}
         >
-            <div className='row' style={{ flexWrap: 'wrap', flex: 1, width: '100%', gap: '0.6rem 0.4rem' }}>
-                {(!_value || typeof _value.name === "string" || typeof _value.name === "number") ? <input ref={this.inputRef} readOnly={this.props.readOnly} onChange={this.search} placeholder={this.props.placeholder}
-                    onKeyDown={this.onKeyDown}
-                    onBlur={ev => {
-                        if (this.state.onSelect && !this.props.readOnly) ev.target.focus()
-                        else if (!this.state.onSelect) this.setState({ ...this.state, isOpen: false, onSelect: null })
-                    }}
-                /> : _value.name}
-            </div>
+            {(!_value || typeof _value.name === "string" || typeof _value.name === "number") ? <input ref={this.inputRef} readOnly={this.props.readOnly} onChange={this.search} placeholder={this.props.placeholder}
+                onKeyDown={this.onKeyDown}
+                onBlur={ev => {
+                    if (this.state.onSelect && !this.props.readOnly) ev.target.focus()
+                    else if (!this.state.onSelect) this.setState({ ...this.state, isOpen: false, onSelect: null })
+                }}
+            /> : _value.name}
             {this.props.showClearValueButton && _value ? <button type='button' className='row' style={{ padding: '0.4rem' }} onClick={(ev) => {
                 ev.stopPropagation()
                 if (this.state.value) this.setState({ ...this.state, isOpen: true, value: undefined })

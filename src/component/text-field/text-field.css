@@ -40,10 +40,6 @@ input::-webkit-inner-spin-button {
     text-overflow: inherit;
 }
 
-.text-field-container>input::placeholder {
-    opacity: 0.5;
-}
-
 .text-field-container.helper-text {
     overflow: visible !important;
     border-color: var(--helper-text-color) !important;
