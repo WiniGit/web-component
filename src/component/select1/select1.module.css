@@ -38,7 +38,6 @@
 .select1-container>input {
     flex: 1;
     width: 100%;
-    height: 100%;
     border: none;
     outline: none;
     padding: 0;
@@ -97,11 +96,11 @@
     background-color: var(--selected-background);
 }
 
-.select-multi-popup>.select-body .select-tile.disabled {
+.select1-popup>.select-body .select-tile.disabled {
     background-color: var(--disabled-background) !important;
 }
 
-.select-multi-popup>.select-body .select-tile.disabled * {
+.select1-popup>.select-body .select-tile.disabled * {
     color: var(--disabled-font-color) !important;
 }
 
