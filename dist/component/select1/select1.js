@@ -89,11 +89,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Select1 = void 0;
+var select1_module_css_1 = __importDefault(require("./select1.module.css"));
 var free_solid_svg_icons_1 = require("@fortawesome/free-solid-svg-icons");
 var react_fontawesome_1 = require("@fortawesome/react-fontawesome");
 var react_1 = __importStar(require("react"));
 var react_dom_1 = __importDefault(require("react-dom"));
-require("./select1.css");
 var text_1 = require("../text/text");
 ;
 var Select1 = /** @class */ (function (_super) {
@@ -207,7 +207,7 @@ var Select1 = /** @class */ (function (_super) {
             children = ((_a = this.state.search) !== null && _a !== void 0 ? _a : this.state.options).filter(function (e) { return e.parentId === item.id; });
         // 
         return react_1.default.createElement("div", { key: item.id, className: 'col', style: { width: '100%' } },
-            react_1.default.createElement("div", { className: "select-tile row ".concat(item.disabled ? "disabled" : ""), style: { paddingLeft: item.parentId ? '4.4rem' : undefined, backgroundColor: this.state.selected === item.id ? "var(--selected-background)" : undefined }, onClick: children.length ? function () {
+            react_1.default.createElement("div", { className: "".concat(select1_module_css_1.default['select-tile'], " row ").concat(item.disabled ? select1_module_css_1.default["disabled"] : ""), style: { paddingLeft: item.parentId ? '4.4rem' : undefined, backgroundColor: this.state.selected === item.id ? "var(--selected-background)" : undefined }, onClick: children.length ? function () {
                     if (_this.state.search) {
                         _this.setState(__assign(__assign({}, _this.state), { search: _this.state.search.map(function (e) {
                                 if (e.id === item.id)
@@ -245,7 +245,7 @@ var Select1 = /** @class */ (function (_super) {
             this.inputRef.current.value = "".concat((_d = (_c = this.state.options.find(function (e) { return e.id === _this.state.value; })) === null || _c === void 0 ? void 0 : _c.name) !== null && _d !== void 0 ? _d : "");
         //
         if (this.state.isOpen && prevState.isOpen !== this.state.isOpen) {
-            var thisPopupRect = (_e = document.body.querySelector('.select1-popup')) === null || _e === void 0 ? void 0 : _e.getBoundingClientRect();
+            var thisPopupRect = (_e = document.body.querySelector(':scope > .col[class*="select1-popup"]')) === null || _e === void 0 ? void 0 : _e.getBoundingClientRect();
             if (thisPopupRect) {
                 var style = void 0;
                 if (thisPopupRect.right > document.body.offsetWidth) {
@@ -279,7 +279,7 @@ var Select1 = /** @class */ (function (_super) {
         var _this = this;
         var _a, _b, _c, _d, _e, _f, _g, _h, _j;
         var _value = this.state.options.find(function (e) { return e.id === _this.state.value; });
-        return react_1.default.createElement("div", { id: this.props.id, ref: this.containerRef, className: "select1-container row ".concat(this.props.disabled ? 'disabled' : '', " ").concat(((_a = this.props.helperText) === null || _a === void 0 ? void 0 : _a.length) && 'helper-text', " ").concat((_b = this.props.className) !== null && _b !== void 0 ? _b : 'body-3'), "helper-text": this.props.helperText, style: this.props.style ? __assign(__assign({}, { '--helper-text-color': (_c = this.props.helperTextColor) !== null && _c !== void 0 ? _c : '#e14337' }), this.props.style) : { '--helper-text-color': (_d = this.props.helperTextColor) !== null && _d !== void 0 ? _d : '#e14337' }, onClick: function () {
+        return react_1.default.createElement("div", { id: this.props.id, ref: this.containerRef, className: "".concat(select1_module_css_1.default['select1-container'], " row ").concat(this.props.disabled ? select1_module_css_1.default['disabled'] : '', " ").concat(((_a = this.props.helperText) === null || _a === void 0 ? void 0 : _a.length) && select1_module_css_1.default['helper-text'], " ").concat((_b = this.props.className) !== null && _b !== void 0 ? _b : 'body-3'), "helper-text": this.props.helperText, style: this.props.style ? __assign(__assign({}, { '--helper-text-color': (_c = this.props.helperTextColor) !== null && _c !== void 0 ? _c : '#e14337' }), this.props.style) : { '--helper-text-color': (_d = this.props.helperTextColor) !== null && _d !== void 0 ? _d : '#e14337' }, onClick: function () {
                 var _a, _b, _c;
                 if (!_this.state.isOpen) {
                     _this.setState(__assign(__assign({}, _this.state), { isOpen: true, style: undefined, offset: (_b = (_a = _this.containerRef) === null || _a === void 0 ? void 0 : _a.current) === null || _b === void 0 ? void 0 : _b.getBoundingClientRect() }));
@@ -300,14 +300,14 @@ var Select1 = /** @class */ (function (_super) {
                 react_1.default.createElement(react_fontawesome_1.FontAwesomeIcon, { icon: free_solid_svg_icons_1.faXmarkCircle, style: { fontSize: '1.6rem', color: "var(--neutral-text-color-subtitle)" } })) : react_1.default.createElement("div", { className: 'row', style: { display: (!this.containerRef.current || this.containerRef.current.getBoundingClientRect().width >= 120) ? "flex" : "none" } },
                 react_1.default.createElement(react_fontawesome_1.FontAwesomeIcon, { icon: this.state.isOpen ? free_solid_svg_icons_1.faChevronUp : free_solid_svg_icons_1.faChevronDown, style: { fontSize: '1.1rem', color: "var(--neutral-text-color-subtitle)" } })),
             this.state.isOpen &&
-                react_dom_1.default.createPortal(react_1.default.createElement("div", { className: "select1-popup col ".concat((_e = this.props.popupClassName) !== null && _e !== void 0 ? _e : ""), style: (_f = this.state.style) !== null && _f !== void 0 ? _f : {
+                react_dom_1.default.createPortal(react_1.default.createElement("div", { className: "".concat(select1_module_css_1.default['select1-popup'], " col ").concat((_e = this.props.popupClassName) !== null && _e !== void 0 ? _e : ""), style: (_f = this.state.style) !== null && _f !== void 0 ? _f : {
                         top: this.state.offset.y + this.state.offset.height + 2 + 'px',
                         left: this.state.offset.x + 'px',
                         width: this.state.offset.width,
                     }, onMouseOver: function (ev) { return _this.setState(__assign(__assign({}, _this.state), { onSelect: ev.target })); }, onMouseOut: function () { return _this.setState(__assign(__assign({}, _this.state), { onSelect: null })); } },
-                    react_1.default.createElement("div", { className: 'col select-body' },
+                    react_1.default.createElement("div", { className: "col ".concat(select1_module_css_1.default['select-body']) },
                         ((_g = this.state.search) !== null && _g !== void 0 ? _g : this.state.options).filter(function (e) { return !e.parentId; }).map(function (item) { return _this.renderOptions(item); }),
-                        (((_h = this.state.search) === null || _h === void 0 ? void 0 : _h.length) === 0 || ((_j = this.props.options) === null || _j === void 0 ? void 0 : _j.length) === 0) && (react_1.default.createElement("div", { className: 'no-results-found' }, "No result found")))), document.body));
+                        (((_h = this.state.search) === null || _h === void 0 ? void 0 : _h.length) === 0 || ((_j = this.props.options) === null || _j === void 0 ? void 0 : _j.length) === 0) && (react_1.default.createElement("div", { className: select1_module_css_1.default['no-results-found'] }, "No result found")))), document.body));
     };
     return Select1;
 }(react_1.default.Component));
