@@ -13,10 +13,15 @@
     --neutral-text-color-subtitle: #61616b;
     --neutral-text-color-body: #313135;
     --neutral-text-color-label: #313135;
-    --neutral-border-color: 1px solid #d7d7db;
-    --background: #F2F5F8;
+    --neutral-border: 1px solid #d7d7db;
+    --neutral-background-main: #F2F5F8;
     --hover-background: #f1f1f1;
     --selected-background: #C0CBD83D;
     --disabled-background: #f5f7fa;
     --disabled-font-color: #9fb0c7b3;
+    --shadow-top: 0px -1px 6px 0px #2D32390F;
+    --shadow-bottom: 0px 1px 6px 0px #2D32390F;
+    --shadow-right: 1px 0px 6px 0px #2D32390F;
+    --shadow-left: -1px 0px 6px 0px #2D32390F;
+    --shadow-dropdown: 2px 0px 16px 0px #0000000A;
 }

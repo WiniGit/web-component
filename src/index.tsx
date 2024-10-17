@@ -1,4 +1,4 @@
-import './skin/color.css'
+import './skin/root.css'
 import './skin/layout.css'
 import './skin/typography.css'
 import { Checkbox } from './component/checkbox/checkbox'
