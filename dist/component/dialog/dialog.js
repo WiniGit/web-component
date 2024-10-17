@@ -32,7 +32,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Dialog = exports.showDialog = exports.DialogAlignment = void 0;
 var react_1 = __importDefault(require("react"));
 var react_dom_1 = __importDefault(require("react-dom"));
-require("./dialog.css");
+var dialog_module_css_1 = __importDefault(require("./dialog.module.css"));
 var index_1 = require("../../index");
 var DialogAlignment;
 (function (DialogAlignment) {
@@ -41,13 +41,14 @@ var DialogAlignment;
     DialogAlignment["end"] = "end";
 })(DialogAlignment = exports.DialogAlignment || (exports.DialogAlignment = {}));
 var showDialog = function (_a) {
-    var ref = _a.ref, title = _a.title, status = _a.status, content = _a.content, onSubmit = _a.onSubmit, submitTitle = _a.submitTitle, alignment = _a.alignment;
+    var ref = _a.ref, title = _a.title, status = _a.status, content = _a.content, onSubmit = _a.onSubmit, submitTitle = _a.submitTitle, cancelTitle = _a.cancelTitle, alignment = _a.alignment;
     ref.current.showDialogNoti({
         title: title !== null && title !== void 0 ? title : '',
         status: status !== null && status !== void 0 ? status : index_1.ComponentStatus.INFOR,
         content: content !== null && content !== void 0 ? content : '',
         onSubmit: onSubmit !== null && onSubmit !== void 0 ? onSubmit : (function () { }),
         submitTitle: submitTitle,
+        cancelTitle: cancelTitle,
         alignment: alignment
     });
 };
@@ -73,23 +74,20 @@ var Dialog = /** @class */ (function (_super) {
     };
     Dialog.prototype.render = function () {
         var _this = this;
-        var _a;
+        var _a, _b;
         return (react_1.default.createElement(react_1.default.Fragment, null, this.state.open &&
-            react_dom_1.default.createPortal(react_1.default.createElement("div", { className: 'dialog-overlay' },
-                react_1.default.createElement("div", { className: 'dialog-container col', style: { width: '41.4rem', alignItems: this.state.alignment }, "dialog-type": this.state.status, onClick: function (e) { return e.stopPropagation(); } },
-                    react_1.default.createElement("div", { key: 'dialog-body', className: 'dialog-body col', style: { alignItems: 'inherit' } },
-                        react_1.default.createElement("div", { className: 'dialog-status row' }, (0, index_1.getStatusIcon)(this.state.status)),
-                        react_1.default.createElement("div", { className: 'dialog-title', style: { textAlign: this.state.alignment === DialogAlignment.center ? 'center' : 'start' } }, this.state.title),
-                        react_1.default.createElement("div", { className: 'dialog-content', style: { textAlign: this.state.alignment === DialogAlignment.center ? 'center' : 'start' } }, this.state.content)),
-                    react_1.default.createElement("div", { key: 'dialog-footer', className: 'dialog-footer row' },
-                        react_1.default.createElement("button", { type: 'button', style: this.state.alignment === DialogAlignment.center ? { flex: 1, width: '100%' } : undefined, onClick: function () { return _this.setState({ open: false }); }, className: 'dialog-action' }, "Quay l\u1EA1i"),
+            react_dom_1.default.createPortal(react_1.default.createElement("div", { className: dialog_module_css_1.default['dialog-overlay'] },
+                react_1.default.createElement("div", { className: "".concat(dialog_module_css_1.default['dialog-container'], " col"), style: { width: '41.4rem', alignItems: this.state.alignment }, "dialog-type": this.state.status, onClick: function (e) { return e.stopPropagation(); } },
+                    react_1.default.createElement("div", { key: 'dialog-body', className: "".concat(dialog_module_css_1.default['dialog-body'], " col"), style: { alignItems: 'inherit' } },
+                        react_1.default.createElement("div", { className: "".concat(dialog_module_css_1.default['dialog-status'], " row") }, (0, index_1.getStatusIcon)(this.state.status)),
+                        react_1.default.createElement("div", { className: dialog_module_css_1.default['dialog-title'], style: { textAlign: this.state.alignment === DialogAlignment.center ? 'center' : 'start' } }, this.state.title),
+                        react_1.default.createElement("div", { className: dialog_module_css_1.default['dialog-content'], style: { textAlign: this.state.alignment === DialogAlignment.center ? 'center' : 'start' } }, this.state.content)),
+                    react_1.default.createElement("div", { key: 'dialog-footer', className: "".concat(dialog_module_css_1.default['dialog-footer'], " row") },
+                        react_1.default.createElement("button", { type: 'button', style: this.state.alignment === DialogAlignment.center ? { flex: 1, width: '100%' } : undefined, onClick: function () { return _this.setState({ open: false }); }, className: dialog_module_css_1.default['dialog-action'] }, (_a = this.state.cancelTitle) !== null && _a !== void 0 ? _a : "Quay lại"),
                         react_1.default.createElement("button", { type: 'button', style: this.state.alignment === DialogAlignment.center ? { flex: 1, width: '100%' } : undefined, onClick: function () {
                                 _this.state.onSubmit();
                                 _this.setState({ open: false });
-                            }, className: 'dialog-action dialog-submit' }, (_a = this.state.submitTitle) !== null && _a !== void 0 ? _a : 'Xác nhận')),
-                    react_1.default.createElement("button", { type: 'button', onClick: function () { return _this.setState({ open: false }); }, className: 'dialog-close-btn row' },
-                        react_1.default.createElement("svg", { width: '100%', height: '100%', viewBox: '0 0 20 20', fill: 'none', xmlns: 'http://www.w3.org/2000/svg', style: { width: '2rem', height: '2rem' } },
-                            react_1.default.createElement("path", { fillRule: 'evenodd', clipRule: 'evenodd', d: 'M16.4223 4.7559C16.7477 4.43047 16.7477 3.90283 16.4223 3.57739C16.0968 3.25195 15.5692 3.25195 15.2438 3.57739L9.99967 8.82147L4.7556 3.57739C4.43016 3.25195 3.90252 3.25195 3.57709 3.57739C3.25165 3.90283 3.25165 4.43047 3.57709 4.7559L8.82116 9.99998L3.57709 15.2441C3.25165 15.5695 3.25165 16.0971 3.57709 16.4226C3.90252 16.748 4.43016 16.748 4.7556 16.4226L9.99967 11.1785L15.2438 16.4226C15.5692 16.748 16.0968 16.748 16.4223 16.4226C16.7477 16.0971 16.7477 15.5695 16.4223 15.2441L11.1782 9.99998L16.4223 4.7559Z', fill: '#00204D', fillOpacity: 0.6 }))))), document.body)));
+                            }, className: "".concat(dialog_module_css_1.default['dialog-action'], " ").concat(dialog_module_css_1.default['dialog-submit']) }, (_b = this.state.submitTitle) !== null && _b !== void 0 ? _b : 'Xác nhận')))), document.body)));
     };
     return Dialog;
 }(react_1.default.Component));
