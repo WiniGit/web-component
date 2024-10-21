@@ -1,10 +1,5 @@
 import React, { CSSProperties, useEffect, useRef } from "react";
 import ReactPaginate from "react-paginate";
-<<<<<<< HEAD
-import './pagination.css';
-import { Text } from "../text/text";
-import { Select1 } from "../select1/select1";
-=======
 import styles from './pagination.module.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
@@ -14,7 +9,6 @@ import { TextField } from "../text-field/text-field";
 
 export function Pagination({ id, currentPage, itemPerPage, totalItem, onChangePage, hidePageSize = false, hideGoToPage = false, style }: { id?: string, currentPage: number, itemPerPage: number, totalItem: number, onChangePage: Function, hideGoToPage?: boolean, hidePageSize?: boolean, style: CSSProperties }) {
     const goToPageRef = useRef<TextField>()
->>>>>>> main
 
     if (currentPage > 1 && (totalItem === 0 || (Math.floor(totalItem / itemPerPage) + (totalItem % itemPerPage === 0 ? 0 : 1)) < currentPage)) {
         onChangePage(1, itemPerPage);

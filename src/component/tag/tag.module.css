@@ -6,6 +6,10 @@
     justify-content: center;
 }
 
+.tag-container.type-button {
+    cursor: pointer;
+}
+
 /* 
 INFOR = 1
 ERROR = 2
@@ -16,29 +20,29 @@ SUCCSESS = 4
 .tag-container[tag-type="1"] {
     color: var(--infor-color);
     background-color: var(--infor-background);
-    border: solid var(--infor-color) 1px;
+    border: 1px solid var(--infor-color);
 }
 
-.tag-container[tag-type="2"]{
+.tag-container[tag-type="2"] {
     color: var(--error-color);
     background-color: var(--error-background);
-    border: solid var(--error-color) 1px;
+    border: 1px solid var(--error-color);
 
 }
 
-.tag-container[tag-type="3"]{
+.tag-container[tag-type="3"] {
     color: var(--warning-color);
     background-color: var(--warning-background);
-    border: solid var(--warning-color) 1px;
+    border: 1px solid var(--warning-color);
 }
 
 .tag-container[tag-type="4"] {
     color: var(--success-color);
     background-color: var(--success-background);
-    border: solid var(--success-color) 1px;
+    border: 1px solid var(--success-color);
 }
 
-.tag-container > .tag-label {
+.tag-container>.tag-label {
     color: inherit;
     font: inherit;
     font-size: inherit;
@@ -52,7 +56,6 @@ SUCCSESS = 4
 .tag-container.disabled {
     color: var(--disabled-font-color);
     background-color: var(--disabled-background) !important;
-    border: solid var(--disabled-color) 0.05px !important;
+    border: 0.05px solid var(--disabled-color) !important;
     pointer-events: none !important;
 }
-

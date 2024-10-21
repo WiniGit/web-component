@@ -5,7 +5,7 @@ import { ComponentStatus } from '../component-status';
 
 interface TagProps {
     id?: string,
-    label: string,
+    title: string,
     prefix?: ReactNode,
     suffix?: ReactNode,
     disabled?: boolean,
@@ -18,9 +18,9 @@ interface TagProps {
 export class Tag extends React.Component<TagProps> {
 
     render() {
-        return <div id={this.props.id} tag-type={this.state ?? ComponentStatus.INFOR} className={`${styles['tag-container']} row ${this.props.disabled ? styles['disabled'] : ""} ${this.props.className ?? "button-text-2"} `} style={this.props.style} onClick={this.props.onClick}>
+        return <div id={this.props.id} tag-type={this.state ?? ComponentStatus.INFOR} className={`${styles['tag-container']} row ${this.props.onClick ? styles['type-button'] : ''} ${this.props.disabled ? styles['disabled'] : ""} ${this.props.className ?? "button-text-2"} `} style={this.props.style} onClick={this.props.onClick}>
             {this.props.prefix}
-            <Text maxLine={1} className={styles['tag-label']}>{this.props.label}</Text>
+            <Text maxLine={1} className={styles['tag-label']}>{this.props.title}</Text>
             {this.props.suffix}
         </div>
     }
