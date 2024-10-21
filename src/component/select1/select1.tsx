@@ -202,7 +202,6 @@ export class Select1 extends React.Component<Select1Props, Select1State> {
         const _value = this.state.options.find(e => e.id === this.state.value)
         return <div
             id={this.props.id}
-            ref={this.containerRef}
             className={`${styles['select1-container']} row ${this.props.disabled ? styles['disabled'] : ''} ${this.props.helperText?.length && styles['helper-text']} ${this.props.className ?? 'body-3'}`}
             helper-text={this.props.helperText}
             style={this.props.style ? { ...({ '--helper-text-color': this.props.helperTextColor ?? '#e14337' } as CSSProperties), ...this.props.style } : ({ '--helper-text-color': this.props.helperTextColor ?? '#e14337' } as CSSProperties)}
@@ -230,7 +229,9 @@ export class Select1 extends React.Component<Select1Props, Select1State> {
                 if (this.state.value) this.setState({ ...this.state, isOpen: true, value: undefined })
             }}>
                 <FontAwesomeIcon icon={faXmarkCircle} style={{ fontSize: '1.6rem', color: "var(--neutral-text-color-subtitle)" }} />
-            </button> : <div className='row' style={{ display: (!this.containerRef.current || this.containerRef.current.getBoundingClientRect().width >= 120) ? "flex" : "none" }} >
+            </button> : <div ref={iconRef => {
+                if (iconRef?.parentElement && iconRef.parentElement.getBoundingClientRect().width < 120) iconRef.style.display = "none"
+            }} className='row' >
                 <FontAwesomeIcon icon={this.state.isOpen ? faChevronUp : faChevronDown} style={{ fontSize: '1.1rem', color: "var(--neutral-text-color-subtitle)" }} />
             </div>}
             {this.state.isOpen &&
