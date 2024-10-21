@@ -1,5 +1,4 @@
 import React, { CSSProperties } from 'react';
-import './radio-button.css';
 import { UseFormRegister } from 'react-hook-form';
 interface RadioButtonProps {
     id?: string;

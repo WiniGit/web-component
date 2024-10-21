@@ -1,5 +1,5 @@
 import React, { CSSProperties } from 'react';
-import './radio-button.css';
+import styles from './radio-button.module.css';
 import { UseFormRegister } from 'react-hook-form';
 
 interface RadioButtonProps {
@@ -38,7 +38,7 @@ export class RadioButton extends React.Component<RadioButtonProps> {
             }
         }
 
-        return <label id={this.props.id} className={`radio-btn-container row ${this.props.className ?? ''}`} style={convertStyle} >
+        return <label id={this.props.id} className={`row ${styles['radio-btn-container']} ${this.props.className ?? ''}`} style={convertStyle} >
             {this.props.register ?
                 <input
                     {...this.props.register}
@@ -54,7 +54,7 @@ export class RadioButton extends React.Component<RadioButtonProps> {
                     onChange={this.props.onChange}
                 />
             }
-            <span className="checkmark"></span>
+            <span className={styles['checkmark']}></span>
         </label>
     }
 }

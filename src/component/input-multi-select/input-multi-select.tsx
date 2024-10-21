@@ -1,4 +1,4 @@
-import { faCaretDown, faCaretRight, faClose, faXmarkCircle } from '@fortawesome/free-solid-svg-icons'
+import { faCaretDown, faCaretRight, faChevronDown, faChevronUp, faClose, faXmarkCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { createRef, CSSProperties } from 'react'
 import ReactDOM from 'react-dom'
@@ -200,12 +200,14 @@ export class SelectMultiple extends React.Component<SelectMultipleProps, SelectM
                     }}
                 />}
             </div>
-            {this.props.showClearValueButton && <button type='button' className='row' style={{ padding: '0.4rem' }} onClick={(ev) => {
+            {this.props.showClearValueButton && this.state.value.length ? <button type='button' className='row' style={{ padding: '0.4rem' }} onClick={(ev) => {
                 ev.stopPropagation()
                 if (this.state.value.length) this.setState({ ...this.state, isOpen: true, value: [] })
             }}>
-                <FontAwesomeIcon icon={faXmarkCircle} style={{ fontSize: '1.6rem', color: '#161C24' }} />
-            </button>}
+                <FontAwesomeIcon icon={faXmarkCircle} style={{ fontSize: '1.6rem', color: "var(--neutral-text-color-subtitle)" }} />
+            </button> : <div className='row' style={{ display: (this.containerRef.current && this.containerRef.current.getBoundingClientRect().width >= 120) ? "flex" : "none" }} >
+                <FontAwesomeIcon icon={this.state.isOpen ? faChevronUp : faChevronDown} style={{ fontSize: '1.1rem', color: "var(--neutral-text-color-subtitle)" }} />
+            </div>}
             {this.state.isOpen &&
                 ReactDOM.createPortal(
                     <div className={`select-multi-popup col ${this.props.popupClassName ?? ""}`}

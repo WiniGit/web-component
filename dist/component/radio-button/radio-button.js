@@ -31,7 +31,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RadioButton = void 0;
 var react_1 = __importDefault(require("react"));
-require("./radio-button.css");
+var radio_button_module_css_1 = __importDefault(require("./radio-button.module.css"));
 var RadioButton = /** @class */ (function (_super) {
     __extends(RadioButton, _super);
     function RadioButton() {
@@ -53,11 +53,11 @@ var RadioButton = /** @class */ (function (_super) {
             delete this.props.style.maxHeight;
             convertStyle = __assign(__assign({}, this.props.style), convertStyle);
         }
-        return react_1.default.createElement("label", { id: this.props.id, className: "radio-btn-container row ".concat((_c = this.props.className) !== null && _c !== void 0 ? _c : ''), style: convertStyle },
+        return react_1.default.createElement("label", { id: this.props.id, className: "row ".concat(radio_button_module_css_1.default['radio-btn-container'], " ").concat((_c = this.props.className) !== null && _c !== void 0 ? _c : ''), style: convertStyle },
             this.props.register ?
                 react_1.default.createElement("input", __assign({}, this.props.register, { type: "radio", value: this.props.value, disabled: this.props.disabled })) :
                 react_1.default.createElement("input", { type: "radio", name: this.props.name, value: this.props.value, defaultChecked: this.props.defaultChecked, disabled: this.props.disabled, onChange: this.props.onChange }),
-            react_1.default.createElement("span", { className: "checkmark" }));
+            react_1.default.createElement("span", { className: radio_button_module_css_1.default['checkmark'] }));
     };
     return RadioButton;
 }(react_1.default.Component));

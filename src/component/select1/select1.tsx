@@ -1,8 +1,8 @@
-import { faCaretDown, faCaretRight, faXmarkCircle } from '@fortawesome/free-solid-svg-icons'
+import styles from './select1.module.css'
+import { faCaretDown, faCaretRight, faChevronDown, faChevronUp, faXmarkCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { createRef, CSSProperties, ReactNode } from 'react'
 import ReactDOM from 'react-dom'
-import './select1.css'
 import { Text } from '../text/text'
 
 export interface OptionsItem {
@@ -101,7 +101,7 @@ export class Select1 extends React.Component<Select1Props, Select1State> {
         if (!item.parentId) children = (this.state.search ?? this.state.options).filter(e => e.parentId === item.id)
         // 
         return <div key={item.id} className='col' style={{ width: '100%' }}>
-            <div className={`select-tile row ${item.disabled ? "disabled" : ""}`} style={{ paddingLeft: item.parentId ? '4.4rem' : undefined, backgroundColor: this.state.selected === item.id ? "var(--selected-background)" : undefined }} onClick={children.length ? () => {
+            <div className={`${styles['select-tile']} row ${item.disabled ? styles["disabled"] : ""}`} style={{ paddingLeft: item.parentId ? '4.4rem' : undefined, backgroundColor: this.state.selected === item.id ? "var(--selected-background)" : undefined }} onClick={children.length ? () => {
                 if (this.state.search) {
                     this.setState({
                         ...this.state, search: this.state.search.map(e => {
@@ -169,7 +169,7 @@ export class Select1 extends React.Component<Select1Props, Select1State> {
         if (prevState.value !== this.state.value && this.inputRef.current) this.inputRef.current.value = `${this.state.options.find(e => e.id === this.state.value)?.name ?? ""}`
         //
         if (this.state.isOpen && prevState.isOpen !== this.state.isOpen) {
-            const thisPopupRect = document.body.querySelector('.select1-popup')?.getBoundingClientRect()
+            const thisPopupRect = document.body.querySelector(':scope > .col[class*="select1-popup"]')?.getBoundingClientRect()
             if (thisPopupRect) {
                 let style: { top?: string, left?: string, right?: string, bottom?: string, width?: string, height?: string } | undefined;
                 if (thisPopupRect.right > document.body.offsetWidth) {
@@ -203,7 +203,7 @@ export class Select1 extends React.Component<Select1Props, Select1State> {
         return <div
             id={this.props.id}
             ref={this.containerRef}
-            className={`select1-container row ${this.props.disabled ? 'disabled' : ''} ${this.props.helperText?.length && 'helper-text'} ${this.props.className ?? 'body-3'}`}
+            className={`${styles['select1-container']} row ${this.props.disabled ? styles['disabled'] : ''} ${this.props.helperText?.length && styles['helper-text']} ${this.props.className ?? 'body-3'}`}
             helper-text={this.props.helperText}
             style={this.props.style ? { ...({ '--helper-text-color': this.props.helperTextColor ?? '#e14337' } as CSSProperties), ...this.props.style } : ({ '--helper-text-color': this.props.helperTextColor ?? '#e14337' } as CSSProperties)}
             onClick={() => {
@@ -218,24 +218,24 @@ export class Select1 extends React.Component<Select1Props, Select1State> {
                 }
             }}
         >
-            <div className='row' style={{ flexWrap: 'wrap', flex: 1, width: '100%', gap: '0.6rem 0.4rem' }}>
-                {(!_value || typeof _value.name === "string" || typeof _value.name === "number") ? <input ref={this.inputRef} readOnly={this.props.readOnly} onChange={this.search} placeholder={this.props.placeholder}
-                    onKeyDown={this.onKeyDown}
-                    onBlur={ev => {
-                        if (this.state.onSelect && !this.props.readOnly) ev.target.focus()
-                        else if (!this.state.onSelect) this.setState({ ...this.state, isOpen: false, onSelect: null })
-                    }}
-                /> : _value.name}
-            </div>
-            {this.props.showClearValueButton && <button type='button' className='row' style={{ padding: '0.4rem' }} onClick={(ev) => {
+            {(!_value || typeof _value.name === "string" || typeof _value.name === "number") ? <input ref={this.inputRef} readOnly={this.props.readOnly} onChange={this.search} placeholder={this.props.placeholder}
+                onKeyDown={this.onKeyDown}
+                onBlur={ev => {
+                    if (this.state.onSelect && !this.props.readOnly) ev.target.focus()
+                    else if (!this.state.onSelect) this.setState({ ...this.state, isOpen: false, onSelect: null })
+                }}
+            /> : _value.name}
+            {this.props.showClearValueButton && _value ? <button type='button' className='row' style={{ padding: '0.4rem' }} onClick={(ev) => {
                 ev.stopPropagation()
                 if (this.state.value) this.setState({ ...this.state, isOpen: true, value: undefined })
             }}>
-                <FontAwesomeIcon icon={faXmarkCircle} style={{ fontSize: '1.6rem', color: '#161C24' }} />
-            </button>}
+                <FontAwesomeIcon icon={faXmarkCircle} style={{ fontSize: '1.6rem', color: "var(--neutral-text-color-subtitle)" }} />
+            </button> : <div className='row' style={{ display: (!this.containerRef.current || this.containerRef.current.getBoundingClientRect().width >= 120) ? "flex" : "none" }} >
+                <FontAwesomeIcon icon={this.state.isOpen ? faChevronUp : faChevronDown} style={{ fontSize: '1.1rem', color: "var(--neutral-text-color-subtitle)" }} />
+            </div>}
             {this.state.isOpen &&
                 ReactDOM.createPortal(
-                    <div className={`select1-popup col ${this.props.popupClassName ?? ""}`}
+                    <div className={`${styles['select1-popup']} col ${this.props.popupClassName ?? ""}`}
                         style={this.state.style ?? {
                             top: this.state.offset.y + this.state.offset.height + 2 + 'px',
                             left: this.state.offset.x + 'px',
@@ -244,10 +244,10 @@ export class Select1 extends React.Component<Select1Props, Select1State> {
                         onMouseOver={ev => this.setState({ ...this.state, onSelect: ev.target })}
                         onMouseOut={() => this.setState({ ...this.state, onSelect: null })}
                     >
-                        <div className='col select-body'>
+                        <div className={`col ${styles['select-body']}`}>
                             {(this.state.search ?? this.state.options).filter(e => !e.parentId).map(item => this.renderOptions(item))}
                             {(this.state.search?.length === 0 || this.props.options?.length === 0) && (
-                                <div className='no-results-found'>No result found</div>
+                                <div className={styles['no-results-found']}>No result found</div>
                             )}
                         </div>
                     </div>,

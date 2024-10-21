@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons'
 import { ComponentStatus, getStatusIcon } from '../../index'
 
-export function ProgressBar({id, status = ComponentStatus.INFOR, percent = 100, titleText, title, hideTitle = false, progressBarOnly = false, fullColor = 'var(--background)', percentColor = 'var(--infor-color)', style, progressBarStyle }: {
+export function ProgressBar({id, status = ComponentStatus.INFOR, percent = 100, titleText, title, hideTitle = false, progressBarOnly = false, fullColor = 'var(--neutral-background-main)', percentColor = 'var(--infor-color)', style, progressBarStyle }: {
     id?: string,
     percent: number,
     titleText?: string,

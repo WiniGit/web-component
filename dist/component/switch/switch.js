@@ -52,7 +52,7 @@ var Switch = /** @class */ (function (_super) {
         var _this = this;
         var _a, _b, _c, _d;
         var propStyle = {
-            '--off-bg': (_a = this.props.offBackground) !== null && _a !== void 0 ? _a : 'var(--background)',
+            '--off-bg': (_a = this.props.offBackground) !== null && _a !== void 0 ? _a : 'var(--neutral-background-main)',
             '--on-bg': (_b = this.props.onBackground) !== null && _b !== void 0 ? _b : 'var(--infor-color)',
             '--dot-color': (_c = this.props.dotColor) !== null && _c !== void 0 ? _c : '#ffffff',
             '--size': this.props.size ? (typeof this.props.size === 'number') ? "".concat(this.props.size, "px") : this.props.size : '2rem'

@@ -31,7 +31,7 @@ export class Switch extends React.Component<SwitchProps, SwitchState> {
 
     render() {
         const propStyle = {
-            '--off-bg': this.props.offBackground ?? 'var(--background)',
+            '--off-bg': this.props.offBackground ?? 'var(--neutral-background-main)',
             '--on-bg': this.props.onBackground ?? 'var(--infor-color)',
             '--dot-color': this.props.dotColor ?? '#ffffff',
             '--size': this.props.size ? (typeof this.props.size === 'number') ? `${this.props.size}px` : this.props.size : '2rem'
