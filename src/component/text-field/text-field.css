@@ -2,9 +2,15 @@
     position: relative;
     box-sizing: border-box;
     padding: 0.8rem 1.6rem;
-    border: 1px solid #00358033;
+    border: var(--neutral-border);
     border-radius: 0.8rem;
     gap: 0.8rem;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 .text-field-container:has(> input:disabled) {
@@ -19,7 +25,6 @@
 .text-field-container>input {
     flex: 1;
     width: 100%;
-    height: 100%;
     border: none;
     outline: none;
     padding: 0;
@@ -32,10 +37,6 @@
     line-height: inherit;
     text-align: inherit;
     text-overflow: inherit;
-}
-
-.text-field-container>input::placeholder {
-    opacity: 0.5;
 }
 
 .text-field-container.helper-text {

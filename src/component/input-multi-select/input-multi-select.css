@@ -4,7 +4,7 @@
     max-height: 100%;
     box-sizing: border-box;
     padding: 0.8rem 1.6rem;
-    border: 1px solid #00358033;
+    border: var(--neutral-border);
     border-radius: 0.8rem;
     gap: 0.8rem;
     position: relative;
@@ -38,7 +38,6 @@
 
 .select-multi-container *:has(input),
 .select-multi-container *:has(.selected-item-value),
-.selected-item-value>.comp-text,
 .select-multi-container input {
     font: inherit;
     color: inherit;

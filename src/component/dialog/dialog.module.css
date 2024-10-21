@@ -109,17 +109,3 @@ SUCCSESS = 4
 .dialog-container[dialog-type="4"] .dialog-footer>.dialog-submit {
     background-color: #39AC6D;
 }
-
-.dialog-container>.dialog-close-btn {
-    position: absolute;
-    right: 0;
-    top: 0;
-    transform: translate(50%, -50%);
-    width: 3.2rem;
-    height: 3.2rem;
-    border-radius: 50%;
-    align-items: center;
-    justify-content: center;
-    background-color: #FFFFFF;
-    box-shadow: 0px 1px 6px 0px #2D32390F;
-}

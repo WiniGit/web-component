@@ -1,66 +1,85 @@
-import React, { CSSProperties } from "react";
+import React, { CSSProperties, useEffect, useRef } from "react";
 import ReactPaginate from "react-paginate";
+<<<<<<< HEAD
 import './pagination.css';
 import { Text } from "../text/text";
 import { Select1 } from "../select1/select1";
+=======
+import styles from './pagination.module.css';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import { Select1 } from "../select1/select1";
+import { Text } from "../text/text";
+import { TextField } from "../text-field/text-field";
 
-export function Pagination({ currentPage, itemPerPage, totalItem, onChangePage, hiddenPageSize = false, hiddenTotal = false, style }: { currentPage: number, itemPerPage: number, totalItem: number, onChangePage: Function, hiddenPageSize: boolean, hiddenTotal: boolean, style: CSSProperties }) {
+export function Pagination({ id, currentPage, itemPerPage, totalItem, onChangePage, hidePageSize = false, hideGoToPage = false, style }: { id?: string, currentPage: number, itemPerPage: number, totalItem: number, onChangePage: Function, hideGoToPage?: boolean, hidePageSize?: boolean, style: CSSProperties }) {
+    const goToPageRef = useRef<TextField>()
+>>>>>>> main
+
     if (currentPage > 1 && (totalItem === 0 || (Math.floor(totalItem / itemPerPage) + (totalItem % itemPerPage === 0 ? 0 : 1)) < currentPage)) {
         onChangePage(1, itemPerPage);
         return <div></div>;
     }
-    if (totalItem > 0) {
-        return (
-            <div className="row custom-pagination" style={style}>
-                {hiddenTotal ? null : <Text className="regular2">
-                    Hiển thị {itemPerPage * (currentPage - 1) + 1}-{((itemPerPage * (currentPage - 1) + itemPerPage) > totalItem) ? totalItem : (itemPerPage * (currentPage - 1) + itemPerPage)} trong tổng số {totalItem} bản ghi
-                </Text>}
-                <div className="row ">
-                    {hiddenPageSize ? null : <div className="row items-per-page-container" >
-                        <Text className="regular2">Items/page</Text>
-                        <div className="row">
-                            <Select1
-                                readOnly
-                                style={{ width: '8.6rem' }}
-                                placeholder={itemPerPage.toString()}
-                                options={[10, 20, 50, 100, 200].map((item, _) => { return { id: item, name: item } })}
-                                onChange={(ev: any) => {
-                                    onChangePage(currentPage, isNaN(parseInt(ev.id)) ? itemPerPage : parseInt(ev.id));
-                                }}
-                            />
-                        </div>
-                    </div>}
-                    <ReactPaginate
-                        breakLabel="..."
-                        nextLabel="Next"
-                        onPageChange={(ev) => {
-                            onChangePage(ev.selected + 1, itemPerPage);
-                        }}
-                        forcePage={currentPage - 1}
-                        // initialPage={currentPage - 1}
-                        pageCount={Math.ceil(totalItem / itemPerPage)}
-                        previousLabel="Previous"
-                        containerClassName="pagination row"
-                        pageClassName=""
-                        pageLinkClassName="nav-link"
-                        previousClassName="nav-link"
-                        previousLinkClassName="nav-link"
-                        nextClassName="nav-link regular2"
-                        nextLinkClassName="nav-link"
-                        activeClassName="active"
-                        hrefBuilder={(pageIndex: number) =>
-                            pageIndex >= 1 && pageIndex <= Math.ceil(totalItem / itemPerPage) ? `/page/${pageIndex}` : '#'
-                        }
-                        renderOnZeroPageCount={null}
-                    />
-                </div>
-            </div>
-        )
-    } else {
-        return (
-            <div >
 
-            </div>
-        )
-    }
+    useEffect(() => {
+        if (goToPageRef.current) {
+            const _inputPage = goToPageRef.current.getInput()
+            if (_inputPage) _inputPage.value = currentPage.toString()
+        }
+    }, [currentPage])
+
+    if (totalItem > 0) {
+        return <div id={id} className={`${styles['custom-pagination']} row`} style={style}>
+            {hidePageSize ? null : <div className="row" style={{ gap: '0.8rem' }}>
+                <Select1
+                    readOnly
+                    placeholder={itemPerPage.toString()}
+                    options={[10, 20, 50, 80, 100, 150, 200].map((item, _) => { return { id: item, name: item } })}
+                    style={{ borderRadius: '0.4rem', width: '5.6rem', padding: '0 0.8rem', height: '2.4rem' }}
+                    onChange={(ev: any) => {
+                        onChangePage(currentPage, isNaN(parseInt(ev.id)) ? itemPerPage : parseInt(ev.id));
+                    }}
+                />
+                <Text className="body-3">of {totalItem} items</Text>
+            </div>}
+            <div style={{ flex: 1 }} />
+            <ReactPaginate
+                onPageChange={(ev) => {
+                    onChangePage(ev.selected + 1, itemPerPage);
+                }}
+                forcePage={currentPage - 1}
+                // initialPage={currentPage - 1}
+                breakClassName="row button-text-3"
+                breakLabel="..."
+                pageCount={Math.ceil(totalItem / itemPerPage)}
+                previousClassName="row"
+                previousLabel={<FontAwesomeIcon icon={faChevronLeft} style={{ fontSize: '1.4rem' }} />}
+                nextClassName="row"
+                nextLabel={<FontAwesomeIcon icon={faChevronRight} style={{ fontSize: '1.4rem' }} />}
+                containerClassName={`${styles['pagination']} row`}
+                pageClassName="row button-text-3"
+                activeClassName={styles['active']}
+                hrefBuilder={(pageIndex: number) =>
+                    pageIndex >= 1 && pageIndex <= Math.ceil(totalItem / itemPerPage) ? `/page/${pageIndex}` : '#'
+                }
+                renderOnZeroPageCount={null}
+            />
+            {hideGoToPage ? null : <>
+                <div style={{ height: '1.6rem', backgroundColor: "#00358033", width: 1 }} />
+                <Text className="label-3" style={{ color: "#161C2499" }}>Go to page</Text>
+                <TextField
+                    ref={goToPageRef as any}
+                    style={{ width: '4.8rem', textAlign: "center", padding: 0, height: '2.4rem', borderRadius: '0.4rem' }}
+                    className="body-3"
+                    type="number"
+                    onBlur={(ev) => {
+                        const _tmp = ev.target.value.trim().length ? parseInt(ev.target.value.trim()) : undefined
+                        if (_tmp && !isNaN(_tmp) && _tmp > 0 && _tmp <= Math.ceil(totalItem / itemPerPage)) {
+                            onChangePage(_tmp, itemPerPage)
+                        } else ev.target.value = ""
+                    }}
+                />
+            </>}
+        </div>
+    } else return <div id={id} />
 }
