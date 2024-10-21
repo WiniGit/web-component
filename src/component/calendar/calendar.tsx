@@ -25,6 +25,7 @@ export enum CalendarType {
     DATETIME = 3
 }
 interface CalendarProps {
+    id?: string,
     value?: Date,
     min?: Date,
     max?: Date,
@@ -296,7 +297,7 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
     }
 
     render(): React.ReactNode {
-        return <div className={`row calendar-container ${this.props.className}`} style={this.props.style}>
+        return <div id={this.props.id} className={`row calendar-container ${this.props.className}`} style={this.props.style}>
             {this.props.showSidebar ? <div className="calendar-sidebar-options col">
                 <button type="button" onClick={() => { }} className="label-4 calendar-sidebar-option-buttton">Yesterday</button>
                 <button type="button" className="label-4 calendar-sidebar-option-buttton">Last week</button>

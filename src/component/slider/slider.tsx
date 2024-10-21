@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleChevronLeft, faCircleChevronRight } from '@fortawesome/free-solid-svg-icons';
 
 interface SliderProps {
+    id?: string,
     children?: Array<ReactNode>,
     autoPlay?: boolean,
     /** default: 2000ms */

@@ -2,6 +2,7 @@ import React, { CSSProperties, ReactNode } from 'react';
 import './text.css';
 
 interface TextProps {
+    id?: string,
     children?: ReactNode,
     style?: CSSProperties,
     className?: string,
@@ -16,6 +17,6 @@ export class Text extends React.Component<TextProps> {
         if (this.props.maxLine) {
             convertStyle = { ...convertStyle, '--max-line': this.props.maxLine } as CSSProperties
         }
-        return <div onMouseOver={this.props.onHover} onClick={this.props.onClick} className={`comp-text ${this.props.onClick ? 'type-button' : ''} ${this.props.className ?? ''}`} style={convertStyle}>{this.props.children}</div>
+        return <div id={this.props.id} onMouseOver={this.props.onHover} onClick={this.props.onClick} className={`comp-text ${this.props.onClick ? 'type-button' : ''} ${this.props.className ?? ''}`} style={convertStyle}>{this.props.children}</div>
     }
 }

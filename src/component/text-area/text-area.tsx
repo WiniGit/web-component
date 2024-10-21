@@ -3,6 +3,7 @@ import './text-area.css'
 import { UseFormRegister } from "react-hook-form";
 
 interface TextAreaProps {
+    id?: string,
     value?: string,
     maxLength?: number,
     defaultValue?: string,
@@ -24,6 +25,7 @@ interface TextAreaProps {
 export class TextArea extends React.Component<TextAreaProps> {
     render(): React.ReactNode {
         return <div
+            id={this.props.id}
             className={`text-area-container row ${this.props.className ?? 'body-3'} ${this.props.helperText?.length && 'helper-text'}`}
             helper-text={this.props.helperText}
             style={this.props.style ? { ...({ '--helper-text-color': this.props.helperTextColor ?? '#e14337' } as CSSProperties), ...this.props.style } : ({ '--helper-text-color': this.props.helperTextColor ?? '#e14337' } as CSSProperties)}

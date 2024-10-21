@@ -5,7 +5,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons'
 import { ComponentStatus, getStatusIcon } from '../component-status'
 
-export function ProgressBar({ status = ComponentStatus.INFOR, percent = 100, titleText, title, hideTitle = false, progressBarOnly = false, fullColor = 'var(--background)', percentColor = 'var(--infor-color)', style, progressBarStyle }: {
+export function ProgressBar({id, status = ComponentStatus.INFOR, percent = 100, titleText, title, hideTitle = false, progressBarOnly = false, fullColor = 'var(--neutral-background-main)', percentColor = 'var(--infor-color)', style, progressBarStyle }: {
+    id?: string,
     percent: number,
     titleText?: string,
     title?: ReactNode,
@@ -19,7 +20,7 @@ export function ProgressBar({ status = ComponentStatus.INFOR, percent = 100, tit
 }) {
     const [openDetails, setOpenDetails] = useState(true)
 
-    return <div className="progress-bar-container col" style={style ? { padding: progressBarOnly ? '0' : '1.6rem 2.4rem', ...style } : { padding: progressBarOnly ? '0' : '1.6rem 2.4rem' }}>
+    return <div id={id} className="progress-bar-container col" style={style ? { padding: progressBarOnly ? '0' : '1.6rem 2.4rem', ...style } : { padding: progressBarOnly ? '0' : '1.6rem 2.4rem' }}>
         {(hideTitle || progressBarOnly) ? null : (title ?? <div className="progress-bar-title row">
             <div className="heading-text">{titleText}</div>
             <button type="button" className="suffix-action" onClick={() => { setOpenDetails(!openDetails) }}><FontAwesomeIcon icon={openDetails ? faChevronDown : faChevronUp} /></button>

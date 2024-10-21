@@ -1,4 +1,4 @@
-import { faCaretDown, faCaretRight, faClose, faXmarkCircle } from '@fortawesome/free-solid-svg-icons'
+import { faCaretDown, faCaretRight, faChevronDown, faChevronUp, faClose, faXmarkCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { createRef, CSSProperties } from 'react'
 import ReactDOM from 'react-dom'
@@ -8,6 +8,7 @@ import { Checkbox } from '../checkbox/checkbox'
 import { Text } from '../text/text'
 
 interface SelectMultipleProps {
+    id?: string,
     value?: Array<string | number>,
     options: Required<Array<OptionsItem>>,
     onChange?: (value?: Array<string | number>) => void,
@@ -18,7 +19,8 @@ interface SelectMultipleProps {
     helperTextColor?: string,
     style?: CSSProperties,
     handleSearch?: (e: string) => Promise<Array<OptionsItem>>,
-    showClearValueButton?: boolean
+    showClearValueButton?: boolean,
+    popupClassName?: string
 }
 
 interface SelectMultipleState {
@@ -169,6 +171,7 @@ export class SelectMultiple extends React.Component<SelectMultipleProps, SelectM
 
     render() {
         return <div
+            id={this.props.id}
             ref={this.containerRef}
             className={`select-multi-container row ${this.props.disabled ? 'disabled' : ''} ${this.props.helperText?.length && 'helper-text'} ${this.props.className ?? 'body-3'}`}
             helper-text={this.props.helperText}
@@ -186,7 +189,7 @@ export class SelectMultiple extends React.Component<SelectMultipleProps, SelectM
                 {this.state.value.map(item => {
                     const optionItem = this.props.options.find(e => e.id === item)
                     return <div key={item} className='selected-item-value row' onClick={(ev) => this.onClickItem(ev, item)}>
-                        <Text>{optionItem?.name}</Text>
+                        <Text style={{ color: '#161D24E5', fontSize: '1.2rem', lineHeight: '1.4rem' }} >{optionItem?.name}</Text>
                         <FontAwesomeIcon icon={faClose} style={{ color: '#161D24E5', fontSize: '1.2rem' }} />
                     </div>
                 })}
@@ -197,15 +200,17 @@ export class SelectMultiple extends React.Component<SelectMultipleProps, SelectM
                     }}
                 />}
             </div>
-            {this.props.showClearValueButton && <button type='button' className='row' style={{ padding: '0.4rem' }} onClick={(ev) => {
+            {this.props.showClearValueButton && this.state.value.length ? <button type='button' className='row' style={{ padding: '0.4rem' }} onClick={(ev) => {
                 ev.stopPropagation()
                 if (this.state.value.length) this.setState({ ...this.state, isOpen: true, value: [] })
             }}>
-                <FontAwesomeIcon icon={faXmarkCircle} style={{ fontSize: '1.6rem', color: '#161C24' }} />
-            </button>}
+                <FontAwesomeIcon icon={faXmarkCircle} style={{ fontSize: '1.6rem', color: "var(--neutral-text-color-subtitle)" }} />
+            </button> : <div className='row' style={{ display: (this.containerRef.current && this.containerRef.current.getBoundingClientRect().width >= 120) ? "flex" : "none" }} >
+                <FontAwesomeIcon icon={this.state.isOpen ? faChevronUp : faChevronDown} style={{ fontSize: '1.1rem', color: "var(--neutral-text-color-subtitle)" }} />
+            </div>}
             {this.state.isOpen &&
                 ReactDOM.createPortal(
-                    <div className='select-multi-popup col'
+                    <div className={`select-multi-popup col ${this.props.popupClassName ?? ""}`}
                         style={this.state.style ?? {
                             top: this.state.offset.y + this.state.offset.height + 2 + 'px',
                             left: this.state.offset.x + 'px',
