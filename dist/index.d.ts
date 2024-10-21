@@ -24,6 +24,6 @@ import { Rating } from './component/rating/rating';
 import { ProgressCircle } from './component/progress-circle/progress-circle';
 import { CustomSlider } from './component/slider/slider';
 import { ToastContainer } from 'react-toastify';
-import { CardInfo } from './component/card/card';
 import { Button } from './component/button/button';
-export { Calendar, CalendarType, ComponentStatus, getStatusIcon, Checkbox, Select1, OptionsItem, Switch, Popup, showPopup, closePopup, Dialog, showDialog, DialogAlignment, DatePicker, SelectMultiple, ProgressBar, Text, Pagination, Table, TbCell, TbHeader, TbBody, TbRow, CellAlignItems, TextField, RadioButton, TextArea, ImportFile, ToastMessage, InfiniteScroll, Rating, ProgressCircle, CustomSlider, ToastContainer, CardInfo, Button };
+export { Calendar, CalendarType, ComponentStatus, getStatusIcon, Checkbox, Select1, Switch, Popup, showPopup, closePopup, Dialog, showDialog, DialogAlignment, DatePicker, SelectMultiple, ProgressBar, Text, Pagination, Table, TbCell, TbHeader, TbBody, TbRow, CellAlignItems, TextField, RadioButton, TextArea, ImportFile, ToastMessage, InfiniteScroll, Rating, ProgressCircle, CustomSlider, ToastContainer, Button };
+export type { OptionsItem };

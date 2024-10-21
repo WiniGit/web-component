@@ -279,7 +279,7 @@ var Select1 = /** @class */ (function (_super) {
         var _this = this;
         var _a, _b, _c, _d, _e, _f, _g, _h, _j;
         var _value = this.state.options.find(function (e) { return e.id === _this.state.value; });
-        return react_1.default.createElement("div", { id: this.props.id, ref: this.containerRef, className: "".concat(select1_module_css_1.default['select1-container'], " row ").concat(this.props.disabled ? select1_module_css_1.default['disabled'] : '', " ").concat(((_a = this.props.helperText) === null || _a === void 0 ? void 0 : _a.length) && select1_module_css_1.default['helper-text'], " ").concat((_b = this.props.className) !== null && _b !== void 0 ? _b : 'body-3'), "helper-text": this.props.helperText, style: this.props.style ? __assign(__assign({}, { '--helper-text-color': (_c = this.props.helperTextColor) !== null && _c !== void 0 ? _c : '#e14337' }), this.props.style) : { '--helper-text-color': (_d = this.props.helperTextColor) !== null && _d !== void 0 ? _d : '#e14337' }, onClick: function () {
+        return react_1.default.createElement("div", { id: this.props.id, className: "".concat(select1_module_css_1.default['select1-container'], " row ").concat(this.props.disabled ? select1_module_css_1.default['disabled'] : '', " ").concat(((_a = this.props.helperText) === null || _a === void 0 ? void 0 : _a.length) && select1_module_css_1.default['helper-text'], " ").concat((_b = this.props.className) !== null && _b !== void 0 ? _b : 'body-3'), "helper-text": this.props.helperText, style: this.props.style ? __assign(__assign({}, { '--helper-text-color': (_c = this.props.helperTextColor) !== null && _c !== void 0 ? _c : '#e14337' }), this.props.style) : { '--helper-text-color': (_d = this.props.helperTextColor) !== null && _d !== void 0 ? _d : '#e14337' }, onClick: function () {
                 var _a, _b, _c;
                 if (!_this.state.isOpen) {
                     _this.setState(__assign(__assign({}, _this.state), { isOpen: true, style: undefined, offset: (_b = (_a = _this.containerRef) === null || _a === void 0 ? void 0 : _a.current) === null || _b === void 0 ? void 0 : _b.getBoundingClientRect() }));
@@ -297,7 +297,10 @@ var Select1 = /** @class */ (function (_super) {
                     if (_this.state.value)
                         _this.setState(__assign(__assign({}, _this.state), { isOpen: true, value: undefined }));
                 } },
-                react_1.default.createElement(react_fontawesome_1.FontAwesomeIcon, { icon: free_solid_svg_icons_1.faXmarkCircle, style: { fontSize: '1.6rem', color: "var(--neutral-text-color-subtitle)" } })) : react_1.default.createElement("div", { className: 'row', style: { display: (!this.containerRef.current || this.containerRef.current.getBoundingClientRect().width >= 120) ? "flex" : "none" } },
+                react_1.default.createElement(react_fontawesome_1.FontAwesomeIcon, { icon: free_solid_svg_icons_1.faXmarkCircle, style: { fontSize: '1.6rem', color: "var(--neutral-text-color-subtitle)" } })) : react_1.default.createElement("div", { ref: function (iconRef) {
+                    if ((iconRef === null || iconRef === void 0 ? void 0 : iconRef.parentElement) && iconRef.parentElement.getBoundingClientRect().width < 120)
+                        iconRef.style.display = "none";
+                }, className: 'row' },
                 react_1.default.createElement(react_fontawesome_1.FontAwesomeIcon, { icon: this.state.isOpen ? free_solid_svg_icons_1.faChevronUp : free_solid_svg_icons_1.faChevronDown, style: { fontSize: '1.1rem', color: "var(--neutral-text-color-subtitle)" } })),
             this.state.isOpen &&
                 react_dom_1.default.createPortal(react_1.default.createElement("div", { className: "".concat(select1_module_css_1.default['select1-popup'], " col ").concat((_e = this.props.popupClassName) !== null && _e !== void 0 ? _e : ""), style: (_f = this.state.style) !== null && _f !== void 0 ? _f : {
