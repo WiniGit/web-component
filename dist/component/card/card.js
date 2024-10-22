@@ -3,10 +3,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CardInfo = void 0;
+exports.CardSimple = void 0;
 var react_1 = __importDefault(require("react"));
 require("./card.css");
-function CardInfo(_a) {
+function CardSimple(_a) {
     var avatar = _a.avatar, heading = _a.heading, subHeading = _a.subHeading, content = _a.content, action = _a.action, style = _a.style, className = _a.className;
     return react_1.default.createElement("div", { className: "card-new-grid ".concat(className !== null && className !== void 0 ? className : ''), style: style },
         react_1.default.createElement("div", { className: "list-item" },
@@ -30,4 +30,4 @@ function CardInfo(_a) {
                 react_1.default.createElement("div", { className: "body-content" }, "content2")))),
         react_1.default.createElement("div", null, action !== null && action !== void 0 ? action : react_1.default.createElement("div", null)));
 }
-exports.CardInfo = CardInfo;
+exports.CardSimple = CardSimple;

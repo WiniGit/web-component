@@ -11,7 +11,7 @@ interface cardInfoProps {
     className?: string
 }
 
-export function CardInfo({ avatar, heading, subHeading, content, action, style, className }: cardInfoProps) {
+export function CardSimple({ avatar, heading, subHeading, content, action, style, className }: cardInfoProps) {
     return <div className={`card-new-grid ${className ?? ''}`} style={style}>
         <div className="list-item">
             <div className="media">

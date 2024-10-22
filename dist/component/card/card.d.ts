@@ -9,5 +9,5 @@ interface cardInfoProps {
     style?: CSSProperties;
     className?: string;
 }
-export declare function CardInfo({ avatar, heading, subHeading, content, action, style, className }: cardInfoProps): React.JSX.Element;
+export declare function CardSimple({ avatar, heading, subHeading, content, action, style, className }: cardInfoProps): React.JSX.Element;
 export {};
