@@ -9,7 +9,7 @@
     height: 1.2rem;
     border: 0.4rem solid #f3f3f3;
     border-radius: 50%;
-    border-top: 0.4rem solid var(--infor-color);
+    border-top: 0.4rem solid var(--infor-main-color);
     -webkit-animation: spin 2s linear infinite;
     /* Safari */
     animation: spin 2s linear infinite;

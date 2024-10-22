@@ -15,7 +15,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 var __assign = (this && this.__assign) || function () {
-    __assign = Object.assign || function(t) {
+    __assign = Object.assign || function (t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
             s = arguments[i];
             for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
@@ -41,7 +41,7 @@ var RadioButton = /** @class */ (function (_super) {
         var _a, _b, _c;
         var convertStyle = {
             '--off-color': (_a = this.props.offColor) !== null && _a !== void 0 ? _a : '#ccd7e6',
-            '--active-color': (_b = this.props.activeColor) !== null && _b !== void 0 ? _b : 'var(--infor-color)',
+            '--active-color': (_b = this.props.activeColor) !== null && _b !== void 0 ? _b : 'var(--infor-main-color)',
             '--size': this.props.size ? (typeof this.props.size === 'number') ? "".concat(this.props.size, "px") : this.props.size : '20px'
         };
         if (this.props.style) {

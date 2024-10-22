@@ -9,12 +9,12 @@
     gap: 0.8rem;
     width: 16rem;
     position: relative;
-    border: var(--neutral-border);
+    border: var(--neutral-main-border-color);
     border-radius: 0.8rem;
 }
 
 .date-picker-container:focus-within {
-    border-color: var(--focus-border);
+    border-color: var(--primary-main-color);
 }
 
 .date-picker-container>.input-field-value {
@@ -32,7 +32,7 @@
 }
 
 .date-picker-container.disabled {
-    background-color: var(--disabled-background) !important;
+    background-color: var(--neutral-disable-background-color) !important;
     pointer-events: none !important;
 }
 
@@ -108,7 +108,7 @@
 
 .date-picker-popup-container .apply-value-button {
     color: #ffffff;
-    background-color: var(--infor-color);
+    background-color: var(--infor-main-color);
     padding: 0.6rem 1.2rem;
     border-radius: 2.4rem;
     width: fit-content;

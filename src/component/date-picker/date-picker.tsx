@@ -338,7 +338,7 @@ export class DatePicker extends React.Component<DatePickerProps, DatePickerState
                                     <button
                                         type='button'
                                         className='row button-text-3'
-                                        style={{ color: 'var(--infor-color)', width: 'fit-content' }}
+                                        style={{ color: 'var(--infor-main-color)', width: 'fit-content' }}
                                         onClick={() => {
                                             let format = this.props.formatDate ?? (this.props.pickerType === CalendarType.DATETIME ? 'dd/mm/yyyy hh:mm' : 'dd/mm/yyyy')
                                             this.setState({ ...this.state, isOpen: false, value: dateToString(today, format) })

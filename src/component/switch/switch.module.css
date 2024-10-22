@@ -40,7 +40,7 @@
 .switch-container:has(> input:disabled:not(*:checked)) {
     pointer-events: none;
     border: 1px inset #00358033;
-    background-color: var(--disabled-background) !important;
+    background-color: var(--neutral-disable-background-color) !important;
 }
 
 .switch-container:has(> input:disabled:not(*:checked)) .slider {

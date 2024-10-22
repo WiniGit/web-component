@@ -15,7 +15,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 var __assign = (this && this.__assign) || function () {
-    __assign = Object.assign || function(t) {
+    __assign = Object.assign || function (t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
             s = arguments[i];
             for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
@@ -106,13 +106,13 @@ var Calendar = /** @class */ (function (_super) {
                 var additionProps = {};
                 var selected = false;
                 if (dateNumber + 1 === exports.today.getDate() && _this.state.selectMonth === exports.today.getMonth() && _this.state.selectYear === exports.today.getFullYear()) {
-                    style = { borderColor: 'var(--infor-color)' };
+                    style = { borderColor: 'var(--infor-main-color)' };
                 }
                 if (!(0, exports.inRangeTime)(timeValue, exports.startDate, exports.endDate)) {
                     additionProps = { 'in-range': 'false' };
                 }
                 else if (!(0, exports.inRangeTime)(timeValue, (_a = _this.props.min) !== null && _a !== void 0 ? _a : exports.startDate, (_b = _this.props.max) !== null && _b !== void 0 ? _b : exports.endDate)) {
-                    style = __assign(__assign({}, style), { color: 'var(--disabled-font-color)', pointerEvents: 'none' });
+                    style = __assign(__assign({}, style), { color: 'var(--neutral-text-disabled-color)', pointerEvents: 'none' });
                 }
                 else if (_this.state.value.valueOf() === timeValue.valueOf()) {
                     additionProps = __assign({}, additionProps);
@@ -121,11 +121,13 @@ var Calendar = /** @class */ (function (_super) {
                 else if (timeValue.getMonth() !== _this.state.selectMonth) {
                     style = __assign(__assign({}, style), { color: '#9fb0c7' });
                 }
-                return react_1.default.createElement("button", __assign({ type: "button", key: timeValue.toString(), className: "date-picker-circle body-3 ".concat(selected ? 'selected' : ''), style: style }, additionProps, { onClick: function () {
+                return react_1.default.createElement("button", __assign({ type: "button", key: timeValue.toString(), className: "date-picker-circle body-3 ".concat(selected ? 'selected' : ''), style: style }, additionProps, {
+                    onClick: function () {
                         _this.setState(__assign(__assign({}, _this.state), { value: timeValue }));
                         if (_this.props.onSelect)
                             _this.props.onSelect(timeValue);
-                    } }), timeValue.getDate());
+                    }
+                }), timeValue.getDate());
             }));
     };
     Calendar.prototype.showMonthInYear = function () {
@@ -178,7 +180,7 @@ var Calendar = /** @class */ (function (_super) {
             var style = {};
             var selected = false;
             if (_this.state.selectYear === exports.today.getFullYear() && exports.today.getMonth() === i) {
-                style = { borderColor: 'var(--infor-color)' };
+                style = { borderColor: 'var(--infor-main-color)' };
             }
             if (!(0, exports.inRangeTime)(timeValue, exports.startDate, exports.endDate)) {
                 additionProps = { 'in-range': 'false' };
@@ -186,7 +188,7 @@ var Calendar = /** @class */ (function (_super) {
             else if (!(0, exports.inRangeTime)(new Date(_this.state.selectYear, _this.state.selectMonth), (_a = _this.props.min) !== null && _a !== void 0 ? _a : exports.startDate, (_b = _this.props.max) !== null && _b !== void 0 ? _b : exports.endDate)) {
                 if (_this.state.selectYear === ((_c = _this.state.selectDate) === null || _c === void 0 ? void 0 : _c.getFullYear()) && _this.state.selectDate.getMonth() === i) {
                     style = {
-                        color: 'var(--disabled-font-color)',
+                        color: 'var(--neutral-text-disabled-color)',
                         pointerEvents: 'none'
                     };
                 }
@@ -194,7 +196,8 @@ var Calendar = /** @class */ (function (_super) {
             if (_this.state.selectYear === _this.state.value.getFullYear() && i === _this.state.value.getMonth()) {
                 selected = true;
             }
-            return react_1.default.createElement("button", __assign({ type: "button", key: timeValue.toString(), className: "month-picker-circle body-3 row ".concat(selected ? 'selected' : ''), style: style }, additionProps, { onClick: function () {
+            return react_1.default.createElement("button", __assign({ type: "button", key: timeValue.toString(), className: "month-picker-circle body-3 row ".concat(selected ? 'selected' : ''), style: style }, additionProps, {
+                onClick: function () {
                     if (_this.props.type === CalendarType.MONTH) {
                         _this.setState(__assign(__assign({}, _this.state), { value: timeValue }));
                         if (_this.props.onSelect)
@@ -203,7 +206,8 @@ var Calendar = /** @class */ (function (_super) {
                     else {
                         _this.setState(__assign(__assign({}, _this.state), { selectMonth: i, type: CalendarType.DATE }));
                     }
-                } }), monthTitle);
+                }
+            }), monthTitle);
         }));
     };
     Calendar.prototype.showYearInRange = function () {
@@ -216,7 +220,7 @@ var Calendar = /** @class */ (function (_super) {
             var style = {};
             var selected = false;
             if (yearNumber === exports.today.getFullYear()) {
-                style = { borderColor: 'var(--infor-color)' };
+                style = { borderColor: 'var(--infor-main-color)' };
             }
             else if (yearNumber < (((_a = _this.props.min) !== null && _a !== void 0 ? _a : exports.startDate).getFullYear()) || yearNumber > (((_b = _this.props.max) !== null && _b !== void 0 ? _b : exports.endDate).getFullYear())) {
                 additionProps = { 'in-range': 'false' };
@@ -224,7 +228,8 @@ var Calendar = /** @class */ (function (_super) {
             if (yearNumber === _this.state.value.getFullYear()) {
                 selected = true;
             }
-            return react_1.default.createElement("button", __assign({ type: "button", key: yearNumber.toString(), className: "year-picker-circle body-3 row ".concat(selected ? 'selected' : ''), style: style }, additionProps, { onClick: function () {
+            return react_1.default.createElement("button", __assign({ type: "button", key: yearNumber.toString(), className: "year-picker-circle body-3 row ".concat(selected ? 'selected' : ''), style: style }, additionProps, {
+                onClick: function () {
                     if (_this.props.type === CalendarType.YEAR) {
                         _this.setState(__assign(__assign({}, _this.state), { value: new Date(yearNumber) }));
                         if (_this.props.onSelect)
@@ -233,7 +238,8 @@ var Calendar = /** @class */ (function (_super) {
                     else {
                         _this.setState(__assign(__assign({}, _this.state), { type: CalendarType.MONTH, selectYear: yearNumber }));
                     }
-                } }), yearNumber);
+                }
+            }), yearNumber);
         }));
     };
     Calendar.prototype.getTitle = function () {
@@ -300,7 +306,8 @@ var Calendar = /** @class */ (function (_super) {
                 react_1.default.createElement("div", { className: "row", style: { alignItems: 'start' } },
                     react_1.default.createElement("div", { className: "picker-date-container col" },
                         react_1.default.createElement("div", { className: 'picker-date-header row' },
-                            react_1.default.createElement("button", { type: 'button', onClick: function () {
+                            react_1.default.createElement("button", {
+                                type: 'button', onClick: function () {
                                     switch (_this.state.type) {
                                         case CalendarType.YEAR:
                                             if (_this.state.selectYear - 20 < exports.startDate.getFullYear()) {
@@ -322,9 +329,11 @@ var Calendar = /** @class */ (function (_super) {
                                             _this.setState(__assign(__assign({}, _this.state), { selectYear: _this.state.selectYear - 1 }));
                                             break;
                                     }
-                                } },
+                                }
+                            },
                                 react_1.default.createElement(react_fontawesome_1.FontAwesomeIcon, { icon: free_solid_svg_icons_1.faAngleDoubleLeft })),
-                            react_1.default.createElement("button", { type: 'button', onClick: function () {
+                            react_1.default.createElement("button", {
+                                type: 'button', onClick: function () {
                                     switch (_this.state.type) {
                                         case CalendarType.YEAR:
                                             if (_this.state.selectYear - 10 < exports.startDate.getFullYear()) {
@@ -344,13 +353,17 @@ var Calendar = /** @class */ (function (_super) {
                                             _this.setState(__assign(__assign({}, _this.state), { selectMonth: newDataVl.getMonth(), selectYear: newDataVl.getFullYear() }));
                                             break;
                                     }
-                                } },
+                                }
+                            },
                                 react_1.default.createElement(react_fontawesome_1.FontAwesomeIcon, { icon: free_solid_svg_icons_1.faAngleLeft })),
-                            react_1.default.createElement("span", { className: "heading-7", onClick: function () {
+                            react_1.default.createElement("span", {
+                                className: "heading-7", onClick: function () {
                                     if (_this.state.type !== CalendarType.YEAR)
                                         _this.setState(__assign(__assign({}, _this.state), { type: _this.state.type === CalendarType.DATE ? CalendarType.MONTH : CalendarType.YEAR }));
-                                } }, this.getTitle()),
-                            react_1.default.createElement("button", { type: 'button', onClick: function () {
+                                }
+                            }, this.getTitle()),
+                            react_1.default.createElement("button", {
+                                type: 'button', onClick: function () {
                                     switch (_this.state.type) {
                                         case CalendarType.YEAR:
                                             if (_this.state.selectYear + 10 > exports.endDate.getFullYear()) {
@@ -370,9 +383,11 @@ var Calendar = /** @class */ (function (_super) {
                                             _this.setState(__assign(__assign({}, _this.state), { selectMonth: newDataVl.getMonth(), selectYear: newDataVl.getFullYear() }));
                                             break;
                                     }
-                                } },
+                                }
+                            },
                                 react_1.default.createElement(react_fontawesome_1.FontAwesomeIcon, { icon: free_solid_svg_icons_1.faAngleRight })),
-                            react_1.default.createElement("button", { type: 'button', onClick: function () {
+                            react_1.default.createElement("button", {
+                                type: 'button', onClick: function () {
                                     switch (_this.state.type) {
                                         case CalendarType.YEAR:
                                             if (_this.state.selectYear + 20 > exports.endDate.getFullYear()) {
@@ -394,7 +409,8 @@ var Calendar = /** @class */ (function (_super) {
                                             _this.setState(__assign(__assign({}, _this.state), { selectYear: _this.state.selectYear + 1 }));
                                             break;
                                     }
-                                } },
+                                }
+                            },
                                 react_1.default.createElement(react_fontawesome_1.FontAwesomeIcon, { icon: free_solid_svg_icons_1.faAngleDoubleRight }))),
                         react_1.default.createElement("div", { className: 'picker-date-body row' }, this.state.type === CalendarType.YEAR ? this.showYearInRange() : this.state.type === CalendarType.MONTH ? this.showMonthInYear() : this.showDateInMonth())),
                     this.props.type === CalendarType.DATETIME ? react_1.default.createElement("div", { className: "picker-time-container col" },
@@ -405,27 +421,39 @@ var Calendar = /** @class */ (function (_super) {
                             ":",
                             this.state.selectSeconds < 10 ? "0".concat(this.state.selectSeconds) : this.state.selectSeconds),
                         react_1.default.createElement("div", { className: "row", style: { alignItems: 'start', flex: 1, height: '100%' } },
-                            react_1.default.createElement("div", { className: "scroll-picker-hours col" }, Array.from({ length: 24 }).map(function (_, i) { return react_1.default.createElement("button", { type: "button", onClick: function () {
-                                    var newValue = _this.state.value;
-                                    newValue.setHours(i);
-                                    _this.setState(__assign(__assign({}, _this.state), { selectHours: i, value: newValue }));
-                                    if (_this.props.onSelect)
-                                        _this.props.onSelect(newValue);
-                                }, key: "hours-".concat(i), className: "label-4 ".concat(_this.state.selectHours === (i) ? 'selected' : '') }, i < 10 ? "0".concat(i) : i); })),
-                            react_1.default.createElement("div", { className: "scroll-picker-minutes col" }, Array.from({ length: 60 }).map(function (_, i) { return react_1.default.createElement("button", { type: "button", onClick: function () {
-                                    var newValue = _this.state.value;
-                                    newValue.setMinutes(i);
-                                    _this.setState(__assign(__assign({}, _this.state), { selectMinutes: i, value: newValue }));
-                                    if (_this.props.onSelect)
-                                        _this.props.onSelect(newValue);
-                                }, key: "hours-".concat(i), className: "label-4 ".concat(_this.state.selectMinutes === (i) ? 'selected' : '') }, i < 10 ? "0".concat(i) : i); })),
-                            react_1.default.createElement("div", { className: "scroll-picker-seconds col" }, Array.from({ length: 60 }).map(function (_, i) { return react_1.default.createElement("button", { type: "button", onClick: function () {
-                                    var newValue = _this.state.value;
-                                    newValue.setSeconds(i);
-                                    _this.setState(__assign(__assign({}, _this.state), { selectSeconds: i, value: newValue }));
-                                    if (_this.props.onSelect)
-                                        _this.props.onSelect(newValue);
-                                }, key: "hours-".concat(i), className: "label-4 ".concat(_this.state.selectSeconds === (i) ? 'selected' : '') }, i < 10 ? "0".concat(i) : i); })))) : null),
+                            react_1.default.createElement("div", { className: "scroll-picker-hours col" }, Array.from({ length: 24 }).map(function (_, i) {
+                                return react_1.default.createElement("button", {
+                                    type: "button", onClick: function () {
+                                        var newValue = _this.state.value;
+                                        newValue.setHours(i);
+                                        _this.setState(__assign(__assign({}, _this.state), { selectHours: i, value: newValue }));
+                                        if (_this.props.onSelect)
+                                            _this.props.onSelect(newValue);
+                                    }, key: "hours-".concat(i), className: "label-4 ".concat(_this.state.selectHours === (i) ? 'selected' : '')
+                                }, i < 10 ? "0".concat(i) : i);
+                            })),
+                            react_1.default.createElement("div", { className: "scroll-picker-minutes col" }, Array.from({ length: 60 }).map(function (_, i) {
+                                return react_1.default.createElement("button", {
+                                    type: "button", onClick: function () {
+                                        var newValue = _this.state.value;
+                                        newValue.setMinutes(i);
+                                        _this.setState(__assign(__assign({}, _this.state), { selectMinutes: i, value: newValue }));
+                                        if (_this.props.onSelect)
+                                            _this.props.onSelect(newValue);
+                                    }, key: "hours-".concat(i), className: "label-4 ".concat(_this.state.selectMinutes === (i) ? 'selected' : '')
+                                }, i < 10 ? "0".concat(i) : i);
+                            })),
+                            react_1.default.createElement("div", { className: "scroll-picker-seconds col" }, Array.from({ length: 60 }).map(function (_, i) {
+                                return react_1.default.createElement("button", {
+                                    type: "button", onClick: function () {
+                                        var newValue = _this.state.value;
+                                        newValue.setSeconds(i);
+                                        _this.setState(__assign(__assign({}, _this.state), { selectSeconds: i, value: newValue }));
+                                        if (_this.props.onSelect)
+                                            _this.props.onSelect(newValue);
+                                    }, key: "hours-".concat(i), className: "label-4 ".concat(_this.state.selectSeconds === (i) ? 'selected' : '')
+                                }, i < 10 ? "0".concat(i) : i);
+                            })))) : null),
                 this.props.footer));
     };
     return Calendar;

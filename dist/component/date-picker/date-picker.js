@@ -15,7 +15,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 var __assign = (this && this.__assign) || function () {
-    __assign = Object.assign || function(t) {
+    __assign = Object.assign || function (t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
             s = arguments[i];
             for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
@@ -216,7 +216,8 @@ var DatePicker = /** @class */ (function (_super) {
         }
         return react_1.default.createElement("div", { id: this.props.id, className: "date-picker-container row ".concat((_a = this.props.className) !== null && _a !== void 0 ? _a : 'body-3', " ").concat(this.props.disabled ? 'disabled' : '', " ").concat(((_b = this.props.helperText) === null || _b === void 0 ? void 0 : _b.length) && 'helper-text'), "helper-text": this.props.helperText, style: this.props.style ? __assign(__assign({}, { '--helper-text-color': (_c = this.props.helperTextColor) !== null && _c !== void 0 ? _c : '#e14337' }), this.props.style) : { '--helper-text-color': (_d = this.props.helperTextColor) !== null && _d !== void 0 ? _d : '#e14337' } },
             react_1.default.createElement("div", { className: 'input-field-value row', style: { height: '4rem' } },
-                react_1.default.createElement("input", { autoComplete: 'off', value: (_e = this.state.value) !== null && _e !== void 0 ? _e : '', onChange: function (ev) { return _this.setState(__assign(__assign({}, _this.state), { value: ev.target.value })); }, placeholder: this.props.placeholder, maxLength: maxLength, onBlur: function (ev) {
+                react_1.default.createElement("input", {
+                    autoComplete: 'off', value: (_e = this.state.value) !== null && _e !== void 0 ? _e : '', onChange: function (ev) { return _this.setState(__assign(__assign({}, _this.state), { value: ev.target.value })); }, placeholder: this.props.placeholder, maxLength: maxLength, onBlur: function (ev) {
                         var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v;
                         var inputValue = ev.target.value.trim();
                         switch (_this.props.pickerType) {
@@ -297,61 +298,72 @@ var DatePicker = /** @class */ (function (_super) {
                                     _this.props.onChange(stateDateValue);
                                 break;
                         }
-                    } })),
-            react_1.default.createElement("button", { type: 'button', onClick: function (ev) {
+                    }
+                })),
+            react_1.default.createElement("button", {
+                type: 'button', onClick: function (ev) {
                     var _a;
                     if (!_this.state.isOpen) {
                         _this.setState(__assign(__assign({}, _this.state), { isOpen: true, style: undefined, offset: ((_a = ev.target.closest('.date-picker-container')) !== null && _a !== void 0 ? _a : ev.target).getBoundingClientRect() }));
                     }
-                }, className: 'row', style: { padding: '0.4rem' } },
+                }, className: 'row', style: { padding: '0.4rem' }
+            },
                 react_1.default.createElement(CalendarIcon, null)),
             this.state.isOpen &&
-                react_dom_1.default.createPortal(react_1.default.createElement("div", { className: "popup-overlay hidden-overlay", onClick: function (ev) {
-                        if (ev.target.classList.contains('popup-overlay'))
-                            _this.setState(__assign(__assign({}, _this.state), { isOpen: false }));
-                    } },
-                    react_1.default.createElement(index_1.Calendar, { min: this.props.min, max: this.props.max, value: this.getNewValue(), type: (_f = this.props.pickerType) !== null && _f !== void 0 ? _f : index_1.CalendarType.DATE, className: 'date-picker-popup-container', style: (_g = this.state.style) !== null && _g !== void 0 ? _g : { top: this.state.offset.y + this.state.offset.height + 2 + 'px', left: this.state.offset.x + 'px', border: 'none', boxShadow: '-20px 20px 40px -4px rgba(145, 158, 171, 0.24), 0px 0px 2px 0px rgba(145, 158, 171, 0.24)' }, onSelect: function (dateValue) {
-                            var _a;
-                            switch (_this.props.pickerType) {
-                                case index_1.CalendarType.YEAR:
-                                    _this.setState(__assign(__assign({}, _this.state), { value: dateValue.getFullYear().toString(), isOpen: false }));
+            react_dom_1.default.createPortal(react_1.default.createElement("div", {
+                className: "popup-overlay hidden-overlay", onClick: function (ev) {
+                    if (ev.target.classList.contains('popup-overlay'))
+                        _this.setState(__assign(__assign({}, _this.state), { isOpen: false }));
+                }
+            },
+                react_1.default.createElement(index_1.Calendar, {
+                    min: this.props.min, max: this.props.max, value: this.getNewValue(), type: (_f = this.props.pickerType) !== null && _f !== void 0 ? _f : index_1.CalendarType.DATE, className: 'date-picker-popup-container', style: (_g = this.state.style) !== null && _g !== void 0 ? _g : { top: this.state.offset.y + this.state.offset.height + 2 + 'px', left: this.state.offset.x + 'px', border: 'none', boxShadow: '-20px 20px 40px -4px rgba(145, 158, 171, 0.24), 0px 0px 2px 0px rgba(145, 158, 171, 0.24)' }, onSelect: function (dateValue) {
+                        var _a;
+                        switch (_this.props.pickerType) {
+                            case index_1.CalendarType.YEAR:
+                                _this.setState(__assign(__assign({}, _this.state), { value: dateValue.getFullYear().toString(), isOpen: false }));
+                                if (_this.props.onChange)
+                                    _this.props.onChange(dateValue.getFullYear().toString());
+                                break;
+                            case index_1.CalendarType.MONTH:
+                                var newValue = dateToString(dateValue);
+                                _this.setState(__assign(__assign({}, _this.state), { value: newValue.split('/').slice(1).join('/'), isOpen: false }));
+                                if (_this.props.onChange)
+                                    _this.props.onChange(newValue.split('/').slice(1).join('/'));
+                                break;
+                            case index_1.CalendarType.DATETIME:
+                                var newValue = dateToString(dateValue, (_a = _this.props.formatDate) !== null && _a !== void 0 ? _a : 'dd/mm/yyyy hh:mm');
+                                _this.setState(__assign(__assign({}, _this.state), { value: newValue }));
+                                break;
+                            default:
+                                var newValue = dateToString(dateValue);
+                                _this.setState(__assign(__assign({}, _this.state), { value: newValue, isOpen: false }));
+                                if (_this.props.onChange)
+                                    _this.props.onChange(newValue);
+                                break;
+                        }
+                    }, footer: (this.props.pickerType === index_1.CalendarType.DATETIME || !this.props.hideButtonToday) && react_1.default.createElement("div", { className: 'row picker-popup-footer' },
+                        this.props.pickerType === undefined || this.props.pickerType === index_1.CalendarType.DATE || this.props.pickerType === index_1.CalendarType.DATETIME ?
+                            react_1.default.createElement("button", {
+                                type: 'button', className: 'row button-text-3', style: { color: 'var(--infor-main-color)', width: 'fit-content' }, onClick: function () {
+                                    var _a;
+                                    var format = (_a = _this.props.formatDate) !== null && _a !== void 0 ? _a : (_this.props.pickerType === index_1.CalendarType.DATETIME ? 'dd/mm/yyyy hh:mm' : 'dd/mm/yyyy');
+                                    _this.setState(__assign(__assign({}, _this.state), { isOpen: false, value: dateToString(calendar_1.today, format) }));
                                     if (_this.props.onChange)
-                                        _this.props.onChange(dateValue.getFullYear().toString());
-                                    break;
-                                case index_1.CalendarType.MONTH:
-                                    var newValue = dateToString(dateValue);
-                                    _this.setState(__assign(__assign({}, _this.state), { value: newValue.split('/').slice(1).join('/'), isOpen: false }));
+                                        _this.props.onChange(dateToString(calendar_1.today, format));
+                                }
+                            }, "Today") : null,
+                        this.props.pickerType === index_1.CalendarType.DATETIME ? react_1.default.createElement(react_1.default.Fragment, null,
+                            react_1.default.createElement("div", { style: { flex: 1 } }),
+                            react_1.default.createElement("button", {
+                                type: 'button', className: 'row button-primary', style: { padding: '0.6rem 0.8rem' }, onClick: function () {
+                                    _this.setState(__assign(__assign({}, _this.state), { isOpen: false }));
                                     if (_this.props.onChange)
-                                        _this.props.onChange(newValue.split('/').slice(1).join('/'));
-                                    break;
-                                case index_1.CalendarType.DATETIME:
-                                    var newValue = dateToString(dateValue, (_a = _this.props.formatDate) !== null && _a !== void 0 ? _a : 'dd/mm/yyyy hh:mm');
-                                    _this.setState(__assign(__assign({}, _this.state), { value: newValue }));
-                                    break;
-                                default:
-                                    var newValue = dateToString(dateValue);
-                                    _this.setState(__assign(__assign({}, _this.state), { value: newValue, isOpen: false }));
-                                    if (_this.props.onChange)
-                                        _this.props.onChange(newValue);
-                                    break;
-                            }
-                        }, footer: (this.props.pickerType === index_1.CalendarType.DATETIME || !this.props.hideButtonToday) && react_1.default.createElement("div", { className: 'row picker-popup-footer' },
-                            this.props.pickerType === undefined || this.props.pickerType === index_1.CalendarType.DATE || this.props.pickerType === index_1.CalendarType.DATETIME ?
-                                react_1.default.createElement("button", { type: 'button', className: 'row button-text-3', style: { color: 'var(--infor-color)', width: 'fit-content' }, onClick: function () {
-                                        var _a;
-                                        var format = (_a = _this.props.formatDate) !== null && _a !== void 0 ? _a : (_this.props.pickerType === index_1.CalendarType.DATETIME ? 'dd/mm/yyyy hh:mm' : 'dd/mm/yyyy');
-                                        _this.setState(__assign(__assign({}, _this.state), { isOpen: false, value: dateToString(calendar_1.today, format) }));
-                                        if (_this.props.onChange)
-                                            _this.props.onChange(dateToString(calendar_1.today, format));
-                                    } }, "Today") : null,
-                            this.props.pickerType === index_1.CalendarType.DATETIME ? react_1.default.createElement(react_1.default.Fragment, null,
-                                react_1.default.createElement("div", { style: { flex: 1 } }),
-                                react_1.default.createElement("button", { type: 'button', className: 'row button-primary', style: { padding: '0.6rem 0.8rem' }, onClick: function () {
-                                        _this.setState(__assign(__assign({}, _this.state), { isOpen: false }));
-                                        if (_this.props.onChange)
-                                            _this.props.onChange(_this.state.value);
-                                    } },
-                                    react_1.default.createElement("div", { className: 'button-text-3' }, "Submit"))) : null) })), document.body));
+                                        _this.props.onChange(_this.state.value);
+                                }
+                            },
+                                react_1.default.createElement("div", { className: 'button-text-3' }, "Submit"))) : null)
+                })), document.body));
     };
     return DatePicker;
 }(react_1.default.Component));

@@ -3,18 +3,18 @@
     position: relative;
     gap: 0.8rem;
     border-radius: 0.8rem;
-    border: var(--neutral-border);
+    border: var(--neutral-main-border-color);
     padding: 0.8rem 1.6rem;
     align-items: start;
 }
 
 .text-area-container:has(> textarea:disabled) {
-    background-color: var(--disabled-background) !important;
+    background-color: var(--neutral-disable-background-color) !important;
     pointer-events: none !important;
 }
 
 .text-area-container:focus-within {
-    border-color: var(--focus-border);
+    border-color: var(--primary-main-color);
 }
 
 .text-area-container>textarea {

@@ -204,9 +204,9 @@ export class SelectMultiple extends React.Component<SelectMultipleProps, SelectM
                 ev.stopPropagation()
                 if (this.state.value.length) this.setState({ ...this.state, isOpen: true, value: [] })
             }}>
-                <FontAwesomeIcon icon={faXmarkCircle} style={{ fontSize: '1.6rem', color: "var(--neutral-text-color-subtitle)" }} />
+                <FontAwesomeIcon icon={faXmarkCircle} style={{ fontSize: '1.6rem', color: "var(--neutral-text-subtitle-color)" }} />
             </button> : <div className='row' style={{ display: (this.containerRef.current && this.containerRef.current.getBoundingClientRect().width >= 120) ? "flex" : "none" }} >
-                <FontAwesomeIcon icon={this.state.isOpen ? faChevronUp : faChevronDown} style={{ fontSize: '1.1rem', color: "var(--neutral-text-color-subtitle)" }} />
+                <FontAwesomeIcon icon={this.state.isOpen ? faChevronUp : faChevronDown} style={{ fontSize: '1.1rem', color: "var(--neutral-text-subtitle-color)" }} />
             </div>}
             {this.state.isOpen &&
                 ReactDOM.createPortal(
@@ -234,7 +234,7 @@ export class SelectMultiple extends React.Component<SelectMultipleProps, SelectM
                                     }
                                     this.setState({ ...this.state, value: newValue })
                                     if (this.props.onChange) this.props.onChange(newValue)
-                                }} className='button-text-3' style={{ color: _list.length ? 'var(--infor-color)' : '#00204D99', }}>{_list.length && isSelectedAll ? 'Bỏ chọn tất cả' : 'Chọn tất cả'}</Text>
+                                }} className='button-text-3' style={{ color: _list.length ? 'var(--infor-main-color)' : '#00204D99', }}>{_list.length && isSelectedAll ? 'Bỏ chọn tất cả' : 'Chọn tất cả'}</Text>
                             })()}
                         </div>
                         <div className='col select-body'>

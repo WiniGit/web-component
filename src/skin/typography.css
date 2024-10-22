@@ -2,7 +2,7 @@
 .subtitle-5 {
     line-height: 1.4rem;
     font-size: 1rem;
-    color: var(--neutral-text-color-title);
+    color: var(--neutral-text-title-color);
 }
 
 .regular1,
@@ -11,7 +11,7 @@
 .label-5 {
     line-height: 1.6rem;
     font-size: 1.2rem;
-    color: var(--neutral-text-color-title);
+    color: var(--neutral-text-title-color);
 }
 
 .regular2,
@@ -22,7 +22,7 @@
 .placeholder-2 {
     line-height: 2.2rem;
     font-size: 1.4rem;
-    color: var(--neutral-text-color-title);
+    color: var(--neutral-text-title-color);
 }
 
 .regular3,
@@ -32,7 +32,7 @@
 .placeholder-1 {
     line-height: 2.4rem;
     font-size: 1.6rem;
-    color: var(--neutral-text-color-title);
+    color: var(--neutral-text-title-color);
 }
 
 .regular4,
@@ -40,37 +40,37 @@
 .body-1 {
     line-height: 2.8rem;
     font-size: 2rem;
-    color: var(--neutral-text-color-title);
+    color: var(--neutral-text-title-color);
 }
 
 .regular5 {
     line-height: 3.2rem;
     font-size: 2.4rem;
-    color: var(--neutral-text-color-title);
+    color: var(--neutral-text-title-color);
 }
 
 .regular6 {
     line-height: 3.8rem;
     font-size: 3rem;
-    color: var(--neutral-text-color-title);
+    color: var(--neutral-text-title-color);
 }
 
 .regular7 {
     line-height: 4.6rem;
     font-size: 3.8rem;
-    color: var(--neutral-text-color-title);
+    color: var(--neutral-text-title-color);
 }
 
 .regular8 {
     line-height: 5.6rem;
     font-size: 4.6rem;
-    color: var(--neutral-text-color-title);
+    color: var(--neutral-text-title-color);
 }
 
 .regular9 {
     line-height: 6.8rem;
     font-size: 5.6rem;
-    color: var(--neutral-text-color-title);
+    color: var(--neutral-text-title-color);
 }
 
 .medium1,
@@ -78,7 +78,7 @@
     line-height: 2rem;
     font-size: 1.2rem;
     font-weight: 500;
-    color: var(--neutral-text-color-title);
+    color: var(--neutral-text-title-color);
 }
 
 .medium2,
@@ -87,7 +87,7 @@
     line-height: 2.2rem;
     font-size: 1.4rem;
     font-weight: 500;
-    color: var(--neutral-text-color-title);
+    color: var(--neutral-text-title-color);
 }
 
 .medium3,
@@ -96,7 +96,7 @@
     line-height: 2.4rem;
     font-size: 1.6rem;
     font-weight: 500;
-    color: var(--neutral-text-color-title);
+    color: var(--neutral-text-title-color);
 }
 
 .medium4,
@@ -104,7 +104,7 @@
     line-height: 2.8rem;
     font-size: 2rem;
     font-weight: 500;
-    color: var(--neutral-text-color-title);
+    color: var(--neutral-text-title-color);
 }
 
 .medium5,
@@ -112,7 +112,7 @@
     line-height: 3.2rem;
     font-size: 2.4rem;
     font-weight: 500;
-    color: var(--neutral-text-color-title);
+    color: var(--neutral-text-title-color);
 }
 
 .medium6,
@@ -120,7 +120,7 @@
     line-height: 3.8rem;
     font-size: 3rem;
     font-weight: 500;
-    color: var(--neutral-text-color-title);
+    color: var(--neutral-text-title-color);
 }
 
 .medium7,
@@ -128,7 +128,7 @@
     line-height: 4.6rem;
     font-size: 3.8rem;
     font-weight: 500;
-    color: var(--neutral-text-color-title);
+    color: var(--neutral-text-title-color);
 }
 
 .medium8,
@@ -136,7 +136,7 @@
     line-height: 5.6rem;
     font-size: 4.6rem;
     font-weight: 500;
-    color: var(--neutral-text-color-title);
+    color: var(--neutral-text-title-color);
 }
 
 .medium9,
@@ -144,7 +144,7 @@
     line-height: 6.8rem;
     font-size: 5.6rem;
     font-weight: 500;
-    color: var(--neutral-text-color-title);
+    color: var(--neutral-text-title-color);
 }
 
 .semibold1,
@@ -152,7 +152,7 @@
     line-height: 2rem;
     font-size: 1.2rem;
     font-weight: 600;
-    color: var(--neutral-text-color-title);
+    color: var(--neutral-text-title-color);
 }
 
 .semibold2,
@@ -160,7 +160,7 @@
     line-height: 2.2rem;
     font-size: 1.4rem;
     font-weight: 600;
-    color: var(--neutral-text-color-title);
+    color: var(--neutral-text-title-color);
 }
 
 .semibold3,
@@ -169,7 +169,7 @@
     line-height: 2.4rem;
     font-size: 1.6rem;
     font-weight: 600;
-    color: var(--neutral-text-color-title);
+    color: var(--neutral-text-title-color);
 }
 
 .semibold4,
@@ -177,7 +177,7 @@
     line-height: 2.8rem;
     font-size: 2rem;
     font-weight: 600;
-    color: var(--neutral-text-color-title);
+    color: var(--neutral-text-title-color);
 }
 
 .semibold5,
@@ -185,7 +185,7 @@
     line-height: 3.2rem;
     font-size: 2.4rem;
     font-weight: 600;
-    color: var(--neutral-text-color-title);
+    color: var(--neutral-text-title-color);
 }
 
 .semibold6,
@@ -193,7 +193,7 @@
     line-height: 3.8rem;
     font-size: 3rem;
     font-weight: 600;
-    color: var(--neutral-text-color-title);
+    color: var(--neutral-text-title-color);
 }
 
 .semibold7,
@@ -201,7 +201,7 @@
     line-height: 4.6rem;
     font-size: 3.8rem;
     font-weight: 600;
-    color: var(--neutral-text-color-title);
+    color: var(--neutral-text-title-color);
 }
 
 .semibold8,
@@ -209,7 +209,7 @@
     line-height: 5.6rem;
     font-size: 4.6rem;
     font-weight: 600;
-    color: var(--neutral-text-color-title);
+    color: var(--neutral-text-title-color);
 }
 
 .semibold9,
@@ -217,89 +217,89 @@
     line-height: 6.8rem;
     font-size: 5.6rem;
     font-weight: 600;
-    color: var(--neutral-text-color-title);
+    color: var(--neutral-text-title-color);
 }
 
 .subtitle-1 {
-    color: var(--neutral-text-color-subtitle);
+    color: var(--neutral-text-subtitle-color);
 }
 
 .subtitle-2 {
-    color: var(--neutral-text-color-subtitle);
+    color: var(--neutral-text-subtitle-color);
 }
 
 .subtitle-3 {
-    color: var(--neutral-text-color-subtitle);
+    color: var(--neutral-text-subtitle-color);
 }
 
 .subtitle-4 {
-    color: var(--neutral-text-color-subtitle);
+    color: var(--neutral-text-subtitle-color);
 }
 
 .subtitle-5 {
-    color: var(--neutral-text-color-subtitle);
+    color: var(--neutral-text-subtitle-color);
 }
 
 .body-1 {
-    color: var(--neutral-text-color-body);
+    color: var(--neutral-text-body-color);
 }
 
 .body-2 {
-    color: var(--neutral-text-color-body);
+    color: var(--neutral-text-body-color);
 }
 
 .body-3 {
-    color: var(--neutral-text-color-body);
+    color: var(--neutral-text-body-color);
 }
 
 .button-text-1 {
-    color: var(--primary-color);
+    color: var(--primary-main-color);
 }
 
 .button-text-2 {
-    color: var(--primary-color);
+    color: var(--primary-main-color);
 }
 
 .button-text-3 {
-    color: var(--primary-color);
+    color: var(--primary-main-color);
 }
 
 .button-text-4 {
-    color: var(--primary-color);
+    color: var(--primary-main-color);
 }
 
 .button-text-5 {
-    color: var(--primary-color);
+    color: var(--primary-main-color);
 }
 
 .button-text-6 {
-    color: var(--primary-color);
+    color: var(--primary-main-color);
 }
 
 .label-1 {
-    color: var(--neutral-text-color-label);
+    color: var(--neutral-text-label-color);
 }
 
 .label-2 {
-    color: var(--neutral-text-color-label);
+    color: var(--neutral-text-label-color);
 }
 
 .label-3 {
-    color: var(--neutral-text-color-label);
+    color: var(--neutral-text-label-color);
 }
 
 .label-4 {
-    color: var(--neutral-text-color-label);
+    color: var(--neutral-text-label-color);
 }
 
 .label-5 {
-    color: var(--neutral-text-color-label);
+    color: var(--neutral-text-label-color);
 }
 
 .placeholder-1 {
-    color: var(--neutral-text-color-subtitle);
+    color: var(--neutral-text-subtitle-color);
 }
 
 .placeholder-2 {
-    color: var(--neutral-text-color-subtitle);
+    color: var(--neutral-text-subtitle-color);
 }

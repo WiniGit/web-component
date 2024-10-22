@@ -49,7 +49,7 @@
 
 .popup-footer>.popup-submit {
     color: #ffffff;
-    background-color: var(--infor-color);
+    background-color: var(--infor-main-color);
 }
 
 .popup-container>.popup-close-btn {

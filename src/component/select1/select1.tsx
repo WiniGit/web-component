@@ -101,7 +101,7 @@ export class Select1 extends React.Component<Select1Props, Select1State> {
         if (!item.parentId) children = (this.state.search ?? this.state.options).filter(e => e.parentId === item.id)
         // 
         return <div key={item.id} className='col' style={{ width: '100%' }}>
-            <div className={`${styles['select-tile']} row ${item.disabled ? styles["disabled"] : ""}`} style={{ paddingLeft: item.parentId ? '4.4rem' : undefined, backgroundColor: this.state.selected === item.id ? "var(--selected-background)" : undefined }} onClick={children.length ? () => {
+            <div className={`${styles['select-tile']} row ${item.disabled ? styles["disabled"] : ""}`} style={{ paddingLeft: item.parentId ? '4.4rem' : undefined, backgroundColor: this.state.selected === item.id ? "var(--neutral-selected-background-color)" : undefined }} onClick={children.length ? () => {
                 if (this.state.search) {
                     this.setState({
                         ...this.state, search: this.state.search.map(e => {
@@ -228,11 +228,11 @@ export class Select1 extends React.Component<Select1Props, Select1State> {
                 ev.stopPropagation()
                 if (this.state.value) this.setState({ ...this.state, isOpen: true, value: undefined })
             }}>
-                <FontAwesomeIcon icon={faXmarkCircle} style={{ fontSize: '1.6rem', color: "var(--neutral-text-color-subtitle)" }} />
+                <FontAwesomeIcon icon={faXmarkCircle} style={{ fontSize: '1.6rem', color: "var(--neutral-text-subtitle-color)" }} />
             </button> : <div ref={iconRef => {
                 if (iconRef?.parentElement && iconRef.parentElement.getBoundingClientRect().width < 120) iconRef.style.display = "none"
             }} className='row' >
-                <FontAwesomeIcon icon={this.state.isOpen ? faChevronUp : faChevronDown} style={{ fontSize: '1.1rem', color: "var(--neutral-text-color-subtitle)" }} />
+                <FontAwesomeIcon icon={this.state.isOpen ? faChevronUp : faChevronDown} style={{ fontSize: '1.1rem', color: "var(--neutral-text-subtitle-color)" }} />
             </div>}
             {this.state.isOpen &&
                 ReactDOM.createPortal(

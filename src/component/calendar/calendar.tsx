@@ -105,14 +105,14 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
                 let additionProps = {}
                 let selected = false
                 if (dateNumber + 1 === today.getDate() && this.state.selectMonth === today.getMonth() && this.state.selectYear === today.getFullYear()) {
-                    style = { borderColor: 'var(--infor-color)' }
+                    style = { borderColor: 'var(--infor-main-color)' }
                 }
                 if (!inRangeTime(timeValue, startDate, endDate)) {
                     additionProps = { 'in-range': 'false' }
                 } else if (!inRangeTime(timeValue, this.props.min ?? startDate, this.props.max ?? endDate)) {
                     style = {
                         ...style,
-                        color: 'var(--disabled-font-color)',
+                        color: 'var(--neutral-text-disabled-color)',
                         pointerEvents: 'none'
                     }
                 } else if (this.state.value.valueOf() === timeValue.valueOf()) {
@@ -181,13 +181,13 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
                 let style = {}
                 let selected = false
                 if (this.state.selectYear === today.getFullYear() && today.getMonth() === i) {
-                    style = { borderColor: 'var(--infor-color)' }
+                    style = { borderColor: 'var(--infor-main-color)' }
                 } if (!inRangeTime(timeValue, startDate, endDate)) {
                     additionProps = { 'in-range': 'false' }
                 } else if (!inRangeTime(new Date(this.state.selectYear, this.state.selectMonth), this.props.min ?? startDate, this.props.max ?? endDate)) {
                     if (this.state.selectYear === this.state.selectDate?.getFullYear() && this.state.selectDate.getMonth() === i) {
                         style = {
-                            color: 'var(--disabled-font-color)',
+                            color: 'var(--neutral-text-disabled-color)',
                             pointerEvents: 'none'
                         }
                     }
@@ -220,7 +220,7 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
                 let style = {}
                 let selected = false
                 if (yearNumber === today.getFullYear()) {
-                    style = { borderColor: 'var(--infor-color)' }
+                    style = { borderColor: 'var(--infor-main-color)' }
                 } else if (yearNumber < ((this.props.min ?? startDate).getFullYear()) || yearNumber > ((this.props.max ?? endDate).getFullYear())) {
                     additionProps = { 'in-range': 'false' }
                 }

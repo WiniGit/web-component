@@ -44,5 +44,5 @@
 }
 
 .pagination>li.active {
-    color: var(--infor-color);
+    color: var(--infor-main-color);
 }

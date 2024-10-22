@@ -15,7 +15,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 var __assign = (this && this.__assign) || function () {
-    __assign = Object.assign || function(t) {
+    __assign = Object.assign || function (t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
             s = arguments[i];
             for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
@@ -52,8 +52,8 @@ var Switch = /** @class */ (function (_super) {
         var _this = this;
         var _a, _b, _c, _d;
         var propStyle = {
-            '--off-bg': (_a = this.props.offBackground) !== null && _a !== void 0 ? _a : 'var(--neutral-background-main)',
-            '--on-bg': (_b = this.props.onBackground) !== null && _b !== void 0 ? _b : 'var(--infor-color)',
+            '--off-bg': (_a = this.props.offBackground) !== null && _a !== void 0 ? _a : 'var(--neutral-main-background-color)',
+            '--on-bg': (_b = this.props.onBackground) !== null && _b !== void 0 ? _b : 'var(--infor-main-color)',
             '--dot-color': (_c = this.props.dotColor) !== null && _c !== void 0 ? _c : '#ffffff',
             '--size': this.props.size ? (typeof this.props.size === 'number') ? "".concat(this.props.size, "px") : this.props.size : '2rem'
         };
@@ -68,12 +68,14 @@ var Switch = /** @class */ (function (_super) {
             convertStyle = __assign(__assign({}, this.props.style), convertStyle);
         }
         return react_1.default.createElement("label", { id: this.props.id, className: "".concat(switch_module_css_1.default['switch-container'], " row"), style: convertStyle },
-            react_1.default.createElement("input", { type: "checkbox", checked: this.state.value, name: this.props.name, disabled: this.props.disabled, onChange: function () {
+            react_1.default.createElement("input", {
+                type: "checkbox", checked: this.state.value, name: this.props.name, disabled: this.props.disabled, onChange: function () {
                     var newValue = !_this.state.value;
                     _this.setState({ value: newValue });
                     if (_this.props.onChange)
                         _this.props.onChange(newValue);
-                } }),
+                }
+            }),
             react_1.default.createElement("span", { className: switch_module_css_1.default['slider'] }));
     };
     return Switch;

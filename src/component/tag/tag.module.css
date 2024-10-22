@@ -17,29 +17,35 @@ WARNING = 3
 SUCCSESS = 4
 */
 
+.tag-container[tag-type="default"] {
+    color: var(--neutral-text-subtitle-color);
+    background-color: var(--neutral-main-background-color);
+    border: 1px solid var(--neutral-darker-background-color);
+}
+
 .tag-container[tag-type="1"] {
-    color: var(--infor-color);
+    color: var(--infor-main-color);
     background-color: var(--infor-background);
-    border: 1px solid var(--infor-color);
+    border: 1px solid var(--infor-main-color);
 }
 
 .tag-container[tag-type="2"] {
-    color: var(--error-color);
+    color: var(--error-main-color);
     background-color: var(--error-background);
-    border: 1px solid var(--error-color);
+    border: 1px solid var(--error-main-color);
 
 }
 
 .tag-container[tag-type="3"] {
-    color: var(--warning-color);
+    color: var(--warning-main-color);
     background-color: var(--warning-background);
-    border: 1px solid var(--warning-color);
+    border: 1px solid var(--warning-main-color);
 }
 
 .tag-container[tag-type="4"] {
-    color: var(--success-color);
+    color: var(--success-main-color);
     background-color: var(--success-background);
-    border: 1px solid var(--success-color);
+    border: 1px solid var(--success-main-color);
 }
 
 .tag-container>.tag-label {
@@ -54,8 +60,8 @@ SUCCSESS = 4
 }
 
 .tag-container.disabled {
-    color: var(--disabled-font-color);
-    background-color: var(--disabled-background) !important;
-    border: 0.05px solid var(--disabled-color) !important;
+    color: var(--neutral-text-disabled-color);
+    background-color: var(--neutral-disable-background-color) !important;
+    border: 0.05px solid var(--neutral-disable-background-color) !important;
     pointer-events: none !important;
 }
