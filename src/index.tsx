@@ -25,6 +25,7 @@ import { ProgressCircle } from './component/progress-circle/progress-circle'
 import { CustomSlider } from './component/slider/slider'
 import { ToastContainer } from 'react-toastify'
 import { Button } from './component/button/button'
+import { Tag } from './component/tag/tag'
 
 
 export {
@@ -51,6 +52,7 @@ export {
   ProgressCircle,
   CustomSlider,
   ToastContainer,
-  Button
+  Button,
+  Tag
 }
 export type { OptionsItem }
