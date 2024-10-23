@@ -8,7 +8,7 @@ interface TagProps {
     disabled?: boolean;
     style?: CSSProperties;
     className?: string;
-    status: ComponentStatus;
+    status?: ComponentStatus;
     onClick?: React.MouseEventHandler<HTMLDivElement>;
 }
 export declare class Tag extends React.Component<TagProps> {

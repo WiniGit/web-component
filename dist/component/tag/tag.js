@@ -22,7 +22,6 @@ exports.Tag = void 0;
 var react_1 = __importDefault(require("react"));
 var text_1 = require("../text/text");
 var tag_module_css_1 = __importDefault(require("./tag.module.css"));
-var component_status_1 = require("../component-status");
 var Tag = /** @class */ (function (_super) {
     __extends(Tag, _super);
     function Tag() {
@@ -30,7 +29,7 @@ var Tag = /** @class */ (function (_super) {
     }
     Tag.prototype.render = function () {
         var _a, _b;
-        return react_1.default.createElement("div", { id: this.props.id, "tag-type": (_a = this.state) !== null && _a !== void 0 ? _a : component_status_1.ComponentStatus.INFOR, className: "".concat(tag_module_css_1.default['tag-container'], " row ").concat(this.props.onClick ? tag_module_css_1.default['type-button'] : '', " ").concat(this.props.disabled ? tag_module_css_1.default['disabled'] : "", " ").concat((_b = this.props.className) !== null && _b !== void 0 ? _b : "button-text-2", " "), style: this.props.style, onClick: this.props.onClick },
+        return react_1.default.createElement("div", { id: this.props.id, "tag-type": (_a = this.state) !== null && _a !== void 0 ? _a : 'default', className: "".concat(tag_module_css_1.default['tag-container'], " row ").concat(this.props.onClick ? tag_module_css_1.default['type-button'] : '', " ").concat(this.props.disabled ? tag_module_css_1.default['disabled'] : "", " ").concat((_b = this.props.className) !== null && _b !== void 0 ? _b : "button-text-2", " "), style: this.props.style, onClick: this.props.onClick },
             this.props.prefix,
             react_1.default.createElement(text_1.Text, { maxLine: 1, className: tag_module_css_1.default['tag-label'] }, this.props.title),
             this.props.suffix);

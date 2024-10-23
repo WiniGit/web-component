@@ -15,7 +15,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 var __assign = (this && this.__assign) || function () {
-    __assign = Object.assign || function (t) {
+    __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
             s = arguments[i];
             for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
@@ -68,14 +68,12 @@ var Switch = /** @class */ (function (_super) {
             convertStyle = __assign(__assign({}, this.props.style), convertStyle);
         }
         return react_1.default.createElement("label", { id: this.props.id, className: "".concat(switch_module_css_1.default['switch-container'], " row"), style: convertStyle },
-            react_1.default.createElement("input", {
-                type: "checkbox", checked: this.state.value, name: this.props.name, disabled: this.props.disabled, onChange: function () {
+            react_1.default.createElement("input", { type: "checkbox", checked: this.state.value, name: this.props.name, disabled: this.props.disabled, onChange: function () {
                     var newValue = !_this.state.value;
                     _this.setState({ value: newValue });
                     if (_this.props.onChange)
                         _this.props.onChange(newValue);
-                }
-            }),
+                } }),
             react_1.default.createElement("span", { className: switch_module_css_1.default['slider'] }));
     };
     return Switch;

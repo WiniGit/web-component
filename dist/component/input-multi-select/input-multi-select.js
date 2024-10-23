@@ -15,7 +15,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 var __assign = (this && this.__assign) || function () {
-    __assign = Object.assign || function (t) {
+    __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
             s = arguments[i];
             for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
@@ -25,20 +25,20 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function (o, m, k, k2) {
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
     if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-        desc = { enumerable: true, get: function () { return m[k]; } };
+      desc = { enumerable: true, get: function() { return m[k]; } };
     }
     Object.defineProperty(o, k2, desc);
-}) : (function (o, m, k, k2) {
+}) : (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
 }));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function (o, v) {
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
     Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function (o, v) {
+}) : function(o, v) {
     o["default"] = v;
 });
 var __importStar = (this && this.__importStar) || function (mod) {
@@ -58,8 +58,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function () { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function () { return this; }), g;
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
@@ -195,30 +195,24 @@ var SelectMultiple = /** @class */ (function (_super) {
             children = ((_a = this.state.search) !== null && _a !== void 0 ? _a : this.state.options).filter(function (e) { return e.parentId === item.id; });
         // 
         return react_1.default.createElement("div", { key: item.id, className: 'col', style: { width: '100%' } },
-            react_1.default.createElement("div", {
-                className: "select-tile row ".concat(item.disabled ? "disabled" : ""), style: { paddingLeft: item.parentId ? '4.4rem' : undefined }, onClick: children.length ? function () {
+            react_1.default.createElement("div", { className: "select-tile row ".concat(item.disabled ? "disabled" : ""), style: { paddingLeft: item.parentId ? '4.4rem' : undefined }, onClick: children.length ? function () {
                     if (_this.state.search) {
-                        _this.setState(__assign(__assign({}, _this.state), {
-                            search: _this.state.search.map(function (e) {
+                        _this.setState(__assign(__assign({}, _this.state), { search: _this.state.search.map(function (e) {
                                 if (e.id === item.id)
                                     return __assign(__assign({}, e), { isOpen: !item.isOpen });
                                 else
                                     return e;
-                            })
-                        }));
+                            }) }));
                     }
                     else {
-                        _this.setState(__assign(__assign({}, _this.state), {
-                            options: _this.state.options.map(function (e) {
+                        _this.setState(__assign(__assign({}, _this.state), { options: _this.state.options.map(function (e) {
                                 if (e.id === item.id)
                                     return __assign(__assign({}, e), { isOpen: !item.isOpen });
                                 else
                                     return e;
-                            })
-                        }));
+                            }) }));
                     }
-                } : undefined
-            },
+                } : undefined },
                 ((_b = this.state.search) !== null && _b !== void 0 ? _b : this.state.options).some(function (e) { return e.parentId; }) && react_1.default.createElement("div", { className: 'row', style: { width: '1.4rem', height: '1.4rem' } }, children.length ? react_1.default.createElement(react_fontawesome_1.FontAwesomeIcon, { icon: item.isOpen ? free_solid_svg_icons_1.faCaretDown : free_solid_svg_icons_1.faCaretRight, style: { fontSize: '1.2rem', color: '#161C2499' } }) : null),
                 react_1.default.createElement(checkbox_1.Checkbox, { disabled: item.disabled, value: children.length ? (children.every(function (e) { return _this.state.value.includes(e.id); }) ? true : children.some(function (e) { return _this.state.value.includes(e.id); }) ? undefined : false) : this.state.value.includes(item.id), onChange: function (v) { _this.onCheck(v, __spreadArray([item], children, true)); }, size: '2rem' }),
                 react_1.default.createElement(text_1.Text, { className: 'body-3' }, item.name)),
@@ -263,13 +257,11 @@ var SelectMultiple = /** @class */ (function (_super) {
     SelectMultiple.prototype.render = function () {
         var _this = this;
         var _a, _b, _c, _d, _e, _f, _g, _h, _j;
-        return react_1.default.createElement("div", {
-            id: this.props.id, ref: this.containerRef, className: "select-multi-container row ".concat(this.props.disabled ? 'disabled' : '', " ").concat(((_a = this.props.helperText) === null || _a === void 0 ? void 0 : _a.length) && 'helper-text', " ").concat((_b = this.props.className) !== null && _b !== void 0 ? _b : 'body-3'), "helper-text": this.props.helperText, style: this.props.style ? __assign(__assign({}, { '--helper-text-color': (_c = this.props.helperTextColor) !== null && _c !== void 0 ? _c : '#e14337' }), this.props.style) : { '--helper-text-color': (_d = this.props.helperTextColor) !== null && _d !== void 0 ? _d : '#e14337' }, onClick: function () {
+        return react_1.default.createElement("div", { id: this.props.id, ref: this.containerRef, className: "select-multi-container row ".concat(this.props.disabled ? 'disabled' : '', " ").concat(((_a = this.props.helperText) === null || _a === void 0 ? void 0 : _a.length) && 'helper-text', " ").concat((_b = this.props.className) !== null && _b !== void 0 ? _b : 'body-3'), "helper-text": this.props.helperText, style: this.props.style ? __assign(__assign({}, { '--helper-text-color': (_c = this.props.helperTextColor) !== null && _c !== void 0 ? _c : '#e14337' }), this.props.style) : { '--helper-text-color': (_d = this.props.helperTextColor) !== null && _d !== void 0 ? _d : '#e14337' }, onClick: function () {
                 var _a, _b;
                 if (!_this.state.isOpen)
                     _this.setState(__assign(__assign({}, _this.state), { isOpen: true, style: undefined, offset: (_b = (_a = _this.containerRef) === null || _a === void 0 ? void 0 : _a.current) === null || _b === void 0 ? void 0 : _b.getBoundingClientRect() }));
-            }
-        },
+            } },
             react_1.default.createElement("div", { className: 'row', style: { flexWrap: 'wrap', flex: 1, width: '100%', gap: '0.6rem 0.4rem' } },
                 this.state.value.map(function (item) {
                     var optionItem = _this.props.options.find(function (e) { return e.id === item; });
@@ -277,55 +269,47 @@ var SelectMultiple = /** @class */ (function (_super) {
                         react_1.default.createElement(text_1.Text, { style: { color: '#161D24E5', fontSize: '1.2rem', lineHeight: '1.4rem' } }, optionItem === null || optionItem === void 0 ? void 0 : optionItem.name),
                         react_1.default.createElement(react_fontawesome_1.FontAwesomeIcon, { icon: free_solid_svg_icons_1.faClose, style: { color: '#161D24E5', fontSize: '1.2rem' } }));
                 }),
-                (!this.state.value.length || this.state.isOpen) && react_1.default.createElement("input", {
-                    autoFocus: this.state.isOpen, onChange: this.search, placeholder: this.state.value.length ? undefined : this.props.placeholder, onBlur: function (ev) {
+                (!this.state.value.length || this.state.isOpen) && react_1.default.createElement("input", { autoFocus: this.state.isOpen, onChange: this.search, placeholder: this.state.value.length ? undefined : this.props.placeholder, onBlur: function (ev) {
                         if (_this.state.onSelect)
                             ev.target.focus();
                         else
                             _this.setState(__assign(__assign({}, _this.state), { isOpen: false, onSelect: null }));
-                    }
-                })),
-            this.props.showClearValueButton && this.state.value.length ? react_1.default.createElement("button", {
-                type: 'button', className: 'row', style: { padding: '0.4rem' }, onClick: function (ev) {
+                    } })),
+            this.props.showClearValueButton && this.state.value.length ? react_1.default.createElement("button", { type: 'button', className: 'row', style: { padding: '0.4rem' }, onClick: function (ev) {
                     ev.stopPropagation();
                     if (_this.state.value.length)
                         _this.setState(__assign(__assign({}, _this.state), { isOpen: true, value: [] }));
-                }
-            },
+                } },
                 react_1.default.createElement(react_fontawesome_1.FontAwesomeIcon, { icon: free_solid_svg_icons_1.faXmarkCircle, style: { fontSize: '1.6rem', color: "var(--neutral-text-subtitle-color)" } })) : react_1.default.createElement("div", { className: 'row', style: { display: (this.containerRef.current && this.containerRef.current.getBoundingClientRect().width >= 120) ? "flex" : "none" } },
-                    react_1.default.createElement(react_fontawesome_1.FontAwesomeIcon, { icon: this.state.isOpen ? free_solid_svg_icons_1.faChevronUp : free_solid_svg_icons_1.faChevronDown, style: { fontSize: '1.1rem', color: "var(--neutral-text-subtitle-color)" } })),
+                react_1.default.createElement(react_fontawesome_1.FontAwesomeIcon, { icon: this.state.isOpen ? free_solid_svg_icons_1.faChevronUp : free_solid_svg_icons_1.faChevronDown, style: { fontSize: '1.1rem', color: "var(--neutral-text-subtitle-color)" } })),
             this.state.isOpen &&
-            react_dom_1.default.createPortal(react_1.default.createElement("div", {
-                className: "select-multi-popup col ".concat((_e = this.props.popupClassName) !== null && _e !== void 0 ? _e : ""), style: (_f = this.state.style) !== null && _f !== void 0 ? _f : {
-                    top: this.state.offset.y + this.state.offset.height + 2 + 'px',
-                    left: this.state.offset.x + 'px',
-                    width: this.state.offset.width,
-                }, onMouseOver: function (ev) { return _this.setState(__assign(__assign({}, _this.state), { onSelect: ev.target })); }, onMouseOut: function () { return _this.setState(__assign(__assign({}, _this.state), { onSelect: null })); }
-            },
-                react_1.default.createElement("div", { style: { padding: '1.2rem 1.6rem', width: '100%', borderBottom: '1px solid #161D2414' } }, (function () {
-                    var _a, _b;
-                    var _list = ((_b = (_a = _this.state.search) !== null && _a !== void 0 ? _a : _this.props.options) !== null && _b !== void 0 ? _b : []);
-                    var isSelectedAll = _list.every(function (item) { return _this.state.value.some(function (vl) { return vl === item.id; }); });
-                    return react_1.default.createElement(text_1.Text, {
-                        onClick: function () {
-                            var newValue = [];
-                            if (_list.length) {
-                                if (isSelectedAll) {
-                                    newValue = _this.state.value.filter(function (vl) { return _list.every(function (item) { return vl !== item.id; }); });
+                react_dom_1.default.createPortal(react_1.default.createElement("div", { className: "select-multi-popup col ".concat((_e = this.props.popupClassName) !== null && _e !== void 0 ? _e : ""), style: (_f = this.state.style) !== null && _f !== void 0 ? _f : {
+                        top: this.state.offset.y + this.state.offset.height + 2 + 'px',
+                        left: this.state.offset.x + 'px',
+                        width: this.state.offset.width,
+                    }, onMouseOver: function (ev) { return _this.setState(__assign(__assign({}, _this.state), { onSelect: ev.target })); }, onMouseOut: function () { return _this.setState(__assign(__assign({}, _this.state), { onSelect: null })); } },
+                    react_1.default.createElement("div", { style: { padding: '1.2rem 1.6rem', width: '100%', borderBottom: '1px solid #161D2414' } }, (function () {
+                        var _a, _b;
+                        var _list = ((_b = (_a = _this.state.search) !== null && _a !== void 0 ? _a : _this.props.options) !== null && _b !== void 0 ? _b : []);
+                        var isSelectedAll = _list.every(function (item) { return _this.state.value.some(function (vl) { return vl === item.id; }); });
+                        return react_1.default.createElement(text_1.Text, { onClick: function () {
+                                var newValue = [];
+                                if (_list.length) {
+                                    if (isSelectedAll) {
+                                        newValue = _this.state.value.filter(function (vl) { return _list.every(function (item) { return vl !== item.id; }); });
+                                    }
+                                    else {
+                                        newValue = __spreadArray(__spreadArray([], _this.state.value, true), _list.filter(function (item) { return _this.state.value.every(function (vl) { return vl !== item.id; }); }).map(function (e) { return e.id; }), true);
+                                    }
                                 }
-                                else {
-                                    newValue = __spreadArray(__spreadArray([], _this.state.value, true), _list.filter(function (item) { return _this.state.value.every(function (vl) { return vl !== item.id; }); }).map(function (e) { return e.id; }), true);
-                                }
-                            }
-                            _this.setState(__assign(__assign({}, _this.state), { value: newValue }));
-                            if (_this.props.onChange)
-                                _this.props.onChange(newValue);
-                        }, className: 'button-text-3', style: { color: _list.length ? 'var(--infor-main-color)' : '#00204D99', }
-                    }, _list.length && isSelectedAll ? 'Bỏ chọn tất cả' : 'Chọn tất cả');
-                })()),
-                react_1.default.createElement("div", { className: 'col select-body' },
-                    ((_g = this.state.search) !== null && _g !== void 0 ? _g : this.state.options).filter(function (e) { return !e.parentId; }).map(function (item) { return _this.renderOptions(item); }),
-                    (((_h = this.state.search) === null || _h === void 0 ? void 0 : _h.length) === 0 || ((_j = this.props.options) === null || _j === void 0 ? void 0 : _j.length) === 0) && (react_1.default.createElement("div", { className: 'no-results-found' }, "No result found")))), document.body));
+                                _this.setState(__assign(__assign({}, _this.state), { value: newValue }));
+                                if (_this.props.onChange)
+                                    _this.props.onChange(newValue);
+                            }, className: 'button-text-3', style: { color: _list.length ? 'var(--infor-main-color)' : '#00204D99', } }, _list.length && isSelectedAll ? 'Bỏ chọn tất cả' : 'Chọn tất cả');
+                    })()),
+                    react_1.default.createElement("div", { className: 'col select-body' },
+                        ((_g = this.state.search) !== null && _g !== void 0 ? _g : this.state.options).filter(function (e) { return !e.parentId; }).map(function (item) { return _this.renderOptions(item); }),
+                        (((_h = this.state.search) === null || _h === void 0 ? void 0 : _h.length) === 0 || ((_j = this.props.options) === null || _j === void 0 ? void 0 : _j.length) === 0) && (react_1.default.createElement("div", { className: 'no-results-found' }, "No result found")))), document.body));
     };
     return SelectMultiple;
 }(react_1.default.Component));
