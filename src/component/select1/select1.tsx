@@ -202,6 +202,7 @@ export class Select1 extends React.Component<Select1Props, Select1State> {
         const _value = this.state.options.find(e => e.id === this.state.value)
         return <div
             id={this.props.id}
+            ref={this.containerRef}
             className={`${styles['select1-container']} row ${this.props.disabled ? styles['disabled'] : ''} ${this.props.helperText?.length && styles['helper-text']} ${this.props.className ?? 'body-3'}`}
             helper-text={this.props.helperText}
             style={this.props.style ? { ...({ '--helper-text-color': this.props.helperTextColor ?? '#e14337' } as CSSProperties), ...this.props.style } : ({ '--helper-text-color': this.props.helperTextColor ?? '#e14337' } as CSSProperties)}
