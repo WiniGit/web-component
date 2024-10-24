@@ -20,10 +20,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Rating = void 0;
 var react_1 = __importDefault(require("react"));
-require("./rating.css");
-var autoKeyId = function () { return ("".concat(1e7 + -1e3 + -4e3 + -8e3 + -1e11)).replace(/[018]/g, function (c) {
-    return (parseFloat(c) ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (parseFloat(c) / 4)))).toString(16);
-}); };
+var rating_module_css_1 = __importDefault(require("./rating.module.css"));
+var autoKeyId = function () { return window.crypto.randomUUID().replace(/-/g, ''); };
 var Rating = /** @class */ (function (_super) {
     __extends(Rating, _super);
     function Rating() {
@@ -44,7 +42,7 @@ var Rating = /** @class */ (function (_super) {
     Rating.prototype.render = function () {
         var _this = this;
         var _a;
-        return react_1.default.createElement("div", { id: this.props.id, className: "row rating-container ".concat((_a = this.props.className) !== null && _a !== void 0 ? _a : ''), style: this.props.style }, Array.from({ length: 5 }).map(function (_, i) {
+        return react_1.default.createElement("div", { id: this.props.id, className: "row ".concat(rating_module_css_1.default['rating-container'], " ").concat((_a = this.props.className) !== null && _a !== void 0 ? _a : ''), style: this.props.style }, Array.from({ length: 5 }).map(function (_, i) {
             var _a, _b, _c, _d, _e;
             var uniqueId = 'rating-star-grad-0';
             var stopValue = 0;

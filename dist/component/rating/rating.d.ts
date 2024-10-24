@@ -1,5 +1,4 @@
 import React, { CSSProperties } from "react";
-import './rating.css';
 interface RatingProps {
     id?: string;
     /**
@@ -7,7 +6,7 @@ interface RatingProps {
     */
     value?: number;
     size?: number | string;
-    onChange?: (e: number) => {};
+    onChange?: (e: number) => void;
     className?: string;
     style?: CSSProperties;
     strokeColor?: string;
