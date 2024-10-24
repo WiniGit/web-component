@@ -1,5 +1,5 @@
 import React, { CSSProperties } from "react"
-import './rating.css'
+import styles from './rating.module.css'
 
 interface RatingProps {
     id?: string,
@@ -8,7 +8,7 @@ interface RatingProps {
     */
     value?: number,
     size?: number | string,
-    onChange?: (e: number) => {}
+    onChange?: (e: number) => void
     className?: string,
     style?: CSSProperties,
     strokeColor?: string,
@@ -19,8 +19,7 @@ interface RatingState {
     value: number,
 }
 
-const autoKeyId = () => (`${1e7 + -1e3 + -4e3 + -8e3 + -1e11}`).replace(/[018]/g, c =>
-    (parseFloat(c) ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (parseFloat(c) / 4)))).toString(16))
+const autoKeyId = () => window.crypto.randomUUID().replace(/-/g, '')
 
 export class Rating extends React.Component<RatingProps, RatingState> {
     state: Readonly<RatingState> = {
@@ -33,7 +32,7 @@ export class Rating extends React.Component<RatingProps, RatingState> {
         }
     }
     render(): React.ReactNode {
-        return <div id={this.props.id} className={`row rating-container ${this.props.className ?? ''}`} style={this.props.style}>
+        return <div id={this.props.id} className={`row ${styles['rating-container']} ${this.props.className ?? ''}`} style={this.props.style}>
             {Array.from({ length: 5 }).map((_, i) => {
                 let uniqueId = 'rating-star-grad-0'
                 let stopValue = 0
