@@ -92,10 +92,6 @@
     background-color: var(--neutral-hover-background-color);
 }
 
-.select1-popup>.select-body .select-tile:has(input:checked) {
-    background-color: var(--neutral-selected-background-color);
-}
-
 .select1-popup>.select-body .select-tile.disabled {
     background-color: var(--neutral-disable-background-color) !important;
 }
