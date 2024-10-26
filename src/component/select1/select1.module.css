@@ -59,7 +59,7 @@
 .select1-popup {
     position: absolute;
     z-index: 10;
-    background-color: #fff;
+    background-color: var(--neutral-absolute-background-color);
     border-radius: 0.8rem;
     height: fit-content;
     box-shadow: 0 0 12px 0 #00204d1f;

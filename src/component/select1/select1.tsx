@@ -25,7 +25,6 @@ interface Select1Props {
     helperTextColor?: string,
     style?: CSSProperties,
     handleSearch?: (e: string) => Promise<Array<OptionsItem>>,
-    showClearValueButton?: boolean,
     readOnly?: boolean,
     popupClassName?: string
 }
@@ -225,16 +224,11 @@ export class Select1 extends React.Component<Select1Props, Select1State> {
                     else if (!this.state.onSelect) this.setState({ ...this.state, isOpen: false, onSelect: null })
                 }}
             /> : _value.name}
-            {this.props.showClearValueButton && _value ? <button type='button' className='row' style={{ padding: '0.4rem' }} onClick={(ev) => {
-                ev.stopPropagation()
-                if (this.state.value) this.setState({ ...this.state, isOpen: true, value: undefined })
-            }}>
-                <FontAwesomeIcon icon={faXmarkCircle} style={{ fontSize: '1.6rem', color: "var(--neutral-text-subtitle-color)" }} />
-            </button> : <div ref={iconRef => {
+            <div ref={iconRef => {
                 if (iconRef?.parentElement && iconRef.parentElement.getBoundingClientRect().width < 120) iconRef.style.display = "none"
             }} className='row' >
                 <FontAwesomeIcon icon={this.state.isOpen ? faChevronUp : faChevronDown} style={{ fontSize: '1.1rem', color: "var(--neutral-text-subtitle-color)" }} />
-            </div>}
+            </div>
             {this.state.isOpen &&
                 ReactDOM.createPortal(
                     <div className={`${styles['select1-popup']} col ${this.props.popupClassName ?? ""}`}

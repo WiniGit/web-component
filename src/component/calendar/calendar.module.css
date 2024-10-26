@@ -1,5 +1,5 @@
 .calendar-container {
-    background-color: #ffffff;
+    background-color: var(--neutral-absolute-background-color);
     border-radius: 0.8rem;
     align-items: stretch;
     border: var(--neutral-main-border-color);
@@ -23,7 +23,7 @@
 }
 
 .calendar-sidebar-options>.calendar-sidebar-option-buttton {
-    color: #00204DE5;
+    color: var(--neutral-text-title-color);
     padding: 0.8rem 1.6rem;
 }
 
@@ -74,7 +74,6 @@
     flex: 1;
     text-align: center;
     cursor: pointer;
-    ;
 }
 
 .picker-date-header>button {
@@ -87,7 +86,7 @@
 
 .picker-date-header>button>svg {
     font-size: 1.4rem;
-    color: #00204D99;
+    color: var(--neutral-text-title-color);
     pointer-events: none;
 }
 
@@ -115,7 +114,7 @@
     align-items: center;
     justify-content: center;
     border-radius: 2.4rem;
-    color: #00204de5;
+    color: var(--neutral-text-title-color);
 }
 
 button[class*="-picker-circle"] {
@@ -124,7 +123,7 @@ button[class*="-picker-circle"] {
 
 button[class*="-picker-circle"].selected {
     background-color: var(--infor-main-color);
-    color: #ffffff;
+    color: var(--neutral-absolute-background-color);
 }
 
 button[class*="-picker-circle"][in-range="false"] {

@@ -1,4 +1,5 @@
 import React, { CSSProperties, ReactNode } from 'react';
+import styles from './infinite-scroll.module.css'
 
 
 interface InfiniteScrollProps {
@@ -27,7 +28,7 @@ export class InfiniteScroll extends React.Component<InfiniteScrollProps, Infinit
                 await this.props.handleScroll(Math.round(scrollElement.offsetHeight + scrollElement.scrollTop) >= (scrollElement.scrollHeight - 1), ev)
                 this.setState({ loading: false })
             }
-        }} className={`infinite-scroll ${this.state.loading ? 'loading' : ''} ${this.props.className ?? 'col'}`} style={this.props.style ?? { 'overflow': 'hidden auto' }}>
+        }} className={`${styles['infinite-scroll']} ${this.state.loading ? styles['loading'] : ''} ${this.props.className ?? 'col'}`} style={this.props.style ?? { 'overflow': 'hidden auto' }}>
             {this.props.children}
         </div>
     }
