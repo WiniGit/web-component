@@ -1,5 +1,4 @@
 import React, { CSSProperties, ReactNode } from "react";
-import './calendar.css';
 export declare const today: Date;
 export declare const startDate: Date;
 export declare const endDate: Date;

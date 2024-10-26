@@ -1,5 +1,5 @@
 import React, { CSSProperties, ReactNode } from "react"
-import styles from './calendar.css'
+import styles from './calendar.module.css'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faAngleDoubleLeft, faAngleDoubleRight, faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons"
 import { differenceInCalendarDays } from "date-fns"

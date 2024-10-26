@@ -31,7 +31,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Calendar = exports.CalendarType = exports.inRangeTime = exports.endDate = exports.startDate = exports.today = void 0;
 var react_1 = __importDefault(require("react"));
-require("./calendar.css");
+var calendar_module_css_1 = __importDefault(require("./calendar.module.css"));
 var react_fontawesome_1 = require("@fortawesome/react-fontawesome");
 var free_solid_svg_icons_1 = require("@fortawesome/free-solid-svg-icons");
 var date_fns_1 = require("date-fns");
@@ -96,7 +96,7 @@ var Calendar = /** @class */ (function (_super) {
                         weekdayTitle = '';
                         break;
                 }
-                return react_1.default.createElement("div", { key: 'dtwk-' + i, className: 'date-picker-circle label-4', style: { color: '#00204D99' } }, weekdayTitle);
+                return react_1.default.createElement("div", { key: 'dtwk-' + i, className: "".concat(calendar_module_css_1.default['date-picker-circle'], " label-4"), style: { color: 'var(--neutral-text-title-color)' } }, weekdayTitle);
             }),
             Array.from({ length: 42 }).map(function (_, i) {
                 var _a, _b;
@@ -119,9 +119,9 @@ var Calendar = /** @class */ (function (_super) {
                     selected = true;
                 }
                 else if (timeValue.getMonth() !== _this.state.selectMonth) {
-                    style = __assign(__assign({}, style), { color: '#9fb0c7' });
+                    style = __assign(__assign({}, style), { color: 'var(--neutral-text-subtitle-color)' });
                 }
-                return react_1.default.createElement("button", __assign({ type: "button", key: timeValue.toString(), className: "date-picker-circle body-3 ".concat(selected ? 'selected' : ''), style: style }, additionProps, { onClick: function () {
+                return react_1.default.createElement("button", __assign({ type: "button", key: timeValue.toString(), className: "".concat(calendar_module_css_1.default['date-picker-circle'], " body-3 ").concat(selected ? calendar_module_css_1.default['selected'] : ''), style: style }, additionProps, { onClick: function () {
                         _this.setState(__assign(__assign({}, _this.state), { value: timeValue }));
                         if (_this.props.onSelect)
                             _this.props.onSelect(timeValue);
@@ -194,7 +194,7 @@ var Calendar = /** @class */ (function (_super) {
             if (_this.state.selectYear === _this.state.value.getFullYear() && i === _this.state.value.getMonth()) {
                 selected = true;
             }
-            return react_1.default.createElement("button", __assign({ type: "button", key: timeValue.toString(), className: "month-picker-circle body-3 row ".concat(selected ? 'selected' : ''), style: style }, additionProps, { onClick: function () {
+            return react_1.default.createElement("button", __assign({ type: "button", key: timeValue.toString(), className: "".concat(calendar_module_css_1.default['month-picker-circle'], " body-3 row ").concat(selected ? calendar_module_css_1.default['selected'] : ''), style: style }, additionProps, { onClick: function () {
                     if (_this.props.type === CalendarType.MONTH) {
                         _this.setState(__assign(__assign({}, _this.state), { value: timeValue }));
                         if (_this.props.onSelect)
@@ -224,7 +224,7 @@ var Calendar = /** @class */ (function (_super) {
             if (yearNumber === _this.state.value.getFullYear()) {
                 selected = true;
             }
-            return react_1.default.createElement("button", __assign({ type: "button", key: yearNumber.toString(), className: "year-picker-circle body-3 row ".concat(selected ? 'selected' : ''), style: style }, additionProps, { onClick: function () {
+            return react_1.default.createElement("button", __assign({ type: "button", key: yearNumber.toString(), className: "".concat(calendar_module_css_1.default['year-picker-circle'], " body-3 row ").concat(selected ? calendar_module_css_1.default['selected'] : ''), style: style }, additionProps, { onClick: function () {
                     if (_this.props.type === CalendarType.YEAR) {
                         _this.setState(__assign(__assign({}, _this.state), { value: new Date(yearNumber) }));
                         if (_this.props.onSelect)
@@ -290,16 +290,16 @@ var Calendar = /** @class */ (function (_super) {
     };
     Calendar.prototype.render = function () {
         var _this = this;
-        return react_1.default.createElement("div", { id: this.props.id, className: "row calendar-container ".concat(this.props.className), style: this.props.style },
-            this.props.showSidebar ? react_1.default.createElement("div", { className: "calendar-sidebar-options col" },
-                react_1.default.createElement("button", { type: "button", onClick: function () { }, className: "label-4 calendar-sidebar-option-buttton" }, "Yesterday"),
-                react_1.default.createElement("button", { type: "button", className: "label-4 calendar-sidebar-option-buttton" }, "Last week"),
-                react_1.default.createElement("button", { type: "button", className: "label-4 calendar-sidebar-option-buttton" }, "Last month"),
-                react_1.default.createElement("button", { type: "button", className: "label-4 calendar-sidebar-option-buttton" }, "Last year")) : null,
-            react_1.default.createElement("div", { className: "calendar-body col" },
+        return react_1.default.createElement("div", { id: this.props.id, className: "row ".concat(calendar_module_css_1.default['calendar-container'], " ").concat(this.props.className), style: this.props.style },
+            this.props.showSidebar ? react_1.default.createElement("div", { className: "".concat(calendar_module_css_1.default['calendar-sidebar-options'], " col") },
+                react_1.default.createElement("button", { type: "button", onClick: function () { }, className: "label-4 ".concat(calendar_module_css_1.default['calendar-sidebar-option-buttton']) }, "Yesterday"),
+                react_1.default.createElement("button", { type: "button", className: "label-4 ".concat(calendar_module_css_1.default['calendar-sidebar-option-buttton']) }, "Last week"),
+                react_1.default.createElement("button", { type: "button", className: "label-4 ".concat(calendar_module_css_1.default['calendar-sidebar-option-buttton']) }, "Last month"),
+                react_1.default.createElement("button", { type: "button", className: "label-4 ".concat(calendar_module_css_1.default['calendar-sidebar-option-buttton']) }, "Last year")) : null,
+            react_1.default.createElement("div", { className: "".concat(calendar_module_css_1.default['calendar-body'], " col") },
                 react_1.default.createElement("div", { className: "row", style: { alignItems: 'start' } },
-                    react_1.default.createElement("div", { className: "picker-date-container col" },
-                        react_1.default.createElement("div", { className: 'picker-date-header row' },
+                    react_1.default.createElement("div", { className: "".concat(calendar_module_css_1.default['picker-date-container'], " col") },
+                        react_1.default.createElement("div", { className: "".concat(calendar_module_css_1.default['picker-date-header'], " row") },
                             react_1.default.createElement("button", { type: 'button', onClick: function () {
                                     switch (_this.state.type) {
                                         case CalendarType.YEAR:
@@ -396,8 +396,8 @@ var Calendar = /** @class */ (function (_super) {
                                     }
                                 } },
                                 react_1.default.createElement(react_fontawesome_1.FontAwesomeIcon, { icon: free_solid_svg_icons_1.faAngleDoubleRight }))),
-                        react_1.default.createElement("div", { className: 'picker-date-body row' }, this.state.type === CalendarType.YEAR ? this.showYearInRange() : this.state.type === CalendarType.MONTH ? this.showMonthInYear() : this.showDateInMonth())),
-                    this.props.type === CalendarType.DATETIME ? react_1.default.createElement("div", { className: "picker-time-container col" },
+                        react_1.default.createElement("div", { className: "".concat(calendar_module_css_1.default['picker-date-body'], " row") }, this.state.type === CalendarType.YEAR ? this.showYearInRange() : this.state.type === CalendarType.MONTH ? this.showMonthInYear() : this.showDateInMonth())),
+                    this.props.type === CalendarType.DATETIME ? react_1.default.createElement("div", { className: "".concat(calendar_module_css_1.default['picker-time-container'], " col") },
                         react_1.default.createElement("div", { className: "heading-7" },
                             this.state.selectHours < 10 ? "0".concat(this.state.selectHours) : this.state.selectHours,
                             ":",
@@ -405,27 +405,27 @@ var Calendar = /** @class */ (function (_super) {
                             ":",
                             this.state.selectSeconds < 10 ? "0".concat(this.state.selectSeconds) : this.state.selectSeconds),
                         react_1.default.createElement("div", { className: "row", style: { alignItems: 'start', flex: 1, height: '100%' } },
-                            react_1.default.createElement("div", { className: "scroll-picker-hours col" }, Array.from({ length: 24 }).map(function (_, i) { return react_1.default.createElement("button", { type: "button", onClick: function () {
+                            react_1.default.createElement("div", { className: "".concat(calendar_module_css_1.default['scroll-picker-hours'], " col") }, Array.from({ length: 24 }).map(function (_, i) { return react_1.default.createElement("button", { type: "button", onClick: function () {
                                     var newValue = _this.state.value;
                                     newValue.setHours(i);
                                     _this.setState(__assign(__assign({}, _this.state), { selectHours: i, value: newValue }));
                                     if (_this.props.onSelect)
                                         _this.props.onSelect(newValue);
-                                }, key: "hours-".concat(i), className: "label-4 ".concat(_this.state.selectHours === (i) ? 'selected' : '') }, i < 10 ? "0".concat(i) : i); })),
-                            react_1.default.createElement("div", { className: "scroll-picker-minutes col" }, Array.from({ length: 60 }).map(function (_, i) { return react_1.default.createElement("button", { type: "button", onClick: function () {
+                                }, key: "hours-".concat(i), className: "label-4 ".concat(_this.state.selectHours === (i) ? calendar_module_css_1.default['selected'] : '') }, i < 10 ? "0".concat(i) : i); })),
+                            react_1.default.createElement("div", { className: "".concat(calendar_module_css_1.default['scroll-picker-minutes'], " col") }, Array.from({ length: 60 }).map(function (_, i) { return react_1.default.createElement("button", { type: "button", onClick: function () {
                                     var newValue = _this.state.value;
                                     newValue.setMinutes(i);
                                     _this.setState(__assign(__assign({}, _this.state), { selectMinutes: i, value: newValue }));
                                     if (_this.props.onSelect)
                                         _this.props.onSelect(newValue);
-                                }, key: "hours-".concat(i), className: "label-4 ".concat(_this.state.selectMinutes === (i) ? 'selected' : '') }, i < 10 ? "0".concat(i) : i); })),
-                            react_1.default.createElement("div", { className: "scroll-picker-seconds col" }, Array.from({ length: 60 }).map(function (_, i) { return react_1.default.createElement("button", { type: "button", onClick: function () {
+                                }, key: "hours-".concat(i), className: "label-4 ".concat(_this.state.selectMinutes === (i) ? calendar_module_css_1.default['selected'] : '') }, i < 10 ? "0".concat(i) : i); })),
+                            react_1.default.createElement("div", { className: "".concat(calendar_module_css_1.default['scroll-picker-seconds'], " col") }, Array.from({ length: 60 }).map(function (_, i) { return react_1.default.createElement("button", { type: "button", onClick: function () {
                                     var newValue = _this.state.value;
                                     newValue.setSeconds(i);
                                     _this.setState(__assign(__assign({}, _this.state), { selectSeconds: i, value: newValue }));
                                     if (_this.props.onSelect)
                                         _this.props.onSelect(newValue);
-                                }, key: "hours-".concat(i), className: "label-4 ".concat(_this.state.selectSeconds === (i) ? 'selected' : '') }, i < 10 ? "0".concat(i) : i); })))) : null),
+                                }, key: "hours-".concat(i), className: "label-4 ".concat(_this.state.selectSeconds === (i) ? calendar_module_css_1.default['selected'] : '') }, i < 10 ? "0".concat(i) : i); })))) : null),
                 this.props.footer));
     };
     return Calendar;

@@ -292,12 +292,7 @@ var Select1 = /** @class */ (function (_super) {
                     else if (!_this.state.onSelect)
                         _this.setState(__assign(__assign({}, _this.state), { isOpen: false, onSelect: null }));
                 } }) : _value.name,
-            this.props.showClearValueButton && _value ? react_1.default.createElement("button", { type: 'button', className: 'row', style: { padding: '0.4rem' }, onClick: function (ev) {
-                    ev.stopPropagation();
-                    if (_this.state.value)
-                        _this.setState(__assign(__assign({}, _this.state), { isOpen: true, value: undefined }));
-                } },
-                react_1.default.createElement(react_fontawesome_1.FontAwesomeIcon, { icon: free_solid_svg_icons_1.faXmarkCircle, style: { fontSize: '1.6rem', color: "var(--neutral-text-subtitle-color)" } })) : react_1.default.createElement("div", { ref: function (iconRef) {
+            react_1.default.createElement("div", { ref: function (iconRef) {
                     if ((iconRef === null || iconRef === void 0 ? void 0 : iconRef.parentElement) && iconRef.parentElement.getBoundingClientRect().width < 120)
                         iconRef.style.display = "none";
                 }, className: 'row' },

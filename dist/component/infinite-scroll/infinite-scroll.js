@@ -67,6 +67,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.InfiniteScroll = void 0;
 var react_1 = __importDefault(require("react"));
+var infinite_scroll_module_css_1 = __importDefault(require("./infinite-scroll.module.css"));
 var InfiniteScroll = /** @class */ (function (_super) {
     __extends(InfiniteScroll, _super);
     function InfiniteScroll() {
@@ -95,7 +96,7 @@ var InfiniteScroll = /** @class */ (function (_super) {
                         case 2: return [2 /*return*/];
                     }
                 });
-            }); }, className: "infinite-scroll ".concat(this.state.loading ? 'loading' : '', " ").concat((_a = this.props.className) !== null && _a !== void 0 ? _a : 'col'), style: (_b = this.props.style) !== null && _b !== void 0 ? _b : { 'overflow': 'hidden auto' } }, this.props.children);
+            }); }, className: "".concat(infinite_scroll_module_css_1.default['infinite-scroll'], " ").concat(this.state.loading ? infinite_scroll_module_css_1.default['loading'] : '', " ").concat((_a = this.props.className) !== null && _a !== void 0 ? _a : 'col'), style: (_b = this.props.style) !== null && _b !== void 0 ? _b : { 'overflow': 'hidden auto' } }, this.props.children);
     };
     return InfiniteScroll;
 }(react_1.default.Component));

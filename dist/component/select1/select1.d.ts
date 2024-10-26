@@ -18,7 +18,6 @@ interface Select1Props {
     helperTextColor?: string;
     style?: CSSProperties;
     handleSearch?: (e: string) => Promise<Array<OptionsItem>>;
-    showClearValueButton?: boolean;
     readOnly?: boolean;
     popupClassName?: string;
 }
