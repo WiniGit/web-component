@@ -26,7 +26,8 @@ interface Select1Props {
     style?: CSSProperties,
     handleSearch?: (e: string) => Promise<Array<OptionsItem>>,
     readOnly?: boolean,
-    popupClassName?: string
+    popupClassName?: string,
+    prefix?: ReactNode,
 }
 
 interface Select1State {
@@ -217,6 +218,7 @@ export class Select1 extends React.Component<Select1Props, Select1State> {
                 }
             }}
         >
+            {this.props.prefix}
             {(!_value || typeof _value.name === "string" || typeof _value.name === "number") ? <input ref={this.inputRef} readOnly={this.props.readOnly} onChange={this.search} placeholder={this.props.placeholder}
                 onKeyDown={this.onKeyDown}
                 onBlur={ev => {
@@ -225,7 +227,7 @@ export class Select1 extends React.Component<Select1Props, Select1State> {
                 }}
             /> : _value.name}
             <div ref={iconRef => {
-                if (iconRef?.parentElement && iconRef.parentElement.getBoundingClientRect().width < 120) iconRef.style.display = "none"
+                if (iconRef?.parentElement && iconRef.parentElement.getBoundingClientRect().width < 100) iconRef.style.display = "none"
             }} className='row' >
                 <FontAwesomeIcon icon={this.state.isOpen ? faChevronUp : faChevronDown} style={{ fontSize: '1.1rem', color: "var(--neutral-text-subtitle-color)" }} />
             </div>
