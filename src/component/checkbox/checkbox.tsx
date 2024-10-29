@@ -7,6 +7,7 @@ interface CheckboxProps {
     value?: boolean,
     checkColor?: string,
     disabled?: boolean,
+    className?: string,
     style?: CSSProperties,
     /** default 2.4rem **/
     size?: number | string,
@@ -45,7 +46,7 @@ export class Checkbox extends React.Component<CheckboxProps, CheckboxState> {
                 ...convertStyle
             }
         }
-        return <label id={this.props.id} className={`${styles['checkbox-container']} row`} style={convertStyle} is-null-value={`${this.state.value == undefined}`} onClick={this.props.onClick}>
+        return <label id={this.props.id} className={`${styles['checkbox-container']} row ${this.props.className ?? ''}`} style={convertStyle} is-null-value={`${this.state.value == undefined}`} onClick={this.props.onClick}>
             <input type="checkbox" checked={this.state.value} disabled={this.props.disabled}
                 onChange={(ev) => {
                     ev.stopPropagation()

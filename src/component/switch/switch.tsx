@@ -6,6 +6,7 @@ interface SwitchProps {
     onChange?: (value: boolean) => void,
     value?: boolean,
     disabled?: boolean,
+    className?: string,
     style?: CSSProperties,
     size?: number | string,
     dotColor?: string,
@@ -53,7 +54,7 @@ export class Switch extends React.Component<SwitchProps, SwitchState> {
                 ...convertStyle,
             }
         }
-        return <label id={this.props.id} className={`${styles['switch-container']} row`} style={convertStyle} >
+        return <label id={this.props.id} className={`${styles['switch-container']} row ${this.props.className ?? ''}`} style={convertStyle} >
             <input type="checkbox" checked={this.state.value} name={this.props.name} disabled={this.props.disabled}
                 onChange={() => {
                     const newValue = !this.state.value
