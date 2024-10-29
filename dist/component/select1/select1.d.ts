@@ -20,6 +20,7 @@ interface Select1Props {
     handleSearch?: (e: string) => Promise<Array<OptionsItem>>;
     readOnly?: boolean;
     popupClassName?: string;
+    prefix?: ReactNode;
 }
 interface Select1State {
     value?: string | number;
