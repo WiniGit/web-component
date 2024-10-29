@@ -50,7 +50,7 @@ var Switch = /** @class */ (function (_super) {
     };
     Switch.prototype.render = function () {
         var _this = this;
-        var _a, _b, _c, _d;
+        var _a, _b, _c, _d, _e;
         var propStyle = {
             '--off-bg': (_a = this.props.offBackground) !== null && _a !== void 0 ? _a : 'var(--neutral-main-background-color)',
             '--on-bg': (_b = this.props.onBackground) !== null && _b !== void 0 ? _b : 'var(--infor-main-color)',
@@ -67,7 +67,7 @@ var Switch = /** @class */ (function (_super) {
             delete this.props.style.maxHeight;
             convertStyle = __assign(__assign({}, this.props.style), convertStyle);
         }
-        return react_1.default.createElement("label", { id: this.props.id, className: "".concat(switch_module_css_1.default['switch-container'], " row"), style: convertStyle },
+        return react_1.default.createElement("label", { id: this.props.id, className: "".concat(switch_module_css_1.default['switch-container'], " row ").concat((_e = this.props.className) !== null && _e !== void 0 ? _e : ''), style: convertStyle },
             react_1.default.createElement("input", { type: "checkbox", checked: this.state.value, name: this.props.name, disabled: this.props.disabled, onChange: function () {
                     var newValue = !_this.state.value;
                     _this.setState({ value: newValue });

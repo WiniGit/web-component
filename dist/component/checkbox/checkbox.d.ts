@@ -5,6 +5,7 @@ interface CheckboxProps {
     value?: boolean;
     checkColor?: string;
     disabled?: boolean;
+    className?: string;
     style?: CSSProperties;
     /** default 2.4rem **/
     size?: number | string;
