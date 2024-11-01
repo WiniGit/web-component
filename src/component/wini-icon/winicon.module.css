@@ -1,9 +1,14 @@
+.wini-icon {
+    --size: 1.6rem;
+    --color: var(--neutral-text-subtitle-color);
+}
+
 .wini-icon>svg {
     width: var(--size, inherit);
     height: var(--size, inherit);
 }
 
-.wini-icon>svg path, .wini-icon>* {
+.wini-icon>svg>* {
     fill: var(--color, "#61616B");
     stroke: var(--color, "#61616B");
 }
