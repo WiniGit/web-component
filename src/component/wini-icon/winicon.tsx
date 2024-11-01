@@ -13,7 +13,7 @@ interface WiniconProps {
 
 export function Winicon({ src, link, className, style, size, color }: WiniconProps) {
     const [svgData, setSvgData] = useState<string>()
-    const cdnSrc = "https://cdn.jsdelivr.net/gh/WiniGit/wini-icons@latest/icons/"
+    const cdnSrc = "https://cdn.jsdelivr.net/gh/WiniGit/icon-library@latest/"
 
     useEffect(() => {
         if (src) {
