@@ -1,11 +1,12 @@
 import React from "react";
-import { CSSProperties, ReactNode } from "react";
+import { CSSProperties } from "react";
 interface WiniconProps {
-    svg: ReactNode;
+    src?: string;
+    link?: string;
     className?: string;
     style?: CSSProperties;
     size?: number | string;
     color?: string;
 }
-export default function Winicon({ svg, className, style, size, color }: WiniconProps): React.JSX.Element;
+export declare function Winicon({ src, link, className, style, size, color }: WiniconProps): React.JSX.Element;
 export {};
