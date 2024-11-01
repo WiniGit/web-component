@@ -1,18 +1,27 @@
-import React from "react";
-import { CSSProperties, ReactNode } from "react";
+import React, { useEffect, useState } from "react";
+import styles from './winicon.module.css'
+import { CSSProperties } from "react";
 
 interface WiniconProps {
-    svg: ReactNode,
+    src?: string,
+    link?: string,
     className?: string
     style?: CSSProperties,
     size?: number | string,
     color?: string
 }
 
-export default function Winicon({ svg, className, style, size, color }: WiniconProps) {
-    const modifiedSvg = React.cloneElement(svg as React.ReactElement, {
-        size,
-        fill: color,  // Apply color to the fill attribute of the SVG
-    });
-    return <div className={`wini-icon ${className ?? ''}`} style={style}>{modifiedSvg}</div>
+export function Winicon({ src, link, className, style, size, color }: WiniconProps) {
+    const [svgData, setSvgData] = useState<string>()
+    const cdnSrc = "https://cdn.jsdelivr.net/gh/WiniGit/wini-icons@latest/icons/"
+
+    useEffect(() => {
+        if (src) {
+            fetch(cdnSrc + src + ".svg").then(async (res) => { setSvgData(await res.text()) })
+        } else if (link) {
+            fetch(link).then(async (res) => { setSvgData(await res.text()) })
+        }
+    }, [src, link])
+
+    return <div className={`${styles['wini-icon']} ${className ?? ''}`} style={(style ? { ...style, '--size': size, '--color': color } : { '--size': size, '--color': color }) as any} dangerouslySetInnerHTML={{ __html: svgData ?? '' }} />
 }

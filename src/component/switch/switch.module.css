@@ -39,15 +39,15 @@
 
 .switch-container:has(> input:disabled:not(*:checked)) {
     pointer-events: none;
-    border: 1px inset #00358033;
+    border: var(--neutral-main-border-color);
     background-color: var(--neutral-disable-background-color) !important;
 }
 
 .switch-container:has(> input:disabled:not(*:checked)) .slider {
-    background-color: #00204D40;
+    background-color: var(--neutral-text-disabled-color) !important;
 }
 
 .switch-container:has(> input:disabled:checked) {
     pointer-events: none;
-    background-color: #bccdf5 !important;
+    background-color: var(--primary-sub-color) !important;
 }

@@ -26,6 +26,7 @@ import { CustomSlider } from './component/slider/slider'
 import { ToastContainer } from 'react-toastify'
 import { Button } from './component/button/button'
 import { Tag } from './component/tag/tag'
+import { Winicon } from './component/wini-icon/winicon'
 
 
 export {
@@ -53,6 +54,7 @@ export {
   CustomSlider,
   ToastContainer,
   Button,
-  Tag
+  Tag,
+  Winicon
 }
 export type { OptionsItem }
