@@ -83,7 +83,7 @@ function Winicon(_a) {
     var cdnSrc = "https://cdn.jsdelivr.net/gh/WiniGit/icon-library@latest/";
     (0, react_1.useEffect)(function () {
         if (src) {
-            fetch(cdnSrc + src + "").then(function (res) { return __awaiter(_this, void 0, void 0, function () { var _a; return __generator(this, function (_b) {
+            fetch(cdnSrc + src + ".svg").then(function (res) { return __awaiter(_this, void 0, void 0, function () { var _a; return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
                         _a = setSvgData;
