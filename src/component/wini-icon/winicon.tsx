@@ -4903,4 +4903,1932 @@ type WiniIconName = "color/accessibility/accessibility-lift" |
   "outline/arrows/window-minimize-2" |
   "outline/arrows/window-minimize-3" |
   "outline/arrows/window-minimize-4" |
-  "outline/arrows/window-minimize"
+  "outline/arrows/window-minimize" |
+  "outline/business/address-book-2" |
+  "outline/business/address-book-3" |
+  "outline/business/address-book-4" |
+  "outline/business/address-book" |
+  "outline/business/agenda-2" |
+  "outline/business/agenda-3" |
+  "outline/business/agenda-4" |
+  "outline/business/agenda-5" |
+  "outline/business/agenda" |
+  "outline/business/algorithm-2" |
+  "outline/business/algorithm-3" |
+  "outline/business/algorithm-4" |
+  "outline/business/algorithm-5" |
+  "outline/business/algorithm" |
+  "outline/business/amazon-card-2" |
+  "outline/business/amazon-card" |
+  "outline/business/amex-2" |
+  "outline/business/amex" |
+  "outline/business/android-card-2" |
+  "outline/business/android-card" |
+  "outline/business/app-services-2" |
+  "outline/business/app-services-3" |
+  "outline/business/app-services-4" |
+  "outline/business/app-services" |
+  "outline/business/apple-card-2" |
+  "outline/business/apple-card" |
+  "outline/business/archery-target-2" |
+  "outline/business/archery-target-3" |
+  "outline/business/archery-target-4" |
+  "outline/business/archery-target-5" |
+  "outline/business/archery-target" |
+  "outline/business/atm-2" |
+  "outline/business/atm-3" |
+  "outline/business/atm-4" |
+  "outline/business/atm-5" |
+  "outline/business/atm" |
+  "outline/business/award-49-2" |
+  "outline/business/award-49-3" |
+  "outline/business/award-49-4" |
+  "outline/business/award-49-5" |
+  "outline/business/award-49" |
+  "outline/business/badge-2" |
+  "outline/business/badge-3" |
+  "outline/business/badge-4" |
+  "outline/business/badge-5" |
+  "outline/business/badge" |
+  "outline/business/bank-statement-2" |
+  "outline/business/bank-statement-3" |
+  "outline/business/bank-statement-4" |
+  "outline/business/bank-statement" |
+  "outline/business/bill-2" |
+  "outline/business/bill-3" |
+  "outline/business/bill-4" |
+  "outline/business/bill-5" |
+  "outline/business/bill" |
+  "outline/business/bitcoin-2" |
+  "outline/business/bitcoin-3" |
+  "outline/business/bitcoin-4" |
+  "outline/business/bitcoin-5" |
+  "outline/business/bitcoin-card-2" |
+  "outline/business/bitcoin-card" |
+  "outline/business/bitcoin" |
+  "outline/business/block-2" |
+  "outline/business/block-3" |
+  "outline/business/block-4" |
+  "outline/business/block-5" |
+  "outline/business/block-6" |
+  "outline/business/block" |
+  "outline/business/blockchain-2" |
+  "outline/business/blockchain-3" |
+  "outline/business/blockchain-4" |
+  "outline/business/blockchain-5" |
+  "outline/business/blockchain" |
+  "outline/business/board-27-2" |
+  "outline/business/board-27-3" |
+  "outline/business/board-27-4" |
+  "outline/business/board-27-5" |
+  "outline/business/board-27" |
+  "outline/business/board-28-2" |
+  "outline/business/board-28-3" |
+  "outline/business/board-28-4" |
+  "outline/business/board-28-5" |
+  "outline/business/board-28" |
+  "outline/business/board-29-2" |
+  "outline/business/board-29-3" |
+  "outline/business/board-29-4" |
+  "outline/business/board-29" |
+  "outline/business/board-30-2" |
+  "outline/business/board-30-3" |
+  "outline/business/board-30-4" |
+  "outline/business/board-30" |
+  "outline/business/books-2" |
+  "outline/business/books-3" |
+  "outline/business/books-4" |
+  "outline/business/books-5" |
+  "outline/business/books" |
+  "outline/business/briefcase-24-2" |
+  "outline/business/briefcase-24-3" |
+  "outline/business/briefcase-24-4" |
+  "outline/business/briefcase-24-5" |
+  "outline/business/briefcase-24-6" |
+  "outline/business/briefcase-24" |
+  "outline/business/briefcase-25-2" |
+  "outline/business/briefcase-25-3" |
+  "outline/business/briefcase-25-4" |
+  "outline/business/briefcase-25-5" |
+  "outline/business/briefcase-25" |
+  "outline/business/briefcase-26-2" |
+  "outline/business/briefcase-26-3" |
+  "outline/business/briefcase-26-4" |
+  "outline/business/briefcase-26-5" |
+  "outline/business/briefcase-26" |
+  "outline/business/bulb-61-2" |
+  "outline/business/bulb-61-3" |
+  "outline/business/bulb-61-4" |
+  "outline/business/bulb-61-5" |
+  "outline/business/bulb-61" |
+  "outline/business/bulb-62-2" |
+  "outline/business/bulb-62-3" |
+  "outline/business/bulb-62-4" |
+  "outline/business/bulb-62-5" |
+  "outline/business/bulb-62" |
+  "outline/business/bulb-63-2" |
+  "outline/business/bulb-63-3" |
+  "outline/business/bulb-63-4" |
+  "outline/business/bulb-63-5" |
+  "outline/business/bulb-63" |
+  "outline/business/business-agent-2" |
+  "outline/business/business-agent-3" |
+  "outline/business/business-agent-4" |
+  "outline/business/business-agent" |
+  "outline/business/business-contact-85-2" |
+  "outline/business/business-contact-85-3" |
+  "outline/business/business-contact-85-4" |
+  "outline/business/business-contact-85" |
+  "outline/business/business-contact-86-2" |
+  "outline/business/business-contact-86-3" |
+  "outline/business/business-contact-86" |
+  "outline/business/business-contact-87-2" |
+  "outline/business/business-contact-87-3" |
+  "outline/business/business-contact-87" |
+  "outline/business/business-contact-88-2" |
+  "outline/business/business-contact-88-3" |
+  "outline/business/business-contact-88" |
+  "outline/business/businessman-03-2" |
+  "outline/business/businessman-03-3" |
+  "outline/business/businessman-03-4" |
+  "outline/business/businessman-03-5" |
+  "outline/business/businessman-03" |
+  "outline/business/businessman-04-2" |
+  "outline/business/businessman-04-3" |
+  "outline/business/businessman-04-4" |
+  "outline/business/businessman-04-5" |
+  "outline/business/businessman-04" |
+  "outline/business/calculator-2" |
+  "outline/business/calculator-3" |
+  "outline/business/calculator-4" |
+  "outline/business/calculator-5" |
+  "outline/business/calculator" |
+  "outline/business/candlestick-chart-2" |
+  "outline/business/candlestick-chart-3" |
+  "outline/business/candlestick-chart-4" |
+  "outline/business/candlestick-chart-5" |
+  "outline/business/candlestick-chart-6" |
+  "outline/business/candlestick-chart" |
+  "outline/business/card-edit-2" |
+  "outline/business/card-edit-3" |
+  "outline/business/card-edit-4" |
+  "outline/business/card-edit-5" |
+  "outline/business/card-edit" |
+  "outline/business/card-favorite-2" |
+  "outline/business/card-favorite-3" |
+  "outline/business/card-favorite-4" |
+  "outline/business/card-favorite-5" |
+  "outline/business/card-favorite" |
+  "outline/business/card-remove-2" |
+  "outline/business/card-remove-3" |
+  "outline/business/card-remove-4" |
+  "outline/business/card-remove-5" |
+  "outline/business/card-remove" |
+  "outline/business/card-switch-2" |
+  "outline/business/card-switch" |
+  "outline/business/card-update-2" |
+  "outline/business/card-update-3" |
+  "outline/business/card-update-4" |
+  "outline/business/card-update" |
+  "outline/business/certificate-2" |
+  "outline/business/certificate-3" |
+  "outline/business/certificate-4" |
+  "outline/business/certificate-5" |
+  "outline/business/certificate" |
+  "outline/business/chart-2" |
+  "outline/business/chart-3" |
+  "outline/business/chart-4" |
+  "outline/business/chart-5" |
+  "outline/business/chart-6" |
+  "outline/business/chart-bar-32-2" |
+  "outline/business/chart-bar-32-3" |
+  "outline/business/chart-bar-32-4" |
+  "outline/business/chart-bar-32-5" |
+  "outline/business/chart-bar-32" |
+  "outline/business/chart-bar-33-2" |
+  "outline/business/chart-bar-33-3" |
+  "outline/business/chart-bar-33-4" |
+  "outline/business/chart-bar-33" |
+  "outline/business/chart-growth-2" |
+  "outline/business/chart-growth-3" |
+  "outline/business/chart-growth-4" |
+  "outline/business/chart-growth-5" |
+  "outline/business/chart-growth" |
+  "outline/business/chart-pie-35-2" |
+  "outline/business/chart-pie-35-3" |
+  "outline/business/chart-pie-35-4" |
+  "outline/business/chart-pie-35-5" |
+  "outline/business/chart-pie-35" |
+  "outline/business/chart-pie-36-2" |
+  "outline/business/chart-pie-36-3" |
+  "outline/business/chart-pie-36-4" |
+  "outline/business/chart-pie-36-5" |
+  "outline/business/chart-pie-36" |
+  "outline/business/chart" |
+  "outline/business/cheque-2" |
+  "outline/business/cheque-3" |
+  "outline/business/cheque-4" |
+  "outline/business/cheque-5" |
+  "outline/business/cheque" |
+  "outline/business/chess-knight-2" |
+  "outline/business/chess-knight-3" |
+  "outline/business/chess-knight-4" |
+  "outline/business/chess-knight-5" |
+  "outline/business/chess-knight" |
+  "outline/business/chess-tower-2" |
+  "outline/business/chess-tower-3" |
+  "outline/business/chess-tower-4" |
+  "outline/business/chess-tower-5" |
+  "outline/business/chess-tower" |
+  "outline/business/citi-2" |
+  "outline/business/citi" |
+  "outline/business/cloud-mining-2" |
+  "outline/business/cloud-mining-3" |
+  "outline/business/cloud-mining-4" |
+  "outline/business/cloud-mining-5" |
+  "outline/business/cloud-mining" |
+  "outline/business/cockade-2" |
+  "outline/business/cockade-3" |
+  "outline/business/cockade-4" |
+  "outline/business/cockade-5" |
+  "outline/business/cockade" |
+  "outline/business/coins-2" |
+  "outline/business/coins-3" |
+  "outline/business/coins-4" |
+  "outline/business/coins-5" |
+  "outline/business/coins" |
+  "outline/business/conference-room-2" |
+  "outline/business/conference-room-3" |
+  "outline/business/conference-room-4" |
+  "outline/business/conference-room-5" |
+  "outline/business/conference-room" |
+  "outline/business/connect-2" |
+  "outline/business/connect-3" |
+  "outline/business/connect-4" |
+  "outline/business/connect-5" |
+  "outline/business/connect" |
+  "outline/business/contact-86" |
+  "outline/business/contact-87" |
+  "outline/business/contact-88" |
+  "outline/business/contactless-card-2" |
+  "outline/business/contactless-card-3" |
+  "outline/business/contactless-card-4" |
+  "outline/business/contactless-card" |
+  "outline/business/contacts-2" |
+  "outline/business/contacts-3" |
+  "outline/business/contacts-4" |
+  "outline/business/contacts-5" |
+  "outline/business/contacts" |
+  "outline/business/copyright-2" |
+  "outline/business/copyright-3" |
+  "outline/business/copyright-4" |
+  "outline/business/copyright-5" |
+  "outline/business/copyright-6" |
+  "outline/business/copyright" |
+  "outline/business/credit-card-2" |
+  "outline/business/credit-card-3" |
+  "outline/business/credit-card-4" |
+  "outline/business/credit-card-5" |
+  "outline/business/credit-card-in-2" |
+  "outline/business/credit-card-in-3" |
+  "outline/business/credit-card-in-4" |
+  "outline/business/credit-card-in-5" |
+  "outline/business/credit-card-in" |
+  "outline/business/credit-card" |
+  "outline/business/credit-locked-2" |
+  "outline/business/credit-locked-3" |
+  "outline/business/credit-locked-4" |
+  "outline/business/credit-locked" |
+  "outline/business/crypto-wallet-2" |
+  "outline/business/crypto-wallet-3" |
+  "outline/business/crypto-wallet-4" |
+  "outline/business/crypto-wallet-5" |
+  "outline/business/crypto-wallet" |
+  "outline/business/currency-dollar-2" |
+  "outline/business/currency-dollar-3" |
+  "outline/business/currency-dollar-4" |
+  "outline/business/currency-dollar-5" |
+  "outline/business/currency-dollar" |
+  "outline/business/currency-euro-2" |
+  "outline/business/currency-euro-3" |
+  "outline/business/currency-euro-4" |
+  "outline/business/currency-euro-5" |
+  "outline/business/currency-euro" |
+  "outline/business/currency-exchange-2-2" |
+  "outline/business/currency-exchange-2-3" |
+  "outline/business/currency-exchange-2-4" |
+  "outline/business/currency-exchange-2" |
+  "outline/business/currency-exchange-3" |
+  "outline/business/currency-exchange-4" |
+  "outline/business/currency-exchange-5" |
+  "outline/business/currency-exchange-6" |
+  "outline/business/currency-exchange" |
+  "outline/business/currency-pound-2" |
+  "outline/business/currency-pound-3" |
+  "outline/business/currency-pound-4" |
+  "outline/business/currency-pound-5" |
+  "outline/business/currency-pound" |
+  "outline/business/currency-yen-2" |
+  "outline/business/currency-yen-3" |
+  "outline/business/currency-yen-4" |
+  "outline/business/currency-yen-5" |
+  "outline/business/currency-yen" |
+  "outline/business/debt-2" |
+  "outline/business/debt-3" |
+  "outline/business/debt-4" |
+  "outline/business/debt" |
+  "outline/business/decentralize-2" |
+  "outline/business/decentralize-3" |
+  "outline/business/decentralize-4" |
+  "outline/business/decentralize-5" |
+  "outline/business/decentralize" |
+  "outline/business/decision-process-2" |
+  "outline/business/decision-process-3" |
+  "outline/business/decision-process-4" |
+  "outline/business/decision-process" |
+  "outline/business/dice-2" |
+  "outline/business/dice-3" |
+  "outline/business/dice-4" |
+  "outline/business/dice-5" |
+  "outline/business/dice-6" |
+  "outline/business/dice" |
+  "outline/business/diners-club-2" |
+  "outline/business/diners-club" |
+  "outline/business/discover-2" |
+  "outline/business/discover" |
+  "outline/business/factory-2" |
+  "outline/business/factory-3" |
+  "outline/business/factory-4" |
+  "outline/business/factory-5" |
+  "outline/business/factory" |
+  "outline/business/globe-2" |
+  "outline/business/globe-3" |
+  "outline/business/globe-4" |
+  "outline/business/globe-5" |
+  "outline/business/globe" |
+  "outline/business/goal-65-2" |
+  "outline/business/goal-65-3" |
+  "outline/business/goal-65-4" |
+  "outline/business/goal-65-5" |
+  "outline/business/goal-65" |
+  "outline/business/gold-2" |
+  "outline/business/gold-3" |
+  "outline/business/gold-4" |
+  "outline/business/gold" |
+  "outline/business/hammer-2" |
+  "outline/business/hammer-3" |
+  "outline/business/hammer-4" |
+  "outline/business/hammer-5" |
+  "outline/business/hammer" |
+  "outline/business/hand-card-2" |
+  "outline/business/hand-card-3" |
+  "outline/business/hand-card-4" |
+  "outline/business/hand-card" |
+  "outline/business/handout-2" |
+  "outline/business/handout-3" |
+  "outline/business/handout-4" |
+  "outline/business/handout-5" |
+  "outline/business/handout" |
+  "outline/business/handshake-2" |
+  "outline/business/handshake-3" |
+  "outline/business/handshake-4" |
+  "outline/business/handshake-5" |
+  "outline/business/handshake" |
+  "outline/business/hat-2" |
+  "outline/business/hat-3" |
+  "outline/business/hat-4" |
+  "outline/business/hat-5" |
+  "outline/business/hat" |
+  "outline/business/hierarchy-53-2" |
+  "outline/business/hierarchy-53-3" |
+  "outline/business/hierarchy-53-4" |
+  "outline/business/hierarchy-53-5" |
+  "outline/business/hierarchy-53" |
+  "outline/business/hierarchy-54-2" |
+  "outline/business/hierarchy-54-3" |
+  "outline/business/hierarchy-54-4" |
+  "outline/business/hierarchy-54" |
+  "outline/business/hierarchy-55-2" |
+  "outline/business/hierarchy-55-3" |
+  "outline/business/hierarchy-55-4" |
+  "outline/business/hierarchy-55" |
+  "outline/business/hierarchy-56-2" |
+  "outline/business/hierarchy-56-3" |
+  "outline/business/hierarchy-56-4" |
+  "outline/business/hierarchy-56" |
+  "outline/business/info-point-2" |
+  "outline/business/info-point-3" |
+  "outline/business/info-point-4" |
+  "outline/business/info-point-5" |
+  "outline/business/info-point" |
+  "outline/business/interview-2" |
+  "outline/business/interview-3" |
+  "outline/business/interview-4" |
+  "outline/business/interview" |
+  "outline/business/jcb-2" |
+  "outline/business/jcb" |
+  "outline/business/joint-account-2" |
+  "outline/business/joint-account-3" |
+  "outline/business/joint-account-4" |
+  "outline/business/joint-account" |
+  "outline/business/laptop-71-2" |
+  "outline/business/laptop-71-3" |
+  "outline/business/laptop-71-4" |
+  "outline/business/laptop-71" |
+  "outline/business/laptop-72-2" |
+  "outline/business/laptop-72-3" |
+  "outline/business/laptop-72-4" |
+  "outline/business/laptop-72" |
+  "outline/business/laptop-91-2" |
+  "outline/business/laptop-91-3" |
+  "outline/business/laptop-91" |
+  "outline/business/law-2" |
+  "outline/business/law-3" |
+  "outline/business/law-4" |
+  "outline/business/law" |
+  "outline/business/line-chart-2" |
+  "outline/business/line-chart-3" |
+  "outline/business/line-chart-4" |
+  "outline/business/line-chart-5" |
+  "outline/business/line-chart-6" |
+  "outline/business/line-chart" |
+  "outline/business/loan-2" |
+  "outline/business/loan-3" |
+  "outline/business/loan-4" |
+  "outline/business/loan" |
+  "outline/business/logic-2" |
+  "outline/business/logic-3" |
+  "outline/business/logic-4" |
+  "outline/business/logic" |
+  "outline/business/maestro-2" |
+  "outline/business/maestro" |
+  "outline/business/mastercard-2" |
+  "outline/business/mastercard" |
+  "outline/business/math-2" |
+  "outline/business/math-3" |
+  "outline/business/math-4" |
+  "outline/business/math-5" |
+  "outline/business/math" |
+  "outline/business/miner-2" |
+  "outline/business/miner-3" |
+  "outline/business/miner-4" |
+  "outline/business/miner-5" |
+  "outline/business/miner" |
+  "outline/business/mobile-banking-2" |
+  "outline/business/mobile-banking-3" |
+  "outline/business/mobile-banking-4" |
+  "outline/business/mobile-banking" |
+  "outline/business/mobile-card-2" |
+  "outline/business/mobile-card-3" |
+  "outline/business/mobile-card-4" |
+  "outline/business/mobile-card" |
+  "outline/business/money-11-2" |
+  "outline/business/money-11-3" |
+  "outline/business/money-11-4" |
+  "outline/business/money-11-5" |
+  "outline/business/money-11" |
+  "outline/business/money-12-2" |
+  "outline/business/money-12-3" |
+  "outline/business/money-12-4" |
+  "outline/business/money-12-5" |
+  "outline/business/money-12" |
+  "outline/business/money-13-2" |
+  "outline/business/money-13-3" |
+  "outline/business/money-13-4" |
+  "outline/business/money-13-5" |
+  "outline/business/money-13" |
+  "outline/business/money-bag-2" |
+  "outline/business/money-bag-3" |
+  "outline/business/money-bag-4" |
+  "outline/business/money-bag-5" |
+  "outline/business/money-bag" |
+  "outline/business/money-coins-2" |
+  "outline/business/money-coins-3" |
+  "outline/business/money-coins-4" |
+  "outline/business/money-coins" |
+  "outline/business/money-growth-2" |
+  "outline/business/money-growth-3" |
+  "outline/business/money-growth-4" |
+  "outline/business/money-growth" |
+  "outline/business/money-time-2" |
+  "outline/business/money-time-3" |
+  "outline/business/money-time-4" |
+  "outline/business/money-time" |
+  "outline/business/money-transfer-2" |
+  "outline/business/money-transfer-3" |
+  "outline/business/money-transfer-4" |
+  "outline/business/money-transfer" |
+  "outline/business/mortgage-2" |
+  "outline/business/mortgage-3" |
+  "outline/business/mortgage-4" |
+  "outline/business/mortgage" |
+  "outline/business/name-card-2" |
+  "outline/business/name-card-3" |
+  "outline/business/name-card-4" |
+  "outline/business/name-card-5" |
+  "outline/business/name-card" |
+  "outline/business/negative-judgement-2" |
+  "outline/business/negative-judgement-3" |
+  "outline/business/negative-judgement-4" |
+  "outline/business/negative-judgement" |
+  "outline/business/net-2" |
+  "outline/business/net-3" |
+  "outline/business/net-4" |
+  "outline/business/net-5" |
+  "outline/business/net" |
+  "outline/business/new-construction-2" |
+  "outline/business/new-construction-3" |
+  "outline/business/new-construction-4" |
+  "outline/business/new-construction-5" |
+  "outline/business/new-construction" |
+  "outline/business/nodes-2" |
+  "outline/business/nodes-3" |
+  "outline/business/nodes-4" |
+  "outline/business/nodes-5" |
+  "outline/business/nodes" |
+  "outline/business/notes-2" |
+  "outline/business/notes-3" |
+  "outline/business/notes-4" |
+  "outline/business/notes-5" |
+  "outline/business/notes" |
+  "outline/business/office-2" |
+  "outline/business/office-3" |
+  "outline/business/office-4" |
+  "outline/business/office-5" |
+  "outline/business/office-badge-2" |
+  "outline/business/office-badge-3" |
+  "outline/business/office-badge-4" |
+  "outline/business/office-badge-5" |
+  "outline/business/office-badge" |
+  "outline/business/office-chair-2" |
+  "outline/business/office-chair-3" |
+  "outline/business/office-chair-4" |
+  "outline/business/office-chair-5" |
+  "outline/business/office-chair" |
+  "outline/business/office-pass-2" |
+  "outline/business/office-pass-3" |
+  "outline/business/office-pass-4" |
+  "outline/business/office-pass-5" |
+  "outline/business/office-pass-6" |
+  "outline/business/office-pass" |
+  "outline/business/office" |
+  "outline/business/online-banking-2" |
+  "outline/business/online-banking-3" |
+  "outline/business/online-banking-4" |
+  "outline/business/online-banking" |
+  "outline/business/payee-2" |
+  "outline/business/payee-3" |
+  "outline/business/payee-4" |
+  "outline/business/payee-5" |
+  "outline/business/payee" |
+  "outline/business/payment-2" |
+  "outline/business/payment-3" |
+  "outline/business/payment-4" |
+  "outline/business/payment-method-2" |
+  "outline/business/payment-method-3" |
+  "outline/business/payment-method-4" |
+  "outline/business/payment-method-5" |
+  "outline/business/payment-method" |
+  "outline/business/payment" |
+  "outline/business/payor-2" |
+  "outline/business/payor-3" |
+  "outline/business/payor-4" |
+  "outline/business/payor-5" |
+  "outline/business/payor" |
+  "outline/business/paypal-2" |
+  "outline/business/paypal" |
+  "outline/business/percentage-38-2" |
+  "outline/business/percentage-38-3" |
+  "outline/business/percentage-38-4" |
+  "outline/business/percentage-38" |
+  "outline/business/percentage-39-2" |
+  "outline/business/percentage-39-3" |
+  "outline/business/percentage-39-4" |
+  "outline/business/percentage-39-5" |
+  "outline/business/percentage-39" |
+  "outline/business/personal-trainer-2" |
+  "outline/business/personal-trainer-3" |
+  "outline/business/personal-trainer-4" |
+  "outline/business/personal-trainer-5" |
+  "outline/business/personal-trainer" |
+  "outline/business/pig-2" |
+  "outline/business/pig-3" |
+  "outline/business/pig-4" |
+  "outline/business/pig" |
+  "outline/business/pin-2" |
+  "outline/business/pin-3" |
+  "outline/business/pin-4" |
+  "outline/business/pin-5" |
+  "outline/business/pin" |
+  "outline/business/plug-2" |
+  "outline/business/plug-3" |
+  "outline/business/plug-4" |
+  "outline/business/plug-5" |
+  "outline/business/plug-6" |
+  "outline/business/plug" |
+  "outline/business/pos-2" |
+  "outline/business/pos-3" |
+  "outline/business/pos-4" |
+  "outline/business/pos" |
+  "outline/business/positive-judgement-2" |
+  "outline/business/positive-judgement-3" |
+  "outline/business/positive-judgement-4" |
+  "outline/business/positive-judgement" |
+  "outline/business/presentation-2" |
+  "outline/business/presentation-3" |
+  "outline/business/presentation-4" |
+  "outline/business/presentation-5" |
+  "outline/business/presentation" |
+  "outline/business/privacy-policy-2" |
+  "outline/business/privacy-policy-3" |
+  "outline/business/privacy-policy-4" |
+  "outline/business/privacy-policy-5" |
+  "outline/business/privacy-policy" |
+  "outline/business/progress-2" |
+  "outline/business/progress-3" |
+  "outline/business/progress-4" |
+  "outline/business/progress-5" |
+  "outline/business/progress" |
+  "outline/business/puzzle-09-2" |
+  "outline/business/puzzle-09-3" |
+  "outline/business/puzzle-09-4" |
+  "outline/business/puzzle-09-5" |
+  "outline/business/puzzle-09" |
+  "outline/business/puzzle-10-2" |
+  "outline/business/puzzle-10-3" |
+  "outline/business/puzzle-10-4" |
+  "outline/business/puzzle-10-5" |
+  "outline/business/puzzle-10" |
+  "outline/business/ranking-2" |
+  "outline/business/ranking-3" |
+  "outline/business/ranking-4" |
+  "outline/business/ranking-5" |
+  "outline/business/ranking" |
+  "outline/business/rate-down-2" |
+  "outline/business/rate-down-3" |
+  "outline/business/rate-down-4" |
+  "outline/business/rate-down" |
+  "outline/business/rate-up-2" |
+  "outline/business/rate-up-3" |
+  "outline/business/rate-up-4" |
+  "outline/business/rate-up" |
+  "outline/business/refund-2" |
+  "outline/business/refund-3" |
+  "outline/business/refund-4" |
+  "outline/business/refund" |
+  "outline/business/round-dollar-2" |
+  "outline/business/round-dollar-3" |
+  "outline/business/round-dollar-4" |
+  "outline/business/round-dollar" |
+  "outline/business/round-euro-2" |
+  "outline/business/round-euro-3" |
+  "outline/business/round-euro-4" |
+  "outline/business/round-euro" |
+  "outline/business/round-pound-2" |
+  "outline/business/round-pound-3" |
+  "outline/business/round-pound-4" |
+  "outline/business/round-pound" |
+  "outline/business/round-yen-2" |
+  "outline/business/round-yen-3" |
+  "outline/business/round-yen-4" |
+  "outline/business/round-yen" |
+  "outline/business/safe-2" |
+  "outline/business/safe-3" |
+  "outline/business/safe-4" |
+  "outline/business/safe-5" |
+  "outline/business/safe" |
+  "outline/business/savings-2" |
+  "outline/business/savings-3" |
+  "outline/business/savings-4" |
+  "outline/business/savings" |
+  "outline/business/scale-2" |
+  "outline/business/scale-3" |
+  "outline/business/scale-4" |
+  "outline/business/scale" |
+  "outline/business/sign-2" |
+  "outline/business/sign-3" |
+  "outline/business/sign-4" |
+  "outline/business/sign-5" |
+  "outline/business/sign" |
+  "outline/business/signature-2" |
+  "outline/business/signature-3" |
+  "outline/business/signature-4" |
+  "outline/business/signature-5" |
+  "outline/business/signature" |
+  "outline/business/solo-2" |
+  "outline/business/solo" |
+  "outline/business/statistics-2" |
+  "outline/business/statistics-3" |
+  "outline/business/statistics-4" |
+  "outline/business/statistics-5" |
+  "outline/business/statistics-6" |
+  "outline/business/statistics" |
+  "outline/business/stock-market-2" |
+  "outline/business/stock-market-3" |
+  "outline/business/stock-market-4" |
+  "outline/business/stock-market-5" |
+  "outline/business/stock-market" |
+  "outline/business/stripe-2" |
+  "outline/business/stripe" |
+  "outline/business/tactic-2" |
+  "outline/business/tactic-3" |
+  "outline/business/tactic-4" |
+  "outline/business/tactic-5" |
+  "outline/business/tactic" |
+  "outline/business/temple-2" |
+  "outline/business/temple-3" |
+  "outline/business/temple-4" |
+  "outline/business/temple-5" |
+  "outline/business/temple" |
+  "outline/business/tie-01-2" |
+  "outline/business/tie-01-3" |
+  "outline/business/tie-01-4" |
+  "outline/business/tie-01-5" |
+  "outline/business/tie-01" |
+  "outline/business/tie-02-2" |
+  "outline/business/tie-02-3" |
+  "outline/business/tie-02-4" |
+  "outline/business/tie-02-5" |
+  "outline/business/tie-02" |
+  "outline/business/transaction-2" |
+  "outline/business/transaction-3" |
+  "outline/business/transaction-4" |
+  "outline/business/transaction-5" |
+  "outline/business/transaction-6" |
+  "outline/business/transaction" |
+  "outline/business/transactions-2" |
+  "outline/business/transactions-3" |
+  "outline/business/transactions-4" |
+  "outline/business/transactions-5" |
+  "outline/business/transactions-6" |
+  "outline/business/transactions" |
+  "outline/business/visa-2" |
+  "outline/business/visa" |
+  "outline/business/wallet-43-2" |
+  "outline/business/wallet-43-3" |
+  "outline/business/wallet-43-4" |
+  "outline/business/wallet-43-5" |
+  "outline/business/wallet-43" |
+  "outline/business/wallet-44-2" |
+  "outline/business/wallet-44-3" |
+  "outline/business/wallet-44-4" |
+  "outline/business/wallet-44-5" |
+  "outline/business/wallet-44" |
+  "outline/business/wallet-90-2" |
+  "outline/business/wallet-90-3" |
+  "outline/business/wallet-90-4" |
+  "outline/business/wallet-90" |
+  "outline/education/abc-2" |
+  "outline/education/abc-3" |
+  "outline/education/abc-4" |
+  "outline/education/abc" |
+  "outline/education/agenda-2" |
+  "outline/education/agenda-3" |
+  "outline/education/agenda-4" |
+  "outline/education/agenda-5" |
+  "outline/education/agenda-bookmark-2" |
+  "outline/education/agenda-bookmark-3" |
+  "outline/education/agenda-bookmark-4" |
+  "outline/education/agenda-bookmark-5" |
+  "outline/education/agenda-bookmark" |
+  "outline/education/agenda" |
+  "outline/education/album-2" |
+  "outline/education/album-3" |
+  "outline/education/album-4" |
+  "outline/education/album-5" |
+  "outline/education/album-6" |
+  "outline/education/album" |
+  "outline/education/astronomy-2" |
+  "outline/education/astronomy-3" |
+  "outline/education/astronomy-4" |
+  "outline/education/astronomy-5" |
+  "outline/education/astronomy" |
+  "outline/education/atom-2" |
+  "outline/education/atom-3" |
+  "outline/education/atom-4" |
+  "outline/education/atom-5" |
+  "outline/education/atom" |
+  "outline/education/award-49-2" |
+  "outline/education/award-49-3" |
+  "outline/education/award-49-4" |
+  "outline/education/award-49-5" |
+  "outline/education/award-49" |
+  "outline/education/backpack-57-2" |
+  "outline/education/backpack-57-3" |
+  "outline/education/backpack-57-4" |
+  "outline/education/backpack-57-5" |
+  "outline/education/backpack-57" |
+  "outline/education/backpack-58-2" |
+  "outline/education/backpack-58-3" |
+  "outline/education/backpack-58-4" |
+  "outline/education/backpack-58-5" |
+  "outline/education/backpack-58" |
+  "outline/education/basketball-2" |
+  "outline/education/basketball-3" |
+  "outline/education/basketball-4" |
+  "outline/education/basketball-5" |
+  "outline/education/basketball" |
+  "outline/education/biochemistry-2" |
+  "outline/education/biochemistry-3" |
+  "outline/education/biochemistry-4" |
+  "outline/education/biochemistry-5" |
+  "outline/education/biochemistry" |
+  "outline/education/biology-2" |
+  "outline/education/biology-3" |
+  "outline/education/biology-4" |
+  "outline/education/biology-5" |
+  "outline/education/biology" |
+  "outline/education/board-27-2" |
+  "outline/education/board-27-3" |
+  "outline/education/board-27-4" |
+  "outline/education/board-27-5" |
+  "outline/education/board-27" |
+  "outline/education/board-51-2" |
+  "outline/education/board-51-3" |
+  "outline/education/board-51-4" |
+  "outline/education/board-51-5" |
+  "outline/education/board-51" |
+  "outline/education/book-2" |
+  "outline/education/book-3" |
+  "outline/education/book-39-2" |
+  "outline/education/book-39-3" |
+  "outline/education/book-39-4" |
+  "outline/education/book-39-5" |
+  "outline/education/book-39" |
+  "outline/education/book-4" |
+  "outline/education/book-5" |
+  "outline/education/book-6" |
+  "outline/education/book-bookmark-2-2" |
+  "outline/education/book-bookmark-2-3" |
+  "outline/education/book-bookmark-2-4" |
+  "outline/education/book-bookmark-2-5" |
+  "outline/education/book-bookmark-2" |
+  "outline/education/book-bookmark-3" |
+  "outline/education/book-bookmark-4" |
+  "outline/education/book-bookmark-5" |
+  "outline/education/book-bookmark-6" |
+  "outline/education/book-bookmark" |
+  "outline/education/book-open-2-2" |
+  "outline/education/book-open-2-3" |
+  "outline/education/book-open-2-4" |
+  "outline/education/book-open-2-5" |
+  "outline/education/book-open-2" |
+  "outline/education/book-open-3" |
+  "outline/education/book-open-4" |
+  "outline/education/book-open-5" |
+  "outline/education/book-open" |
+  "outline/education/book" |
+  "outline/education/bookmark-2" |
+  "outline/education/bookmark-3" |
+  "outline/education/bookmark-4" |
+  "outline/education/bookmark-5" |
+  "outline/education/bookmark-6" |
+  "outline/education/bookmark" |
+  "outline/education/books-2" |
+  "outline/education/books-3" |
+  "outline/education/books-4" |
+  "outline/education/books-46-2" |
+  "outline/education/books-46-3" |
+  "outline/education/books-46-4" |
+  "outline/education/books-46-5" |
+  "outline/education/books-46" |
+  "outline/education/books-5" |
+  "outline/education/books" |
+  "outline/education/botany-2" |
+  "outline/education/botany-3" |
+  "outline/education/botany-4" |
+  "outline/education/botany-5" |
+  "outline/education/botany" |
+  "outline/education/brush-2" |
+  "outline/education/brush-3" |
+  "outline/education/brush-4" |
+  "outline/education/brush-5" |
+  "outline/education/brush-6" |
+  "outline/education/brush" |
+  "outline/education/bus-2" |
+  "outline/education/bus-3" |
+  "outline/education/bus-4" |
+  "outline/education/bus-front-12-2" |
+  "outline/education/bus-front-12-3" |
+  "outline/education/bus-front-12-4" |
+  "outline/education/bus-front-12-5" |
+  "outline/education/bus-front-12" |
+  "outline/education/bus" |
+  "outline/education/buzz-2" |
+  "outline/education/buzz-3" |
+  "outline/education/buzz-4" |
+  "outline/education/buzz-5" |
+  "outline/education/buzz" |
+  "outline/education/calculator-2" |
+  "outline/education/calculator-3" |
+  "outline/education/calculator-4" |
+  "outline/education/calculator-5" |
+  "outline/education/calculator" |
+  "outline/education/certificate-2" |
+  "outline/education/certificate-3" |
+  "outline/education/certificate-4" |
+  "outline/education/certificate-5" |
+  "outline/education/certificate" |
+  "outline/education/chalkboard-2" |
+  "outline/education/chalkboard-3" |
+  "outline/education/chalkboard-4" |
+  "outline/education/chalkboard" |
+  "outline/education/chemistry-2" |
+  "outline/education/chemistry-3" |
+  "outline/education/chemistry-4" |
+  "outline/education/chemistry-5" |
+  "outline/education/chemistry-6" |
+  "outline/education/chemistry" |
+  "outline/education/cockade-2" |
+  "outline/education/cockade-3" |
+  "outline/education/cockade-4" |
+  "outline/education/cockade-5" |
+  "outline/education/cockade" |
+  "outline/education/collection-2" |
+  "outline/education/collection-3" |
+  "outline/education/collection-4" |
+  "outline/education/collection-5" |
+  "outline/education/collection" |
+  "outline/education/compass-2" |
+  "outline/education/compass-3" |
+  "outline/education/compass-4" |
+  "outline/education/compass-5" |
+  "outline/education/compass" |
+  "outline/education/design-2" |
+  "outline/education/design-3" |
+  "outline/education/design-4" |
+  "outline/education/design-5" |
+  "outline/education/design" |
+  "outline/education/earth-science-2" |
+  "outline/education/earth-science-3" |
+  "outline/education/earth-science-4" |
+  "outline/education/earth-science-5" |
+  "outline/education/earth-science" |
+  "outline/education/ecology-2" |
+  "outline/education/ecology-3" |
+  "outline/education/ecology-4" |
+  "outline/education/ecology-5" |
+  "outline/education/ecology" |
+  "outline/education/equation-2" |
+  "outline/education/equation-3" |
+  "outline/education/equation-4" |
+  "outline/education/equation-5" |
+  "outline/education/equation-6" |
+  "outline/education/equation" |
+  "outline/education/eraser-32-2" |
+  "outline/education/eraser-32-3" |
+  "outline/education/eraser-32-4" |
+  "outline/education/eraser-32-5" |
+  "outline/education/eraser-32" |
+  "outline/education/eraser-33-2" |
+  "outline/education/eraser-33-3" |
+  "outline/education/eraser-33-4" |
+  "outline/education/eraser-33-5" |
+  "outline/education/eraser-33" |
+  "outline/education/flask-2" |
+  "outline/education/flask-3" |
+  "outline/education/flask-4" |
+  "outline/education/flask-5" |
+  "outline/education/flask" |
+  "outline/education/function-2" |
+  "outline/education/function-3" |
+  "outline/education/function-4" |
+  "outline/education/function-5" |
+  "outline/education/function-6" |
+  "outline/education/function" |
+  "outline/education/geometry-2" |
+  "outline/education/geometry-3" |
+  "outline/education/geometry-4" |
+  "outline/education/geometry-5" |
+  "outline/education/geometry" |
+  "outline/education/glasses-2-2" |
+  "outline/education/glasses-2-3" |
+  "outline/education/glasses-2-4" |
+  "outline/education/glasses-2-5" |
+  "outline/education/glasses-2" |
+  "outline/education/glasses-3" |
+  "outline/education/glasses-4" |
+  "outline/education/glasses-5" |
+  "outline/education/glasses-6" |
+  "outline/education/glasses" |
+  "outline/education/globe-2-2" |
+  "outline/education/globe-2-3" |
+  "outline/education/globe-2-4" |
+  "outline/education/globe-2-5" |
+  "outline/education/globe-2" |
+  "outline/education/globe-3" |
+  "outline/education/globe-4" |
+  "outline/education/globe-5" |
+  "outline/education/globe-6" |
+  "outline/education/globe" |
+  "outline/education/grammar-check-2" |
+  "outline/education/grammar-check-3" |
+  "outline/education/grammar-check-4" |
+  "outline/education/grammar-check" |
+  "outline/education/hat-3-2" |
+  "outline/education/hat-3-3" |
+  "outline/education/hat-3-4" |
+  "outline/education/hat-3-5" |
+  "outline/education/hat-3" |
+  "outline/education/language-2" |
+  "outline/education/language-3" |
+  "outline/education/language-4" |
+  "outline/education/language-5" |
+  "outline/education/language" |
+  "outline/education/logic-2" |
+  "outline/education/logic-3" |
+  "outline/education/logic-4" |
+  "outline/education/logic" |
+  "outline/education/marker-2" |
+  "outline/education/marker-3" |
+  "outline/education/marker-4" |
+  "outline/education/marker-5" |
+  "outline/education/marker" |
+  "outline/education/math-2" |
+  "outline/education/math-3" |
+  "outline/education/math-4" |
+  "outline/education/math-5" |
+  "outline/education/math" |
+  "outline/education/measure-02-2" |
+  "outline/education/measure-02-3" |
+  "outline/education/measure-02-4" |
+  "outline/education/measure-02-5" |
+  "outline/education/measure-02" |
+  "outline/education/measure-17-2" |
+  "outline/education/measure-17-3" |
+  "outline/education/measure-17-4" |
+  "outline/education/measure-17-5" |
+  "outline/education/measure-17" |
+  "outline/education/measure-big-2" |
+  "outline/education/measure-big-3" |
+  "outline/education/measure-big-4" |
+  "outline/education/measure-big-5" |
+  "outline/education/measure-big" |
+  "outline/education/medal-2" |
+  "outline/education/medal-3" |
+  "outline/education/medal-4" |
+  "outline/education/medal-5" |
+  "outline/education/medal" |
+  "outline/education/medicine-2" |
+  "outline/education/medicine-3" |
+  "outline/education/medicine-4" |
+  "outline/education/medicine-5" |
+  "outline/education/medicine" |
+  "outline/education/microbiology-2" |
+  "outline/education/microbiology-3" |
+  "outline/education/microbiology-4" |
+  "outline/education/microbiology-5" |
+  "outline/education/microbiology" |
+  "outline/education/microscope-2" |
+  "outline/education/microscope-3" |
+  "outline/education/microscope-4" |
+  "outline/education/microscope-5" |
+  "outline/education/microscope" |
+  "outline/education/molecule-2" |
+  "outline/education/molecule-3" |
+  "outline/education/molecule-4" |
+  "outline/education/molecule-5" |
+  "outline/education/molecule" |
+  "outline/education/notepad-2" |
+  "outline/education/notepad-3" |
+  "outline/education/notepad-4" |
+  "outline/education/notepad-5" |
+  "outline/education/notepad" |
+  "outline/education/notes-2" |
+  "outline/education/notes-3" |
+  "outline/education/notes-4" |
+  "outline/education/notes-5" |
+  "outline/education/notes" |
+  "outline/education/notification-2" |
+  "outline/education/notification-3" |
+  "outline/education/notification-4" |
+  "outline/education/notification" |
+  "outline/education/open-book-2" |
+  "outline/education/open-book-3" |
+  "outline/education/open-book-4" |
+  "outline/education/open-book" |
+  "outline/education/paper-2" |
+  "outline/education/paper-3" |
+  "outline/education/paper-4" |
+  "outline/education/paper-5" |
+  "outline/education/paper-diploma-2" |
+  "outline/education/paper-diploma-3" |
+  "outline/education/paper-diploma-4" |
+  "outline/education/paper-diploma-5" |
+  "outline/education/paper-diploma" |
+  "outline/education/paper" |
+  "outline/education/paw-2" |
+  "outline/education/paw-3" |
+  "outline/education/paw-4" |
+  "outline/education/paw-5" |
+  "outline/education/paw" |
+  "outline/education/pc-play-media-2" |
+  "outline/education/pc-play-media-3" |
+  "outline/education/pc-play-media-4" |
+  "outline/education/pc-play-media-5" |
+  "outline/education/pc-play-media" |
+  "outline/education/pen-01-2" |
+  "outline/education/pen-01-3" |
+  "outline/education/pen-01-4" |
+  "outline/education/pen-01-5" |
+  "outline/education/pen-01" |
+  "outline/education/pen-23-2" |
+  "outline/education/pen-23-3" |
+  "outline/education/pen-23-4" |
+  "outline/education/pen-23-5" |
+  "outline/education/pen-23" |
+  "outline/education/pen-tool-2" |
+  "outline/education/pen-tool-3" |
+  "outline/education/pen-tool-4" |
+  "outline/education/pen-tool-5" |
+  "outline/education/pen-tool" |
+  "outline/education/pencil-2" |
+  "outline/education/pencil-3" |
+  "outline/education/pencil-4" |
+  "outline/education/pencil-47-2" |
+  "outline/education/pencil-47-3" |
+  "outline/education/pencil-47-4" |
+  "outline/education/pencil-47-5" |
+  "outline/education/pencil-47" |
+  "outline/education/pencil-5" |
+  "outline/education/pencil" |
+  "outline/education/pendulum-2" |
+  "outline/education/pendulum-3" |
+  "outline/education/pendulum-4" |
+  "outline/education/pendulum-5" |
+  "outline/education/pendulum" |
+  "outline/education/planet-2" |
+  "outline/education/planet-3" |
+  "outline/education/planet-4" |
+  "outline/education/planet-5" |
+  "outline/education/planet" |
+  "outline/education/potion-2" |
+  "outline/education/potion-3" |
+  "outline/education/potion-4" |
+  "outline/education/potion-5" |
+  "outline/education/potion" |
+  "outline/education/presentation-2" |
+  "outline/education/presentation-3" |
+  "outline/education/presentation-4" |
+  "outline/education/presentation-5" |
+  "outline/education/presentation" |
+  "outline/education/rat-2" |
+  "outline/education/rat-3" |
+  "outline/education/rat-4" |
+  "outline/education/rat-5" |
+  "outline/education/rat" |
+  "outline/education/read-2" |
+  "outline/education/read-3" |
+  "outline/education/read-4" |
+  "outline/education/read-5" |
+  "outline/education/read-6" |
+  "outline/education/read" |
+  "outline/education/reading-2" |
+  "outline/education/reading-3" |
+  "outline/education/reading-4" |
+  "outline/education/reading" |
+  "outline/education/research-2" |
+  "outline/education/research-3" |
+  "outline/education/research-4" |
+  "outline/education/research-5" |
+  "outline/education/research" |
+  "outline/education/saved-items-2" |
+  "outline/education/saved-items-3" |
+  "outline/education/saved-items-4" |
+  "outline/education/saved-items-5" |
+  "outline/education/saved-items-6" |
+  "outline/education/saved-items" |
+  "outline/education/school-2" |
+  "outline/education/school-3" |
+  "outline/education/school-4" |
+  "outline/education/school-5" |
+  "outline/education/school" |
+  "outline/education/soccer-ball-2" |
+  "outline/education/soccer-ball-3" |
+  "outline/education/soccer-ball-4" |
+  "outline/education/soccer-ball-5" |
+  "outline/education/soccer-ball" |
+  "outline/education/statistics-2" |
+  "outline/education/statistics-3" |
+  "outline/education/statistics-4" |
+  "outline/education/statistics-5" |
+  "outline/education/statistics-6" |
+  "outline/education/statistics" |
+  "outline/education/survey-2" |
+  "outline/education/survey-3" |
+  "outline/education/survey-4" |
+  "outline/education/survey-5" |
+  "outline/education/survey" |
+  "outline/education/telescope-2" |
+  "outline/education/telescope-3" |
+  "outline/education/telescope-4" |
+  "outline/education/telescope-5" |
+  "outline/education/telescope" |
+  "outline/education/translation-2" |
+  "outline/education/translation-3" |
+  "outline/education/translation-4" |
+  "outline/education/translation-5" |
+  "outline/education/translation" |
+  "outline/education/typography-2" |
+  "outline/education/typography-3" |
+  "outline/education/typography-4" |
+  "outline/education/typography-5" |
+  "outline/education/typography" |
+  "outline/user interface/a-chart" |
+  "outline/user interface/a-chat" |
+  "outline/user interface/a-tag-add" |
+  "outline/user interface/a-tag-remove" |
+  "outline/user interface/a-tag" |
+  "outline/user interface/access-key" |
+  "outline/user interface/add-fav" |
+  "outline/user interface/add-favorite" |
+  "outline/user interface/add-like" |
+  "outline/user interface/add-notification" |
+  "outline/user interface/add-to-cart-2" |
+  "outline/user interface/add-to-cart" |
+  "outline/user interface/add" |
+  "outline/user interface/alarm-add" |
+  "outline/user interface/alarm-disable" |
+  "outline/user interface/alarm" |
+  "outline/user interface/analytics" |
+  "outline/user interface/app-store" |
+  "outline/user interface/apps" |
+  "outline/user interface/archive-drawer" |
+  "outline/user interface/archive" |
+  "outline/user interface/at-sign" |
+  "outline/user interface/attach" |
+  "outline/user interface/attachment" |
+  "outline/user interface/b-chart" |
+  "outline/user interface/b-comment" |
+  "outline/user interface/b-eye" |
+  "outline/user interface/backward" |
+  "outline/user interface/ban" |
+  "outline/user interface/basket" |
+  "outline/user interface/battery-charging" |
+  "outline/user interface/battery-low" |
+  "outline/user interface/battery-power" |
+  "outline/user interface/battery-status" |
+  "outline/user interface/bell" |
+  "outline/user interface/bin" |
+  "outline/user interface/blog" |
+  "outline/user interface/bluetooth" |
+  "outline/user interface/board-2" |
+  "outline/user interface/bolt" |
+  "outline/user interface/book" |
+  "outline/user interface/bookmark-add-2" |
+  "outline/user interface/bookmark-add" |
+  "outline/user interface/bookmark-delete-2" |
+  "outline/user interface/bookmark-delete" |
+  "outline/user interface/bookmark" |
+  "outline/user interface/bookmarks" |
+  "outline/user interface/bullet-list" |
+  "outline/user interface/buzz" |
+  "outline/user interface/c-add" |
+  "outline/user interface/c-check" |
+  "outline/user interface/c-delete" |
+  "outline/user interface/c-edit" |
+  "outline/user interface/c-info" |
+  "outline/user interface/c-pulse" |
+  "outline/user interface/c-question" |
+  "outline/user interface/c-remove" |
+  "outline/user interface/c-warning" |
+  "outline/user interface/calendar-2" |
+  "outline/user interface/calendar-date-2" |
+  "outline/user interface/calendar-date" |
+  "outline/user interface/calendar-day-view" |
+  "outline/user interface/calendar-event-2" |
+  "outline/user interface/calendar-event-create" |
+  "outline/user interface/calendar-event" |
+  "outline/user interface/calendar" |
+  "outline/user interface/chain" |
+  "outline/user interface/chart" |
+  "outline/user interface/chat" |
+  "outline/user interface/check-all" |
+  "outline/user interface/check-double" |
+  "outline/user interface/check-in" |
+  "outline/user interface/check-list" |
+  "outline/user interface/check-out" |
+  "outline/user interface/check-single" |
+  "outline/user interface/check" |
+  "outline/user interface/checkbox-btn-checked" |
+  "outline/user interface/checkbox-btn" |
+  "outline/user interface/chemistry" |
+  "outline/user interface/clear-data" |
+  "outline/user interface/clock" |
+  "outline/user interface/cloud-forecast" |
+  "outline/user interface/cloud" |
+  "outline/user interface/cogwheel" |
+  "outline/user interface/comment-add" |
+  "outline/user interface/comment" |
+  "outline/user interface/comments" |
+  "outline/user interface/compare-items" |
+  "outline/user interface/components" |
+  "outline/user interface/configuration-tools" |
+  "outline/user interface/control-panel" |
+  "outline/user interface/d-add" |
+  "outline/user interface/d-chart" |
+  "outline/user interface/d-check" |
+  "outline/user interface/d-delete" |
+  "outline/user interface/d-edit" |
+  "outline/user interface/d-remove" |
+  "outline/user interface/dashboard" |
+  "outline/user interface/data-download" |
+  "outline/user interface/data-settings" |
+  "outline/user interface/data-upload" |
+  "outline/user interface/database" |
+  "outline/user interface/delete-forever" |
+  "outline/user interface/delete" |
+  "outline/user interface/design-system" |
+  "outline/user interface/disk" |
+  "outline/user interface/dock-bottom" |
+  "outline/user interface/dock-left" |
+  "outline/user interface/dock-right" |
+  "outline/user interface/dock-top" |
+  "outline/user interface/download" |
+  "outline/user interface/drop" |
+  "outline/user interface/e-add" |
+  "outline/user interface/e-delete" |
+  "outline/user interface/e-remove" |
+  "outline/user interface/edit-note" |
+  "outline/user interface/edit" |
+  "outline/user interface/email-open" |
+  "outline/user interface/email" |
+  "outline/user interface/empty" |
+  "outline/user interface/enlarge" |
+  "outline/user interface/event-confirm" |
+  "outline/user interface/event-create" |
+  "outline/user interface/exclamation-mark" |
+  "outline/user interface/eye" |
+  "outline/user interface/f-add" |
+  "outline/user interface/f-chat" |
+  "outline/user interface/f-check" |
+  "outline/user interface/f-comment" |
+  "outline/user interface/f-dashboard" |
+  "outline/user interface/f-delete" |
+  "outline/user interface/f-remove" |
+  "outline/user interface/fav-list" |
+  "outline/user interface/fav-remove" |
+  "outline/user interface/favorite" |
+  "outline/user interface/feedback" |
+  "outline/user interface/file-add" |
+  "outline/user interface/file-article" |
+  "outline/user interface/file-delete" |
+  "outline/user interface/file-text" |
+  "outline/user interface/filter-check" |
+  "outline/user interface/filter-remove" |
+  "outline/user interface/filter-tool" |
+  "outline/user interface/filter" |
+  "outline/user interface/find-replace" |
+  "outline/user interface/flame" |
+  "outline/user interface/floors" |
+  "outline/user interface/floppy-disk" |
+  "outline/user interface/forward" |
+  "outline/user interface/full-screen" |
+  "outline/user interface/fullsize" |
+  "outline/user interface/funnel" |
+  "outline/user interface/g-chart" |
+  "outline/user interface/g-check" |
+  "outline/user interface/gallery-layout" |
+  "outline/user interface/gallery-view" |
+  "outline/user interface/gantt" |
+  "outline/user interface/gear" |
+  "outline/user interface/geometry" |
+  "outline/user interface/grid-interface" |
+  "outline/user interface/grid-layout" |
+  "outline/user interface/grid-view" |
+  "outline/user interface/heart" |
+  "outline/user interface/hide" |
+  "outline/user interface/home-2" |
+  "outline/user interface/home-3" |
+  "outline/user interface/home" |
+  "outline/user interface/hot-key" |
+  "outline/user interface/hotspot" |
+  "outline/user interface/hourglass" |
+  "outline/user interface/house" |
+  "outline/user interface/hyperlink-broken" |
+  "outline/user interface/hyperlink" |
+  "outline/user interface/i-add" |
+  "outline/user interface/i-check" |
+  "outline/user interface/i-delete" |
+  "outline/user interface/i-edit" |
+  "outline/user interface/i-remove" |
+  "outline/user interface/incognito" |
+  "outline/user interface/increase" |
+  "outline/user interface/infinite" |
+  "outline/user interface/info" |
+  "outline/user interface/key" |
+  "outline/user interface/label" |
+  "outline/user interface/layout-grid" |
+  "outline/user interface/layout" |
+  "outline/user interface/leaf" |
+  "outline/user interface/leave" |
+  "outline/user interface/letter" |
+  "outline/user interface/lifering" |
+  "outline/user interface/light-control" |
+  "outline/user interface/like" |
+  "outline/user interface/link" |
+  "outline/user interface/lock" |
+  "outline/user interface/log-out" |
+  "outline/user interface/magnifier-zoom-in" |
+  "outline/user interface/magnifier-zoom-out" |
+  "outline/user interface/magnifier" |
+  "outline/user interface/mail" |
+  "outline/user interface/megaphone" |
+  "outline/user interface/menu-2" |
+  "outline/user interface/menu-3" |
+  "outline/user interface/menu-4" |
+  "outline/user interface/menu-6" |
+  "outline/user interface/menu-7" |
+  "outline/user interface/menu-8" |
+  "outline/user interface/menu-dots" |
+  "outline/user interface/menu" |
+  "outline/user interface/metrics" |
+  "outline/user interface/mirror-tablet-phone" |
+  "outline/user interface/n-check" |
+  "outline/user interface/n-edit" |
+  "outline/user interface/network-communication" |
+  "outline/user interface/network-connection" |
+  "outline/user interface/networking" |
+  "outline/user interface/new-notification" |
+  "outline/user interface/news" |
+  "outline/user interface/no-results" |
+  "outline/user interface/note" |
+  "outline/user interface/notification-2" |
+  "outline/user interface/notification" |
+  "outline/user interface/o-check" |
+  "outline/user interface/o-warning" |
+  "outline/user interface/offline" |
+  "outline/user interface/opening-times" |
+  "outline/user interface/options" |
+  "outline/user interface/p-chart" |
+  "outline/user interface/padlock-unlocked" |
+  "outline/user interface/padlock" |
+  "outline/user interface/paragraph" |
+  "outline/user interface/password" |
+  "outline/user interface/pen-2" |
+  "outline/user interface/pen" |
+  "outline/user interface/pencil" |
+  "outline/user interface/phone-call-end" |
+  "outline/user interface/phone-call" |
+  "outline/user interface/phone" |
+  "outline/user interface/plant-leaf" |
+  "outline/user interface/playlist" |
+  "outline/user interface/preferences" |
+  "outline/user interface/present" |
+  "outline/user interface/privacy-settings" |
+  "outline/user interface/privacy" |
+  "outline/user interface/progress-2" |
+  "outline/user interface/progress-indicator" |
+  "outline/user interface/question-mark" |
+  "outline/user interface/questionnaire" |
+  "outline/user interface/r-chat" |
+  "outline/user interface/radio-btn-checked" |
+  "outline/user interface/radio-btn" |
+  "outline/user interface/remove-fav" |
+  "outline/user interface/remove-favorite" |
+  "outline/user interface/remove-like" |
+  "outline/user interface/remove" |
+  "outline/user interface/roadmap" |
+  "outline/user interface/s-add" |
+  "outline/user interface/s-ban" |
+  "outline/user interface/s-check" |
+  "outline/user interface/s-delete" |
+  "outline/user interface/s-edit" |
+  "outline/user interface/s-info" |
+  "outline/user interface/s-pulse" |
+  "outline/user interface/s-question" |
+  "outline/user interface/s-remove" |
+  "outline/user interface/s-warning" |
+  "outline/user interface/save-for-later" |
+  "outline/user interface/save-to-list" |
+  "outline/user interface/saved-items" |
+  "outline/user interface/screen-enlarge" |
+  "outline/user interface/screen-expand" |
+  "outline/user interface/screen-maximize" |
+  "outline/user interface/screen-sharing-2" |
+  "outline/user interface/screen-sharing-off-2" |
+  "outline/user interface/search-content" |
+  "outline/user interface/search-zoom-in" |
+  "outline/user interface/search-zoom-out" |
+  "outline/user interface/search" |
+  "outline/user interface/security" |
+  "outline/user interface/segmentation" |
+  "outline/user interface/select" |
+  "outline/user interface/send-message" |
+  "outline/user interface/send" |
+  "outline/user interface/settings-gear" |
+  "outline/user interface/settings-wheel" |
+  "outline/user interface/settings" |
+  "outline/user interface/setup-options" |
+  "outline/user interface/setup-preferences" |
+  "outline/user interface/setup-tools" |
+  "outline/user interface/share" |
+  "outline/user interface/sharing" |
+  "outline/user interface/shop" |
+  "outline/user interface/shopping-bag" |
+  "outline/user interface/shopping-cart-2" |
+  "outline/user interface/shopping-cart" |
+  "outline/user interface/shopping-label" |
+  "outline/user interface/shopping-tag" |
+  "outline/user interface/sidebar" |
+  "outline/user interface/slide-left" |
+  "outline/user interface/slide-right" |
+  "outline/user interface/social-sharing" |
+  "outline/user interface/sort-tool" |
+  "outline/user interface/spaceship" |
+  "outline/user interface/speedometer" |
+  "outline/user interface/stack" |
+  "outline/user interface/star-rate" |
+  "outline/user interface/star" |
+  "outline/user interface/stopwatch" |
+  "outline/user interface/support" |
+  "outline/user interface/survey" |
+  "outline/user interface/switches" |
+  "outline/user interface/system-configuration" |
+  "outline/user interface/system-preferences" |
+  "outline/user interface/t-add" |
+  "outline/user interface/t-delete" |
+  "outline/user interface/t-remove" |
+  "outline/user interface/table-layout" |
+  "outline/user interface/table-move" |
+  "outline/user interface/table-slide" |
+  "outline/user interface/tag" |
+  "outline/user interface/tags-stack" |
+  "outline/user interface/target" |
+  "outline/user interface/telephone" |
+  "outline/user interface/time-alarm" |
+  "outline/user interface/time-clock" |
+  "outline/user interface/time-machine" |
+  "outline/user interface/timeline" |
+  "outline/user interface/toggle" |
+  "outline/user interface/translation" |
+  "outline/user interface/trash-can" |
+  "outline/user interface/trash" |
+  "outline/user interface/unlink" |
+  "outline/user interface/unlocked" |
+  "outline/user interface/upload" |
+  "outline/user interface/url" |
+  "outline/user interface/verified" |
+  "outline/user interface/video-gallery" |
+  "outline/user interface/view" |
+  "outline/user interface/virtual-assistant-2" |
+  "outline/user interface/warning-sign" |
+  "outline/user interface/web-hyperlink" |
+  "outline/user interface/web-link" |
+  "outline/user interface/web-url" |
+  "outline/user interface/webpage" |
+  "outline/user interface/widget" |
+  "outline/user interface/window-add" |
+  "outline/user interface/window-delete" |
+  "outline/user interface/wireframe" |
+  "outline/user interface/wrench-tool" |
+  "outline/user interface/wrench" |
+  "outline/user interface/zoom-in" |
+  "outline/user interface/zoom-out" |
+  "outline/user interface/zoom" |
+  "outline/users/accessibility" |
+  "outline/users/account" |
+  "outline/users/address-book" |
+  "outline/users/child" |
+  "outline/users/contact-list" |
+  "outline/users/contact" |
+  "outline/users/contacts" |
+  "outline/users/couple-gay" |
+  "outline/users/couple-lesbian" |
+  "outline/users/diaper-changing-area" |
+  "outline/users/doctor" |
+  "outline/users/exchange" |
+  "outline/users/face-man" |
+  "outline/users/face-woman" |
+  "outline/users/family-roof" |
+  "outline/users/family" |
+  "outline/users/farmer" |
+  "outline/users/female-figure" |
+  "outline/users/female-sign" |
+  "outline/users/file-shared" |
+  "outline/users/file-user" |
+  "outline/users/folder-shared" |
+  "outline/users/folder-user" |
+  "outline/users/gathering-restrictions" |
+  "outline/users/grandparent" |
+  "outline/users/hacker" |
+  "outline/users/hair-man" |
+  "outline/users/hair-woman" |
+  "outline/users/humanoid" |
+  "outline/users/info-point" |
+  "outline/users/interview" |
+  "outline/users/joint-account" |
+  "outline/users/male-sign" |
+  "outline/users/man-arrow-down" |
+  "outline/users/man-arrow-up" |
+  "outline/users/man-profile" |
+  "outline/users/man" |
+  "outline/users/meeting" |
+  "outline/users/mickey-mouse" |
+  "outline/users/miner" |
+  "outline/users/mobile-contact" |
+  "outline/users/negative-judgement" |
+  "outline/users/no-contact" |
+  "outline/users/office-badge" |
+  "outline/users/office-pass" |
+  "outline/users/parenting" |
+  "outline/users/payee" |
+  "outline/users/payor" |
+  "outline/users/people-network" |
+  "outline/users/police-officer" |
+  "outline/users/positive-judgement" |
+  "outline/users/pregnant-woman" |
+  "outline/users/privacy-policy" |
+  "outline/users/profile" |
+  "outline/users/property" |
+  "outline/users/reading" |
+  "outline/users/search-user" |
+  "outline/users/security-gate" |
+  "outline/users/security-officer" |
+  "outline/users/social-distancing" |
+  "outline/users/standing-man" |
+  "outline/users/standing-woman" |
+  "outline/users/stay-home" |
+  "outline/users/team" |
+  "outline/users/toilette" |
+  "outline/users/user-2" |
+  "outline/users/user-add" |
+  "outline/users/user-bubble" |
+  "outline/users/user-c-frame-2" |
+  "outline/users/user-c-frame-3" |
+  "outline/users/user-c-frame" |
+  "outline/users/user-check" |
+  "outline/users/user-create" |
+  "outline/users/user-delete-cross" |
+  "outline/users/user-delete-line" |
+  "outline/users/user-delete" |
+  "outline/users/user-edit" |
+  "outline/users/user-focus" |
+  "outline/users/user-group" |
+  "outline/users/user-heart" |
+  "outline/users/user-list" |
+  "outline/users/user-location-2" |
+  "outline/users/user-location" |
+  "outline/users/user-lock" |
+  "outline/users/user-new" |
+  "outline/users/user-remove" |
+  "outline/users/user-s-frame-2" |
+  "outline/users/user-s-frame-3" |
+  "outline/users/user-s-frame" |
+  "outline/users/user-search" |
+  "outline/users/user-share" |
+  "outline/users/user-star" |
+  "outline/users/user-sync" |
+  "outline/users/user-time" |
+  "outline/users/user-wearing-glasses" |
+  "outline/users/user" |
+  "outline/users/users-add" |
+  "outline/users/users-check" |
+  "outline/users/users-heart" |
+  "outline/users/users-location" |
+  "outline/users/users-lock" |
+  "outline/users/users-meeting" |
+  "outline/users/users-mm" |
+  "outline/users/users-remove" |
+  "outline/users/users-wm" |
+  "outline/users/users-ww" |
+  "outline/users/users" |
+  "outline/users/virtual-assistant-2" |
+  "outline/users/voice-record" |
+  "outline/users/wc-sign" |
+  "outline/users/wheelchair" |
+  "outline/users/woman-arrow-down" |
+  "outline/users/woman-arrow-up" |
+  "outline/users/woman-man" |
+  "outline/users/woman-profile" |
+  "outline/users/woman" |
+  "outline/users/work-badge" |
+  "outline/health/ambulance" |
+  "outline/health/apple-2" |
+  "outline/health/atom" |
+  "outline/health/bag-49" |
+  "outline/health/bag-50" |
+  "outline/health/bedroom" |
+  "outline/health/biochemistry" |
+  "outline/health/biology" |
+  "outline/health/botany" |
+  "outline/health/brain" |
+  "outline/health/c-pulse" |
+  "outline/health/call-doctor" |
+  "outline/health/chemistry" |
+  "outline/health/condom" |
+  "outline/health/coughing" |
+  "outline/health/cure" |
+  "outline/health/diet-food" |
+  "outline/health/diet-plan" |
+  "outline/health/diet" |
+  "outline/health/disinfectant" |
+  "outline/health/dna-27" |
+  "outline/health/dna-38" |
+  "outline/health/doctor" |
+  "outline/health/dont-touch-eyes" |
+  "outline/health/dont-touch-mouth" |
+  "outline/health/drop" |
+  "outline/health/embryo" |
+  "outline/health/female-figure" |
+  "outline/health/female-sign" |
+  "outline/health/flame" |
+  "outline/health/flask-2" |
+  "outline/health/flask" |
+  "outline/health/food-scale" |
+  "outline/health/gathering-restrictions" |
+  "outline/health/heart" |
+  "outline/health/heartbeat" |
+  "outline/health/height" |
+  "outline/health/hospital-32" |
+  "outline/health/hospital-33" |
+  "outline/health/hospital-34" |
+  "outline/health/hospital-bed" |
+  "outline/health/humidity-26" |
+  "outline/health/humidity-52" |
+  "outline/health/infrared-thermometer" |
+  "outline/health/intestine" |
+  "outline/health/liquid-soap-container" |
+  "outline/health/lungs-infection" |
+  "outline/health/lungs" |
+  "outline/health/male-sign" |
+  "outline/health/man" |
+  "outline/health/measurement" |
+  "outline/health/medical-clipboard" |
+  "outline/health/medical-mask" |
+  "outline/health/medication" |
+  "outline/health/medicine" |
+  "outline/health/microbiology" |
+  "outline/health/microscope" |
+  "outline/health/molecule-39" |
+  "outline/health/molecule-40" |
+  "outline/health/molecule" |
+  "outline/health/mortar" |
+  "outline/health/no-contact" |
+  "outline/health/no-smoking" |
+  "outline/health/nurse" |
+  "outline/health/nutrition" |
+  "outline/health/ovum-sperm" |
+  "outline/health/patch-34" |
+  "outline/health/patch" |
+  "outline/health/pharmacy" |
+  "outline/health/phone-heart" |
+  "outline/health/phone-heartbeat" |
+  "outline/health/pill-42" |
+  "outline/health/pill-43" |
+  "outline/health/pill-bottle" |
+  "outline/health/potion" |
+  "outline/health/pregnancy-test" |
+  "outline/health/pulse-chart" |
+  "outline/health/pulse-sleep" |
+  "outline/health/pulse" |
+  "outline/health/research" |
+  "outline/health/runny-nose" |
+  "outline/health/s-pulse" |
+  "outline/health/smoking" |
+  "outline/health/sneeze" |
+  "outline/health/soap" |
+  "outline/health/social-distancing" |
+  "outline/health/sperm" |
+  "outline/health/stay-home" |
+  "outline/health/steps" |
+  "outline/health/stethoscope" |
+  "outline/health/stretching" |
+  "outline/health/syringe" |
+  "outline/health/temperature-2" |
+  "outline/health/temperature" |
+  "outline/health/thermometer" |
+  "outline/health/tooth" |
+  "outline/health/treadmill" |
+  "outline/health/virus" |
+  "outline/health/walking-support" |
+  "outline/health/wash-hands" |
+  "outline/health/watch-heart" |
+  "outline/health/watch-heartbeat" |
+  "outline/health/weed" |
+  "outline/health/weight-gain" |
+  "outline/health/weight-loss" |
+  "outline/health/weight-scale" |
+  "outline/health/wheelchair-2" |
+  "outline/health/woman-man" | 
+  "outline/files/archive-check" |
+  "outline/files/archive-content" |
+  "outline/files/archive-doc-check" |
+  "outline/files/archive-doc" |
+  "outline/files/archive-drawer" |
+  "outline/files/archive-file-check" |
+  "outline/files/archive-file" |
+  "outline/files/archive" |
+  "outline/files/backup" |
+  "outline/files/box" |
+  "outline/files/browse" |
+  "outline/files/catalog" |
+  "outline/files/clear-data" |
+  "outline/files/compressed-file" |
+  "outline/files/computer-upload" |
+  "outline/files/copy-2" |
+  "outline/files/doc-folder" |
+  "outline/files/document-2" |
+  "outline/files/document-copy" |
+  "outline/files/document" |
+  "outline/files/drawer" |
+  "outline/files/file-2" |
+  "outline/files/file-add" |
+  "outline/files/file-alert" |
+  "outline/files/file-archive" |
+  "outline/files/file-article" |
+  "outline/files/file-audio-2" |
+  "outline/files/file-audio" |
+  "outline/files/file-bookmark" |
+  "outline/files/file-chart-bar" |
+  "outline/files/file-chart-pie" |
+  "outline/files/file-check" |
+  "outline/files/file-cloud" |
+  "outline/files/file-copies" |
+  "outline/files/file-copy" |
+  "outline/files/file-delete" |
+  "outline/files/file-dev" |
+  "outline/files/file-download-3" |
+  "outline/files/file-download" |
+  "outline/files/file-edit" |
+  "outline/files/file-export" |
+  "outline/files/file-favorite" |
+  "outline/files/file-folder" |
+  "outline/files/file-gallery" |
+  "outline/files/file-history" |
+  "outline/files/file-image" |
+  "outline/files/file-import" |
+  "outline/files/file-info" |
+  "outline/files/file-link" |
+  "outline/files/file-locked" |
+  "outline/files/file-money" |
+  "outline/files/file-new" |
+  "outline/files/file-no-access" |
+  "outline/files/file-play" |
+  "outline/files/file-preferences" |
+  "outline/files/file-question" |
+  "outline/files/file-remove" |
+  "outline/files/file-replace" |
+  "outline/files/file-search" |
+  "outline/files/file-settings" |
+  "outline/files/file-shared" |
+  "outline/files/file-starred" |
+  "outline/files/file-sync" |
+  "outline/files/file-text" |
+  "outline/files/file-upload-2" |
+  "outline/files/file-upload-3" |
+  "outline/files/file-upload" |
+  "outline/files/file-user" |
+  "outline/files/file-vector" |
+  "outline/files/file" |
+  "outline/files/folder-2" |
+  "outline/files/folder-3" |
+  "outline/files/folder-add" |
+  "outline/files/folder-alert" |
+  "outline/files/folder-audio" |
+  "outline/files/folder-bookmark" |
+  "outline/files/folder-chart-bar" |
+  "outline/files/folder-chart-pie" |
+  "outline/files/folder-check" |
+  "outline/files/folder-cloud" |
+  "outline/files/folder-dev" |
+  "outline/files/folder-download" |
+  "outline/files/folder-edit" |
+  "outline/files/folder-favorite" |
+  "outline/files/folder-gallery" |
+  "outline/files/folder-history" |
+  "outline/files/folder-image" |
+  "outline/files/folder-info" |
+  "outline/files/folder-link" |
+  "outline/files/folder-locked" |
+  "outline/files/folder-money" |
+  "outline/files/folder-music" |
+  "outline/files/folder-no-access" |
+  "outline/files/folder-play" |
+  "outline/files/folder-preferences" |
+  "outline/files/folder-question" |
+  "outline/files/folder-remove" |
+  "outline/files/folder-replace" |
+  "outline/files/folder-search" |
+  "outline/files/folder-settings" |
+  "outline/files/folder-shared" |
+  "outline/files/folder-starred" |
+  "outline/files/folder-sync" |
+  "outline/files/folder-upload" |
+  "outline/files/folder-user" |
+  "outline/files/folder-vector" |
+  "outline/files/folder" |
+  "outline/files/layers" |
+  "outline/files/news" |
+  "outline/files/note" |
+  "outline/files/notebook" |
+  "outline/files/open-book" |
+  "outline/files/open-folder" |
+  "outline/files/paper" |
+  "outline/files/raw-image" |
+  "outline/files/read" |
+  "outline/files/research" |
+  "outline/files/save-for-later" |
+  "outline/files/saved-items" |
+  "outline/files/upload-file" |
+  "outline/files/zipped-file"
