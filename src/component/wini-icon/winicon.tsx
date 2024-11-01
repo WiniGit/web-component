@@ -5,7 +5,7 @@ import { CSSProperties } from "react";
 interface WiniconProps {
     src?: WiniIconName,
     link?: string,
-    className?: string
+    className?: string,
     style?: CSSProperties,
     size?: number | string,
     color?: string
