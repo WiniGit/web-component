@@ -17,7 +17,7 @@ export function Winicon({ src, link, className, style, size, color }: WiniconPro
 
     useEffect(() => {
         if (src) {
-            fetch(cdnSrc + src + "").then(async (res) => { setSvgData(await res.text()) })
+            fetch(cdnSrc + src + ".svg").then(async (res) => { setSvgData(await res.text()) })
         } else if (link) {
             fetch(link).then(async (res) => { setSvgData(await res.text()) })
         }
