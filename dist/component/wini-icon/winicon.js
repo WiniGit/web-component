@@ -80,7 +80,7 @@ function Winicon(_a) {
     var _this = this;
     var src = _a.src, link = _a.link, className = _a.className, style = _a.style, size = _a.size, color = _a.color;
     var _b = (0, react_1.useState)(), svgData = _b[0], setSvgData = _b[1];
-    var cdnSrc = "https://cdn.jsdelivr.net/gh/WiniGit/wini-icons@latest/icons/";
+    var cdnSrc = "https://cdn.jsdelivr.net/gh/WiniGit/icon-library@latest/";
     (0, react_1.useEffect)(function () {
         if (src) {
             fetch(cdnSrc + src + ".svg").then(function (res) { return __awaiter(_this, void 0, void 0, function () { var _a; return __generator(this, function (_b) {
