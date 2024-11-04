@@ -90,11 +90,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Select1 = void 0;
 var select1_module_css_1 = __importDefault(require("./select1.module.css"));
-var free_solid_svg_icons_1 = require("@fortawesome/free-solid-svg-icons");
-var react_fontawesome_1 = require("@fortawesome/react-fontawesome");
 var react_1 = __importStar(require("react"));
 var react_dom_1 = __importDefault(require("react-dom"));
 var text_1 = require("../text/text");
+var winicon_1 = require("../wini-icon/winicon");
 ;
 var Select1 = /** @class */ (function (_super) {
     __extends(Select1, _super);
@@ -227,7 +226,7 @@ var Select1 = /** @class */ (function (_super) {
                 } : function () {
                     _this.onSelect(item);
                 } },
-                ((_b = this.state.search) !== null && _b !== void 0 ? _b : this.state.options).some(function (e) { return e.parentId; }) && react_1.default.createElement("div", { className: 'row', style: { width: '1.4rem', height: '1.4rem' } }, children.length ? react_1.default.createElement(react_fontawesome_1.FontAwesomeIcon, { icon: item.isOpen ? free_solid_svg_icons_1.faCaretDown : free_solid_svg_icons_1.faCaretRight, style: { fontSize: '1.2rem', color: '#161C2499' } }) : null),
+                ((_b = this.state.search) !== null && _b !== void 0 ? _b : this.state.options).some(function (e) { return e.parentId; }) && react_1.default.createElement("div", { className: 'row', style: { width: '1.4rem', height: '1.4rem' } }, children.length ? react_1.default.createElement(winicon_1.Winicon, { src: item.isOpen ? "fill/arrows/triangle-down" : "fill/arrows/triangle-right", size: "1.2rem" }) : null),
                 react_1.default.createElement(text_1.Text, { className: 'body-3' }, item.name)),
             react_1.default.createElement("div", { className: 'col', style: { display: item.isOpen ? "flex" : "none", width: '100%' } }, children.map(function (e) { return _this.renderOptions(e); })));
     };
@@ -297,7 +296,7 @@ var Select1 = /** @class */ (function (_super) {
                     if ((iconRef === null || iconRef === void 0 ? void 0 : iconRef.parentElement) && iconRef.parentElement.getBoundingClientRect().width < 100)
                         iconRef.style.display = "none";
                 }, className: 'row' },
-                react_1.default.createElement(react_fontawesome_1.FontAwesomeIcon, { icon: this.state.isOpen ? free_solid_svg_icons_1.faChevronUp : free_solid_svg_icons_1.faChevronDown, style: { fontSize: '1.1rem', color: "var(--neutral-text-subtitle-color)" } })),
+                react_1.default.createElement(winicon_1.Winicon, { src: this.state.isOpen ? "fill/arrows/up-arrow" : "fill/arrows/down-arrow", size: "1.2rem" })),
             this.state.isOpen &&
                 react_dom_1.default.createPortal(react_1.default.createElement("div", { className: "".concat(select1_module_css_1.default['select1-popup'], " col ").concat((_e = this.props.popupClassName) !== null && _e !== void 0 ? _e : ""), style: (_f = this.state.style) !== null && _f !== void 0 ? _f : {
                         top: this.state.offset.y + this.state.offset.height + 2 + 'px',

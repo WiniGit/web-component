@@ -32,9 +32,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Calendar = exports.CalendarType = exports.inRangeTime = exports.endDate = exports.startDate = exports.today = void 0;
 var react_1 = __importDefault(require("react"));
 var calendar_module_css_1 = __importDefault(require("./calendar.module.css"));
-var react_fontawesome_1 = require("@fortawesome/react-fontawesome");
-var free_solid_svg_icons_1 = require("@fortawesome/free-solid-svg-icons");
 var date_fns_1 = require("date-fns");
+var winicon_1 = require("../wini-icon/winicon");
 exports.today = new Date();
 exports.startDate = new Date(exports.today.getFullYear() - 100, exports.today.getMonth(), exports.today.getDate());
 exports.endDate = new Date(exports.today.getFullYear() + 100, exports.today.getMonth(), exports.today.getDate());
@@ -323,7 +322,7 @@ var Calendar = /** @class */ (function (_super) {
                                             break;
                                     }
                                 } },
-                                react_1.default.createElement(react_fontawesome_1.FontAwesomeIcon, { icon: free_solid_svg_icons_1.faAngleDoubleLeft })),
+                                react_1.default.createElement(winicon_1.Winicon, { src: "fill/arrows/double-arrow-left", size: '1.6rem' })),
                             react_1.default.createElement("button", { type: 'button', onClick: function () {
                                     switch (_this.state.type) {
                                         case CalendarType.YEAR:
@@ -345,7 +344,7 @@ var Calendar = /** @class */ (function (_super) {
                                             break;
                                     }
                                 } },
-                                react_1.default.createElement(react_fontawesome_1.FontAwesomeIcon, { icon: free_solid_svg_icons_1.faAngleLeft })),
+                                react_1.default.createElement(winicon_1.Winicon, { src: "fill/arrows/left-arrow", size: '1.6rem' })),
                             react_1.default.createElement("span", { className: "heading-7", onClick: function () {
                                     if (_this.state.type !== CalendarType.YEAR)
                                         _this.setState(__assign(__assign({}, _this.state), { type: _this.state.type === CalendarType.DATE ? CalendarType.MONTH : CalendarType.YEAR }));
@@ -371,7 +370,7 @@ var Calendar = /** @class */ (function (_super) {
                                             break;
                                     }
                                 } },
-                                react_1.default.createElement(react_fontawesome_1.FontAwesomeIcon, { icon: free_solid_svg_icons_1.faAngleRight })),
+                                react_1.default.createElement(winicon_1.Winicon, { src: "fill/arrows/double-arrow-right", size: '1.6rem' })),
                             react_1.default.createElement("button", { type: 'button', onClick: function () {
                                     switch (_this.state.type) {
                                         case CalendarType.YEAR:
@@ -395,7 +394,7 @@ var Calendar = /** @class */ (function (_super) {
                                             break;
                                     }
                                 } },
-                                react_1.default.createElement(react_fontawesome_1.FontAwesomeIcon, { icon: free_solid_svg_icons_1.faAngleDoubleRight }))),
+                                react_1.default.createElement(winicon_1.Winicon, { src: "fill/arrows/right-arrow", size: '1.6rem' }))),
                         react_1.default.createElement("div", { className: "".concat(calendar_module_css_1.default['picker-date-body'], " row") }, this.state.type === CalendarType.YEAR ? this.showYearInRange() : this.state.type === CalendarType.MONTH ? this.showMonthInYear() : this.showDateInMonth())),
                     this.props.type === CalendarType.DATETIME ? react_1.default.createElement("div", { className: "".concat(calendar_module_css_1.default['picker-time-container'], " col") },
                         react_1.default.createElement("div", { className: "heading-7" },

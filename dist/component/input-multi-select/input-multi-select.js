@@ -98,13 +98,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SelectMultiple = void 0;
-var free_solid_svg_icons_1 = require("@fortawesome/free-solid-svg-icons");
-var react_fontawesome_1 = require("@fortawesome/react-fontawesome");
 var react_1 = __importStar(require("react"));
 var react_dom_1 = __importDefault(require("react-dom"));
 require("./input-multi-select.css");
 var checkbox_1 = require("../checkbox/checkbox");
 var text_1 = require("../text/text");
+var winicon_1 = require("../wini-icon/winicon");
 ;
 var SelectMultiple = /** @class */ (function (_super) {
     __extends(SelectMultiple, _super);
@@ -213,7 +212,7 @@ var SelectMultiple = /** @class */ (function (_super) {
                             }) }));
                     }
                 } : undefined },
-                ((_b = this.state.search) !== null && _b !== void 0 ? _b : this.state.options).some(function (e) { return e.parentId; }) && react_1.default.createElement("div", { className: 'row', style: { width: '1.4rem', height: '1.4rem' } }, children.length ? react_1.default.createElement(react_fontawesome_1.FontAwesomeIcon, { icon: item.isOpen ? free_solid_svg_icons_1.faCaretDown : free_solid_svg_icons_1.faCaretRight, style: { fontSize: '1.2rem', color: '#161C2499' } }) : null),
+                ((_b = this.state.search) !== null && _b !== void 0 ? _b : this.state.options).some(function (e) { return e.parentId; }) && react_1.default.createElement("div", { className: 'row', style: { width: '1.4rem', height: '1.4rem' } }, children.length ? react_1.default.createElement(winicon_1.Winicon, { src: item.isOpen ? 'fill/arrows/triangle-down' : 'fill/arrows/triangle-right', size: '1.2rem' }) : null),
                 react_1.default.createElement(checkbox_1.Checkbox, { disabled: item.disabled, value: children.length ? (children.every(function (e) { return _this.state.value.includes(e.id); }) ? true : children.some(function (e) { return _this.state.value.includes(e.id); }) ? undefined : false) : this.state.value.includes(item.id), onChange: function (v) { _this.onCheck(v, __spreadArray([item], children, true)); }, size: '2rem' }),
                 react_1.default.createElement(text_1.Text, { className: 'body-3' }, item.name)),
             react_1.default.createElement("div", { className: 'col', style: { display: item.isOpen ? "flex" : "none", width: '100%' } }, children.map(function (e) { return _this.renderOptions(e); })));
@@ -267,7 +266,7 @@ var SelectMultiple = /** @class */ (function (_super) {
                     var optionItem = _this.props.options.find(function (e) { return e.id === item; });
                     return react_1.default.createElement("div", { key: item, className: 'selected-item-value row', onClick: function (ev) { return _this.onClickItem(ev, item); } },
                         react_1.default.createElement(text_1.Text, { style: { color: '#161D24E5', fontSize: '1.2rem', lineHeight: '1.4rem' } }, optionItem === null || optionItem === void 0 ? void 0 : optionItem.name),
-                        react_1.default.createElement(react_fontawesome_1.FontAwesomeIcon, { icon: free_solid_svg_icons_1.faClose, style: { color: '#161D24E5', fontSize: '1.2rem' } }));
+                        react_1.default.createElement(winicon_1.Winicon, { src: "outline/user interface/e-remove", size: '1.2rem' }));
                 }),
                 (!this.state.value.length || this.state.isOpen) && react_1.default.createElement("input", { autoFocus: this.state.isOpen, onChange: this.search, placeholder: this.state.value.length ? undefined : this.props.placeholder, onBlur: function (ev) {
                         if (_this.state.onSelect)
@@ -280,8 +279,8 @@ var SelectMultiple = /** @class */ (function (_super) {
                     if (_this.state.value.length)
                         _this.setState(__assign(__assign({}, _this.state), { isOpen: true, value: [] }));
                 } },
-                react_1.default.createElement(react_fontawesome_1.FontAwesomeIcon, { icon: free_solid_svg_icons_1.faXmarkCircle, style: { fontSize: '1.6rem', color: "var(--neutral-text-subtitle-color)" } })) : react_1.default.createElement("div", { className: 'row', style: { display: (this.containerRef.current && this.containerRef.current.getBoundingClientRect().width >= 120) ? "flex" : "none" } },
-                react_1.default.createElement(react_fontawesome_1.FontAwesomeIcon, { icon: this.state.isOpen ? free_solid_svg_icons_1.faChevronUp : free_solid_svg_icons_1.faChevronDown, style: { fontSize: '1.1rem', color: "var(--neutral-text-subtitle-color)" } })),
+                react_1.default.createElement(winicon_1.Winicon, { src: "outline/user interface/c-remove", size: '1.6rem' })) : react_1.default.createElement("div", { className: 'row', style: { display: (this.containerRef.current && this.containerRef.current.getBoundingClientRect().width >= 120) ? "flex" : "none" } },
+                react_1.default.createElement(winicon_1.Winicon, { src: this.state.isOpen ? "fill/arrows/up-arrow" : "fill/arrows/down-arrow", size: '1.2rem' })),
             this.state.isOpen &&
                 react_dom_1.default.createPortal(react_1.default.createElement("div", { className: "select-multi-popup col ".concat((_e = this.props.popupClassName) !== null && _e !== void 0 ? _e : ""), style: (_f = this.state.style) !== null && _f !== void 0 ? _f : {
                         top: this.state.offset.y + this.state.offset.height + 2 + 'px',

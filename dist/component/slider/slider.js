@@ -22,8 +22,7 @@ exports.CustomSlider = void 0;
 var react_1 = __importDefault(require("react"));
 var react_awesome_slider_1 = __importDefault(require("react-awesome-slider"));
 require("./slider.css");
-var react_fontawesome_1 = require("@fortawesome/react-fontawesome");
-var free_solid_svg_icons_1 = require("@fortawesome/free-solid-svg-icons");
+var winicon_1 = require("../wini-icon/winicon");
 var CustomSlider = /** @class */ (function (_super) {
     __extends(CustomSlider, _super);
     function CustomSlider(props) {
@@ -74,8 +73,8 @@ var CustomSlider = /** @class */ (function (_super) {
             clearInterval(this.intervalPlay);
     };
     CustomSlider.prototype.render = function () {
-        var _a, _b, _c, _d, _e, _f, _g, _h;
-        return react_1.default.createElement(react_awesome_slider_1.default, { style: this.props.style, className: "custom-slider-container ".concat((_a = this.props.className) !== null && _a !== void 0 ? _a : ''), selected: this.state.page, bullets: false, buttons: this.props.buttons ? (this.props.children && ((_b = this.props.children) === null || _b === void 0 ? void 0 : _b.length) > 1) : false, organicArrows: false, buttonContentLeft: (_c = this.props.prevButton) !== null && _c !== void 0 ? _c : react_1.default.createElement(react_fontawesome_1.FontAwesomeIcon, { icon: free_solid_svg_icons_1.faCircleChevronLeft, style: { color: (_d = this.props.iconColor) !== null && _d !== void 0 ? _d : '#ffffff', fontSize: (_e = this.props.iconSize) !== null && _e !== void 0 ? _e : '2.4rem' } }), buttonContentRight: (_f = this.props.nextButton) !== null && _f !== void 0 ? _f : react_1.default.createElement(react_fontawesome_1.FontAwesomeIcon, { icon: free_solid_svg_icons_1.faCircleChevronRight, style: { color: (_g = this.props.iconColor) !== null && _g !== void 0 ? _g : '#ffffff', fontSize: (_h = this.props.iconSize) !== null && _h !== void 0 ? _h : '2.4rem' } }) }, this.props.children);
+        var _a, _b, _c, _d, _e, _f;
+        return react_1.default.createElement(react_awesome_slider_1.default, { style: this.props.style, className: "custom-slider-container ".concat((_a = this.props.className) !== null && _a !== void 0 ? _a : ''), selected: this.state.page, bullets: false, buttons: this.props.buttons ? (this.props.children && ((_b = this.props.children) === null || _b === void 0 ? void 0 : _b.length) > 1) : false, organicArrows: false, buttonContentLeft: (_c = this.props.prevButton) !== null && _c !== void 0 ? _c : react_1.default.createElement(winicon_1.Winicon, { src: "fill/arrows/circle-ctrl-left", size: "2.4rem", color: (_d = this.props.iconColor) !== null && _d !== void 0 ? _d : "var(--neutral-absolute-background-color)" }), buttonContentRight: (_e = this.props.nextButton) !== null && _e !== void 0 ? _e : react_1.default.createElement(winicon_1.Winicon, { src: "fill/arrows/circle-ctrl-right", size: "2.4rem", color: (_f = this.props.iconColor) !== null && _f !== void 0 ? _f : "var(--neutral-absolute-background-color)" }) }, this.props.children);
     };
     return CustomSlider;
 }(react_1.default.Component));

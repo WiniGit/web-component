@@ -30,11 +30,10 @@ exports.Pagination = void 0;
 var react_1 = __importStar(require("react"));
 var react_paginate_1 = __importDefault(require("react-paginate"));
 var pagination_module_css_1 = __importDefault(require("./pagination.module.css"));
-var react_fontawesome_1 = require("@fortawesome/react-fontawesome");
-var free_solid_svg_icons_1 = require("@fortawesome/free-solid-svg-icons");
 var select1_1 = require("../select1/select1");
 var text_1 = require("../text/text");
 var text_field_1 = require("../text-field/text-field");
+var winicon_1 = require("../wini-icon/winicon");
 function Pagination(_a) {
     var id = _a.id, currentPage = _a.currentPage, itemPerPage = _a.itemPerPage, totalItem = _a.totalItem, onChangePage = _a.onChangePage, _b = _a.hidePageSize, hidePageSize = _b === void 0 ? false : _b, _c = _a.hideGoToPage, hideGoToPage = _c === void 0 ? false : _c, style = _a.style;
     var goToPageRef = (0, react_1.useRef)();
@@ -64,7 +63,7 @@ function Pagination(_a) {
                     onChangePage(ev.selected + 1, itemPerPage);
                 }, forcePage: currentPage - 1, 
                 // initialPage={currentPage - 1}
-                breakClassName: "row button-text-3", breakLabel: "...", pageCount: Math.ceil(totalItem / itemPerPage), previousClassName: "row", previousLabel: react_1.default.createElement(react_fontawesome_1.FontAwesomeIcon, { icon: free_solid_svg_icons_1.faChevronLeft, style: { fontSize: '1.4rem' } }), nextClassName: "row", nextLabel: react_1.default.createElement(react_fontawesome_1.FontAwesomeIcon, { icon: free_solid_svg_icons_1.faChevronRight, style: { fontSize: '1.4rem' } }), containerClassName: "".concat(pagination_module_css_1.default['pagination'], " row"), pageClassName: "row button-text-3", activeClassName: pagination_module_css_1.default['active'], hrefBuilder: function (pageIndex) {
+                breakClassName: "row button-text-3", breakLabel: "...", pageCount: Math.ceil(totalItem / itemPerPage), previousClassName: "row", previousLabel: react_1.default.createElement(winicon_1.Winicon, { src: "fill/arrows/left-arrow", size: "1.4rem" }), nextClassName: "row", nextLabel: react_1.default.createElement(winicon_1.Winicon, { src: "fill/arrows/right-arrow", size: "1.4rem" }), containerClassName: "".concat(pagination_module_css_1.default['pagination'], " row"), pageClassName: "row button-text-3", activeClassName: pagination_module_css_1.default['active'], hrefBuilder: function (pageIndex) {
                     return pageIndex >= 1 && pageIndex <= Math.ceil(totalItem / itemPerPage) ? "/page/".concat(pageIndex) : '#';
                 }, renderOnZeroPageCount: null }),
             hideGoToPage ? null : react_1.default.createElement(react_1.default.Fragment, null,
