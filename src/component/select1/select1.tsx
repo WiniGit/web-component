@@ -168,7 +168,7 @@ export class Select1 extends React.Component<Select1Props, Select1State> {
         if (prevState.value !== this.state.value && this.inputRef.current) this.inputRef.current.value = `${this.state.options.find(e => e.id === this.state.value)?.name ?? ""}`
         //
         if (this.state.isOpen && prevState.isOpen !== this.state.isOpen) {
-            const thisPopupRect = document.body.querySelector(':scope > .col[class*="select1-popup"]')?.getBoundingClientRect()
+            const thisPopupRect = document.body.querySelector(`:scope > .${styles['select1-popup']}`)?.getBoundingClientRect()
             if (thisPopupRect) {
                 let style: { top?: string, left?: string, right?: string, bottom?: string, width?: string, height?: string } | undefined;
                 if (thisPopupRect.right > document.body.offsetWidth) {

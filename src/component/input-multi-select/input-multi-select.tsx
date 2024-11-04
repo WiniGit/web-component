@@ -1,6 +1,6 @@
 import React, { createRef, CSSProperties } from 'react'
 import ReactDOM from 'react-dom'
-import './input-multi-select.css'
+import styles from './input-multi-select.css'
 import { OptionsItem } from '../select1/select1'
 import { Checkbox } from '../checkbox/checkbox'
 import { Text } from '../text/text'
@@ -107,7 +107,7 @@ export class SelectMultiple extends React.Component<SelectMultipleProps, SelectM
         if (!item.parentId) children = (this.state.search ?? this.state.options).filter(e => e.parentId === item.id)
         // 
         return <div key={item.id} className='col' style={{ width: '100%' }}>
-            <div className={`select-tile row ${item.disabled ? "disabled" : ""}`} style={{ paddingLeft: item.parentId ? '4.4rem' : undefined }} onClick={children.length ? () => {
+            <div className={`${styles['select-tile']} row ${item.disabled ? styles["disabled"] : ""}`} style={{ paddingLeft: item.parentId ? '4.4rem' : undefined }} onClick={children.length ? () => {
                 if (this.state.search) {
                     this.setState({
                         ...this.state, search: this.state.search.map(e => {
@@ -139,7 +139,7 @@ export class SelectMultiple extends React.Component<SelectMultipleProps, SelectM
         if (prevProps.value !== this.props.value) this.setState({ ...this.state, value: this.props.value ?? [] })
         //
         if (this.state.isOpen && (prevState.isOpen !== this.state.isOpen || prevState.value.length !== this.state.value.length)) {
-            const thisPopupRect = document.body.querySelector('.select-multi-popup')?.getBoundingClientRect()
+            const thisPopupRect = document.body.querySelector(`.${styles['select-multi-popup']}`)?.getBoundingClientRect()
             if (thisPopupRect) {
                 let style: { top?: string, left?: string, right?: string, bottom?: string, width?: string, height?: string } | undefined;
                 if (prevState.isOpen !== this.state.isOpen && thisPopupRect.right > document.body.offsetWidth) {
@@ -172,7 +172,7 @@ export class SelectMultiple extends React.Component<SelectMultipleProps, SelectM
         return <div
             id={this.props.id}
             ref={this.containerRef}
-            className={`select-multi-container row ${this.props.disabled ? 'disabled' : ''} ${this.props.helperText?.length && 'helper-text'} ${this.props.className ?? 'body-3'}`}
+            className={`${styles['select-multi-container']} row ${this.props.disabled ? styles['disabled'] : ''} ${this.props.helperText?.length && styles['helper-text']} ${this.props.className ?? 'body-3'}`}
             helper-text={this.props.helperText}
             style={this.props.style ? { ...({ '--helper-text-color': this.props.helperTextColor ?? '#e14337' } as CSSProperties), ...this.props.style } : ({ '--helper-text-color': this.props.helperTextColor ?? '#e14337' } as CSSProperties)}
             onClick={() => {
@@ -187,7 +187,7 @@ export class SelectMultiple extends React.Component<SelectMultipleProps, SelectM
             <div className='row' style={{ flexWrap: 'wrap', flex: 1, width: '100%', gap: '0.6rem 0.4rem' }}>
                 {this.state.value.map(item => {
                     const optionItem = this.props.options.find(e => e.id === item)
-                    return <div key={item} className='selected-item-value row' onClick={(ev) => this.onClickItem(ev, item)}>
+                    return <div key={item} className={`row ${styles['selected-item-value']}`} onClick={(ev) => this.onClickItem(ev, item)}>
                         <Text style={{ color: '#161D24E5', fontSize: '1.2rem', lineHeight: '1.4rem' }} >{optionItem?.name}</Text>
                         <Winicon src={"outline/user interface/e-remove"} size={'1.2rem'} />
                     </div>
@@ -209,7 +209,7 @@ export class SelectMultiple extends React.Component<SelectMultipleProps, SelectM
             </div>}
             {this.state.isOpen &&
                 ReactDOM.createPortal(
-                    <div className={`select-multi-popup col ${this.props.popupClassName ?? ""}`}
+                    <div className={`${styles['select-multi-popup']} col ${this.props.popupClassName ?? ""}`}
                         style={this.state.style ?? {
                             top: this.state.offset.y + this.state.offset.height + 2 + 'px',
                             left: this.state.offset.x + 'px',
@@ -236,10 +236,10 @@ export class SelectMultiple extends React.Component<SelectMultipleProps, SelectM
                                 }} className='button-text-3' style={{ color: _list.length ? 'var(--infor-main-color)' : '#00204D99', }}>{_list.length && isSelectedAll ? 'Bỏ chọn tất cả' : 'Chọn tất cả'}</Text>
                             })()}
                         </div>
-                        <div className='col select-body'>
+                        <div className={`col ${styles['select-body']}`}>
                             {(this.state.search ?? this.state.options).filter(e => !e.parentId).map(item => this.renderOptions(item))}
                             {(this.state.search?.length === 0 || this.props.options?.length === 0) && (
-                                <div className='no-results-found'>No result found</div>
+                                <div className={styles['no-results-found']}>No result found</div>
                             )}
                         </div>
                     </div>,

@@ -6831,4 +6831,1309 @@ type WiniIconName = "color/accessibility/accessibility-lift" |
   "outline/files/save-for-later" |
   "outline/files/saved-items" |
   "outline/files/upload-file" |
-  "outline/files/zipped-file"
+  "outline/files/zipped-file" |
+  "outline/development/3d-29" |
+  "outline/development/3d-model" |
+  "outline/development/ai-generated-img" |
+  "outline/development/album" |
+  "outline/development/align-bottom" |
+  "outline/development/align-center-horizontal" |
+  "outline/development/align-center-vertical" |
+  "outline/development/align-left" |
+  "outline/development/align-right" |
+  "outline/development/align-top" |
+  "outline/development/android" |
+  "outline/development/angle" |
+  "outline/development/animation-14" |
+  "outline/development/animation-31" |
+  "outline/development/animation-32" |
+  "outline/development/api" |
+  "outline/development/app-store" |
+  "outline/development/app" |
+  "outline/development/apple" |
+  "outline/development/apps" |
+  "outline/development/arrow-tool" |
+  "outline/development/artboard" |
+  "outline/development/binary-code" |
+  "outline/development/blend" |
+  "outline/development/block" |
+  "outline/development/blockchain" |
+  "outline/development/board-2" |
+  "outline/development/book-bookmark-2" |
+  "outline/development/book-bookmark" |
+  "outline/development/book-open-2" |
+  "outline/development/book-open" |
+  "outline/development/border-radius" |
+  "outline/development/border-width" |
+  "outline/development/border" |
+  "outline/development/browser-chrome" |
+  "outline/development/browser-edge-legacy" |
+  "outline/development/browser-edge" |
+  "outline/development/browser-firefox" |
+  "outline/development/browser-ie" |
+  "outline/development/browser-opera" |
+  "outline/development/browser-safari" |
+  "outline/development/brush" |
+  "outline/development/bucket" |
+  "outline/development/bullet-list-67" |
+  "outline/development/bullet-list-68" |
+  "outline/development/bullet-list-69" |
+  "outline/development/bullet-list-70" |
+  "outline/development/button-2" |
+  "outline/development/canvas" |
+  "outline/development/cards" |
+  "outline/development/clone" |
+  "outline/development/code-editor" |
+  "outline/development/code" |
+  "outline/development/collection" |
+  "outline/development/command" |
+  "outline/development/compare-items" |
+  "outline/development/compass" |
+  "outline/development/components" |
+  "outline/development/contrast-2" |
+  "outline/development/copy" |
+  "outline/development/creative-commons" |
+  "outline/development/crop" |
+  "outline/development/css3" |
+  "outline/development/cursor-48" |
+  "outline/development/cursor-49" |
+  "outline/development/cursor-add" |
+  "outline/development/cursor-grab" |
+  "outline/development/cursor-load" |
+  "outline/development/cursor-menu" |
+  "outline/development/cursor-not-allowed" |
+  "outline/development/cursor-pointer" |
+  "outline/development/cursor-text" |
+  "outline/development/data-table" |
+  "outline/development/decision-process" |
+  "outline/development/depth" |
+  "outline/development/design-system" |
+  "outline/development/design" |
+  "outline/development/digital-image" |
+  "outline/development/distribute-horizontal" |
+  "outline/development/distribute-vertical" |
+  "outline/development/divider" |
+  "outline/development/drag" |
+  "outline/development/drop-15" |
+  "outline/development/duplicate" |
+  "outline/development/edit-curves" |
+  "outline/development/edit-levels" |
+  "outline/development/empty" |
+  "outline/development/eraser-32" |
+  "outline/development/eraser-33" |
+  "outline/development/eraser-46" |
+  "outline/development/fairy-wand" |
+  "outline/development/filter-organization" |
+  "outline/development/flip-horizontal" |
+  "outline/development/flip-vertical" |
+  "outline/development/floors" |
+  "outline/development/form" |
+  "outline/development/frame" |
+  "outline/development/function" |
+  "outline/development/geometry" |
+  "outline/development/git-commit" |
+  "outline/development/gradient" |
+  "outline/development/grain-effect" |
+  "outline/development/graphics-tablet" |
+  "outline/development/grid-system" |
+  "outline/development/group" |
+  "outline/development/hash-mark" |
+  "outline/development/height-2" |
+  "outline/development/hot-key" |
+  "outline/development/html5" |
+  "outline/development/image-2" |
+  "outline/development/image" |
+  "outline/development/img-stack" |
+  "outline/development/invert-process" |
+  "outline/development/js-console" |
+  "outline/development/json-logo" |
+  "outline/development/ladybug" |
+  "outline/development/layers-2" |
+  "outline/development/layers" |
+  "outline/development/layout-11" |
+  "outline/development/layout-25" |
+  "outline/development/layout-grid" |
+  "outline/development/layout" |
+  "outline/development/license-key" |
+  "outline/development/magic-wand" |
+  "outline/development/magnet" |
+  "outline/development/markdown" |
+  "outline/development/marker" |
+  "outline/development/mask-oval" |
+  "outline/development/mask-rect" |
+  "outline/development/measure-02" |
+  "outline/development/measure-17" |
+  "outline/development/measure-big" |
+  "outline/development/microsoft" |
+  "outline/development/mirror-display" |
+  "outline/development/mirror-tablet-phone" |
+  "outline/development/mobile-design" |
+  "outline/development/mobile-dev" |
+  "outline/development/mobile-phone" |
+  "outline/development/mouse-2" |
+  "outline/development/mouse" |
+  "outline/development/move-down-2" |
+  "outline/development/move-up-2" |
+  "outline/development/move" |
+  "outline/development/newsletter-dev" |
+  "outline/development/note-code" |
+  "outline/development/note" |
+  "outline/development/octagon-m" |
+  "outline/development/octagon" |
+  "outline/development/paint-16" |
+  "outline/development/paint-37" |
+  "outline/development/paint-38" |
+  "outline/development/paint-brush" |
+  "outline/development/paint-bucket-39" |
+  "outline/development/paint-bucket-40" |
+  "outline/development/palette" |
+  "outline/development/pantone" |
+  "outline/development/paper-design" |
+  "outline/development/paper-dev" |
+  "outline/development/paragraph-2" |
+  "outline/development/patch-19" |
+  "outline/development/patch-34" |
+  "outline/development/path-exclude" |
+  "outline/development/path-intersect" |
+  "outline/development/path-minus" |
+  "outline/development/path-unite" |
+  "outline/development/pc-mouse" |
+  "outline/development/pen-01" |
+  "outline/development/pen-23" |
+  "outline/development/pen-tool" |
+  "outline/development/photo-album" |
+  "outline/development/photo-editor" |
+  "outline/development/pilcrow" |
+  "outline/development/plug-2" |
+  "outline/development/position" |
+  "outline/development/priority-high" |
+  "outline/development/priority-highest" |
+  "outline/development/priority-low" |
+  "outline/development/priority-lowest" |
+  "outline/development/priority-normal" |
+  "outline/development/prototype" |
+  "outline/development/refresh-02" |
+  "outline/development/roadmap" |
+  "outline/development/row-table" |
+  "outline/development/ruler-pencil" |
+  "outline/development/scale-2" |
+  "outline/development/scale-down" |
+  "outline/development/scale-up" |
+  "outline/development/scissors-dashed" |
+  "outline/development/scissors" |
+  "outline/development/selection" |
+  "outline/development/shape-adjust" |
+  "outline/development/shape-arrow" |
+  "outline/development/shape-circle" |
+  "outline/development/shape-custom" |
+  "outline/development/shape-line" |
+  "outline/development/shape-oval" |
+  "outline/development/shape-polygon-2" |
+  "outline/development/shape-polygon" |
+  "outline/development/shape-rectangle" |
+  "outline/development/shape-square" |
+  "outline/development/shape-star" |
+  "outline/development/shape-triangle-2" |
+  "outline/development/shape-triangle" |
+  "outline/development/shapes" |
+  "outline/development/sharpener" |
+  "outline/development/sidebar" |
+  "outline/development/size-large" |
+  "outline/development/size-medium" |
+  "outline/development/size-small" |
+  "outline/development/slice" |
+  "outline/development/slider" |
+  "outline/development/space-divider" |
+  "outline/development/sparks" |
+  "outline/development/spray-can" |
+  "outline/development/stack" |
+  "outline/development/stamp" |
+  "outline/development/style" |
+  "outline/development/tablet-mobile" |
+  "outline/development/texture" |
+  "outline/development/three-dimensional-object" |
+  "outline/development/time-machine" |
+  "outline/development/timeline" |
+  "outline/development/todo" |
+  "outline/development/tool-blur" |
+  "outline/development/tool-hand" |
+  "outline/development/tool-select" |
+  "outline/development/transactions" |
+  "outline/development/transform-2d" |
+  "outline/development/transform-origin" |
+  "outline/development/transform" |
+  "outline/development/transparent" |
+  "outline/development/type-tool" |
+  "outline/development/typography" |
+  "outline/development/ungroup" |
+  "outline/development/usb" |
+  "outline/development/vector" |
+  "outline/development/vibrance" |
+  "outline/development/wand" |
+  "outline/development/watch-dev" |
+  "outline/development/web-design" |
+  "outline/development/webpage" |
+  "outline/development/width" |
+  "outline/development/window-code" |
+  "outline/development/window-dev" |
+  "outline/development/window-paragraph" |
+  "outline/development/window-responsive" |
+  "outline/development/wireframe" |
+  "outline/development/zoom" |
+  "fill/development/3d-29" |
+  "fill/development/3d-model" |
+  "fill/development/ai-generated-img" |
+  "fill/development/album" |
+  "fill/development/align-bottom" |
+  "fill/development/align-center-horizontal" |
+  "fill/development/align-center-vertical" |
+  "fill/development/align-left" |
+  "fill/development/align-right" |
+  "fill/development/align-top" |
+  "fill/development/android" |
+  "fill/development/angle" |
+  "fill/development/animation-14" |
+  "fill/development/animation-31" |
+  "fill/development/animation-32" |
+  "fill/development/api" |
+  "fill/development/app-store" |
+  "fill/development/app" |
+  "fill/development/apple" |
+  "fill/development/apps" |
+  "fill/development/arrow-tool" |
+  "fill/development/artboard" |
+  "fill/development/binary-code" |
+  "fill/development/blend" |
+  "fill/development/block" |
+  "fill/development/blockchain" |
+  "fill/development/board-2" |
+  "fill/development/book-bookmark-2" |
+  "fill/development/book-bookmark" |
+  "fill/development/book-open-2" |
+  "fill/development/book-open" |
+  "fill/development/border-radius" |
+  "fill/development/border-width" |
+  "fill/development/border" |
+  "fill/development/browser-chrome" |
+  "fill/development/browser-edge-legacy" |
+  "fill/development/browser-edge" |
+  "fill/development/browser-firefox" |
+  "fill/development/browser-ie" |
+  "fill/development/browser-opera" |
+  "fill/development/browser-safari" |
+  "fill/development/brush" |
+  "fill/development/bucket" |
+  "fill/development/bullet-list-67" |
+  "fill/development/bullet-list-68" |
+  "fill/development/bullet-list-69" |
+  "fill/development/bullet-list-70" |
+  "fill/development/button-2" |
+  "fill/development/canvas" |
+  "fill/development/cards" |
+  "fill/development/clone" |
+  "fill/development/code-editor" |
+  "fill/development/code" |
+  "fill/development/collection" |
+  "fill/development/command" |
+  "fill/development/compare-items" |
+  "fill/development/compass" |
+  "fill/development/components" |
+  "fill/development/contrast-2" |
+  "fill/development/copy" |
+  "fill/development/creative-commons" |
+  "fill/development/crop" |
+  "fill/development/css3" |
+  "fill/development/cursor-48" |
+  "fill/development/cursor-49" |
+  "fill/development/cursor-add" |
+  "fill/development/cursor-grab" |
+  "fill/development/cursor-load" |
+  "fill/development/cursor-menu" |
+  "fill/development/cursor-not-allowed" |
+  "fill/development/cursor-pointer" |
+  "fill/development/cursor-text" |
+  "fill/development/data-table" |
+  "fill/development/decision-process" |
+  "fill/development/depth" |
+  "fill/development/design-system" |
+  "fill/development/design" |
+  "fill/development/devto" |
+  "fill/development/digital-image" |
+  "fill/development/distribute-horizontal" |
+  "fill/development/distribute-vertical" |
+  "fill/development/divider" |
+  "fill/development/drag" |
+  "fill/development/drop-15" |
+  "fill/development/duplicate" |
+  "fill/development/edit-curves" |
+  "fill/development/edit-levels" |
+  "fill/development/empty" |
+  "fill/development/eraser-32" |
+  "fill/development/eraser-33" |
+  "fill/development/eraser-46" |
+  "fill/development/fairy-wand" |
+  "fill/development/filter-organization" |
+  "fill/development/flip-horizontal" |
+  "fill/development/flip-vertical" |
+  "fill/development/floors" |
+  "fill/development/form" |
+  "fill/development/frame" |
+  "fill/development/function" |
+  "fill/development/geometry" |
+  "fill/development/git-commit" |
+  "fill/development/gradient" |
+  "fill/development/grain-effect" |
+  "fill/development/graphics-tablet" |
+  "fill/development/grid-system" |
+  "fill/development/group" |
+  "fill/development/hash-mark" |
+  "fill/development/height-2" |
+  "fill/development/hot-key" |
+  "fill/development/html5" |
+  "fill/development/image-2" |
+  "fill/development/image" |
+  "fill/development/img-stack" |
+  "fill/development/invert-process" |
+  "fill/development/js-console" |
+  "fill/development/json-logo" |
+  "fill/development/ladybug" |
+  "fill/development/layers-2" |
+  "fill/development/layers" |
+  "fill/development/layout-11" |
+  "fill/development/layout-25" |
+  "fill/development/layout-grid" |
+  "fill/development/license-key" |
+  "fill/development/linux" |
+  "fill/development/magic-wand" |
+  "fill/development/magnet" |
+  "fill/development/markdown" |
+  "fill/development/marker" |
+  "fill/development/mask-oval" |
+  "fill/development/mask-rect" |
+  "fill/development/measure-02" |
+  "fill/development/measure-17" |
+  "fill/development/measure-big" |
+  "fill/development/microsoft" |
+  "fill/development/mirror-display" |
+  "fill/development/mirror-tablet-phone" |
+  "fill/development/mobile-design" |
+  "fill/development/mobile-dev" |
+  "fill/development/mobile-phone" |
+  "fill/development/mouse-2" |
+  "fill/development/mouse" |
+  "fill/development/move-down-2" |
+  "fill/development/move-up-2" |
+  "fill/development/move" |
+  "fill/development/newsletter-dev" |
+  "fill/development/note-code" |
+  "fill/development/note" |
+  "fill/development/octagon-m" |
+  "fill/development/octagon" |
+  "fill/development/paint-16" |
+  "fill/development/paint-37" |
+  "fill/development/paint-38" |
+  "fill/development/paint-brush" |
+  "fill/development/paint-bucket-39" |
+  "fill/development/paint-bucket-40" |
+  "fill/development/palette" |
+  "fill/development/pantone" |
+  "fill/development/paper-design" |
+  "fill/development/paper-dev" |
+  "fill/development/paragraph-2" |
+  "fill/development/patch-19" |
+  "fill/development/patch-34" |
+  "fill/development/path-exclude" |
+  "fill/development/path-intersect" |
+  "fill/development/path-minus" |
+  "fill/development/path-unite" |
+  "fill/development/pc-mouse" |
+  "fill/development/pen-01" |
+  "fill/development/pen-23" |
+  "fill/development/pen-tool" |
+  "fill/development/photo-album" |
+  "fill/development/photo-editor" |
+  "fill/development/pilcrow" |
+  "fill/development/plug-2" |
+  "fill/development/position" |
+  "fill/development/priority-high" |
+  "fill/development/priority-highest" |
+  "fill/development/priority-low" |
+  "fill/development/priority-lowest" |
+  "fill/development/priority-normal" |
+  "fill/development/prototype" |
+  "fill/development/refresh-02" |
+  "fill/development/roadmap" |
+  "fill/development/row-table" |
+  "fill/development/ruler-pencil" |
+  "fill/development/scale-2" |
+  "fill/development/scale-down" |
+  "fill/development/scale-up" |
+  "fill/development/scissors-dashed" |
+  "fill/development/scissors" |
+  "fill/development/selection" |
+  "fill/development/shape-adjust" |
+  "fill/development/shape-arrow" |
+  "fill/development/shape-circle" |
+  "fill/development/shape-custom" |
+  "fill/development/shape-line" |
+  "fill/development/shape-oval" |
+  "fill/development/shape-polygon-2" |
+  "fill/development/shape-polygon" |
+  "fill/development/shape-rectangle" |
+  "fill/development/shape-square" |
+  "fill/development/shape-star" |
+  "fill/development/shape-triangle-2" |
+  "fill/development/shape-triangle" |
+  "fill/development/shapes" |
+  "fill/development/sharpener" |
+  "fill/development/sidebar" |
+  "fill/development/size-large" |
+  "fill/development/size-medium" |
+  "fill/development/size-small" |
+  "fill/development/slice" |
+  "fill/development/slider" |
+  "fill/development/space-divider" |
+  "fill/development/sparks" |
+  "fill/development/spray-can" |
+  "fill/development/stack" |
+  "fill/development/stamp" |
+  "fill/development/style" |
+  "fill/development/tablet-mobile" |
+  "fill/development/texture" |
+  "fill/development/three-dimensional-object" |
+  "fill/development/time-machine" |
+  "fill/development/timeline" |
+  "fill/development/todo" |
+  "fill/development/tool-blur" |
+  "fill/development/tool-hand" |
+  "fill/development/tool-select" |
+  "fill/development/transactions" |
+  "fill/development/transform-2d" |
+  "fill/development/transform-origin" |
+  "fill/development/transform" |
+  "fill/development/transparent" |
+  "fill/development/type-tool" |
+  "fill/development/typography" |
+  "fill/development/ungroup" |
+  "fill/development/usb" |
+  "fill/development/vector" |
+  "fill/development/vibrance" |
+  "fill/development/wand" |
+  "fill/development/watch-dev" |
+  "fill/development/web-design" |
+  "fill/development/webpage" |
+  "fill/development/width" |
+  "fill/development/window-code" |
+  "fill/development/window-dev" |
+  "fill/development/window-paragraph" |
+  "fill/development/window-responsive" |
+  "fill/development/wireframe" |
+  "fill/development/zoom" |
+  "fill/user interface/a-chart" |
+  "fill/user interface/a-chat" |
+  "fill/user interface/a-tag-add" |
+  "fill/user interface/a-tag-remove" |
+  "fill/user interface/a-tag" |
+  "fill/user interface/access-key" |
+  "fill/user interface/add-fav" |
+  "fill/user interface/add-favorite" |
+  "fill/user interface/add-like" |
+  "fill/user interface/add-notification" |
+  "fill/user interface/add-to-cart-2" |
+  "fill/user interface/add-to-cart" |
+  "fill/user interface/add" |
+  "fill/user interface/alarm-add" |
+  "fill/user interface/alarm-disable" |
+  "fill/user interface/alarm" |
+  "fill/user interface/analytics" |
+  "fill/user interface/app-store" |
+  "fill/user interface/apps" |
+  "fill/user interface/archive-drawer" |
+  "fill/user interface/archive" |
+  "fill/user interface/at-sign" |
+  "fill/user interface/attach" |
+  "fill/user interface/attachment" |
+  "fill/user interface/b-chart" |
+  "fill/user interface/b-comment" |
+  "fill/user interface/b-eye" |
+  "fill/user interface/backward" |
+  "fill/user interface/ban" |
+  "fill/user interface/basket" |
+  "fill/user interface/battery-charging" |
+  "fill/user interface/battery-low" |
+  "fill/user interface/battery-power" |
+  "fill/user interface/battery-status" |
+  "fill/user interface/bell" |
+  "fill/user interface/bin" |
+  "fill/user interface/blog" |
+  "fill/user interface/bluetooth" |
+  "fill/user interface/board-2" |
+  "fill/user interface/bolt" |
+  "fill/user interface/book" |
+  "fill/user interface/bookmark-add-2" |
+  "fill/user interface/bookmark-add" |
+  "fill/user interface/bookmark-delete-2" |
+  "fill/user interface/bookmark-delete" |
+  "fill/user interface/bookmark" |
+  "fill/user interface/bookmarks" |
+  "fill/user interface/bullet-list" |
+  "fill/user interface/buzz" |
+  "fill/user interface/c-add" |
+  "fill/user interface/c-check" |
+  "fill/user interface/c-delete" |
+  "fill/user interface/c-edit" |
+  "fill/user interface/c-info" |
+  "fill/user interface/c-pulse" |
+  "fill/user interface/c-question" |
+  "fill/user interface/c-remove" |
+  "fill/user interface/c-warning" |
+  "fill/user interface/calendar-2" |
+  "fill/user interface/calendar-date-2" |
+  "fill/user interface/calendar-date" |
+  "fill/user interface/calendar-day-view" |
+  "fill/user interface/calendar-event-2" |
+  "fill/user interface/calendar-event-create" |
+  "fill/user interface/calendar-event" |
+  "fill/user interface/calendar" |
+  "fill/user interface/chain" |
+  "fill/user interface/chart" |
+  "fill/user interface/chat" |
+  "fill/user interface/check-all" |
+  "fill/user interface/check-double" |
+  "fill/user interface/check-in" |
+  "fill/user interface/check-list" |
+  "fill/user interface/check-out" |
+  "fill/user interface/check-single" |
+  "fill/user interface/check" |
+  "fill/user interface/checkbox-btn-checked" |
+  "fill/user interface/checkbox-btn" |
+  "fill/user interface/chemistry" |
+  "fill/user interface/clear-data" |
+  "fill/user interface/clock" |
+  "fill/user interface/cloud-forecast" |
+  "fill/user interface/cloud" |
+  "fill/user interface/cogwheel" |
+  "fill/user interface/comment-add" |
+  "fill/user interface/comment" |
+  "fill/user interface/comments" |
+  "fill/user interface/compare-items" |
+  "fill/user interface/components" |
+  "fill/user interface/configuration-tools" |
+  "fill/user interface/control-panel" |
+  "fill/user interface/d-add" |
+  "fill/user interface/d-chart" |
+  "fill/user interface/d-check" |
+  "fill/user interface/d-delete" |
+  "fill/user interface/d-edit" |
+  "fill/user interface/d-remove" |
+  "fill/user interface/dashboard" |
+  "fill/user interface/data-download" |
+  "fill/user interface/data-settings" |
+  "fill/user interface/data-upload" |
+  "fill/user interface/database" |
+  "fill/user interface/delete-forever" |
+  "fill/user interface/delete" |
+  "fill/user interface/design-system" |
+  "fill/user interface/disk" |
+  "fill/user interface/dock-bottom" |
+  "fill/user interface/dock-left" |
+  "fill/user interface/dock-right" |
+  "fill/user interface/dock-top" |
+  "fill/user interface/download" |
+  "fill/user interface/drop" |
+  "fill/user interface/e-add" |
+  "fill/user interface/e-delete" |
+  "fill/user interface/e-remove" |
+  "fill/user interface/edit-note" |
+  "fill/user interface/edit" |
+  "fill/user interface/email-open" |
+  "fill/user interface/email" |
+  "fill/user interface/empty" |
+  "fill/user interface/enlarge" |
+  "fill/user interface/event-confirm" |
+  "fill/user interface/event-create" |
+  "fill/user interface/exclamation-mark" |
+  "fill/user interface/eye" |
+  "fill/user interface/f-add" |
+  "fill/user interface/f-chat" |
+  "fill/user interface/f-check" |
+  "fill/user interface/f-comment" |
+  "fill/user interface/f-dashboard" |
+  "fill/user interface/f-delete" |
+  "fill/user interface/f-remove" |
+  "fill/user interface/fav-list" |
+  "fill/user interface/fav-remove" |
+  "fill/user interface/favorite" |
+  "fill/user interface/feedback" |
+  "fill/user interface/file-add" |
+  "fill/user interface/file-article" |
+  "fill/user interface/file-delete" |
+  "fill/user interface/file-text" |
+  "fill/user interface/filter-check" |
+  "fill/user interface/filter-remove" |
+  "fill/user interface/filter-tool" |
+  "fill/user interface/filter" |
+  "fill/user interface/find-replace" |
+  "fill/user interface/flame" |
+  "fill/user interface/floors" |
+  "fill/user interface/floppy-disk" |
+  "fill/user interface/forward" |
+  "fill/user interface/full-screen" |
+  "fill/user interface/fullsize" |
+  "fill/user interface/funnel" |
+  "fill/user interface/g-chart" |
+  "fill/user interface/g-check" |
+  "fill/user interface/gallery-layout" |
+  "fill/user interface/gallery-view" |
+  "fill/user interface/gantt" |
+  "fill/user interface/gear" |
+  "fill/user interface/geometry" |
+  "fill/user interface/grid-interface" |
+  "fill/user interface/grid-layout" |
+  "fill/user interface/grid-view" |
+  "fill/user interface/heart" |
+  "fill/user interface/hide" |
+  "fill/user interface/home-2" |
+  "fill/user interface/home-3" |
+  "fill/user interface/home" |
+  "fill/user interface/hot-key" |
+  "fill/user interface/hotspot" |
+  "fill/user interface/hourglass" |
+  "fill/user interface/house" |
+  "fill/user interface/hyperlink-broken" |
+  "fill/user interface/hyperlink" |
+  "fill/user interface/i-add" |
+  "fill/user interface/i-check" |
+  "fill/user interface/i-delete" |
+  "fill/user interface/i-edit" |
+  "fill/user interface/i-remove" |
+  "fill/user interface/incognito" |
+  "fill/user interface/increase" |
+  "fill/user interface/infinite" |
+  "fill/user interface/info" |
+  "fill/user interface/key" |
+  "fill/user interface/label" |
+  "fill/user interface/layout-grid" |
+  "fill/user interface/leaf" |
+  "fill/user interface/leave" |
+  "fill/user interface/letter" |
+  "fill/user interface/lifering" |
+  "fill/user interface/light-control" |
+  "fill/user interface/like" |
+  "fill/user interface/link" |
+  "fill/user interface/lock" |
+  "fill/user interface/log-out" |
+  "fill/user interface/magnifier-zoom-in" |
+  "fill/user interface/magnifier-zoom-out" |
+  "fill/user interface/magnifier" |
+  "fill/user interface/mail" |
+  "fill/user interface/megaphone" |
+  "fill/user interface/menu-2" |
+  "fill/user interface/menu-3" |
+  "fill/user interface/menu-4" |
+  "fill/user interface/menu-6" |
+  "fill/user interface/menu-7" |
+  "fill/user interface/menu-8" |
+  "fill/user interface/menu-dots" |
+  "fill/user interface/menu" |
+  "fill/user interface/metrics" |
+  "fill/user interface/mirror-tablet-phone" |
+  "fill/user interface/n-check" |
+  "fill/user interface/n-edit" |
+  "fill/user interface/network-communication" |
+  "fill/user interface/network-connection" |
+  "fill/user interface/networking" |
+  "fill/user interface/new-notification" |
+  "fill/user interface/news" |
+  "fill/user interface/no-results" |
+  "fill/user interface/note" |
+  "fill/user interface/notification-2" |
+  "fill/user interface/notification" |
+  "fill/user interface/o-check" |
+  "fill/user interface/o-warning" |
+  "fill/user interface/offline" |
+  "fill/user interface/opening-times" |
+  "fill/user interface/options" |
+  "fill/user interface/p-chart" |
+  "fill/user interface/padlock-unlocked" |
+  "fill/user interface/padlock" |
+  "fill/user interface/paragraph" |
+  "fill/user interface/password" |
+  "fill/user interface/pen-2" |
+  "fill/user interface/pen" |
+  "fill/user interface/pencil" |
+  "fill/user interface/phone-call-end" |
+  "fill/user interface/phone-call" |
+  "fill/user interface/phone" |
+  "fill/user interface/plant-leaf" |
+  "fill/user interface/playlist" |
+  "fill/user interface/preferences" |
+  "fill/user interface/present" |
+  "fill/user interface/privacy-settings" |
+  "fill/user interface/privacy" |
+  "fill/user interface/progress-2" |
+  "fill/user interface/progress-indicator" |
+  "fill/user interface/question-mark" |
+  "fill/user interface/questionnaire" |
+  "fill/user interface/r-chat" |
+  "fill/user interface/radio-btn-checked" |
+  "fill/user interface/radio-btn" |
+  "fill/user interface/remove-fav" |
+  "fill/user interface/remove-favorite" |
+  "fill/user interface/remove-like" |
+  "fill/user interface/remove" |
+  "fill/user interface/roadmap" |
+  "fill/user interface/s-add" |
+  "fill/user interface/s-ban" |
+  "fill/user interface/s-check" |
+  "fill/user interface/s-delete" |
+  "fill/user interface/s-edit" |
+  "fill/user interface/s-info" |
+  "fill/user interface/s-pulse" |
+  "fill/user interface/s-question" |
+  "fill/user interface/s-remove" |
+  "fill/user interface/s-warning" |
+  "fill/user interface/save-for-later" |
+  "fill/user interface/save-to-list" |
+  "fill/user interface/saved-items" |
+  "fill/user interface/screen-enlarge" |
+  "fill/user interface/screen-expand" |
+  "fill/user interface/screen-maximize" |
+  "fill/user interface/screen-sharing-2" |
+  "fill/user interface/screen-sharing-off-2" |
+  "fill/user interface/search-content" |
+  "fill/user interface/search-zoom-in" |
+  "fill/user interface/search-zoom-out" |
+  "fill/user interface/search" |
+  "fill/user interface/security" |
+  "fill/user interface/segmentation" |
+  "fill/user interface/select" |
+  "fill/user interface/send-message" |
+  "fill/user interface/send" |
+  "fill/user interface/settings-gear" |
+  "fill/user interface/settings-wheel" |
+  "fill/user interface/settings" |
+  "fill/user interface/setup-options" |
+  "fill/user interface/setup-preferences" |
+  "fill/user interface/setup-tools" |
+  "fill/user interface/share" |
+  "fill/user interface/sharing" |
+  "fill/user interface/shop" |
+  "fill/user interface/shopping-bag" |
+  "fill/user interface/shopping-cart-2" |
+  "fill/user interface/shopping-cart" |
+  "fill/user interface/shopping-label" |
+  "fill/user interface/shopping-tag" |
+  "fill/user interface/sidebar" |
+  "fill/user interface/slide-left" |
+  "fill/user interface/slide-right" |
+  "fill/user interface/social-sharing" |
+  "fill/user interface/sort-tool" |
+  "fill/user interface/spaceship" |
+  "fill/user interface/speedometer" |
+  "fill/user interface/stack" |
+  "fill/user interface/star-rate" |
+  "fill/user interface/star" |
+  "fill/user interface/stopwatch" |
+  "fill/user interface/support" |
+  "fill/user interface/survey" |
+  "fill/user interface/switches" |
+  "fill/user interface/system-configuration" |
+  "fill/user interface/system-preferences" |
+  "fill/user interface/t-add" |
+  "fill/user interface/t-delete" |
+  "fill/user interface/t-remove" |
+  "fill/user interface/table-layout" |
+  "fill/user interface/table-move" |
+  "fill/user interface/table-slide" |
+  "fill/user interface/tag" |
+  "fill/user interface/tags-stack" |
+  "fill/user interface/target" |
+  "fill/user interface/telephone" |
+  "fill/user interface/time-alarm" |
+  "fill/user interface/time-clock" |
+  "fill/user interface/time-machine" |
+  "fill/user interface/timeline" |
+  "fill/user interface/toggle" |
+  "fill/user interface/translation" |
+  "fill/user interface/trash-can" |
+  "fill/user interface/trash" |
+  "fill/user interface/unlink" |
+  "fill/user interface/unlocked" |
+  "fill/user interface/upload" |
+  "fill/user interface/url" |
+  "fill/user interface/verified" |
+  "fill/user interface/video-gallery" |
+  "fill/user interface/view" |
+  "fill/user interface/virtual-assistant-2" |
+  "fill/user interface/warning-sign" |
+  "fill/user interface/web-hyperlink" |
+  "fill/user interface/web-link" |
+  "fill/user interface/web-url" |
+  "fill/user interface/webpage" |
+  "fill/user interface/widget" |
+  "fill/user interface/window-add" |
+  "fill/user interface/window-delete" |
+  "fill/user interface/wireframe" |
+  "fill/user interface/wrench-tool" |
+  "fill/user interface/wrench" |
+  "fill/user interface/zoom-in" |
+  "fill/user interface/zoom-out" |
+  "fill/user interface/zoom" | 
+  "fill/files/archive-check" |
+  "fill/files/archive-content" |
+  "fill/files/archive-doc-check" |
+  "fill/files/archive-doc" |
+  "fill/files/archive-drawer" |
+  "fill/files/archive-file-check" |
+  "fill/files/archive-file" |
+  "fill/files/archive" |
+  "fill/files/backup" |
+  "fill/files/box" |
+  "fill/files/browse" |
+  "fill/files/catalog" |
+  "fill/files/clear-data" |
+  "fill/files/compressed-file" |
+  "fill/files/computer-upload" |
+  "fill/files/copy-2" |
+  "fill/files/doc-folder" |
+  "fill/files/document-2" |
+  "fill/files/document-copy" |
+  "fill/files/document" |
+  "fill/files/drawer" |
+  "fill/files/file-2" |
+  "fill/files/file-add" |
+  "fill/files/file-alert" |
+  "fill/files/file-archive" |
+  "fill/files/file-article" |
+  "fill/files/file-audio-2" |
+  "fill/files/file-audio" |
+  "fill/files/file-bookmark" |
+  "fill/files/file-chart-bar" |
+  "fill/files/file-chart-pie" |
+  "fill/files/file-check" |
+  "fill/files/file-cloud" |
+  "fill/files/file-copies" |
+  "fill/files/file-copy" |
+  "fill/files/file-delete" |
+  "fill/files/file-dev" |
+  "fill/files/file-download-3" |
+  "fill/files/file-download" |
+  "fill/files/file-edit" |
+  "fill/files/file-export" |
+  "fill/files/file-favorite" |
+  "fill/files/file-folder" |
+  "fill/files/file-gallery" |
+  "fill/files/file-history" |
+  "fill/files/file-image" |
+  "fill/files/file-import" |
+  "fill/files/file-info" |
+  "fill/files/file-link" |
+  "fill/files/file-locked" |
+  "fill/files/file-money" |
+  "fill/files/file-new" |
+  "fill/files/file-no-access" |
+  "fill/files/file-play" |
+  "fill/files/file-preferences" |
+  "fill/files/file-question" |
+  "fill/files/file-remove" |
+  "fill/files/file-replace" |
+  "fill/files/file-search" |
+  "fill/files/file-settings" |
+  "fill/files/file-shared" |
+  "fill/files/file-starred" |
+  "fill/files/file-sync" |
+  "fill/files/file-text" |
+  "fill/files/file-upload-2" |
+  "fill/files/file-upload-3" |
+  "fill/files/file-upload" |
+  "fill/files/file-user" |
+  "fill/files/file-vector" |
+  "fill/files/file" |
+  "fill/files/folder-2" |
+  "fill/files/folder-3" |
+  "fill/files/folder-add" |
+  "fill/files/folder-alert" |
+  "fill/files/folder-audio" |
+  "fill/files/folder-bookmark" |
+  "fill/files/folder-chart-bar" |
+  "fill/files/folder-chart-pie" |
+  "fill/files/folder-check" |
+  "fill/files/folder-cloud" |
+  "fill/files/folder-dev" |
+  "fill/files/folder-download" |
+  "fill/files/folder-edit" |
+  "fill/files/folder-favorite" |
+  "fill/files/folder-gallery" |
+  "fill/files/folder-history" |
+  "fill/files/folder-image" |
+  "fill/files/folder-info" |
+  "fill/files/folder-link" |
+  "fill/files/folder-locked" |
+  "fill/files/folder-money" |
+  "fill/files/folder-music" |
+  "fill/files/folder-no-access" |
+  "fill/files/folder-play" |
+  "fill/files/folder-preferences" |
+  "fill/files/folder-question" |
+  "fill/files/folder-remove" |
+  "fill/files/folder-replace" |
+  "fill/files/folder-search" |
+  "fill/files/folder-settings" |
+  "fill/files/folder-shared" |
+  "fill/files/folder-starred" |
+  "fill/files/folder-sync" |
+  "fill/files/folder-upload" |
+  "fill/files/folder-user" |
+  "fill/files/folder-vector" |
+  "fill/files/folder" |
+  "fill/files/layers" |
+  "fill/files/microsoft-onenote" |
+  "fill/files/news" |
+  "fill/files/note" |
+  "fill/files/notebook" |
+  "fill/files/open-book" |
+  "fill/files/open-folder" |
+  "fill/files/paper" |
+  "fill/files/raw-image" |
+  "fill/files/read" |
+  "fill/files/research" |
+  "fill/files/save-for-later" |
+  "fill/files/saved-items" |
+  "fill/files/upload-file" |
+  "fill/files/zipped-file" |
+  "fill/education/abc" |
+  "fill/education/agenda-bookmark" |
+  "fill/education/agenda" |
+  "fill/education/album" |
+  "fill/education/astronomy" |
+  "fill/education/atom" |
+  "fill/education/award-49" |
+  "fill/education/backpack-57" |
+  "fill/education/backpack-58" |
+  "fill/education/basketball" |
+  "fill/education/biochemistry" |
+  "fill/education/biology" |
+  "fill/education/board-27" |
+  "fill/education/board-51" |
+  "fill/education/book-39" |
+  "fill/education/book-bookmark-2" |
+  "fill/education/book-bookmark" |
+  "fill/education/book-open-2" |
+  "fill/education/book-open" |
+  "fill/education/book" |
+  "fill/education/bookmark" |
+  "fill/education/books-46" |
+  "fill/education/books" |
+  "fill/education/botany" |
+  "fill/education/brush" |
+  "fill/education/bus-front-12" |
+  "fill/education/bus" |
+  "fill/education/buzz" |
+  "fill/education/calculator" |
+  "fill/education/certificate" |
+  "fill/education/chalkboard" |
+  "fill/education/chemistry" |
+  "fill/education/cockade" |
+  "fill/education/collection" |
+  "fill/education/compass" |
+  "fill/education/design" |
+  "fill/education/earth-science" |
+  "fill/education/ecology" |
+  "fill/education/equation" |
+  "fill/education/eraser-32" |
+  "fill/education/eraser-33" |
+  "fill/education/flask" |
+  "fill/education/function" |
+  "fill/education/geometry" |
+  "fill/education/glasses-2" |
+  "fill/education/glasses" |
+  "fill/education/globe-2" |
+  "fill/education/globe" |
+  "fill/education/grammar-check" |
+  "fill/education/hat-3" |
+  "fill/education/language" |
+  "fill/education/logic" |
+  "fill/education/marker" |
+  "fill/education/math" |
+  "fill/education/measure-02" |
+  "fill/education/measure-17" |
+  "fill/education/measure-big" |
+  "fill/education/medal" |
+  "fill/education/medicine" |
+  "fill/education/microbiology" |
+  "fill/education/microscope" |
+  "fill/education/molecule" |
+  "fill/education/notepad" |
+  "fill/education/notes" |
+  "fill/education/notification" |
+  "fill/education/open-book" |
+  "fill/education/paper-diploma" |
+  "fill/education/paper" |
+  "fill/education/paw" |
+  "fill/education/pc-play-media" |
+  "fill/education/pen-01" |
+  "fill/education/pen-23" |
+  "fill/education/pen-tool" |
+  "fill/education/pencil-47" |
+  "fill/education/pencil" |
+  "fill/education/pendulum" |
+  "fill/education/planet" |
+  "fill/education/potion" |
+  "fill/education/presentation" |
+  "fill/education/rat" |
+  "fill/education/read" |
+  "fill/education/reading" |
+  "fill/education/research" |
+  "fill/education/saved-items" |
+  "fill/education/school" |
+  "fill/education/soccer-ball" |
+  "fill/education/statistics" |
+  "fill/education/survey" |
+  "fill/education/telescope" |
+  "fill/education/translation" |
+  "fill/education/typography" |
+  "fill/users/accessibility" |
+  "fill/users/account" |
+  "fill/users/address-book" |
+  "fill/users/child" |
+  "fill/users/contact-list" |
+  "fill/users/contact" |
+  "fill/users/contacts" |
+  "fill/users/couple-gay" |
+  "fill/users/couple-lesbian" |
+  "fill/users/diaper-changing-area" |
+  "fill/users/doctor" |
+  "fill/users/exchange" |
+  "fill/users/face-man" |
+  "fill/users/face-woman" |
+  "fill/users/family-roof" |
+  "fill/users/family" |
+  "fill/users/farmer" |
+  "fill/users/female-figure" |
+  "fill/users/female-sign" |
+  "fill/users/file-shared" |
+  "fill/users/file-user" |
+  "fill/users/folder-shared" |
+  "fill/users/folder-user" |
+  "fill/users/gathering-restrictions" |
+  "fill/users/grandparent" |
+  "fill/users/hacker" |
+  "fill/users/hair-man" |
+  "fill/users/hair-woman" |
+  "fill/users/humanoid" |
+  "fill/users/info-point" |
+  "fill/users/interview" |
+  "fill/users/joint-account" |
+  "fill/users/male-sign" |
+  "fill/users/man-arrow-down" |
+  "fill/users/man-arrow-up" |
+  "fill/users/man-profile" |
+  "fill/users/man" |
+  "fill/users/meeting" |
+  "fill/users/mickey-mouse" |
+  "fill/users/miner" |
+  "fill/users/mobile-contact" |
+  "fill/users/negative-judgement" |
+  "fill/users/no-contact" |
+  "fill/users/office-badge" |
+  "fill/users/office-pass" |
+  "fill/users/parenting" |
+  "fill/users/payee" |
+  "fill/users/payor" |
+  "fill/users/people-network" |
+  "fill/users/police-officer" |
+  "fill/users/positive-judgement" |
+  "fill/users/pregnant-woman" |
+  "fill/users/privacy-policy" |
+  "fill/users/profile" |
+  "fill/users/property" |
+  "fill/users/reading" |
+  "fill/users/search-user" |
+  "fill/users/security-gate" |
+  "fill/users/security-officer" |
+  "fill/users/social-distancing" |
+  "fill/users/standing-man" |
+  "fill/users/standing-woman" |
+  "fill/users/stay-home" |
+  "fill/users/team" |
+  "fill/users/toilette" |
+  "fill/users/user-2" |
+  "fill/users/user-add" |
+  "fill/users/user-bubble" |
+  "fill/users/user-c-frame-2" |
+  "fill/users/user-c-frame-3" |
+  "fill/users/user-c-frame" |
+  "fill/users/user-check" |
+  "fill/users/user-create" |
+  "fill/users/user-delete-cross" |
+  "fill/users/user-delete-line" |
+  "fill/users/user-delete" |
+  "fill/users/user-edit" |
+  "fill/users/user-focus" |
+  "fill/users/user-group" |
+  "fill/users/user-heart" |
+  "fill/users/user-list" |
+  "fill/users/user-location-2" |
+  "fill/users/user-location" |
+  "fill/users/user-lock" |
+  "fill/users/user-new" |
+  "fill/users/user-remove" |
+  "fill/users/user-s-frame-2" |
+  "fill/users/user-s-frame-3" |
+  "fill/users/user-s-frame" |
+  "fill/users/user-search" |
+  "fill/users/user-share" |
+  "fill/users/user-star" |
+  "fill/users/user-sync" |
+  "fill/users/user-time" |
+  "fill/users/user-wearing-glasses" |
+  "fill/users/user" |
+  "fill/users/users-add" |
+  "fill/users/users-check" |
+  "fill/users/users-heart" |
+  "fill/users/users-location" |
+  "fill/users/users-lock" |
+  "fill/users/users-meeting" |
+  "fill/users/users-mm" |
+  "fill/users/users-remove" |
+  "fill/users/users-wm" |
+  "fill/users/users-ww" |
+  "fill/users/users" |
+  "fill/users/virtual-assistant-2" |
+  "fill/users/voice-record" |
+  "fill/users/wc-sign" |
+  "fill/users/wheelchair" |
+  "fill/users/woman-arrow-down" |
+  "fill/users/woman-arrow-up" |
+  "fill/users/woman-man" |
+  "fill/users/woman-profile" |
+  "fill/users/woman" |
+  "fill/users/work-badge" |
+  "color/social media/devto" |
+  "color/social media/discord" |
+  "color/social media/google" |
+  "color/social media/logo-500px" |
+  "color/social media/logo-angellist" |
+  "color/social media/logo-behance" |
+  "color/social media/logo-blogger" |
+  "color/social media/logo-buffer" |
+  "color/social media/logo-buysellads" |
+  "color/social media/logo-codepen" |
+  "color/social media/logo-creative-market" |
+  "color/social media/logo-crunchbase" |
+  "color/social media/logo-deviantart" |
+  "color/social media/logo-dribbble" |
+  "color/social media/logo-dropbox" |
+  "color/social media/logo-envato" |
+  "color/social media/logo-evernote" |
+  "color/social media/logo-facebook" |
+  "color/social media/logo-fb-simple" |
+  "color/social media/logo-feedly" |
+  "color/social media/logo-flickr" |
+  "color/social media/logo-github" |
+  "color/social media/logo-google-plus" |
+  "color/social media/logo-instagram" |
+  "color/social media/logo-lastfm" |
+  "color/social media/logo-linkedin" |
+  "color/social media/logo-medium" |
+  "color/social media/logo-meetup" |
+  "color/social media/logo-messenger" |
+  "color/social media/logo-mixer" |
+  "color/social media/logo-myspace" |
+  "color/social media/logo-paypal" |
+  "color/social media/logo-pinterest" |
+  "color/social media/logo-product-hunt" |
+  "color/social media/logo-qq" |
+  "color/social media/logo-reddit" |
+  "color/social media/logo-rss" |
+  "color/social media/logo-shopify" |
+  "color/social media/logo-skype" |
+  "color/social media/logo-slack" |
+  "color/social media/logo-snapchat" |
+  "color/social media/logo-soundcloud" |
+  "color/social media/logo-spotify" |
+  "color/social media/logo-squarespace" |
+  "color/social media/logo-trello" |
+  "color/social media/logo-tumblr" |
+  "color/social media/logo-twitter" |
+  "color/social media/logo-unsplash" |
+  "color/social media/logo-vimeo" |
+  "color/social media/logo-vine" |
+  "color/social media/logo-vk" |
+  "color/social media/logo-wechat" |
+  "color/social media/logo-weibo" |
+  "color/social media/logo-whatsapp" |
+  "color/social media/logo-wikipedia" |
+  "color/social media/logo-wordpress" |
+  "color/social media/logo-yelp" |
+  "color/social media/logo-youtube" |
+  "color/social media/microsoft-onenote" |
+  "color/social media/spectrum" |
+  "color/social media/telegram" |
+  "color/social media/tiktok" |
+  "color/social media/twitch" |
+  "fill/social media/discord" |
+  "fill/social media/devto" |
+  "fill/social media/google" |
+  "fill/social media/logo-500px" |
+  "fill/social media/logo-angellist" |
+  "fill/social media/logo-behance" |
+  "fill/social media/logo-blogger" |
+  "fill/social media/logo-buffer" |
+  "fill/social media/logo-buysellads" |
+  "fill/social media/logo-codepen" |
+  "fill/social media/logo-creative-market" |
+  "fill/social media/logo-crunchbase" |
+  "fill/social media/logo-deviantart" |
+  "fill/social media/logo-dribbble" |
+  "fill/social media/logo-dropbox" |
+  "fill/social media/logo-envato" |
+  "fill/social media/logo-evernote" |
+  "fill/social media/logo-facebook" |
+  "fill/social media/logo-fb-simple" |
+  "fill/social media/logo-feedly" |
+  "fill/social media/logo-flickr" |
+  "fill/social media/logo-github" |
+  "fill/social media/logo-google-plus" |
+  "fill/social media/logo-instagram" |
+  "fill/social media/logo-lastfm" |
+  "fill/social media/logo-linkedin" |
+  "fill/social media/logo-medium" |
+  "fill/social media/logo-meetup" |
+  "fill/social media/logo-messenger" |
+  "fill/social media/logo-mixer" |
+  "fill/social media/logo-myspace" |
+  "fill/social media/logo-paypal" |
+  "fill/social media/logo-pinterest" |
+  "fill/social media/logo-product-hunt" |
+  "fill/social media/logo-qq" |
+  "fill/social media/logo-reddit" |
+  "fill/social media/logo-rss" |
+  "fill/social media/logo-shopify" |
+  "fill/social media/logo-skype" |
+  "fill/social media/logo-slack" |
+  "fill/social media/logo-snapchat" |
+  "fill/social media/logo-soundcloud" |
+  "fill/social media/logo-spotify" |
+  "fill/social media/logo-squarespace" |
+  "fill/social media/logo-trello" |
+  "fill/social media/logo-tumblr" |
+  "fill/social media/logo-twitter" |
+  "fill/social media/logo-unsplash" |
+  "fill/social media/logo-vimeo" |
+  "fill/social media/logo-vine" |
+  "fill/social media/logo-vk" |
+  "fill/social media/logo-wechat" |
+  "fill/social media/logo-weibo" |
+  "fill/social media/logo-whatsapp" |
+  "fill/social media/logo-wikipedia" |
+  "fill/social media/logo-wordpress" |
+  "fill/social media/logo-yelp" |
+  "fill/social media/logo-youtube" |
+  "fill/social media/microsoft-onenote" |
+  "fill/social media/spectrum" |
+  "fill/social media/telegram" |
+  "fill/social media/tiktok" |
+  "fill/social media/twitch"
+  
