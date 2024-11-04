@@ -1,9 +1,8 @@
 import styles from './select1.module.css'
-import { faCaretDown, faCaretRight, faChevronDown, faChevronUp, faXmarkCircle } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { createRef, CSSProperties, ReactNode } from 'react'
 import ReactDOM from 'react-dom'
 import { Text } from '../text/text'
+import { Winicon } from '../wini-icon/winicon'
 
 export interface OptionsItem {
     id: string | number,
@@ -121,7 +120,7 @@ export class Select1 extends React.Component<Select1Props, Select1State> {
                 this.onSelect(item)
             }}>
                 {(this.state.search ?? this.state.options).some(e => e.parentId) && <div className='row' style={{ width: '1.4rem', height: '1.4rem' }}>
-                    {children.length ? <FontAwesomeIcon icon={(item as any).isOpen ? faCaretDown : faCaretRight} style={{ fontSize: '1.2rem', color: '#161C2499' }} /> : null}
+                    {children.length ? <Winicon src={(item as any).isOpen ? "fill/arrows/triangle-down" : "fill/arrows/triangle-right"} size={"1.2rem"} /> : null}
                 </div>}
                 <Text className='body-3'>{item.name}</Text>
             </div>
@@ -229,7 +228,7 @@ export class Select1 extends React.Component<Select1Props, Select1State> {
             <div ref={iconRef => {
                 if (iconRef?.parentElement && iconRef.parentElement.getBoundingClientRect().width < 100) iconRef.style.display = "none"
             }} className='row' >
-                <FontAwesomeIcon icon={this.state.isOpen ? faChevronUp : faChevronDown} style={{ fontSize: '1.1rem', color: "var(--neutral-text-subtitle-color)" }} />
+                <Winicon src={this.state.isOpen ? "fill/arrows/up-arrow" : "fill/arrows/down-arrow"} size={"1.2rem"} />
             </div>
             {this.state.isOpen &&
                 ReactDOM.createPortal(

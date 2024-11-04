@@ -1,11 +1,10 @@
 import React, { CSSProperties, useEffect, useRef } from "react";
 import ReactPaginate from "react-paginate";
 import styles from './pagination.module.css';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { Select1 } from "../select1/select1";
 import { Text } from "../text/text";
 import { TextField } from "../text-field/text-field";
+import { Winicon } from "../wini-icon/winicon";
 
 export function Pagination({ id, currentPage, itemPerPage, totalItem, onChangePage, hidePageSize = false, hideGoToPage = false, style }: { id?: string, currentPage: number, itemPerPage: number, totalItem: number, onChangePage: Function, hideGoToPage?: boolean, hidePageSize?: boolean, style: CSSProperties }) {
     const goToPageRef = useRef<TextField>()
@@ -47,9 +46,9 @@ export function Pagination({ id, currentPage, itemPerPage, totalItem, onChangePa
                 breakLabel="..."
                 pageCount={Math.ceil(totalItem / itemPerPage)}
                 previousClassName="row"
-                previousLabel={<FontAwesomeIcon icon={faChevronLeft} style={{ fontSize: '1.4rem' }} />}
+                previousLabel={<Winicon src={"fill/arrows/left-arrow"} size={"1.4rem"} />}
                 nextClassName="row"
-                nextLabel={<FontAwesomeIcon icon={faChevronRight} style={{ fontSize: '1.4rem' }} />}
+                nextLabel={<Winicon src={"fill/arrows/right-arrow"} size={"1.4rem"} />}
                 containerClassName={`${styles['pagination']} row`}
                 pageClassName="row button-text-3"
                 activeClassName={styles['active']}

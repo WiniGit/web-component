@@ -1,8 +1,7 @@
 import React, { CSSProperties, ReactNode } from 'react';
 import AwesomeSlider from 'react-awesome-slider';
 import './slider.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleChevronLeft, faCircleChevronRight } from '@fortawesome/free-solid-svg-icons';
+import { Winicon } from '../wini-icon/winicon';
 
 interface SliderProps {
     id?: string,
@@ -78,8 +77,8 @@ export class CustomSlider extends React.Component<SliderProps, SliderState> {
             bullets={false}
             buttons={this.props.buttons ? (this.props.children && this.props.children?.length > 1) : false}
             organicArrows={false}
-            buttonContentLeft={this.props.prevButton ?? <FontAwesomeIcon icon={faCircleChevronLeft} style={{ color: this.props.iconColor ?? '#ffffff', fontSize: this.props.iconSize ?? '2.4rem' }} />}
-            buttonContentRight={this.props.nextButton ?? <FontAwesomeIcon icon={faCircleChevronRight} style={{ color: this.props.iconColor ?? '#ffffff', fontSize: this.props.iconSize ?? '2.4rem' }} />}
+            buttonContentLeft={this.props.prevButton ?? <Winicon src={"fill/arrows/circle-ctrl-left"} size={"2.4rem"} color={this.props.iconColor ?? "var(--neutral-absolute-background-color)"} />}
+            buttonContentRight={this.props.nextButton ?? <Winicon src={"fill/arrows/circle-ctrl-right"} size={"2.4rem"} color={this.props.iconColor ?? "var(--neutral-absolute-background-color)"} />}
         >
             {this.props.children}
         </AwesomeSlider>

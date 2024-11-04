@@ -1,9 +1,7 @@
 import { CSSProperties, ReactNode, useState } from 'react'
 import './progress-bar.css'
 import React from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons'
-import { ComponentStatus, getStatusIcon } from '../../index'
+import { ComponentStatus, getStatusIcon, Winicon } from '../../index'
 
 export function ProgressBar({ id, status = ComponentStatus.INFOR, percent = 100, titleText, title, hideTitle = false, progressBarOnly = false, fullColor = 'var(--neutral-main-background-color)', percentColor = 'var(--infor-main-color)', style, progressBarStyle }: {
     id?: string,
@@ -23,7 +21,7 @@ export function ProgressBar({ id, status = ComponentStatus.INFOR, percent = 100,
     return <div id={id} className="progress-bar-container col" style={style ? { padding: progressBarOnly ? '0' : '1.6rem 2.4rem', ...style } : { padding: progressBarOnly ? '0' : '1.6rem 2.4rem' }}>
         {(hideTitle || progressBarOnly) ? null : (title ?? <div className="progress-bar-title row">
             <div className="heading-text">{titleText}</div>
-            <button type="button" className="suffix-action" onClick={() => { setOpenDetails(!openDetails) }}><FontAwesomeIcon icon={openDetails ? faChevronDown : faChevronUp} /></button>
+            <button type="button" className="suffix-action" onClick={() => { setOpenDetails(!openDetails) }}><Winicon src={openDetails ? "fill/arrows/down-arrow" : "fill/arrows/up-arrow"} /></button>
         </div>)}
         {openDetails ? <div className='progress-bar-tile row' >
             <div className="progress-bar-value" style={{ '--percent-color': percentColor, '--full-color': fullColor, '--percent': `${percent}%`, ...(progressBarStyle ?? {}) } as CSSProperties}></div>

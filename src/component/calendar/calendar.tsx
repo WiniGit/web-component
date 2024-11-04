@@ -1,8 +1,7 @@
 import React, { CSSProperties, ReactNode } from "react"
 import styles from './calendar.module.css'
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faAngleDoubleLeft, faAngleDoubleRight, faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons"
 import { differenceInCalendarDays } from "date-fns"
+import { Winicon } from "../wini-icon/winicon"
 
 export const today = new Date()
 export const startDate = new Date(
@@ -331,7 +330,7 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
                                     }
                                 }}
                             >
-                                <FontAwesomeIcon icon={faAngleDoubleLeft} />
+                                <Winicon src={"fill/arrows/double-arrow-left"} size={'1.6rem'} />
                             </button>
                             <button type='button'
                                 onClick={() => {
@@ -355,7 +354,7 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
                                     }
                                 }}
                             >
-                                <FontAwesomeIcon icon={faAngleLeft} />
+                                <Winicon src={"fill/arrows/left-arrow"} size={'1.6rem'} />
                             </button>
                             <span className="heading-7" onClick={() => {
                                 if (this.state.type !== CalendarType.YEAR)
@@ -385,7 +384,7 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
                                     }
                                 }}
                             >
-                                <FontAwesomeIcon icon={faAngleRight} />
+                                <Winicon src={"fill/arrows/double-arrow-right"} size={'1.6rem'} />
                             </button>
                             <button type='button'
                                 onClick={() => {
@@ -410,7 +409,7 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
                                     }
                                 }}
                             >
-                                <FontAwesomeIcon icon={faAngleDoubleRight} />
+                                <Winicon src={"fill/arrows/right-arrow"} size={'1.6rem'} />
                             </button>
                         </div>
                         <div className={`${styles['picker-date-body']} row`} >

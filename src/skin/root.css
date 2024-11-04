@@ -74,6 +74,10 @@ html {
     --neutral-disable-background-color: #F4F4F5;
     --neutral-selected-background-color: #18181B14;
     --neutral-hover-background-color: #18181B0A;
+    /* reverse */
+    --neutral-darker-reverse-background-color: #242428;
+    --neutral-main-reverse-background-color: #313135;
+    --neutral-sub-reverse-background-color: #494950;
     /* neutral-text */
     --neutral-text-title-color: #18181B;
     --neutral-text-subtitle-color: #61616B;
@@ -81,7 +85,15 @@ html {
     --neutral-text-label-color: #313135;
     --neutral-text-placeholder-color: #878792;
     --neutral-text-disabled-color: #A2A2AA;
-    --neutral-text-alwaywhite-color: #FFFFFF;
+    --neutral-text-stable-color: #FFFFFF;
+    /* reverse */
+    --neutral-text-title-reverse-color: #F4F4F5;
+    --neutral-text-subtitle-reverse-color: #A2A2AA;
+    --neutral-text-body-reverse-color: #D7D7DB;
+    --neutral-text-label-reverse-color: #EAEAEC;
+    --neutral-text-placeholder-reverse-color: #A2A2AA;
+    --neutral-text-disabled-reverse-color: #878792;
+    --neutral-text-stable-reverse-color: #000000;
     /* neutral-border */
     --neutral-main-border-color: 1px solid #D7D7DB;
     --neutral-sub1-border-color: 1px solid #EAEAEC;
@@ -170,6 +182,10 @@ html.dark {
     --neutral-disable-background-color: #494950;
     --neutral-selected-background-color: #FFFFFF14;
     --neutral-hover-background-color: #FFFFFF0A;
+    /* reverse */
+    --neutral-darker-reverse-background-color: #ffffff;
+    --neutral-main-reverse-background-color: #ffffff;
+    --neutral-sub-reverse-background-color: #ffffff;
     /* neutral-text */
     --neutral-text-title-color: #F4F4F5;
     --neutral-text-subtitle-color: #D7D7DB;
@@ -177,7 +193,7 @@ html.dark {
     --neutral-text-label-color: #D7D7DB;
     --neutral-text-placeholder-color: #A2A2AA;
     --neutral-text-disabled-color: #878792;
-    --neutral-text-alwaywhite-color: #FFFFFF;
+    --neutral-text-stable-color: #FFFFFF;
     /* neutral-border */
     --neutral-main-border-color: 1px solid #494950;
     --neutral-sub1-border-color: 1px solid #61616B;

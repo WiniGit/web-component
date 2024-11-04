@@ -1,11 +1,10 @@
-import { faCaretDown, faCaretRight, faChevronDown, faChevronUp, faClose, faXmarkCircle } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { createRef, CSSProperties } from 'react'
 import ReactDOM from 'react-dom'
 import './input-multi-select.css'
 import { OptionsItem } from '../select1/select1'
 import { Checkbox } from '../checkbox/checkbox'
 import { Text } from '../text/text'
+import { Winicon } from '../wini-icon/winicon'
 
 interface SelectMultipleProps {
     id?: string,
@@ -126,7 +125,7 @@ export class SelectMultiple extends React.Component<SelectMultipleProps, SelectM
                 }
             } : undefined}>
                 {(this.state.search ?? this.state.options).some(e => e.parentId) && <div className='row' style={{ width: '1.4rem', height: '1.4rem' }}>
-                    {children.length ? <FontAwesomeIcon icon={(item as any).isOpen ? faCaretDown : faCaretRight} style={{ fontSize: '1.2rem', color: '#161C2499' }} /> : null}
+                    {children.length ? <Winicon src={(item as any).isOpen ? 'fill/arrows/triangle-down' : 'fill/arrows/triangle-right'} size={'1.2rem'} /> : null}
                 </div>}
                 <Checkbox disabled={item.disabled} value={children.length ? (children.every((e) => this.state.value.includes(e.id)) ? true : children.some((e) => this.state.value.includes(e.id)) ? undefined : false) : this.state.value.includes(item.id)} onChange={(v) => { this.onCheck(v, [item, ...children]) }} size={'2rem'} />
                 <Text className='body-3'>{item.name}</Text>
@@ -190,7 +189,7 @@ export class SelectMultiple extends React.Component<SelectMultipleProps, SelectM
                     const optionItem = this.props.options.find(e => e.id === item)
                     return <div key={item} className='selected-item-value row' onClick={(ev) => this.onClickItem(ev, item)}>
                         <Text style={{ color: '#161D24E5', fontSize: '1.2rem', lineHeight: '1.4rem' }} >{optionItem?.name}</Text>
-                        <FontAwesomeIcon icon={faClose} style={{ color: '#161D24E5', fontSize: '1.2rem' }} />
+                        <Winicon src={"outline/user interface/e-remove"} size={'1.2rem'} />
                     </div>
                 })}
                 {(!this.state.value.length || this.state.isOpen) && <input autoFocus={this.state.isOpen} onChange={this.search} placeholder={this.state.value.length ? undefined : this.props.placeholder}
@@ -204,9 +203,9 @@ export class SelectMultiple extends React.Component<SelectMultipleProps, SelectM
                 ev.stopPropagation()
                 if (this.state.value.length) this.setState({ ...this.state, isOpen: true, value: [] })
             }}>
-                <FontAwesomeIcon icon={faXmarkCircle} style={{ fontSize: '1.6rem', color: "var(--neutral-text-subtitle-color)" }} />
+                <Winicon src={"outline/user interface/c-remove"} size={'1.6rem'} />
             </button> : <div className='row' style={{ display: (this.containerRef.current && this.containerRef.current.getBoundingClientRect().width >= 120) ? "flex" : "none" }} >
-                <FontAwesomeIcon icon={this.state.isOpen ? faChevronUp : faChevronDown} style={{ fontSize: '1.1rem', color: "var(--neutral-text-subtitle-color)" }} />
+                <Winicon src={this.state.isOpen ? "fill/arrows/up-arrow" : "fill/arrows/down-arrow"} size={'1.2rem'} />
             </div>}
             {this.state.isOpen &&
                 ReactDOM.createPortal(
