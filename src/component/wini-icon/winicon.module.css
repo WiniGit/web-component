@@ -15,3 +15,8 @@
 .wini-icon>svg>*[stroke^="#"] {
     stroke: var(--color, "#61616B");
 }
+
+.wini-icon.color-icon>svg>* {
+    fill: unset !important;
+    stroke: unset !important;
+}

@@ -24,7 +24,7 @@ export function Winicon({ src, link, className, style, size, color, alt }: Winic
         }
     }, [src, link])
 
-    return <div className={`${styles['wini-icon']} ${className ?? ''}`} style={(style ? { ...style, '--size': size, '--color': color } : { '--size': size, '--color': color }) as any} dangerouslySetInnerHTML={{ __html: svgData ?? '' }} />
+    return <div className={`${styles['wini-icon']} ${className ?? ''} ${src ? styles[`${src.substring(0, src.indexOf('/'))}-icon`] : ''}`} style={(style ? { ...style, '--size': size, '--color': color } : { '--size': size, '--color': color }) as any} dangerouslySetInnerHTML={{ __html: svgData ?? '' }} />
 }
 
 type WiniIconName = "color/accessibility/accessibility-lift" |
