@@ -107,6 +107,6 @@ function Winicon(_a) {
             }); }); });
         }
     }, [src, link]);
-    return react_1.default.createElement("div", { className: "".concat(winicon_module_css_1.default['wini-icon'], " ").concat(className !== null && className !== void 0 ? className : ''), style: (style ? __assign(__assign({}, style), { '--size': size, '--color': color }) : { '--size': size, '--color': color }), dangerouslySetInnerHTML: { __html: svgData !== null && svgData !== void 0 ? svgData : '' } });
+    return react_1.default.createElement("div", { className: "".concat(winicon_module_css_1.default['wini-icon'], " ").concat(className !== null && className !== void 0 ? className : '', " ").concat(src ? winicon_module_css_1.default["".concat(src.substring(0, src.indexOf('/')), "-icon")] : ''), style: (style ? __assign(__assign({}, style), { '--size': size, '--color': color }) : { '--size': size, '--color': color }), dangerouslySetInnerHTML: { __html: svgData !== null && svgData !== void 0 ? svgData : '' } });
 }
 exports.Winicon = Winicon;
