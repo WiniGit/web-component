@@ -1,5 +1,4 @@
 import React, { CSSProperties } from 'react';
-import './input-multi-select.css';
 import { OptionsItem } from '../select1/select1';
 interface SelectMultipleProps {
     id?: string;

@@ -100,7 +100,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.SelectMultiple = void 0;
 var react_1 = __importStar(require("react"));
 var react_dom_1 = __importDefault(require("react-dom"));
-require("./input-multi-select.css");
+var input_multi_select_module_css_1 = __importDefault(require("./input-multi-select.module.css"));
 var checkbox_1 = require("../checkbox/checkbox");
 var text_1 = require("../text/text");
 var winicon_1 = require("../wini-icon/winicon");
@@ -194,7 +194,7 @@ var SelectMultiple = /** @class */ (function (_super) {
             children = ((_a = this.state.search) !== null && _a !== void 0 ? _a : this.state.options).filter(function (e) { return e.parentId === item.id; });
         // 
         return react_1.default.createElement("div", { key: item.id, className: 'col', style: { width: '100%' } },
-            react_1.default.createElement("div", { className: "select-tile row ".concat(item.disabled ? "disabled" : ""), style: { paddingLeft: item.parentId ? '4.4rem' : undefined }, onClick: children.length ? function () {
+            react_1.default.createElement("div", { className: "".concat(input_multi_select_module_css_1.default['select-tile'], " row ").concat(item.disabled ? input_multi_select_module_css_1.default["disabled"] : ""), style: { paddingLeft: item.parentId ? '4.4rem' : undefined }, onClick: children.length ? function () {
                     if (_this.state.search) {
                         _this.setState(__assign(__assign({}, _this.state), { search: _this.state.search.map(function (e) {
                                 if (e.id === item.id)
@@ -225,7 +225,7 @@ var SelectMultiple = /** @class */ (function (_super) {
             this.setState(__assign(__assign({}, this.state), { value: (_a = this.props.value) !== null && _a !== void 0 ? _a : [] }));
         //
         if (this.state.isOpen && (prevState.isOpen !== this.state.isOpen || prevState.value.length !== this.state.value.length)) {
-            var thisPopupRect = (_b = document.body.querySelector('.select-multi-popup')) === null || _b === void 0 ? void 0 : _b.getBoundingClientRect();
+            var thisPopupRect = (_b = document.body.querySelector(".".concat(input_multi_select_module_css_1.default['select-multi-popup']))) === null || _b === void 0 ? void 0 : _b.getBoundingClientRect();
             if (thisPopupRect) {
                 var style = void 0;
                 if (prevState.isOpen !== this.state.isOpen && thisPopupRect.right > document.body.offsetWidth) {
@@ -256,7 +256,7 @@ var SelectMultiple = /** @class */ (function (_super) {
     SelectMultiple.prototype.render = function () {
         var _this = this;
         var _a, _b, _c, _d, _e, _f, _g, _h, _j;
-        return react_1.default.createElement("div", { id: this.props.id, ref: this.containerRef, className: "select-multi-container row ".concat(this.props.disabled ? 'disabled' : '', " ").concat(((_a = this.props.helperText) === null || _a === void 0 ? void 0 : _a.length) && 'helper-text', " ").concat((_b = this.props.className) !== null && _b !== void 0 ? _b : 'body-3'), "helper-text": this.props.helperText, style: this.props.style ? __assign(__assign({}, { '--helper-text-color': (_c = this.props.helperTextColor) !== null && _c !== void 0 ? _c : '#e14337' }), this.props.style) : { '--helper-text-color': (_d = this.props.helperTextColor) !== null && _d !== void 0 ? _d : '#e14337' }, onClick: function () {
+        return react_1.default.createElement("div", { id: this.props.id, ref: this.containerRef, className: "".concat(input_multi_select_module_css_1.default['select-multi-container'], " row ").concat(this.props.disabled ? input_multi_select_module_css_1.default['disabled'] : '', " ").concat(((_a = this.props.helperText) === null || _a === void 0 ? void 0 : _a.length) && input_multi_select_module_css_1.default['helper-text'], " ").concat((_b = this.props.className) !== null && _b !== void 0 ? _b : 'body-3'), "helper-text": this.props.helperText, style: this.props.style ? __assign(__assign({}, { '--helper-text-color': (_c = this.props.helperTextColor) !== null && _c !== void 0 ? _c : '#e14337' }), this.props.style) : { '--helper-text-color': (_d = this.props.helperTextColor) !== null && _d !== void 0 ? _d : '#e14337' }, onClick: function () {
                 var _a, _b;
                 if (!_this.state.isOpen)
                     _this.setState(__assign(__assign({}, _this.state), { isOpen: true, style: undefined, offset: (_b = (_a = _this.containerRef) === null || _a === void 0 ? void 0 : _a.current) === null || _b === void 0 ? void 0 : _b.getBoundingClientRect() }));
@@ -264,7 +264,7 @@ var SelectMultiple = /** @class */ (function (_super) {
             react_1.default.createElement("div", { className: 'row', style: { flexWrap: 'wrap', flex: 1, width: '100%', gap: '0.6rem 0.4rem' } },
                 this.state.value.map(function (item) {
                     var optionItem = _this.props.options.find(function (e) { return e.id === item; });
-                    return react_1.default.createElement("div", { key: item, className: 'selected-item-value row', onClick: function (ev) { return _this.onClickItem(ev, item); } },
+                    return react_1.default.createElement("div", { key: item, className: "row ".concat(input_multi_select_module_css_1.default['selected-item-value']), onClick: function (ev) { return _this.onClickItem(ev, item); } },
                         react_1.default.createElement(text_1.Text, { style: { color: '#161D24E5', fontSize: '1.2rem', lineHeight: '1.4rem' } }, optionItem === null || optionItem === void 0 ? void 0 : optionItem.name),
                         react_1.default.createElement(winicon_1.Winicon, { src: "outline/user interface/e-remove", size: '1.2rem' }));
                 }),
@@ -282,7 +282,7 @@ var SelectMultiple = /** @class */ (function (_super) {
                 react_1.default.createElement(winicon_1.Winicon, { src: "outline/user interface/c-remove", size: '1.6rem' })) : react_1.default.createElement("div", { className: 'row', style: { display: (this.containerRef.current && this.containerRef.current.getBoundingClientRect().width >= 120) ? "flex" : "none" } },
                 react_1.default.createElement(winicon_1.Winicon, { src: this.state.isOpen ? "fill/arrows/up-arrow" : "fill/arrows/down-arrow", size: '1.2rem' })),
             this.state.isOpen &&
-                react_dom_1.default.createPortal(react_1.default.createElement("div", { className: "select-multi-popup col ".concat((_e = this.props.popupClassName) !== null && _e !== void 0 ? _e : ""), style: (_f = this.state.style) !== null && _f !== void 0 ? _f : {
+                react_dom_1.default.createPortal(react_1.default.createElement("div", { className: "".concat(input_multi_select_module_css_1.default['select-multi-popup'], " col ").concat((_e = this.props.popupClassName) !== null && _e !== void 0 ? _e : ""), style: (_f = this.state.style) !== null && _f !== void 0 ? _f : {
                         top: this.state.offset.y + this.state.offset.height + 2 + 'px',
                         left: this.state.offset.x + 'px',
                         width: this.state.offset.width,
@@ -306,9 +306,9 @@ var SelectMultiple = /** @class */ (function (_super) {
                                     _this.props.onChange(newValue);
                             }, className: 'button-text-3', style: { color: _list.length ? 'var(--infor-main-color)' : '#00204D99', } }, _list.length && isSelectedAll ? 'Bỏ chọn tất cả' : 'Chọn tất cả');
                     })()),
-                    react_1.default.createElement("div", { className: 'col select-body' },
+                    react_1.default.createElement("div", { className: "col ".concat(input_multi_select_module_css_1.default['select-body']) },
                         ((_g = this.state.search) !== null && _g !== void 0 ? _g : this.state.options).filter(function (e) { return !e.parentId; }).map(function (item) { return _this.renderOptions(item); }),
-                        (((_h = this.state.search) === null || _h === void 0 ? void 0 : _h.length) === 0 || ((_j = this.props.options) === null || _j === void 0 ? void 0 : _j.length) === 0) && (react_1.default.createElement("div", { className: 'no-results-found' }, "No result found")))), document.body));
+                        (((_h = this.state.search) === null || _h === void 0 ? void 0 : _h.length) === 0 || ((_j = this.props.options) === null || _j === void 0 ? void 0 : _j.length) === 0) && (react_1.default.createElement("div", { className: input_multi_select_module_css_1.default['no-results-found'] }, "No result found")))), document.body));
     };
     return SelectMultiple;
 }(react_1.default.Component));

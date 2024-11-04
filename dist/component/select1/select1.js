@@ -244,7 +244,7 @@ var Select1 = /** @class */ (function (_super) {
             this.inputRef.current.value = "".concat((_d = (_c = this.state.options.find(function (e) { return e.id === _this.state.value; })) === null || _c === void 0 ? void 0 : _c.name) !== null && _d !== void 0 ? _d : "");
         //
         if (this.state.isOpen && prevState.isOpen !== this.state.isOpen) {
-            var thisPopupRect = (_e = document.body.querySelector(':scope > .col[class*="select1-popup"]')) === null || _e === void 0 ? void 0 : _e.getBoundingClientRect();
+            var thisPopupRect = (_e = document.body.querySelector(":scope > .".concat(select1_module_css_1.default['select1-popup']))) === null || _e === void 0 ? void 0 : _e.getBoundingClientRect();
             if (thisPopupRect) {
                 var style = void 0;
                 if (thisPopupRect.right > document.body.offsetWidth) {
