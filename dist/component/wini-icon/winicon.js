@@ -78,7 +78,7 @@ var react_1 = __importStar(require("react"));
 var winicon_module_css_1 = __importDefault(require("./winicon.module.css"));
 function Winicon(_a) {
     var _this = this;
-    var src = _a.src, link = _a.link, className = _a.className, style = _a.style, size = _a.size, color = _a.color;
+    var src = _a.src, link = _a.link, className = _a.className, style = _a.style, size = _a.size, color = _a.color, alt = _a.alt;
     var _b = (0, react_1.useState)(), svgData = _b[0], setSvgData = _b[1];
     var cdnSrc = "https://cdn.jsdelivr.net/gh/WiniGit/icon-library@latest/";
     (0, react_1.useEffect)(function () {
@@ -92,7 +92,7 @@ function Winicon(_a) {
                         _a.apply(void 0, [_b.sent()]);
                         return [2 /*return*/];
                 }
-            }); }); });
+            }); }); }).catch(function () { setSvgData(alt !== null && alt !== void 0 ? alt : "error"); });
         }
         else if (link) {
             fetch(link).then(function (res) { return __awaiter(_this, void 0, void 0, function () { var _a; return __generator(this, function (_b) {
