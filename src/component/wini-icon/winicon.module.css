@@ -19,7 +19,7 @@
     stroke: var(--color, "#61616B");
 }
 
-.wini-icon.color-icon>svg>* {
+.wini-icon[class*="color-icon"]>svg>* {
     fill: unset !important;
     stroke: unset !important;
 }
