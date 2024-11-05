@@ -168,7 +168,7 @@ export class Select1 extends React.Component<Select1Props, Select1State> {
         if (prevState.value !== this.state.value && this.inputRef.current) this.inputRef.current.value = `${this.state.options.find(e => e.id === this.state.value)?.name ?? ""}`
         //
         if (this.state.isOpen && prevState.isOpen !== this.state.isOpen) {
-            const thisPopupRect = document.body.querySelector(`:scope > .${styles['select1-popup']}`)?.getBoundingClientRect()
+            const thisPopupRect = document.body.querySelector(`:scope > .select1-popup`)?.getBoundingClientRect()
             if (thisPopupRect) {
                 let style: { top?: string, left?: string, right?: string, bottom?: string, width?: string, height?: string } | undefined;
                 if (thisPopupRect.right > document.body.offsetWidth) {
@@ -232,7 +232,7 @@ export class Select1 extends React.Component<Select1Props, Select1State> {
             </div>
             {this.state.isOpen &&
                 ReactDOM.createPortal(
-                    <div className={`${styles['select1-popup']} col ${this.props.popupClassName ?? ""}`}
+                    <div className={`${styles['select1-popup']} select1-popup col ${this.props.popupClassName ?? ""}`}
                         style={this.state.style ?? {
                             top: this.state.offset.y + this.state.offset.height + 2 + 'px',
                             left: this.state.offset.x + 'px',

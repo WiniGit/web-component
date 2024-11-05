@@ -139,7 +139,7 @@ export class SelectMultiple extends React.Component<SelectMultipleProps, SelectM
         if (prevProps.value !== this.props.value) this.setState({ ...this.state, value: this.props.value ?? [] })
         //
         if (this.state.isOpen && (prevState.isOpen !== this.state.isOpen || prevState.value.length !== this.state.value.length)) {
-            const thisPopupRect = document.body.querySelector(`.${styles['select-multi-popup']}`)?.getBoundingClientRect()
+            const thisPopupRect = document.body.querySelector(`:scope > .select-multi-popup`)?.getBoundingClientRect()
             if (thisPopupRect) {
                 let style: { top?: string, left?: string, right?: string, bottom?: string, width?: string, height?: string } | undefined;
                 if (prevState.isOpen !== this.state.isOpen && thisPopupRect.right > document.body.offsetWidth) {
@@ -209,7 +209,7 @@ export class SelectMultiple extends React.Component<SelectMultipleProps, SelectM
             </div>}
             {this.state.isOpen &&
                 ReactDOM.createPortal(
-                    <div className={`${styles['select-multi-popup']} col ${this.props.popupClassName ?? ""}`}
+                    <div className={`${styles['select-multi-popup']} select-multi-popup col ${this.props.popupClassName ?? ""}`}
                         style={this.state.style ?? {
                             top: this.state.offset.y + this.state.offset.height + 2 + 'px',
                             left: this.state.offset.x + 'px',
