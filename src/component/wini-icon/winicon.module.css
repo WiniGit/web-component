@@ -1,4 +1,7 @@
 .wini-icon {
+    display: flex;
+    width: fit-content;
+    height: fit-content;
     --size: 1.6rem;
     --color: var(--neutral-text-subtitle-color);
 }
