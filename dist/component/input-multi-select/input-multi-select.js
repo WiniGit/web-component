@@ -225,7 +225,7 @@ var SelectMultiple = /** @class */ (function (_super) {
             this.setState(__assign(__assign({}, this.state), { value: (_a = this.props.value) !== null && _a !== void 0 ? _a : [] }));
         //
         if (this.state.isOpen && (prevState.isOpen !== this.state.isOpen || prevState.value.length !== this.state.value.length)) {
-            var thisPopupRect = (_b = document.body.querySelector(".".concat(input_multi_select_module_css_1.default['select-multi-popup']))) === null || _b === void 0 ? void 0 : _b.getBoundingClientRect();
+            var thisPopupRect = (_b = document.body.querySelector(":scope > .select-multi-popup")) === null || _b === void 0 ? void 0 : _b.getBoundingClientRect();
             if (thisPopupRect) {
                 var style = void 0;
                 if (prevState.isOpen !== this.state.isOpen && thisPopupRect.right > document.body.offsetWidth) {
@@ -282,7 +282,7 @@ var SelectMultiple = /** @class */ (function (_super) {
                 react_1.default.createElement(winicon_1.Winicon, { src: "outline/user interface/c-remove", size: '1.6rem' })) : react_1.default.createElement("div", { className: 'row', style: { display: (this.containerRef.current && this.containerRef.current.getBoundingClientRect().width >= 120) ? "flex" : "none" } },
                 react_1.default.createElement(winicon_1.Winicon, { src: this.state.isOpen ? "fill/arrows/up-arrow" : "fill/arrows/down-arrow", size: '1.2rem' })),
             this.state.isOpen &&
-                react_dom_1.default.createPortal(react_1.default.createElement("div", { className: "".concat(input_multi_select_module_css_1.default['select-multi-popup'], " col ").concat((_e = this.props.popupClassName) !== null && _e !== void 0 ? _e : ""), style: (_f = this.state.style) !== null && _f !== void 0 ? _f : {
+                react_dom_1.default.createPortal(react_1.default.createElement("div", { className: "".concat(input_multi_select_module_css_1.default['select-multi-popup'], " select-multi-popup col ").concat((_e = this.props.popupClassName) !== null && _e !== void 0 ? _e : ""), style: (_f = this.state.style) !== null && _f !== void 0 ? _f : {
                         top: this.state.offset.y + this.state.offset.height + 2 + 'px',
                         left: this.state.offset.x + 'px',
                         width: this.state.offset.width,
