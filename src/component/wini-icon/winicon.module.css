@@ -11,15 +11,10 @@
     height: var(--size, inherit);
 }
 
-.wini-icon>svg>*[fill^="#"] {
+.wini-icon[class*="fill-icon"]>svg>*[fill^="#"] {
     fill: var(--color, "#61616B");
 }
 
-.wini-icon>svg>*[stroke^="#"] {
+.wini-icon[class*="outline-icon"]>svg>*[stroke^="#"] {
     stroke: var(--color, "#61616B");
-}
-
-.wini-icon[class*="color-icon"]>svg>* {
-    fill: unset !important;
-    stroke: unset !important;
 }
