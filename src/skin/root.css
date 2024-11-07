@@ -66,18 +66,20 @@ html {
     --error-border-color: #F5C0BC;
     --error-background: #FCEEED;
     /* neutral-background */
-    --neutral-darker-background-color: #EAEAEC;
+    --neutral-bolder-background-color: #EAEAEC;
     --neutral-absolute-background-color: #FFFFFF;
     --neutral-main-background-color: #EFEFF0;
-    --neutral-sub1-background-color: #F4F4F5;
+    --neutral-lighter-background-color: #F4F4F5;
     --neutral-overlay-background-color: #000000B3;
     --neutral-disable-background-color: #F4F4F5;
     --neutral-selected-background-color: #18181B14;
     --neutral-hover-background-color: #18181B0A;
     /* reverse */
-    --neutral-darker-reverse-background-color: #242428;
-    --neutral-main-reverse-background-color: #313135;
-    --neutral-sub-reverse-background-color: #494950;
+    --neutral-absolute-reverse-background-color: #000000;
+    --neutral-bolder-reverse-background-color: #18181B;
+    --neutral-main-reverse-background-color: #242428;
+    --neutral-lighter-reverse-background-color: #313135;
+    --neutral-disable-reverse-background-color: #313135;
     /* neutral-text */
     --neutral-text-title-color: #18181B;
     --neutral-text-subtitle-color: #61616B;
@@ -174,18 +176,20 @@ html.dark {
     --error-border-color: #F5C0BC;
     --error-background: #FCEEED;
     /* neutral-background */
-    --neutral-darker-background-color: #242428;
+    --neutral-bolder-background-color: #242428;
     --neutral-absolute-background-color: #14181b;
     --neutral-main-background-color: #313135;
-    --neutral-sub1-background-color: #494950;
+    --neutral-lighter-background-color: #494950;
     --neutral-overlay-background-color: #FFFFFFB3;
     --neutral-disable-background-color: #494950;
     --neutral-selected-background-color: #FFFFFF14;
     --neutral-hover-background-color: #FFFFFF0A;
     /* reverse */
-    --neutral-darker-reverse-background-color: #ffffff;
-    --neutral-main-reverse-background-color: #ffffff;
-    --neutral-sub-reverse-background-color: #ffffff;
+    --neutral-absolute-reverse-background-color: #000000;
+    --neutral-bolder-reverse-background-color: #18181B;
+    --neutral-main-reverse-background-color: #242428;
+    --neutral-lighter-reverse-background-color: #313135;
+    --neutral-disable-reverse-background-color: #313135;
     /* neutral-text */
     --neutral-text-title-color: #F4F4F5;
     --neutral-text-subtitle-color: #D7D7DB;

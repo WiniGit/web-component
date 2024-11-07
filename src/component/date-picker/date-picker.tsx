@@ -353,7 +353,7 @@ export class DatePicker extends React.Component<DatePickerProps, DatePickerState
                                         this.setState({ ...this.state, isOpen: false })
                                         if (this.props.onChange) this.props.onChange(this.state.value)
                                     }} >
-                                        <div className='button-text-3'>Submit</div>
+                                        <div className='button-text-3'>Apply</div>
                                     </button>
                                 </> : null}
                             </div>}

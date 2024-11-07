@@ -3,7 +3,7 @@
     border-radius: 0.4rem;
     border: var(--neutral-main-border-color);
     background-color: transparent;
-    transition: border, background-color 0.5s;
+    transition: border, background-color 0.4s;
     cursor: pointer;
 }
 
@@ -20,7 +20,7 @@
     height: 100%;
     visibility: hidden;
     opacity: 0 !important;
-    transition: visibility, opacity 0.5s;
+    transition: visibility, opacity 0.4s;
 }
 
 .checkbox-container>svg>path {

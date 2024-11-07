@@ -120,7 +120,7 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
                 } else if (timeValue.getMonth() !== this.state.selectMonth) {
                     style = { ...style, color: 'var(--neutral-text-subtitle-color)' }
                 }
-                return <button type="button" key={timeValue.toString()} className={`${styles['date-picker-circle']} body-3 ${selected ? styles['selected'] : ''}`} style={style} {...additionProps}
+                return <button type="button" key={timeValue.toString()} className={`${styles['date-picker-circle']} date-picker-circle body-3 ${selected ? styles['selected'] : ''}`} style={style} {...additionProps}
                     onClick={() => {
                         this.setState({ ...this.state, value: timeValue })
                         if (this.props.onSelect) this.props.onSelect(timeValue)
@@ -194,7 +194,7 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
                 if (this.state.selectYear === this.state.value.getFullYear() && i === this.state.value.getMonth()) {
                     selected = true
                 }
-                return <button type="button" key={timeValue.toString()} className={`${styles['month-picker-circle']} body-3 row ${selected ? styles['selected'] : ''}`} style={style} {...additionProps}
+                return <button type="button" key={timeValue.toString()} className={`${styles['month-picker-circle']} month-picker-circle body-3 row ${selected ? styles['selected'] : ''}`} style={style} {...additionProps}
                     onClick={() => {
                         if (this.props.type === CalendarType.MONTH) {
                             this.setState({ ...this.state, value: timeValue })
@@ -226,7 +226,7 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
                 if (yearNumber === this.state.value.getFullYear()) {
                     selected = true
                 }
-                return <button type="button" key={yearNumber.toString()} className={`${styles['year-picker-circle']} body-3 row ${selected ? styles['selected'] : ''}`} style={style} {...additionProps}
+                return <button type="button" key={yearNumber.toString()} className={`${styles['year-picker-circle']} year-picker-circle body-3 row ${selected ? styles['selected'] : ''}`} style={style} {...additionProps}
                     onClick={() => {
                         if (this.props.type === CalendarType.YEAR) {
                             this.setState({ ...this.state, value: new Date(yearNumber) })
@@ -330,7 +330,7 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
                                     }
                                 }}
                             >
-                                <Winicon src={"fill/arrows/double-arrow-left"} size={'1.6rem'} />
+                                <Winicon src={"fill/arrows/double-arrow-left"} size={'1.4rem'} />
                             </button>
                             <button type='button'
                                 onClick={() => {
@@ -354,7 +354,7 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
                                     }
                                 }}
                             >
-                                <Winicon src={"fill/arrows/left-arrow"} size={'1.6rem'} />
+                                <Winicon src={"fill/arrows/left-arrow"} size={'1.4rem'} />
                             </button>
                             <span className="heading-7" onClick={() => {
                                 if (this.state.type !== CalendarType.YEAR)
@@ -384,7 +384,7 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
                                     }
                                 }}
                             >
-                                <Winicon src={"fill/arrows/double-arrow-right"} size={'1.6rem'} />
+                                <Winicon src={"fill/arrows/right-arrow"} size={'1.4rem'} />
                             </button>
                             <button type='button'
                                 onClick={() => {
@@ -409,7 +409,7 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
                                     }
                                 }}
                             >
-                                <Winicon src={"fill/arrows/right-arrow"} size={'1.6rem'} />
+                                <Winicon src={"fill/arrows/double-arrow-right"} size={'1.4rem'} />
                             </button>
                         </div>
                         <div className={`${styles['picker-date-body']} row`} >
@@ -417,21 +417,21 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
                         </div>
                     </div>
                     {this.props.type === CalendarType.DATETIME ? <div className={`${styles['picker-time-container']} col`}>
-                        <div className="heading-7">{this.state.selectHours < 10 ? `0${this.state.selectHours}` : this.state.selectHours}:{this.state.selectMinutes < 10 ? `0${this.state.selectMinutes}` : this.state.selectMinutes}:{this.state.selectSeconds < 10 ? `0${this.state.selectSeconds}` : this.state.selectSeconds}</div>
+                        <div className="heading-7" >{this.state.selectHours < 10 ? `0${this.state.selectHours}` : this.state.selectHours}:{this.state.selectMinutes < 10 ? `0${this.state.selectMinutes}` : this.state.selectMinutes}:{this.state.selectSeconds < 10 ? `0${this.state.selectSeconds}` : this.state.selectSeconds}</div>
                         <div className="row" style={{ alignItems: 'start', flex: 1, height: '100%' }}>
-                            <div className={`${styles['scroll-picker-hours']} col`}>{Array.from({ length: 24 }).map((_, i) => <button type="button" onClick={() => {
+                            <div className={`${styles['scroll-picker-hours']} scroll-picker-hours col`}>{Array.from({ length: 24 }).map((_, i) => <button type="button" onClick={() => {
                                 let newValue = this.state.value
                                 newValue.setHours(i)
                                 this.setState({ ...this.state, selectHours: i, value: newValue })
                                 if (this.props.onSelect) this.props.onSelect(newValue)
                             }} key={`hours-${i}`} className={`label-4 ${this.state.selectHours === (i) ? styles['selected'] : ''}`} >{i < 10 ? `0${i}` : i}</button>)}</div>
-                            <div className={`${styles['scroll-picker-minutes']} col`}>{Array.from({ length: 60 }).map((_, i) => <button type="button" onClick={() => {
+                            <div className={`${styles['scroll-picker-minutes']} scroll-picker-minutes col`}>{Array.from({ length: 60 }).map((_, i) => <button type="button" onClick={() => {
                                 let newValue = this.state.value
                                 newValue.setMinutes(i)
                                 this.setState({ ...this.state, selectMinutes: i, value: newValue })
                                 if (this.props.onSelect) this.props.onSelect(newValue)
                             }} key={`hours-${i}`} className={`label-4 ${this.state.selectMinutes === (i) ? styles['selected'] : ''}`} >{i < 10 ? `0${i}` : i}</button>)}</div>
-                            <div className={`${styles['scroll-picker-seconds']} col`}>{Array.from({ length: 60 }).map((_, i) => <button type="button" onClick={() => {
+                            <div className={`${styles['scroll-picker-seconds']} scroll-picker-seconds col`}>{Array.from({ length: 60 }).map((_, i) => <button type="button" onClick={() => {
                                 let newValue = this.state.value
                                 newValue.setSeconds(i)
                                 this.setState({ ...this.state, selectSeconds: i, value: newValue })

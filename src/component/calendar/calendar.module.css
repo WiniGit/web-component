@@ -13,7 +13,7 @@
     cursor: pointer;
 }
 
-.calendar-container>.calendar-body:has(*:nth-child(2))>.row:first-child {
+.calendar-container>.calendar-body:has(*:nth-child(2))>div[class*="row"]:first-child {
     border-bottom: var(--neutral-main-border-color);
 }
 
@@ -30,9 +30,10 @@
 .picker-time-container {
     border-left: var(--neutral-main-border-color);
     height: 34.2rem;
+    align-items: center;
 }
 
-.picker-time-container>.heading-7 {
+.picker-time-container>div[class*="heading-7"]:first-child {
     padding: 1.2rem 1.6rem;
     border-bottom: var(--neutral-main-border-color);
     text-align: center;

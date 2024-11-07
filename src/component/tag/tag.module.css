@@ -20,7 +20,7 @@ SUCCSESS = 4
 .tag-container[tag-type="default"] {
     color: var(--neutral-text-subtitle-color);
     background-color: var(--neutral-main-background-color);
-    border: 1px solid var(--neutral-darker-background-color);
+    border: 1px solid var(--neutral-bolder-background-color);
 }
 
 .tag-container[tag-type="1"] {
