@@ -120,7 +120,7 @@ var Calendar = /** @class */ (function (_super) {
                 else if (timeValue.getMonth() !== _this.state.selectMonth) {
                     style = __assign(__assign({}, style), { color: 'var(--neutral-text-subtitle-color)' });
                 }
-                return react_1.default.createElement("button", __assign({ type: "button", key: timeValue.toString(), className: "".concat(calendar_module_css_1.default['date-picker-circle'], " body-3 ").concat(selected ? calendar_module_css_1.default['selected'] : ''), style: style }, additionProps, { onClick: function () {
+                return react_1.default.createElement("button", __assign({ type: "button", key: timeValue.toString(), className: "".concat(calendar_module_css_1.default['date-picker-circle'], " date-picker-circle body-3 ").concat(selected ? calendar_module_css_1.default['selected'] : ''), style: style }, additionProps, { onClick: function () {
                         _this.setState(__assign(__assign({}, _this.state), { value: timeValue }));
                         if (_this.props.onSelect)
                             _this.props.onSelect(timeValue);
@@ -193,7 +193,7 @@ var Calendar = /** @class */ (function (_super) {
             if (_this.state.selectYear === _this.state.value.getFullYear() && i === _this.state.value.getMonth()) {
                 selected = true;
             }
-            return react_1.default.createElement("button", __assign({ type: "button", key: timeValue.toString(), className: "".concat(calendar_module_css_1.default['month-picker-circle'], " body-3 row ").concat(selected ? calendar_module_css_1.default['selected'] : ''), style: style }, additionProps, { onClick: function () {
+            return react_1.default.createElement("button", __assign({ type: "button", key: timeValue.toString(), className: "".concat(calendar_module_css_1.default['month-picker-circle'], " month-picker-circle body-3 row ").concat(selected ? calendar_module_css_1.default['selected'] : ''), style: style }, additionProps, { onClick: function () {
                     if (_this.props.type === CalendarType.MONTH) {
                         _this.setState(__assign(__assign({}, _this.state), { value: timeValue }));
                         if (_this.props.onSelect)
@@ -223,7 +223,7 @@ var Calendar = /** @class */ (function (_super) {
             if (yearNumber === _this.state.value.getFullYear()) {
                 selected = true;
             }
-            return react_1.default.createElement("button", __assign({ type: "button", key: yearNumber.toString(), className: "".concat(calendar_module_css_1.default['year-picker-circle'], " body-3 row ").concat(selected ? calendar_module_css_1.default['selected'] : ''), style: style }, additionProps, { onClick: function () {
+            return react_1.default.createElement("button", __assign({ type: "button", key: yearNumber.toString(), className: "".concat(calendar_module_css_1.default['year-picker-circle'], " year-picker-circle body-3 row ").concat(selected ? calendar_module_css_1.default['selected'] : ''), style: style }, additionProps, { onClick: function () {
                     if (_this.props.type === CalendarType.YEAR) {
                         _this.setState(__assign(__assign({}, _this.state), { value: new Date(yearNumber) }));
                         if (_this.props.onSelect)
@@ -322,7 +322,7 @@ var Calendar = /** @class */ (function (_super) {
                                             break;
                                     }
                                 } },
-                                react_1.default.createElement(winicon_1.Winicon, { src: "fill/arrows/double-arrow-left", size: '1.6rem' })),
+                                react_1.default.createElement(winicon_1.Winicon, { src: "fill/arrows/double-arrow-left", size: '1.4rem' })),
                             react_1.default.createElement("button", { type: 'button', onClick: function () {
                                     switch (_this.state.type) {
                                         case CalendarType.YEAR:
@@ -344,7 +344,7 @@ var Calendar = /** @class */ (function (_super) {
                                             break;
                                     }
                                 } },
-                                react_1.default.createElement(winicon_1.Winicon, { src: "fill/arrows/left-arrow", size: '1.6rem' })),
+                                react_1.default.createElement(winicon_1.Winicon, { src: "fill/arrows/left-arrow", size: '1.4rem' })),
                             react_1.default.createElement("span", { className: "heading-7", onClick: function () {
                                     if (_this.state.type !== CalendarType.YEAR)
                                         _this.setState(__assign(__assign({}, _this.state), { type: _this.state.type === CalendarType.DATE ? CalendarType.MONTH : CalendarType.YEAR }));
@@ -370,7 +370,7 @@ var Calendar = /** @class */ (function (_super) {
                                             break;
                                     }
                                 } },
-                                react_1.default.createElement(winicon_1.Winicon, { src: "fill/arrows/double-arrow-right", size: '1.6rem' })),
+                                react_1.default.createElement(winicon_1.Winicon, { src: "fill/arrows/right-arrow", size: '1.4rem' })),
                             react_1.default.createElement("button", { type: 'button', onClick: function () {
                                     switch (_this.state.type) {
                                         case CalendarType.YEAR:
@@ -394,7 +394,7 @@ var Calendar = /** @class */ (function (_super) {
                                             break;
                                     }
                                 } },
-                                react_1.default.createElement(winicon_1.Winicon, { src: "fill/arrows/right-arrow", size: '1.6rem' }))),
+                                react_1.default.createElement(winicon_1.Winicon, { src: "fill/arrows/double-arrow-right", size: '1.4rem' }))),
                         react_1.default.createElement("div", { className: "".concat(calendar_module_css_1.default['picker-date-body'], " row") }, this.state.type === CalendarType.YEAR ? this.showYearInRange() : this.state.type === CalendarType.MONTH ? this.showMonthInYear() : this.showDateInMonth())),
                     this.props.type === CalendarType.DATETIME ? react_1.default.createElement("div", { className: "".concat(calendar_module_css_1.default['picker-time-container'], " col") },
                         react_1.default.createElement("div", { className: "heading-7" },
@@ -404,21 +404,21 @@ var Calendar = /** @class */ (function (_super) {
                             ":",
                             this.state.selectSeconds < 10 ? "0".concat(this.state.selectSeconds) : this.state.selectSeconds),
                         react_1.default.createElement("div", { className: "row", style: { alignItems: 'start', flex: 1, height: '100%' } },
-                            react_1.default.createElement("div", { className: "".concat(calendar_module_css_1.default['scroll-picker-hours'], " col") }, Array.from({ length: 24 }).map(function (_, i) { return react_1.default.createElement("button", { type: "button", onClick: function () {
+                            react_1.default.createElement("div", { className: "".concat(calendar_module_css_1.default['scroll-picker-hours'], " scroll-picker-hours col") }, Array.from({ length: 24 }).map(function (_, i) { return react_1.default.createElement("button", { type: "button", onClick: function () {
                                     var newValue = _this.state.value;
                                     newValue.setHours(i);
                                     _this.setState(__assign(__assign({}, _this.state), { selectHours: i, value: newValue }));
                                     if (_this.props.onSelect)
                                         _this.props.onSelect(newValue);
                                 }, key: "hours-".concat(i), className: "label-4 ".concat(_this.state.selectHours === (i) ? calendar_module_css_1.default['selected'] : '') }, i < 10 ? "0".concat(i) : i); })),
-                            react_1.default.createElement("div", { className: "".concat(calendar_module_css_1.default['scroll-picker-minutes'], " col") }, Array.from({ length: 60 }).map(function (_, i) { return react_1.default.createElement("button", { type: "button", onClick: function () {
+                            react_1.default.createElement("div", { className: "".concat(calendar_module_css_1.default['scroll-picker-minutes'], " scroll-picker-minutes col") }, Array.from({ length: 60 }).map(function (_, i) { return react_1.default.createElement("button", { type: "button", onClick: function () {
                                     var newValue = _this.state.value;
                                     newValue.setMinutes(i);
                                     _this.setState(__assign(__assign({}, _this.state), { selectMinutes: i, value: newValue }));
                                     if (_this.props.onSelect)
                                         _this.props.onSelect(newValue);
                                 }, key: "hours-".concat(i), className: "label-4 ".concat(_this.state.selectMinutes === (i) ? calendar_module_css_1.default['selected'] : '') }, i < 10 ? "0".concat(i) : i); })),
-                            react_1.default.createElement("div", { className: "".concat(calendar_module_css_1.default['scroll-picker-seconds'], " col") }, Array.from({ length: 60 }).map(function (_, i) { return react_1.default.createElement("button", { type: "button", onClick: function () {
+                            react_1.default.createElement("div", { className: "".concat(calendar_module_css_1.default['scroll-picker-seconds'], " scroll-picker-seconds col") }, Array.from({ length: 60 }).map(function (_, i) { return react_1.default.createElement("button", { type: "button", onClick: function () {
                                     var newValue = _this.state.value;
                                     newValue.setSeconds(i);
                                     _this.setState(__assign(__assign({}, _this.state), { selectSeconds: i, value: newValue }));

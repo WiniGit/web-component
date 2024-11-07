@@ -1,7 +1,7 @@
 .checkbox-container {
     position: relative;
     border-radius: 0.4rem;
-    border: var(--neutral-main-border-color);
+    border: var(--neutral-bolder-border-color);
     background-color: transparent;
     transition: border, background-color 0.4s;
     cursor: pointer;

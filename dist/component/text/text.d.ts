@@ -8,6 +8,7 @@ interface TextProps {
     maxLine?: number;
     onClick?: React.MouseEventHandler<HTMLDivElement>;
     onHover?: React.MouseEventHandler<HTMLDivElement>;
+    html?: string;
 }
 export declare class Text extends React.Component<TextProps> {
     render(): React.ReactNode;

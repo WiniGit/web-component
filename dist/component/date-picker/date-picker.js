@@ -351,7 +351,7 @@ var DatePicker = /** @class */ (function (_super) {
                                         if (_this.props.onChange)
                                             _this.props.onChange(_this.state.value);
                                     } },
-                                    react_1.default.createElement("div", { className: 'button-text-3' }, "Submit"))) : null) })), document.body));
+                                    react_1.default.createElement("div", { className: 'button-text-3' }, "Apply"))) : null) })), document.body));
     };
     return DatePicker;
 }(react_1.default.Component));

@@ -1,5 +1,4 @@
 import React, { CSSProperties } from 'react';
-import './import-file.css';
 import { ComponentStatus } from '../component-status';
 interface ObjWithKnownKeys {
     [k: string]: any;

@@ -19,7 +19,7 @@
     padding: 2.4rem;
     gap: 1.6rem;
     border-radius: 0.8rem;
-    border: var(--neutral-main-border-color);
+    border: var(--neutral-bolder-border-color);
 }
 
 .import-file-container:not(.button-only):has(svg.preview-icon) {

@@ -97,9 +97,13 @@ html {
     --neutral-text-disabled-reverse-color: #878792;
     --neutral-text-stable-reverse-color: #000000;
     /* neutral-border */
-    --neutral-main-border-color: 1px solid #D7D7DB;
-    --neutral-sub1-border-color: 1px solid #EAEAEC;
-    --neutral-sub2-border-color: 1px solid #F4F4F5;
+    --neutral-bolder-border-color: 1px solid #D7D7DB;
+    --neutral-main-border-color: 1px solid #EAEAEC;
+    --neutral-lighter-border-color: 1px solid #F4F4F5;
+    /* neutral-border reverse */
+    --neutral-bolder-reverse-border-color: 1px solid #242428;
+    --neutral-main-reverse-border-color: 1px solid #313135;
+    --neutral-lighter-reverse-border-color: 1px solid #494950;
 
     --shadow-top: 0px -1px 6px 0px #2D32390F;
     --shadow-bottom: 0px 1px 6px 0px #2D32390F;
@@ -199,9 +203,13 @@ html.dark {
     --neutral-text-disabled-color: #878792;
     --neutral-text-stable-color: #FFFFFF;
     /* neutral-border */
-    --neutral-main-border-color: 1px solid #494950;
-    --neutral-sub1-border-color: 1px solid #61616B;
-    --neutral-sub2-border-color: 1px solid #878792;
+    --neutral-bolder-border-color: 1px solid #494950;
+    --neutral-main-border-color: 1px solid #313135;
+    --neutral-lighter-border-color: 1px solid #242428;
+    /* neutral-border reverse */
+    --neutral-bolder-reverse-border-color: 1px solid #242428;
+    --neutral-main-reverse-border-color: 1px solid #313135;
+    --neutral-lighter-reverse-border-color: 1px solid #494950;
 
 
     --shadow-top: 0px -1px 6px 0px #2D32390F;

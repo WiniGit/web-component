@@ -12,8 +12,8 @@
 }
 
 .custom-table>.tb-header>tr {
-    border-top: var(--neutral-main-border-color);
-    border-bottom: var(--neutral-main-border-color);
+    border-top: var(--neutral-bolder-border-color);
+    border-bottom: var(--neutral-bolder-border-color);
 }
 
 .custom-table .tb-cell {

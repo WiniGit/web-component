@@ -38,12 +38,13 @@ var Text = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     Text.prototype.render = function () {
-        var _a, _b;
+        var _a, _b, _c;
         var convertStyle = (_a = this.props.style) !== null && _a !== void 0 ? _a : {};
         if (this.props.maxLine) {
             convertStyle = __assign(__assign({}, convertStyle), { '--max-line': this.props.maxLine });
         }
-        return react_1.default.createElement("div", { id: this.props.id, onMouseOver: this.props.onHover, onClick: this.props.onClick, className: "comp-text ".concat(this.props.onClick ? 'type-button' : '', " ").concat((_b = this.props.className) !== null && _b !== void 0 ? _b : ''), style: convertStyle }, this.props.children);
+        return this.props.html ? react_1.default.createElement("div", { dangerouslySetInnerHTML: { __html: this.props.html }, id: this.props.id, onMouseOver: this.props.onHover, onClick: this.props.onClick, className: "comp-text ".concat(this.props.onClick ? 'type-button' : '', " ").concat((_b = this.props.className) !== null && _b !== void 0 ? _b : ''), style: convertStyle }) :
+            react_1.default.createElement("div", { id: this.props.id, onMouseOver: this.props.onHover, onClick: this.props.onClick, className: "comp-text ".concat(this.props.onClick ? 'type-button' : '', " ").concat((_c = this.props.className) !== null && _c !== void 0 ? _c : ''), style: convertStyle }, this.props.children);
     };
     return Text;
 }(react_1.default.Component));
