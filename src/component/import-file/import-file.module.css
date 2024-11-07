@@ -33,7 +33,7 @@
 }
 
 .import-file-container>.import-file-prefix {
-    background-color: var(--neutral-text-subtitle-color);
+    background-color: var(--primary-background);
     align-items: center;
     justify-content: center;
 }

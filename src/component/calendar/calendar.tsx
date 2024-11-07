@@ -417,7 +417,7 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
                         </div>
                     </div>
                     {this.props.type === CalendarType.DATETIME ? <div className={`${styles['picker-time-container']} col`}>
-                        <div className="heading-7" >{this.state.selectHours < 10 ? `0${this.state.selectHours}` : this.state.selectHours}:{this.state.selectMinutes < 10 ? `0${this.state.selectMinutes}` : this.state.selectMinutes}:{this.state.selectSeconds < 10 ? `0${this.state.selectSeconds}` : this.state.selectSeconds}</div>
+                        <div className="heading-7">{this.state.selectHours < 10 ? `0${this.state.selectHours}` : this.state.selectHours}:{this.state.selectMinutes < 10 ? `0${this.state.selectMinutes}` : this.state.selectMinutes}:{this.state.selectSeconds < 10 ? `0${this.state.selectSeconds}` : this.state.selectSeconds}</div>
                         <div className="row" style={{ alignItems: 'start', flex: 1, height: '100%' }}>
                             <div className={`${styles['scroll-picker-hours']} scroll-picker-hours col`}>{Array.from({ length: 24 }).map((_, i) => <button type="button" onClick={() => {
                                 let newValue = this.state.value

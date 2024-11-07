@@ -134,7 +134,7 @@ export class ImportFile extends React.Component<ImportFileProps, ImportFileState
             </div>
                 : <Button
                     label={this.state.preview ? 'Remove file' : 'Choose file'}
-                    style={{ color: "var(--neutral-text-subtitle-color)" }}
+                    style={{ padding: "1.2rem" }}
                     className='button-text-4'
                     onClick={() => {
                         if (this.state.preview) {
