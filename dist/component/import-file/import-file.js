@@ -107,7 +107,7 @@ var ImportFile = /** @class */ (function (_super) {
                         if (_this.props.onChange)
                             _this.props.onChange(undefined);
                     } }, closeSvg))
-                : react_1.default.createElement(index_1.Button, { label: this.state.preview ? 'Remove file' : 'Choose file', style: { color: "var(--neutral-text-subtitle-color)" }, className: 'button-text-4', onClick: function () {
+                : react_1.default.createElement(index_1.Button, { label: this.state.preview ? 'Remove file' : 'Choose file', style: { padding: "1.2rem" }, className: 'button-text-4', onClick: function () {
                         if (_this.state.preview) {
                             _this.setState(__assign(__assign({}, _this.state), { preview: null }));
                             if (_this.props.onChange)
