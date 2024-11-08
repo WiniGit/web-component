@@ -7,13 +7,6 @@
     display: none;
 }
 
-.import-file-container button {
-    outline: none;
-    border: none;
-    background-color: transparent;
-    padding: 0;
-}
-
 .import-file-container:not(.button-only) {
     max-width: 57rem;
     padding: 2.4rem;
