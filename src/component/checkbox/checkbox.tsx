@@ -47,7 +47,7 @@ export class Checkbox extends React.Component<CheckboxProps, CheckboxState> {
             }
         }
         return <label id={this.props.id} className={`${styles['checkbox-container']} row ${this.props.className ?? ''}`} style={convertStyle} is-null-value={`${this.state.value == undefined}`} onClick={this.props.onClick}>
-            <input type="checkbox" checked={this.state.value} disabled={this.props.disabled}
+            <input type="checkbox" checked={this.state.value ? true : false} disabled={this.props.disabled}
                 onChange={(ev) => {
                     ev.stopPropagation()
                     const newValue = !this.state.value
