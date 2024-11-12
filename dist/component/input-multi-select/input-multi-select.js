@@ -264,11 +264,11 @@ var SelectMultiple = /** @class */ (function (_super) {
             react_1.default.createElement("div", { className: 'row', style: { flexWrap: 'wrap', flex: 1, width: '100%', gap: '0.6rem 0.4rem' } },
                 this.state.value.map(function (item) {
                     var optionItem = _this.props.options.find(function (e) { return e.id === item; });
-                    return react_1.default.createElement("div", { key: item, className: "row ".concat(input_multi_select_module_css_1.default['selected-item-value']), onClick: function (ev) { return _this.onClickItem(ev, item); } },
-                        react_1.default.createElement(text_1.Text, { style: { color: '#161D24E5', fontSize: '1.2rem', lineHeight: '1.4rem' } }, optionItem === null || optionItem === void 0 ? void 0 : optionItem.name),
+                    return react_1.default.createElement("div", { key: item, className: "row ".concat(input_multi_select_module_css_1.default['selected-item-value']), onClick: (optionItem === null || optionItem === void 0 ? void 0 : optionItem.disabled) ? undefined : function (ev) { return _this.onClickItem(ev, item); } },
+                        react_1.default.createElement(text_1.Text, { style: { color: "var(--neutral-text-title-color)", fontSize: '1.2rem', lineHeight: '1.4rem' } }, optionItem === null || optionItem === void 0 ? void 0 : optionItem.name),
                         react_1.default.createElement(winicon_1.Winicon, { src: "outline/user interface/e-remove", size: '1.2rem' }));
                 }),
-                (!this.state.value.length || this.state.isOpen) && react_1.default.createElement("input", { autoFocus: this.state.isOpen, onChange: this.search, placeholder: this.state.value.length ? undefined : this.props.placeholder, onBlur: function (ev) {
+                (!this.state.value.length || this.state.isOpen) && react_1.default.createElement("input", { autoFocus: this.state.value.length > 0, onChange: this.search, placeholder: this.state.value.length ? undefined : this.props.placeholder, onBlur: function (ev) {
                         if (_this.state.onSelect)
                             ev.target.focus();
                         else
