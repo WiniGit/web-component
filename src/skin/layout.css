@@ -90,13 +90,13 @@
 .row>.col18 {
     width: auto !important;
     min-width: auto !important;
-    flex: 0 calc((100% * 18 / 24) - var(--gutter) * 3 / 4) !important;
+    flex: 0 calc((100% * 18 / 24) - var(--gutter) * 1 / 4) !important;
 }
 
 .row>.col20 {
     width: auto !important;
     min-width: auto !important;
-    flex: 0 calc((100% * 20 / 24) - var(--gutter) * 5 / 6) !important;
+    flex: 0 calc((100% * 20 / 24) - var(--gutter) * 1 / 6) !important;
 }
 
 .row>.col24 {
@@ -178,13 +178,13 @@
     .row>.col18-min {
         width: auto !important;
         min-width: auto !important;
-        flex: 0 calc((100% * 18 / 24) - var(--gutter) * 3 / 4) !important;
+        flex: 0 calc((100% * 18 / 24) - var(--gutter) * 1 / 4) !important;
     }
 
     .row>.col20-min {
         width: auto !important;
         min-width: auto !important;
-        flex: 0 calc((100% * 20 / 24) - var(--gutter) * 5 / 6) !important;
+        flex: 0 calc((100% * 20 / 24) - var(--gutter) * 1 / 6) !important;
     }
 
     .row>.col24-min {
@@ -270,13 +270,13 @@
     .row>.col18-sm {
         width: auto !important;
         min-width: auto !important;
-        flex: 0 calc((100% * 18 / 24) - var(--gutter) * 3 / 4) !important;
+        flex: 0 calc((100% * 18 / 24) - var(--gutter) * 1 / 4) !important;
     }
 
     .row>.col20-sm {
         width: auto !important;
         min-width: auto !important;
-        flex: 0 calc((100% * 20 / 24) - var(--gutter) * 5 / 6) !important;
+        flex: 0 calc((100% * 20 / 24) - var(--gutter) * 1 / 6) !important;
     }
 
     .row>.col24-sm {
@@ -359,13 +359,13 @@
     .row>.col18-md {
         width: auto !important;
         min-width: auto !important;
-        flex: 0 calc((100% * 18 / 24) - var(--gutter) * 3 / 4) !important;
+        flex: 0 calc((100% * 18 / 24) - var(--gutter) * 1 / 4) !important;
     }
 
     .row>.col20-md {
         width: auto !important;
         min-width: auto !important;
-        flex: 0 calc((100% * 20 / 24) - var(--gutter) * 5 / 6) !important;
+        flex: 0 calc((100% * 20 / 24) - var(--gutter) * 1 / 6) !important;
     }
 
     .row>.col24-md {
@@ -447,16 +447,16 @@
         flex: 0 calc((100% * 16 / 24) - var(--gutter) * 1 / 3) !important;
     }
 
-    .row>.col20-lg {
-        width: auto !important;
-        min-width: auto !important;
-        flex: 0 calc((100% * 20 / 24) - var(--gutter) * 5 / 6) !important;
-    }
-
     .row>.col18-lg {
         width: auto !important;
         min-width: auto !important;
-        flex: 0 calc((100% * 18 / 24) - var(--gutter) * 3 / 4) !important;
+        flex: 0 calc((100% * 18 / 24) - var(--gutter) * 1 / 4) !important;
+    }
+
+    .row>.col20-lg {
+        width: auto !important;
+        min-width: auto !important;
+        flex: 0 calc((100% * 20 / 24) - var(--gutter) * 1 / 6) !important;
     }
 
     .row>.col24-lg {
@@ -541,13 +541,13 @@
     .row>.col18-xl {
         width: auto !important;
         min-width: auto !important;
-        flex: 0 calc((100% * 18 / 24) - var(--gutter) * 3 / 4) !important;
+        flex: 0 calc((100% * 18 / 24) - var(--gutter) * 1 / 4) !important;
     }
 
     .row>.col20-xl {
         width: auto !important;
         min-width: auto !important;
-        flex: 0 calc((100% * 20 / 24) - var(--gutter) * 5 / 6) !important;
+        flex: 0 calc((100% * 20 / 24) - var(--gutter) * 1 / 6) !important;
     }
 
     .row>.col24-xl {
@@ -632,13 +632,13 @@
     .row>.col18-xxl {
         width: auto !important;
         min-width: auto !important;
-        flex: 0 calc((100% * 18 / 24) - var(--gutter) * 3 / 4) !important;
+        flex: 0 calc((100% * 18 / 24) - var(--gutter) * 1 / 4) !important;
     }
 
     .row>.col20-xxl {
         width: auto !important;
         min-width: auto !important;
-        flex: 0 calc((100% * 20 / 24) - var(--gutter) * 5 / 6) !important;
+        flex: 0 calc((100% * 20 / 24) - var(--gutter) * 1 / 6) !important;
     }
 
     .row>.col24-xxl {
