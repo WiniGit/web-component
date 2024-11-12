@@ -187,12 +187,12 @@ export class SelectMultiple extends React.Component<SelectMultipleProps, SelectM
             <div className='row' style={{ flexWrap: 'wrap', flex: 1, width: '100%', gap: '0.6rem 0.4rem' }}>
                 {this.state.value.map(item => {
                     const optionItem = this.props.options.find(e => e.id === item)
-                    return <div key={item} className={`row ${styles['selected-item-value']}`} onClick={(ev) => this.onClickItem(ev, item)}>
-                        <Text style={{ color: '#161D24E5', fontSize: '1.2rem', lineHeight: '1.4rem' }} >{optionItem?.name}</Text>
+                    return <div key={item} className={`row ${styles['selected-item-value']}`} onClick={optionItem?.disabled ? undefined : (ev) => this.onClickItem(ev, item)}>
+                        <Text style={{ color: "var(--neutral-text-title-color)", fontSize: '1.2rem', lineHeight: '1.4rem' }} >{optionItem?.name}</Text>
                         <Winicon src={"outline/user interface/e-remove"} size={'1.2rem'} />
                     </div>
                 })}
-                {(!this.state.value.length || this.state.isOpen) && <input autoFocus={this.state.isOpen} onChange={this.search} placeholder={this.state.value.length ? undefined : this.props.placeholder}
+                {(!this.state.value.length || this.state.isOpen) && <input autoFocus={this.state.value.length > 0} onChange={this.search} placeholder={this.state.value.length ? undefined : this.props.placeholder}
                     onBlur={ev => {
                         if (this.state.onSelect) ev.target.focus()
                         else this.setState({ ...this.state, isOpen: false, onSelect: null })

@@ -84,7 +84,7 @@
 .row>.col16 {
     width: auto !important;
     min-width: auto !important;
-    flex: 0 calc((100% * 16 / 24) - var(--gutter) * 2 / 3) !important;
+    flex: 0 calc((100% * 16 / 24) - var(--gutter) * 1 / 3) !important;
 }
 
 .row>.col18 {
@@ -108,7 +108,7 @@
 /* Extra small devices (phones, 576px and down) min*/
 @media only screen and (max-width: 576px) {
     :root {
-        font-size: 6px !important;
+        font-size: 6.4px !important;
     }
 
     .row>.remain-min {
@@ -172,7 +172,7 @@
     .row>.col16-min {
         width: auto !important;
         min-width: auto !important;
-        flex: 0 calc((100% * 16 / 24) - var(--gutter) * 2 / 3) !important;
+        flex: 0 calc((100% * 16 / 24) - var(--gutter) * 1 / 3) !important;
     }
 
     .row>.col18-min {
@@ -264,7 +264,7 @@
     .row>.col16-sm {
         width: auto !important;
         min-width: auto !important;
-        flex: 0 calc((100% * 16 / 24) - var(--gutter) * 2 / 3) !important;
+        flex: 0 calc((100% * 16 / 24) - var(--gutter) * 1 / 3) !important;
     }
 
     .row>.col18-sm {
@@ -353,7 +353,7 @@
     .row>.col16-md {
         width: auto !important;
         min-width: auto !important;
-        flex: 0 calc((100% * 16 / 24) - var(--gutter) * 2 / 3) !important;
+        flex: 0 calc((100% * 16 / 24) - var(--gutter) * 1 / 3) !important;
     }
 
     .row>.col18-md {
@@ -444,7 +444,7 @@
     .row>.col16-lg {
         width: auto !important;
         min-width: auto !important;
-        flex: 0 calc((100% * 16 / 24) - var(--gutter) * 2 / 3) !important;
+        flex: 0 calc((100% * 16 / 24) - var(--gutter) * 1 / 3) !important;
     }
 
     .row>.col20-lg {
@@ -535,7 +535,7 @@
     .row>.col16-xl {
         width: auto !important;
         min-width: auto !important;
-        flex: 0 calc((100% * 16 / 24) - var(--gutter) * 2 / 3) !important;
+        flex: 0 calc((100% * 16 / 24) - var(--gutter) * 1 / 3) !important;
     }
 
     .row>.col18-xl {
@@ -626,7 +626,7 @@
     .row>.col16-xxl {
         width: auto !important;
         min-width: auto !important;
-        flex: 0 calc((100% * 16 / 24) - var(--gutter) * 2 / 3) !important;
+        flex: 0 calc((100% * 16 / 24) - var(--gutter) * 1 / 3) !important;
     }
 
     .row>.col18-xxl {
