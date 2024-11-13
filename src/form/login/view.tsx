@@ -40,7 +40,10 @@ export function WLoginView(props: Props) {
                         style={{ height: "4.8rem" }}
                         prefix={props.formData.username.prefix}
                         name={props.formData.username.name}
-                        register={methods.register(props.formData.username.name, { onBlur: props.formData.username.onValidate }) as any}
+                        register={methods.register(props.formData.username.name, {
+                            onChange: (ev) => { ev.target.value = ev.target.value.trim() },
+                            onBlur: props.formData.username.onValidate
+                        }) as any}
                         onComplete={(ev: any) => { ev.target.blur() }}
                         helperText={methods.formState.errors?.[props.formData.username.name]?.message as any}
                     />
@@ -55,7 +58,10 @@ export function WLoginView(props: Props) {
                         suffix={<button type='button' onClick={() => { setShowPass(!isShowPass) }}><Winicon src={`outline/user interface/${isShowPass ? "view" : "hide"}`} size={"1.6rem"} /></button>}
                         name={props.formData.password.name}
                         type={isShowPass ? "text" : "password"}
-                        register={methods.register(props.formData.password.name, { onBlur: props.formData.password.onValidate }) as any}
+                        register={methods.register(props.formData.password.name, {
+                            onChange: (ev) => { ev.target.value = ev.target.value.trim() },
+                            onBlur: props.formData.password.onValidate
+                        }) as any}
                         onComplete={(ev: any) => {
                             if (methods.watch(props.formData.password.name)?.length) {
                                 ev.target.blur()
