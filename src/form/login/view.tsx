@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { CSSProperties } from 'react'
 import { Button, Text, TextField, Winicon } from '../../index'
 import styles from './view.module.css'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
@@ -15,19 +15,22 @@ interface Props {
     orText?: string,
     buttonLoginLabel?: string,
     loginWithGoogle?: React.MouseEventHandler<HTMLButtonElement>,
-    loginWithFacebook: React.MouseEventHandler<HTMLButtonElement>,
+    loginWithFacebook?: React.MouseEventHandler<HTMLButtonElement>,
     onRegister?: React.MouseEventHandler<HTMLDivElement>,
     registerPrefixText?: string,
     registerText?: string,
     forgotPasswordText?: string,
     onForgotPassword?: React.MouseEventHandler<HTMLDivElement>,
+    style?: CSSProperties,
+    className?: string,
+    id?: string
 }
 
 export function WLoginView(props: Props) {
     const methods = useForm<any>({ shouldFocusError: false })
     const [isShowPass, setShowPass] = useState(false)
 
-    return <div className={`col login-view-container ${styles['login-view-container']}`}>
+    return <div id={props.id} className={`col login-view-container ${styles['login-view-container']} ${props.className ?? ''}`} style={props.style}>
         {typeof props.logo === "string" ? <img alt='logo' src={props.logo} height={"36rem"} /> : props.logo}
         <div className={`col login-view-form-container ${styles['login-view-form-container']}`}>
             <Text className='heading-4'>{props.title ?? "Log in to Wini"}</Text>
