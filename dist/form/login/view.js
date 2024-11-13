@@ -19,13 +19,13 @@ function WLoginView(props) {
             react_1.default.createElement(index_1.Text, { className: 'heading-4' }, (_b = props.title) !== null && _b !== void 0 ? _b : "Log in to Wini"),
             react_1.default.createElement("div", { className: 'col' },
                 react_1.default.createElement("div", { className: 'col', style: { gap: "0.8rem" } },
-                    react_1.default.createElement(index_1.Text, { className: 'label-3' }, "Email"),
+                    react_1.default.createElement(index_1.Text, { className: 'label-3' }, props.formData.username.label),
                     react_1.default.createElement(index_1.TextField, { className: "placeholder-2", placeholder: props.formData.username.label, style: { height: "4.8rem" }, prefix: props.formData.username.prefix, name: props.formData.username.name, register: methods.register(props.formData.username.name, {
                             onChange: function (ev) { ev.target.value = ev.target.value.trim(); },
                             onBlur: props.formData.username.onValidate
                         }), onComplete: function (ev) { ev.target.blur(); }, helperText: (_d = (_c = methods.formState.errors) === null || _c === void 0 ? void 0 : _c[props.formData.username.name]) === null || _d === void 0 ? void 0 : _d.message })),
                 react_1.default.createElement("div", { className: 'col', style: { gap: "0.8rem" } },
-                    react_1.default.createElement(index_1.Text, { className: 'label-3' }, "Email"),
+                    react_1.default.createElement(index_1.Text, { className: 'label-3' }, props.formData.password.label),
                     react_1.default.createElement(index_1.TextField, { className: "placeholder-2", placeholder: props.formData.password.label, style: { height: "4.8rem" }, prefix: props.formData.password.prefix, suffix: react_1.default.createElement("button", { type: 'button', onClick: function () { setShowPass(!isShowPass); } },
                             react_1.default.createElement(index_1.Winicon, { src: "outline/user interface/".concat(isShowPass ? "view" : "hide"), size: "1.6rem" })), name: props.formData.password.name, type: isShowPass ? "text" : "password", register: methods.register(props.formData.password.name, {
                             onChange: function (ev) { ev.target.value = ev.target.value.trim(); },
