@@ -36,7 +36,7 @@ export function WLoginView(props: Props) {
             <Text className='heading-4'>{props.title ?? "Log in to Wini"}</Text>
             <div className='col'>
                 <div className='col' style={{ gap: "0.8rem" }}>
-                    <Text className='label-3'>Email</Text>
+                    <Text className='label-3'>{props.formData.username.label}</Text>
                     <TextField
                         className="placeholder-2"
                         placeholder={props.formData.username.label}
@@ -52,7 +52,7 @@ export function WLoginView(props: Props) {
                     />
                 </div>
                 <div className='col' style={{ gap: "0.8rem" }}>
-                    <Text className='label-3'>Email</Text>
+                    <Text className='label-3'>{props.formData.password.label}</Text>
                     <TextField
                         className="placeholder-2"
                         placeholder={props.formData.password.label}
