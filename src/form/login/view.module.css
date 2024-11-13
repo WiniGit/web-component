@@ -1,0 +1,80 @@
+.login-view-container {
+    gap: 4.8rem;
+    align-items: center;
+    min-width: 320px;
+    max-width: 460px;
+}
+
+.login-view-form-container {
+    gap: 2rem;
+    align-items: inherit;
+    width: 100%;
+}
+
+.login-view-form-container>div:last-child {
+    padding: 0.4rem 3.2rem;
+    gap: inherit;
+    align-items: inherit;
+    width: 100%;
+}
+
+.login-view-form-container>div:last-child>div {
+    width: 100%;
+}
+
+button.login-btn {
+    height: 4.8rem;
+    width: 100%;
+    justify-content: center;
+    background-color: var(--primary-main-color);
+    color: var(--neutral-text-stable-color);
+}
+
+button:disabled.login-btn {
+    background-color: var(--neutral-disable-background-color);
+    color: var(--neutral-text-disabled-color);
+    cursor: context-menu;
+}
+
+.forgot-password-btn {
+    color: var(--neutral-text-subtitle-color);
+}
+
+.forgot-password-btn:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.register-btn:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.login-social-media {
+    gap: 1.6rem;
+}
+
+.login-social-media>button {
+    height: 4.8rem;
+    width: 100%;
+    flex: 1;
+    gap: 1.6rem;
+    justify-content: center;
+    border: var(--neutral-bolder-border-color);
+    background-color: transparent;
+}
+
+.or-spacing {
+    gap: 1.2rem;
+}
+
+.or-spacing>div:nth-child(odd) {
+    height: 1px;
+    width: 100%;
+    flex: 1;
+    background-color: var(--neutral-text-body-reverse-color);
+}
+
+.or-spacing>div:nth-child(even) {
+    color: var(--neutral-text-subtitle-color);
+}

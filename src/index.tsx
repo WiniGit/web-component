@@ -27,6 +27,7 @@ import { ToastContainer } from 'react-toastify'
 import { Button } from './component/button/button'
 import { Tag } from './component/tag/tag'
 import { Winicon } from './component/wini-icon/winicon'
+import { WLoginView } from './form/login/view'
 
 
 export {
@@ -55,6 +56,7 @@ export {
   ToastContainer,
   Button,
   Tag,
-  Winicon
+  Winicon,
+  WLoginView
 }
 export type { OptionsItem }
