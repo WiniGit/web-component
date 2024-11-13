@@ -295,16 +295,16 @@ var SelectMultiple = /** @class */ (function (_super) {
                                 var newValue = [];
                                 if (_list.length) {
                                     if (isSelectedAll) {
-                                        newValue = _this.state.value.filter(function (vl) { return _list.every(function (item) { return vl !== item.id; }); });
+                                        newValue = _this.state.value.filter(function (vl) { return _list.every(function (item) { return vl !== item.id || item.disabled; }); });
                                     }
                                     else {
-                                        newValue = __spreadArray(__spreadArray([], _this.state.value, true), _list.filter(function (item) { return _this.state.value.every(function (vl) { return vl !== item.id; }); }).map(function (e) { return e.id; }), true);
+                                        newValue = __spreadArray(__spreadArray([], _this.state.value, true), _list.filter(function (item) { return _this.state.value.every(function (vl) { return vl !== item.id; }) && !item.disabled; }).map(function (e) { return e.id; }), true);
                                     }
                                 }
                                 _this.setState(__assign(__assign({}, _this.state), { value: newValue }));
                                 if (_this.props.onChange)
                                     _this.props.onChange(newValue);
-                            }, className: 'button-text-3', style: { color: _list.length ? 'var(--infor-main-color)' : '#00204D99', } }, _list.length && isSelectedAll ? 'Bỏ chọn tất cả' : 'Chọn tất cả');
+                            }, className: 'button-text-3', style: { color: _list.length ? 'var(--infor-main-color)' : 'var(--neutral-text-title-color)' } }, _list.length && isSelectedAll ? 'Bỏ chọn tất cả' : 'Chọn tất cả');
                     })()),
                     react_1.default.createElement("div", { className: "col ".concat(input_multi_select_module_css_1.default['select-body']) },
                         ((_g = this.state.search) !== null && _g !== void 0 ? _g : this.state.options).filter(function (e) { return !e.parentId; }).map(function (item) { return _this.renderOptions(item); }),
