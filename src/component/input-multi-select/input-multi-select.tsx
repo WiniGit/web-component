@@ -226,14 +226,14 @@ export class SelectMultiple extends React.Component<SelectMultipleProps, SelectM
                                     let newValue: Array<string | number> = []
                                     if (_list.length) {
                                         if (isSelectedAll) {
-                                            newValue = this.state.value.filter(vl => _list.every(item => vl !== item.id))
+                                            newValue = this.state.value.filter(vl => _list.every(item => vl !== item.id || item.disabled))
                                         } else {
-                                            newValue = [...this.state.value, ..._list.filter(item => this.state.value.every(vl => vl !== item.id)).map(e => e.id)]
+                                            newValue = [...this.state.value, ..._list.filter(item => this.state.value.every(vl => vl !== item.id) && !item.disabled).map(e => e.id)]
                                         }
                                     }
                                     this.setState({ ...this.state, value: newValue })
                                     if (this.props.onChange) this.props.onChange(newValue)
-                                }} className='button-text-3' style={{ color: _list.length ? 'var(--infor-main-color)' : '#00204D99', }}>{_list.length && isSelectedAll ? 'Bỏ chọn tất cả' : 'Chọn tất cả'}</Text>
+                                }} className='button-text-3' style={{ color: _list.length ? 'var(--infor-main-color)' : 'var(--neutral-text-title-color)' }}>{_list.length && isSelectedAll ? 'Bỏ chọn tất cả' : 'Chọn tất cả'}</Text>
                             })()}
                         </div>
                         <div className={`col ${styles['select-body']}`}>
