@@ -39,7 +39,7 @@ function WLoginView(props) {
                             if ((_b = ((_a = props.methods) !== null && _a !== void 0 ? _a : methods).watch(props.formData.password.name)) === null || _b === void 0 ? void 0 : _b.length) {
                                 ev.target.blur();
                                 if (!props.formData.password.onValidate && props.onSubmit)
-                                    props.onSubmit(((_c = props.methods) !== null && _c !== void 0 ? _c : methods).getValues());
+                                    _onSubmit(((_c = props.methods) !== null && _c !== void 0 ? _c : methods).getValues());
                             }
                             else
                                 ev.target.blur();
