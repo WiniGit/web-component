@@ -22,6 +22,7 @@ interface TextFieldProps {
     style?: CSSProperties;
     type?: React.HTMLInputTypeAttribute;
     autoFocus?: boolean;
+    autoComplete?: React.HTMLInputAutoCompleteAttribute;
     register?: UseFormRegister<{}>;
 }
 export declare class TextField extends React.Component<TextFieldProps> {

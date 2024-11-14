@@ -69,7 +69,7 @@ var TextField = /** @class */ (function (_super) {
         return react_1.default.createElement("div", { ref: this.containerRef, id: this.props.id, className: "text-field-container row ".concat((_a = this.props.className) !== null && _a !== void 0 ? _a : 'body-3', " ").concat(((_b = this.props.helperText) === null || _b === void 0 ? void 0 : _b.length) && 'helper-text'), "helper-text": this.props.helperText, style: this.props.style ? __assign(__assign({}, { '--helper-text-color': (_c = this.props.helperTextColor) !== null && _c !== void 0 ? _c : '#e14337' }), this.props.style) : { '--helper-text-color': (_d = this.props.helperTextColor) !== null && _d !== void 0 ? _d : '#e14337' } },
             this.props.prefix,
             this.props.register ?
-                react_1.default.createElement("input", __assign({}, this.props.register, { autoFocus: this.props.autoFocus, maxLength: this.props.maxLength, name: this.props.name, type: (_e = this.props.type) !== null && _e !== void 0 ? _e : 'text', placeholder: this.props.placeholder, readOnly: this.props.readOnly, disabled: this.props.disabled, onFocus: this.props.onFocus, onKeyDown: this.props.onComplete ? function (ev) {
+                react_1.default.createElement("input", __assign({}, this.props.register, { autoComplete: this.props.autoComplete, autoFocus: this.props.autoFocus, maxLength: this.props.maxLength, name: this.props.name, type: (_e = this.props.type) !== null && _e !== void 0 ? _e : 'text', placeholder: this.props.placeholder, readOnly: this.props.readOnly, disabled: this.props.disabled, onFocus: this.props.onFocus, onKeyDown: this.props.onComplete ? function (ev) {
                         if (_this.props.onComplete) {
                             switch (ev.key.toLowerCase()) {
                                 case "enter":
@@ -79,7 +79,7 @@ var TextField = /** @class */ (function (_super) {
                                     break;
                             }
                         }
-                    } : undefined })) : react_1.default.createElement("input", { autoFocus: this.props.autoFocus, maxLength: this.props.maxLength, name: this.props.name, type: (_f = this.props.type) !== null && _f !== void 0 ? _f : 'text', defaultValue: this.props.defaultValue, value: this.props.value, placeholder: this.props.placeholder, readOnly: this.props.readOnly, disabled: this.props.disabled, onChange: this.props.onChange, onFocus: this.props.onFocus, onBlur: this.props.onBlur, onKeyDown: this.props.onComplete ? function (ev) {
+                    } : undefined })) : react_1.default.createElement("input", { autoComplete: this.props.autoComplete, autoFocus: this.props.autoFocus, maxLength: this.props.maxLength, name: this.props.name, type: (_f = this.props.type) !== null && _f !== void 0 ? _f : 'text', defaultValue: this.props.defaultValue, value: this.props.value, placeholder: this.props.placeholder, readOnly: this.props.readOnly, disabled: this.props.disabled, onChange: this.props.onChange, onFocus: this.props.onFocus, onBlur: this.props.onBlur, onKeyDown: this.props.onComplete ? function (ev) {
                     if (_this.props.onComplete) {
                         switch (ev.key.toLowerCase()) {
                             case "enter":

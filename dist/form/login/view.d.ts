@@ -1,5 +1,5 @@
 import React, { CSSProperties } from 'react';
-import { FieldValues, SubmitHandler } from 'react-hook-form';
+import { FieldValues, UseFormReturn } from 'react-hook-form';
 interface Props {
     logo: React.ReactNode | string;
     formData: {
@@ -18,9 +18,10 @@ interface Props {
             maxLength?: number;
         };
     };
-    onSubmit?: SubmitHandler<FieldValues>;
+    onSubmit?: (data: FieldValues, methods?: UseFormReturn<any>) => void;
     title?: string;
     orText?: string;
+    methods?: UseFormReturn<any>;
     buttonLoginLabel?: string;
     loginWithGoogle?: React.MouseEventHandler<HTMLButtonElement>;
     loginWithFacebook?: React.MouseEventHandler<HTMLButtonElement>;
