@@ -10,10 +10,11 @@ interface WiniconProps {
     style?: CSSProperties,
     size?: number | string,
     color?: string,
-    alt?: string
+    alt?: string,
+    onClick?: React.MouseEventHandler<HTMLDivElement>
 }
 
-export function Winicon({ id, src, link, className, style, size, color, alt }: WiniconProps) {
+export function Winicon({ id, src, link, className, style, size, color, alt, onClick }: WiniconProps) {
     const [svgData, setSvgData] = useState<string>()
     const cdnSrc = "https://cdn.jsdelivr.net/gh/WiniGit/icon-library@latest/"
 
@@ -25,7 +26,7 @@ export function Winicon({ id, src, link, className, style, size, color, alt }: W
         }
     }, [src, link])
 
-    return <div id={id} className={`${styles['wini-icon']} ${className ?? ''} ${src ? src.split("/").map((e, i) => i === 0 ? `${e}-icon` : e.replace(" ", "-")).join(" ") : ''}`} style={(style ? { ...style, '--size': size, '--color': color } : { '--size': size, '--color': color }) as any} dangerouslySetInnerHTML={{ __html: svgData ?? '' }} />
+    return <div id={id} onClick={onClick} className={`${styles['wini-icon']} ${onClick ? styles['clickable'] : ''} ${className ?? ''} ${src ? src.split("/").map((e, i) => i === 0 ? `${e}-icon` : e.replace(" ", "-")).join(" ") : ''}`} style={(style ? { ...style, '--size': size, '--color': color } : { '--size': size, '--color': color }) as any} dangerouslySetInnerHTML={{ __html: svgData ?? '' }} />
 }
 
 export type WiniIconName = "color/accessibility/accessibility-lift" |
@@ -10040,6 +10041,477 @@ export type WiniIconName = "color/accessibility/accessibility-lift" |
     "outline/travel/windmill-2" |
     "outline/travel/windsurfing" |
     "outline/travel/world" |
-    "outline/travel/world-2"
+    "outline/travel/world-2" |
+    "outline/touch gestures/2x-drag-down" |
+  "outline/touch gestures/2x-drag-up" |
+  "outline/touch gestures/2x-swipe-down" |
+  "outline/touch gestures/2x-swipe-left" |
+  "outline/touch gestures/2x-swipe-right" |
+  "outline/touch gestures/2x-swipe-up" |
+  "outline/touch gestures/2x-tap" |
+  "outline/touch gestures/3x-swipe-left" |
+  "outline/touch gestures/3x-swipe-right" |
+  "outline/touch gestures/3x-swipe-up" |
+  "outline/touch gestures/3x-tap" |
+  "outline/touch gestures/4x-swipe-left" |
+  "outline/touch gestures/4x-swipe-right" |
+  "outline/touch gestures/4x-swipe-up" |
+  "outline/touch gestures/active-38" |
+  "outline/touch gestures/active-40" |
+  "outline/touch gestures/camera-button" |
+  "outline/touch gestures/double-tap" |
+  "outline/touch gestures/drag-21" |
+  "outline/touch gestures/drag-31" |
+  "outline/touch gestures/drag-down" |
+  "outline/touch gestures/drag-left" |
+  "outline/touch gestures/drag-right" |
+  "outline/touch gestures/drag-up" |
+  "outline/touch gestures/flick-down" |
+  "outline/touch gestures/flick-left" |
+  "outline/touch gestures/flick-right" |
+  "outline/touch gestures/flick-up" |
+  "outline/touch gestures/grab" |
+  "outline/touch gestures/hold" |
+  "outline/touch gestures/pin-2" |
+  "outline/touch gestures/pinch" |
+  "outline/touch gestures/rotate-22" |
+  "outline/touch gestures/rotate-23" |
+  "outline/touch gestures/scan" |
+  "outline/touch gestures/scroll-horizontal" |
+  "outline/touch gestures/scroll-vertical" |
+  "outline/touch gestures/stretch" |
+  "outline/touch gestures/swipe-bottom" |
+  "outline/touch gestures/swipe-left" |
+  "outline/touch gestures/swipe-right" |
+  "outline/touch gestures/swipe-up" |
+  "outline/touch gestures/tap-01" |
+  "outline/touch gestures/tap-02" |
+  "fill/touch gestures/2x-drag-down" |
+  "fill/touch gestures/2x-drag-up" |
+  "fill/touch gestures/2x-swipe-down" |
+  "fill/touch gestures/2x-swipe-left" |
+  "fill/touch gestures/2x-swipe-right" |
+  "fill/touch gestures/2x-swipe-up" |
+  "fill/touch gestures/2x-tap" |
+  "fill/touch gestures/3x-swipe-left" |
+  "fill/touch gestures/3x-swipe-right" |
+  "fill/touch gestures/3x-swipe-up" |
+  "fill/touch gestures/3x-tap" |
+  "fill/touch gestures/4x-swipe-left" |
+  "fill/touch gestures/4x-swipe-right" |
+  "fill/touch gestures/4x-swipe-up" |
+  "fill/touch gestures/active-40" |
+  "fill/touch gestures/active-38" |
+  "fill/touch gestures/camera-button" |
+  "fill/touch gestures/double-tap" |
+  "fill/touch gestures/drag-31" |
+  "fill/touch gestures/drag-21" |
+  "fill/touch gestures/drag-down" |
+  "fill/touch gestures/drag-left" |
+  "fill/touch gestures/drag-right" |
+  "fill/touch gestures/drag-up" |
+  "fill/touch gestures/flick-down" |
+  "fill/touch gestures/flick-left" |
+  "fill/touch gestures/flick-right" |
+  "fill/touch gestures/flick-up" |
+  "fill/touch gestures/grab" |
+  "fill/touch gestures/hold" |
+  "fill/touch gestures/pin-2" |
+  "fill/touch gestures/pinch" |
+  "fill/touch gestures/rotate-22" |
+  "fill/touch gestures/rotate-23" |
+  "fill/touch gestures/scan" |
+  "fill/touch gestures/scroll-horizontal" |
+  "fill/touch gestures/scroll-vertical" |
+  "fill/touch gestures/stretch" |
+  "fill/touch gestures/swipe-bottom" |
+  "fill/touch gestures/swipe-left" |
+  "fill/touch gestures/swipe-right" |
+  "fill/touch gestures/swipe-up" |
+  "fill/touch gestures/tap-01" |
+  "fill/touch gestures/tap-02" |
+  "fill/multimedia/3d-glasses" |
+  "fill/multimedia/adult-content" |
+  "fill/multimedia/ai-generated-img" |
+  "fill/multimedia/album" |
+  "fill/multimedia/alpha-order" |
+  "fill/multimedia/antenna" |
+  "fill/multimedia/anti-shake" |
+  "fill/multimedia/aperture" |
+  "fill/multimedia/audio-description" |
+  "fill/multimedia/audio-jack" |
+  "fill/multimedia/audio-mixer" |
+  "fill/multimedia/auto-flash" |
+  "fill/multimedia/auto-flash-2" |
+  "fill/multimedia/auto-focus" |
+  "fill/multimedia/brightness" |
+  "fill/multimedia/browse" |
+  "fill/multimedia/btn-play-2" |
+  "fill/multimedia/btn-play" |
+  "fill/multimedia/btn-stop" |
+  "fill/multimedia/button-eject" |
+  "fill/multimedia/button-next" |
+  "fill/multimedia/button-pause" |
+  "fill/multimedia/button-play" |
+  "fill/multimedia/button-power" |
+  "fill/multimedia/button-previous" |
+  "fill/multimedia/button-record" |
+  "fill/multimedia/button-rewind" |
+  "fill/multimedia/button-skip" |
+  "fill/multimedia/button-stop" |
+  "fill/multimedia/camcorder" |
+  "fill/multimedia/camera" |
+  "fill/multimedia/camera-2" |
+  "fill/multimedia/camera-3" |
+  "fill/multimedia/camera-flash" |
+  "fill/multimedia/camera-flashlight" |
+  "fill/multimedia/camera-focus" |
+  "fill/multimedia/camera-focus-2" |
+  "fill/multimedia/camera-lens" |
+  "fill/multimedia/camera-roll" |
+  "fill/multimedia/camera-screen" |
+  "fill/multimedia/camera-shooting" |
+  "fill/multimedia/camera-timer" |
+  "fill/multimedia/clapperboard" |
+  "fill/multimedia/clapperboard-2" |
+  "fill/multimedia/clarinet" |
+  "fill/multimedia/compact-camera" |
+  "fill/multimedia/countdown" |
+  "fill/multimedia/countdown-2" |
+  "fill/multimedia/crop" |
+  "fill/multimedia/cycle" |
+  "fill/multimedia/digital-image" |
+  "fill/multimedia/digital-piano" |
+  "fill/multimedia/drums" |
+  "fill/multimedia/earbuds" |
+  "fill/multimedia/edit-color" |
+  "fill/multimedia/edit-contrast" |
+  "fill/multimedia/edit-curves" |
+  "fill/multimedia/edit-levels" |
+  "fill/multimedia/edit-saturation" |
+  "fill/multimedia/event-ticket" |
+  "fill/multimedia/expand" |
+  "fill/multimedia/face-recognition" |
+  "fill/multimedia/file-audio" |
+  "fill/multimedia/film" |
+  "fill/multimedia/flash-off-2" |
+  "fill/multimedia/flash-off" |
+  "fill/multimedia/folder-image" |
+  "fill/multimedia/folder-music" |
+  "fill/multimedia/frame-effect" |
+  "fill/multimedia/full-screen" |
+  "fill/multimedia/fullscreen" |
+  "fill/multimedia/grain-effect" |
+  "fill/multimedia/grid" |
+  "fill/multimedia/guitar" |
+  "fill/multimedia/headphones-2" |
+  "fill/multimedia/headphones-3" |
+  "fill/multimedia/headphones" |
+  "fill/multimedia/headphones-mic" |
+  "fill/multimedia/image-add" |
+  "fill/multimedia/image-delete" |
+  "fill/multimedia/image-location" |
+  "fill/multimedia/image" |
+  "fill/multimedia/img-rotate-left" |
+  "fill/multimedia/img-rotate-right" |
+  "fill/multimedia/img-stack" |
+  "fill/multimedia/img" |
+  "fill/multimedia/instant-camera-2" |
+  "fill/multimedia/instant-camera" |
+  "fill/multimedia/interview" |
+  "fill/multimedia/kid-2" |
+  "fill/multimedia/knob" |
+  "fill/multimedia/layers-2" |
+  "fill/multimedia/lightning" |
+  "fill/multimedia/logo-mixer" |
+  "fill/multimedia/loudspeaker" |
+  "fill/multimedia/love-movie" |
+  "fill/multimedia/macro" |
+  "fill/multimedia/media-player" |
+  "fill/multimedia/media-stream" |
+  "fill/multimedia/mic" |
+  "fill/multimedia/mic-2" |
+  "fill/multimedia/microphone-2" |
+  "fill/multimedia/microphone-off" |
+  "fill/multimedia/microphone" |
+  "fill/multimedia/movie-2" |
+  "fill/multimedia/movie" |
+  "fill/multimedia/movie-3" |
+  "fill/multimedia/movie-reel" |
+  "fill/multimedia/music-album" |
+  "fill/multimedia/music" |
+  "fill/multimedia/music-cloud" |
+  "fill/multimedia/music-note" |
+  "fill/multimedia/music-playlist" |
+  "fill/multimedia/night" |
+  "fill/multimedia/no-photo" |
+  "fill/multimedia/offline" |
+  "fill/multimedia/options" |
+  "fill/multimedia/pc-play-media" |
+  "fill/multimedia/phone-camera-back" |
+  "fill/multimedia/phone-music" |
+  "fill/multimedia/photo-album" |
+  "fill/multimedia/photo" |
+  "fill/multimedia/photo-frame" |
+  "fill/multimedia/photo-not-allowed" |
+  "fill/multimedia/piano-2" |
+  "fill/multimedia/piano" |
+  "fill/multimedia/picture" |
+  "fill/multimedia/play-media" |
+  "fill/multimedia/play-movie" |
+  "fill/multimedia/player" |
+  "fill/multimedia/playlist" |
+  "fill/multimedia/podcast-mic" |
+  "fill/multimedia/podcast" |
+  "fill/multimedia/polaroid" |
+  "fill/multimedia/polaroid-photo" |
+  "fill/multimedia/polaroid-portrait" |
+  "fill/multimedia/polaroid-shot-delete" |
+  "fill/multimedia/polaroid-shot-new" |
+  "fill/multimedia/polaroid-shots" |
+  "fill/multimedia/progress-indicator" |
+  "fill/multimedia/projector" |
+  "fill/multimedia/radio" |
+  "fill/multimedia/random" |
+  "fill/multimedia/raw-image" |
+  "fill/multimedia/rotate-camera" |
+  "fill/multimedia/record-player" |
+  "fill/multimedia/rotate-left" |
+  "fill/multimedia/rotate-right" |
+  "fill/multimedia/save-to-list" |
+  "fill/multimedia/saxophone" |
+  "fill/multimedia/scale-2" |
+  "fill/multimedia/screen-reader" |
+  "fill/multimedia/screen-sharing-2" |
+  "fill/multimedia/screen-sharing-off-2" |
+  "fill/multimedia/screen-touch" |
+  "fill/multimedia/sd-card" |
+  "fill/multimedia/selfie-2" |
+  "fill/multimedia/selfie" |
+  "fill/multimedia/sharpen" |
+  "fill/multimedia/sound" |
+  "fill/multimedia/sound-wave" |
+  "fill/multimedia/soundwave" |
+  "fill/multimedia/sparks" |
+  "fill/multimedia/speaker" |
+  "fill/multimedia/speaker-2" |
+  "fill/multimedia/sport-mode" |
+  "fill/multimedia/sticker" |
+  "fill/multimedia/subtitles" |
+  "fill/multimedia/sun" |
+  "fill/multimedia/tape" |
+  "fill/multimedia/temperature" |
+  "fill/multimedia/ticket" |
+  "fill/multimedia/tool-blur" |
+  "fill/multimedia/tripod" |
+  "fill/multimedia/trumpet" |
+  "fill/multimedia/vibrance" |
+  "fill/multimedia/video-camera" |
+  "fill/multimedia/video-gallery-2" |
+  "fill/multimedia/video-gallery" |
+  "fill/multimedia/video" |
+  "fill/multimedia/video-off" |
+  "fill/multimedia/video-player" |
+  "fill/multimedia/video-playlist" |
+  "fill/multimedia/vignette" |
+  "fill/multimedia/violin" |
+  "fill/multimedia/volume" |
+  "fill/multimedia/volume-2" |
+  "fill/multimedia/volume-down" |
+  "fill/multimedia/volume-mute" |
+  "fill/multimedia/volume-off" |
+  "fill/multimedia/volume-up" |
+  "fill/multimedia/white-balance" |
+  "outline/multimedia/3d-glasses" |
+  "outline/multimedia/adult-content" |
+  "outline/multimedia/ai-generated-img" |
+  "outline/multimedia/album" |
+  "outline/multimedia/alpha-order" |
+  "outline/multimedia/antenna" |
+  "outline/multimedia/anti-shake" |
+  "outline/multimedia/aperture" |
+  "outline/multimedia/audio-description" |
+  "outline/multimedia/audio-jack" |
+  "outline/multimedia/audio-mixer" |
+  "outline/multimedia/auto-flash" |
+  "outline/multimedia/auto-flash-2" |
+  "outline/multimedia/auto-focus" |
+  "outline/multimedia/brightness" |
+  "outline/multimedia/browse" |
+  "outline/multimedia/btn-play-2" |
+  "outline/multimedia/btn-play" |
+  "outline/multimedia/btn-stop" |
+  "outline/multimedia/button-eject" |
+  "outline/multimedia/button-next" |
+  "outline/multimedia/button-pause" |
+  "outline/multimedia/button-play" |
+  "outline/multimedia/button-power" |
+  "outline/multimedia/button-previous" |
+  "outline/multimedia/button-record" |
+  "outline/multimedia/button-rewind" |
+  "outline/multimedia/button-skip" |
+  "outline/multimedia/button-stop" |
+  "outline/multimedia/camcorder" |
+  "outline/multimedia/camera-2" |
+  "outline/multimedia/camera" |
+  "outline/multimedia/camera-3" |
+  "outline/multimedia/camera-flash" |
+  "outline/multimedia/camera-flashlight" |
+  "outline/multimedia/camera-focus" |
+  "outline/multimedia/camera-focus-2" |
+  "outline/multimedia/camera-lens" |
+  "outline/multimedia/camera-roll" |
+  "outline/multimedia/camera-screen" |
+  "outline/multimedia/camera-shooting" |
+  "outline/multimedia/camera-timer" |
+  "outline/multimedia/clapperboard" |
+  "outline/multimedia/clapperboard-2" |
+  "outline/multimedia/clarinet" |
+  "outline/multimedia/compact-camera" |
+  "outline/multimedia/countdown-2" |
+  "outline/multimedia/countdown" |
+  "outline/multimedia/crop" |
+  "outline/multimedia/cycle" |
+  "outline/multimedia/digital-image" |
+  "outline/multimedia/digital-piano" |
+  "outline/multimedia/drums" |
+  "outline/multimedia/earbuds" |
+  "outline/multimedia/edit-color" |
+  "outline/multimedia/edit-contrast" |
+  "outline/multimedia/edit-curves" |
+  "outline/multimedia/edit-levels" |
+  "outline/multimedia/edit-saturation" |
+  "outline/multimedia/event-ticket" |
+  "outline/multimedia/expand" |
+  "outline/multimedia/face-recognition" |
+  "outline/multimedia/file-audio" |
+  "outline/multimedia/film" |
+  "outline/multimedia/flash-off-2" |
+  "outline/multimedia/flash-off" |
+  "outline/multimedia/folder-image" |
+  "outline/multimedia/folder-music" |
+  "outline/multimedia/frame-effect" |
+  "outline/multimedia/full-screen" |
+  "outline/multimedia/fullscreen" |
+  "outline/multimedia/grain-effect" |
+  "outline/multimedia/grid" |
+  "outline/multimedia/guitar" |
+  "outline/multimedia/headphones" |
+  "outline/multimedia/headphones-2" |
+  "outline/multimedia/headphones-3" |
+  "outline/multimedia/headphones-mic" |
+  "outline/multimedia/image-add" |
+  "outline/multimedia/image" |
+  "outline/multimedia/image-delete" |
+  "outline/multimedia/image-location" |
+  "outline/multimedia/img-rotate-left" |
+  "outline/multimedia/img-rotate-right" |
+  "outline/multimedia/img-stack" |
+  "outline/multimedia/img" |
+  "outline/multimedia/instant-camera-2" |
+  "outline/multimedia/instant-camera" |
+  "outline/multimedia/interview" |
+  "outline/multimedia/kid-2" |
+  "outline/multimedia/knob" |
+  "outline/multimedia/layers-2" |
+  "outline/multimedia/lightning" |
+  "outline/multimedia/loudspeaker" |
+  "outline/multimedia/love-movie" |
+  "outline/multimedia/macro" |
+  "outline/multimedia/media-player" |
+  "outline/multimedia/media-stream" |
+  "outline/multimedia/mic-2" |
+  "outline/multimedia/mic" |
+  "outline/multimedia/microphone-2" |
+  "outline/multimedia/microphone" |
+  "outline/multimedia/microphone-off" |
+  "outline/multimedia/movie-2" |
+  "outline/multimedia/movie-3" |
+  "outline/multimedia/movie" |
+  "outline/multimedia/movie-reel" |
+  "outline/multimedia/music" |
+  "outline/multimedia/music-album" |
+  "outline/multimedia/music-cloud" |
+  "outline/multimedia/music-note" |
+  "outline/multimedia/music-playlist" |
+  "outline/multimedia/night" |
+  "outline/multimedia/no-photo" |
+  "outline/multimedia/offline" |
+  "outline/multimedia/options" |
+  "outline/multimedia/pc-play-media" |
+  "outline/multimedia/phone-camera-back" |
+  "outline/multimedia/phone-music" |
+  "outline/multimedia/photo" |
+  "outline/multimedia/photo-album" |
+  "outline/multimedia/photo-frame" |
+  "outline/multimedia/photo-not-allowed" |
+  "outline/multimedia/piano-2" |
+  "outline/multimedia/piano" |
+  "outline/multimedia/picture" |
+  "outline/multimedia/play-media" |
+  "outline/multimedia/play-movie" |
+  "outline/multimedia/player" |
+  "outline/multimedia/playlist" |
+  "outline/multimedia/podcast-mic" |
+  "outline/multimedia/podcast" |
+  "outline/multimedia/polaroid-photo" |
+  "outline/multimedia/polaroid-portrait" |
+  "outline/multimedia/polaroid-shot-delete" |
+  "outline/multimedia/polaroid" |
+  "outline/multimedia/polaroid-shot-new" |
+  "outline/multimedia/polaroid-shots" |
+  "outline/multimedia/progress-indicator" |
+  "outline/multimedia/projector" |
+  "outline/multimedia/radio" |
+  "outline/multimedia/random" |
+  "outline/multimedia/raw-image" |
+  "outline/multimedia/record-player" |
+  "outline/multimedia/rotate-camera" |
+  "outline/multimedia/rotate-left" |
+  "outline/multimedia/rotate-right" |
+  "outline/multimedia/save-to-list" |
+  "outline/multimedia/saxophone" |
+  "outline/multimedia/scale-2" |
+  "outline/multimedia/screen-reader" |
+  "outline/multimedia/screen-sharing-2" |
+  "outline/multimedia/screen-sharing-off-2" |
+  "outline/multimedia/screen-touch" |
+  "outline/multimedia/sd-card" |
+  "outline/multimedia/selfie" |
+  "outline/multimedia/selfie-2" |
+  "outline/multimedia/sharpen" |
+  "outline/multimedia/sound-wave" |
+  "outline/multimedia/sound" |
+  "outline/multimedia/soundwave" |
+  "outline/multimedia/sparks" |
+  "outline/multimedia/speaker-2" |
+  "outline/multimedia/speaker" |
+  "outline/multimedia/sport-mode" |
+  "outline/multimedia/sticker" |
+  "outline/multimedia/subtitles" |
+  "outline/multimedia/sun" |
+  "outline/multimedia/tape" |
+  "outline/multimedia/temperature" |
+  "outline/multimedia/ticket" |
+  "outline/multimedia/tool-blur" |
+  "outline/multimedia/tripod" |
+  "outline/multimedia/trumpet" |
+  "outline/multimedia/vibrance" |
+  "outline/multimedia/video" |
+  "outline/multimedia/video-camera" |
+  "outline/multimedia/video-gallery-2" |
+  "outline/multimedia/video-gallery" |
+  "outline/multimedia/video-off" |
+  "outline/multimedia/video-player" |
+  "outline/multimedia/video-playlist" |
+  "outline/multimedia/vignette" |
+  "outline/multimedia/violin" |
+  "outline/multimedia/volume-2" |
+  "outline/multimedia/volume" |
+  "outline/multimedia/volume-down" |
+  "outline/multimedia/volume-mute" |
+  "outline/multimedia/volume-off" |
+  "outline/multimedia/volume-up" |
+  "outline/multimedia/white-balance"
 
 

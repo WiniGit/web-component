@@ -6,9 +6,13 @@
     --color: var(--neutral-text-subtitle-color);
 }
 
+.wini-icon.clickable {
+    cursor: pointer;
+}
+
 .wini-icon>svg {
-    width: var(--size, inherit);
-    height: var(--size, inherit);
+    width: var(--size, inherit) !important;
+    height: var(--size, inherit) !important;
 }
 
 .wini-icon[class*="fill-icon"]>svg>*[fill^="#"] {

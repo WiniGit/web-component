@@ -218,3 +218,18 @@ html.dark {
     --shadow-left: -1px 0px 6px 0px #2D32390F;
     --shadow-dropdown: 2px 0px 16px 0px #0000000A;
 }
+
+@keyframes skeleton-animation {
+    0% {
+        background-position: -1000px 0
+    }
+
+    100% {
+        background-position: 1000px 0
+    }
+}
+
+.skeleton-loading {
+    animation: skeleton-animation 4.2s linear infinite forwards;
+    background: linear-gradient(to right, #cbd5e1 8%, #f1f5f9 18%, #cbd5e1 33%);
+}
