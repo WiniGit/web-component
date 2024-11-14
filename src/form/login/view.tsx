@@ -1,7 +1,7 @@
 import React, { CSSProperties } from 'react'
 import { Button, Text, TextField, Winicon } from '../../index'
 import styles from './view.module.css'
-import { FieldValues, SubmitHandler, useForm, UseFormReturn } from 'react-hook-form'
+import { FieldValues, useForm, UseFormReturn } from 'react-hook-form'
 import { useState } from 'react'
 
 interface Props {
@@ -40,7 +40,7 @@ export function WLoginView(props: Props) {
         <div className={`col login-view-form-container ${styles['login-view-form-container']}`}>
             <Text className='heading-4'>{props.title ?? "Log in to Wini"}</Text>
             <div className='col'>
-                <div className='col' style={{ gap: "0.8rem" }}>
+                <div className='col' style={{ gap: "0.8rem", overflow: "visible" }}>
                     <Text className='label-3'>{props.formData.username.label}</Text>
                     <TextField
                         autoComplete='username'
@@ -57,7 +57,7 @@ export function WLoginView(props: Props) {
                         helperText={(props.methods ?? methods).formState.errors?.[props.formData.username.name]?.message as any}
                     />
                 </div>
-                <div className='col' style={{ gap: "0.8rem" }}>
+                <div className='col' style={{ gap: "0.8rem", overflow: "visible" }}>
                     <Text className='label-3'>{props.formData.password.label}</Text>
                     <TextField
                         autoComplete='current-password'
