@@ -75,7 +75,7 @@ export function WLoginView(props: Props) {
                         onComplete={(ev: any) => {
                             if ((props.methods ?? methods).watch(props.formData.password.name)?.length) {
                                 ev.target.blur()
-                                if (!props.formData.password.onValidate && props.onSubmit) props.onSubmit((props.methods ?? methods).getValues())
+                                if (!props.formData.password.onValidate && props.onSubmit) _onSubmit((props.methods ?? methods).getValues())
                             } else ev.target.blur()
                         }}
                         helperText={(props.methods ?? methods).formState.errors?.[props.formData.password.name]?.message as any}
