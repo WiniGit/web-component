@@ -23,6 +23,7 @@ interface TextFieldProps {
     style?: CSSProperties,
     type?: React.HTMLInputTypeAttribute,
     autoFocus?: boolean,
+    autoComplete?: React.HTMLInputAutoCompleteAttribute,
     register?: UseFormRegister<{}>,
 }
 
@@ -45,6 +46,7 @@ export class TextField extends React.Component<TextFieldProps> {
             {this.props.register ?
                 <input
                     {...this.props.register}
+                    autoComplete={this.props.autoComplete}
                     autoFocus={this.props.autoFocus}
                     maxLength={this.props.maxLength}
                     name={this.props.name}
@@ -65,6 +67,7 @@ export class TextField extends React.Component<TextFieldProps> {
                         }
                     } : undefined}
                 /> : <input
+                    autoComplete={this.props.autoComplete}
                     autoFocus={this.props.autoFocus}
                     maxLength={this.props.maxLength}
                     name={this.props.name}
