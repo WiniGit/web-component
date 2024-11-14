@@ -78,7 +78,7 @@ var react_1 = __importStar(require("react"));
 var winicon_module_css_1 = __importDefault(require("./winicon.module.css"));
 function Winicon(_a) {
     var _this = this;
-    var id = _a.id, src = _a.src, link = _a.link, className = _a.className, style = _a.style, size = _a.size, color = _a.color, alt = _a.alt;
+    var id = _a.id, src = _a.src, link = _a.link, className = _a.className, style = _a.style, size = _a.size, color = _a.color, alt = _a.alt, onClick = _a.onClick;
     var _b = (0, react_1.useState)(), svgData = _b[0], setSvgData = _b[1];
     var cdnSrc = "https://cdn.jsdelivr.net/gh/WiniGit/icon-library@latest/";
     (0, react_1.useEffect)(function () {
@@ -107,6 +107,6 @@ function Winicon(_a) {
             }); }); });
         }
     }, [src, link]);
-    return react_1.default.createElement("div", { id: id, className: "".concat(winicon_module_css_1.default['wini-icon'], " ").concat(className !== null && className !== void 0 ? className : '', " ").concat(src ? src.split("/").map(function (e, i) { return i === 0 ? "".concat(e, "-icon") : e.replace(" ", "-"); }).join(" ") : ''), style: (style ? __assign(__assign({}, style), { '--size': size, '--color': color }) : { '--size': size, '--color': color }), dangerouslySetInnerHTML: { __html: svgData !== null && svgData !== void 0 ? svgData : '' } });
+    return react_1.default.createElement("div", { id: id, onClick: onClick, className: "".concat(winicon_module_css_1.default['wini-icon'], " ").concat(onClick ? winicon_module_css_1.default['clickable'] : '', " ").concat(className !== null && className !== void 0 ? className : '', " ").concat(src ? src.split("/").map(function (e, i) { return i === 0 ? "".concat(e, "-icon") : e.replace(" ", "-"); }).join(" ") : ''), style: (style ? __assign(__assign({}, style), { '--size': size, '--color': color }) : { '--size': size, '--color': color }), dangerouslySetInnerHTML: { __html: svgData !== null && svgData !== void 0 ? svgData : '' } });
 }
 exports.Winicon = Winicon;

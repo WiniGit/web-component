@@ -13,7 +13,7 @@ function WLoginView(props) {
     var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o;
     var methods = (0, react_hook_form_1.useForm)({ shouldFocusError: false });
     var _p = (0, react_2.useState)(false), isShowPass = _p[0], setShowPass = _p[1];
-    return react_1.default.createElement("div", { id: props.id, className: "col login-view-container ".concat(view_module_css_1.default['login-view-container'], " ").concat((_a = props.className) !== null && _a !== void 0 ? _a : ''), style: props.style },
+    return react_1.default.createElement("form", { id: props.id, className: "col login-view-container ".concat(view_module_css_1.default['login-view-container'], " ").concat((_a = props.className) !== null && _a !== void 0 ? _a : ''), style: props.style },
         typeof props.logo === "string" ? react_1.default.createElement("img", { alt: 'logo', src: props.logo, height: "36rem" }) : props.logo,
         react_1.default.createElement("div", { className: "col login-view-form-container ".concat(view_module_css_1.default['login-view-form-container']) },
             react_1.default.createElement(index_1.Text, { className: 'heading-4' }, (_b = props.title) !== null && _b !== void 0 ? _b : "Log in to Wini"),
