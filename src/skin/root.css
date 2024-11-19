@@ -230,6 +230,6 @@ html.dark {
 }
 
 .skeleton-loading {
-    animation: skeleton-animation 4.2s linear infinite forwards;
+    animation: skeleton-animation 6s linear infinite forwards;
     background: linear-gradient(to right, #cbd5e1 8%, #f1f5f9 18%, #cbd5e1 33%);
 }
