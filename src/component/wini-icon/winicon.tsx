@@ -26,7 +26,7 @@ export function Winicon({ id, src, link, className, style, size, color, alt, onC
         }
     }, [src, link])
 
-    return <div id={id} onClick={onClick} className={`${styles['wini-icon']} ${onClick ? styles['clickable'] : ''} ${className ?? ''} ${src ? src.split("/").map((e, i) => i === 0 ? `${e}-icon` : e.replace(" ", "-")).join(" ") : ''}`} style={(style ? { ...style, '--size': size, '--color': color } : { '--size': size, '--color': color }) as any} dangerouslySetInnerHTML={{ __html: svgData ?? '' }} />
+    return <div id={id} onClick={onClick} className={`${styles['wini-icon']} ${onClick ? styles['clickable'] : ''} ${className ?? ''} ${src ? src.split("/").map((e, i) => i === 0 ? `${e}-icon` : e.replace(" ", "-")).join(" ") : ''}${link ? ' link-icon' : ""}`} style={(style ? { ...style, '--size': size, '--color': color } : { '--size': size, '--color': color }) as any} dangerouslySetInnerHTML={{ __html: svgData ?? '' }} />
 }
 
 export type WiniIconName = "color/accessibility/accessibility-lift" |
@@ -52,224 +52,52 @@ export type WiniIconName = "color/accessibility/accessibility-lift" |
     "color/accessibility/walking-support" |
     "color/accessibility/wheelchair-2" |
     "color/accessibility/wheelchair-ramp" |
-    "fill/accessibility/accessibility-2" |
-    "fill/accessibility/accessibility-3" |
-    "fill/accessibility/accessibility-4" |
-    "fill/accessibility/accessibility-5" |
-    "fill/accessibility/accessibility-lift-2" |
-    "fill/accessibility/accessibility-lift-3" |
-    "fill/accessibility/accessibility-lift-4" |
     "fill/accessibility/accessibility-lift" |
     "fill/accessibility/accessibility" |
-    "fill/accessibility/adaptive-bike-2" |
-    "fill/accessibility/adaptive-bike-3" |
-    "fill/accessibility/adaptive-bike-4" |
     "fill/accessibility/adaptive-bike" |
-    "fill/accessibility/audio-description-2" |
-    "fill/accessibility/audio-description-3" |
-    "fill/accessibility/audio-description-4" |
-    "fill/accessibility/audio-description-5" |
     "fill/accessibility/audio-description" |
-    "fill/accessibility/b-eye-2" |
-    "fill/accessibility/b-eye-3" |
-    "fill/accessibility/b-eye-4" |
-    "fill/accessibility/b-eye-5" |
     "fill/accessibility/b-eye" |
-    "fill/accessibility/blindness-2" |
-    "fill/accessibility/blindness-3" |
-    "fill/accessibility/blindness-4" |
     "fill/accessibility/blindness" |
-    "fill/accessibility/braille-2" |
-    "fill/accessibility/braille-3" |
-    "fill/accessibility/braille-4" |
-    "fill/accessibility/braille-5" |
     "fill/accessibility/braille" |
-    "fill/accessibility/closed-captioning-2" |
-    "fill/accessibility/closed-captioning-3" |
-    "fill/accessibility/closed-captioning-4" |
-    "fill/accessibility/closed-captioning-5" |
     "fill/accessibility/closed-captioning" |
-    "fill/accessibility/deaf-2" |
-    "fill/accessibility/deaf-3" |
-    "fill/accessibility/deaf-4" |
     "fill/accessibility/deaf" |
-    "fill/accessibility/dog-leash-2" |
-    "fill/accessibility/dog-leash-3" |
-    "fill/accessibility/dog-leash-4" |
     "fill/accessibility/dog-leash" |
-    "fill/accessibility/edit-color-2" |
-    "fill/accessibility/edit-color-3" |
-    "fill/accessibility/edit-color-4" |
-    "fill/accessibility/edit-color-5" |
-    "fill/accessibility/edit-color-6" |
     "fill/accessibility/edit-color" |
-    "fill/accessibility/escalator-2" |
-    "fill/accessibility/escalator-3" |
-    "fill/accessibility/escalator-4" |
-    "fill/accessibility/escalator-5" |
     "fill/accessibility/escalator" |
-    "fill/accessibility/hide-2" |
-    "fill/accessibility/hide-3" |
-    "fill/accessibility/hide-4" |
-    "fill/accessibility/hide-5" |
     "fill/accessibility/hide" |
-    "fill/accessibility/lift-2" |
-    "fill/accessibility/lift-3" |
-    "fill/accessibility/lift-4" |
-    "fill/accessibility/lift-5" |
     "fill/accessibility/lift" |
-    "fill/accessibility/low-vision-2" |
-    "fill/accessibility/low-vision-3" |
-    "fill/accessibility/low-vision-4" |
-    "fill/accessibility/low-vision-5" |
     "fill/accessibility/low-vision" |
-    "fill/accessibility/screen-reader-2" |
-    "fill/accessibility/screen-reader-3" |
-    "fill/accessibility/screen-reader-4" |
     "fill/accessibility/screen-reader" |
-    "fill/accessibility/sign-language-2" |
-    "fill/accessibility/sign-language" |
-    "fill/accessibility/text-size-2" |
-    "fill/accessibility/text-size-3" |
-    "fill/accessibility/text-size-4" |
-    "fill/accessibility/text-size-5" |
     "fill/accessibility/text-size" |
-    "fill/accessibility/tty-2" |
-    "fill/accessibility/tty-3" |
-    "fill/accessibility/tty-4" |
     "fill/accessibility/tty" |
-    "fill/accessibility/walking-aid-2" |
-    "fill/accessibility/walking-aid-3" |
-    "fill/accessibility/walking-aid-4" |
     "fill/accessibility/walking-aid" |
-    "fill/accessibility/walking-support-2" |
-    "fill/accessibility/walking-support-3" |
-    "fill/accessibility/walking-support-4" |
-    "fill/accessibility/walking-support-5" |
     "fill/accessibility/walking-support" |
-    "fill/accessibility/wheelchair-2-2" |
-    "fill/accessibility/wheelchair-2-3" |
-    "fill/accessibility/wheelchair-2-4" |
-    "fill/accessibility/wheelchair-2-5" |
     "fill/accessibility/wheelchair-2" |
-    "fill/accessibility/wheelchair-3" |
-    "fill/accessibility/wheelchair-4" |
-    "fill/accessibility/wheelchair-5" |
-    "fill/accessibility/wheelchair-6" |
-    "fill/accessibility/wheelchair-ramp-2" |
-    "fill/accessibility/wheelchair-ramp-3" |
-    "fill/accessibility/wheelchair-ramp-4" |
-    "fill/accessibility/wheelchair-ramp" |
     "fill/accessibility/wheelchair" |
-    "outline/accessibility/accessibility-2" |
-    "outline/accessibility/accessibility-3" |
-    "outline/accessibility/accessibility-4" |
-    "outline/accessibility/accessibility-5" |
-    "outline/accessibility/accessibility-lift-2" |
-    "outline/accessibility/accessibility-lift-3" |
-    "outline/accessibility/accessibility-lift-4" |
+    "fill/accessibility/wheelchair-ramp" |
     "outline/accessibility/accessibility-lift" |
     "outline/accessibility/accessibility" |
-    "outline/accessibility/adaptive-bike-2" |
-    "outline/accessibility/adaptive-bike-3" |
-    "outline/accessibility/adaptive-bike-4" |
     "outline/accessibility/adaptive-bike" |
-    "outline/accessibility/audio-description-2" |
-    "outline/accessibility/audio-description-3" |
-    "outline/accessibility/audio-description-4" |
-    "outline/accessibility/audio-description-5" |
     "outline/accessibility/audio-description" |
-    "outline/accessibility/b-eye-2" |
-    "outline/accessibility/b-eye-3" |
-    "outline/accessibility/b-eye-4" |
-    "outline/accessibility/b-eye-5" |
     "outline/accessibility/b-eye" |
-    "outline/accessibility/blindness-2" |
-    "outline/accessibility/blindness-3" |
-    "outline/accessibility/blindness-4" |
     "outline/accessibility/blindness" |
-    "outline/accessibility/braille-2" |
-    "outline/accessibility/braille-3" |
-    "outline/accessibility/braille-4" |
-    "outline/accessibility/braille-5" |
     "outline/accessibility/braille" |
-    "outline/accessibility/closed-captioning-2" |
-    "outline/accessibility/closed-captioning-3" |
-    "outline/accessibility/closed-captioning-4" |
-    "outline/accessibility/closed-captioning-5" |
     "outline/accessibility/closed-captioning" |
-    "outline/accessibility/deaf-2" |
-    "outline/accessibility/deaf-3" |
-    "outline/accessibility/deaf-4" |
     "outline/accessibility/deaf" |
-    "outline/accessibility/dog-leash-2" |
-    "outline/accessibility/dog-leash-3" |
-    "outline/accessibility/dog-leash-4" |
     "outline/accessibility/dog-leash" |
-    "outline/accessibility/edit-color-2" |
-    "outline/accessibility/edit-color-3" |
-    "outline/accessibility/edit-color-4" |
-    "outline/accessibility/edit-color-5" |
-    "outline/accessibility/edit-color-6" |
     "outline/accessibility/edit-color" |
-    "outline/accessibility/escalator-2" |
-    "outline/accessibility/escalator-3" |
-    "outline/accessibility/escalator-4" |
-    "outline/accessibility/escalator-5" |
     "outline/accessibility/escalator" |
-    "outline/accessibility/hide-2" |
-    "outline/accessibility/hide-3" |
-    "outline/accessibility/hide-4" |
-    "outline/accessibility/hide-5" |
     "outline/accessibility/hide" |
-    "outline/accessibility/lift-2" |
-    "outline/accessibility/lift-3" |
-    "outline/accessibility/lift-4" |
-    "outline/accessibility/lift-5" |
     "outline/accessibility/lift" |
-    "outline/accessibility/low-vision-2" |
-    "outline/accessibility/low-vision-3" |
-    "outline/accessibility/low-vision-4" |
-    "outline/accessibility/low-vision-5" |
     "outline/accessibility/low-vision" |
-    "outline/accessibility/screen-reader-2" |
-    "outline/accessibility/screen-reader-3" |
-    "outline/accessibility/screen-reader-4" |
     "outline/accessibility/screen-reader" |
-    "outline/accessibility/sign-language-2" |
-    "outline/accessibility/sign-language" |
-    "outline/accessibility/text-size-2" |
-    "outline/accessibility/text-size-3" |
-    "outline/accessibility/text-size-4" |
-    "outline/accessibility/text-size-5" |
     "outline/accessibility/text-size" |
-    "outline/accessibility/tty-2" |
-    "outline/accessibility/tty-3" |
-    "outline/accessibility/tty-4" |
     "outline/accessibility/tty" |
-    "outline/accessibility/walking-aid-2" |
-    "outline/accessibility/walking-aid-3" |
-    "outline/accessibility/walking-aid-4" |
     "outline/accessibility/walking-aid" |
-    "outline/accessibility/walking-support-2" |
-    "outline/accessibility/walking-support-3" |
-    "outline/accessibility/walking-support-4" |
-    "outline/accessibility/walking-support-5" |
     "outline/accessibility/walking-support" |
-    "outline/accessibility/wheelchair-2-2" |
-    "outline/accessibility/wheelchair-2-3" |
-    "outline/accessibility/wheelchair-2-4" |
-    "outline/accessibility/wheelchair-2-5" |
     "outline/accessibility/wheelchair-2" |
-    "outline/accessibility/wheelchair-3" |
-    "outline/accessibility/wheelchair-4" |
-    "outline/accessibility/wheelchair-5" |
-    "outline/accessibility/wheelchair-6" |
-    "outline/accessibility/wheelchair-ramp-2" |
-    "outline/accessibility/wheelchair-ramp-3" |
-    "outline/accessibility/wheelchair-ramp-4" |
-    "outline/accessibility/wheelchair-ramp" |
     "outline/accessibility/wheelchair" |
+    "outline/accessibility/wheelchair-ramp" |
     "color/animals/bamboo" |
     "color/animals/bat" |
     "color/animals/bear-2" |
@@ -367,954 +195,199 @@ export type WiniIconName = "color/accessibility/accessibility-lift" |
     "color/animals/wolf" |
     "color/animals/wood" |
     "color/animals/wool-ball" |
-    "fill/animals/bamboo-2" |
-    "fill/animals/bamboo-3" |
-    "fill/animals/bamboo-4" |
-    "fill/animals/bamboo-5" |
     "fill/animals/bamboo" |
-    "fill/animals/bat-2" |
-    "fill/animals/bat-3" |
-    "fill/animals/bat-4" |
-    "fill/animals/bat-5" |
     "fill/animals/bat" |
-    "fill/animals/bear-2-2" |
-    "fill/animals/bear-2-3" |
-    "fill/animals/bear-2-4" |
-    "fill/animals/bear-2-5" |
     "fill/animals/bear-2" |
-    "fill/animals/bear-3" |
-    "fill/animals/bear-4" |
-    "fill/animals/bear-5" |
     "fill/animals/bear" |
-    "fill/animals/bee-2" |
-    "fill/animals/bee-3" |
-    "fill/animals/bee-4" |
-    "fill/animals/bee-5" |
     "fill/animals/bee" |
-    "fill/animals/bones-2" |
-    "fill/animals/bones-3" |
-    "fill/animals/bones-4" |
-    "fill/animals/bones-5" |
     "fill/animals/bones" |
-    "fill/animals/border-collie-2" |
-    "fill/animals/border-collie-3" |
-    "fill/animals/border-collie-4" |
-    "fill/animals/border-collie-5" |
     "fill/animals/border-collie" |
-    "fill/animals/botany-2" |
-    "fill/animals/botany-3" |
-    "fill/animals/botany-4" |
-    "fill/animals/botany-5" |
     "fill/animals/botany" |
-    "fill/animals/bug-2" |
-    "fill/animals/bug-3" |
-    "fill/animals/bug-4" |
-    "fill/animals/bug-5" |
     "fill/animals/bug" |
-    "fill/animals/butterfly-2" |
-    "fill/animals/butterfly-3" |
-    "fill/animals/butterfly-4" |
-    "fill/animals/butterfly-5" |
     "fill/animals/butterfly" |
-    "fill/animals/cactus-2" |
-    "fill/animals/cactus-3" |
-    "fill/animals/cactus-4" |
-    "fill/animals/cactus-5" |
     "fill/animals/cactus" |
-    "fill/animals/cat-2" |
-    "fill/animals/cat-3" |
-    "fill/animals/cat-4" |
-    "fill/animals/cat-5" |
     "fill/animals/cat" |
-    "fill/animals/chicken-2-2" |
-    "fill/animals/chicken-2-3" |
-    "fill/animals/chicken-2-4" |
-    "fill/animals/chicken-2-5" |
     "fill/animals/chicken-2" |
-    "fill/animals/chicken-front-2" |
-    "fill/animals/chicken-front-3" |
-    "fill/animals/chicken-front-4" |
-    "fill/animals/chicken-front-5" |
     "fill/animals/chicken-front" |
-    "fill/animals/clover-2" |
-    "fill/animals/clover-3" |
-    "fill/animals/clover-4" |
-    "fill/animals/clover-5" |
-    "fill/animals/clover-6" |
     "fill/animals/clover" |
-    "fill/animals/collar-2" |
-    "fill/animals/collar-3" |
-    "fill/animals/collar-4" |
-    "fill/animals/collar-5" |
     "fill/animals/collar" |
-    "fill/animals/cow-2" |
-    "fill/animals/cow-3" |
-    "fill/animals/cow-4" |
-    "fill/animals/cow-5" |
     "fill/animals/cow" |
-    "fill/animals/crab-2" |
-    "fill/animals/crab-3" |
-    "fill/animals/crab-4" |
-    "fill/animals/crab-5" |
     "fill/animals/crab" |
-    "fill/animals/deer-2" |
-    "fill/animals/deer-3" |
-    "fill/animals/deer-4" |
-    "fill/animals/deer-5" |
     "fill/animals/deer" |
-    "fill/animals/dog-2" |
-    "fill/animals/dog-3" |
-    "fill/animals/dog-4" |
-    "fill/animals/dog-5" |
-    "fill/animals/dog-house-2" |
-    "fill/animals/dog-house-3" |
-    "fill/animals/dog-house-4" |
-    "fill/animals/dog-house-5" |
-    "fill/animals/dog-house" |
-    "fill/animals/dog-leash-2" |
-    "fill/animals/dog-leash-3" |
-    "fill/animals/dog-leash-4" |
-    "fill/animals/dog-leash" |
     "fill/animals/dog" |
-    "fill/animals/drop-2" |
-    "fill/animals/drop-3" |
-    "fill/animals/drop-4" |
-    "fill/animals/drop-5" |
-    "fill/animals/drop-6" |
+    "fill/animals/dog-house" |
+    "fill/animals/dog-leash" |
     "fill/animals/drop" |
-    "fill/animals/duck-2" |
-    "fill/animals/duck-3" |
-    "fill/animals/duck-4" |
-    "fill/animals/duck-5" |
     "fill/animals/duck" |
-    "fill/animals/earth-science-2" |
-    "fill/animals/earth-science-3" |
-    "fill/animals/earth-science-4" |
-    "fill/animals/earth-science-5" |
     "fill/animals/earth-science" |
-    "fill/animals/ecology-2" |
-    "fill/animals/ecology-3" |
-    "fill/animals/ecology-4" |
-    "fill/animals/ecology-5" |
     "fill/animals/ecology" |
-    "fill/animals/elephant-2" |
-    "fill/animals/elephant-3" |
-    "fill/animals/elephant-4" |
-    "fill/animals/elephant-5" |
     "fill/animals/elephant" |
-    "fill/animals/fire-2" |
-    "fill/animals/fire-3" |
-    "fill/animals/fire-4" |
-    "fill/animals/fire-5" |
     "fill/animals/fire" |
-    "fill/animals/fish-2" |
-    "fill/animals/fish-3" |
-    "fill/animals/fish-4" |
-    "fill/animals/fish-5" |
     "fill/animals/fish" |
-    "fill/animals/fishbone-2" |
-    "fill/animals/fishbone-3" |
-    "fill/animals/fishbone-4" |
     "fill/animals/fishbone" |
-    "fill/animals/flame-2" |
-    "fill/animals/flame-3" |
-    "fill/animals/flame-4" |
-    "fill/animals/flame-5" |
     "fill/animals/flame" |
-    "fill/animals/flower-07-2" |
-    "fill/animals/flower-07-3" |
-    "fill/animals/flower-07-4" |
-    "fill/animals/flower-07-5" |
     "fill/animals/flower-07" |
-    "fill/animals/flower-2-2" |
-    "fill/animals/flower-2-3" |
-    "fill/animals/flower-2-4" |
-    "fill/animals/flower-2-5" |
     "fill/animals/flower-2" |
-    "fill/animals/flower-3" |
-    "fill/animals/flower-4" |
-    "fill/animals/flower-5" |
-    "fill/animals/flower-6" |
-    "fill/animals/flower-rose-2" |
-    "fill/animals/flower-rose-3" |
-    "fill/animals/flower-rose-4" |
-    "fill/animals/flower-rose" |
     "fill/animals/flower" |
-    "fill/animals/food-dog-2" |
-    "fill/animals/food-dog-3" |
-    "fill/animals/food-dog-4" |
-    "fill/animals/food-dog-5" |
+    "fill/animals/flower-rose" |
     "fill/animals/food-dog" |
-    "fill/animals/forest-2" |
-    "fill/animals/forest-3" |
-    "fill/animals/forest-4" |
     "fill/animals/forest" |
-    "fill/animals/goose-2" |
-    "fill/animals/goose-3" |
-    "fill/animals/goose-4" |
-    "fill/animals/goose-5" |
     "fill/animals/goose" |
-    "fill/animals/grain-2" |
-    "fill/animals/grain-3" |
-    "fill/animals/grain-4" |
-    "fill/animals/grain-5" |
     "fill/animals/grain" |
-    "fill/animals/horse-2-2" |
-    "fill/animals/horse-2-3" |
-    "fill/animals/horse-2-4" |
-    "fill/animals/horse-2-5" |
-    "fill/animals/horse-2" |
-    "fill/animals/horse-3" |
-    "fill/animals/horse-4" |
-    "fill/animals/horse-5" |
-    "fill/animals/horse-6" |
     "fill/animals/horse" |
-    "fill/animals/horseshoe-2" |
-    "fill/animals/horseshoe-3" |
-    "fill/animals/horseshoe-4" |
-    "fill/animals/horseshoe-5" |
+    "fill/animals/horse-2" |
     "fill/animals/horseshoe" |
-    "fill/animals/jellyfish-2" |
-    "fill/animals/jellyfish-3" |
-    "fill/animals/jellyfish-4" |
-    "fill/animals/jellyfish-5" |
     "fill/animals/jellyfish" |
-    "fill/animals/ladybug-2" |
-    "fill/animals/ladybug-3" |
-    "fill/animals/ladybug-4" |
-    "fill/animals/ladybug-5" |
     "fill/animals/ladybug" |
-    "fill/animals/land-2" |
-    "fill/animals/land-3" |
-    "fill/animals/land-4" |
-    "fill/animals/land-5" |
     "fill/animals/land" |
-    "fill/animals/leaf-2" |
-    "fill/animals/leaf-3" |
-    "fill/animals/leaf-36-2" |
-    "fill/animals/leaf-36-3" |
-    "fill/animals/leaf-36-4" |
-    "fill/animals/leaf-36-5" |
-    "fill/animals/leaf-36" |
-    "fill/animals/leaf-38-2" |
-    "fill/animals/leaf-38-3" |
-    "fill/animals/leaf-38-4" |
-    "fill/animals/leaf-38" |
-    "fill/animals/leaf-4" |
-    "fill/animals/leaf-5" |
     "fill/animals/leaf" |
-    "fill/animals/lobster-2" |
-    "fill/animals/lobster-3" |
-    "fill/animals/lobster-4" |
+    "fill/animals/leaf-36" |
+    "fill/animals/leaf-38" |
     "fill/animals/lobster" |
-    "fill/animals/lotus-flower-2" |
-    "fill/animals/lotus-flower-3" |
-    "fill/animals/lotus-flower-4" |
-    "fill/animals/lotus-flower-5" |
-    "fill/animals/lotus-flower-6" |
     "fill/animals/lotus-flower" |
-    "fill/animals/macro-2" |
-    "fill/animals/macro-3" |
-    "fill/animals/macro-4" |
-    "fill/animals/macro-5" |
     "fill/animals/macro" |
-    "fill/animals/maple-leaf-2" |
-    "fill/animals/maple-leaf-3" |
-    "fill/animals/maple-leaf-4" |
-    "fill/animals/maple-leaf-5" |
     "fill/animals/maple-leaf" |
-    "fill/animals/mountain-2" |
-    "fill/animals/mountain-3" |
-    "fill/animals/mountain-4" |
-    "fill/animals/mountain-5" |
     "fill/animals/mountain" |
-    "fill/animals/mower-2" |
-    "fill/animals/mower-3" |
-    "fill/animals/mower-4" |
-    "fill/animals/mower-5" |
     "fill/animals/mower" |
-    "fill/animals/mushroom-2" |
-    "fill/animals/mushroom-3" |
-    "fill/animals/mushroom-4" |
-    "fill/animals/mushroom-5" |
     "fill/animals/mushroom" |
-    "fill/animals/octopus-2" |
-    "fill/animals/octopus-3" |
-    "fill/animals/octopus-4" |
-    "fill/animals/octopus-5" |
     "fill/animals/octopus" |
-    "fill/animals/organic-2-2" |
-    "fill/animals/organic-2-3" |
-    "fill/animals/organic-2-4" |
-    "fill/animals/organic-2-5" |
     "fill/animals/organic-2" |
-    "fill/animals/organic-3" |
-    "fill/animals/organic-4" |
-    "fill/animals/organic-5" |
-    "fill/animals/organic-6" |
     "fill/animals/organic" |
-    "fill/animals/owl-2" |
-    "fill/animals/owl-3" |
-    "fill/animals/owl-4" |
-    "fill/animals/owl-5" |
     "fill/animals/owl" |
-    "fill/animals/palm-tree-2" |
-    "fill/animals/palm-tree-3" |
-    "fill/animals/palm-tree-4" |
     "fill/animals/palm-tree" |
-    "fill/animals/panda-2" |
-    "fill/animals/panda-3" |
-    "fill/animals/panda-4" |
-    "fill/animals/panda-5" |
     "fill/animals/panda" |
-    "fill/animals/park-2" |
-    "fill/animals/park-3" |
-    "fill/animals/park-4" |
-    "fill/animals/park-5" |
     "fill/animals/park" |
-    "fill/animals/parrot-2" |
-    "fill/animals/parrot-3" |
-    "fill/animals/parrot-4" |
     "fill/animals/parrot" |
-    "fill/animals/paw-2" |
-    "fill/animals/paw-3" |
-    "fill/animals/paw-4" |
-    "fill/animals/paw-5" |
     "fill/animals/paw" |
-    "fill/animals/penguin-2" |
-    "fill/animals/penguin-3" |
-    "fill/animals/penguin-4" |
     "fill/animals/penguin" |
-    "fill/animals/pet-food-2" |
-    "fill/animals/pet-food-3" |
-    "fill/animals/pet-food-4" |
-    "fill/animals/pet-food-5" |
     "fill/animals/pet-food" |
-    "fill/animals/pickaxe-2" |
-    "fill/animals/pickaxe-3" |
-    "fill/animals/pickaxe-4" |
-    "fill/animals/pickaxe-5" |
     "fill/animals/pickaxe" |
-    "fill/animals/pig-2-2" |
-    "fill/animals/pig-2-3" |
-    "fill/animals/pig-2-4" |
-    "fill/animals/pig-2-5" |
     "fill/animals/pig-2" |
-    "fill/animals/plant-leaf-2" |
-    "fill/animals/plant-leaf-3" |
-    "fill/animals/plant-leaf-4" |
-    "fill/animals/plant-leaf-5" |
-    "fill/animals/plant-leaf-6" |
     "fill/animals/plant-leaf" |
-    "fill/animals/plant-soil-2" |
-    "fill/animals/plant-soil-3" |
-    "fill/animals/plant-soil-4" |
-    "fill/animals/plant-soil-5" |
     "fill/animals/plant-soil" |
-    "fill/animals/plant-vase-2" |
-    "fill/animals/plant-vase-3" |
-    "fill/animals/plant-vase-4" |
-    "fill/animals/plant-vase-5" |
     "fill/animals/plant-vase" |
-    "fill/animals/rabbit-2" |
-    "fill/animals/rabbit-3" |
-    "fill/animals/rabbit-4" |
-    "fill/animals/rabbit-5" |
     "fill/animals/rabbit" |
-    "fill/animals/rat-2" |
-    "fill/animals/rat-3" |
-    "fill/animals/rat-4" |
-    "fill/animals/rat-5" |
-    "fill/animals/rat-head-2" |
-    "fill/animals/rat-head-3" |
-    "fill/animals/rat-head-4" |
-    "fill/animals/rat-head-5" |
     "fill/animals/rat-head" |
     "fill/animals/rat" |
-    "fill/animals/shark-2-2" |
-    "fill/animals/shark-2-3" |
-    "fill/animals/shark-2-4" |
-    "fill/animals/shark-2-5" |
     "fill/animals/shark-2" |
-    "fill/animals/shark-3" |
-    "fill/animals/shark-4" |
-    "fill/animals/shark-5" |
-    "fill/animals/shark-6" |
-    "fill/animals/shark-e" |
     "fill/animals/shark" |
-    "fill/animals/sheep-2" |
-    "fill/animals/sheep-3" |
-    "fill/animals/sheep-4" |
     "fill/animals/sheep" |
-    "fill/animals/shell-2" |
-    "fill/animals/shell-3" |
-    "fill/animals/shell-4" |
-    "fill/animals/shell-5" |
     "fill/animals/shell" |
-    "fill/animals/shovel-2" |
-    "fill/animals/shovel-3" |
-    "fill/animals/shovel-4" |
-    "fill/animals/shovel-5" |
     "fill/animals/shovel" |
-    "fill/animals/shrimp-2" |
-    "fill/animals/shrimp-3" |
-    "fill/animals/shrimp-4" |
     "fill/animals/shrimp" |
-    "fill/animals/sloth-2" |
-    "fill/animals/sloth-3" |
-    "fill/animals/sloth-4" |
     "fill/animals/sloth" |
-    "fill/animals/snake-2" |
-    "fill/animals/snake-3" |
-    "fill/animals/snake-4" |
     "fill/animals/snake" |
-    "fill/animals/spider-2" |
-    "fill/animals/spider-3" |
-    "fill/animals/spider-4" |
-    "fill/animals/spider-5" |
     "fill/animals/spider" |
-    "fill/animals/teddy-bear-2" |
-    "fill/animals/teddy-bear-3" |
-    "fill/animals/teddy-bear-4" |
     "fill/animals/teddy-bear" |
-    "fill/animals/tree-01-2" |
-    "fill/animals/tree-01-3" |
-    "fill/animals/tree-01-4" |
-    "fill/animals/tree-01-5" |
     "fill/animals/tree-01" |
-    "fill/animals/tree-03-2" |
-    "fill/animals/tree-03-3" |
-    "fill/animals/tree-03-4" |
-    "fill/animals/tree-03-5" |
     "fill/animals/tree-03" |
-    "fill/animals/tree-2-2" |
-    "fill/animals/tree-2-3" |
-    "fill/animals/tree-2-4" |
-    "fill/animals/tree-2-5" |
     "fill/animals/tree-2" |
-    "fill/animals/turkey-head-2" |
-    "fill/animals/turkey-head-3" |
-    "fill/animals/turkey-head-4" |
-    "fill/animals/turkey-head-5" |
     "fill/animals/turkey-head" |
-    "fill/animals/turtle-2" |
-    "fill/animals/turtle-3" |
-    "fill/animals/turtle-4" |
-    "fill/animals/turtle-5" |
     "fill/animals/turtle" |
-    "fill/animals/water-surface-2" |
-    "fill/animals/water-surface-3" |
-    "fill/animals/water-surface-4" |
-    "fill/animals/water-surface-5" |
     "fill/animals/water-surface" |
-    "fill/animals/water-wave-2" |
-    "fill/animals/water-wave-3" |
-    "fill/animals/water-wave-4" |
-    "fill/animals/water-wave-5" |
     "fill/animals/water-wave" |
-    "fill/animals/watering-plants-2" |
-    "fill/animals/watering-plants-3" |
-    "fill/animals/watering-plants-4" |
-    "fill/animals/watering-plants-5" |
     "fill/animals/watering-plants" |
-    "fill/animals/weed-2" |
-    "fill/animals/weed-3" |
-    "fill/animals/weed-4" |
-    "fill/animals/weed-5" |
     "fill/animals/weed" |
-    "fill/animals/windmill-2-2" |
-    "fill/animals/windmill-2-3" |
-    "fill/animals/windmill-2-4" |
-    "fill/animals/windmill-2-5" |
     "fill/animals/windmill-2" |
-    "fill/animals/wolf-2" |
-    "fill/animals/wolf-3" |
-    "fill/animals/wolf-4" |
-    "fill/animals/wolf-5" |
     "fill/animals/wolf" |
-    "fill/animals/wood-2" |
-    "fill/animals/wood-3" |
-    "fill/animals/wood-4" |
-    "fill/animals/wood-5" |
     "fill/animals/wood" |
-    "fill/animals/wool-ball-2" |
-    "fill/animals/wool-ball-3" |
-    "fill/animals/wool-ball-4" |
-    "fill/animals/wool-ball-5" |
     "fill/animals/wool-ball" |
-    "outline/animals/bamboo-2" |
-    "outline/animals/bamboo-3" |
-    "outline/animals/bamboo-4" |
-    "outline/animals/bamboo-5" |
     "outline/animals/bamboo" |
-    "outline/animals/bat-2" |
-    "outline/animals/bat-3" |
-    "outline/animals/bat-4" |
-    "outline/animals/bat-5" |
     "outline/animals/bat" |
-    "outline/animals/bear-2-2" |
-    "outline/animals/bear-2-3" |
-    "outline/animals/bear-2-4" |
-    "outline/animals/bear-2-5" |
     "outline/animals/bear-2" |
-    "outline/animals/bear-3" |
-    "outline/animals/bear-4" |
-    "outline/animals/bear-5" |
     "outline/animals/bear" |
-    "outline/animals/bee-2" |
-    "outline/animals/bee-3" |
-    "outline/animals/bee-4" |
-    "outline/animals/bee-5" |
     "outline/animals/bee" |
-    "outline/animals/bones-2" |
-    "outline/animals/bones-3" |
-    "outline/animals/bones-4" |
-    "outline/animals/bones-5" |
     "outline/animals/bones" |
-    "outline/animals/border-collie-2" |
-    "outline/animals/border-collie-3" |
-    "outline/animals/border-collie-4" |
-    "outline/animals/border-collie-5" |
     "outline/animals/border-collie" |
-    "outline/animals/botany-2" |
-    "outline/animals/botany-3" |
-    "outline/animals/botany-4" |
-    "outline/animals/botany-5" |
     "outline/animals/botany" |
-    "outline/animals/bug-2" |
-    "outline/animals/bug-3" |
-    "outline/animals/bug-4" |
-    "outline/animals/bug-5" |
     "outline/animals/bug" |
-    "outline/animals/butterfly-2" |
-    "outline/animals/butterfly-3" |
-    "outline/animals/butterfly-4" |
-    "outline/animals/butterfly-5" |
     "outline/animals/butterfly" |
-    "outline/animals/cactus-2" |
-    "outline/animals/cactus-3" |
-    "outline/animals/cactus-4" |
-    "outline/animals/cactus-5" |
     "outline/animals/cactus" |
-    "outline/animals/cat-2" |
-    "outline/animals/cat-3" |
-    "outline/animals/cat-4" |
-    "outline/animals/cat-5" |
     "outline/animals/cat" |
-    "outline/animals/chicken-2-2" |
-    "outline/animals/chicken-2-3" |
-    "outline/animals/chicken-2-4" |
-    "outline/animals/chicken-2-5" |
     "outline/animals/chicken-2" |
-    "outline/animals/chicken-front-2" |
-    "outline/animals/chicken-front-3" |
-    "outline/animals/chicken-front-4" |
-    "outline/animals/chicken-front-5" |
     "outline/animals/chicken-front" |
-    "outline/animals/clover-2" |
-    "outline/animals/clover-3" |
-    "outline/animals/clover-4" |
-    "outline/animals/clover-5" |
-    "outline/animals/clover-6" |
     "outline/animals/clover" |
-    "outline/animals/collar-2" |
-    "outline/animals/collar-3" |
-    "outline/animals/collar-4" |
-    "outline/animals/collar-5" |
     "outline/animals/collar" |
-    "outline/animals/cow-2" |
-    "outline/animals/cow-3" |
-    "outline/animals/cow-4" |
-    "outline/animals/cow-5" |
     "outline/animals/cow" |
-    "outline/animals/crab-2" |
-    "outline/animals/crab-3" |
-    "outline/animals/crab-4" |
-    "outline/animals/crab-5" |
     "outline/animals/crab" |
-    "outline/animals/deer-2" |
-    "outline/animals/deer-3" |
-    "outline/animals/deer-4" |
-    "outline/animals/deer-5" |
     "outline/animals/deer" |
-    "outline/animals/dog-2" |
-    "outline/animals/dog-3" |
-    "outline/animals/dog-4" |
-    "outline/animals/dog-5" |
-    "outline/animals/dog-house-2" |
-    "outline/animals/dog-house-3" |
-    "outline/animals/dog-house-4" |
-    "outline/animals/dog-house-5" |
-    "outline/animals/dog-house" |
-    "outline/animals/dog-leash-2" |
-    "outline/animals/dog-leash-3" |
-    "outline/animals/dog-leash-4" |
-    "outline/animals/dog-leash" |
     "outline/animals/dog" |
-    "outline/animals/drop-2" |
-    "outline/animals/drop-3" |
-    "outline/animals/drop-4" |
-    "outline/animals/drop-5" |
-    "outline/animals/drop-6" |
+    "outline/animals/dog-house" |
+    "outline/animals/dog-leash" |
     "outline/animals/drop" |
-    "outline/animals/duck-2" |
-    "outline/animals/duck-3" |
-    "outline/animals/duck-4" |
-    "outline/animals/duck-5" |
     "outline/animals/duck" |
-    "outline/animals/earth-science-2" |
-    "outline/animals/earth-science-3" |
-    "outline/animals/earth-science-4" |
-    "outline/animals/earth-science-5" |
     "outline/animals/earth-science" |
-    "outline/animals/ecology-2" |
-    "outline/animals/ecology-3" |
-    "outline/animals/ecology-4" |
-    "outline/animals/ecology-5" |
     "outline/animals/ecology" |
-    "outline/animals/elephant-2" |
-    "outline/animals/elephant-3" |
-    "outline/animals/elephant-4" |
-    "outline/animals/elephant-5" |
     "outline/animals/elephant" |
-    "outline/animals/fire-2" |
-    "outline/animals/fire-3" |
-    "outline/animals/fire-4" |
-    "outline/animals/fire-5" |
     "outline/animals/fire" |
-    "outline/animals/fish-2" |
-    "outline/animals/fish-3" |
-    "outline/animals/fish-4" |
-    "outline/animals/fish-5" |
     "outline/animals/fish" |
-    "outline/animals/fishbone-2" |
-    "outline/animals/fishbone-3" |
-    "outline/animals/fishbone-4" |
     "outline/animals/fishbone" |
-    "outline/animals/flame-2" |
-    "outline/animals/flame-3" |
-    "outline/animals/flame-4" |
-    "outline/animals/flame-5" |
     "outline/animals/flame" |
-    "outline/animals/flower-07-2" |
-    "outline/animals/flower-07-3" |
-    "outline/animals/flower-07-4" |
-    "outline/animals/flower-07-5" |
-    "outline/animals/flower-07" |
-    "outline/animals/flower-2-2" |
-    "outline/animals/flower-2-3" |
-    "outline/animals/flower-2-4" |
-    "outline/animals/flower-2-5" |
-    "outline/animals/flower-2" |
-    "outline/animals/flower-3" |
-    "outline/animals/flower-4" |
-    "outline/animals/flower-5" |
-    "outline/animals/flower-6" |
-    "outline/animals/flower-rose-2" |
-    "outline/animals/flower-rose-3" |
-    "outline/animals/flower-rose-4" |
-    "outline/animals/flower-rose" |
     "outline/animals/flower" |
-    "outline/animals/food-dog-2" |
-    "outline/animals/food-dog-3" |
-    "outline/animals/food-dog-4" |
-    "outline/animals/food-dog-5" |
+    "outline/animals/flower-07" |
+    "outline/animals/flower-2" |
+    "outline/animals/flower-rose" |
     "outline/animals/food-dog" |
-    "outline/animals/forest-2" |
-    "outline/animals/forest-3" |
-    "outline/animals/forest-4" |
     "outline/animals/forest" |
-    "outline/animals/goose-2" |
-    "outline/animals/goose-3" |
-    "outline/animals/goose-4" |
-    "outline/animals/goose-5" |
     "outline/animals/goose" |
-    "outline/animals/grain-2" |
-    "outline/animals/grain-3" |
-    "outline/animals/grain-4" |
-    "outline/animals/grain-5" |
     "outline/animals/grain" |
-    "outline/animals/horse-2-2" |
-    "outline/animals/horse-2-3" |
-    "outline/animals/horse-2-4" |
-    "outline/animals/horse-2-5" |
     "outline/animals/horse-2" |
-    "outline/animals/horse-3" |
-    "outline/animals/horse-4" |
-    "outline/animals/horse-5" |
-    "outline/animals/horse-6" |
     "outline/animals/horse" |
-    "outline/animals/horseshoe-2" |
-    "outline/animals/horseshoe-3" |
-    "outline/animals/horseshoe-4" |
-    "outline/animals/horseshoe-5" |
     "outline/animals/horseshoe" |
-    "outline/animals/jellyfish-2" |
-    "outline/animals/jellyfish-3" |
-    "outline/animals/jellyfish-4" |
-    "outline/animals/jellyfish-5" |
     "outline/animals/jellyfish" |
-    "outline/animals/ladybug-2" |
-    "outline/animals/ladybug-3" |
-    "outline/animals/ladybug-4" |
-    "outline/animals/ladybug-5" |
     "outline/animals/ladybug" |
-    "outline/animals/land-2" |
-    "outline/animals/land-3" |
-    "outline/animals/land-4" |
-    "outline/animals/land-5" |
     "outline/animals/land" |
-    "outline/animals/leaf-2" |
-    "outline/animals/leaf-3" |
-    "outline/animals/leaf-36-2" |
-    "outline/animals/leaf-36-3" |
-    "outline/animals/leaf-36-4" |
-    "outline/animals/leaf-36-5" |
     "outline/animals/leaf-36" |
-    "outline/animals/leaf-38-2" |
-    "outline/animals/leaf-38-3" |
-    "outline/animals/leaf-38-4" |
-    "outline/animals/leaf-38" |
-    "outline/animals/leaf-4" |
-    "outline/animals/leaf-5" |
     "outline/animals/leaf" |
-    "outline/animals/lobster-2" |
-    "outline/animals/lobster-3" |
-    "outline/animals/lobster-4" |
+    "outline/animals/leaf-38" |
     "outline/animals/lobster" |
-    "outline/animals/lotus-flower-2" |
-    "outline/animals/lotus-flower-3" |
-    "outline/animals/lotus-flower-4" |
-    "outline/animals/lotus-flower-5" |
-    "outline/animals/lotus-flower-6" |
     "outline/animals/lotus-flower" |
-    "outline/animals/macro-2" |
-    "outline/animals/macro-3" |
-    "outline/animals/macro-4" |
-    "outline/animals/macro-5" |
     "outline/animals/macro" |
-    "outline/animals/maple-leaf-2" |
-    "outline/animals/maple-leaf-3" |
-    "outline/animals/maple-leaf-4" |
-    "outline/animals/maple-leaf-5" |
     "outline/animals/maple-leaf" |
-    "outline/animals/mountain-2" |
-    "outline/animals/mountain-3" |
-    "outline/animals/mountain-4" |
-    "outline/animals/mountain-5" |
     "outline/animals/mountain" |
-    "outline/animals/mower-2" |
-    "outline/animals/mower-3" |
-    "outline/animals/mower-4" |
-    "outline/animals/mower-5" |
     "outline/animals/mower" |
-    "outline/animals/mushroom-2" |
-    "outline/animals/mushroom-3" |
-    "outline/animals/mushroom-4" |
-    "outline/animals/mushroom-5" |
     "outline/animals/mushroom" |
-    "outline/animals/octopus-2" |
-    "outline/animals/octopus-3" |
-    "outline/animals/octopus-4" |
-    "outline/animals/octopus-5" |
     "outline/animals/octopus" |
-    "outline/animals/organic-2-2" |
-    "outline/animals/organic-2-3" |
-    "outline/animals/organic-2-4" |
-    "outline/animals/organic-2-5" |
     "outline/animals/organic-2" |
-    "outline/animals/organic-3" |
-    "outline/animals/organic-4" |
-    "outline/animals/organic-5" |
-    "outline/animals/organic-6" |
     "outline/animals/organic" |
-    "outline/animals/owl-2" |
-    "outline/animals/owl-3" |
-    "outline/animals/owl-4" |
-    "outline/animals/owl-5" |
     "outline/animals/owl" |
-    "outline/animals/palm-tree-2" |
-    "outline/animals/palm-tree-3" |
-    "outline/animals/palm-tree-4" |
     "outline/animals/palm-tree" |
-    "outline/animals/panda-2" |
-    "outline/animals/panda-3" |
-    "outline/animals/panda-4" |
-    "outline/animals/panda-5" |
     "outline/animals/panda" |
-    "outline/animals/park-2" |
-    "outline/animals/park-3" |
-    "outline/animals/park-4" |
-    "outline/animals/park-5" |
     "outline/animals/park" |
-    "outline/animals/parrot-2" |
-    "outline/animals/parrot-3" |
-    "outline/animals/parrot-4" |
     "outline/animals/parrot" |
-    "outline/animals/paw-2" |
-    "outline/animals/paw-3" |
-    "outline/animals/paw-4" |
-    "outline/animals/paw-5" |
     "outline/animals/paw" |
-    "outline/animals/penguin-2" |
-    "outline/animals/penguin-3" |
-    "outline/animals/penguin-4" |
     "outline/animals/penguin" |
-    "outline/animals/pet-food-2" |
-    "outline/animals/pet-food-3" |
-    "outline/animals/pet-food-4" |
-    "outline/animals/pet-food-5" |
     "outline/animals/pet-food" |
-    "outline/animals/pickaxe-2" |
-    "outline/animals/pickaxe-3" |
-    "outline/animals/pickaxe-4" |
-    "outline/animals/pickaxe-5" |
     "outline/animals/pickaxe" |
-    "outline/animals/pig-2-2" |
-    "outline/animals/pig-2-3" |
-    "outline/animals/pig-2-4" |
-    "outline/animals/pig-2-5" |
     "outline/animals/pig-2" |
-    "outline/animals/plant-leaf-2" |
-    "outline/animals/plant-leaf-3" |
-    "outline/animals/plant-leaf-4" |
-    "outline/animals/plant-leaf-5" |
-    "outline/animals/plant-leaf-6" |
     "outline/animals/plant-leaf" |
-    "outline/animals/plant-soil-2" |
-    "outline/animals/plant-soil-3" |
-    "outline/animals/plant-soil-4" |
-    "outline/animals/plant-soil-5" |
     "outline/animals/plant-soil" |
-    "outline/animals/plant-vase-2" |
-    "outline/animals/plant-vase-3" |
-    "outline/animals/plant-vase-4" |
-    "outline/animals/plant-vase-5" |
     "outline/animals/plant-vase" |
-    "outline/animals/rabbit-2" |
-    "outline/animals/rabbit-3" |
-    "outline/animals/rabbit-4" |
-    "outline/animals/rabbit-5" |
     "outline/animals/rabbit" |
-    "outline/animals/rat-2" |
-    "outline/animals/rat-3" |
-    "outline/animals/rat-4" |
-    "outline/animals/rat-5" |
-    "outline/animals/rat-head-2" |
-    "outline/animals/rat-head-3" |
-    "outline/animals/rat-head-4" |
-    "outline/animals/rat-head-5" |
     "outline/animals/rat-head" |
     "outline/animals/rat" |
-    "outline/animals/shark-2-2" |
-    "outline/animals/shark-2-3" |
-    "outline/animals/shark-2-4" |
-    "outline/animals/shark-2-5" |
     "outline/animals/shark-2" |
-    "outline/animals/shark-3" |
-    "outline/animals/shark-4" |
-    "outline/animals/shark-5" |
-    "outline/animals/shark-6" |
     "outline/animals/shark" |
-    "outline/animals/sheep-2" |
-    "outline/animals/sheep-3" |
-    "outline/animals/sheep-4" |
     "outline/animals/sheep" |
-    "outline/animals/shell-2" |
-    "outline/animals/shell-3" |
-    "outline/animals/shell-4" |
-    "outline/animals/shell-5" |
     "outline/animals/shell" |
-    "outline/animals/shovel-2" |
-    "outline/animals/shovel-3" |
-    "outline/animals/shovel-4" |
-    "outline/animals/shovel-5" |
     "outline/animals/shovel" |
-    "outline/animals/shrimp-2" |
-    "outline/animals/shrimp-3" |
-    "outline/animals/shrimp-4" |
     "outline/animals/shrimp" |
-    "outline/animals/sloth-2" |
-    "outline/animals/sloth-3" |
-    "outline/animals/sloth-4" |
     "outline/animals/sloth" |
-    "outline/animals/snake-2" |
-    "outline/animals/snake-3" |
-    "outline/animals/snake-4" |
     "outline/animals/snake" |
-    "outline/animals/spider-2" |
-    "outline/animals/spider-3" |
-    "outline/animals/spider-4" |
-    "outline/animals/spider-5" |
     "outline/animals/spider" |
-    "outline/animals/teddy-bear-2" |
-    "outline/animals/teddy-bear-3" |
-    "outline/animals/teddy-bear-4" |
     "outline/animals/teddy-bear" |
-    "outline/animals/tree-01-2" |
-    "outline/animals/tree-01-3" |
-    "outline/animals/tree-01-4" |
-    "outline/animals/tree-01-5" |
     "outline/animals/tree-01" |
-    "outline/animals/tree-03-2" |
-    "outline/animals/tree-03-3" |
-    "outline/animals/tree-03-4" |
-    "outline/animals/tree-03-5" |
     "outline/animals/tree-03" |
-    "outline/animals/tree-2-2" |
-    "outline/animals/tree-2-3" |
-    "outline/animals/tree-2-4" |
-    "outline/animals/tree-2-5" |
     "outline/animals/tree-2" |
-    "outline/animals/turkey-head-2" |
-    "outline/animals/turkey-head-3" |
-    "outline/animals/turkey-head-4" |
-    "outline/animals/turkey-head-5" |
     "outline/animals/turkey-head" |
-    "outline/animals/turtle-2" |
-    "outline/animals/turtle-3" |
-    "outline/animals/turtle-4" |
-    "outline/animals/turtle-5" |
     "outline/animals/turtle" |
-    "outline/animals/water-surface-2" |
-    "outline/animals/water-surface-3" |
-    "outline/animals/water-surface-4" |
-    "outline/animals/water-surface-5" |
     "outline/animals/water-surface" |
-    "outline/animals/water-wave-2" |
-    "outline/animals/water-wave-3" |
-    "outline/animals/water-wave-4" |
-    "outline/animals/water-wave-5" |
     "outline/animals/water-wave" |
-    "outline/animals/watering-plants-2" |
-    "outline/animals/watering-plants-3" |
-    "outline/animals/watering-plants-4" |
-    "outline/animals/watering-plants-5" |
     "outline/animals/watering-plants" |
-    "outline/animals/weed-2" |
-    "outline/animals/weed-3" |
-    "outline/animals/weed-4" |
-    "outline/animals/weed-5" |
     "outline/animals/weed" |
-    "outline/animals/windmill-2-2" |
-    "outline/animals/windmill-2-3" |
-    "outline/animals/windmill-2-4" |
-    "outline/animals/windmill-2-5" |
     "outline/animals/windmill-2" |
-    "outline/animals/wolf-2" |
-    "outline/animals/wolf-3" |
-    "outline/animals/wolf-4" |
-    "outline/animals/wolf-5" |
     "outline/animals/wolf" |
-    "outline/animals/wood-2" |
-    "outline/animals/wood-3" |
-    "outline/animals/wood-4" |
-    "outline/animals/wood-5" |
     "outline/animals/wood" |
-    "outline/animals/wool-ball-2" |
-    "outline/animals/wool-ball-3" |
-    "outline/animals/wool-ball-4" |
-    "outline/animals/wool-ball-5" |
     "outline/animals/wool-ball" |
     "color/arrows/all-directions" |
     "color/arrows/alpha-order" |
@@ -1628,4514 +701,844 @@ export type WiniIconName = "color/accessibility/accessibility-lift" |
     "color/arrows/width" |
     "color/arrows/window-maximize" |
     "color/arrows/window-minimize" |
-    "fill/arrows/all-directions-2" |
-    "fill/arrows/all-directions-3" |
-    "fill/arrows/all-directions-4" |
     "fill/arrows/all-directions" |
-    "fill/arrows/alpha-order-2" |
-    "fill/arrows/alpha-order-3" |
-    "fill/arrows/alpha-order-4" |
-    "fill/arrows/alpha-order-5" |
     "fill/arrows/alpha-order" |
-    "fill/arrows/archive-e-download" |
-    "fill/arrows/archive-e-upload" |
-    "fill/arrows/arrow-bottom-left-2" |
-    "fill/arrows/arrow-bottom-left-3" |
-    "fill/arrows/arrow-bottom-left-4" |
-    "fill/arrows/arrow-bottom-left-5" |
-    "fill/arrows/arrow-bottom-left-6" |
     "fill/arrows/arrow-bottom-left" |
-    "fill/arrows/arrow-bottom-right-2" |
-    "fill/arrows/arrow-bottom-right-3" |
-    "fill/arrows/arrow-bottom-right-4" |
-    "fill/arrows/arrow-bottom-right-5" |
-    "fill/arrows/arrow-bottom-right-6" |
     "fill/arrows/arrow-bottom-right" |
-    "fill/arrows/arrow-down-2-2" |
-    "fill/arrows/arrow-down-2-3" |
-    "fill/arrows/arrow-down-2-4" |
-    "fill/arrows/arrow-down-2-5" |
-    "fill/arrows/arrow-down-2-6" |
-    "fill/arrows/arrow-down-2" |
-    "fill/arrows/arrow-down-3-2" |
-    "fill/arrows/arrow-down-3-3" |
-    "fill/arrows/arrow-down-3-4" |
-    "fill/arrows/arrow-down-3-5" |
-    "fill/arrows/arrow-down-3-6" |
-    "fill/arrows/arrow-down-3" |
-    "fill/arrows/arrow-down-4" |
-    "fill/arrows/arrow-down-5" |
-    "fill/arrows/arrow-down-6" |
-    "fill/arrows/arrow-down-7" |
-    "fill/arrows/arrow-down-8" |
     "fill/arrows/arrow-down" |
-    "fill/arrows/arrow-e-2" |
-    "fill/arrows/arrow-e-3" |
-    "fill/arrows/arrow-e-4" |
-    "fill/arrows/arrow-e-5" |
-    "fill/arrows/arrow-e-6" |
+    "fill/arrows/arrow-down-2" |
+    "fill/arrows/arrow-down-3" |
     "fill/arrows/arrow-e" |
-    "fill/arrows/arrow-left-2-2" |
-    "fill/arrows/arrow-left-2-3" |
-    "fill/arrows/arrow-left-2-4" |
-    "fill/arrows/arrow-left-2-5" |
-    "fill/arrows/arrow-left-2-6" |
     "fill/arrows/arrow-left-2" |
-    "fill/arrows/arrow-left-3-2" |
-    "fill/arrows/arrow-left-3-3" |
-    "fill/arrows/arrow-left-3-4" |
-    "fill/arrows/arrow-left-3-5" |
-    "fill/arrows/arrow-left-3-6" |
-    "fill/arrows/arrow-left-3" |
-    "fill/arrows/arrow-left-4" |
-    "fill/arrows/arrow-left-5" |
-    "fill/arrows/arrow-left-6" |
-    "fill/arrows/arrow-left-7" |
-    "fill/arrows/arrow-left-8" |
     "fill/arrows/arrow-left" |
-    "fill/arrows/arrow-n-2" |
-    "fill/arrows/arrow-n-3" |
-    "fill/arrows/arrow-n-4" |
-    "fill/arrows/arrow-n-5" |
-    "fill/arrows/arrow-n-6" |
+    "fill/arrows/arrow-left-3" |
     "fill/arrows/arrow-n" |
-    "fill/arrows/arrow-right-2-2" |
-    "fill/arrows/arrow-right-2-3" |
-    "fill/arrows/arrow-right-2-4" |
-    "fill/arrows/arrow-right-2-5" |
-    "fill/arrows/arrow-right-2-6" |
     "fill/arrows/arrow-right-2" |
-    "fill/arrows/arrow-right-3-2" |
-    "fill/arrows/arrow-right-3-3" |
-    "fill/arrows/arrow-right-3-4" |
-    "fill/arrows/arrow-right-3-5" |
-    "fill/arrows/arrow-right-3-6" |
     "fill/arrows/arrow-right-3" |
-    "fill/arrows/arrow-right-4" |
-    "fill/arrows/arrow-right-5" |
-    "fill/arrows/arrow-right-6" |
-    "fill/arrows/arrow-right-7" |
-    "fill/arrows/arrow-right-8" |
     "fill/arrows/arrow-right" |
-    "fill/arrows/arrow-s-2" |
-    "fill/arrows/arrow-s-3" |
-    "fill/arrows/arrow-s-4" |
-    "fill/arrows/arrow-s-5" |
-    "fill/arrows/arrow-s-6" |
     "fill/arrows/arrow-s" |
-    "fill/arrows/arrow-sm-down-2" |
-    "fill/arrows/arrow-sm-down-3" |
-    "fill/arrows/arrow-sm-down-4" |
-    "fill/arrows/arrow-sm-down-5" |
     "fill/arrows/arrow-sm-down" |
-    "fill/arrows/arrow-sm-left-2" |
-    "fill/arrows/arrow-sm-left-3" |
-    "fill/arrows/arrow-sm-left-4" |
-    "fill/arrows/arrow-sm-left-5" |
     "fill/arrows/arrow-sm-left" |
-    "fill/arrows/arrow-sm-right-2" |
-    "fill/arrows/arrow-sm-right-3" |
-    "fill/arrows/arrow-sm-right-4" |
-    "fill/arrows/arrow-sm-right-5" |
     "fill/arrows/arrow-sm-right" |
-    "fill/arrows/arrow-tool-2" |
-    "fill/arrows/arrow-tool-3" |
-    "fill/arrows/arrow-tool-4" |
-    "fill/arrows/arrow-tool-5" |
-    "fill/arrows/arrow-tool-6" |
     "fill/arrows/arrow-tool" |
-    "fill/arrows/arrow-top-left-2" |
-    "fill/arrows/arrow-top-left-3" |
-    "fill/arrows/arrow-top-left-4" |
-    "fill/arrows/arrow-top-left-5" |
-    "fill/arrows/arrow-top-left-6" |
     "fill/arrows/arrow-top-left" |
-    "fill/arrows/arrow-top-right-2" |
-    "fill/arrows/arrow-top-right-3" |
-    "fill/arrows/arrow-top-right-4" |
-    "fill/arrows/arrow-top-right-5" |
-    "fill/arrows/arrow-top-right-6" |
     "fill/arrows/arrow-top-right" |
-    "fill/arrows/arrow-up-2-2" |
-    "fill/arrows/arrow-up-2-3" |
-    "fill/arrows/arrow-up-2-4" |
-    "fill/arrows/arrow-up-2-5" |
-    "fill/arrows/arrow-up-2-6" |
     "fill/arrows/arrow-up-2" |
-    "fill/arrows/arrow-up-3-2" |
-    "fill/arrows/arrow-up-3-3" |
-    "fill/arrows/arrow-up-3-4" |
-    "fill/arrows/arrow-up-3-5" |
-    "fill/arrows/arrow-up-3-6" |
-    "fill/arrows/arrow-up-3" |
-    "fill/arrows/arrow-up-4" |
-    "fill/arrows/arrow-up-5" |
-    "fill/arrows/arrow-up-6" |
-    "fill/arrows/arrow-up-7" |
-    "fill/arrows/arrow-up-8" |
     "fill/arrows/arrow-up" |
-    "fill/arrows/arrow-w-2" |
-    "fill/arrows/arrow-w-3" |
-    "fill/arrows/arrow-w-4" |
-    "fill/arrows/arrow-w-5" |
-    "fill/arrows/arrow-w-6" |
+    "fill/arrows/arrow-up-3" |
     "fill/arrows/arrow-w" |
-    "fill/arrows/arrows-expand-2-2" |
-    "fill/arrows/arrows-expand-2-3" |
-    "fill/arrows/arrows-expand-2-4" |
-    "fill/arrows/arrows-expand-2-5" |
     "fill/arrows/arrows-expand-2" |
-    "fill/arrows/arrows-expand-3" |
-    "fill/arrows/arrows-expand-4" |
-    "fill/arrows/arrows-expand-5" |
-    "fill/arrows/arrows-expand-6" |
     "fill/arrows/arrows-expand" |
-    "fill/arrows/arrows-fullscreen-2-2" |
-    "fill/arrows/arrows-fullscreen-2-3" |
-    "fill/arrows/arrows-fullscreen-2-4" |
-    "fill/arrows/arrows-fullscreen-2-5" |
     "fill/arrows/arrows-fullscreen-2" |
-    "fill/arrows/arrows-fullscreen-3" |
-    "fill/arrows/arrows-fullscreen-4" |
-    "fill/arrows/arrows-fullscreen-5" |
-    "fill/arrows/arrows-fullscreen-6" |
     "fill/arrows/arrows-fullscreen" |
-    "fill/arrows/arrows-maximize-2-2" |
-    "fill/arrows/arrows-maximize-2-3" |
-    "fill/arrows/arrows-maximize-2-4" |
-    "fill/arrows/arrows-maximize-2-5" |
     "fill/arrows/arrows-maximize-2" |
-    "fill/arrows/arrows-maximize-3" |
-    "fill/arrows/arrows-maximize-4" |
-    "fill/arrows/arrows-maximize-5" |
-    "fill/arrows/arrows-maximize-6" |
     "fill/arrows/arrows-maximize" |
-    "fill/arrows/arrows-opposite-directions-2" |
-    "fill/arrows/arrows-opposite-directions-3" |
-    "fill/arrows/arrows-opposite-directions-4" |
-    "fill/arrows/arrows-opposite-directions-5" |
     "fill/arrows/arrows-opposite-directions" |
-    "fill/arrows/arrows-same-direction-2" |
-    "fill/arrows/arrows-same-direction-3" |
-    "fill/arrows/arrows-same-direction-4" |
     "fill/arrows/arrows-same-direction" |
-    "fill/arrows/back-arrow-2" |
-    "fill/arrows/back-arrow-3" |
-    "fill/arrows/back-arrow-4" |
-    "fill/arrows/back-arrow-5" |
     "fill/arrows/back-arrow" |
-    "fill/arrows/backward-2" |
-    "fill/arrows/backward-3" |
-    "fill/arrows/backward-4" |
-    "fill/arrows/backward-5" |
-    "fill/arrows/backward-6" |
     "fill/arrows/backward" |
-    "fill/arrows/block-down-2" |
-    "fill/arrows/block-down-3" |
-    "fill/arrows/block-down-4" |
-    "fill/arrows/block-down-5" |
-    "fill/arrows/block-down-6" |
     "fill/arrows/block-down" |
-    "fill/arrows/block-left-2" |
-    "fill/arrows/block-left-3" |
-    "fill/arrows/block-left-4" |
-    "fill/arrows/block-left-5" |
-    "fill/arrows/block-left-6" |
     "fill/arrows/block-left" |
-    "fill/arrows/block-right-2" |
-    "fill/arrows/block-right-3" |
-    "fill/arrows/block-right-4" |
-    "fill/arrows/block-right-5" |
-    "fill/arrows/block-right-6" |
     "fill/arrows/block-right" |
-    "fill/arrows/block-up-2" |
-    "fill/arrows/block-up-3" |
-    "fill/arrows/block-up-4" |
-    "fill/arrows/block-up-5" |
-    "fill/arrows/block-up-6" |
     "fill/arrows/block-up" |
-    "fill/arrows/box-arrow-bottom-left-2" |
-    "fill/arrows/box-arrow-bottom-left-3" |
-    "fill/arrows/box-arrow-bottom-left-4" |
-    "fill/arrows/box-arrow-bottom-left-5" |
-    "fill/arrows/box-arrow-bottom-left-6" |
     "fill/arrows/box-arrow-bottom-left" |
-    "fill/arrows/box-arrow-bottom-right-2" |
-    "fill/arrows/box-arrow-bottom-right-3" |
-    "fill/arrows/box-arrow-bottom-right-4" |
-    "fill/arrows/box-arrow-bottom-right-5" |
-    "fill/arrows/box-arrow-bottom-right-6" |
     "fill/arrows/box-arrow-bottom-right" |
-    "fill/arrows/box-arrow-down-2" |
-    "fill/arrows/box-arrow-down-3" |
-    "fill/arrows/box-arrow-down-4" |
-    "fill/arrows/box-arrow-down-5" |
     "fill/arrows/box-arrow-down" |
-    "fill/arrows/box-arrow-left-2" |
-    "fill/arrows/box-arrow-left-3" |
-    "fill/arrows/box-arrow-left-4" |
-    "fill/arrows/box-arrow-left-5" |
     "fill/arrows/box-arrow-left" |
-    "fill/arrows/box-arrow-pointing-down-2" |
-    "fill/arrows/box-arrow-pointing-down-3" |
-    "fill/arrows/box-arrow-pointing-down" |
-    "fill/arrows/box-arrow-pointing-left-2" |
-    "fill/arrows/box-arrow-pointing-left-3" |
-    "fill/arrows/box-arrow-pointing-left" |
-    "fill/arrows/box-arrow-pointing-right-2" |
-    "fill/arrows/box-arrow-pointing-right-3" |
-    "fill/arrows/box-arrow-pointing-right" |
-    "fill/arrows/box-arrow-pointing-up-2" |
-    "fill/arrows/box-arrow-pointing-up-3" |
-    "fill/arrows/box-arrow-pointing-up" |
-    "fill/arrows/box-arrow-right-2" |
-    "fill/arrows/box-arrow-right-3" |
-    "fill/arrows/box-arrow-right-4" |
-    "fill/arrows/box-arrow-right-5" |
     "fill/arrows/box-arrow-right" |
-    "fill/arrows/box-arrow-top-left-2" |
-    "fill/arrows/box-arrow-top-left-3" |
-    "fill/arrows/box-arrow-top-left-4" |
-    "fill/arrows/box-arrow-top-left-5" |
-    "fill/arrows/box-arrow-top-left-6" |
     "fill/arrows/box-arrow-top-left" |
-    "fill/arrows/box-arrow-top-right-2" |
-    "fill/arrows/box-arrow-top-right-3" |
-    "fill/arrows/box-arrow-top-right-4" |
-    "fill/arrows/box-arrow-top-right-5" |
-    "fill/arrows/box-arrow-top-right-6" |
     "fill/arrows/box-arrow-top-right" |
-    "fill/arrows/box-arrow-up-2" |
-    "fill/arrows/box-arrow-up-3" |
-    "fill/arrows/box-arrow-up-4" |
-    "fill/arrows/box-arrow-up-5" |
     "fill/arrows/box-arrow-up" |
-    "fill/arrows/box-caret-down-2" |
-    "fill/arrows/box-caret-down-3" |
-    "fill/arrows/box-caret-down-4" |
-    "fill/arrows/box-caret-down-5" |
-    "fill/arrows/box-caret-down-6" |
     "fill/arrows/box-caret-down" |
-    "fill/arrows/box-caret-left-2" |
-    "fill/arrows/box-caret-left-3" |
-    "fill/arrows/box-caret-left-4" |
-    "fill/arrows/box-caret-left-5" |
-    "fill/arrows/box-caret-left-6" |
     "fill/arrows/box-caret-left" |
-    "fill/arrows/box-caret-right-2" |
-    "fill/arrows/box-caret-right-3" |
-    "fill/arrows/box-caret-right-4" |
-    "fill/arrows/box-caret-right-5" |
-    "fill/arrows/box-caret-right-6" |
     "fill/arrows/box-caret-right" |
-    "fill/arrows/box-caret-up-2" |
-    "fill/arrows/box-caret-up-3" |
-    "fill/arrows/box-caret-up-4" |
-    "fill/arrows/box-caret-up-5" |
-    "fill/arrows/box-caret-up-6" |
     "fill/arrows/box-caret-up" |
-    "fill/arrows/box-ctrl-down-2" |
-    "fill/arrows/box-ctrl-down-3" |
-    "fill/arrows/box-ctrl-down-4" |
-    "fill/arrows/box-ctrl-down-5" |
-    "fill/arrows/box-ctrl-down-6" |
     "fill/arrows/box-ctrl-down" |
-    "fill/arrows/box-ctrl-left-2" |
-    "fill/arrows/box-ctrl-left-3" |
-    "fill/arrows/box-ctrl-left-4" |
-    "fill/arrows/box-ctrl-left-5" |
-    "fill/arrows/box-ctrl-left-6" |
     "fill/arrows/box-ctrl-left" |
-    "fill/arrows/box-ctrl-right-2" |
-    "fill/arrows/box-ctrl-right-3" |
-    "fill/arrows/box-ctrl-right-4" |
-    "fill/arrows/box-ctrl-right-5" |
-    "fill/arrows/box-ctrl-right-6" |
     "fill/arrows/box-ctrl-right" |
-    "fill/arrows/box-ctrl-up-2" |
-    "fill/arrows/box-ctrl-up-3" |
-    "fill/arrows/box-ctrl-up-4" |
-    "fill/arrows/box-ctrl-up-5" |
-    "fill/arrows/box-ctrl-up-6" |
     "fill/arrows/box-ctrl-up" |
-    "fill/arrows/btn-enlarge-2" |
-    "fill/arrows/btn-enlarge-3" |
-    "fill/arrows/btn-enlarge" |
-    "fill/arrows/btn-expand-2" |
-    "fill/arrows/btn-expand-3" |
-    "fill/arrows/btn-expand" |
-    "fill/arrows/caret-sm-up-2" |
-    "fill/arrows/caret-sm-up-3" |
-    "fill/arrows/caret-sm-up-4" |
-    "fill/arrows/caret-sm-up-5" |
     "fill/arrows/caret-sm-up" |
-    "fill/arrows/centralize-2" |
-    "fill/arrows/centralize-3" |
-    "fill/arrows/centralize-4" |
-    "fill/arrows/centralize-5" |
     "fill/arrows/centralize" |
-    "fill/arrows/change-direction-2" |
-    "fill/arrows/change-direction-3" |
-    "fill/arrows/change-direction-4" |
     "fill/arrows/change-direction" |
-    "fill/arrows/circle-arrow-down-2" |
-    "fill/arrows/circle-arrow-down-3" |
-    "fill/arrows/circle-arrow-down-4" |
-    "fill/arrows/circle-arrow-down-5" |
     "fill/arrows/circle-arrow-down" |
-    "fill/arrows/circle-arrow-left-2" |
-    "fill/arrows/circle-arrow-left-3" |
-    "fill/arrows/circle-arrow-left-4" |
-    "fill/arrows/circle-arrow-left-5" |
     "fill/arrows/circle-arrow-left" |
-    "fill/arrows/circle-arrow-pointing-down-2" |
-    "fill/arrows/circle-arrow-pointing-down-3" |
-    "fill/arrows/circle-arrow-pointing-down" |
-    "fill/arrows/circle-arrow-pointing-left-2" |
-    "fill/arrows/circle-arrow-pointing-left-3" |
-    "fill/arrows/circle-arrow-pointing-left" |
-    "fill/arrows/circle-arrow-pointing-right-2" |
-    "fill/arrows/circle-arrow-pointing-right-3" |
-    "fill/arrows/circle-arrow-pointing-right" |
-    "fill/arrows/circle-arrow-pointing-up-2" |
-    "fill/arrows/circle-arrow-pointing-up-3" |
-    "fill/arrows/circle-arrow-pointing-up" |
-    "fill/arrows/circle-arrow-right-2" |
-    "fill/arrows/circle-arrow-right-3" |
-    "fill/arrows/circle-arrow-right-4" |
-    "fill/arrows/circle-arrow-right-5" |
     "fill/arrows/circle-arrow-right" |
-    "fill/arrows/circle-arrow-up-2" |
-    "fill/arrows/circle-arrow-up-3" |
-    "fill/arrows/circle-arrow-up-4" |
     "fill/arrows/circle-arrow-up" |
-    "fill/arrows/circle-caret-down-2" |
-    "fill/arrows/circle-caret-down-3" |
-    "fill/arrows/circle-caret-down-4" |
-    "fill/arrows/circle-caret-down-5" |
-    "fill/arrows/circle-caret-down-6" |
     "fill/arrows/circle-caret-down" |
-    "fill/arrows/circle-caret-left-2" |
-    "fill/arrows/circle-caret-left-3" |
-    "fill/arrows/circle-caret-left-4" |
-    "fill/arrows/circle-caret-left-5" |
-    "fill/arrows/circle-caret-left-6" |
     "fill/arrows/circle-caret-left" |
-    "fill/arrows/circle-caret-right-2" |
-    "fill/arrows/circle-caret-right-3" |
-    "fill/arrows/circle-caret-right-4" |
-    "fill/arrows/circle-caret-right-5" |
-    "fill/arrows/circle-caret-right-6" |
     "fill/arrows/circle-caret-right" |
-    "fill/arrows/circle-caret-up-2" |
-    "fill/arrows/circle-caret-up-3" |
-    "fill/arrows/circle-caret-up-4" |
-    "fill/arrows/circle-caret-up-5" |
-    "fill/arrows/circle-caret-up-6" |
     "fill/arrows/circle-caret-up" |
-    "fill/arrows/circle-ctrl-down-2" |
-    "fill/arrows/circle-ctrl-down-3" |
-    "fill/arrows/circle-ctrl-down-4" |
-    "fill/arrows/circle-ctrl-down-5" |
-    "fill/arrows/circle-ctrl-down-6" |
     "fill/arrows/circle-ctrl-down" |
-    "fill/arrows/circle-ctrl-left-2" |
-    "fill/arrows/circle-ctrl-left-3" |
-    "fill/arrows/circle-ctrl-left-4" |
-    "fill/arrows/circle-ctrl-left-5" |
-    "fill/arrows/circle-ctrl-left-6" |
     "fill/arrows/circle-ctrl-left" |
-    "fill/arrows/circle-ctrl-right-2" |
-    "fill/arrows/circle-ctrl-right-3" |
-    "fill/arrows/circle-ctrl-right-4" |
-    "fill/arrows/circle-ctrl-right-5" |
-    "fill/arrows/circle-ctrl-right-6" |
     "fill/arrows/circle-ctrl-right" |
-    "fill/arrows/circle-ctrl-up-2" |
-    "fill/arrows/circle-ctrl-up-3" |
-    "fill/arrows/circle-ctrl-up-4" |
-    "fill/arrows/circle-ctrl-up-5" |
-    "fill/arrows/circle-ctrl-up-6" |
     "fill/arrows/circle-ctrl-up" |
-    "fill/arrows/circle-e-down-04" |
-    "fill/arrows/circle-e-down-12" |
-    "fill/arrows/circle-e-left-02" |
-    "fill/arrows/circle-e-left-10" |
-    "fill/arrows/circle-e-right-01" |
-    "fill/arrows/circle-e-right-09" |
-    "fill/arrows/circle-e-up-03" |
-    "fill/arrows/circle-e-up-11" |
-    "fill/arrows/circle-in-2" |
-    "fill/arrows/circle-in-3" |
-    "fill/arrows/circle-in-4" |
     "fill/arrows/circle-in" |
-    "fill/arrows/circle-out-2" |
-    "fill/arrows/circle-out-3" |
-    "fill/arrows/circle-out-4" |
     "fill/arrows/circle-out" |
-    "fill/arrows/circle-simple-top" |
-    "fill/arrows/circuit-2" |
-    "fill/arrows/circuit-3" |
-    "fill/arrows/circuit-4" |
-    "fill/arrows/circuit-round-2" |
-    "fill/arrows/circuit-round-3" |
-    "fill/arrows/circuit-round-4" |
-    "fill/arrows/circuit-round" |
     "fill/arrows/circuit" |
-    "fill/arrows/cloud-data-download-2" |
-    "fill/arrows/cloud-data-download-3" |
-    "fill/arrows/cloud-data-download-4" |
+    "fill/arrows/circuit-round" |
     "fill/arrows/cloud-data-download" |
-    "fill/arrows/cloud-data-sync-2" |
-    "fill/arrows/cloud-data-sync-3" |
-    "fill/arrows/cloud-data-sync" |
-    "fill/arrows/cloud-download-2" |
-    "fill/arrows/cloud-download-3" |
-    "fill/arrows/cloud-download-4" |
-    "fill/arrows/cloud-download-5" |
     "fill/arrows/cloud-download" |
-    "fill/arrows/cloud-upload-2" |
-    "fill/arrows/cloud-upload-3" |
-    "fill/arrows/cloud-upload-4" |
-    "fill/arrows/cloud-upload-5" |
     "fill/arrows/cloud-upload" |
-    "fill/arrows/compare-2" |
-    "fill/arrows/compare-3" |
-    "fill/arrows/compare-4" |
-    "fill/arrows/compare-5" |
     "fill/arrows/compare" |
-    "fill/arrows/computer-upload-2" |
-    "fill/arrows/computer-upload-3" |
-    "fill/arrows/computer-upload-4" |
     "fill/arrows/computer-upload" |
-    "fill/arrows/contrast-2" |
-    "fill/arrows/contrast-3" |
-    "fill/arrows/contrast-4" |
-    "fill/arrows/contrast-5" |
     "fill/arrows/contrast" |
-    "fill/arrows/conversion-2" |
-    "fill/arrows/conversion-3" |
-    "fill/arrows/conversion-4" |
-    "fill/arrows/conversion-5" |
-    "fill/arrows/conversion-6" |
     "fill/arrows/conversion" |
-    "fill/arrows/corner-bottom-left-2" |
-    "fill/arrows/corner-bottom-left-3" |
-    "fill/arrows/corner-bottom-left-4" |
-    "fill/arrows/corner-bottom-left-5" |
-    "fill/arrows/corner-bottom-left-6" |
     "fill/arrows/corner-bottom-left" |
-    "fill/arrows/corner-bottom-right-2" |
-    "fill/arrows/corner-bottom-right-3" |
-    "fill/arrows/corner-bottom-right-4" |
-    "fill/arrows/corner-bottom-right-5" |
-    "fill/arrows/corner-bottom-right-6" |
     "fill/arrows/corner-bottom-right" |
-    "fill/arrows/corner-down-round-2" |
-    "fill/arrows/corner-down-round-3" |
-    "fill/arrows/corner-down-round-4" |
-    "fill/arrows/corner-down-round-5" |
     "fill/arrows/corner-down-round" |
-    "fill/arrows/corner-left-down-2" |
-    "fill/arrows/corner-left-down-3" |
-    "fill/arrows/corner-left-down-4" |
-    "fill/arrows/corner-left-down-5" |
     "fill/arrows/corner-left-down" |
-    "fill/arrows/corner-left-round-2" |
-    "fill/arrows/corner-left-round-3" |
-    "fill/arrows/corner-left-round-4" |
-    "fill/arrows/corner-left-round-5" |
     "fill/arrows/corner-left-round" |
-    "fill/arrows/corner-right-down-2" |
-    "fill/arrows/corner-right-down-3" |
-    "fill/arrows/corner-right-down-4" |
-    "fill/arrows/corner-right-down-5" |
     "fill/arrows/corner-right-down" |
-    "fill/arrows/corner-right-round-2" |
-    "fill/arrows/corner-right-round-3" |
-    "fill/arrows/corner-right-round-4" |
-    "fill/arrows/corner-right-round-5" |
     "fill/arrows/corner-right-round" |
-    "fill/arrows/corner-top-left-2" |
-    "fill/arrows/corner-top-left-3" |
-    "fill/arrows/corner-top-left-4" |
-    "fill/arrows/corner-top-left-5" |
-    "fill/arrows/corner-top-left-6" |
     "fill/arrows/corner-top-left" |
-    "fill/arrows/corner-top-right-2" |
-    "fill/arrows/corner-top-right-3" |
-    "fill/arrows/corner-top-right-4" |
-    "fill/arrows/corner-top-right-5" |
-    "fill/arrows/corner-top-right-6" |
     "fill/arrows/corner-top-right" |
-    "fill/arrows/corner-up-left-2" |
-    "fill/arrows/corner-up-left-3" |
-    "fill/arrows/corner-up-left-4" |
-    "fill/arrows/corner-up-left-5" |
     "fill/arrows/corner-up-left" |
-    "fill/arrows/corner-up-right-2" |
-    "fill/arrows/corner-up-right-3" |
-    "fill/arrows/corner-up-right-4" |
-    "fill/arrows/corner-up-right-5" |
     "fill/arrows/corner-up-right" |
-    "fill/arrows/corner-up-round-2" |
-    "fill/arrows/corner-up-round-3" |
-    "fill/arrows/corner-up-round-4" |
-    "fill/arrows/corner-up-round-5" |
     "fill/arrows/corner-up-round" |
-    "fill/arrows/cross-2" |
-    "fill/arrows/cross-3" |
-    "fill/arrows/cross-4" |
-    "fill/arrows/cross-5" |
-    "fill/arrows/cross-down-2" |
-    "fill/arrows/cross-down-3" |
-    "fill/arrows/cross-down-4" |
-    "fill/arrows/cross-down-5" |
     "fill/arrows/cross-down" |
-    "fill/arrows/cross-horizontal-2" |
-    "fill/arrows/cross-horizontal-3" |
-    "fill/arrows/cross-horizontal-4" |
-    "fill/arrows/cross-horizontal" |
-    "fill/arrows/cross-left-2" |
-    "fill/arrows/cross-left-3" |
-    "fill/arrows/cross-left-4" |
-    "fill/arrows/cross-left-5" |
-    "fill/arrows/cross-left" |
-    "fill/arrows/cross-right-2" |
-    "fill/arrows/cross-right-3" |
-    "fill/arrows/cross-right-4" |
-    "fill/arrows/cross-right-5" |
-    "fill/arrows/cross-right" |
-    "fill/arrows/cross-up-2" |
-    "fill/arrows/cross-up-3" |
-    "fill/arrows/cross-up-4" |
-    "fill/arrows/cross-up-5" |
-    "fill/arrows/cross-up" |
-    "fill/arrows/cross-vertical-2" |
-    "fill/arrows/cross-vertical-3" |
-    "fill/arrows/cross-vertical-4" |
-    "fill/arrows/cross-vertical" |
     "fill/arrows/cross" |
-    "fill/arrows/crossing-directions-2" |
-    "fill/arrows/crossing-directions-3" |
-    "fill/arrows/crossing-directions-4" |
-    "fill/arrows/crossing-directions-5" |
+    "fill/arrows/cross-horizontal" |
+    "fill/arrows/cross-left" |
+    "fill/arrows/cross-right" |
+    "fill/arrows/cross-up" |
+    "fill/arrows/cross-vertical" |
     "fill/arrows/crossing-directions" |
-    "fill/arrows/ctrl-backward-2" |
-    "fill/arrows/ctrl-backward-3" |
-    "fill/arrows/ctrl-backward-4" |
-    "fill/arrows/ctrl-backward-5" |
-    "fill/arrows/ctrl-backward-6" |
     "fill/arrows/ctrl-backward" |
-    "fill/arrows/ctrl-down-2" |
-    "fill/arrows/ctrl-down-3" |
-    "fill/arrows/ctrl-down-4" |
-    "fill/arrows/ctrl-down-5" |
-    "fill/arrows/ctrl-down-6" |
     "fill/arrows/ctrl-down" |
-    "fill/arrows/ctrl-forward-2" |
-    "fill/arrows/ctrl-forward-3" |
-    "fill/arrows/ctrl-forward-4" |
-    "fill/arrows/ctrl-forward-5" |
-    "fill/arrows/ctrl-forward-6" |
     "fill/arrows/ctrl-forward" |
-    "fill/arrows/ctrl-left-2" |
-    "fill/arrows/ctrl-left-3" |
-    "fill/arrows/ctrl-left-4" |
-    "fill/arrows/ctrl-left-5" |
-    "fill/arrows/ctrl-left-6" |
     "fill/arrows/ctrl-left" |
-    "fill/arrows/ctrl-right-2" |
-    "fill/arrows/ctrl-right-3" |
-    "fill/arrows/ctrl-right-4" |
-    "fill/arrows/ctrl-right-5" |
-    "fill/arrows/ctrl-right-6" |
     "fill/arrows/ctrl-right" |
-    "fill/arrows/ctrl-up-2" |
-    "fill/arrows/ctrl-up-3" |
-    "fill/arrows/ctrl-up-4" |
-    "fill/arrows/ctrl-up-5" |
-    "fill/arrows/ctrl-up-6" |
     "fill/arrows/ctrl-up" |
-    "fill/arrows/curved-arrow-down-2" |
-    "fill/arrows/curved-arrow-down-3" |
-    "fill/arrows/curved-arrow-down-4" |
-    "fill/arrows/curved-arrow-down-5" |
-    "fill/arrows/curved-arrow-down-6" |
     "fill/arrows/curved-arrow-down" |
-    "fill/arrows/curved-arrow-left-2" |
-    "fill/arrows/curved-arrow-left-3" |
-    "fill/arrows/curved-arrow-left-4" |
-    "fill/arrows/curved-arrow-left-5" |
-    "fill/arrows/curved-arrow-left-6" |
     "fill/arrows/curved-arrow-left" |
-    "fill/arrows/curved-arrow-right-2" |
-    "fill/arrows/curved-arrow-right-3" |
-    "fill/arrows/curved-arrow-right-4" |
-    "fill/arrows/curved-arrow-right-5" |
-    "fill/arrows/curved-arrow-right-6" |
     "fill/arrows/curved-arrow-right" |
-    "fill/arrows/curved-circuit-2" |
-    "fill/arrows/curved-circuit-3" |
-    "fill/arrows/curved-circuit-4" |
     "fill/arrows/curved-circuit" |
-    "fill/arrows/cycle-2" |
-    "fill/arrows/cycle-3" |
-    "fill/arrows/cycle-4" |
-    "fill/arrows/cycle-5" |
-    "fill/arrows/cycle-6" |
     "fill/arrows/cycle" |
-    "fill/arrows/data-download-2" |
-    "fill/arrows/data-download-3" |
-    "fill/arrows/data-download-4" |
-    "fill/arrows/data-download-5" |
-    "fill/arrows/data-download-6" |
     "fill/arrows/data-download" |
-    "fill/arrows/data-upload-2" |
-    "fill/arrows/data-upload-3" |
-    "fill/arrows/data-upload-4" |
-    "fill/arrows/data-upload-5" |
-    "fill/arrows/data-upload-6" |
     "fill/arrows/data-upload" |
-    "fill/arrows/delete-key-2" |
-    "fill/arrows/delete-key-3" |
-    "fill/arrows/delete-key-4" |
-    "fill/arrows/delete-key-5" |
-    "fill/arrows/delete-key-6" |
     "fill/arrows/delete-key" |
-    "fill/arrows/delete-x-2" |
-    "fill/arrows/delete-x-3" |
-    "fill/arrows/delete-x-4" |
-    "fill/arrows/delete-x-5" |
     "fill/arrows/delete-x" |
-    "fill/arrows/depth-2" |
-    "fill/arrows/depth-3" |
-    "fill/arrows/depth-4" |
-    "fill/arrows/depth-5" |
     "fill/arrows/depth" |
-    "fill/arrows/direction-2" |
-    "fill/arrows/direction-3" |
-    "fill/arrows/direction-4" |
-    "fill/arrows/direction-5" |
-    "fill/arrows/direction-down-2" |
-    "fill/arrows/direction-down-3" |
-    "fill/arrows/direction-down-4" |
-    "fill/arrows/direction-down-5" |
-    "fill/arrows/direction-down-6" |
     "fill/arrows/direction-down" |
-    "fill/arrows/direction-e-2" |
-    "fill/arrows/direction-e-3" |
-    "fill/arrows/direction-e" |
-    "fill/arrows/direction-left-2" |
-    "fill/arrows/direction-left-3" |
-    "fill/arrows/direction-left-4" |
-    "fill/arrows/direction-left-5" |
-    "fill/arrows/direction-left-6" |
     "fill/arrows/direction-left" |
-    "fill/arrows/direction-n-2" |
-    "fill/arrows/direction-n-3" |
-    "fill/arrows/direction-n" |
-    "fill/arrows/direction-right-2" |
-    "fill/arrows/direction-right-3" |
-    "fill/arrows/direction-right-4" |
-    "fill/arrows/direction-right-5" |
-    "fill/arrows/direction-right-6" |
     "fill/arrows/direction-right" |
-    "fill/arrows/direction-s-2" |
-    "fill/arrows/direction-s-3" |
-    "fill/arrows/direction-s" |
-    "fill/arrows/direction-up-2" |
-    "fill/arrows/direction-up-3" |
-    "fill/arrows/direction-up-4" |
-    "fill/arrows/direction-up-5" |
-    "fill/arrows/direction-up-6" |
     "fill/arrows/direction-up" |
-    "fill/arrows/direction-w-2" |
-    "fill/arrows/direction-w-3" |
-    "fill/arrows/direction-w" |
     "fill/arrows/direction" |
-    "fill/arrows/disperse-2" |
-    "fill/arrows/disperse-3" |
-    "fill/arrows/disperse-4" |
-    "fill/arrows/disperse-5" |
     "fill/arrows/disperse" |
-    "fill/arrows/double-arrow-left-2" |
-    "fill/arrows/double-arrow-left-3" |
-    "fill/arrows/double-arrow-left-4" |
-    "fill/arrows/double-arrow-left-5" |
-    "fill/arrows/double-arrow-left-6" |
     "fill/arrows/double-arrow-left" |
-    "fill/arrows/double-arrow-right-2" |
-    "fill/arrows/double-arrow-right-3" |
-    "fill/arrows/double-arrow-right-4" |
-    "fill/arrows/double-arrow-right-5" |
-    "fill/arrows/double-arrow-right-6" |
     "fill/arrows/double-arrow-right" |
-    "fill/arrows/down-arrow-2" |
-    "fill/arrows/down-arrow-3" |
-    "fill/arrows/down-arrow-4" |
-    "fill/arrows/down-arrow-5" |
-    "fill/arrows/down-arrow-6" |
     "fill/arrows/down-arrow" |
-    "fill/arrows/download-2" |
-    "fill/arrows/download-3" |
-    "fill/arrows/download-4" |
-    "fill/arrows/download-5" |
-    "fill/arrows/download-6" |
-    "fill/arrows/download-7" |
-    "fill/arrows/download-data-2" |
-    "fill/arrows/download-data-3" |
-    "fill/arrows/download-data-4" |
-    "fill/arrows/download-data-5" |
-    "fill/arrows/download-data-6" |
-    "fill/arrows/download-data" |
-    "fill/arrows/download-file-2" |
-    "fill/arrows/download-file-3" |
-    "fill/arrows/download-file-4" |
-    "fill/arrows/download-file-5" |
-    "fill/arrows/download-file-6" |
-    "fill/arrows/download-file" |
     "fill/arrows/download" |
-    "fill/arrows/eject-2" |
-    "fill/arrows/eject-3" |
-    "fill/arrows/eject-4" |
-    "fill/arrows/eject-5" |
-    "fill/arrows/eject-6" |
+    "fill/arrows/download-data" |
+    "fill/arrows/download-file" |
     "fill/arrows/eject" |
-    "fill/arrows/enlarge-2" |
-    "fill/arrows/enlarge-21" |
-    "fill/arrows/enlarge-22" |
-    "fill/arrows/enlarge-3" |
-    "fill/arrows/enlarge-4" |
-    "fill/arrows/enlarge-5" |
-    "fill/arrows/enlarge-6" |
-    "fill/arrows/enlarge-diagonal-2-2" |
-    "fill/arrows/enlarge-diagonal-2-3" |
-    "fill/arrows/enlarge-diagonal-2-4" |
-    "fill/arrows/enlarge-diagonal-2-5" |
-    "fill/arrows/enlarge-diagonal-2" |
-    "fill/arrows/enlarge-diagonal-3" |
-    "fill/arrows/enlarge-diagonal-4" |
-    "fill/arrows/enlarge-diagonal-5" |
-    "fill/arrows/enlarge-diagonal-6" |
-    "fill/arrows/enlarge-diagonal" |
-    "fill/arrows/enlarge-h-2" |
-    "fill/arrows/enlarge-h-3" |
-    "fill/arrows/enlarge-h-4" |
-    "fill/arrows/enlarge-h-5" |
-    "fill/arrows/enlarge-h-6" |
-    "fill/arrows/enlarge-h" |
-    "fill/arrows/enlarge-horizontal-2" |
-    "fill/arrows/enlarge-horizontal-3" |
-    "fill/arrows/enlarge-horizontal-4" |
-    "fill/arrows/enlarge-horizontal-5" |
-    "fill/arrows/enlarge-horizontal" |
-    "fill/arrows/enlarge-vertical-2" |
-    "fill/arrows/enlarge-vertical-3" |
-    "fill/arrows/enlarge-vertical-4" |
-    "fill/arrows/enlarge-vertical-5" |
-    "fill/arrows/enlarge-vertical" |
     "fill/arrows/enlarge" |
-    "fill/arrows/enter-2" |
-    "fill/arrows/enter-3" |
-    "fill/arrows/enter-4" |
-    "fill/arrows/enter-5" |
-    "fill/arrows/enter-6" |
+    "fill/arrows/enlarge-diagonal-2" |
+    "fill/arrows/enlarge-diagonal" |
+    "fill/arrows/enlarge-h" |
+    "fill/arrows/enlarge-horizontal" |
+    "fill/arrows/enlarge-vertical" |
     "fill/arrows/enter" |
-    "fill/arrows/exit-right-2" |
-    "fill/arrows/exit-right-3" |
-    "fill/arrows/exit-right-4" |
-    "fill/arrows/exit-right-5" |
     "fill/arrows/exit-right" |
-    "fill/arrows/expand-2-2" |
-    "fill/arrows/expand-2-3" |
-    "fill/arrows/expand-2-4" |
-    "fill/arrows/expand-2-5" |
-    "fill/arrows/expand-2-6" |
-    "fill/arrows/expand-2" |
-    "fill/arrows/expand-3" |
-    "fill/arrows/expand-4" |
-    "fill/arrows/expand-5" |
-    "fill/arrows/expand-6" |
-    "fill/arrows/expand-7" |
-    "fill/arrows/expand-h-2" |
-    "fill/arrows/expand-h-3" |
-    "fill/arrows/expand-h-4" |
-    "fill/arrows/expand-h-5" |
-    "fill/arrows/expand-h-6" |
-    "fill/arrows/expand-h" |
-    "fill/arrows/expand-window-2" |
-    "fill/arrows/expand-window-3" |
-    "fill/arrows/expand-window-4" |
-    "fill/arrows/expand-window-5" |
-    "fill/arrows/expand-window-6" |
-    "fill/arrows/expand-window" |
     "fill/arrows/expand" |
-    "fill/arrows/export-2" |
-    "fill/arrows/export-3" |
-    "fill/arrows/export-4" |
-    "fill/arrows/export-5" |
-    "fill/arrows/export-6" |
+    "fill/arrows/expand-2" |
+    "fill/arrows/expand-h" |
+    "fill/arrows/expand-window" |
     "fill/arrows/export" |
-    "fill/arrows/file-archive-2" |
-    "fill/arrows/file-archive-3" |
-    "fill/arrows/file-archive-4" |
     "fill/arrows/file-archive" |
-    "fill/arrows/file-download-2" |
-    "fill/arrows/file-download-3-2" |
-    "fill/arrows/file-download-3-3" |
-    "fill/arrows/file-download-3-4" |
     "fill/arrows/file-download-3" |
-    "fill/arrows/file-download-4" |
-    "fill/arrows/file-download-5" |
-    "fill/arrows/file-download-6" |
-    "fill/arrows/file-download-7" |
     "fill/arrows/file-download" |
-    "fill/arrows/file-export-2" |
-    "fill/arrows/file-export-3" |
-    "fill/arrows/file-export-4" |
     "fill/arrows/file-export" |
-    "fill/arrows/file-import-2" |
-    "fill/arrows/file-import-3" |
-    "fill/arrows/file-import-4" |
     "fill/arrows/file-import" |
-    "fill/arrows/file-upload-2-2" |
-    "fill/arrows/file-upload-2-3" |
-    "fill/arrows/file-upload-2-4" |
-    "fill/arrows/file-upload-2" |
-    "fill/arrows/file-upload-3-2" |
-    "fill/arrows/file-upload-3-3" |
-    "fill/arrows/file-upload-3-4" |
-    "fill/arrows/file-upload-3" |
-    "fill/arrows/file-upload-4" |
-    "fill/arrows/file-upload-5" |
-    "fill/arrows/file-upload-6" |
-    "fill/arrows/file-upload-7" |
-    "fill/arrows/file-upload-8" |
     "fill/arrows/file-upload" |
-    "fill/arrows/fit-horizontal-2" |
-    "fill/arrows/fit-horizontal-3" |
-    "fill/arrows/fit-horizontal-4" |
+    "fill/arrows/file-upload-2" |
+    "fill/arrows/file-upload-3" |
     "fill/arrows/fit-horizontal" |
-    "fill/arrows/fit-vertical-2" |
-    "fill/arrows/fit-vertical-3" |
-    "fill/arrows/fit-vertical-4" |
     "fill/arrows/fit-vertical" |
-    "fill/arrows/fork-2-2" |
-    "fill/arrows/fork-2-3" |
-    "fill/arrows/fork-2-4" |
     "fill/arrows/fork-2" |
-    "fill/arrows/fork-3" |
-    "fill/arrows/fork-4" |
-    "fill/arrows/fork-5" |
     "fill/arrows/fork" |
-    "fill/arrows/format-left-2" |
-    "fill/arrows/format-left-3" |
-    "fill/arrows/format-left-4" |
-    "fill/arrows/format-left-5" |
-    "fill/arrows/format-left-6" |
     "fill/arrows/format-left" |
-    "fill/arrows/format-right-2" |
-    "fill/arrows/format-right-3" |
-    "fill/arrows/format-right-4" |
-    "fill/arrows/format-right-5" |
-    "fill/arrows/format-right-6" |
     "fill/arrows/format-right" |
-    "fill/arrows/forward-2" |
-    "fill/arrows/forward-3" |
-    "fill/arrows/forward-4" |
-    "fill/arrows/forward-5" |
-    "fill/arrows/forward-6" |
     "fill/arrows/forward" |
-    "fill/arrows/fullscreen-2-2" |
-    "fill/arrows/fullscreen-2-3" |
-    "fill/arrows/fullscreen-2-4" |
-    "fill/arrows/fullscreen-2-5" |
-    "fill/arrows/fullscreen-2" |
-    "fill/arrows/fullscreen-3" |
-    "fill/arrows/fullscreen-4" |
-    "fill/arrows/fullscreen-5" |
-    "fill/arrows/fullscreen-6" |
-    "fill/arrows/fullscreen-7" |
     "fill/arrows/fullscreen" |
-    "fill/arrows/git-merge-2" |
-    "fill/arrows/git-merge-3" |
-    "fill/arrows/git-merge-4" |
+    "fill/arrows/fullscreen-2" |
     "fill/arrows/git-merge" |
-    "fill/arrows/height-2-2" |
-    "fill/arrows/height-2-3" |
-    "fill/arrows/height-2-4" |
-    "fill/arrows/height-2-5" |
     "fill/arrows/height-2" |
-    "fill/arrows/high-priority-2" |
-    "fill/arrows/high-priority-3" |
-    "fill/arrows/high-priority-4" |
-    "fill/arrows/high-priority-5" |
     "fill/arrows/high-priority" |
-    "fill/arrows/horizontal-divider-2" |
-    "fill/arrows/horizontal-divider-3" |
-    "fill/arrows/horizontal-divider-4" |
     "fill/arrows/horizontal-divider" |
-    "fill/arrows/img-rotate-left-2" |
-    "fill/arrows/img-rotate-left-3" |
-    "fill/arrows/img-rotate-left-4" |
     "fill/arrows/img-rotate-left" |
-    "fill/arrows/img-rotate-right-2" |
-    "fill/arrows/img-rotate-right-3" |
-    "fill/arrows/img-rotate-right-4" |
     "fill/arrows/img-rotate-right" |
-    "fill/arrows/increase-2" |
-    "fill/arrows/increase-3" |
-    "fill/arrows/increase-4" |
-    "fill/arrows/increase-5" |
-    "fill/arrows/increase-6" |
     "fill/arrows/increase" |
-    "fill/arrows/infinite-loop-2" |
-    "fill/arrows/infinite-loop-3" |
-    "fill/arrows/infinite-loop-4" |
     "fill/arrows/infinite-loop" |
-    "fill/arrows/input-2" |
-    "fill/arrows/input-3" |
-    "fill/arrows/input-4" |
-    "fill/arrows/input-5" |
-    "fill/arrows/input-6" |
     "fill/arrows/input" |
-    "fill/arrows/invert-direction-2" |
-    "fill/arrows/invert-direction-3" |
-    "fill/arrows/invert-direction-4" |
-    "fill/arrows/invert-direction-5" |
     "fill/arrows/invert-direction" |
-    "fill/arrows/invert-process-2" |
-    "fill/arrows/invert-process-3" |
-    "fill/arrows/invert-process-4" |
-    "fill/arrows/invert-process-5" |
     "fill/arrows/invert-process" |
-    "fill/arrows/launch-2" |
-    "fill/arrows/launch-3" |
-    "fill/arrows/launch-4" |
-    "fill/arrows/launch-5" |
-    "fill/arrows/launch-6" |
-    "fill/arrows/launch-app-2" |
-    "fill/arrows/launch-app-3" |
-    "fill/arrows/launch-app-4" |
-    "fill/arrows/launch-app-5" |
-    "fill/arrows/launch-app-6" |
     "fill/arrows/launch-app" |
     "fill/arrows/launch" |
-    "fill/arrows/leave-2" |
-    "fill/arrows/leave-3" |
-    "fill/arrows/leave-4" |
-    "fill/arrows/leave-5" |
     "fill/arrows/leave" |
-    "fill/arrows/left-arrow-2" |
-    "fill/arrows/left-arrow-3" |
-    "fill/arrows/left-arrow-4" |
-    "fill/arrows/left-arrow-5" |
-    "fill/arrows/left-arrow-6" |
     "fill/arrows/left-arrow" |
-    "fill/arrows/log-in-2" |
-    "fill/arrows/log-in-3" |
-    "fill/arrows/log-in-4" |
-    "fill/arrows/log-in-5" |
-    "fill/arrows/log-in-6" |
     "fill/arrows/log-in" |
-    "fill/arrows/log-out-2" |
-    "fill/arrows/log-out-3" |
-    "fill/arrows/log-out-4" |
-    "fill/arrows/log-out-5" |
-    "fill/arrows/log-out-6" |
     "fill/arrows/log-out" |
-    "fill/arrows/logout-2" |
-    "fill/arrows/logout-3" |
-    "fill/arrows/logout-4" |
-    "fill/arrows/logout-5" |
-    "fill/arrows/logout-6" |
     "fill/arrows/logout" |
-    "fill/arrows/loop-2-2" |
-    "fill/arrows/loop-2-3" |
-    "fill/arrows/loop-2-4" |
-    "fill/arrows/loop-2" |
-    "fill/arrows/loop-3" |
-    "fill/arrows/loop-4" |
-    "fill/arrows/loop-5" |
-    "fill/arrows/loop-6" |
     "fill/arrows/loop" |
-    "fill/arrows/low-priority-2" |
-    "fill/arrows/low-priority-3" |
-    "fill/arrows/low-priority-4" |
-    "fill/arrows/low-priority-5" |
+    "fill/arrows/loop-2" |
     "fill/arrows/low-priority" |
-    "fill/arrows/maximize-2" |
-    "fill/arrows/maximize-3" |
-    "fill/arrows/maximize-4" |
-    "fill/arrows/maximize-5" |
-    "fill/arrows/maximize-area-2" |
-    "fill/arrows/maximize-area-3" |
-    "fill/arrows/maximize-area-4" |
-    "fill/arrows/maximize-area-5" |
-    "fill/arrows/maximize-area-6" |
     "fill/arrows/maximize-area" |
     "fill/arrows/maximize" |
-    "fill/arrows/merge-2-2" |
-    "fill/arrows/merge-2-3" |
-    "fill/arrows/merge-2-4" |
     "fill/arrows/merge-2" |
-    "fill/arrows/merge-3" |
-    "fill/arrows/merge-4" |
-    "fill/arrows/merge-5" |
-    "fill/arrows/merge-6" |
     "fill/arrows/merge" |
-    "fill/arrows/migration-2" |
-    "fill/arrows/migration-3" |
-    "fill/arrows/migration-4" |
     "fill/arrows/migration" |
-    "fill/arrows/money-transfer-2" |
-    "fill/arrows/money-transfer-3" |
-    "fill/arrows/money-transfer-4" |
     "fill/arrows/money-transfer" |
-    "fill/arrows/move-2-2" |
-    "fill/arrows/move-2-3" |
-    "fill/arrows/move-2-4" |
-    "fill/arrows/move-2-5" |
     "fill/arrows/move-2" |
-    "fill/arrows/move-3-2" |
-    "fill/arrows/move-3-3" |
-    "fill/arrows/move-3-4" |
+    "fill/arrows/move" |
     "fill/arrows/move-3" |
-    "fill/arrows/move-4" |
-    "fill/arrows/move-5" |
-    "fill/arrows/move-6" |
-    "fill/arrows/move-7" |
-    "fill/arrows/move-bottom-right" |
-    "fill/arrows/move-down-2-2" |
-    "fill/arrows/move-down-2-3" |
-    "fill/arrows/move-down-2-4" |
-    "fill/arrows/move-down-2-5" |
     "fill/arrows/move-down-2" |
-    "fill/arrows/move-down-3" |
-    "fill/arrows/move-down-4" |
-    "fill/arrows/move-down-5" |
-    "fill/arrows/move-down-6" |
-    "fill/arrows/move-down-7" |
-    "fill/arrows/move-down-right-2" |
-    "fill/arrows/move-down-right-3" |
-    "fill/arrows/move-down-right-4" |
-    "fill/arrows/move-down-right-5" |
     "fill/arrows/move-down-right" |
     "fill/arrows/move-down" |
-    "fill/arrows/move-layer-down-2" |
-    "fill/arrows/move-layer-down-3" |
-    "fill/arrows/move-layer-down-4" |
-    "fill/arrows/move-layer-down-5" |
-    "fill/arrows/move-layer-down-6" |
     "fill/arrows/move-layer-down" |
-    "fill/arrows/move-layer-left-2" |
-    "fill/arrows/move-layer-left-3" |
-    "fill/arrows/move-layer-left-4" |
-    "fill/arrows/move-layer-left-5" |
-    "fill/arrows/move-layer-left-6" |
     "fill/arrows/move-layer-left" |
-    "fill/arrows/move-layer-right-2" |
-    "fill/arrows/move-layer-right-3" |
-    "fill/arrows/move-layer-right-4" |
-    "fill/arrows/move-layer-right-5" |
-    "fill/arrows/move-layer-right-6" |
     "fill/arrows/move-layer-right" |
-    "fill/arrows/move-layer-up-2" |
-    "fill/arrows/move-layer-up-3" |
-    "fill/arrows/move-layer-up-4" |
-    "fill/arrows/move-layer-up-5" |
-    "fill/arrows/move-layer-up-6" |
     "fill/arrows/move-layer-up" |
-    "fill/arrows/move-left-2" |
-    "fill/arrows/move-left-3" |
-    "fill/arrows/move-left-4" |
-    "fill/arrows/move-left-5" |
-    "fill/arrows/move-left-6" |
     "fill/arrows/move-left" |
-    "fill/arrows/move-right-2" |
-    "fill/arrows/move-right-3" |
-    "fill/arrows/move-right-4" |
-    "fill/arrows/move-right-5" |
-    "fill/arrows/move-right-6" |
     "fill/arrows/move-right" |
-    "fill/arrows/move-top-left" |
-    "fill/arrows/move-up-2-2" |
-    "fill/arrows/move-up-2-3" |
-    "fill/arrows/move-up-2-4" |
-    "fill/arrows/move-up-2-5" |
     "fill/arrows/move-up-2" |
-    "fill/arrows/move-up-3" |
-    "fill/arrows/move-up-4" |
-    "fill/arrows/move-up-5" |
-    "fill/arrows/move-up-6" |
-    "fill/arrows/move-up-7" |
-    "fill/arrows/move-up-left-2" |
-    "fill/arrows/move-up-left-3" |
-    "fill/arrows/move-up-left-4" |
-    "fill/arrows/move-up-left-5" |
-    "fill/arrows/move-up-left" |
     "fill/arrows/move-up" |
-    "fill/arrows/move" |
-    "fill/arrows/nav-down-2" |
-    "fill/arrows/nav-down-3" |
-    "fill/arrows/nav-down-4" |
-    "fill/arrows/nav-down-5" |
-    "fill/arrows/nav-down-6" |
+    "fill/arrows/move-up-left" |
     "fill/arrows/nav-down" |
-    "fill/arrows/nav-left-2" |
-    "fill/arrows/nav-left-3" |
-    "fill/arrows/nav-left-4" |
-    "fill/arrows/nav-left-5" |
-    "fill/arrows/nav-left-6" |
     "fill/arrows/nav-left" |
-    "fill/arrows/nav-right-2" |
-    "fill/arrows/nav-right-3" |
-    "fill/arrows/nav-right-4" |
-    "fill/arrows/nav-right-5" |
-    "fill/arrows/nav-right-6" |
     "fill/arrows/nav-right" |
-    "fill/arrows/nav-up-2" |
-    "fill/arrows/nav-up-3" |
-    "fill/arrows/nav-up-4" |
-    "fill/arrows/nav-up-5" |
-    "fill/arrows/nav-up-6" |
     "fill/arrows/nav-up" |
-    "fill/arrows/open-in-browser-2" |
-    "fill/arrows/open-in-browser-3" |
-    "fill/arrows/open-in-browser-4" |
-    "fill/arrows/open-in-browser-5" |
-    "fill/arrows/open-in-browser-6" |
     "fill/arrows/open-in-browser" |
-    "fill/arrows/opposite-directions-2-2" |
-    "fill/arrows/opposite-directions-2-3" |
-    "fill/arrows/opposite-directions-2-4" |
-    "fill/arrows/opposite-directions-2-5" |
     "fill/arrows/opposite-directions-2" |
-    "fill/arrows/opposite-directions-3" |
-    "fill/arrows/opposite-directions-4" |
-    "fill/arrows/opposite-directions-5" |
-    "fill/arrows/opposite-directions-6" |
     "fill/arrows/opposite-directions" |
-    "fill/arrows/orientation-2" |
-    "fill/arrows/orientation-3" |
-    "fill/arrows/orientation-4" |
     "fill/arrows/orientation" |
-    "fill/arrows/pointing-down-2" |
-    "fill/arrows/pointing-down-3" |
-    "fill/arrows/pointing-down-4" |
-    "fill/arrows/pointing-down-5" |
-    "fill/arrows/pointing-down-6" |
     "fill/arrows/pointing-down" |
-    "fill/arrows/pointing-left-2" |
-    "fill/arrows/pointing-left-3" |
-    "fill/arrows/pointing-left-4" |
-    "fill/arrows/pointing-left-5" |
-    "fill/arrows/pointing-left-6" |
     "fill/arrows/pointing-left" |
-    "fill/arrows/pointing-right-2" |
-    "fill/arrows/pointing-right-3" |
-    "fill/arrows/pointing-right-4" |
-    "fill/arrows/pointing-right-5" |
-    "fill/arrows/pointing-right-6" |
     "fill/arrows/pointing-right" |
-    "fill/arrows/pointing-up-2" |
-    "fill/arrows/pointing-up-3" |
-    "fill/arrows/pointing-up-4" |
-    "fill/arrows/pointing-up-5" |
-    "fill/arrows/pointing-up-6" |
     "fill/arrows/pointing-up" |
-    "fill/arrows/r-down-left-arrows-2" |
-    "fill/arrows/r-down-left-arrows-3" |
-    "fill/arrows/r-down-left-arrows-4" |
-    "fill/arrows/r-down-left-arrows-5" |
     "fill/arrows/r-down-left-arrows" |
-    "fill/arrows/r-down-right-arrows-2" |
-    "fill/arrows/r-down-right-arrows-3" |
-    "fill/arrows/r-down-right-arrows-4" |
-    "fill/arrows/r-down-right-arrows-5" |
     "fill/arrows/r-down-right-arrows" |
-    "fill/arrows/r-up-left-arrows-2" |
-    "fill/arrows/r-up-left-arrows-3" |
-    "fill/arrows/r-up-left-arrows-4" |
-    "fill/arrows/r-up-left-arrows-5" |
     "fill/arrows/r-up-left-arrows" |
-    "fill/arrows/r-up-right-arrows-2" |
-    "fill/arrows/r-up-right-arrows-3" |
-    "fill/arrows/r-up-right-arrows-4" |
-    "fill/arrows/r-up-right-arrows-5" |
     "fill/arrows/r-up-right-arrows" |
-    "fill/arrows/random-2" |
-    "fill/arrows/random-3" |
-    "fill/arrows/random-4" |
-    "fill/arrows/random-5" |
     "fill/arrows/random" |
-    "fill/arrows/rate-down-2" |
-    "fill/arrows/rate-down-3" |
-    "fill/arrows/rate-down-4" |
     "fill/arrows/rate-down" |
-    "fill/arrows/rate-up-2" |
-    "fill/arrows/rate-up-3" |
-    "fill/arrows/rate-up-4" |
     "fill/arrows/rate-up" |
-    "fill/arrows/redo-2" |
-    "fill/arrows/redo-3" |
-    "fill/arrows/redo-4" |
-    "fill/arrows/redo-5" |
     "fill/arrows/redo" |
-    "fill/arrows/refresh-19" |
-    "fill/arrows/refresh-2" |
-    "fill/arrows/refresh-20" |
-    "fill/arrows/refresh-3" |
-    "fill/arrows/refresh-4" |
-    "fill/arrows/refresh-5" |
-    "fill/arrows/refresh-6" |
     "fill/arrows/refresh" |
-    "fill/arrows/refund-2" |
-    "fill/arrows/refund-3" |
-    "fill/arrows/refund-4" |
     "fill/arrows/refund" |
-    "fill/arrows/reload-2" |
-    "fill/arrows/reload-3" |
-    "fill/arrows/reload-4" |
-    "fill/arrows/reload-5" |
-    "fill/arrows/reload-6" |
     "fill/arrows/reload" |
-    "fill/arrows/repeat-2" |
-    "fill/arrows/repeat-3" |
-    "fill/arrows/repeat-4" |
-    "fill/arrows/repeat-cycle-2" |
-    "fill/arrows/repeat-cycle-3" |
-    "fill/arrows/repeat-cycle-4" |
-    "fill/arrows/repeat-cycle-5" |
     "fill/arrows/repeat-cycle" |
     "fill/arrows/repeat" |
-    "fill/arrows/replay-2" |
-    "fill/arrows/replay-3" |
-    "fill/arrows/replay-4" |
-    "fill/arrows/replay-5" |
     "fill/arrows/replay" |
-    "fill/arrows/reply-2" |
-    "fill/arrows/reply-3" |
-    "fill/arrows/reply-4" |
-    "fill/arrows/reply-5" |
-    "fill/arrows/reply-6" |
-    "fill/arrows/reply-all-2" |
-    "fill/arrows/reply-all-3" |
-    "fill/arrows/reply-all-4" |
-    "fill/arrows/reply-all-5" |
     "fill/arrows/reply-all" |
-    "fill/arrows/reply-arrow-2" |
-    "fill/arrows/reply-arrow-3" |
-    "fill/arrows/reply-arrow-4" |
-    "fill/arrows/reply-arrow-5" |
-    "fill/arrows/reply-arrow-6" |
     "fill/arrows/reply-arrow" |
     "fill/arrows/reply" |
-    "fill/arrows/resize-x-2" |
-    "fill/arrows/resize-x-3" |
-    "fill/arrows/resize-x-4" |
-    "fill/arrows/resize-x-5" |
-    "fill/arrows/resize-x-6" |
     "fill/arrows/resize-x" |
-    "fill/arrows/resize-y-2" |
-    "fill/arrows/resize-y-3" |
-    "fill/arrows/resize-y-4" |
-    "fill/arrows/resize-y-5" |
-    "fill/arrows/resize-y-6" |
     "fill/arrows/resize-y" |
-    "fill/arrows/respond-arrow-2" |
-    "fill/arrows/respond-arrow-3" |
-    "fill/arrows/respond-arrow-4" |
-    "fill/arrows/respond-arrow-5" |
-    "fill/arrows/respond-arrow-6" |
     "fill/arrows/respond-arrow" |
-    "fill/arrows/restore-2" |
-    "fill/arrows/restore-3" |
-    "fill/arrows/restore-4" |
     "fill/arrows/restore" |
-    "fill/arrows/right-arrow-2" |
-    "fill/arrows/right-arrow-3" |
-    "fill/arrows/right-arrow-4" |
-    "fill/arrows/right-arrow-5" |
-    "fill/arrows/right-arrow-6" |
     "fill/arrows/right-arrow" |
-    "fill/arrows/rotate-left-2" |
-    "fill/arrows/rotate-left-3" |
-    "fill/arrows/rotate-left-4" |
     "fill/arrows/rotate-left" |
-    "fill/arrows/rotate-right-2" |
-    "fill/arrows/rotate-right-3" |
-    "fill/arrows/rotate-right-4" |
     "fill/arrows/rotate-right" |
-    "fill/arrows/screen-sharing-2-2" |
-    "fill/arrows/screen-sharing-2-3" |
-    "fill/arrows/screen-sharing-2-4" |
-    "fill/arrows/screen-sharing-2-5" |
     "fill/arrows/screen-sharing-2" |
-    "fill/arrows/screen-sharing-off-2-2" |
-    "fill/arrows/screen-sharing-off-2-3" |
-    "fill/arrows/screen-sharing-off-2-4" |
-    "fill/arrows/screen-sharing-off-2-5" |
     "fill/arrows/screen-sharing-off-2" |
-    "fill/arrows/separate-2-2" |
-    "fill/arrows/separate-2-3" |
-    "fill/arrows/separate-2" |
-    "fill/arrows/separate-3" |
-    "fill/arrows/separate-4" |
-    "fill/arrows/separate-5" |
-    "fill/arrows/separate-branch-2" |
-    "fill/arrows/separate-branch-3" |
-    "fill/arrows/separate-branch-4" |
     "fill/arrows/separate-branch" |
-    "fill/arrows/separate-directions-2" |
-    "fill/arrows/separate-directions-3" |
-    "fill/arrows/separate-directions-4" |
     "fill/arrows/separate-directions" |
     "fill/arrows/separate" |
-    "fill/arrows/share-2-2" |
-    "fill/arrows/share-2-3" |
-    "fill/arrows/share-2-4" |
-    "fill/arrows/share-2" |
-    "fill/arrows/share-26" |
-    "fill/arrows/share-27" |
-    "fill/arrows/share-3-2" |
-    "fill/arrows/share-3-3" |
-    "fill/arrows/share-3-4" |
-    "fill/arrows/share-3" |
-    "fill/arrows/share-4" |
-    "fill/arrows/share-5" |
-    "fill/arrows/share-6" |
-    "fill/arrows/share-7" |
-    "fill/arrows/share-8" |
     "fill/arrows/share" |
-    "fill/arrows/sharing-2" |
-    "fill/arrows/sharing-3" |
-    "fill/arrows/sharing-4" |
-    "fill/arrows/sharing-5" |
-    "fill/arrows/sharing-6" |
+    "fill/arrows/share-2" |
+    "fill/arrows/share-3" |
     "fill/arrows/sharing" |
-    "fill/arrows/shuffle-2-2" |
-    "fill/arrows/shuffle-2-3" |
-    "fill/arrows/shuffle-2-4" |
-    "fill/arrows/shuffle-2-5" |
-    "fill/arrows/shuffle-2" |
-    "fill/arrows/shuffle-3" |
-    "fill/arrows/shuffle-4" |
-    "fill/arrows/shuffle-5" |
-    "fill/arrows/shuffle-6" |
     "fill/arrows/shuffle" |
-    "fill/arrows/sign-down-2" |
-    "fill/arrows/sign-down-3" |
-    "fill/arrows/sign-down-4" |
-    "fill/arrows/sign-down-5" |
-    "fill/arrows/sign-down-6" |
+    "fill/arrows/shuffle-2" |
     "fill/arrows/sign-down" |
-    "fill/arrows/sign-left-2" |
-    "fill/arrows/sign-left-3" |
-    "fill/arrows/sign-left-4" |
-    "fill/arrows/sign-left-5" |
-    "fill/arrows/sign-left-6" |
     "fill/arrows/sign-left" |
-    "fill/arrows/sign-right-2" |
-    "fill/arrows/sign-right-3" |
-    "fill/arrows/sign-right-4" |
-    "fill/arrows/sign-right-5" |
-    "fill/arrows/sign-right-6" |
     "fill/arrows/sign-right" |
-    "fill/arrows/sign-up-2" |
-    "fill/arrows/sign-up-3" |
-    "fill/arrows/sign-up-4" |
-    "fill/arrows/sign-up-5" |
-    "fill/arrows/sign-up-6" |
     "fill/arrows/sign-up" |
-    "fill/arrows/slide-left-2" |
-    "fill/arrows/slide-left-3" |
-    "fill/arrows/slide-left-4" |
-    "fill/arrows/slide-left-5" |
-    "fill/arrows/slide-left-6" |
     "fill/arrows/slide-left" |
-    "fill/arrows/slide-right-2" |
-    "fill/arrows/slide-right-3" |
-    "fill/arrows/slide-right-4" |
-    "fill/arrows/slide-right-5" |
-    "fill/arrows/slide-right-6" |
     "fill/arrows/slide-right" |
-    "fill/arrows/social-sharing-2" |
-    "fill/arrows/social-sharing-3" |
-    "fill/arrows/social-sharing-4" |
-    "fill/arrows/social-sharing-5" |
-    "fill/arrows/social-sharing-6" |
     "fill/arrows/social-sharing" |
-    "fill/arrows/split-2" |
-    "fill/arrows/split-3" |
-    "fill/arrows/split-4" |
-    "fill/arrows/split-branch-2" |
-    "fill/arrows/split-branch-3" |
-    "fill/arrows/split-branch-4" |
-    "fill/arrows/split-branch-5" |
-    "fill/arrows/split-branch" |
     "fill/arrows/split" |
-    "fill/arrows/square-e-down" |
-    "fill/arrows/square-e-left" |
-    "fill/arrows/square-e-right" |
-    "fill/arrows/swap-horizontal-2" |
-    "fill/arrows/swap-horizontal-3" |
-    "fill/arrows/swap-horizontal-4" |
-    "fill/arrows/swap-horizontal-5" |
-    "fill/arrows/swap-horizontal-6" |
+    "fill/arrows/split-branch" |
     "fill/arrows/swap-horizontal" |
-    "fill/arrows/swap-vertical-2" |
-    "fill/arrows/swap-vertical-3" |
-    "fill/arrows/swap-vertical-4" |
-    "fill/arrows/swap-vertical-5" |
-    "fill/arrows/swap-vertical-6" |
     "fill/arrows/swap-vertical" |
-    "fill/arrows/system-update-2" |
-    "fill/arrows/system-update-3" |
-    "fill/arrows/system-update-4" |
-    "fill/arrows/system-update-5" |
-    "fill/arrows/system-update-6" |
     "fill/arrows/system-update" |
-    "fill/arrows/three-way-direction-2" |
-    "fill/arrows/three-way-direction-3" |
-    "fill/arrows/three-way-direction-4" |
     "fill/arrows/three-way-direction" |
-    "fill/arrows/time-machine-2" |
-    "fill/arrows/time-machine-3" |
-    "fill/arrows/time-machine-4" |
     "fill/arrows/time-machine" |
-    "fill/arrows/traffic-2" |
-    "fill/arrows/traffic-3" |
-    "fill/arrows/traffic-4" |
-    "fill/arrows/traffic-5" |
-    "fill/arrows/traffic-6" |
     "fill/arrows/traffic" |
-    "fill/arrows/transaction-2" |
-    "fill/arrows/transaction-3" |
-    "fill/arrows/transaction-4" |
-    "fill/arrows/transaction-5" |
-    "fill/arrows/transaction-6" |
     "fill/arrows/transaction" |
-    "fill/arrows/trend-down-2" |
-    "fill/arrows/trend-down-3" |
-    "fill/arrows/trend-down-4" |
-    "fill/arrows/trend-down-5" |
     "fill/arrows/trend-down" |
-    "fill/arrows/trend-up-2" |
-    "fill/arrows/trend-up-3" |
-    "fill/arrows/trend-up-4" |
-    "fill/arrows/trend-up-5" |
     "fill/arrows/trend-up" |
-    "fill/arrows/triangle-down-2" |
-    "fill/arrows/triangle-down-3" |
-    "fill/arrows/triangle-down-4" |
-    "fill/arrows/triangle-down-5" |
-    "fill/arrows/triangle-down-6" |
     "fill/arrows/triangle-down" |
-    "fill/arrows/triangle-left-2" |
-    "fill/arrows/triangle-left-3" |
-    "fill/arrows/triangle-left-4" |
-    "fill/arrows/triangle-left-5" |
-    "fill/arrows/triangle-left-6" |
     "fill/arrows/triangle-left" |
-    "fill/arrows/triangle-line-down-2" |
-    "fill/arrows/triangle-line-down-3" |
-    "fill/arrows/triangle-line-down-4" |
-    "fill/arrows/triangle-line-down-5" |
-    "fill/arrows/triangle-line-down-6" |
     "fill/arrows/triangle-line-down" |
-    "fill/arrows/triangle-line-left-2" |
-    "fill/arrows/triangle-line-left-3" |
-    "fill/arrows/triangle-line-left-4" |
-    "fill/arrows/triangle-line-left-5" |
-    "fill/arrows/triangle-line-left-6" |
     "fill/arrows/triangle-line-left" |
-    "fill/arrows/triangle-line-right-2" |
-    "fill/arrows/triangle-line-right-3" |
-    "fill/arrows/triangle-line-right-4" |
-    "fill/arrows/triangle-line-right-5" |
-    "fill/arrows/triangle-line-right-6" |
     "fill/arrows/triangle-line-right" |
-    "fill/arrows/triangle-line-up-2" |
-    "fill/arrows/triangle-line-up-3" |
-    "fill/arrows/triangle-line-up-4" |
-    "fill/arrows/triangle-line-up-5" |
-    "fill/arrows/triangle-line-up-6" |
     "fill/arrows/triangle-line-up" |
-    "fill/arrows/triangle-right-2" |
-    "fill/arrows/triangle-right-3" |
-    "fill/arrows/triangle-right-4" |
-    "fill/arrows/triangle-right-5" |
-    "fill/arrows/triangle-right-6" |
     "fill/arrows/triangle-right" |
-    "fill/arrows/triangle-sm-down-2" |
-    "fill/arrows/triangle-sm-down-3" |
-    "fill/arrows/triangle-sm-down-4" |
-    "fill/arrows/triangle-sm-down-5" |
     "fill/arrows/triangle-sm-down" |
-    "fill/arrows/triangle-sm-left-2" |
-    "fill/arrows/triangle-sm-left-3" |
-    "fill/arrows/triangle-sm-left-4" |
-    "fill/arrows/triangle-sm-left-5" |
     "fill/arrows/triangle-sm-left" |
-    "fill/arrows/triangle-sm-right-2" |
-    "fill/arrows/triangle-sm-right-3" |
-    "fill/arrows/triangle-sm-right-4" |
-    "fill/arrows/triangle-sm-right-5" |
     "fill/arrows/triangle-sm-right" |
-    "fill/arrows/triangle-sm-up-2" |
-    "fill/arrows/triangle-sm-up-3" |
-    "fill/arrows/triangle-sm-up-4" |
-    "fill/arrows/triangle-sm-up-5" |
     "fill/arrows/triangle-sm-up" |
-    "fill/arrows/triangle-up-2" |
-    "fill/arrows/triangle-up-3" |
-    "fill/arrows/triangle-up-4" |
-    "fill/arrows/triangle-up-5" |
-    "fill/arrows/triangle-up-6" |
     "fill/arrows/triangle-up" |
-    "fill/arrows/turn-e-2" |
-    "fill/arrows/turn-e-3" |
-    "fill/arrows/turn-e-4" |
-    "fill/arrows/turn-e-5" |
-    "fill/arrows/turn-e-6" |
     "fill/arrows/turn-e" |
-    "fill/arrows/turn-n-2" |
-    "fill/arrows/turn-n-3" |
-    "fill/arrows/turn-n-4" |
-    "fill/arrows/turn-n-5" |
-    "fill/arrows/turn-n-6" |
     "fill/arrows/turn-n" |
-    "fill/arrows/turn-s-2" |
-    "fill/arrows/turn-s-3" |
-    "fill/arrows/turn-s-4" |
-    "fill/arrows/turn-s-5" |
-    "fill/arrows/turn-s-6" |
     "fill/arrows/turn-s" |
-    "fill/arrows/turn-w-2" |
-    "fill/arrows/turn-w-3" |
-    "fill/arrows/turn-w-4" |
-    "fill/arrows/turn-w-5" |
-    "fill/arrows/turn-w-6" |
     "fill/arrows/turn-w" |
-    "fill/arrows/two-way-direction-2" |
-    "fill/arrows/two-way-direction-3" |
-    "fill/arrows/two-way-direction-4" |
     "fill/arrows/two-way-direction" |
-    "fill/arrows/undo-2" |
-    "fill/arrows/undo-3" |
-    "fill/arrows/undo-4" |
-    "fill/arrows/undo-5" |
     "fill/arrows/undo" |
-    "fill/arrows/unite-2-2" |
-    "fill/arrows/unite-2-3" |
-    "fill/arrows/unite-2-4" |
     "fill/arrows/unite-2" |
-    "fill/arrows/unite-3" |
-    "fill/arrows/unite-4" |
-    "fill/arrows/unite-5" |
     "fill/arrows/unite" |
-    "fill/arrows/up-arrow-2" |
-    "fill/arrows/up-arrow-3" |
-    "fill/arrows/up-arrow-4" |
-    "fill/arrows/up-arrow-5" |
-    "fill/arrows/up-arrow-6" |
     "fill/arrows/up-arrow" |
-    "fill/arrows/upload-2" |
-    "fill/arrows/upload-3" |
-    "fill/arrows/upload-4" |
-    "fill/arrows/upload-5" |
-    "fill/arrows/upload-6" |
-    "fill/arrows/upload-data-2" |
-    "fill/arrows/upload-data-3" |
-    "fill/arrows/upload-data-4" |
-    "fill/arrows/upload-data-5" |
-    "fill/arrows/upload-data-6" |
-    "fill/arrows/upload-data" |
-    "fill/arrows/upload-file-2" |
-    "fill/arrows/upload-file-3" |
-    "fill/arrows/upload-file-4" |
-    "fill/arrows/upload-file-5" |
-    "fill/arrows/upload-file-6" |
-    "fill/arrows/upload-file" |
     "fill/arrows/upload" |
-    "fill/arrows/vertical-divider-2" |
-    "fill/arrows/vertical-divider-3" |
-    "fill/arrows/vertical-divider-4" |
+    "fill/arrows/upload-data" |
+    "fill/arrows/upload-file" |
     "fill/arrows/vertical-divider" |
-    "fill/arrows/width-2" |
-    "fill/arrows/width-3" |
-    "fill/arrows/width-4" |
-    "fill/arrows/width-5" |
     "fill/arrows/width" |
-    "fill/arrows/window-maximize-2" |
-    "fill/arrows/window-maximize-3" |
-    "fill/arrows/window-maximize-4" |
     "fill/arrows/window-maximize" |
-    "fill/arrows/window-minimize-2" |
-    "fill/arrows/window-minimize-3" |
-    "fill/arrows/window-minimize-4" |
     "fill/arrows/window-minimize" |
-    "fill/arrows/zoom-circle" |
-    "fill/arrows/zoom-square" |
-    "outline/arrows/all-directions-2" |
-    "outline/arrows/all-directions-3" |
-    "outline/arrows/all-directions-4" |
     "outline/arrows/all-directions" |
-    "outline/arrows/alpha-order-2" |
-    "outline/arrows/alpha-order-3" |
-    "outline/arrows/alpha-order-4" |
-    "outline/arrows/alpha-order-5" |
     "outline/arrows/alpha-order" |
-    "outline/arrows/arrow-bottom-left-2" |
-    "outline/arrows/arrow-bottom-left-3" |
-    "outline/arrows/arrow-bottom-left-4" |
-    "outline/arrows/arrow-bottom-left-5" |
-    "outline/arrows/arrow-bottom-left-6" |
     "outline/arrows/arrow-bottom-left" |
-    "outline/arrows/arrow-bottom-right-2" |
-    "outline/arrows/arrow-bottom-right-3" |
-    "outline/arrows/arrow-bottom-right-4" |
-    "outline/arrows/arrow-bottom-right-5" |
-    "outline/arrows/arrow-bottom-right-6" |
     "outline/arrows/arrow-bottom-right" |
-    "outline/arrows/arrow-down-2-2" |
-    "outline/arrows/arrow-down-2-3" |
-    "outline/arrows/arrow-down-2-4" |
-    "outline/arrows/arrow-down-2-5" |
-    "outline/arrows/arrow-down-2-6" |
-    "outline/arrows/arrow-down-2" |
-    "outline/arrows/arrow-down-3-2" |
-    "outline/arrows/arrow-down-3-3" |
-    "outline/arrows/arrow-down-3-4" |
-    "outline/arrows/arrow-down-3-5" |
-    "outline/arrows/arrow-down-3-6" |
-    "outline/arrows/arrow-down-3" |
-    "outline/arrows/arrow-down-4" |
-    "outline/arrows/arrow-down-5" |
-    "outline/arrows/arrow-down-6" |
-    "outline/arrows/arrow-down-7" |
-    "outline/arrows/arrow-down-8" |
     "outline/arrows/arrow-down" |
-    "outline/arrows/arrow-e-2" |
-    "outline/arrows/arrow-e-3" |
-    "outline/arrows/arrow-e-4" |
-    "outline/arrows/arrow-e-5" |
-    "outline/arrows/arrow-e-6" |
+    "outline/arrows/arrow-down-2" |
+    "outline/arrows/arrow-down-3" |
     "outline/arrows/arrow-e" |
-    "outline/arrows/arrow-left-2-2" |
-    "outline/arrows/arrow-left-2-3" |
-    "outline/arrows/arrow-left-2-4" |
-    "outline/arrows/arrow-left-2-5" |
-    "outline/arrows/arrow-left-2-6" |
     "outline/arrows/arrow-left-2" |
-    "outline/arrows/arrow-left-3-2" |
-    "outline/arrows/arrow-left-3-3" |
-    "outline/arrows/arrow-left-3-4" |
-    "outline/arrows/arrow-left-3-5" |
-    "outline/arrows/arrow-left-3-6" |
-    "outline/arrows/arrow-left-3" |
-    "outline/arrows/arrow-left-4" |
-    "outline/arrows/arrow-left-5" |
-    "outline/arrows/arrow-left-6" |
-    "outline/arrows/arrow-left-7" |
-    "outline/arrows/arrow-left-8" |
     "outline/arrows/arrow-left" |
-    "outline/arrows/arrow-n-2" |
-    "outline/arrows/arrow-n-3" |
-    "outline/arrows/arrow-n-4" |
-    "outline/arrows/arrow-n-5" |
-    "outline/arrows/arrow-n-6" |
+    "outline/arrows/arrow-left-3" |
     "outline/arrows/arrow-n" |
-    "outline/arrows/arrow-right-2-2" |
-    "outline/arrows/arrow-right-2-3" |
-    "outline/arrows/arrow-right-2-4" |
-    "outline/arrows/arrow-right-2-5" |
-    "outline/arrows/arrow-right-2-6" |
     "outline/arrows/arrow-right-2" |
-    "outline/arrows/arrow-right-3-2" |
-    "outline/arrows/arrow-right-3-3" |
-    "outline/arrows/arrow-right-3-4" |
-    "outline/arrows/arrow-right-3-5" |
-    "outline/arrows/arrow-right-3-6" |
-    "outline/arrows/arrow-right-3" |
-    "outline/arrows/arrow-right-4" |
-    "outline/arrows/arrow-right-5" |
-    "outline/arrows/arrow-right-6" |
-    "outline/arrows/arrow-right-7" |
-    "outline/arrows/arrow-right-8" |
     "outline/arrows/arrow-right" |
-    "outline/arrows/arrow-s-2" |
-    "outline/arrows/arrow-s-3" |
-    "outline/arrows/arrow-s-4" |
-    "outline/arrows/arrow-s-5" |
-    "outline/arrows/arrow-s-6" |
+    "outline/arrows/arrow-right-3" |
     "outline/arrows/arrow-s" |
-    "outline/arrows/arrow-sm-down-2" |
-    "outline/arrows/arrow-sm-down-3" |
-    "outline/arrows/arrow-sm-down-4" |
-    "outline/arrows/arrow-sm-down-5" |
     "outline/arrows/arrow-sm-down" |
-    "outline/arrows/arrow-sm-left-2" |
-    "outline/arrows/arrow-sm-left-3" |
-    "outline/arrows/arrow-sm-left-4" |
-    "outline/arrows/arrow-sm-left-5" |
     "outline/arrows/arrow-sm-left" |
-    "outline/arrows/arrow-sm-right-2" |
-    "outline/arrows/arrow-sm-right-3" |
-    "outline/arrows/arrow-sm-right-4" |
-    "outline/arrows/arrow-sm-right-5" |
     "outline/arrows/arrow-sm-right" |
-    "outline/arrows/arrow-tool-2" |
-    "outline/arrows/arrow-tool-3" |
-    "outline/arrows/arrow-tool-4" |
-    "outline/arrows/arrow-tool-5" |
-    "outline/arrows/arrow-tool-6" |
     "outline/arrows/arrow-tool" |
-    "outline/arrows/arrow-top-left-2" |
-    "outline/arrows/arrow-top-left-3" |
-    "outline/arrows/arrow-top-left-4" |
-    "outline/arrows/arrow-top-left-5" |
-    "outline/arrows/arrow-top-left-6" |
     "outline/arrows/arrow-top-left" |
-    "outline/arrows/arrow-top-right-2" |
-    "outline/arrows/arrow-top-right-3" |
-    "outline/arrows/arrow-top-right-4" |
-    "outline/arrows/arrow-top-right-5" |
-    "outline/arrows/arrow-top-right-6" |
     "outline/arrows/arrow-top-right" |
-    "outline/arrows/arrow-up-2-2" |
-    "outline/arrows/arrow-up-2-3" |
-    "outline/arrows/arrow-up-2-4" |
-    "outline/arrows/arrow-up-2-5" |
-    "outline/arrows/arrow-up-2-6" |
     "outline/arrows/arrow-up-2" |
-    "outline/arrows/arrow-up-3-2" |
-    "outline/arrows/arrow-up-3-3" |
-    "outline/arrows/arrow-up-3-4" |
-    "outline/arrows/arrow-up-3-5" |
-    "outline/arrows/arrow-up-3-6" |
-    "outline/arrows/arrow-up-3" |
-    "outline/arrows/arrow-up-4" |
-    "outline/arrows/arrow-up-5" |
-    "outline/arrows/arrow-up-6" |
-    "outline/arrows/arrow-up-7" |
-    "outline/arrows/arrow-up-8" |
     "outline/arrows/arrow-up" |
-    "outline/arrows/arrow-w-2" |
-    "outline/arrows/arrow-w-3" |
-    "outline/arrows/arrow-w-4" |
-    "outline/arrows/arrow-w-5" |
-    "outline/arrows/arrow-w-6" |
+    "outline/arrows/arrow-up-3" |
     "outline/arrows/arrow-w" |
-    "outline/arrows/arrows-expand-2-2" |
-    "outline/arrows/arrows-expand-2-3" |
-    "outline/arrows/arrows-expand-2-4" |
-    "outline/arrows/arrows-expand-2-5" |
     "outline/arrows/arrows-expand-2" |
-    "outline/arrows/arrows-expand-3" |
-    "outline/arrows/arrows-expand-4" |
-    "outline/arrows/arrows-expand-5" |
-    "outline/arrows/arrows-expand-6" |
     "outline/arrows/arrows-expand" |
-    "outline/arrows/arrows-fullscreen-2-2" |
-    "outline/arrows/arrows-fullscreen-2-3" |
-    "outline/arrows/arrows-fullscreen-2-4" |
-    "outline/arrows/arrows-fullscreen-2-5" |
     "outline/arrows/arrows-fullscreen-2" |
-    "outline/arrows/arrows-fullscreen-3" |
-    "outline/arrows/arrows-fullscreen-4" |
-    "outline/arrows/arrows-fullscreen-5" |
-    "outline/arrows/arrows-fullscreen-6" |
     "outline/arrows/arrows-fullscreen" |
-    "outline/arrows/arrows-maximize-2-2" |
-    "outline/arrows/arrows-maximize-2-3" |
-    "outline/arrows/arrows-maximize-2-4" |
-    "outline/arrows/arrows-maximize-2-5" |
     "outline/arrows/arrows-maximize-2" |
-    "outline/arrows/arrows-maximize-3" |
-    "outline/arrows/arrows-maximize-4" |
-    "outline/arrows/arrows-maximize-5" |
-    "outline/arrows/arrows-maximize-6" |
     "outline/arrows/arrows-maximize" |
-    "outline/arrows/arrows-opposite-directions-2" |
-    "outline/arrows/arrows-opposite-directions-3" |
-    "outline/arrows/arrows-opposite-directions-4" |
-    "outline/arrows/arrows-opposite-directions-5" |
     "outline/arrows/arrows-opposite-directions" |
-    "outline/arrows/arrows-same-direction-2" |
-    "outline/arrows/arrows-same-direction-3" |
-    "outline/arrows/arrows-same-direction-4" |
     "outline/arrows/arrows-same-direction" |
-    "outline/arrows/back-arrow-2" |
-    "outline/arrows/back-arrow-3" |
-    "outline/arrows/back-arrow-4" |
-    "outline/arrows/back-arrow-5" |
     "outline/arrows/back-arrow" |
-    "outline/arrows/backward-2" |
-    "outline/arrows/backward-3" |
-    "outline/arrows/backward-4" |
-    "outline/arrows/backward-5" |
-    "outline/arrows/backward-6" |
     "outline/arrows/backward" |
-    "outline/arrows/block-down-2" |
-    "outline/arrows/block-down-3" |
-    "outline/arrows/block-down-4" |
-    "outline/arrows/block-down-5" |
-    "outline/arrows/block-down-6" |
     "outline/arrows/block-down" |
-    "outline/arrows/block-left-2" |
-    "outline/arrows/block-left-3" |
-    "outline/arrows/block-left-4" |
-    "outline/arrows/block-left-5" |
-    "outline/arrows/block-left-6" |
     "outline/arrows/block-left" |
-    "outline/arrows/block-right-2" |
-    "outline/arrows/block-right-3" |
-    "outline/arrows/block-right-4" |
-    "outline/arrows/block-right-5" |
-    "outline/arrows/block-right-6" |
     "outline/arrows/block-right" |
-    "outline/arrows/block-up-2" |
-    "outline/arrows/block-up-3" |
-    "outline/arrows/block-up-4" |
-    "outline/arrows/block-up-5" |
-    "outline/arrows/block-up-6" |
     "outline/arrows/block-up" |
-    "outline/arrows/box-arrow-bottom-left-2" |
-    "outline/arrows/box-arrow-bottom-left-3" |
-    "outline/arrows/box-arrow-bottom-left-4" |
-    "outline/arrows/box-arrow-bottom-left-5" |
-    "outline/arrows/box-arrow-bottom-left-6" |
     "outline/arrows/box-arrow-bottom-left" |
-    "outline/arrows/box-arrow-bottom-right-2" |
-    "outline/arrows/box-arrow-bottom-right-3" |
-    "outline/arrows/box-arrow-bottom-right-4" |
-    "outline/arrows/box-arrow-bottom-right-5" |
-    "outline/arrows/box-arrow-bottom-right-6" |
     "outline/arrows/box-arrow-bottom-right" |
-    "outline/arrows/box-arrow-down-2" |
-    "outline/arrows/box-arrow-down-3" |
-    "outline/arrows/box-arrow-down-4" |
-    "outline/arrows/box-arrow-down-5" |
     "outline/arrows/box-arrow-down" |
-    "outline/arrows/box-arrow-left-2" |
-    "outline/arrows/box-arrow-left-3" |
-    "outline/arrows/box-arrow-left-4" |
-    "outline/arrows/box-arrow-left-5" |
     "outline/arrows/box-arrow-left" |
-    "outline/arrows/box-arrow-pointing-down-2" |
-    "outline/arrows/box-arrow-pointing-down-3" |
-    "outline/arrows/box-arrow-pointing-down" |
-    "outline/arrows/box-arrow-pointing-left-2" |
-    "outline/arrows/box-arrow-pointing-left-3" |
-    "outline/arrows/box-arrow-pointing-left" |
-    "outline/arrows/box-arrow-pointing-right-2" |
-    "outline/arrows/box-arrow-pointing-right-3" |
-    "outline/arrows/box-arrow-pointing-right" |
-    "outline/arrows/box-arrow-pointing-up-2" |
-    "outline/arrows/box-arrow-pointing-up-3" |
-    "outline/arrows/box-arrow-pointing-up" |
-    "outline/arrows/box-arrow-right-2" |
-    "outline/arrows/box-arrow-right-3" |
-    "outline/arrows/box-arrow-right-4" |
-    "outline/arrows/box-arrow-right-5" |
     "outline/arrows/box-arrow-right" |
-    "outline/arrows/box-arrow-top-left-2" |
-    "outline/arrows/box-arrow-top-left-3" |
-    "outline/arrows/box-arrow-top-left-4" |
-    "outline/arrows/box-arrow-top-left-5" |
-    "outline/arrows/box-arrow-top-left-6" |
     "outline/arrows/box-arrow-top-left" |
-    "outline/arrows/box-arrow-top-right-2" |
-    "outline/arrows/box-arrow-top-right-3" |
-    "outline/arrows/box-arrow-top-right-4" |
-    "outline/arrows/box-arrow-top-right-5" |
-    "outline/arrows/box-arrow-top-right-6" |
     "outline/arrows/box-arrow-top-right" |
-    "outline/arrows/box-arrow-up-2" |
-    "outline/arrows/box-arrow-up-3" |
-    "outline/arrows/box-arrow-up-4" |
-    "outline/arrows/box-arrow-up-5" |
     "outline/arrows/box-arrow-up" |
-    "outline/arrows/box-caret-down-2" |
-    "outline/arrows/box-caret-down-3" |
-    "outline/arrows/box-caret-down-4" |
-    "outline/arrows/box-caret-down-5" |
-    "outline/arrows/box-caret-down-6" |
     "outline/arrows/box-caret-down" |
-    "outline/arrows/box-caret-left-2" |
-    "outline/arrows/box-caret-left-3" |
-    "outline/arrows/box-caret-left-4" |
-    "outline/arrows/box-caret-left-5" |
-    "outline/arrows/box-caret-left-6" |
     "outline/arrows/box-caret-left" |
-    "outline/arrows/box-caret-right-2" |
-    "outline/arrows/box-caret-right-3" |
-    "outline/arrows/box-caret-right-4" |
-    "outline/arrows/box-caret-right-5" |
-    "outline/arrows/box-caret-right-6" |
     "outline/arrows/box-caret-right" |
-    "outline/arrows/box-caret-up-2" |
-    "outline/arrows/box-caret-up-3" |
-    "outline/arrows/box-caret-up-4" |
-    "outline/arrows/box-caret-up-5" |
-    "outline/arrows/box-caret-up-6" |
     "outline/arrows/box-caret-up" |
-    "outline/arrows/box-ctrl-down-2" |
-    "outline/arrows/box-ctrl-down-3" |
-    "outline/arrows/box-ctrl-down-4" |
-    "outline/arrows/box-ctrl-down-5" |
-    "outline/arrows/box-ctrl-down-6" |
     "outline/arrows/box-ctrl-down" |
-    "outline/arrows/box-ctrl-left-2" |
-    "outline/arrows/box-ctrl-left-3" |
-    "outline/arrows/box-ctrl-left-4" |
-    "outline/arrows/box-ctrl-left-5" |
-    "outline/arrows/box-ctrl-left-6" |
     "outline/arrows/box-ctrl-left" |
-    "outline/arrows/box-ctrl-right-2" |
-    "outline/arrows/box-ctrl-right-3" |
-    "outline/arrows/box-ctrl-right-4" |
-    "outline/arrows/box-ctrl-right-5" |
-    "outline/arrows/box-ctrl-right-6" |
     "outline/arrows/box-ctrl-right" |
-    "outline/arrows/box-ctrl-up-2" |
-    "outline/arrows/box-ctrl-up-3" |
-    "outline/arrows/box-ctrl-up-4" |
-    "outline/arrows/box-ctrl-up-5" |
-    "outline/arrows/box-ctrl-up-6" |
     "outline/arrows/box-ctrl-up" |
-    "outline/arrows/btn-enlarge-2" |
-    "outline/arrows/btn-enlarge-3" |
-    "outline/arrows/btn-enlarge" |
-    "outline/arrows/btn-expand-2" |
-    "outline/arrows/btn-expand-3" |
-    "outline/arrows/btn-expand" |
-    "outline/arrows/caret-sm-up-2" |
-    "outline/arrows/caret-sm-up-3" |
-    "outline/arrows/caret-sm-up-4" |
-    "outline/arrows/caret-sm-up-5" |
     "outline/arrows/caret-sm-up" |
-    "outline/arrows/centralize-2" |
-    "outline/arrows/centralize-3" |
-    "outline/arrows/centralize-4" |
-    "outline/arrows/centralize-5" |
     "outline/arrows/centralize" |
-    "outline/arrows/change-direction-2" |
-    "outline/arrows/change-direction-3" |
-    "outline/arrows/change-direction-4" |
     "outline/arrows/change-direction" |
-    "outline/arrows/circle-arrow-down-2" |
-    "outline/arrows/circle-arrow-down-3" |
-    "outline/arrows/circle-arrow-down-4" |
-    "outline/arrows/circle-arrow-down-5" |
     "outline/arrows/circle-arrow-down" |
-    "outline/arrows/circle-arrow-left-2" |
-    "outline/arrows/circle-arrow-left-3" |
-    "outline/arrows/circle-arrow-left-4" |
-    "outline/arrows/circle-arrow-left-5" |
     "outline/arrows/circle-arrow-left" |
-    "outline/arrows/circle-arrow-pointing-down-2" |
-    "outline/arrows/circle-arrow-pointing-down-3" |
-    "outline/arrows/circle-arrow-pointing-down" |
-    "outline/arrows/circle-arrow-pointing-left-2" |
-    "outline/arrows/circle-arrow-pointing-left-3" |
-    "outline/arrows/circle-arrow-pointing-left" |
-    "outline/arrows/circle-arrow-pointing-right-2" |
-    "outline/arrows/circle-arrow-pointing-right-3" |
-    "outline/arrows/circle-arrow-pointing-right" |
-    "outline/arrows/circle-arrow-pointing-up-2" |
-    "outline/arrows/circle-arrow-pointing-up-3" |
-    "outline/arrows/circle-arrow-pointing-up" |
-    "outline/arrows/circle-arrow-right-2" |
-    "outline/arrows/circle-arrow-right-3" |
-    "outline/arrows/circle-arrow-right-4" |
-    "outline/arrows/circle-arrow-right-5" |
     "outline/arrows/circle-arrow-right" |
-    "outline/arrows/circle-arrow-up-2" |
-    "outline/arrows/circle-arrow-up-3" |
-    "outline/arrows/circle-arrow-up-4" |
-    "outline/arrows/circle-arrow-up-5" |
     "outline/arrows/circle-arrow-up" |
-    "outline/arrows/circle-caret-down-2" |
-    "outline/arrows/circle-caret-down-3" |
-    "outline/arrows/circle-caret-down-4" |
-    "outline/arrows/circle-caret-down-5" |
-    "outline/arrows/circle-caret-down-6" |
     "outline/arrows/circle-caret-down" |
-    "outline/arrows/circle-caret-left-2" |
-    "outline/arrows/circle-caret-left-3" |
-    "outline/arrows/circle-caret-left-4" |
-    "outline/arrows/circle-caret-left-5" |
-    "outline/arrows/circle-caret-left-6" |
     "outline/arrows/circle-caret-left" |
-    "outline/arrows/circle-caret-right-2" |
-    "outline/arrows/circle-caret-right-3" |
-    "outline/arrows/circle-caret-right-4" |
-    "outline/arrows/circle-caret-right-5" |
-    "outline/arrows/circle-caret-right-6" |
     "outline/arrows/circle-caret-right" |
-    "outline/arrows/circle-caret-up-2" |
-    "outline/arrows/circle-caret-up-3" |
-    "outline/arrows/circle-caret-up-4" |
-    "outline/arrows/circle-caret-up-5" |
-    "outline/arrows/circle-caret-up-6" |
     "outline/arrows/circle-caret-up" |
-    "outline/arrows/circle-ctrl-down-2" |
-    "outline/arrows/circle-ctrl-down-3" |
-    "outline/arrows/circle-ctrl-down-4" |
-    "outline/arrows/circle-ctrl-down-5" |
-    "outline/arrows/circle-ctrl-down-6" |
     "outline/arrows/circle-ctrl-down" |
-    "outline/arrows/circle-ctrl-left-2" |
-    "outline/arrows/circle-ctrl-left-3" |
-    "outline/arrows/circle-ctrl-left-4" |
-    "outline/arrows/circle-ctrl-left-5" |
-    "outline/arrows/circle-ctrl-left-6" |
     "outline/arrows/circle-ctrl-left" |
-    "outline/arrows/circle-ctrl-right-2" |
-    "outline/arrows/circle-ctrl-right-3" |
-    "outline/arrows/circle-ctrl-right-4" |
-    "outline/arrows/circle-ctrl-right-5" |
-    "outline/arrows/circle-ctrl-right-6" |
     "outline/arrows/circle-ctrl-right" |
-    "outline/arrows/circle-ctrl-up-2" |
-    "outline/arrows/circle-ctrl-up-3" |
-    "outline/arrows/circle-ctrl-up-4" |
-    "outline/arrows/circle-ctrl-up-5" |
-    "outline/arrows/circle-ctrl-up-6" |
     "outline/arrows/circle-ctrl-up" |
-    "outline/arrows/circle-in-2" |
-    "outline/arrows/circle-in-3" |
-    "outline/arrows/circle-in-4" |
     "outline/arrows/circle-in" |
-    "outline/arrows/circle-out-2" |
-    "outline/arrows/circle-out-3" |
-    "outline/arrows/circle-out-4" |
     "outline/arrows/circle-out" |
-    "outline/arrows/circuit-2" |
-    "outline/arrows/circuit-3" |
-    "outline/arrows/circuit-4" |
-    "outline/arrows/circuit-round-2" |
-    "outline/arrows/circuit-round-3" |
-    "outline/arrows/circuit-round-4" |
     "outline/arrows/circuit-round" |
     "outline/arrows/circuit" |
-    "outline/arrows/cloud-data-download-2" |
-    "outline/arrows/cloud-data-download-3" |
-    "outline/arrows/cloud-data-download-4" |
     "outline/arrows/cloud-data-download" |
-    "outline/arrows/cloud-data-sync-2" |
-    "outline/arrows/cloud-data-sync-3" |
-    "outline/arrows/cloud-data-sync" |
-    "outline/arrows/cloud-download-2" |
-    "outline/arrows/cloud-download-3" |
-    "outline/arrows/cloud-download-4" |
-    "outline/arrows/cloud-download-5" |
     "outline/arrows/cloud-download" |
-    "outline/arrows/cloud-upload-2" |
-    "outline/arrows/cloud-upload-3" |
-    "outline/arrows/cloud-upload-4" |
-    "outline/arrows/cloud-upload-5" |
     "outline/arrows/cloud-upload" |
-    "outline/arrows/compare-2" |
-    "outline/arrows/compare-3" |
-    "outline/arrows/compare-4" |
-    "outline/arrows/compare-5" |
     "outline/arrows/compare" |
-    "outline/arrows/computer-upload-2" |
-    "outline/arrows/computer-upload-3" |
-    "outline/arrows/computer-upload-4" |
     "outline/arrows/computer-upload" |
-    "outline/arrows/contrast-2" |
-    "outline/arrows/contrast-3" |
-    "outline/arrows/contrast-4" |
-    "outline/arrows/contrast-5" |
     "outline/arrows/contrast" |
-    "outline/arrows/conversion-2" |
-    "outline/arrows/conversion-3" |
-    "outline/arrows/conversion-4" |
-    "outline/arrows/conversion-5" |
-    "outline/arrows/conversion-6" |
     "outline/arrows/conversion" |
-    "outline/arrows/corner-bottom-left-2" |
-    "outline/arrows/corner-bottom-left-3" |
-    "outline/arrows/corner-bottom-left-4" |
-    "outline/arrows/corner-bottom-left-5" |
-    "outline/arrows/corner-bottom-left-6" |
     "outline/arrows/corner-bottom-left" |
-    "outline/arrows/corner-bottom-right-2" |
-    "outline/arrows/corner-bottom-right-3" |
-    "outline/arrows/corner-bottom-right-4" |
-    "outline/arrows/corner-bottom-right-5" |
-    "outline/arrows/corner-bottom-right-6" |
     "outline/arrows/corner-bottom-right" |
-    "outline/arrows/corner-down-round-2" |
-    "outline/arrows/corner-down-round-3" |
-    "outline/arrows/corner-down-round-4" |
-    "outline/arrows/corner-down-round-5" |
     "outline/arrows/corner-down-round" |
-    "outline/arrows/corner-left-down-2" |
-    "outline/arrows/corner-left-down-3" |
-    "outline/arrows/corner-left-down-4" |
-    "outline/arrows/corner-left-down-5" |
     "outline/arrows/corner-left-down" |
-    "outline/arrows/corner-left-round-2" |
-    "outline/arrows/corner-left-round-3" |
-    "outline/arrows/corner-left-round-4" |
-    "outline/arrows/corner-left-round-5" |
     "outline/arrows/corner-left-round" |
-    "outline/arrows/corner-right-down-2" |
-    "outline/arrows/corner-right-down-3" |
-    "outline/arrows/corner-right-down-4" |
-    "outline/arrows/corner-right-down-5" |
     "outline/arrows/corner-right-down" |
-    "outline/arrows/corner-right-round-2" |
-    "outline/arrows/corner-right-round-3" |
-    "outline/arrows/corner-right-round-4" |
-    "outline/arrows/corner-right-round-5" |
     "outline/arrows/corner-right-round" |
-    "outline/arrows/corner-top-left-2" |
-    "outline/arrows/corner-top-left-3" |
-    "outline/arrows/corner-top-left-4" |
-    "outline/arrows/corner-top-left-5" |
-    "outline/arrows/corner-top-left-6" |
     "outline/arrows/corner-top-left" |
-    "outline/arrows/corner-top-right-2" |
-    "outline/arrows/corner-top-right-3" |
-    "outline/arrows/corner-top-right-4" |
-    "outline/arrows/corner-top-right-5" |
-    "outline/arrows/corner-top-right-6" |
     "outline/arrows/corner-top-right" |
-    "outline/arrows/corner-up-left-2" |
-    "outline/arrows/corner-up-left-3" |
-    "outline/arrows/corner-up-left-4" |
-    "outline/arrows/corner-up-left-5" |
     "outline/arrows/corner-up-left" |
-    "outline/arrows/corner-up-right-2" |
-    "outline/arrows/corner-up-right-3" |
-    "outline/arrows/corner-up-right-4" |
-    "outline/arrows/corner-up-right-5" |
     "outline/arrows/corner-up-right" |
-    "outline/arrows/corner-up-round-2" |
-    "outline/arrows/corner-up-round-3" |
-    "outline/arrows/corner-up-round-4" |
-    "outline/arrows/corner-up-round-5" |
     "outline/arrows/corner-up-round" |
-    "outline/arrows/cross-2" |
-    "outline/arrows/cross-3" |
-    "outline/arrows/cross-4" |
-    "outline/arrows/cross-5" |
-    "outline/arrows/cross-down-2" |
-    "outline/arrows/cross-down-3" |
-    "outline/arrows/cross-down-4" |
-    "outline/arrows/cross-down-5" |
     "outline/arrows/cross-down" |
-    "outline/arrows/cross-horizontal-2" |
-    "outline/arrows/cross-horizontal-3" |
-    "outline/arrows/cross-horizontal-4" |
-    "outline/arrows/cross-horizontal" |
-    "outline/arrows/cross-left-2" |
-    "outline/arrows/cross-left-3" |
-    "outline/arrows/cross-left-4" |
-    "outline/arrows/cross-left-5" |
-    "outline/arrows/cross-left" |
-    "outline/arrows/cross-right-2" |
-    "outline/arrows/cross-right-3" |
-    "outline/arrows/cross-right-4" |
-    "outline/arrows/cross-right-5" |
-    "outline/arrows/cross-right" |
-    "outline/arrows/cross-up-2" |
-    "outline/arrows/cross-up-3" |
-    "outline/arrows/cross-up-4" |
-    "outline/arrows/cross-up-5" |
-    "outline/arrows/cross-up" |
-    "outline/arrows/cross-vertical-2" |
-    "outline/arrows/cross-vertical-3" |
-    "outline/arrows/cross-vertical-4" |
-    "outline/arrows/cross-vertical" |
     "outline/arrows/cross" |
-    "outline/arrows/crossing-directions-2" |
-    "outline/arrows/crossing-directions-3" |
-    "outline/arrows/crossing-directions-4" |
-    "outline/arrows/crossing-directions-5" |
+    "outline/arrows/cross-horizontal" |
+    "outline/arrows/cross-left" |
+    "outline/arrows/cross-right" |
+    "outline/arrows/cross-up" |
+    "outline/arrows/cross-vertical" |
     "outline/arrows/crossing-directions" |
-    "outline/arrows/ctrl-backward-2" |
-    "outline/arrows/ctrl-backward-3" |
-    "outline/arrows/ctrl-backward-4" |
-    "outline/arrows/ctrl-backward-5" |
-    "outline/arrows/ctrl-backward-6" |
     "outline/arrows/ctrl-backward" |
-    "outline/arrows/ctrl-down-2" |
-    "outline/arrows/ctrl-down-3" |
-    "outline/arrows/ctrl-down-4" |
-    "outline/arrows/ctrl-down-5" |
-    "outline/arrows/ctrl-down-6" |
     "outline/arrows/ctrl-down" |
-    "outline/arrows/ctrl-forward-2" |
-    "outline/arrows/ctrl-forward-3" |
-    "outline/arrows/ctrl-forward-4" |
-    "outline/arrows/ctrl-forward-5" |
-    "outline/arrows/ctrl-forward-6" |
     "outline/arrows/ctrl-forward" |
-    "outline/arrows/ctrl-left-2" |
-    "outline/arrows/ctrl-left-3" |
-    "outline/arrows/ctrl-left-4" |
-    "outline/arrows/ctrl-left-5" |
-    "outline/arrows/ctrl-left-6" |
     "outline/arrows/ctrl-left" |
-    "outline/arrows/ctrl-right-2" |
-    "outline/arrows/ctrl-right-3" |
-    "outline/arrows/ctrl-right-4" |
-    "outline/arrows/ctrl-right-5" |
-    "outline/arrows/ctrl-right-6" |
     "outline/arrows/ctrl-right" |
-    "outline/arrows/ctrl-up-2" |
-    "outline/arrows/ctrl-up-3" |
-    "outline/arrows/ctrl-up-4" |
-    "outline/arrows/ctrl-up-5" |
-    "outline/arrows/ctrl-up-6" |
     "outline/arrows/ctrl-up" |
-    "outline/arrows/curved-arrow-down-2" |
-    "outline/arrows/curved-arrow-down-3" |
-    "outline/arrows/curved-arrow-down-4" |
-    "outline/arrows/curved-arrow-down-5" |
-    "outline/arrows/curved-arrow-down-6" |
     "outline/arrows/curved-arrow-down" |
-    "outline/arrows/curved-arrow-left-2" |
-    "outline/arrows/curved-arrow-left-3" |
-    "outline/arrows/curved-arrow-left-4" |
-    "outline/arrows/curved-arrow-left-5" |
-    "outline/arrows/curved-arrow-left-6" |
     "outline/arrows/curved-arrow-left" |
-    "outline/arrows/curved-arrow-right-2" |
-    "outline/arrows/curved-arrow-right-3" |
-    "outline/arrows/curved-arrow-right-4" |
-    "outline/arrows/curved-arrow-right-5" |
-    "outline/arrows/curved-arrow-right-6" |
     "outline/arrows/curved-arrow-right" |
-    "outline/arrows/curved-circuit-2" |
-    "outline/arrows/curved-circuit-3" |
-    "outline/arrows/curved-circuit-4" |
     "outline/arrows/curved-circuit" |
-    "outline/arrows/cycle-2" |
-    "outline/arrows/cycle-3" |
-    "outline/arrows/cycle-4" |
-    "outline/arrows/cycle-5" |
-    "outline/arrows/cycle-6" |
     "outline/arrows/cycle" |
-    "outline/arrows/data-download-2" |
-    "outline/arrows/data-download-3" |
-    "outline/arrows/data-download-4" |
-    "outline/arrows/data-download-5" |
-    "outline/arrows/data-download-6" |
     "outline/arrows/data-download" |
-    "outline/arrows/data-upload-2" |
-    "outline/arrows/data-upload-3" |
-    "outline/arrows/data-upload-4" |
-    "outline/arrows/data-upload-5" |
-    "outline/arrows/data-upload-6" |
     "outline/arrows/data-upload" |
-    "outline/arrows/delete-key-2" |
-    "outline/arrows/delete-key-3" |
-    "outline/arrows/delete-key-4" |
-    "outline/arrows/delete-key-5" |
-    "outline/arrows/delete-key-6" |
     "outline/arrows/delete-key" |
-    "outline/arrows/delete-x-2" |
-    "outline/arrows/delete-x-3" |
-    "outline/arrows/delete-x-4" |
-    "outline/arrows/delete-x-5" |
     "outline/arrows/delete-x" |
-    "outline/arrows/depth-2" |
-    "outline/arrows/depth-3" |
-    "outline/arrows/depth-4" |
-    "outline/arrows/depth-5" |
     "outline/arrows/depth" |
-    "outline/arrows/direction-2" |
-    "outline/arrows/direction-3" |
-    "outline/arrows/direction-4" |
-    "outline/arrows/direction-5" |
-    "outline/arrows/direction-down-2" |
-    "outline/arrows/direction-down-3" |
-    "outline/arrows/direction-down-4" |
-    "outline/arrows/direction-down-5" |
-    "outline/arrows/direction-down-6" |
     "outline/arrows/direction-down" |
-    "outline/arrows/direction-e-2" |
-    "outline/arrows/direction-e-3" |
-    "outline/arrows/direction-e" |
-    "outline/arrows/direction-left-2" |
-    "outline/arrows/direction-left-3" |
-    "outline/arrows/direction-left-4" |
-    "outline/arrows/direction-left-5" |
-    "outline/arrows/direction-left-6" |
-    "outline/arrows/direction-left" |
-    "outline/arrows/direction-n-2" |
-    "outline/arrows/direction-n-3" |
-    "outline/arrows/direction-n" |
-    "outline/arrows/direction-right-2" |
-    "outline/arrows/direction-right-3" |
-    "outline/arrows/direction-right-4" |
-    "outline/arrows/direction-right-5" |
-    "outline/arrows/direction-right-6" |
-    "outline/arrows/direction-right" |
-    "outline/arrows/direction-s-2" |
-    "outline/arrows/direction-s-3" |
-    "outline/arrows/direction-s" |
-    "outline/arrows/direction-up-2" |
-    "outline/arrows/direction-up-3" |
-    "outline/arrows/direction-up-4" |
-    "outline/arrows/direction-up-5" |
-    "outline/arrows/direction-up-6" |
-    "outline/arrows/direction-up" |
-    "outline/arrows/direction-w-2" |
-    "outline/arrows/direction-w-3" |
-    "outline/arrows/direction-w" |
     "outline/arrows/direction" |
-    "outline/arrows/disperse-2" |
-    "outline/arrows/disperse-3" |
-    "outline/arrows/disperse-4" |
-    "outline/arrows/disperse-5" |
+    "outline/arrows/direction-left" |
+    "outline/arrows/direction-right" |
+    "outline/arrows/direction-up" |
     "outline/arrows/disperse" |
-    "outline/arrows/double-arrow-left-2" |
-    "outline/arrows/double-arrow-left-3" |
-    "outline/arrows/double-arrow-left-4" |
-    "outline/arrows/double-arrow-left-5" |
-    "outline/arrows/double-arrow-left-6" |
     "outline/arrows/double-arrow-left" |
-    "outline/arrows/double-arrow-right-2" |
-    "outline/arrows/double-arrow-right-3" |
-    "outline/arrows/double-arrow-right-4" |
-    "outline/arrows/double-arrow-right-5" |
-    "outline/arrows/double-arrow-right-6" |
     "outline/arrows/double-arrow-right" |
-    "outline/arrows/down-arrow-2" |
-    "outline/arrows/down-arrow-3" |
-    "outline/arrows/down-arrow-4" |
-    "outline/arrows/down-arrow-5" |
-    "outline/arrows/down-arrow-6" |
     "outline/arrows/down-arrow" |
-    "outline/arrows/download-2" |
-    "outline/arrows/download-3" |
-    "outline/arrows/download-4" |
-    "outline/arrows/download-5" |
-    "outline/arrows/download-6" |
-    "outline/arrows/download-7" |
-    "outline/arrows/download-data-2" |
-    "outline/arrows/download-data-3" |
-    "outline/arrows/download-data-4" |
-    "outline/arrows/download-data-5" |
-    "outline/arrows/download-data-6" |
-    "outline/arrows/download-data" |
-    "outline/arrows/download-file-2" |
-    "outline/arrows/download-file-3" |
-    "outline/arrows/download-file-4" |
-    "outline/arrows/download-file-5" |
-    "outline/arrows/download-file-6" |
-    "outline/arrows/download-file" |
     "outline/arrows/download" |
-    "outline/arrows/eject-2" |
-    "outline/arrows/eject-3" |
-    "outline/arrows/eject-4" |
-    "outline/arrows/eject-5" |
-    "outline/arrows/eject-6" |
+    "outline/arrows/download-data" |
+    "outline/arrows/download-file" |
     "outline/arrows/eject" |
-    "outline/arrows/enlarge-2" |
-    "outline/arrows/enlarge-3" |
-    "outline/arrows/enlarge-4" |
-    "outline/arrows/enlarge-5" |
-    "outline/arrows/enlarge-6" |
-    "outline/arrows/enlarge-diagonal-2-2" |
-    "outline/arrows/enlarge-diagonal-2-3" |
-    "outline/arrows/enlarge-diagonal-2-4" |
-    "outline/arrows/enlarge-diagonal-2-5" |
-    "outline/arrows/enlarge-diagonal-2" |
-    "outline/arrows/enlarge-diagonal-3" |
-    "outline/arrows/enlarge-diagonal-4" |
-    "outline/arrows/enlarge-diagonal-5" |
-    "outline/arrows/enlarge-diagonal-6" |
-    "outline/arrows/enlarge-diagonal" |
-    "outline/arrows/enlarge-h-2" |
-    "outline/arrows/enlarge-h-3" |
-    "outline/arrows/enlarge-h-4" |
-    "outline/arrows/enlarge-h-5" |
-    "outline/arrows/enlarge-h-6" |
-    "outline/arrows/enlarge-h" |
-    "outline/arrows/enlarge-horizontal-2" |
-    "outline/arrows/enlarge-horizontal-3" |
-    "outline/arrows/enlarge-horizontal-4" |
-    "outline/arrows/enlarge-horizontal-5" |
-    "outline/arrows/enlarge-horizontal" |
-    "outline/arrows/enlarge-vertical-2" |
-    "outline/arrows/enlarge-vertical-3" |
-    "outline/arrows/enlarge-vertical-4" |
-    "outline/arrows/enlarge-vertical-5" |
-    "outline/arrows/enlarge-vertical" |
     "outline/arrows/enlarge" |
-    "outline/arrows/enter-2" |
-    "outline/arrows/enter-3" |
-    "outline/arrows/enter-4" |
-    "outline/arrows/enter-5" |
-    "outline/arrows/enter-6" |
+    "outline/arrows/enlarge-diagonal-2" |
+    "outline/arrows/enlarge-diagonal" |
+    "outline/arrows/enlarge-h" |
+    "outline/arrows/enlarge-horizontal" |
+    "outline/arrows/enlarge-vertical" |
     "outline/arrows/enter" |
-    "outline/arrows/exit-right-2" |
-    "outline/arrows/exit-right-3" |
-    "outline/arrows/exit-right-4" |
-    "outline/arrows/exit-right-5" |
     "outline/arrows/exit-right" |
-    "outline/arrows/expand-2-2" |
-    "outline/arrows/expand-2-3" |
-    "outline/arrows/expand-2-4" |
-    "outline/arrows/expand-2-5" |
-    "outline/arrows/expand-2-6" |
-    "outline/arrows/expand-2" |
-    "outline/arrows/expand-3" |
-    "outline/arrows/expand-4" |
-    "outline/arrows/expand-5" |
-    "outline/arrows/expand-6" |
-    "outline/arrows/expand-7" |
-    "outline/arrows/expand-h-2" |
-    "outline/arrows/expand-h-3" |
-    "outline/arrows/expand-h-4" |
-    "outline/arrows/expand-h-5" |
-    "outline/arrows/expand-h-6" |
-    "outline/arrows/expand-h" |
-    "outline/arrows/expand-window-2" |
-    "outline/arrows/expand-window-3" |
-    "outline/arrows/expand-window-4" |
-    "outline/arrows/expand-window-5" |
-    "outline/arrows/expand-window-6" |
-    "outline/arrows/expand-window" |
     "outline/arrows/expand" |
-    "outline/arrows/export-2" |
-    "outline/arrows/export-3" |
-    "outline/arrows/export-4" |
-    "outline/arrows/export-5" |
-    "outline/arrows/export-6" |
+    "outline/arrows/expand-2" |
+    "outline/arrows/expand-h" |
+    "outline/arrows/expand-window" |
     "outline/arrows/export" |
-    "outline/arrows/file-archive-2" |
-    "outline/arrows/file-archive-3" |
-    "outline/arrows/file-archive-4" |
     "outline/arrows/file-archive" |
-    "outline/arrows/file-download-2" |
-    "outline/arrows/file-download-3-2" |
-    "outline/arrows/file-download-3-3" |
-    "outline/arrows/file-download-3-4" |
     "outline/arrows/file-download-3" |
-    "outline/arrows/file-download-4" |
-    "outline/arrows/file-download-5" |
-    "outline/arrows/file-download-6" |
-    "outline/arrows/file-download-7" |
     "outline/arrows/file-download" |
-    "outline/arrows/file-export-2" |
-    "outline/arrows/file-export-3" |
-    "outline/arrows/file-export-4" |
     "outline/arrows/file-export" |
-    "outline/arrows/file-import-2" |
-    "outline/arrows/file-import-3" |
-    "outline/arrows/file-import-4" |
     "outline/arrows/file-import" |
-    "outline/arrows/file-upload-2-2" |
-    "outline/arrows/file-upload-2-3" |
-    "outline/arrows/file-upload-2-4" |
-    "outline/arrows/file-upload-2" |
-    "outline/arrows/file-upload-3-2" |
-    "outline/arrows/file-upload-3-3" |
-    "outline/arrows/file-upload-3-4" |
-    "outline/arrows/file-upload-3" |
-    "outline/arrows/file-upload-4" |
-    "outline/arrows/file-upload-5" |
-    "outline/arrows/file-upload-6" |
-    "outline/arrows/file-upload-7" |
-    "outline/arrows/file-upload-8" |
     "outline/arrows/file-upload" |
-    "outline/arrows/fit-horizontal-2" |
-    "outline/arrows/fit-horizontal-3" |
-    "outline/arrows/fit-horizontal-4" |
+    "outline/arrows/file-upload-2" |
+    "outline/arrows/file-upload-3" |
     "outline/arrows/fit-horizontal" |
-    "outline/arrows/fit-vertical-2" |
-    "outline/arrows/fit-vertical-3" |
-    "outline/arrows/fit-vertical-4" |
     "outline/arrows/fit-vertical" |
-    "outline/arrows/fork-2-2" |
-    "outline/arrows/fork-2-3" |
-    "outline/arrows/fork-2-4" |
     "outline/arrows/fork-2" |
-    "outline/arrows/fork-3" |
-    "outline/arrows/fork-4" |
-    "outline/arrows/fork-5" |
     "outline/arrows/fork" |
-    "outline/arrows/format-left-2" |
-    "outline/arrows/format-left-3" |
-    "outline/arrows/format-left-4" |
-    "outline/arrows/format-left-5" |
-    "outline/arrows/format-left-6" |
     "outline/arrows/format-left" |
-    "outline/arrows/format-right-2" |
-    "outline/arrows/format-right-3" |
-    "outline/arrows/format-right-4" |
-    "outline/arrows/format-right-5" |
-    "outline/arrows/format-right-6" |
     "outline/arrows/format-right" |
-    "outline/arrows/forward-2" |
-    "outline/arrows/forward-3" |
-    "outline/arrows/forward-4" |
-    "outline/arrows/forward-5" |
-    "outline/arrows/forward-6" |
     "outline/arrows/forward" |
-    "outline/arrows/fullscreen-2-2" |
-    "outline/arrows/fullscreen-2-3" |
-    "outline/arrows/fullscreen-2-4" |
-    "outline/arrows/fullscreen-2-5" |
-    "outline/arrows/fullscreen-2" |
-    "outline/arrows/fullscreen-3" |
-    "outline/arrows/fullscreen-4" |
-    "outline/arrows/fullscreen-5" |
-    "outline/arrows/fullscreen-6" |
-    "outline/arrows/fullscreen-7" |
     "outline/arrows/fullscreen" |
-    "outline/arrows/git-merge-2" |
-    "outline/arrows/git-merge-3" |
-    "outline/arrows/git-merge-4" |
+    "outline/arrows/fullscreen-2" |
     "outline/arrows/git-merge" |
-    "outline/arrows/height-2-2" |
-    "outline/arrows/height-2-3" |
-    "outline/arrows/height-2-4" |
-    "outline/arrows/height-2-5" |
     "outline/arrows/height-2" |
-    "outline/arrows/high-priority-2" |
-    "outline/arrows/high-priority-3" |
-    "outline/arrows/high-priority-4" |
-    "outline/arrows/high-priority-5" |
     "outline/arrows/high-priority" |
-    "outline/arrows/horizontal-divider-2" |
-    "outline/arrows/horizontal-divider-3" |
-    "outline/arrows/horizontal-divider-4" |
     "outline/arrows/horizontal-divider" |
-    "outline/arrows/img-rotate-left-2" |
-    "outline/arrows/img-rotate-left-3" |
-    "outline/arrows/img-rotate-left-4" |
     "outline/arrows/img-rotate-left" |
-    "outline/arrows/img-rotate-right-2" |
-    "outline/arrows/img-rotate-right-3" |
-    "outline/arrows/img-rotate-right-4" |
     "outline/arrows/img-rotate-right" |
-    "outline/arrows/increase-2" |
-    "outline/arrows/increase-3" |
-    "outline/arrows/increase-4" |
-    "outline/arrows/increase-5" |
-    "outline/arrows/increase-6" |
     "outline/arrows/increase" |
-    "outline/arrows/infinite-loop-2" |
-    "outline/arrows/infinite-loop-3" |
-    "outline/arrows/infinite-loop-4" |
     "outline/arrows/infinite-loop" |
-    "outline/arrows/input-2" |
-    "outline/arrows/input-3" |
-    "outline/arrows/input-4" |
-    "outline/arrows/input-5" |
-    "outline/arrows/input-6" |
     "outline/arrows/input" |
-    "outline/arrows/invert-direction-2" |
-    "outline/arrows/invert-direction-3" |
-    "outline/arrows/invert-direction-4" |
-    "outline/arrows/invert-direction-5" |
     "outline/arrows/invert-direction" |
-    "outline/arrows/invert-process-2" |
-    "outline/arrows/invert-process-3" |
-    "outline/arrows/invert-process-4" |
-    "outline/arrows/invert-process-5" |
     "outline/arrows/invert-process" |
-    "outline/arrows/launch-2" |
-    "outline/arrows/launch-3" |
-    "outline/arrows/launch-4" |
-    "outline/arrows/launch-5" |
-    "outline/arrows/launch-6" |
-    "outline/arrows/launch-app-2" |
-    "outline/arrows/launch-app-3" |
-    "outline/arrows/launch-app-4" |
-    "outline/arrows/launch-app-5" |
-    "outline/arrows/launch-app-6" |
     "outline/arrows/launch-app" |
     "outline/arrows/launch" |
-    "outline/arrows/leave-2" |
-    "outline/arrows/leave-3" |
-    "outline/arrows/leave-4" |
-    "outline/arrows/leave-5" |
     "outline/arrows/leave" |
-    "outline/arrows/left-arrow-2" |
-    "outline/arrows/left-arrow-3" |
-    "outline/arrows/left-arrow-4" |
-    "outline/arrows/left-arrow-5" |
-    "outline/arrows/left-arrow-6" |
     "outline/arrows/left-arrow" |
-    "outline/arrows/log-in-2" |
-    "outline/arrows/log-in-3" |
-    "outline/arrows/log-in-4" |
-    "outline/arrows/log-in-5" |
-    "outline/arrows/log-in-6" |
     "outline/arrows/log-in" |
-    "outline/arrows/log-out-2" |
-    "outline/arrows/log-out-3" |
-    "outline/arrows/log-out-4" |
-    "outline/arrows/log-out-5" |
-    "outline/arrows/log-out-6" |
     "outline/arrows/log-out" |
-    "outline/arrows/logout-2" |
-    "outline/arrows/logout-3" |
-    "outline/arrows/logout-4" |
-    "outline/arrows/logout-5" |
-    "outline/arrows/logout-6" |
     "outline/arrows/logout" |
-    "outline/arrows/loop-2-2" |
-    "outline/arrows/loop-2-3" |
-    "outline/arrows/loop-2-4" |
     "outline/arrows/loop-2" |
-    "outline/arrows/loop-3" |
-    "outline/arrows/loop-4" |
-    "outline/arrows/loop-5" |
-    "outline/arrows/loop-6" |
     "outline/arrows/loop" |
-    "outline/arrows/low-priority-2" |
-    "outline/arrows/low-priority-3" |
-    "outline/arrows/low-priority-4" |
-    "outline/arrows/low-priority-5" |
     "outline/arrows/low-priority" |
-    "outline/arrows/maximize-2" |
-    "outline/arrows/maximize-3" |
-    "outline/arrows/maximize-4" |
-    "outline/arrows/maximize-5" |
-    "outline/arrows/maximize-area-2" |
-    "outline/arrows/maximize-area-3" |
-    "outline/arrows/maximize-area-4" |
-    "outline/arrows/maximize-area-5" |
-    "outline/arrows/maximize-area-6" |
-    "outline/arrows/maximize-area" |
     "outline/arrows/maximize" |
-    "outline/arrows/merge-2-2" |
-    "outline/arrows/merge-2-3" |
-    "outline/arrows/merge-2-4" |
+    "outline/arrows/maximize-area" |
     "outline/arrows/merge-2" |
-    "outline/arrows/merge-3" |
-    "outline/arrows/merge-4" |
-    "outline/arrows/merge-5" |
-    "outline/arrows/merge-6" |
     "outline/arrows/merge" |
-    "outline/arrows/migration-2" |
-    "outline/arrows/migration-3" |
-    "outline/arrows/migration-4" |
     "outline/arrows/migration" |
-    "outline/arrows/money-transfer-2" |
-    "outline/arrows/money-transfer-3" |
-    "outline/arrows/money-transfer-4" |
     "outline/arrows/money-transfer" |
-    "outline/arrows/move-2-2" |
-    "outline/arrows/move-2-3" |
-    "outline/arrows/move-2-4" |
-    "outline/arrows/move-2-5" |
     "outline/arrows/move-2" |
-    "outline/arrows/move-3-2" |
-    "outline/arrows/move-3-3" |
-    "outline/arrows/move-3-4" |
+    "outline/arrows/move" |
     "outline/arrows/move-3" |
-    "outline/arrows/move-4" |
-    "outline/arrows/move-5" |
-    "outline/arrows/move-6" |
-    "outline/arrows/move-7" |
-    "outline/arrows/move-down-2-2" |
-    "outline/arrows/move-down-2-3" |
-    "outline/arrows/move-down-2-4" |
-    "outline/arrows/move-down-2-5" |
-    "outline/arrows/move-down-2" |
-    "outline/arrows/move-down-3" |
-    "outline/arrows/move-down-4" |
-    "outline/arrows/move-down-5" |
-    "outline/arrows/move-down-6" |
-    "outline/arrows/move-down-7" |
-    "outline/arrows/move-down-right-2" |
-    "outline/arrows/move-down-right-3" |
-    "outline/arrows/move-down-right-4" |
-    "outline/arrows/move-down-right-5" |
-    "outline/arrows/move-down-right" |
     "outline/arrows/move-down" |
-    "outline/arrows/move-layer-down-2" |
-    "outline/arrows/move-layer-down-3" |
-    "outline/arrows/move-layer-down-4" |
-    "outline/arrows/move-layer-down-5" |
-    "outline/arrows/move-layer-down-6" |
+    "outline/arrows/move-down-2" |
+    "outline/arrows/move-down-right" |
     "outline/arrows/move-layer-down" |
-    "outline/arrows/move-layer-left-2" |
-    "outline/arrows/move-layer-left-3" |
-    "outline/arrows/move-layer-left-4" |
-    "outline/arrows/move-layer-left-5" |
-    "outline/arrows/move-layer-left-6" |
     "outline/arrows/move-layer-left" |
-    "outline/arrows/move-layer-right-2" |
-    "outline/arrows/move-layer-right-3" |
-    "outline/arrows/move-layer-right-4" |
-    "outline/arrows/move-layer-right-5" |
-    "outline/arrows/move-layer-right-6" |
     "outline/arrows/move-layer-right" |
-    "outline/arrows/move-layer-up-2" |
-    "outline/arrows/move-layer-up-3" |
-    "outline/arrows/move-layer-up-4" |
-    "outline/arrows/move-layer-up-5" |
-    "outline/arrows/move-layer-up-6" |
     "outline/arrows/move-layer-up" |
-    "outline/arrows/move-left-2" |
-    "outline/arrows/move-left-3" |
-    "outline/arrows/move-left-4" |
-    "outline/arrows/move-left-5" |
-    "outline/arrows/move-left-6" |
     "outline/arrows/move-left" |
-    "outline/arrows/move-right-2" |
-    "outline/arrows/move-right-3" |
-    "outline/arrows/move-right-4" |
-    "outline/arrows/move-right-5" |
-    "outline/arrows/move-right-6" |
     "outline/arrows/move-right" |
-    "outline/arrows/move-up-2-2" |
-    "outline/arrows/move-up-2-3" |
-    "outline/arrows/move-up-2-4" |
-    "outline/arrows/move-up-2-5" |
     "outline/arrows/move-up-2" |
-    "outline/arrows/move-up-3" |
-    "outline/arrows/move-up-4" |
-    "outline/arrows/move-up-5" |
-    "outline/arrows/move-up-6" |
-    "outline/arrows/move-up-7" |
-    "outline/arrows/move-up-left-2" |
-    "outline/arrows/move-up-left-3" |
-    "outline/arrows/move-up-left-4" |
-    "outline/arrows/move-up-left-5" |
     "outline/arrows/move-up-left" |
     "outline/arrows/move-up" |
-    "outline/arrows/move" |
-    "outline/arrows/nav-down-2" |
-    "outline/arrows/nav-down-3" |
-    "outline/arrows/nav-down-4" |
-    "outline/arrows/nav-down-5" |
-    "outline/arrows/nav-down-6" |
     "outline/arrows/nav-down" |
-    "outline/arrows/nav-left-2" |
-    "outline/arrows/nav-left-3" |
-    "outline/arrows/nav-left-4" |
-    "outline/arrows/nav-left-5" |
-    "outline/arrows/nav-left-6" |
     "outline/arrows/nav-left" |
-    "outline/arrows/nav-right-2" |
-    "outline/arrows/nav-right-3" |
-    "outline/arrows/nav-right-4" |
-    "outline/arrows/nav-right-5" |
-    "outline/arrows/nav-right-6" |
     "outline/arrows/nav-right" |
-    "outline/arrows/nav-up-2" |
-    "outline/arrows/nav-up-3" |
-    "outline/arrows/nav-up-4" |
-    "outline/arrows/nav-up-5" |
-    "outline/arrows/nav-up-6" |
     "outline/arrows/nav-up" |
-    "outline/arrows/open-in-browser-2" |
-    "outline/arrows/open-in-browser-3" |
-    "outline/arrows/open-in-browser-4" |
-    "outline/arrows/open-in-browser-5" |
-    "outline/arrows/open-in-browser-6" |
     "outline/arrows/open-in-browser" |
-    "outline/arrows/opposite-directions-2-2" |
-    "outline/arrows/opposite-directions-2-3" |
-    "outline/arrows/opposite-directions-2-4" |
-    "outline/arrows/opposite-directions-2-5" |
     "outline/arrows/opposite-directions-2" |
-    "outline/arrows/opposite-directions-3" |
-    "outline/arrows/opposite-directions-4" |
-    "outline/arrows/opposite-directions-5" |
-    "outline/arrows/opposite-directions-6" |
     "outline/arrows/opposite-directions" |
-    "outline/arrows/orientation-2" |
-    "outline/arrows/orientation-3" |
-    "outline/arrows/orientation-4" |
     "outline/arrows/orientation" |
-    "outline/arrows/pointing-down-2" |
-    "outline/arrows/pointing-down-3" |
-    "outline/arrows/pointing-down-4" |
-    "outline/arrows/pointing-down-5" |
-    "outline/arrows/pointing-down-6" |
     "outline/arrows/pointing-down" |
-    "outline/arrows/pointing-left-2" |
-    "outline/arrows/pointing-left-3" |
-    "outline/arrows/pointing-left-4" |
-    "outline/arrows/pointing-left-5" |
-    "outline/arrows/pointing-left-6" |
     "outline/arrows/pointing-left" |
-    "outline/arrows/pointing-right-2" |
-    "outline/arrows/pointing-right-3" |
-    "outline/arrows/pointing-right-4" |
-    "outline/arrows/pointing-right-5" |
-    "outline/arrows/pointing-right-6" |
     "outline/arrows/pointing-right" |
-    "outline/arrows/pointing-up-2" |
-    "outline/arrows/pointing-up-3" |
-    "outline/arrows/pointing-up-4" |
-    "outline/arrows/pointing-up-5" |
-    "outline/arrows/pointing-up-6" |
     "outline/arrows/pointing-up" |
-    "outline/arrows/r-down-left-arrows-2" |
-    "outline/arrows/r-down-left-arrows-3" |
-    "outline/arrows/r-down-left-arrows-4" |
-    "outline/arrows/r-down-left-arrows-5" |
     "outline/arrows/r-down-left-arrows" |
-    "outline/arrows/r-down-right-arrows-2" |
-    "outline/arrows/r-down-right-arrows-3" |
-    "outline/arrows/r-down-right-arrows-4" |
-    "outline/arrows/r-down-right-arrows-5" |
     "outline/arrows/r-down-right-arrows" |
-    "outline/arrows/r-up-left-arrows-2" |
-    "outline/arrows/r-up-left-arrows-3" |
-    "outline/arrows/r-up-left-arrows-4" |
-    "outline/arrows/r-up-left-arrows-5" |
     "outline/arrows/r-up-left-arrows" |
-    "outline/arrows/r-up-right-arrows-2" |
-    "outline/arrows/r-up-right-arrows-3" |
-    "outline/arrows/r-up-right-arrows-4" |
-    "outline/arrows/r-up-right-arrows-5" |
     "outline/arrows/r-up-right-arrows" |
-    "outline/arrows/random-2" |
-    "outline/arrows/random-3" |
-    "outline/arrows/random-4" |
-    "outline/arrows/random-5" |
     "outline/arrows/random" |
-    "outline/arrows/rate-down-2" |
-    "outline/arrows/rate-down-3" |
-    "outline/arrows/rate-down-4" |
     "outline/arrows/rate-down" |
-    "outline/arrows/rate-up-2" |
-    "outline/arrows/rate-up-3" |
-    "outline/arrows/rate-up-4" |
     "outline/arrows/rate-up" |
-    "outline/arrows/redo-2" |
-    "outline/arrows/redo-3" |
-    "outline/arrows/redo-4" |
-    "outline/arrows/redo-5" |
-    "outline/arrows/redo" |
-    "outline/arrows/refresh-2" |
-    "outline/arrows/refresh-3" |
-    "outline/arrows/refresh-4" |
-    "outline/arrows/refresh-5" |
-    "outline/arrows/refresh-6" |
     "outline/arrows/refresh" |
-    "outline/arrows/refund-2" |
-    "outline/arrows/refund-3" |
-    "outline/arrows/refund-4" |
+    "outline/arrows/redo" |
     "outline/arrows/refund" |
-    "outline/arrows/reload-2" |
-    "outline/arrows/reload-3" |
-    "outline/arrows/reload-4" |
-    "outline/arrows/reload-5" |
-    "outline/arrows/reload-6" |
     "outline/arrows/reload" |
-    "outline/arrows/repeat-2" |
-    "outline/arrows/repeat-3" |
-    "outline/arrows/repeat-4" |
-    "outline/arrows/repeat-cycle-2" |
-    "outline/arrows/repeat-cycle-3" |
-    "outline/arrows/repeat-cycle-4" |
-    "outline/arrows/repeat-cycle-5" |
     "outline/arrows/repeat-cycle" |
     "outline/arrows/repeat" |
-    "outline/arrows/replay-2" |
-    "outline/arrows/replay-3" |
-    "outline/arrows/replay-4" |
-    "outline/arrows/replay-5" |
     "outline/arrows/replay" |
-    "outline/arrows/reply-2" |
-    "outline/arrows/reply-3" |
-    "outline/arrows/reply-4" |
-    "outline/arrows/reply-5" |
-    "outline/arrows/reply-6" |
-    "outline/arrows/reply-all-2" |
-    "outline/arrows/reply-all-3" |
-    "outline/arrows/reply-all-4" |
-    "outline/arrows/reply-all-5" |
-    "outline/arrows/reply-all" |
-    "outline/arrows/reply-arrow-2" |
-    "outline/arrows/reply-arrow-3" |
-    "outline/arrows/reply-arrow-4" |
-    "outline/arrows/reply-arrow-5" |
-    "outline/arrows/reply-arrow-6" |
-    "outline/arrows/reply-arrow" |
     "outline/arrows/reply" |
-    "outline/arrows/resize-x-2" |
-    "outline/arrows/resize-x-3" |
-    "outline/arrows/resize-x-4" |
-    "outline/arrows/resize-x-5" |
-    "outline/arrows/resize-x-6" |
+    "outline/arrows/reply-all" |
+    "outline/arrows/reply-arrow" |
     "outline/arrows/resize-x" |
-    "outline/arrows/resize-y-2" |
-    "outline/arrows/resize-y-3" |
-    "outline/arrows/resize-y-4" |
-    "outline/arrows/resize-y-5" |
-    "outline/arrows/resize-y-6" |
     "outline/arrows/resize-y" |
-    "outline/arrows/respond-arrow-2" |
-    "outline/arrows/respond-arrow-3" |
-    "outline/arrows/respond-arrow-4" |
-    "outline/arrows/respond-arrow-5" |
-    "outline/arrows/respond-arrow-6" |
     "outline/arrows/respond-arrow" |
-    "outline/arrows/restore-2" |
-    "outline/arrows/restore-3" |
-    "outline/arrows/restore-4" |
     "outline/arrows/restore" |
-    "outline/arrows/right-arrow-2" |
-    "outline/arrows/right-arrow-3" |
-    "outline/arrows/right-arrow-4" |
-    "outline/arrows/right-arrow-5" |
-    "outline/arrows/right-arrow-6" |
     "outline/arrows/right-arrow" |
-    "outline/arrows/rotate-left-2" |
-    "outline/arrows/rotate-left-3" |
-    "outline/arrows/rotate-left-4" |
     "outline/arrows/rotate-left" |
-    "outline/arrows/rotate-right-2" |
-    "outline/arrows/rotate-right-3" |
-    "outline/arrows/rotate-right-4" |
     "outline/arrows/rotate-right" |
-    "outline/arrows/screen-sharing-2-2" |
-    "outline/arrows/screen-sharing-2-3" |
-    "outline/arrows/screen-sharing-2-4" |
-    "outline/arrows/screen-sharing-2-5" |
     "outline/arrows/screen-sharing-2" |
-    "outline/arrows/screen-sharing-off-2-2" |
-    "outline/arrows/screen-sharing-off-2-3" |
-    "outline/arrows/screen-sharing-off-2-4" |
-    "outline/arrows/screen-sharing-off-2-5" |
     "outline/arrows/screen-sharing-off-2" |
-    "outline/arrows/separate-2-2" |
-    "outline/arrows/separate-2-3" |
-    "outline/arrows/separate-2" |
-    "outline/arrows/separate-3" |
-    "outline/arrows/separate-4" |
-    "outline/arrows/separate-5" |
-    "outline/arrows/separate-branch-2" |
-    "outline/arrows/separate-branch-3" |
-    "outline/arrows/separate-branch-4" |
     "outline/arrows/separate-branch" |
-    "outline/arrows/separate-directions-2" |
-    "outline/arrows/separate-directions-3" |
-    "outline/arrows/separate-directions-4" |
     "outline/arrows/separate-directions" |
     "outline/arrows/separate" |
-    "outline/arrows/share-2-2" |
-    "outline/arrows/share-2-3" |
-    "outline/arrows/share-2-4" |
     "outline/arrows/share-2" |
-    "outline/arrows/share-3-2" |
-    "outline/arrows/share-3-3" |
-    "outline/arrows/share-3-4" |
-    "outline/arrows/share-3" |
-    "outline/arrows/share-4" |
-    "outline/arrows/share-5" |
-    "outline/arrows/share-6" |
-    "outline/arrows/share-7" |
-    "outline/arrows/share-8" |
     "outline/arrows/share" |
-    "outline/arrows/sharing-2" |
-    "outline/arrows/sharing-3" |
-    "outline/arrows/sharing-4" |
-    "outline/arrows/sharing-5" |
-    "outline/arrows/sharing-6" |
+    "outline/arrows/share-3" |
     "outline/arrows/sharing" |
-    "outline/arrows/shuffle-2-2" |
-    "outline/arrows/shuffle-2-3" |
-    "outline/arrows/shuffle-2-4" |
-    "outline/arrows/shuffle-2-5" |
     "outline/arrows/shuffle-2" |
-    "outline/arrows/shuffle-3" |
-    "outline/arrows/shuffle-4" |
-    "outline/arrows/shuffle-5" |
-    "outline/arrows/shuffle-6" |
     "outline/arrows/shuffle" |
-    "outline/arrows/sign-down-2" |
-    "outline/arrows/sign-down-3" |
-    "outline/arrows/sign-down-4" |
-    "outline/arrows/sign-down-5" |
-    "outline/arrows/sign-down-6" |
     "outline/arrows/sign-down" |
-    "outline/arrows/sign-left-2" |
-    "outline/arrows/sign-left-3" |
-    "outline/arrows/sign-left-4" |
-    "outline/arrows/sign-left-5" |
-    "outline/arrows/sign-left-6" |
     "outline/arrows/sign-left" |
-    "outline/arrows/sign-right-2" |
-    "outline/arrows/sign-right-3" |
-    "outline/arrows/sign-right-4" |
-    "outline/arrows/sign-right-5" |
-    "outline/arrows/sign-right-6" |
     "outline/arrows/sign-right" |
-    "outline/arrows/sign-up-2" |
-    "outline/arrows/sign-up-3" |
-    "outline/arrows/sign-up-4" |
-    "outline/arrows/sign-up-5" |
-    "outline/arrows/sign-up-6" |
     "outline/arrows/sign-up" |
-    "outline/arrows/slide-left-2" |
-    "outline/arrows/slide-left-3" |
-    "outline/arrows/slide-left-4" |
-    "outline/arrows/slide-left-5" |
-    "outline/arrows/slide-left-6" |
     "outline/arrows/slide-left" |
-    "outline/arrows/slide-right-2" |
-    "outline/arrows/slide-right-3" |
-    "outline/arrows/slide-right-4" |
-    "outline/arrows/slide-right-5" |
-    "outline/arrows/slide-right-6" |
     "outline/arrows/slide-right" |
-    "outline/arrows/social-sharing-2" |
-    "outline/arrows/social-sharing-3" |
-    "outline/arrows/social-sharing-4" |
-    "outline/arrows/social-sharing-5" |
-    "outline/arrows/social-sharing-6" |
     "outline/arrows/social-sharing" |
-    "outline/arrows/split-2" |
-    "outline/arrows/split-3" |
-    "outline/arrows/split-4" |
-    "outline/arrows/split-branch-2" |
-    "outline/arrows/split-branch-3" |
-    "outline/arrows/split-branch-4" |
-    "outline/arrows/split-branch-5" |
-    "outline/arrows/split-branch" |
     "outline/arrows/split" |
-    "outline/arrows/swap-horizontal-2" |
-    "outline/arrows/swap-horizontal-3" |
-    "outline/arrows/swap-horizontal-4" |
-    "outline/arrows/swap-horizontal-5" |
-    "outline/arrows/swap-horizontal-6" |
+    "outline/arrows/split-branch" |
     "outline/arrows/swap-horizontal" |
-    "outline/arrows/swap-vertical-2" |
-    "outline/arrows/swap-vertical-3" |
-    "outline/arrows/swap-vertical-4" |
-    "outline/arrows/swap-vertical-5" |
-    "outline/arrows/swap-vertical-6" |
     "outline/arrows/swap-vertical" |
-    "outline/arrows/system-update-2" |
-    "outline/arrows/system-update-3" |
-    "outline/arrows/system-update-4" |
-    "outline/arrows/system-update-5" |
-    "outline/arrows/system-update-6" |
     "outline/arrows/system-update" |
-    "outline/arrows/three-way-direction-2" |
-    "outline/arrows/three-way-direction-3" |
-    "outline/arrows/three-way-direction-4" |
     "outline/arrows/three-way-direction" |
-    "outline/arrows/time-machine-2" |
-    "outline/arrows/time-machine-3" |
-    "outline/arrows/time-machine-4" |
     "outline/arrows/time-machine" |
-    "outline/arrows/traffic-2" |
-    "outline/arrows/traffic-3" |
-    "outline/arrows/traffic-4" |
-    "outline/arrows/traffic-5" |
-    "outline/arrows/traffic-6" |
     "outline/arrows/traffic" |
-    "outline/arrows/transaction-2" |
-    "outline/arrows/transaction-3" |
-    "outline/arrows/transaction-4" |
-    "outline/arrows/transaction-5" |
-    "outline/arrows/transaction-6" |
     "outline/arrows/transaction" |
-    "outline/arrows/trend-down-2" |
-    "outline/arrows/trend-down-3" |
-    "outline/arrows/trend-down-4" |
-    "outline/arrows/trend-down-5" |
     "outline/arrows/trend-down" |
-    "outline/arrows/trend-up-2" |
-    "outline/arrows/trend-up-3" |
-    "outline/arrows/trend-up-4" |
-    "outline/arrows/trend-up-5" |
     "outline/arrows/trend-up" |
-    "outline/arrows/triangle-down-2" |
-    "outline/arrows/triangle-down-3" |
-    "outline/arrows/triangle-down-4" |
-    "outline/arrows/triangle-down-5" |
-    "outline/arrows/triangle-down-6" |
     "outline/arrows/triangle-down" |
-    "outline/arrows/triangle-left-2" |
-    "outline/arrows/triangle-left-3" |
-    "outline/arrows/triangle-left-4" |
-    "outline/arrows/triangle-left-5" |
-    "outline/arrows/triangle-left-6" |
     "outline/arrows/triangle-left" |
-    "outline/arrows/triangle-line-down-2" |
-    "outline/arrows/triangle-line-down-3" |
-    "outline/arrows/triangle-line-down-4" |
-    "outline/arrows/triangle-line-down-5" |
-    "outline/arrows/triangle-line-down-6" |
     "outline/arrows/triangle-line-down" |
-    "outline/arrows/triangle-line-left-2" |
-    "outline/arrows/triangle-line-left-3" |
-    "outline/arrows/triangle-line-left-4" |
-    "outline/arrows/triangle-line-left-5" |
-    "outline/arrows/triangle-line-left-6" |
     "outline/arrows/triangle-line-left" |
-    "outline/arrows/triangle-line-right-2" |
-    "outline/arrows/triangle-line-right-3" |
-    "outline/arrows/triangle-line-right-4" |
-    "outline/arrows/triangle-line-right-5" |
-    "outline/arrows/triangle-line-right-6" |
     "outline/arrows/triangle-line-right" |
-    "outline/arrows/triangle-line-up-2" |
-    "outline/arrows/triangle-line-up-3" |
-    "outline/arrows/triangle-line-up-4" |
-    "outline/arrows/triangle-line-up-5" |
-    "outline/arrows/triangle-line-up-6" |
     "outline/arrows/triangle-line-up" |
-    "outline/arrows/triangle-right-2" |
-    "outline/arrows/triangle-right-3" |
-    "outline/arrows/triangle-right-4" |
-    "outline/arrows/triangle-right-5" |
-    "outline/arrows/triangle-right-6" |
     "outline/arrows/triangle-right" |
-    "outline/arrows/triangle-sm-down-2" |
-    "outline/arrows/triangle-sm-down-3" |
-    "outline/arrows/triangle-sm-down-4" |
-    "outline/arrows/triangle-sm-down-5" |
     "outline/arrows/triangle-sm-down" |
-    "outline/arrows/triangle-sm-left-2" |
-    "outline/arrows/triangle-sm-left-3" |
-    "outline/arrows/triangle-sm-left-4" |
-    "outline/arrows/triangle-sm-left-5" |
     "outline/arrows/triangle-sm-left" |
-    "outline/arrows/triangle-sm-right-2" |
-    "outline/arrows/triangle-sm-right-3" |
-    "outline/arrows/triangle-sm-right-4" |
-    "outline/arrows/triangle-sm-right-5" |
     "outline/arrows/triangle-sm-right" |
-    "outline/arrows/triangle-sm-up-2" |
-    "outline/arrows/triangle-sm-up-3" |
-    "outline/arrows/triangle-sm-up-4" |
-    "outline/arrows/triangle-sm-up-5" |
     "outline/arrows/triangle-sm-up" |
-    "outline/arrows/triangle-up-2" |
-    "outline/arrows/triangle-up-3" |
-    "outline/arrows/triangle-up-4" |
-    "outline/arrows/triangle-up-5" |
-    "outline/arrows/triangle-up-6" |
     "outline/arrows/triangle-up" |
-    "outline/arrows/turn-e-2" |
-    "outline/arrows/turn-e-3" |
-    "outline/arrows/turn-e-4" |
-    "outline/arrows/turn-e-5" |
-    "outline/arrows/turn-e-6" |
     "outline/arrows/turn-e" |
-    "outline/arrows/turn-n-2" |
-    "outline/arrows/turn-n-3" |
-    "outline/arrows/turn-n-4" |
-    "outline/arrows/turn-n-5" |
-    "outline/arrows/turn-n-6" |
     "outline/arrows/turn-n" |
-    "outline/arrows/turn-s-2" |
-    "outline/arrows/turn-s-3" |
-    "outline/arrows/turn-s-4" |
-    "outline/arrows/turn-s-5" |
-    "outline/arrows/turn-s-6" |
     "outline/arrows/turn-s" |
-    "outline/arrows/turn-w-2" |
-    "outline/arrows/turn-w-3" |
-    "outline/arrows/turn-w-4" |
-    "outline/arrows/turn-w-5" |
-    "outline/arrows/turn-w-6" |
     "outline/arrows/turn-w" |
-    "outline/arrows/two-way-direction-2" |
-    "outline/arrows/two-way-direction-3" |
-    "outline/arrows/two-way-direction-4" |
     "outline/arrows/two-way-direction" |
-    "outline/arrows/undo-2" |
-    "outline/arrows/undo-3" |
-    "outline/arrows/undo-4" |
-    "outline/arrows/undo-5" |
     "outline/arrows/undo" |
-    "outline/arrows/unite-2-2" |
-    "outline/arrows/unite-2-3" |
-    "outline/arrows/unite-2-4" |
     "outline/arrows/unite-2" |
-    "outline/arrows/unite-3" |
-    "outline/arrows/unite-4" |
-    "outline/arrows/unite-5" |
     "outline/arrows/unite" |
-    "outline/arrows/up-arrow-2" |
-    "outline/arrows/up-arrow-3" |
-    "outline/arrows/up-arrow-4" |
-    "outline/arrows/up-arrow-5" |
-    "outline/arrows/up-arrow-6" |
     "outline/arrows/up-arrow" |
-    "outline/arrows/upload-2" |
-    "outline/arrows/upload-3" |
-    "outline/arrows/upload-4" |
-    "outline/arrows/upload-5" |
-    "outline/arrows/upload-6" |
-    "outline/arrows/upload-data-2" |
-    "outline/arrows/upload-data-3" |
-    "outline/arrows/upload-data-4" |
-    "outline/arrows/upload-data-5" |
-    "outline/arrows/upload-data-6" |
     "outline/arrows/upload-data" |
-    "outline/arrows/upload-file-2" |
-    "outline/arrows/upload-file-3" |
-    "outline/arrows/upload-file-4" |
-    "outline/arrows/upload-file-5" |
-    "outline/arrows/upload-file-6" |
     "outline/arrows/upload-file" |
     "outline/arrows/upload" |
-    "outline/arrows/vertical-divider-2" |
-    "outline/arrows/vertical-divider-3" |
-    "outline/arrows/vertical-divider-4" |
     "outline/arrows/vertical-divider" |
-    "outline/arrows/width-2" |
-    "outline/arrows/width-3" |
-    "outline/arrows/width-4" |
-    "outline/arrows/width-5" |
     "outline/arrows/width" |
-    "outline/arrows/window-maximize-2" |
-    "outline/arrows/window-maximize-3" |
-    "outline/arrows/window-maximize-4" |
     "outline/arrows/window-maximize" |
-    "outline/arrows/window-minimize-2" |
-    "outline/arrows/window-minimize-3" |
-    "outline/arrows/window-minimize-4" |
     "outline/arrows/window-minimize" |
-    "outline/business/address-book-2" |
-    "outline/business/address-book-3" |
-    "outline/business/address-book-4" |
     "outline/business/address-book" |
-    "outline/business/agenda-2" |
-    "outline/business/agenda-3" |
-    "outline/business/agenda-4" |
-    "outline/business/agenda-5" |
     "outline/business/agenda" |
-    "outline/business/algorithm-2" |
-    "outline/business/algorithm-3" |
-    "outline/business/algorithm-4" |
-    "outline/business/algorithm-5" |
     "outline/business/algorithm" |
-    "outline/business/amazon-card-2" |
-    "outline/business/amazon-card" |
-    "outline/business/amex-2" |
-    "outline/business/amex" |
-    "outline/business/android-card-2" |
-    "outline/business/android-card" |
-    "outline/business/app-services-2" |
-    "outline/business/app-services-3" |
-    "outline/business/app-services-4" |
     "outline/business/app-services" |
-    "outline/business/apple-card-2" |
-    "outline/business/apple-card" |
-    "outline/business/archery-target-2" |
-    "outline/business/archery-target-3" |
-    "outline/business/archery-target-4" |
-    "outline/business/archery-target-5" |
     "outline/business/archery-target" |
-    "outline/business/atm-2" |
-    "outline/business/atm-3" |
-    "outline/business/atm-4" |
-    "outline/business/atm-5" |
     "outline/business/atm" |
-    "outline/business/award-49-2" |
-    "outline/business/award-49-3" |
-    "outline/business/award-49-4" |
-    "outline/business/award-49-5" |
     "outline/business/award-49" |
-    "outline/business/badge-2" |
-    "outline/business/badge-3" |
-    "outline/business/badge-4" |
-    "outline/business/badge-5" |
     "outline/business/badge" |
-    "outline/business/bank-statement-2" |
-    "outline/business/bank-statement-3" |
-    "outline/business/bank-statement-4" |
     "outline/business/bank-statement" |
-    "outline/business/bill-2" |
-    "outline/business/bill-3" |
-    "outline/business/bill-4" |
-    "outline/business/bill-5" |
     "outline/business/bill" |
-    "outline/business/bitcoin-2" |
-    "outline/business/bitcoin-3" |
-    "outline/business/bitcoin-4" |
-    "outline/business/bitcoin-5" |
-    "outline/business/bitcoin-card-2" |
-    "outline/business/bitcoin-card" |
     "outline/business/bitcoin" |
-    "outline/business/block-2" |
-    "outline/business/block-3" |
-    "outline/business/block-4" |
-    "outline/business/block-5" |
-    "outline/business/block-6" |
     "outline/business/block" |
-    "outline/business/blockchain-2" |
-    "outline/business/blockchain-3" |
-    "outline/business/blockchain-4" |
-    "outline/business/blockchain-5" |
     "outline/business/blockchain" |
-    "outline/business/board-27-2" |
-    "outline/business/board-27-3" |
-    "outline/business/board-27-4" |
-    "outline/business/board-27-5" |
     "outline/business/board-27" |
-    "outline/business/board-28-2" |
-    "outline/business/board-28-3" |
-    "outline/business/board-28-4" |
-    "outline/business/board-28-5" |
     "outline/business/board-28" |
-    "outline/business/board-29-2" |
-    "outline/business/board-29-3" |
-    "outline/business/board-29-4" |
     "outline/business/board-29" |
-    "outline/business/board-30-2" |
-    "outline/business/board-30-3" |
-    "outline/business/board-30-4" |
     "outline/business/board-30" |
-    "outline/business/books-2" |
-    "outline/business/books-3" |
-    "outline/business/books-4" |
-    "outline/business/books-5" |
     "outline/business/books" |
-    "outline/business/briefcase-24-2" |
-    "outline/business/briefcase-24-3" |
-    "outline/business/briefcase-24-4" |
-    "outline/business/briefcase-24-5" |
-    "outline/business/briefcase-24-6" |
     "outline/business/briefcase-24" |
-    "outline/business/briefcase-25-2" |
-    "outline/business/briefcase-25-3" |
-    "outline/business/briefcase-25-4" |
-    "outline/business/briefcase-25-5" |
     "outline/business/briefcase-25" |
-    "outline/business/briefcase-26-2" |
-    "outline/business/briefcase-26-3" |
-    "outline/business/briefcase-26-4" |
-    "outline/business/briefcase-26-5" |
     "outline/business/briefcase-26" |
-    "outline/business/bulb-61-2" |
-    "outline/business/bulb-61-3" |
-    "outline/business/bulb-61-4" |
-    "outline/business/bulb-61-5" |
     "outline/business/bulb-61" |
-    "outline/business/bulb-62-2" |
-    "outline/business/bulb-62-3" |
-    "outline/business/bulb-62-4" |
-    "outline/business/bulb-62-5" |
     "outline/business/bulb-62" |
-    "outline/business/bulb-63-2" |
-    "outline/business/bulb-63-3" |
-    "outline/business/bulb-63-4" |
-    "outline/business/bulb-63-5" |
     "outline/business/bulb-63" |
-    "outline/business/business-agent-2" |
-    "outline/business/business-agent-3" |
-    "outline/business/business-agent-4" |
     "outline/business/business-agent" |
-    "outline/business/business-contact-85-2" |
-    "outline/business/business-contact-85-3" |
-    "outline/business/business-contact-85-4" |
     "outline/business/business-contact-85" |
-    "outline/business/business-contact-86-2" |
-    "outline/business/business-contact-86-3" |
-    "outline/business/business-contact-86" |
-    "outline/business/business-contact-87-2" |
-    "outline/business/business-contact-87-3" |
-    "outline/business/business-contact-87" |
-    "outline/business/business-contact-88-2" |
-    "outline/business/business-contact-88-3" |
-    "outline/business/business-contact-88" |
-    "outline/business/businessman-03-2" |
-    "outline/business/businessman-03-3" |
-    "outline/business/businessman-03-4" |
-    "outline/business/businessman-03-5" |
     "outline/business/businessman-03" |
-    "outline/business/businessman-04-2" |
-    "outline/business/businessman-04-3" |
-    "outline/business/businessman-04-4" |
-    "outline/business/businessman-04-5" |
     "outline/business/businessman-04" |
-    "outline/business/calculator-2" |
-    "outline/business/calculator-3" |
-    "outline/business/calculator-4" |
-    "outline/business/calculator-5" |
     "outline/business/calculator" |
-    "outline/business/candlestick-chart-2" |
-    "outline/business/candlestick-chart-3" |
-    "outline/business/candlestick-chart-4" |
-    "outline/business/candlestick-chart-5" |
-    "outline/business/candlestick-chart-6" |
     "outline/business/candlestick-chart" |
-    "outline/business/card-edit-2" |
-    "outline/business/card-edit-3" |
-    "outline/business/card-edit-4" |
-    "outline/business/card-edit-5" |
     "outline/business/card-edit" |
-    "outline/business/card-favorite-2" |
-    "outline/business/card-favorite-3" |
-    "outline/business/card-favorite-4" |
-    "outline/business/card-favorite-5" |
     "outline/business/card-favorite" |
-    "outline/business/card-remove-2" |
-    "outline/business/card-remove-3" |
-    "outline/business/card-remove-4" |
-    "outline/business/card-remove-5" |
     "outline/business/card-remove" |
-    "outline/business/card-switch-2" |
-    "outline/business/card-switch" |
-    "outline/business/card-update-2" |
-    "outline/business/card-update-3" |
-    "outline/business/card-update-4" |
     "outline/business/card-update" |
-    "outline/business/certificate-2" |
-    "outline/business/certificate-3" |
-    "outline/business/certificate-4" |
-    "outline/business/certificate-5" |
     "outline/business/certificate" |
-    "outline/business/chart-2" |
-    "outline/business/chart-3" |
-    "outline/business/chart-4" |
-    "outline/business/chart-5" |
-    "outline/business/chart-6" |
-    "outline/business/chart-bar-32-2" |
-    "outline/business/chart-bar-32-3" |
-    "outline/business/chart-bar-32-4" |
-    "outline/business/chart-bar-32-5" |
     "outline/business/chart-bar-32" |
-    "outline/business/chart-bar-33-2" |
-    "outline/business/chart-bar-33-3" |
-    "outline/business/chart-bar-33-4" |
     "outline/business/chart-bar-33" |
-    "outline/business/chart-growth-2" |
-    "outline/business/chart-growth-3" |
-    "outline/business/chart-growth-4" |
-    "outline/business/chart-growth-5" |
-    "outline/business/chart-growth" |
-    "outline/business/chart-pie-35-2" |
-    "outline/business/chart-pie-35-3" |
-    "outline/business/chart-pie-35-4" |
-    "outline/business/chart-pie-35-5" |
-    "outline/business/chart-pie-35" |
-    "outline/business/chart-pie-36-2" |
-    "outline/business/chart-pie-36-3" |
-    "outline/business/chart-pie-36-4" |
-    "outline/business/chart-pie-36-5" |
-    "outline/business/chart-pie-36" |
     "outline/business/chart" |
-    "outline/business/cheque-2" |
-    "outline/business/cheque-3" |
-    "outline/business/cheque-4" |
-    "outline/business/cheque-5" |
+    "outline/business/chart-growth" |
+    "outline/business/chart-pie-35" |
+    "outline/business/chart-pie-36" |
     "outline/business/cheque" |
-    "outline/business/chess-knight-2" |
-    "outline/business/chess-knight-3" |
-    "outline/business/chess-knight-4" |
-    "outline/business/chess-knight-5" |
     "outline/business/chess-knight" |
-    "outline/business/chess-tower-2" |
-    "outline/business/chess-tower-3" |
-    "outline/business/chess-tower-4" |
-    "outline/business/chess-tower-5" |
     "outline/business/chess-tower" |
-    "outline/business/citi-2" |
-    "outline/business/citi" |
-    "outline/business/cloud-mining-2" |
-    "outline/business/cloud-mining-3" |
-    "outline/business/cloud-mining-4" |
-    "outline/business/cloud-mining-5" |
     "outline/business/cloud-mining" |
-    "outline/business/cockade-2" |
-    "outline/business/cockade-3" |
-    "outline/business/cockade-4" |
-    "outline/business/cockade-5" |
     "outline/business/cockade" |
-    "outline/business/coins-2" |
-    "outline/business/coins-3" |
-    "outline/business/coins-4" |
-    "outline/business/coins-5" |
     "outline/business/coins" |
-    "outline/business/conference-room-2" |
-    "outline/business/conference-room-3" |
-    "outline/business/conference-room-4" |
-    "outline/business/conference-room-5" |
     "outline/business/conference-room" |
-    "outline/business/connect-2" |
-    "outline/business/connect-3" |
-    "outline/business/connect-4" |
-    "outline/business/connect-5" |
     "outline/business/connect" |
     "outline/business/contact-86" |
     "outline/business/contact-87" |
     "outline/business/contact-88" |
-    "outline/business/contactless-card-2" |
-    "outline/business/contactless-card-3" |
-    "outline/business/contactless-card-4" |
     "outline/business/contactless-card" |
-    "outline/business/contacts-2" |
-    "outline/business/contacts-3" |
-    "outline/business/contacts-4" |
-    "outline/business/contacts-5" |
     "outline/business/contacts" |
-    "outline/business/copyright-2" |
-    "outline/business/copyright-3" |
-    "outline/business/copyright-4" |
-    "outline/business/copyright-5" |
-    "outline/business/copyright-6" |
     "outline/business/copyright" |
-    "outline/business/credit-card-2" |
-    "outline/business/credit-card-3" |
-    "outline/business/credit-card-4" |
-    "outline/business/credit-card-5" |
-    "outline/business/credit-card-in-2" |
-    "outline/business/credit-card-in-3" |
-    "outline/business/credit-card-in-4" |
-    "outline/business/credit-card-in-5" |
-    "outline/business/credit-card-in" |
     "outline/business/credit-card" |
-    "outline/business/credit-locked-2" |
-    "outline/business/credit-locked-3" |
-    "outline/business/credit-locked-4" |
+    "outline/business/credit-card-in" |
     "outline/business/credit-locked" |
-    "outline/business/crypto-wallet-2" |
-    "outline/business/crypto-wallet-3" |
-    "outline/business/crypto-wallet-4" |
-    "outline/business/crypto-wallet-5" |
     "outline/business/crypto-wallet" |
-    "outline/business/currency-dollar-2" |
-    "outline/business/currency-dollar-3" |
-    "outline/business/currency-dollar-4" |
-    "outline/business/currency-dollar-5" |
     "outline/business/currency-dollar" |
-    "outline/business/currency-euro-2" |
-    "outline/business/currency-euro-3" |
-    "outline/business/currency-euro-4" |
-    "outline/business/currency-euro-5" |
     "outline/business/currency-euro" |
-    "outline/business/currency-exchange-2-2" |
-    "outline/business/currency-exchange-2-3" |
-    "outline/business/currency-exchange-2-4" |
     "outline/business/currency-exchange-2" |
-    "outline/business/currency-exchange-3" |
-    "outline/business/currency-exchange-4" |
-    "outline/business/currency-exchange-5" |
-    "outline/business/currency-exchange-6" |
     "outline/business/currency-exchange" |
-    "outline/business/currency-pound-2" |
-    "outline/business/currency-pound-3" |
-    "outline/business/currency-pound-4" |
-    "outline/business/currency-pound-5" |
     "outline/business/currency-pound" |
-    "outline/business/currency-yen-2" |
-    "outline/business/currency-yen-3" |
-    "outline/business/currency-yen-4" |
-    "outline/business/currency-yen-5" |
     "outline/business/currency-yen" |
-    "outline/business/debt-2" |
-    "outline/business/debt-3" |
-    "outline/business/debt-4" |
     "outline/business/debt" |
-    "outline/business/decentralize-2" |
-    "outline/business/decentralize-3" |
-    "outline/business/decentralize-4" |
-    "outline/business/decentralize-5" |
     "outline/business/decentralize" |
-    "outline/business/decision-process-2" |
-    "outline/business/decision-process-3" |
-    "outline/business/decision-process-4" |
     "outline/business/decision-process" |
-    "outline/business/dice-2" |
-    "outline/business/dice-3" |
-    "outline/business/dice-4" |
-    "outline/business/dice-5" |
-    "outline/business/dice-6" |
     "outline/business/dice" |
-    "outline/business/diners-club-2" |
-    "outline/business/diners-club" |
-    "outline/business/discover-2" |
-    "outline/business/discover" |
-    "outline/business/factory-2" |
-    "outline/business/factory-3" |
-    "outline/business/factory-4" |
-    "outline/business/factory-5" |
     "outline/business/factory" |
-    "outline/business/globe-2" |
-    "outline/business/globe-3" |
-    "outline/business/globe-4" |
-    "outline/business/globe-5" |
     "outline/business/globe" |
-    "outline/business/goal-65-2" |
-    "outline/business/goal-65-3" |
-    "outline/business/goal-65-4" |
-    "outline/business/goal-65-5" |
     "outline/business/goal-65" |
-    "outline/business/gold-2" |
-    "outline/business/gold-3" |
-    "outline/business/gold-4" |
     "outline/business/gold" |
-    "outline/business/hammer-2" |
-    "outline/business/hammer-3" |
-    "outline/business/hammer-4" |
-    "outline/business/hammer-5" |
     "outline/business/hammer" |
-    "outline/business/hand-card-2" |
-    "outline/business/hand-card-3" |
-    "outline/business/hand-card-4" |
     "outline/business/hand-card" |
-    "outline/business/handout-2" |
-    "outline/business/handout-3" |
-    "outline/business/handout-4" |
-    "outline/business/handout-5" |
     "outline/business/handout" |
-    "outline/business/handshake-2" |
-    "outline/business/handshake-3" |
-    "outline/business/handshake-4" |
-    "outline/business/handshake-5" |
     "outline/business/handshake" |
-    "outline/business/hat-2" |
-    "outline/business/hat-3" |
-    "outline/business/hat-4" |
-    "outline/business/hat-5" |
     "outline/business/hat" |
-    "outline/business/hierarchy-53-2" |
-    "outline/business/hierarchy-53-3" |
-    "outline/business/hierarchy-53-4" |
-    "outline/business/hierarchy-53-5" |
     "outline/business/hierarchy-53" |
-    "outline/business/hierarchy-54-2" |
-    "outline/business/hierarchy-54-3" |
-    "outline/business/hierarchy-54-4" |
     "outline/business/hierarchy-54" |
-    "outline/business/hierarchy-55-2" |
-    "outline/business/hierarchy-55-3" |
-    "outline/business/hierarchy-55-4" |
     "outline/business/hierarchy-55" |
-    "outline/business/hierarchy-56-2" |
-    "outline/business/hierarchy-56-3" |
-    "outline/business/hierarchy-56-4" |
     "outline/business/hierarchy-56" |
-    "outline/business/info-point-2" |
-    "outline/business/info-point-3" |
-    "outline/business/info-point-4" |
-    "outline/business/info-point-5" |
     "outline/business/info-point" |
-    "outline/business/interview-2" |
-    "outline/business/interview-3" |
-    "outline/business/interview-4" |
     "outline/business/interview" |
-    "outline/business/jcb-2" |
-    "outline/business/jcb" |
-    "outline/business/joint-account-2" |
-    "outline/business/joint-account-3" |
-    "outline/business/joint-account-4" |
     "outline/business/joint-account" |
-    "outline/business/laptop-71-2" |
-    "outline/business/laptop-71-3" |
-    "outline/business/laptop-71-4" |
     "outline/business/laptop-71" |
-    "outline/business/laptop-72-2" |
-    "outline/business/laptop-72-3" |
-    "outline/business/laptop-72-4" |
     "outline/business/laptop-72" |
-    "outline/business/laptop-91-2" |
-    "outline/business/laptop-91-3" |
-    "outline/business/laptop-91" |
-    "outline/business/law-2" |
-    "outline/business/law-3" |
-    "outline/business/law-4" |
     "outline/business/law" |
-    "outline/business/line-chart-2" |
-    "outline/business/line-chart-3" |
-    "outline/business/line-chart-4" |
-    "outline/business/line-chart-5" |
-    "outline/business/line-chart-6" |
     "outline/business/line-chart" |
-    "outline/business/loan-2" |
-    "outline/business/loan-3" |
-    "outline/business/loan-4" |
     "outline/business/loan" |
-    "outline/business/logic-2" |
-    "outline/business/logic-3" |
-    "outline/business/logic-4" |
     "outline/business/logic" |
-    "outline/business/maestro-2" |
-    "outline/business/maestro" |
-    "outline/business/mastercard-2" |
-    "outline/business/mastercard" |
-    "outline/business/math-2" |
-    "outline/business/math-3" |
-    "outline/business/math-4" |
-    "outline/business/math-5" |
     "outline/business/math" |
-    "outline/business/miner-2" |
-    "outline/business/miner-3" |
-    "outline/business/miner-4" |
-    "outline/business/miner-5" |
     "outline/business/miner" |
-    "outline/business/mobile-banking-2" |
-    "outline/business/mobile-banking-3" |
-    "outline/business/mobile-banking-4" |
     "outline/business/mobile-banking" |
-    "outline/business/mobile-card-2" |
-    "outline/business/mobile-card-3" |
-    "outline/business/mobile-card-4" |
     "outline/business/mobile-card" |
-    "outline/business/money-11-2" |
-    "outline/business/money-11-3" |
-    "outline/business/money-11-4" |
-    "outline/business/money-11-5" |
     "outline/business/money-11" |
-    "outline/business/money-12-2" |
-    "outline/business/money-12-3" |
-    "outline/business/money-12-4" |
-    "outline/business/money-12-5" |
     "outline/business/money-12" |
-    "outline/business/money-13-2" |
-    "outline/business/money-13-3" |
-    "outline/business/money-13-4" |
-    "outline/business/money-13-5" |
     "outline/business/money-13" |
-    "outline/business/money-bag-2" |
-    "outline/business/money-bag-3" |
-    "outline/business/money-bag-4" |
-    "outline/business/money-bag-5" |
     "outline/business/money-bag" |
-    "outline/business/money-coins-2" |
-    "outline/business/money-coins-3" |
-    "outline/business/money-coins-4" |
     "outline/business/money-coins" |
-    "outline/business/money-growth-2" |
-    "outline/business/money-growth-3" |
-    "outline/business/money-growth-4" |
     "outline/business/money-growth" |
-    "outline/business/money-time-2" |
-    "outline/business/money-time-3" |
-    "outline/business/money-time-4" |
     "outline/business/money-time" |
-    "outline/business/money-transfer-2" |
-    "outline/business/money-transfer-3" |
-    "outline/business/money-transfer-4" |
     "outline/business/money-transfer" |
-    "outline/business/mortgage-2" |
-    "outline/business/mortgage-3" |
-    "outline/business/mortgage-4" |
     "outline/business/mortgage" |
-    "outline/business/name-card-2" |
-    "outline/business/name-card-3" |
-    "outline/business/name-card-4" |
-    "outline/business/name-card-5" |
     "outline/business/name-card" |
-    "outline/business/negative-judgement-2" |
-    "outline/business/negative-judgement-3" |
-    "outline/business/negative-judgement-4" |
     "outline/business/negative-judgement" |
-    "outline/business/net-2" |
-    "outline/business/net-3" |
-    "outline/business/net-4" |
-    "outline/business/net-5" |
     "outline/business/net" |
-    "outline/business/new-construction-2" |
-    "outline/business/new-construction-3" |
-    "outline/business/new-construction-4" |
-    "outline/business/new-construction-5" |
     "outline/business/new-construction" |
-    "outline/business/nodes-2" |
-    "outline/business/nodes-3" |
-    "outline/business/nodes-4" |
-    "outline/business/nodes-5" |
     "outline/business/nodes" |
-    "outline/business/notes-2" |
-    "outline/business/notes-3" |
-    "outline/business/notes-4" |
-    "outline/business/notes-5" |
     "outline/business/notes" |
-    "outline/business/office-2" |
-    "outline/business/office-3" |
-    "outline/business/office-4" |
-    "outline/business/office-5" |
-    "outline/business/office-badge-2" |
-    "outline/business/office-badge-3" |
-    "outline/business/office-badge-4" |
-    "outline/business/office-badge-5" |
-    "outline/business/office-badge" |
-    "outline/business/office-chair-2" |
-    "outline/business/office-chair-3" |
-    "outline/business/office-chair-4" |
-    "outline/business/office-chair-5" |
-    "outline/business/office-chair" |
-    "outline/business/office-pass-2" |
-    "outline/business/office-pass-3" |
-    "outline/business/office-pass-4" |
-    "outline/business/office-pass-5" |
-    "outline/business/office-pass-6" |
-    "outline/business/office-pass" |
     "outline/business/office" |
-    "outline/business/online-banking-2" |
-    "outline/business/online-banking-3" |
-    "outline/business/online-banking-4" |
+    "outline/business/office-badge" |
+    "outline/business/office-chair" |
+    "outline/business/office-pass" |
     "outline/business/online-banking" |
-    "outline/business/payee-2" |
-    "outline/business/payee-3" |
-    "outline/business/payee-4" |
-    "outline/business/payee-5" |
     "outline/business/payee" |
-    "outline/business/payment-2" |
-    "outline/business/payment-3" |
-    "outline/business/payment-4" |
-    "outline/business/payment-method-2" |
-    "outline/business/payment-method-3" |
-    "outline/business/payment-method-4" |
-    "outline/business/payment-method-5" |
     "outline/business/payment-method" |
     "outline/business/payment" |
-    "outline/business/payor-2" |
-    "outline/business/payor-3" |
-    "outline/business/payor-4" |
-    "outline/business/payor-5" |
     "outline/business/payor" |
-    "outline/business/paypal-2" |
-    "outline/business/paypal" |
-    "outline/business/percentage-38-2" |
-    "outline/business/percentage-38-3" |
-    "outline/business/percentage-38-4" |
     "outline/business/percentage-38" |
-    "outline/business/percentage-39-2" |
-    "outline/business/percentage-39-3" |
-    "outline/business/percentage-39-4" |
-    "outline/business/percentage-39-5" |
     "outline/business/percentage-39" |
-    "outline/business/personal-trainer-2" |
-    "outline/business/personal-trainer-3" |
-    "outline/business/personal-trainer-4" |
-    "outline/business/personal-trainer-5" |
     "outline/business/personal-trainer" |
-    "outline/business/pig-2" |
-    "outline/business/pig-3" |
-    "outline/business/pig-4" |
     "outline/business/pig" |
-    "outline/business/pin-2" |
-    "outline/business/pin-3" |
-    "outline/business/pin-4" |
-    "outline/business/pin-5" |
     "outline/business/pin" |
-    "outline/business/plug-2" |
-    "outline/business/plug-3" |
-    "outline/business/plug-4" |
-    "outline/business/plug-5" |
-    "outline/business/plug-6" |
     "outline/business/plug" |
-    "outline/business/pos-2" |
-    "outline/business/pos-3" |
-    "outline/business/pos-4" |
     "outline/business/pos" |
-    "outline/business/positive-judgement-2" |
-    "outline/business/positive-judgement-3" |
-    "outline/business/positive-judgement-4" |
     "outline/business/positive-judgement" |
-    "outline/business/presentation-2" |
-    "outline/business/presentation-3" |
-    "outline/business/presentation-4" |
-    "outline/business/presentation-5" |
     "outline/business/presentation" |
-    "outline/business/privacy-policy-2" |
-    "outline/business/privacy-policy-3" |
-    "outline/business/privacy-policy-4" |
-    "outline/business/privacy-policy-5" |
     "outline/business/privacy-policy" |
-    "outline/business/progress-2" |
-    "outline/business/progress-3" |
-    "outline/business/progress-4" |
-    "outline/business/progress-5" |
     "outline/business/progress" |
-    "outline/business/puzzle-09-2" |
-    "outline/business/puzzle-09-3" |
-    "outline/business/puzzle-09-4" |
-    "outline/business/puzzle-09-5" |
     "outline/business/puzzle-09" |
-    "outline/business/puzzle-10-2" |
-    "outline/business/puzzle-10-3" |
-    "outline/business/puzzle-10-4" |
-    "outline/business/puzzle-10-5" |
     "outline/business/puzzle-10" |
-    "outline/business/ranking-2" |
-    "outline/business/ranking-3" |
-    "outline/business/ranking-4" |
-    "outline/business/ranking-5" |
     "outline/business/ranking" |
-    "outline/business/rate-down-2" |
-    "outline/business/rate-down-3" |
-    "outline/business/rate-down-4" |
     "outline/business/rate-down" |
-    "outline/business/rate-up-2" |
-    "outline/business/rate-up-3" |
-    "outline/business/rate-up-4" |
     "outline/business/rate-up" |
-    "outline/business/refund-2" |
-    "outline/business/refund-3" |
-    "outline/business/refund-4" |
     "outline/business/refund" |
-    "outline/business/round-dollar-2" |
-    "outline/business/round-dollar-3" |
-    "outline/business/round-dollar-4" |
     "outline/business/round-dollar" |
-    "outline/business/round-euro-2" |
-    "outline/business/round-euro-3" |
-    "outline/business/round-euro-4" |
     "outline/business/round-euro" |
-    "outline/business/round-pound-2" |
-    "outline/business/round-pound-3" |
-    "outline/business/round-pound-4" |
     "outline/business/round-pound" |
-    "outline/business/round-yen-2" |
-    "outline/business/round-yen-3" |
-    "outline/business/round-yen-4" |
     "outline/business/round-yen" |
-    "outline/business/safe-2" |
-    "outline/business/safe-3" |
-    "outline/business/safe-4" |
-    "outline/business/safe-5" |
     "outline/business/safe" |
-    "outline/business/savings-2" |
-    "outline/business/savings-3" |
-    "outline/business/savings-4" |
     "outline/business/savings" |
-    "outline/business/scale-2" |
-    "outline/business/scale-3" |
-    "outline/business/scale-4" |
     "outline/business/scale" |
-    "outline/business/sign-2" |
-    "outline/business/sign-3" |
-    "outline/business/sign-4" |
-    "outline/business/sign-5" |
     "outline/business/sign" |
-    "outline/business/signature-2" |
-    "outline/business/signature-3" |
-    "outline/business/signature-4" |
-    "outline/business/signature-5" |
     "outline/business/signature" |
-    "outline/business/solo-2" |
-    "outline/business/solo" |
-    "outline/business/statistics-2" |
-    "outline/business/statistics-3" |
-    "outline/business/statistics-4" |
-    "outline/business/statistics-5" |
-    "outline/business/statistics-6" |
     "outline/business/statistics" |
-    "outline/business/stock-market-2" |
-    "outline/business/stock-market-3" |
-    "outline/business/stock-market-4" |
-    "outline/business/stock-market-5" |
     "outline/business/stock-market" |
-    "outline/business/stripe-2" |
-    "outline/business/stripe" |
-    "outline/business/tactic-2" |
-    "outline/business/tactic-3" |
-    "outline/business/tactic-4" |
-    "outline/business/tactic-5" |
     "outline/business/tactic" |
-    "outline/business/temple-2" |
-    "outline/business/temple-3" |
-    "outline/business/temple-4" |
-    "outline/business/temple-5" |
     "outline/business/temple" |
-    "outline/business/tie-01-2" |
-    "outline/business/tie-01-3" |
-    "outline/business/tie-01-4" |
-    "outline/business/tie-01-5" |
     "outline/business/tie-01" |
-    "outline/business/tie-02-2" |
-    "outline/business/tie-02-3" |
-    "outline/business/tie-02-4" |
-    "outline/business/tie-02-5" |
     "outline/business/tie-02" |
-    "outline/business/transaction-2" |
-    "outline/business/transaction-3" |
-    "outline/business/transaction-4" |
-    "outline/business/transaction-5" |
-    "outline/business/transaction-6" |
     "outline/business/transaction" |
-    "outline/business/transactions-2" |
-    "outline/business/transactions-3" |
-    "outline/business/transactions-4" |
-    "outline/business/transactions-5" |
-    "outline/business/transactions-6" |
     "outline/business/transactions" |
-    "outline/business/visa-2" |
-    "outline/business/visa" |
-    "outline/business/wallet-43-2" |
-    "outline/business/wallet-43-3" |
-    "outline/business/wallet-43-4" |
-    "outline/business/wallet-43-5" |
     "outline/business/wallet-43" |
-    "outline/business/wallet-44-2" |
-    "outline/business/wallet-44-3" |
-    "outline/business/wallet-44-4" |
-    "outline/business/wallet-44-5" |
     "outline/business/wallet-44" |
-    "outline/business/wallet-90-2" |
-    "outline/business/wallet-90-3" |
-    "outline/business/wallet-90-4" |
     "outline/business/wallet-90" |
-    "outline/education/abc-2" |
-    "outline/education/abc-3" |
-    "outline/education/abc-4" |
     "outline/education/abc" |
-    "outline/education/agenda-2" |
-    "outline/education/agenda-3" |
-    "outline/education/agenda-4" |
-    "outline/education/agenda-5" |
-    "outline/education/agenda-bookmark-2" |
-    "outline/education/agenda-bookmark-3" |
-    "outline/education/agenda-bookmark-4" |
-    "outline/education/agenda-bookmark-5" |
-    "outline/education/agenda-bookmark" |
     "outline/education/agenda" |
-    "outline/education/album-2" |
-    "outline/education/album-3" |
-    "outline/education/album-4" |
-    "outline/education/album-5" |
-    "outline/education/album-6" |
+    "outline/education/agenda-bookmark" |
     "outline/education/album" |
-    "outline/education/astronomy-2" |
-    "outline/education/astronomy-3" |
-    "outline/education/astronomy-4" |
-    "outline/education/astronomy-5" |
     "outline/education/astronomy" |
-    "outline/education/atom-2" |
-    "outline/education/atom-3" |
-    "outline/education/atom-4" |
-    "outline/education/atom-5" |
     "outline/education/atom" |
-    "outline/education/award-49-2" |
-    "outline/education/award-49-3" |
-    "outline/education/award-49-4" |
-    "outline/education/award-49-5" |
     "outline/education/award-49" |
-    "outline/education/backpack-57-2" |
-    "outline/education/backpack-57-3" |
-    "outline/education/backpack-57-4" |
-    "outline/education/backpack-57-5" |
     "outline/education/backpack-57" |
-    "outline/education/backpack-58-2" |
-    "outline/education/backpack-58-3" |
-    "outline/education/backpack-58-4" |
-    "outline/education/backpack-58-5" |
     "outline/education/backpack-58" |
-    "outline/education/basketball-2" |
-    "outline/education/basketball-3" |
-    "outline/education/basketball-4" |
-    "outline/education/basketball-5" |
     "outline/education/basketball" |
-    "outline/education/biochemistry-2" |
-    "outline/education/biochemistry-3" |
-    "outline/education/biochemistry-4" |
-    "outline/education/biochemistry-5" |
     "outline/education/biochemistry" |
-    "outline/education/biology-2" |
-    "outline/education/biology-3" |
-    "outline/education/biology-4" |
-    "outline/education/biology-5" |
     "outline/education/biology" |
-    "outline/education/board-27-2" |
-    "outline/education/board-27-3" |
-    "outline/education/board-27-4" |
-    "outline/education/board-27-5" |
     "outline/education/board-27" |
-    "outline/education/board-51-2" |
-    "outline/education/board-51-3" |
-    "outline/education/board-51-4" |
-    "outline/education/board-51-5" |
     "outline/education/board-51" |
-    "outline/education/book-2" |
-    "outline/education/book-3" |
-    "outline/education/book-39-2" |
-    "outline/education/book-39-3" |
-    "outline/education/book-39-4" |
-    "outline/education/book-39-5" |
     "outline/education/book-39" |
-    "outline/education/book-4" |
-    "outline/education/book-5" |
-    "outline/education/book-6" |
-    "outline/education/book-bookmark-2-2" |
-    "outline/education/book-bookmark-2-3" |
-    "outline/education/book-bookmark-2-4" |
-    "outline/education/book-bookmark-2-5" |
-    "outline/education/book-bookmark-2" |
-    "outline/education/book-bookmark-3" |
-    "outline/education/book-bookmark-4" |
-    "outline/education/book-bookmark-5" |
-    "outline/education/book-bookmark-6" |
-    "outline/education/book-bookmark" |
-    "outline/education/book-open-2-2" |
-    "outline/education/book-open-2-3" |
-    "outline/education/book-open-2-4" |
-    "outline/education/book-open-2-5" |
-    "outline/education/book-open-2" |
-    "outline/education/book-open-3" |
-    "outline/education/book-open-4" |
-    "outline/education/book-open-5" |
-    "outline/education/book-open" |
     "outline/education/book" |
-    "outline/education/bookmark-2" |
-    "outline/education/bookmark-3" |
-    "outline/education/bookmark-4" |
-    "outline/education/bookmark-5" |
-    "outline/education/bookmark-6" |
+    "outline/education/book-bookmark-2" |
+    "outline/education/book-bookmark" |
+    "outline/education/book-open" |
+    "outline/education/book-open-2" |
     "outline/education/bookmark" |
-    "outline/education/books-2" |
-    "outline/education/books-3" |
-    "outline/education/books-4" |
-    "outline/education/books-46-2" |
-    "outline/education/books-46-3" |
-    "outline/education/books-46-4" |
-    "outline/education/books-46-5" |
-    "outline/education/books-46" |
-    "outline/education/books-5" |
     "outline/education/books" |
-    "outline/education/botany-2" |
-    "outline/education/botany-3" |
-    "outline/education/botany-4" |
-    "outline/education/botany-5" |
+    "outline/education/books-46" |
     "outline/education/botany" |
-    "outline/education/brush-2" |
-    "outline/education/brush-3" |
-    "outline/education/brush-4" |
-    "outline/education/brush-5" |
-    "outline/education/brush-6" |
     "outline/education/brush" |
-    "outline/education/bus-2" |
-    "outline/education/bus-3" |
-    "outline/education/bus-4" |
-    "outline/education/bus-front-12-2" |
-    "outline/education/bus-front-12-3" |
-    "outline/education/bus-front-12-4" |
-    "outline/education/bus-front-12-5" |
-    "outline/education/bus-front-12" |
     "outline/education/bus" |
-    "outline/education/buzz-2" |
-    "outline/education/buzz-3" |
-    "outline/education/buzz-4" |
-    "outline/education/buzz-5" |
+    "outline/education/bus-front-12" |
     "outline/education/buzz" |
-    "outline/education/calculator-2" |
-    "outline/education/calculator-3" |
-    "outline/education/calculator-4" |
-    "outline/education/calculator-5" |
     "outline/education/calculator" |
-    "outline/education/certificate-2" |
-    "outline/education/certificate-3" |
-    "outline/education/certificate-4" |
-    "outline/education/certificate-5" |
     "outline/education/certificate" |
-    "outline/education/chalkboard-2" |
-    "outline/education/chalkboard-3" |
-    "outline/education/chalkboard-4" |
     "outline/education/chalkboard" |
-    "outline/education/chemistry-2" |
-    "outline/education/chemistry-3" |
-    "outline/education/chemistry-4" |
-    "outline/education/chemistry-5" |
-    "outline/education/chemistry-6" |
     "outline/education/chemistry" |
-    "outline/education/cockade-2" |
-    "outline/education/cockade-3" |
-    "outline/education/cockade-4" |
-    "outline/education/cockade-5" |
     "outline/education/cockade" |
-    "outline/education/collection-2" |
-    "outline/education/collection-3" |
-    "outline/education/collection-4" |
-    "outline/education/collection-5" |
     "outline/education/collection" |
-    "outline/education/compass-2" |
-    "outline/education/compass-3" |
-    "outline/education/compass-4" |
-    "outline/education/compass-5" |
     "outline/education/compass" |
-    "outline/education/design-2" |
-    "outline/education/design-3" |
-    "outline/education/design-4" |
-    "outline/education/design-5" |
     "outline/education/design" |
-    "outline/education/earth-science-2" |
-    "outline/education/earth-science-3" |
-    "outline/education/earth-science-4" |
-    "outline/education/earth-science-5" |
     "outline/education/earth-science" |
-    "outline/education/ecology-2" |
-    "outline/education/ecology-3" |
-    "outline/education/ecology-4" |
-    "outline/education/ecology-5" |
     "outline/education/ecology" |
-    "outline/education/equation-2" |
-    "outline/education/equation-3" |
-    "outline/education/equation-4" |
-    "outline/education/equation-5" |
-    "outline/education/equation-6" |
     "outline/education/equation" |
-    "outline/education/eraser-32-2" |
-    "outline/education/eraser-32-3" |
-    "outline/education/eraser-32-4" |
-    "outline/education/eraser-32-5" |
     "outline/education/eraser-32" |
-    "outline/education/eraser-33-2" |
-    "outline/education/eraser-33-3" |
-    "outline/education/eraser-33-4" |
-    "outline/education/eraser-33-5" |
     "outline/education/eraser-33" |
-    "outline/education/flask-2" |
-    "outline/education/flask-3" |
-    "outline/education/flask-4" |
-    "outline/education/flask-5" |
     "outline/education/flask" |
-    "outline/education/function-2" |
-    "outline/education/function-3" |
-    "outline/education/function-4" |
-    "outline/education/function-5" |
-    "outline/education/function-6" |
     "outline/education/function" |
-    "outline/education/geometry-2" |
-    "outline/education/geometry-3" |
-    "outline/education/geometry-4" |
-    "outline/education/geometry-5" |
     "outline/education/geometry" |
-    "outline/education/glasses-2-2" |
-    "outline/education/glasses-2-3" |
-    "outline/education/glasses-2-4" |
-    "outline/education/glasses-2-5" |
     "outline/education/glasses-2" |
-    "outline/education/glasses-3" |
-    "outline/education/glasses-4" |
-    "outline/education/glasses-5" |
-    "outline/education/glasses-6" |
     "outline/education/glasses" |
-    "outline/education/globe-2-2" |
-    "outline/education/globe-2-3" |
-    "outline/education/globe-2-4" |
-    "outline/education/globe-2-5" |
     "outline/education/globe-2" |
-    "outline/education/globe-3" |
-    "outline/education/globe-4" |
-    "outline/education/globe-5" |
-    "outline/education/globe-6" |
     "outline/education/globe" |
-    "outline/education/grammar-check-2" |
-    "outline/education/grammar-check-3" |
-    "outline/education/grammar-check-4" |
     "outline/education/grammar-check" |
-    "outline/education/hat-3-2" |
-    "outline/education/hat-3-3" |
-    "outline/education/hat-3-4" |
-    "outline/education/hat-3-5" |
     "outline/education/hat-3" |
-    "outline/education/language-2" |
-    "outline/education/language-3" |
-    "outline/education/language-4" |
-    "outline/education/language-5" |
     "outline/education/language" |
-    "outline/education/logic-2" |
-    "outline/education/logic-3" |
-    "outline/education/logic-4" |
     "outline/education/logic" |
-    "outline/education/marker-2" |
-    "outline/education/marker-3" |
-    "outline/education/marker-4" |
-    "outline/education/marker-5" |
     "outline/education/marker" |
-    "outline/education/math-2" |
-    "outline/education/math-3" |
-    "outline/education/math-4" |
-    "outline/education/math-5" |
     "outline/education/math" |
-    "outline/education/measure-02-2" |
-    "outline/education/measure-02-3" |
-    "outline/education/measure-02-4" |
-    "outline/education/measure-02-5" |
     "outline/education/measure-02" |
-    "outline/education/measure-17-2" |
-    "outline/education/measure-17-3" |
-    "outline/education/measure-17-4" |
-    "outline/education/measure-17-5" |
     "outline/education/measure-17" |
-    "outline/education/measure-big-2" |
-    "outline/education/measure-big-3" |
-    "outline/education/measure-big-4" |
-    "outline/education/measure-big-5" |
     "outline/education/measure-big" |
-    "outline/education/medal-2" |
-    "outline/education/medal-3" |
-    "outline/education/medal-4" |
-    "outline/education/medal-5" |
     "outline/education/medal" |
-    "outline/education/medicine-2" |
-    "outline/education/medicine-3" |
-    "outline/education/medicine-4" |
-    "outline/education/medicine-5" |
     "outline/education/medicine" |
-    "outline/education/microbiology-2" |
-    "outline/education/microbiology-3" |
-    "outline/education/microbiology-4" |
-    "outline/education/microbiology-5" |
     "outline/education/microbiology" |
-    "outline/education/microscope-2" |
-    "outline/education/microscope-3" |
-    "outline/education/microscope-4" |
-    "outline/education/microscope-5" |
     "outline/education/microscope" |
-    "outline/education/molecule-2" |
-    "outline/education/molecule-3" |
-    "outline/education/molecule-4" |
-    "outline/education/molecule-5" |
     "outline/education/molecule" |
-    "outline/education/notepad-2" |
-    "outline/education/notepad-3" |
-    "outline/education/notepad-4" |
-    "outline/education/notepad-5" |
     "outline/education/notepad" |
-    "outline/education/notes-2" |
-    "outline/education/notes-3" |
-    "outline/education/notes-4" |
-    "outline/education/notes-5" |
     "outline/education/notes" |
-    "outline/education/notification-2" |
-    "outline/education/notification-3" |
-    "outline/education/notification-4" |
     "outline/education/notification" |
-    "outline/education/open-book-2" |
-    "outline/education/open-book-3" |
-    "outline/education/open-book-4" |
     "outline/education/open-book" |
-    "outline/education/paper-2" |
-    "outline/education/paper-3" |
-    "outline/education/paper-4" |
-    "outline/education/paper-5" |
-    "outline/education/paper-diploma-2" |
-    "outline/education/paper-diploma-3" |
-    "outline/education/paper-diploma-4" |
-    "outline/education/paper-diploma-5" |
     "outline/education/paper-diploma" |
     "outline/education/paper" |
-    "outline/education/paw-2" |
-    "outline/education/paw-3" |
-    "outline/education/paw-4" |
-    "outline/education/paw-5" |
     "outline/education/paw" |
-    "outline/education/pc-play-media-2" |
-    "outline/education/pc-play-media-3" |
-    "outline/education/pc-play-media-4" |
-    "outline/education/pc-play-media-5" |
     "outline/education/pc-play-media" |
-    "outline/education/pen-01-2" |
-    "outline/education/pen-01-3" |
-    "outline/education/pen-01-4" |
-    "outline/education/pen-01-5" |
     "outline/education/pen-01" |
-    "outline/education/pen-23-2" |
-    "outline/education/pen-23-3" |
-    "outline/education/pen-23-4" |
-    "outline/education/pen-23-5" |
     "outline/education/pen-23" |
-    "outline/education/pen-tool-2" |
-    "outline/education/pen-tool-3" |
-    "outline/education/pen-tool-4" |
-    "outline/education/pen-tool-5" |
     "outline/education/pen-tool" |
-    "outline/education/pencil-2" |
-    "outline/education/pencil-3" |
-    "outline/education/pencil-4" |
-    "outline/education/pencil-47-2" |
-    "outline/education/pencil-47-3" |
-    "outline/education/pencil-47-4" |
-    "outline/education/pencil-47-5" |
     "outline/education/pencil-47" |
-    "outline/education/pencil-5" |
     "outline/education/pencil" |
-    "outline/education/pendulum-2" |
-    "outline/education/pendulum-3" |
-    "outline/education/pendulum-4" |
-    "outline/education/pendulum-5" |
     "outline/education/pendulum" |
-    "outline/education/planet-2" |
-    "outline/education/planet-3" |
-    "outline/education/planet-4" |
-    "outline/education/planet-5" |
     "outline/education/planet" |
-    "outline/education/potion-2" |
-    "outline/education/potion-3" |
-    "outline/education/potion-4" |
-    "outline/education/potion-5" |
     "outline/education/potion" |
-    "outline/education/presentation-2" |
-    "outline/education/presentation-3" |
-    "outline/education/presentation-4" |
-    "outline/education/presentation-5" |
     "outline/education/presentation" |
-    "outline/education/rat-2" |
-    "outline/education/rat-3" |
-    "outline/education/rat-4" |
-    "outline/education/rat-5" |
     "outline/education/rat" |
-    "outline/education/read-2" |
-    "outline/education/read-3" |
-    "outline/education/read-4" |
-    "outline/education/read-5" |
-    "outline/education/read-6" |
     "outline/education/read" |
-    "outline/education/reading-2" |
-    "outline/education/reading-3" |
-    "outline/education/reading-4" |
     "outline/education/reading" |
-    "outline/education/research-2" |
-    "outline/education/research-3" |
-    "outline/education/research-4" |
-    "outline/education/research-5" |
     "outline/education/research" |
-    "outline/education/saved-items-2" |
-    "outline/education/saved-items-3" |
-    "outline/education/saved-items-4" |
-    "outline/education/saved-items-5" |
-    "outline/education/saved-items-6" |
     "outline/education/saved-items" |
-    "outline/education/school-2" |
-    "outline/education/school-3" |
-    "outline/education/school-4" |
-    "outline/education/school-5" |
     "outline/education/school" |
-    "outline/education/soccer-ball-2" |
-    "outline/education/soccer-ball-3" |
-    "outline/education/soccer-ball-4" |
-    "outline/education/soccer-ball-5" |
     "outline/education/soccer-ball" |
-    "outline/education/statistics-2" |
-    "outline/education/statistics-3" |
-    "outline/education/statistics-4" |
-    "outline/education/statistics-5" |
-    "outline/education/statistics-6" |
     "outline/education/statistics" |
-    "outline/education/survey-2" |
-    "outline/education/survey-3" |
-    "outline/education/survey-4" |
-    "outline/education/survey-5" |
     "outline/education/survey" |
-    "outline/education/telescope-2" |
-    "outline/education/telescope-3" |
-    "outline/education/telescope-4" |
-    "outline/education/telescope-5" |
     "outline/education/telescope" |
-    "outline/education/translation-2" |
-    "outline/education/translation-3" |
-    "outline/education/translation-4" |
-    "outline/education/translation-5" |
     "outline/education/translation" |
-    "outline/education/typography-2" |
-    "outline/education/typography-3" |
-    "outline/education/typography-4" |
-    "outline/education/typography-5" |
     "outline/education/typography" |
     "outline/user interface/a-chart" |
     "outline/user interface/a-chat" |
@@ -10043,772 +5446,2165 @@ export type WiniIconName = "color/accessibility/accessibility-lift" |
     "outline/travel/world" |
     "outline/travel/world-2" |
     "outline/touch gestures/2x-drag-down" |
-  "outline/touch gestures/2x-drag-up" |
-  "outline/touch gestures/2x-swipe-down" |
-  "outline/touch gestures/2x-swipe-left" |
-  "outline/touch gestures/2x-swipe-right" |
-  "outline/touch gestures/2x-swipe-up" |
-  "outline/touch gestures/2x-tap" |
-  "outline/touch gestures/3x-swipe-left" |
-  "outline/touch gestures/3x-swipe-right" |
-  "outline/touch gestures/3x-swipe-up" |
-  "outline/touch gestures/3x-tap" |
-  "outline/touch gestures/4x-swipe-left" |
-  "outline/touch gestures/4x-swipe-right" |
-  "outline/touch gestures/4x-swipe-up" |
-  "outline/touch gestures/active-38" |
-  "outline/touch gestures/active-40" |
-  "outline/touch gestures/camera-button" |
-  "outline/touch gestures/double-tap" |
-  "outline/touch gestures/drag-21" |
-  "outline/touch gestures/drag-31" |
-  "outline/touch gestures/drag-down" |
-  "outline/touch gestures/drag-left" |
-  "outline/touch gestures/drag-right" |
-  "outline/touch gestures/drag-up" |
-  "outline/touch gestures/flick-down" |
-  "outline/touch gestures/flick-left" |
-  "outline/touch gestures/flick-right" |
-  "outline/touch gestures/flick-up" |
-  "outline/touch gestures/grab" |
-  "outline/touch gestures/hold" |
-  "outline/touch gestures/pin-2" |
-  "outline/touch gestures/pinch" |
-  "outline/touch gestures/rotate-22" |
-  "outline/touch gestures/rotate-23" |
-  "outline/touch gestures/scan" |
-  "outline/touch gestures/scroll-horizontal" |
-  "outline/touch gestures/scroll-vertical" |
-  "outline/touch gestures/stretch" |
-  "outline/touch gestures/swipe-bottom" |
-  "outline/touch gestures/swipe-left" |
-  "outline/touch gestures/swipe-right" |
-  "outline/touch gestures/swipe-up" |
-  "outline/touch gestures/tap-01" |
-  "outline/touch gestures/tap-02" |
-  "fill/touch gestures/2x-drag-down" |
-  "fill/touch gestures/2x-drag-up" |
-  "fill/touch gestures/2x-swipe-down" |
-  "fill/touch gestures/2x-swipe-left" |
-  "fill/touch gestures/2x-swipe-right" |
-  "fill/touch gestures/2x-swipe-up" |
-  "fill/touch gestures/2x-tap" |
-  "fill/touch gestures/3x-swipe-left" |
-  "fill/touch gestures/3x-swipe-right" |
-  "fill/touch gestures/3x-swipe-up" |
-  "fill/touch gestures/3x-tap" |
-  "fill/touch gestures/4x-swipe-left" |
-  "fill/touch gestures/4x-swipe-right" |
-  "fill/touch gestures/4x-swipe-up" |
-  "fill/touch gestures/active-40" |
-  "fill/touch gestures/active-38" |
-  "fill/touch gestures/camera-button" |
-  "fill/touch gestures/double-tap" |
-  "fill/touch gestures/drag-31" |
-  "fill/touch gestures/drag-21" |
-  "fill/touch gestures/drag-down" |
-  "fill/touch gestures/drag-left" |
-  "fill/touch gestures/drag-right" |
-  "fill/touch gestures/drag-up" |
-  "fill/touch gestures/flick-down" |
-  "fill/touch gestures/flick-left" |
-  "fill/touch gestures/flick-right" |
-  "fill/touch gestures/flick-up" |
-  "fill/touch gestures/grab" |
-  "fill/touch gestures/hold" |
-  "fill/touch gestures/pin-2" |
-  "fill/touch gestures/pinch" |
-  "fill/touch gestures/rotate-22" |
-  "fill/touch gestures/rotate-23" |
-  "fill/touch gestures/scan" |
-  "fill/touch gestures/scroll-horizontal" |
-  "fill/touch gestures/scroll-vertical" |
-  "fill/touch gestures/stretch" |
-  "fill/touch gestures/swipe-bottom" |
-  "fill/touch gestures/swipe-left" |
-  "fill/touch gestures/swipe-right" |
-  "fill/touch gestures/swipe-up" |
-  "fill/touch gestures/tap-01" |
-  "fill/touch gestures/tap-02" |
-  "fill/multimedia/3d-glasses" |
-  "fill/multimedia/adult-content" |
-  "fill/multimedia/ai-generated-img" |
-  "fill/multimedia/album" |
-  "fill/multimedia/alpha-order" |
-  "fill/multimedia/antenna" |
-  "fill/multimedia/anti-shake" |
-  "fill/multimedia/aperture" |
-  "fill/multimedia/audio-description" |
-  "fill/multimedia/audio-jack" |
-  "fill/multimedia/audio-mixer" |
-  "fill/multimedia/auto-flash" |
-  "fill/multimedia/auto-flash-2" |
-  "fill/multimedia/auto-focus" |
-  "fill/multimedia/brightness" |
-  "fill/multimedia/browse" |
-  "fill/multimedia/btn-play-2" |
-  "fill/multimedia/btn-play" |
-  "fill/multimedia/btn-stop" |
-  "fill/multimedia/button-eject" |
-  "fill/multimedia/button-next" |
-  "fill/multimedia/button-pause" |
-  "fill/multimedia/button-play" |
-  "fill/multimedia/button-power" |
-  "fill/multimedia/button-previous" |
-  "fill/multimedia/button-record" |
-  "fill/multimedia/button-rewind" |
-  "fill/multimedia/button-skip" |
-  "fill/multimedia/button-stop" |
-  "fill/multimedia/camcorder" |
-  "fill/multimedia/camera" |
-  "fill/multimedia/camera-2" |
-  "fill/multimedia/camera-3" |
-  "fill/multimedia/camera-flash" |
-  "fill/multimedia/camera-flashlight" |
-  "fill/multimedia/camera-focus" |
-  "fill/multimedia/camera-focus-2" |
-  "fill/multimedia/camera-lens" |
-  "fill/multimedia/camera-roll" |
-  "fill/multimedia/camera-screen" |
-  "fill/multimedia/camera-shooting" |
-  "fill/multimedia/camera-timer" |
-  "fill/multimedia/clapperboard" |
-  "fill/multimedia/clapperboard-2" |
-  "fill/multimedia/clarinet" |
-  "fill/multimedia/compact-camera" |
-  "fill/multimedia/countdown" |
-  "fill/multimedia/countdown-2" |
-  "fill/multimedia/crop" |
-  "fill/multimedia/cycle" |
-  "fill/multimedia/digital-image" |
-  "fill/multimedia/digital-piano" |
-  "fill/multimedia/drums" |
-  "fill/multimedia/earbuds" |
-  "fill/multimedia/edit-color" |
-  "fill/multimedia/edit-contrast" |
-  "fill/multimedia/edit-curves" |
-  "fill/multimedia/edit-levels" |
-  "fill/multimedia/edit-saturation" |
-  "fill/multimedia/event-ticket" |
-  "fill/multimedia/expand" |
-  "fill/multimedia/face-recognition" |
-  "fill/multimedia/file-audio" |
-  "fill/multimedia/film" |
-  "fill/multimedia/flash-off-2" |
-  "fill/multimedia/flash-off" |
-  "fill/multimedia/folder-image" |
-  "fill/multimedia/folder-music" |
-  "fill/multimedia/frame-effect" |
-  "fill/multimedia/full-screen" |
-  "fill/multimedia/fullscreen" |
-  "fill/multimedia/grain-effect" |
-  "fill/multimedia/grid" |
-  "fill/multimedia/guitar" |
-  "fill/multimedia/headphones-2" |
-  "fill/multimedia/headphones-3" |
-  "fill/multimedia/headphones" |
-  "fill/multimedia/headphones-mic" |
-  "fill/multimedia/image-add" |
-  "fill/multimedia/image-delete" |
-  "fill/multimedia/image-location" |
-  "fill/multimedia/image" |
-  "fill/multimedia/img-rotate-left" |
-  "fill/multimedia/img-rotate-right" |
-  "fill/multimedia/img-stack" |
-  "fill/multimedia/img" |
-  "fill/multimedia/instant-camera-2" |
-  "fill/multimedia/instant-camera" |
-  "fill/multimedia/interview" |
-  "fill/multimedia/kid-2" |
-  "fill/multimedia/knob" |
-  "fill/multimedia/layers-2" |
-  "fill/multimedia/lightning" |
-  "fill/multimedia/logo-mixer" |
-  "fill/multimedia/loudspeaker" |
-  "fill/multimedia/love-movie" |
-  "fill/multimedia/macro" |
-  "fill/multimedia/media-player" |
-  "fill/multimedia/media-stream" |
-  "fill/multimedia/mic" |
-  "fill/multimedia/mic-2" |
-  "fill/multimedia/microphone-2" |
-  "fill/multimedia/microphone-off" |
-  "fill/multimedia/microphone" |
-  "fill/multimedia/movie-2" |
-  "fill/multimedia/movie" |
-  "fill/multimedia/movie-3" |
-  "fill/multimedia/movie-reel" |
-  "fill/multimedia/music-album" |
-  "fill/multimedia/music" |
-  "fill/multimedia/music-cloud" |
-  "fill/multimedia/music-note" |
-  "fill/multimedia/music-playlist" |
-  "fill/multimedia/night" |
-  "fill/multimedia/no-photo" |
-  "fill/multimedia/offline" |
-  "fill/multimedia/options" |
-  "fill/multimedia/pc-play-media" |
-  "fill/multimedia/phone-camera-back" |
-  "fill/multimedia/phone-music" |
-  "fill/multimedia/photo-album" |
-  "fill/multimedia/photo" |
-  "fill/multimedia/photo-frame" |
-  "fill/multimedia/photo-not-allowed" |
-  "fill/multimedia/piano-2" |
-  "fill/multimedia/piano" |
-  "fill/multimedia/picture" |
-  "fill/multimedia/play-media" |
-  "fill/multimedia/play-movie" |
-  "fill/multimedia/player" |
-  "fill/multimedia/playlist" |
-  "fill/multimedia/podcast-mic" |
-  "fill/multimedia/podcast" |
-  "fill/multimedia/polaroid" |
-  "fill/multimedia/polaroid-photo" |
-  "fill/multimedia/polaroid-portrait" |
-  "fill/multimedia/polaroid-shot-delete" |
-  "fill/multimedia/polaroid-shot-new" |
-  "fill/multimedia/polaroid-shots" |
-  "fill/multimedia/progress-indicator" |
-  "fill/multimedia/projector" |
-  "fill/multimedia/radio" |
-  "fill/multimedia/random" |
-  "fill/multimedia/raw-image" |
-  "fill/multimedia/rotate-camera" |
-  "fill/multimedia/record-player" |
-  "fill/multimedia/rotate-left" |
-  "fill/multimedia/rotate-right" |
-  "fill/multimedia/save-to-list" |
-  "fill/multimedia/saxophone" |
-  "fill/multimedia/scale-2" |
-  "fill/multimedia/screen-reader" |
-  "fill/multimedia/screen-sharing-2" |
-  "fill/multimedia/screen-sharing-off-2" |
-  "fill/multimedia/screen-touch" |
-  "fill/multimedia/sd-card" |
-  "fill/multimedia/selfie-2" |
-  "fill/multimedia/selfie" |
-  "fill/multimedia/sharpen" |
-  "fill/multimedia/sound" |
-  "fill/multimedia/sound-wave" |
-  "fill/multimedia/soundwave" |
-  "fill/multimedia/sparks" |
-  "fill/multimedia/speaker" |
-  "fill/multimedia/speaker-2" |
-  "fill/multimedia/sport-mode" |
-  "fill/multimedia/sticker" |
-  "fill/multimedia/subtitles" |
-  "fill/multimedia/sun" |
-  "fill/multimedia/tape" |
-  "fill/multimedia/temperature" |
-  "fill/multimedia/ticket" |
-  "fill/multimedia/tool-blur" |
-  "fill/multimedia/tripod" |
-  "fill/multimedia/trumpet" |
-  "fill/multimedia/vibrance" |
-  "fill/multimedia/video-camera" |
-  "fill/multimedia/video-gallery-2" |
-  "fill/multimedia/video-gallery" |
-  "fill/multimedia/video" |
-  "fill/multimedia/video-off" |
-  "fill/multimedia/video-player" |
-  "fill/multimedia/video-playlist" |
-  "fill/multimedia/vignette" |
-  "fill/multimedia/violin" |
-  "fill/multimedia/volume" |
-  "fill/multimedia/volume-2" |
-  "fill/multimedia/volume-down" |
-  "fill/multimedia/volume-mute" |
-  "fill/multimedia/volume-off" |
-  "fill/multimedia/volume-up" |
-  "fill/multimedia/white-balance" |
-  "outline/multimedia/3d-glasses" |
-  "outline/multimedia/adult-content" |
-  "outline/multimedia/ai-generated-img" |
-  "outline/multimedia/album" |
-  "outline/multimedia/alpha-order" |
-  "outline/multimedia/antenna" |
-  "outline/multimedia/anti-shake" |
-  "outline/multimedia/aperture" |
-  "outline/multimedia/audio-description" |
-  "outline/multimedia/audio-jack" |
-  "outline/multimedia/audio-mixer" |
-  "outline/multimedia/auto-flash" |
-  "outline/multimedia/auto-flash-2" |
-  "outline/multimedia/auto-focus" |
-  "outline/multimedia/brightness" |
-  "outline/multimedia/browse" |
-  "outline/multimedia/btn-play-2" |
-  "outline/multimedia/btn-play" |
-  "outline/multimedia/btn-stop" |
-  "outline/multimedia/button-eject" |
-  "outline/multimedia/button-next" |
-  "outline/multimedia/button-pause" |
-  "outline/multimedia/button-play" |
-  "outline/multimedia/button-power" |
-  "outline/multimedia/button-previous" |
-  "outline/multimedia/button-record" |
-  "outline/multimedia/button-rewind" |
-  "outline/multimedia/button-skip" |
-  "outline/multimedia/button-stop" |
-  "outline/multimedia/camcorder" |
-  "outline/multimedia/camera-2" |
-  "outline/multimedia/camera" |
-  "outline/multimedia/camera-3" |
-  "outline/multimedia/camera-flash" |
-  "outline/multimedia/camera-flashlight" |
-  "outline/multimedia/camera-focus" |
-  "outline/multimedia/camera-focus-2" |
-  "outline/multimedia/camera-lens" |
-  "outline/multimedia/camera-roll" |
-  "outline/multimedia/camera-screen" |
-  "outline/multimedia/camera-shooting" |
-  "outline/multimedia/camera-timer" |
-  "outline/multimedia/clapperboard" |
-  "outline/multimedia/clapperboard-2" |
-  "outline/multimedia/clarinet" |
-  "outline/multimedia/compact-camera" |
-  "outline/multimedia/countdown-2" |
-  "outline/multimedia/countdown" |
-  "outline/multimedia/crop" |
-  "outline/multimedia/cycle" |
-  "outline/multimedia/digital-image" |
-  "outline/multimedia/digital-piano" |
-  "outline/multimedia/drums" |
-  "outline/multimedia/earbuds" |
-  "outline/multimedia/edit-color" |
-  "outline/multimedia/edit-contrast" |
-  "outline/multimedia/edit-curves" |
-  "outline/multimedia/edit-levels" |
-  "outline/multimedia/edit-saturation" |
-  "outline/multimedia/event-ticket" |
-  "outline/multimedia/expand" |
-  "outline/multimedia/face-recognition" |
-  "outline/multimedia/file-audio" |
-  "outline/multimedia/film" |
-  "outline/multimedia/flash-off-2" |
-  "outline/multimedia/flash-off" |
-  "outline/multimedia/folder-image" |
-  "outline/multimedia/folder-music" |
-  "outline/multimedia/frame-effect" |
-  "outline/multimedia/full-screen" |
-  "outline/multimedia/fullscreen" |
-  "outline/multimedia/grain-effect" |
-  "outline/multimedia/grid" |
-  "outline/multimedia/guitar" |
-  "outline/multimedia/headphones" |
-  "outline/multimedia/headphones-2" |
-  "outline/multimedia/headphones-3" |
-  "outline/multimedia/headphones-mic" |
-  "outline/multimedia/image-add" |
-  "outline/multimedia/image" |
-  "outline/multimedia/image-delete" |
-  "outline/multimedia/image-location" |
-  "outline/multimedia/img-rotate-left" |
-  "outline/multimedia/img-rotate-right" |
-  "outline/multimedia/img-stack" |
-  "outline/multimedia/img" |
-  "outline/multimedia/instant-camera-2" |
-  "outline/multimedia/instant-camera" |
-  "outline/multimedia/interview" |
-  "outline/multimedia/kid-2" |
-  "outline/multimedia/knob" |
-  "outline/multimedia/layers-2" |
-  "outline/multimedia/lightning" |
-  "outline/multimedia/loudspeaker" |
-  "outline/multimedia/love-movie" |
-  "outline/multimedia/macro" |
-  "outline/multimedia/media-player" |
-  "outline/multimedia/media-stream" |
-  "outline/multimedia/mic-2" |
-  "outline/multimedia/mic" |
-  "outline/multimedia/microphone-2" |
-  "outline/multimedia/microphone" |
-  "outline/multimedia/microphone-off" |
-  "outline/multimedia/movie-2" |
-  "outline/multimedia/movie-3" |
-  "outline/multimedia/movie" |
-  "outline/multimedia/movie-reel" |
-  "outline/multimedia/music" |
-  "outline/multimedia/music-album" |
-  "outline/multimedia/music-cloud" |
-  "outline/multimedia/music-note" |
-  "outline/multimedia/music-playlist" |
-  "outline/multimedia/night" |
-  "outline/multimedia/no-photo" |
-  "outline/multimedia/offline" |
-  "outline/multimedia/options" |
-  "outline/multimedia/pc-play-media" |
-  "outline/multimedia/phone-camera-back" |
-  "outline/multimedia/phone-music" |
-  "outline/multimedia/photo" |
-  "outline/multimedia/photo-album" |
-  "outline/multimedia/photo-frame" |
-  "outline/multimedia/photo-not-allowed" |
-  "outline/multimedia/piano-2" |
-  "outline/multimedia/piano" |
-  "outline/multimedia/picture" |
-  "outline/multimedia/play-media" |
-  "outline/multimedia/play-movie" |
-  "outline/multimedia/player" |
-  "outline/multimedia/playlist" |
-  "outline/multimedia/podcast-mic" |
-  "outline/multimedia/podcast" |
-  "outline/multimedia/polaroid-photo" |
-  "outline/multimedia/polaroid-portrait" |
-  "outline/multimedia/polaroid-shot-delete" |
-  "outline/multimedia/polaroid" |
-  "outline/multimedia/polaroid-shot-new" |
-  "outline/multimedia/polaroid-shots" |
-  "outline/multimedia/progress-indicator" |
-  "outline/multimedia/projector" |
-  "outline/multimedia/radio" |
-  "outline/multimedia/random" |
-  "outline/multimedia/raw-image" |
-  "outline/multimedia/record-player" |
-  "outline/multimedia/rotate-camera" |
-  "outline/multimedia/rotate-left" |
-  "outline/multimedia/rotate-right" |
-  "outline/multimedia/save-to-list" |
-  "outline/multimedia/saxophone" |
-  "outline/multimedia/scale-2" |
-  "outline/multimedia/screen-reader" |
-  "outline/multimedia/screen-sharing-2" |
-  "outline/multimedia/screen-sharing-off-2" |
-  "outline/multimedia/screen-touch" |
-  "outline/multimedia/sd-card" |
-  "outline/multimedia/selfie" |
-  "outline/multimedia/selfie-2" |
-  "outline/multimedia/sharpen" |
-  "outline/multimedia/sound-wave" |
-  "outline/multimedia/sound" |
-  "outline/multimedia/soundwave" |
-  "outline/multimedia/sparks" |
-  "outline/multimedia/speaker-2" |
-  "outline/multimedia/speaker" |
-  "outline/multimedia/sport-mode" |
-  "outline/multimedia/sticker" |
-  "outline/multimedia/subtitles" |
-  "outline/multimedia/sun" |
-  "outline/multimedia/tape" |
-  "outline/multimedia/temperature" |
-  "outline/multimedia/ticket" |
-  "outline/multimedia/tool-blur" |
-  "outline/multimedia/tripod" |
-  "outline/multimedia/trumpet" |
-  "outline/multimedia/vibrance" |
-  "outline/multimedia/video" |
-  "outline/multimedia/video-camera" |
-  "outline/multimedia/video-gallery-2" |
-  "outline/multimedia/video-gallery" |
-  "outline/multimedia/video-off" |
-  "outline/multimedia/video-player" |
-  "outline/multimedia/video-playlist" |
-  "outline/multimedia/vignette" |
-  "outline/multimedia/violin" |
-  "outline/multimedia/volume-2" |
-  "outline/multimedia/volume" |
-  "outline/multimedia/volume-down" |
-  "outline/multimedia/volume-mute" |
-  "outline/multimedia/volume-off" |
-  "outline/multimedia/volume-up" |
-  "outline/multimedia/white-balance" |
-  "color/emoticons/alien-29" |
-  "color/emoticons/angel-face" |
-  "color/emoticons/angry-10" |
-  "color/emoticons/angry-44" |
-  "color/emoticons/angry-face" |
-  "color/emoticons/bandaged-head" |
-  "color/emoticons/big-eyes" |
-  "color/emoticons/big-grin" |
-  "color/emoticons/big-smile" |
-  "color/emoticons/bigmouth" |
-  "color/emoticons/bleah" |
-  "color/emoticons/bomb" |
-  "color/emoticons/bored" |
-  "color/emoticons/broken-heart" |
-  "color/emoticons/bug" |
-  "color/emoticons/cake" |
-  "color/emoticons/child-v2" |
-  "color/emoticons/child" |
-  "color/emoticons/clapping-hands" |
-  "color/emoticons/clown" |
-  "color/emoticons/cold-sweat" |
-  "color/emoticons/cowboy" |
-  "color/emoticons/crazy-eyes" |
-  "color/emoticons/crossed-fingers" |
-  "color/emoticons/cry-15" |
-  "color/emoticons/cry-57" |
-  "color/emoticons/cursing" |
-  "color/emoticons/cute" |
-  "color/emoticons/devil" |
-  "color/emoticons/disgusted" |
-  "color/emoticons/dizzy-face" |
-  "color/emoticons/drool" |
-  "color/emoticons/excited" |
-  "color/emoticons/eyeballs" |
-  "color/emoticons/face-with-monocle" |
-  "color/emoticons/fairy-wand" |
-  "color/emoticons/fearful-face" |
-  "color/emoticons/finger-snap" |
-  "color/emoticons/fist" |
-  "color/emoticons/flexed-biceps" |
-  "color/emoticons/folded-hands" |
-  "color/emoticons/frowning-face" |
-  "color/emoticons/frustrated" |
-  "color/emoticons/ghost" |
-  "color/emoticons/grinning-face" |
-  "color/emoticons/hand-pointing-down" |
-  "color/emoticons/hand-pointing-left" |
-  "color/emoticons/hand-pointing-right" |
-  "color/emoticons/hand-pointing-up" |
-  "color/emoticons/happy-face" |
-  "color/emoticons/happy-sun" |
-  "color/emoticons/heart-face" |
-  "color/emoticons/heart" |
-  "color/emoticons/horns-sign" |
-  "color/emoticons/hug" |
-  "color/emoticons/hungry" |
-  "color/emoticons/index-pointing-up" |
-  "color/emoticons/kid" |
-  "color/emoticons/kiss" |
-  "color/emoticons/kissy" |
-  "color/emoticons/laugh-17" |
-  "color/emoticons/laugh-35" |
-  "color/emoticons/lips" |
-  "color/emoticons/lol" |
-  "color/emoticons/love-you-gesture" |
-  "color/emoticons/lying-face" |
-  "color/emoticons/mad-12" |
-  "color/emoticons/mad-58" |
-  "color/emoticons/malicious" |
-  "color/emoticons/manga-62" |
-  "color/emoticons/manga-63" |
-  "color/emoticons/mask-face" |
-  "color/emoticons/middle-finger" |
-  "color/emoticons/mind-blown" |
-  "color/emoticons/money-face" |
-  "color/emoticons/monkey-hear-no" |
-  "color/emoticons/monkey-see-no" |
-  "color/emoticons/monkey-speak-no" |
-  "color/emoticons/monster" |
-  "color/emoticons/nerd" |
-  "color/emoticons/ninja" |
-  "color/emoticons/no-words" |
-  "color/emoticons/ok-hand" |
-  "color/emoticons/parrot" |
-  "color/emoticons/party-popper" |
-  "color/emoticons/party" |
-  "color/emoticons/penguin" |
-  "color/emoticons/phone-hand" |
-  "color/emoticons/pirate" |
-  "color/emoticons/poop" |
-  "color/emoticons/psycho-face" |
-  "color/emoticons/puzzled" |
-  "color/emoticons/quiet" |
-  "color/emoticons/quite-happy" |
-  "color/emoticons/raised-eyebrow" |
-  "color/emoticons/raised-fist" |
-  "color/emoticons/raised-hand" |
-  "color/emoticons/raising-hands" |
-  "color/emoticons/robot" |
-  "color/emoticons/rock" |
-  "color/emoticons/sad-sweat-face" |
-  "color/emoticons/sad" |
-  "color/emoticons/satisfied" |
-  "color/emoticons/scream" |
-  "color/emoticons/selfie-hand" |
-  "color/emoticons/shaking-hands" |
-  "color/emoticons/shark" |
-  "color/emoticons/shy" |
-  "color/emoticons/sick-face" |
-  "color/emoticons/sick" |
-  "color/emoticons/silly" |
-  "color/emoticons/skull" |
-  "color/emoticons/sleep" |
-  "color/emoticons/sleep-2" |
-  "color/emoticons/sloth" |
-  "color/emoticons/sleep-face" |
-  "color/emoticons/smart" |
-  "color/emoticons/smile" |
-  "color/emoticons/smiley-face" |
-  "color/emoticons/smiling-face" |
-  "color/emoticons/smiling-face-glasses" |
-  "color/emoticons/smiling-face-sunglasses" |
-  "color/emoticons/sneezing-face" |
-  "color/emoticons/soldier" |
-  "color/emoticons/speechless" |
-  "color/emoticons/spiteful" |
-  "color/emoticons/sunglasses-48" |
-  "color/emoticons/surprise" |
-  "color/emoticons/thinker" |
-  "color/emoticons/thumb-down" |
-  "color/emoticons/thumb-up" |
-  "color/emoticons/upset-13" |
-  "color/emoticons/upset-14" |
-  "color/emoticons/upside-down-face" |
-  "color/emoticons/victory-hand" |
-  "color/emoticons/vomit-face" |
-  "color/emoticons/vulcan-salute" |
-  "color/emoticons/waving-hand" |
-  "color/emoticons/what" |
-  "color/emoticons/whiskers" |
-  "color/emoticons/wink-06" |
-  "color/emoticons/wink-11" |
-  "color/emoticons/wink-69" |
-  "fill/emoticons/alien-29" |
-  "fill/emoticons/angry-10" |
-  "fill/emoticons/angry-44" |
-  "fill/emoticons/big-eyes" |
-  "fill/emoticons/big-smile" |
-  "fill/emoticons/bigmouth" |
-  "fill/emoticons/bleah" |
-  "fill/emoticons/bomb" |
-  "fill/emoticons/bored" |
-  "fill/emoticons/broken-heart" |
-  "fill/emoticons/bug" |
-  "fill/emoticons/cake" |
-  "fill/emoticons/child" |
-  "fill/emoticons/cry-15" |
-  "fill/emoticons/cry-57" |
-  "fill/emoticons/cute" |
-  "fill/emoticons/devil" |
-  "fill/emoticons/disgusted" |
-  "fill/emoticons/dizzy-face" |
-  "fill/emoticons/fairy-wand" |
-  "fill/emoticons/finger-snap" |
-  "fill/emoticons/fist" |
-  "fill/emoticons/ghost" |
-  "fill/emoticons/happy-sun" |
-  "fill/emoticons/heart" |
-  "fill/emoticons/kid" |
-  "fill/emoticons/kiss" |
-  "fill/emoticons/laugh-17" |
-  "fill/emoticons/laugh-35" |
-  "fill/emoticons/lips" |
-  "fill/emoticons/mad-12" |
-  "fill/emoticons/mad-58" |
-  "fill/emoticons/malicious" |
-  "fill/emoticons/manga-62" |
-  "fill/emoticons/manga-63" |
-  "fill/emoticons/mask-face" |
-  "fill/emoticons/monster" |
-  "fill/emoticons/nerd" |
-  "fill/emoticons/ninja" |
-  "fill/emoticons/no-words" |
-  "fill/emoticons/parrot" |
-  "fill/emoticons/party" |
-  "fill/emoticons/penguin" |
-  "fill/emoticons/pirate" |
-  "fill/emoticons/poop" |
-  "fill/emoticons/puzzled" |
-  "fill/emoticons/quite-happy" |
-  "fill/emoticons/robot" |
-  "fill/emoticons/rock" |
-  "fill/emoticons/sad" |
-  "fill/emoticons/satisfied" |
-  "fill/emoticons/shark" |
-  "fill/emoticons/shy" |
-  "fill/emoticons/sick" |
-  "fill/emoticons/silly" |
-  "fill/emoticons/skull" |
-  "fill/emoticons/sleep-2" |
-  "fill/emoticons/sleep" |
-  "fill/emoticons/sloth" |
-  "fill/emoticons/smart" |
-  "fill/emoticons/smile" |
-  "fill/emoticons/smiling-face-glasses" |
-  "fill/emoticons/smiling-face-sunglasses" |
-  "fill/emoticons/soldier" |
-  "fill/emoticons/speechless" |
-  "fill/emoticons/spiteful" |
-  "fill/emoticons/sunglasses-48" |
-  "fill/emoticons/surprise" |
-  "fill/emoticons/thumb-down" |
-  "fill/emoticons/thumb-up" |
-  "fill/emoticons/upset-13" |
-  "fill/emoticons/upset-14" |
-  "fill/emoticons/what" |
-  "fill/emoticons/whiskers" |
-  "fill/emoticons/wink-06" |
-  "fill/emoticons/wink-11" |
-  "fill/emoticons/wink-69" |
-  "outline/emoticons/alien-29" |
-  "outline/emoticons/angry-10" |
-  "outline/emoticons/angry-44" |
-  "outline/emoticons/big-eyes" |
-  "outline/emoticons/big-smile" |
-  "outline/emoticons/bigmouth" |
-  "outline/emoticons/bleah" |
-  "outline/emoticons/bomb" |
-  "outline/emoticons/bored" |
-  "outline/emoticons/broken-heart" |
-  "outline/emoticons/bug" |
-  "outline/emoticons/cake" |
-  "outline/emoticons/child" |
-  "outline/emoticons/cry-15" |
-  "outline/emoticons/cute" |
-  "outline/emoticons/cry-57" |
-  "outline/emoticons/devil" |
-  "outline/emoticons/disgusted" |
-  "outline/emoticons/dizzy-face" |
-  "outline/emoticons/fairy-wand" |
-  "outline/emoticons/finger-snap" |
-  "outline/emoticons/fist" |
-  "outline/emoticons/ghost" |
-  "outline/emoticons/happy-sun" |
-  "outline/emoticons/heart" |
-  "outline/emoticons/kid" |
-  "outline/emoticons/kiss" |
-  "outline/emoticons/laugh-17" |
-  "outline/emoticons/laugh-35" |
-  "outline/emoticons/lips" |
-  "outline/emoticons/mad-12" |
-  "outline/emoticons/mad-58" |
-  "outline/emoticons/malicious" |
-  "outline/emoticons/manga-62" |
-  "outline/emoticons/manga-63" |
-  "outline/emoticons/mask-face" |
-  "outline/emoticons/monster" |
-  "outline/emoticons/nerd" |
-  "outline/emoticons/ninja" |
-  "outline/emoticons/no-words" |
-  "outline/emoticons/parrot" |
-  "outline/emoticons/party" |
-  "outline/emoticons/penguin" |
-  "outline/emoticons/pirate" |
-  "outline/emoticons/puzzled" |
-  "outline/emoticons/poop" |
-  "outline/emoticons/quite-happy" |
-  "outline/emoticons/robot" |
-  "outline/emoticons/rock" |
-  "outline/emoticons/sad" |
-  "outline/emoticons/satisfied" |
-  "outline/emoticons/shark" |
-  "outline/emoticons/shy" |
-  "outline/emoticons/sick" |
-  "outline/emoticons/silly" |
-  "outline/emoticons/skull" |
-  "outline/emoticons/sleep-2" |
-  "outline/emoticons/sleep" |
-  "outline/emoticons/sloth" |
-  "outline/emoticons/smart" |
-  "outline/emoticons/smile" |
-  "outline/emoticons/smiling-face-glasses" |
-  "outline/emoticons/smiling-face-sunglasses" |
-  "outline/emoticons/soldier" |
-  "outline/emoticons/speechless" |
-  "outline/emoticons/spiteful" |
-  "outline/emoticons/sunglasses-48" |
-  "outline/emoticons/surprise" |
-  "outline/emoticons/thumb-down" |
-  "outline/emoticons/thumb-up" |
-  "outline/emoticons/upset-13" |
-  "outline/emoticons/upset-14" |
-  "outline/emoticons/what" |
-  "outline/emoticons/whiskers" |
-  "outline/emoticons/wink-06" |
-  "outline/emoticons/wink-11" |
-  "outline/emoticons/wink-69"
+    "outline/touch gestures/2x-drag-up" |
+    "outline/touch gestures/2x-swipe-down" |
+    "outline/touch gestures/2x-swipe-left" |
+    "outline/touch gestures/2x-swipe-right" |
+    "outline/touch gestures/2x-swipe-up" |
+    "outline/touch gestures/2x-tap" |
+    "outline/touch gestures/3x-swipe-left" |
+    "outline/touch gestures/3x-swipe-right" |
+    "outline/touch gestures/3x-swipe-up" |
+    "outline/touch gestures/3x-tap" |
+    "outline/touch gestures/4x-swipe-left" |
+    "outline/touch gestures/4x-swipe-right" |
+    "outline/touch gestures/4x-swipe-up" |
+    "outline/touch gestures/active-38" |
+    "outline/touch gestures/active-40" |
+    "outline/touch gestures/camera-button" |
+    "outline/touch gestures/double-tap" |
+    "outline/touch gestures/drag-21" |
+    "outline/touch gestures/drag-31" |
+    "outline/touch gestures/drag-down" |
+    "outline/touch gestures/drag-left" |
+    "outline/touch gestures/drag-right" |
+    "outline/touch gestures/drag-up" |
+    "outline/touch gestures/flick-down" |
+    "outline/touch gestures/flick-left" |
+    "outline/touch gestures/flick-right" |
+    "outline/touch gestures/flick-up" |
+    "outline/touch gestures/grab" |
+    "outline/touch gestures/hold" |
+    "outline/touch gestures/pin-2" |
+    "outline/touch gestures/pinch" |
+    "outline/touch gestures/rotate-22" |
+    "outline/touch gestures/rotate-23" |
+    "outline/touch gestures/scan" |
+    "outline/touch gestures/scroll-horizontal" |
+    "outline/touch gestures/scroll-vertical" |
+    "outline/touch gestures/stretch" |
+    "outline/touch gestures/swipe-bottom" |
+    "outline/touch gestures/swipe-left" |
+    "outline/touch gestures/swipe-right" |
+    "outline/touch gestures/swipe-up" |
+    "outline/touch gestures/tap-01" |
+    "outline/touch gestures/tap-02" |
+    "fill/touch gestures/2x-drag-down" |
+    "fill/touch gestures/2x-drag-up" |
+    "fill/touch gestures/2x-swipe-down" |
+    "fill/touch gestures/2x-swipe-left" |
+    "fill/touch gestures/2x-swipe-right" |
+    "fill/touch gestures/2x-swipe-up" |
+    "fill/touch gestures/2x-tap" |
+    "fill/touch gestures/3x-swipe-left" |
+    "fill/touch gestures/3x-swipe-right" |
+    "fill/touch gestures/3x-swipe-up" |
+    "fill/touch gestures/3x-tap" |
+    "fill/touch gestures/4x-swipe-left" |
+    "fill/touch gestures/4x-swipe-right" |
+    "fill/touch gestures/4x-swipe-up" |
+    "fill/touch gestures/active-40" |
+    "fill/touch gestures/active-38" |
+    "fill/touch gestures/camera-button" |
+    "fill/touch gestures/double-tap" |
+    "fill/touch gestures/drag-31" |
+    "fill/touch gestures/drag-21" |
+    "fill/touch gestures/drag-down" |
+    "fill/touch gestures/drag-left" |
+    "fill/touch gestures/drag-right" |
+    "fill/touch gestures/drag-up" |
+    "fill/touch gestures/flick-down" |
+    "fill/touch gestures/flick-left" |
+    "fill/touch gestures/flick-right" |
+    "fill/touch gestures/flick-up" |
+    "fill/touch gestures/grab" |
+    "fill/touch gestures/hold" |
+    "fill/touch gestures/pin-2" |
+    "fill/touch gestures/pinch" |
+    "fill/touch gestures/rotate-22" |
+    "fill/touch gestures/rotate-23" |
+    "fill/touch gestures/scan" |
+    "fill/touch gestures/scroll-horizontal" |
+    "fill/touch gestures/scroll-vertical" |
+    "fill/touch gestures/stretch" |
+    "fill/touch gestures/swipe-bottom" |
+    "fill/touch gestures/swipe-left" |
+    "fill/touch gestures/swipe-right" |
+    "fill/touch gestures/swipe-up" |
+    "fill/touch gestures/tap-01" |
+    "fill/touch gestures/tap-02" |
+    "fill/multimedia/3d-glasses" |
+    "fill/multimedia/adult-content" |
+    "fill/multimedia/ai-generated-img" |
+    "fill/multimedia/album" |
+    "fill/multimedia/alpha-order" |
+    "fill/multimedia/antenna" |
+    "fill/multimedia/anti-shake" |
+    "fill/multimedia/aperture" |
+    "fill/multimedia/audio-description" |
+    "fill/multimedia/audio-jack" |
+    "fill/multimedia/audio-mixer" |
+    "fill/multimedia/auto-flash" |
+    "fill/multimedia/auto-flash-2" |
+    "fill/multimedia/auto-focus" |
+    "fill/multimedia/brightness" |
+    "fill/multimedia/browse" |
+    "fill/multimedia/btn-play-2" |
+    "fill/multimedia/btn-play" |
+    "fill/multimedia/btn-stop" |
+    "fill/multimedia/button-eject" |
+    "fill/multimedia/button-next" |
+    "fill/multimedia/button-pause" |
+    "fill/multimedia/button-play" |
+    "fill/multimedia/button-power" |
+    "fill/multimedia/button-previous" |
+    "fill/multimedia/button-record" |
+    "fill/multimedia/button-rewind" |
+    "fill/multimedia/button-skip" |
+    "fill/multimedia/button-stop" |
+    "fill/multimedia/camcorder" |
+    "fill/multimedia/camera" |
+    "fill/multimedia/camera-2" |
+    "fill/multimedia/camera-3" |
+    "fill/multimedia/camera-flash" |
+    "fill/multimedia/camera-flashlight" |
+    "fill/multimedia/camera-focus" |
+    "fill/multimedia/camera-focus-2" |
+    "fill/multimedia/camera-lens" |
+    "fill/multimedia/camera-roll" |
+    "fill/multimedia/camera-screen" |
+    "fill/multimedia/camera-shooting" |
+    "fill/multimedia/camera-timer" |
+    "fill/multimedia/clapperboard" |
+    "fill/multimedia/clapperboard-2" |
+    "fill/multimedia/clarinet" |
+    "fill/multimedia/compact-camera" |
+    "fill/multimedia/countdown" |
+    "fill/multimedia/countdown-2" |
+    "fill/multimedia/crop" |
+    "fill/multimedia/cycle" |
+    "fill/multimedia/digital-image" |
+    "fill/multimedia/digital-piano" |
+    "fill/multimedia/drums" |
+    "fill/multimedia/earbuds" |
+    "fill/multimedia/edit-color" |
+    "fill/multimedia/edit-contrast" |
+    "fill/multimedia/edit-curves" |
+    "fill/multimedia/edit-levels" |
+    "fill/multimedia/edit-saturation" |
+    "fill/multimedia/event-ticket" |
+    "fill/multimedia/expand" |
+    "fill/multimedia/face-recognition" |
+    "fill/multimedia/file-audio" |
+    "fill/multimedia/film" |
+    "fill/multimedia/flash-off-2" |
+    "fill/multimedia/flash-off" |
+    "fill/multimedia/folder-image" |
+    "fill/multimedia/folder-music" |
+    "fill/multimedia/frame-effect" |
+    "fill/multimedia/full-screen" |
+    "fill/multimedia/fullscreen" |
+    "fill/multimedia/grain-effect" |
+    "fill/multimedia/grid" |
+    "fill/multimedia/guitar" |
+    "fill/multimedia/headphones-2" |
+    "fill/multimedia/headphones-3" |
+    "fill/multimedia/headphones" |
+    "fill/multimedia/headphones-mic" |
+    "fill/multimedia/image-add" |
+    "fill/multimedia/image-delete" |
+    "fill/multimedia/image-location" |
+    "fill/multimedia/image" |
+    "fill/multimedia/img-rotate-left" |
+    "fill/multimedia/img-rotate-right" |
+    "fill/multimedia/img-stack" |
+    "fill/multimedia/img" |
+    "fill/multimedia/instant-camera-2" |
+    "fill/multimedia/instant-camera" |
+    "fill/multimedia/interview" |
+    "fill/multimedia/kid-2" |
+    "fill/multimedia/knob" |
+    "fill/multimedia/layers-2" |
+    "fill/multimedia/lightning" |
+    "fill/multimedia/logo-mixer" |
+    "fill/multimedia/loudspeaker" |
+    "fill/multimedia/love-movie" |
+    "fill/multimedia/macro" |
+    "fill/multimedia/media-player" |
+    "fill/multimedia/media-stream" |
+    "fill/multimedia/mic" |
+    "fill/multimedia/mic-2" |
+    "fill/multimedia/microphone-2" |
+    "fill/multimedia/microphone-off" |
+    "fill/multimedia/microphone" |
+    "fill/multimedia/movie-2" |
+    "fill/multimedia/movie" |
+    "fill/multimedia/movie-3" |
+    "fill/multimedia/movie-reel" |
+    "fill/multimedia/music-album" |
+    "fill/multimedia/music" |
+    "fill/multimedia/music-cloud" |
+    "fill/multimedia/music-note" |
+    "fill/multimedia/music-playlist" |
+    "fill/multimedia/night" |
+    "fill/multimedia/no-photo" |
+    "fill/multimedia/offline" |
+    "fill/multimedia/options" |
+    "fill/multimedia/pc-play-media" |
+    "fill/multimedia/phone-camera-back" |
+    "fill/multimedia/phone-music" |
+    "fill/multimedia/photo-album" |
+    "fill/multimedia/photo" |
+    "fill/multimedia/photo-frame" |
+    "fill/multimedia/photo-not-allowed" |
+    "fill/multimedia/piano-2" |
+    "fill/multimedia/piano" |
+    "fill/multimedia/picture" |
+    "fill/multimedia/play-media" |
+    "fill/multimedia/play-movie" |
+    "fill/multimedia/player" |
+    "fill/multimedia/playlist" |
+    "fill/multimedia/podcast-mic" |
+    "fill/multimedia/podcast" |
+    "fill/multimedia/polaroid" |
+    "fill/multimedia/polaroid-photo" |
+    "fill/multimedia/polaroid-portrait" |
+    "fill/multimedia/polaroid-shot-delete" |
+    "fill/multimedia/polaroid-shot-new" |
+    "fill/multimedia/polaroid-shots" |
+    "fill/multimedia/progress-indicator" |
+    "fill/multimedia/projector" |
+    "fill/multimedia/radio" |
+    "fill/multimedia/random" |
+    "fill/multimedia/raw-image" |
+    "fill/multimedia/rotate-camera" |
+    "fill/multimedia/record-player" |
+    "fill/multimedia/rotate-left" |
+    "fill/multimedia/rotate-right" |
+    "fill/multimedia/save-to-list" |
+    "fill/multimedia/saxophone" |
+    "fill/multimedia/scale-2" |
+    "fill/multimedia/screen-reader" |
+    "fill/multimedia/screen-sharing-2" |
+    "fill/multimedia/screen-sharing-off-2" |
+    "fill/multimedia/screen-touch" |
+    "fill/multimedia/sd-card" |
+    "fill/multimedia/selfie-2" |
+    "fill/multimedia/selfie" |
+    "fill/multimedia/sharpen" |
+    "fill/multimedia/sound" |
+    "fill/multimedia/sound-wave" |
+    "fill/multimedia/soundwave" |
+    "fill/multimedia/sparks" |
+    "fill/multimedia/speaker" |
+    "fill/multimedia/speaker-2" |
+    "fill/multimedia/sport-mode" |
+    "fill/multimedia/sticker" |
+    "fill/multimedia/subtitles" |
+    "fill/multimedia/sun" |
+    "fill/multimedia/tape" |
+    "fill/multimedia/temperature" |
+    "fill/multimedia/ticket" |
+    "fill/multimedia/tool-blur" |
+    "fill/multimedia/tripod" |
+    "fill/multimedia/trumpet" |
+    "fill/multimedia/vibrance" |
+    "fill/multimedia/video-camera" |
+    "fill/multimedia/video-gallery-2" |
+    "fill/multimedia/video-gallery" |
+    "fill/multimedia/video" |
+    "fill/multimedia/video-off" |
+    "fill/multimedia/video-player" |
+    "fill/multimedia/video-playlist" |
+    "fill/multimedia/vignette" |
+    "fill/multimedia/violin" |
+    "fill/multimedia/volume" |
+    "fill/multimedia/volume-2" |
+    "fill/multimedia/volume-down" |
+    "fill/multimedia/volume-mute" |
+    "fill/multimedia/volume-off" |
+    "fill/multimedia/volume-up" |
+    "fill/multimedia/white-balance" |
+    "outline/multimedia/3d-glasses" |
+    "outline/multimedia/adult-content" |
+    "outline/multimedia/ai-generated-img" |
+    "outline/multimedia/album" |
+    "outline/multimedia/alpha-order" |
+    "outline/multimedia/antenna" |
+    "outline/multimedia/anti-shake" |
+    "outline/multimedia/aperture" |
+    "outline/multimedia/audio-description" |
+    "outline/multimedia/audio-jack" |
+    "outline/multimedia/audio-mixer" |
+    "outline/multimedia/auto-flash" |
+    "outline/multimedia/auto-flash-2" |
+    "outline/multimedia/auto-focus" |
+    "outline/multimedia/brightness" |
+    "outline/multimedia/browse" |
+    "outline/multimedia/btn-play-2" |
+    "outline/multimedia/btn-play" |
+    "outline/multimedia/btn-stop" |
+    "outline/multimedia/button-eject" |
+    "outline/multimedia/button-next" |
+    "outline/multimedia/button-pause" |
+    "outline/multimedia/button-play" |
+    "outline/multimedia/button-power" |
+    "outline/multimedia/button-previous" |
+    "outline/multimedia/button-record" |
+    "outline/multimedia/button-rewind" |
+    "outline/multimedia/button-skip" |
+    "outline/multimedia/button-stop" |
+    "outline/multimedia/camcorder" |
+    "outline/multimedia/camera-2" |
+    "outline/multimedia/camera" |
+    "outline/multimedia/camera-3" |
+    "outline/multimedia/camera-flash" |
+    "outline/multimedia/camera-flashlight" |
+    "outline/multimedia/camera-focus" |
+    "outline/multimedia/camera-focus-2" |
+    "outline/multimedia/camera-lens" |
+    "outline/multimedia/camera-roll" |
+    "outline/multimedia/camera-screen" |
+    "outline/multimedia/camera-shooting" |
+    "outline/multimedia/camera-timer" |
+    "outline/multimedia/clapperboard" |
+    "outline/multimedia/clapperboard-2" |
+    "outline/multimedia/clarinet" |
+    "outline/multimedia/compact-camera" |
+    "outline/multimedia/countdown-2" |
+    "outline/multimedia/countdown" |
+    "outline/multimedia/crop" |
+    "outline/multimedia/cycle" |
+    "outline/multimedia/digital-image" |
+    "outline/multimedia/digital-piano" |
+    "outline/multimedia/drums" |
+    "outline/multimedia/earbuds" |
+    "outline/multimedia/edit-color" |
+    "outline/multimedia/edit-contrast" |
+    "outline/multimedia/edit-curves" |
+    "outline/multimedia/edit-levels" |
+    "outline/multimedia/edit-saturation" |
+    "outline/multimedia/event-ticket" |
+    "outline/multimedia/expand" |
+    "outline/multimedia/face-recognition" |
+    "outline/multimedia/file-audio" |
+    "outline/multimedia/film" |
+    "outline/multimedia/flash-off-2" |
+    "outline/multimedia/flash-off" |
+    "outline/multimedia/folder-image" |
+    "outline/multimedia/folder-music" |
+    "outline/multimedia/frame-effect" |
+    "outline/multimedia/full-screen" |
+    "outline/multimedia/fullscreen" |
+    "outline/multimedia/grain-effect" |
+    "outline/multimedia/grid" |
+    "outline/multimedia/guitar" |
+    "outline/multimedia/headphones" |
+    "outline/multimedia/headphones-2" |
+    "outline/multimedia/headphones-3" |
+    "outline/multimedia/headphones-mic" |
+    "outline/multimedia/image-add" |
+    "outline/multimedia/image" |
+    "outline/multimedia/image-delete" |
+    "outline/multimedia/image-location" |
+    "outline/multimedia/img-rotate-left" |
+    "outline/multimedia/img-rotate-right" |
+    "outline/multimedia/img-stack" |
+    "outline/multimedia/img" |
+    "outline/multimedia/instant-camera-2" |
+    "outline/multimedia/instant-camera" |
+    "outline/multimedia/interview" |
+    "outline/multimedia/kid-2" |
+    "outline/multimedia/knob" |
+    "outline/multimedia/layers-2" |
+    "outline/multimedia/lightning" |
+    "outline/multimedia/loudspeaker" |
+    "outline/multimedia/love-movie" |
+    "outline/multimedia/macro" |
+    "outline/multimedia/media-player" |
+    "outline/multimedia/media-stream" |
+    "outline/multimedia/mic-2" |
+    "outline/multimedia/mic" |
+    "outline/multimedia/microphone-2" |
+    "outline/multimedia/microphone" |
+    "outline/multimedia/microphone-off" |
+    "outline/multimedia/movie-2" |
+    "outline/multimedia/movie-3" |
+    "outline/multimedia/movie" |
+    "outline/multimedia/movie-reel" |
+    "outline/multimedia/music" |
+    "outline/multimedia/music-album" |
+    "outline/multimedia/music-cloud" |
+    "outline/multimedia/music-note" |
+    "outline/multimedia/music-playlist" |
+    "outline/multimedia/night" |
+    "outline/multimedia/no-photo" |
+    "outline/multimedia/offline" |
+    "outline/multimedia/options" |
+    "outline/multimedia/pc-play-media" |
+    "outline/multimedia/phone-camera-back" |
+    "outline/multimedia/phone-music" |
+    "outline/multimedia/photo" |
+    "outline/multimedia/photo-album" |
+    "outline/multimedia/photo-frame" |
+    "outline/multimedia/photo-not-allowed" |
+    "outline/multimedia/piano-2" |
+    "outline/multimedia/piano" |
+    "outline/multimedia/picture" |
+    "outline/multimedia/play-media" |
+    "outline/multimedia/play-movie" |
+    "outline/multimedia/player" |
+    "outline/multimedia/playlist" |
+    "outline/multimedia/podcast-mic" |
+    "outline/multimedia/podcast" |
+    "outline/multimedia/polaroid-photo" |
+    "outline/multimedia/polaroid-portrait" |
+    "outline/multimedia/polaroid-shot-delete" |
+    "outline/multimedia/polaroid" |
+    "outline/multimedia/polaroid-shot-new" |
+    "outline/multimedia/polaroid-shots" |
+    "outline/multimedia/progress-indicator" |
+    "outline/multimedia/projector" |
+    "outline/multimedia/radio" |
+    "outline/multimedia/random" |
+    "outline/multimedia/raw-image" |
+    "outline/multimedia/record-player" |
+    "outline/multimedia/rotate-camera" |
+    "outline/multimedia/rotate-left" |
+    "outline/multimedia/rotate-right" |
+    "outline/multimedia/save-to-list" |
+    "outline/multimedia/saxophone" |
+    "outline/multimedia/scale-2" |
+    "outline/multimedia/screen-reader" |
+    "outline/multimedia/screen-sharing-2" |
+    "outline/multimedia/screen-sharing-off-2" |
+    "outline/multimedia/screen-touch" |
+    "outline/multimedia/sd-card" |
+    "outline/multimedia/selfie" |
+    "outline/multimedia/selfie-2" |
+    "outline/multimedia/sharpen" |
+    "outline/multimedia/sound-wave" |
+    "outline/multimedia/sound" |
+    "outline/multimedia/soundwave" |
+    "outline/multimedia/sparks" |
+    "outline/multimedia/speaker-2" |
+    "outline/multimedia/speaker" |
+    "outline/multimedia/sport-mode" |
+    "outline/multimedia/sticker" |
+    "outline/multimedia/subtitles" |
+    "outline/multimedia/sun" |
+    "outline/multimedia/tape" |
+    "outline/multimedia/temperature" |
+    "outline/multimedia/ticket" |
+    "outline/multimedia/tool-blur" |
+    "outline/multimedia/tripod" |
+    "outline/multimedia/trumpet" |
+    "outline/multimedia/vibrance" |
+    "outline/multimedia/video" |
+    "outline/multimedia/video-camera" |
+    "outline/multimedia/video-gallery-2" |
+    "outline/multimedia/video-gallery" |
+    "outline/multimedia/video-off" |
+    "outline/multimedia/video-player" |
+    "outline/multimedia/video-playlist" |
+    "outline/multimedia/vignette" |
+    "outline/multimedia/violin" |
+    "outline/multimedia/volume-2" |
+    "outline/multimedia/volume" |
+    "outline/multimedia/volume-down" |
+    "outline/multimedia/volume-mute" |
+    "outline/multimedia/volume-off" |
+    "outline/multimedia/volume-up" |
+    "outline/multimedia/white-balance" |
+    "color/emoticons/alien-29" |
+    "color/emoticons/angel-face" |
+    "color/emoticons/angry-10" |
+    "color/emoticons/angry-44" |
+    "color/emoticons/angry-face" |
+    "color/emoticons/bandaged-head" |
+    "color/emoticons/big-eyes" |
+    "color/emoticons/big-grin" |
+    "color/emoticons/big-smile" |
+    "color/emoticons/bigmouth" |
+    "color/emoticons/bleah" |
+    "color/emoticons/bomb" |
+    "color/emoticons/bored" |
+    "color/emoticons/broken-heart" |
+    "color/emoticons/bug" |
+    "color/emoticons/cake" |
+    "color/emoticons/child-v2" |
+    "color/emoticons/child" |
+    "color/emoticons/clapping-hands" |
+    "color/emoticons/clown" |
+    "color/emoticons/cold-sweat" |
+    "color/emoticons/cowboy" |
+    "color/emoticons/crazy-eyes" |
+    "color/emoticons/crossed-fingers" |
+    "color/emoticons/cry-15" |
+    "color/emoticons/cry-57" |
+    "color/emoticons/cursing" |
+    "color/emoticons/cute" |
+    "color/emoticons/devil" |
+    "color/emoticons/disgusted" |
+    "color/emoticons/dizzy-face" |
+    "color/emoticons/drool" |
+    "color/emoticons/excited" |
+    "color/emoticons/eyeballs" |
+    "color/emoticons/face-with-monocle" |
+    "color/emoticons/fairy-wand" |
+    "color/emoticons/fearful-face" |
+    "color/emoticons/finger-snap" |
+    "color/emoticons/fist" |
+    "color/emoticons/flexed-biceps" |
+    "color/emoticons/folded-hands" |
+    "color/emoticons/frowning-face" |
+    "color/emoticons/frustrated" |
+    "color/emoticons/ghost" |
+    "color/emoticons/grinning-face" |
+    "color/emoticons/hand-pointing-down" |
+    "color/emoticons/hand-pointing-left" |
+    "color/emoticons/hand-pointing-right" |
+    "color/emoticons/hand-pointing-up" |
+    "color/emoticons/happy-face" |
+    "color/emoticons/happy-sun" |
+    "color/emoticons/heart-face" |
+    "color/emoticons/heart" |
+    "color/emoticons/horns-sign" |
+    "color/emoticons/hug" |
+    "color/emoticons/hungry" |
+    "color/emoticons/index-pointing-up" |
+    "color/emoticons/kid" |
+    "color/emoticons/kiss" |
+    "color/emoticons/kissy" |
+    "color/emoticons/laugh-17" |
+    "color/emoticons/laugh-35" |
+    "color/emoticons/lips" |
+    "color/emoticons/lol" |
+    "color/emoticons/love-you-gesture" |
+    "color/emoticons/lying-face" |
+    "color/emoticons/mad-12" |
+    "color/emoticons/mad-58" |
+    "color/emoticons/malicious" |
+    "color/emoticons/manga-62" |
+    "color/emoticons/manga-63" |
+    "color/emoticons/mask-face" |
+    "color/emoticons/middle-finger" |
+    "color/emoticons/mind-blown" |
+    "color/emoticons/money-face" |
+    "color/emoticons/monkey-hear-no" |
+    "color/emoticons/monkey-see-no" |
+    "color/emoticons/monkey-speak-no" |
+    "color/emoticons/monster" |
+    "color/emoticons/nerd" |
+    "color/emoticons/ninja" |
+    "color/emoticons/no-words" |
+    "color/emoticons/ok-hand" |
+    "color/emoticons/parrot" |
+    "color/emoticons/party-popper" |
+    "color/emoticons/party" |
+    "color/emoticons/penguin" |
+    "color/emoticons/phone-hand" |
+    "color/emoticons/pirate" |
+    "color/emoticons/poop" |
+    "color/emoticons/psycho-face" |
+    "color/emoticons/puzzled" |
+    "color/emoticons/quiet" |
+    "color/emoticons/quite-happy" |
+    "color/emoticons/raised-eyebrow" |
+    "color/emoticons/raised-fist" |
+    "color/emoticons/raised-hand" |
+    "color/emoticons/raising-hands" |
+    "color/emoticons/robot" |
+    "color/emoticons/rock" |
+    "color/emoticons/sad-sweat-face" |
+    "color/emoticons/sad" |
+    "color/emoticons/satisfied" |
+    "color/emoticons/scream" |
+    "color/emoticons/selfie-hand" |
+    "color/emoticons/shaking-hands" |
+    "color/emoticons/shark" |
+    "color/emoticons/shy" |
+    "color/emoticons/sick-face" |
+    "color/emoticons/sick" |
+    "color/emoticons/silly" |
+    "color/emoticons/skull" |
+    "color/emoticons/sleep" |
+    "color/emoticons/sleep-2" |
+    "color/emoticons/sloth" |
+    "color/emoticons/sleep-face" |
+    "color/emoticons/smart" |
+    "color/emoticons/smile" |
+    "color/emoticons/smiley-face" |
+    "color/emoticons/smiling-face" |
+    "color/emoticons/smiling-face-glasses" |
+    "color/emoticons/smiling-face-sunglasses" |
+    "color/emoticons/sneezing-face" |
+    "color/emoticons/soldier" |
+    "color/emoticons/speechless" |
+    "color/emoticons/spiteful" |
+    "color/emoticons/sunglasses-48" |
+    "color/emoticons/surprise" |
+    "color/emoticons/thinker" |
+    "color/emoticons/thumb-down" |
+    "color/emoticons/thumb-up" |
+    "color/emoticons/upset-13" |
+    "color/emoticons/upset-14" |
+    "color/emoticons/upside-down-face" |
+    "color/emoticons/victory-hand" |
+    "color/emoticons/vomit-face" |
+    "color/emoticons/vulcan-salute" |
+    "color/emoticons/waving-hand" |
+    "color/emoticons/what" |
+    "color/emoticons/whiskers" |
+    "color/emoticons/wink-06" |
+    "color/emoticons/wink-11" |
+    "color/emoticons/wink-69" |
+    "fill/emoticons/alien-29" |
+    "fill/emoticons/angry-10" |
+    "fill/emoticons/angry-44" |
+    "fill/emoticons/big-eyes" |
+    "fill/emoticons/big-smile" |
+    "fill/emoticons/bigmouth" |
+    "fill/emoticons/bleah" |
+    "fill/emoticons/bomb" |
+    "fill/emoticons/bored" |
+    "fill/emoticons/broken-heart" |
+    "fill/emoticons/bug" |
+    "fill/emoticons/cake" |
+    "fill/emoticons/child" |
+    "fill/emoticons/cry-15" |
+    "fill/emoticons/cry-57" |
+    "fill/emoticons/cute" |
+    "fill/emoticons/devil" |
+    "fill/emoticons/disgusted" |
+    "fill/emoticons/dizzy-face" |
+    "fill/emoticons/fairy-wand" |
+    "fill/emoticons/finger-snap" |
+    "fill/emoticons/fist" |
+    "fill/emoticons/ghost" |
+    "fill/emoticons/happy-sun" |
+    "fill/emoticons/heart" |
+    "fill/emoticons/kid" |
+    "fill/emoticons/kiss" |
+    "fill/emoticons/laugh-17" |
+    "fill/emoticons/laugh-35" |
+    "fill/emoticons/lips" |
+    "fill/emoticons/mad-12" |
+    "fill/emoticons/mad-58" |
+    "fill/emoticons/malicious" |
+    "fill/emoticons/manga-62" |
+    "fill/emoticons/manga-63" |
+    "fill/emoticons/mask-face" |
+    "fill/emoticons/monster" |
+    "fill/emoticons/nerd" |
+    "fill/emoticons/ninja" |
+    "fill/emoticons/no-words" |
+    "fill/emoticons/parrot" |
+    "fill/emoticons/party" |
+    "fill/emoticons/penguin" |
+    "fill/emoticons/pirate" |
+    "fill/emoticons/poop" |
+    "fill/emoticons/puzzled" |
+    "fill/emoticons/quite-happy" |
+    "fill/emoticons/robot" |
+    "fill/emoticons/rock" |
+    "fill/emoticons/sad" |
+    "fill/emoticons/satisfied" |
+    "fill/emoticons/shark" |
+    "fill/emoticons/shy" |
+    "fill/emoticons/sick" |
+    "fill/emoticons/silly" |
+    "fill/emoticons/skull" |
+    "fill/emoticons/sleep-2" |
+    "fill/emoticons/sleep" |
+    "fill/emoticons/sloth" |
+    "fill/emoticons/smart" |
+    "fill/emoticons/smile" |
+    "fill/emoticons/smiling-face-glasses" |
+    "fill/emoticons/smiling-face-sunglasses" |
+    "fill/emoticons/soldier" |
+    "fill/emoticons/speechless" |
+    "fill/emoticons/spiteful" |
+    "fill/emoticons/sunglasses-48" |
+    "fill/emoticons/surprise" |
+    "fill/emoticons/thumb-down" |
+    "fill/emoticons/thumb-up" |
+    "fill/emoticons/upset-13" |
+    "fill/emoticons/upset-14" |
+    "fill/emoticons/what" |
+    "fill/emoticons/whiskers" |
+    "fill/emoticons/wink-06" |
+    "fill/emoticons/wink-11" |
+    "fill/emoticons/wink-69" |
+    "outline/emoticons/alien-29" |
+    "outline/emoticons/angry-10" |
+    "outline/emoticons/angry-44" |
+    "outline/emoticons/big-eyes" |
+    "outline/emoticons/big-smile" |
+    "outline/emoticons/bigmouth" |
+    "outline/emoticons/bleah" |
+    "outline/emoticons/bomb" |
+    "outline/emoticons/bored" |
+    "outline/emoticons/broken-heart" |
+    "outline/emoticons/bug" |
+    "outline/emoticons/cake" |
+    "outline/emoticons/child" |
+    "outline/emoticons/cry-15" |
+    "outline/emoticons/cute" |
+    "outline/emoticons/cry-57" |
+    "outline/emoticons/devil" |
+    "outline/emoticons/disgusted" |
+    "outline/emoticons/dizzy-face" |
+    "outline/emoticons/fairy-wand" |
+    "outline/emoticons/finger-snap" |
+    "outline/emoticons/fist" |
+    "outline/emoticons/ghost" |
+    "outline/emoticons/happy-sun" |
+    "outline/emoticons/heart" |
+    "outline/emoticons/kid" |
+    "outline/emoticons/kiss" |
+    "outline/emoticons/laugh-17" |
+    "outline/emoticons/laugh-35" |
+    "outline/emoticons/lips" |
+    "outline/emoticons/mad-12" |
+    "outline/emoticons/mad-58" |
+    "outline/emoticons/malicious" |
+    "outline/emoticons/manga-62" |
+    "outline/emoticons/manga-63" |
+    "outline/emoticons/mask-face" |
+    "outline/emoticons/monster" |
+    "outline/emoticons/nerd" |
+    "outline/emoticons/ninja" |
+    "outline/emoticons/no-words" |
+    "outline/emoticons/parrot" |
+    "outline/emoticons/party" |
+    "outline/emoticons/penguin" |
+    "outline/emoticons/pirate" |
+    "outline/emoticons/puzzled" |
+    "outline/emoticons/poop" |
+    "outline/emoticons/quite-happy" |
+    "outline/emoticons/robot" |
+    "outline/emoticons/rock" |
+    "outline/emoticons/sad" |
+    "outline/emoticons/satisfied" |
+    "outline/emoticons/shark" |
+    "outline/emoticons/shy" |
+    "outline/emoticons/sick" |
+    "outline/emoticons/silly" |
+    "outline/emoticons/skull" |
+    "outline/emoticons/sleep-2" |
+    "outline/emoticons/sleep" |
+    "outline/emoticons/sloth" |
+    "outline/emoticons/smart" |
+    "outline/emoticons/smile" |
+    "outline/emoticons/smiling-face-glasses" |
+    "outline/emoticons/smiling-face-sunglasses" |
+    "outline/emoticons/soldier" |
+    "outline/emoticons/speechless" |
+    "outline/emoticons/spiteful" |
+    "outline/emoticons/sunglasses-48" |
+    "outline/emoticons/surprise" |
+    "outline/emoticons/thumb-down" |
+    "outline/emoticons/thumb-up" |
+    "outline/emoticons/upset-13" |
+    "outline/emoticons/upset-14" |
+    "outline/emoticons/what" |
+    "outline/emoticons/whiskers" |
+    "outline/emoticons/wink-06" |
+    "outline/emoticons/wink-11" |
+    "outline/emoticons/wink-69" |
+    "color/business/address-book" |
+    "color/business/agenda" |
+    "color/business/algorithm" |
+    "color/business/amazon-card" |
+    "color/business/amex" |
+    "color/business/android-card" |
+    "color/business/app-services" |
+    "color/business/apple-card" |
+    "color/business/archery-target" |
+    "color/business/atm" |
+    "color/business/award-49" |
+    "color/business/badge" |
+    "color/business/bank-statement" |
+    "color/business/bill" |
+    "color/business/bitcoin" |
+    "color/business/bitcoin-card" |
+    "color/business/block" |
+    "color/business/blockchain" |
+    "color/business/board-27" |
+    "color/business/board-28" |
+    "color/business/board-29" |
+    "color/business/board-30" |
+    "color/business/books" |
+    "color/business/briefcase-24" |
+    "color/business/briefcase-25" |
+    "color/business/briefcase-26" |
+    "color/business/bulb-61" |
+    "color/business/bulb-62" |
+    "color/business/bulb-63" |
+    "color/business/business-agent" |
+    "color/business/business-contact-85" |
+    "color/business/business-contact-86" |
+    "color/business/business-contact-87" |
+    "color/business/business-contact-88" |
+    "color/business/businessman-03" |
+    "color/business/businessman-04" |
+    "color/business/calculator" |
+    "color/business/candlestick-chart" |
+    "color/business/card-switch" |
+    "color/business/certificate" |
+    "color/business/chart-bar-32" |
+    "color/business/chart-bar-33" |
+    "color/business/chart-growth" |
+    "color/business/chart-pie-35" |
+    "color/business/chart-pie-36" |
+    "color/business/chart" |
+    "color/business/cheque" |
+    "color/business/chess-knight" |
+    "color/business/chess-tower" |
+    "color/business/citi" |
+    "color/business/cloud-mining" |
+    "color/business/cockade" |
+    "color/business/coins" |
+    "color/business/conference-room" |
+    "color/business/connect" |
+    "color/business/contactless-card" |
+    "color/business/contacts" |
+    "color/business/copyright" |
+    "color/business/credit-card-in" |
+    "color/business/credit-card" |
+    "color/business/credit-locked" |
+    "color/business/crypto-wallet" |
+    "color/business/currency-dollar" |
+    "color/business/currency-euro" |
+    "color/business/currency-exchange-2" |
+    "color/business/currency-pound" |
+    "color/business/currency-yen" |
+    "color/business/debt" |
+    "color/business/decentralize" |
+    "color/business/decision-process" |
+    "color/business/dice" |
+    "color/business/diners-club" |
+    "color/business/discover" |
+    "color/business/factory" |
+    "color/business/globe" |
+    "color/business/goal-65" |
+    "color/business/gold" |
+    "color/business/hammer" |
+    "color/business/hand-card" |
+    "color/business/handout" |
+    "color/business/handshake" |
+    "color/business/hat" |
+    "color/business/hierarchy-53" |
+    "color/business/hierarchy-54" |
+    "color/business/hierarchy-55" |
+    "color/business/hierarchy-56" |
+    "color/business/info-point" |
+    "color/business/interview" |
+    "color/business/jcb" |
+    "color/business/joint-account" |
+    "color/business/laptop-71" |
+    "color/business/laptop-72" |
+    "color/business/laptop-91" |
+    "color/business/law" |
+    "color/business/line-chart" |
+    "color/business/loan" |
+    "color/business/logic" |
+    "color/business/maestro" |
+    "color/business/mastercard" |
+    "color/business/math" |
+    "color/business/miner-v2" |
+    "color/business/miner" |
+    "color/business/mobile-banking" |
+    "color/business/mobile-card" |
+    "color/business/money-11" |
+    "color/business/money-12" |
+    "color/business/money-13" |
+    "color/business/money-bag" |
+    "color/business/money-coins" |
+    "color/business/money-growth" |
+    "color/business/money-time" |
+    "color/business/money-transfer" |
+    "color/business/mortgage-v2" |
+    "color/business/mortgage" |
+    "color/business/name-card" |
+    "color/business/negative-judgement" |
+    "color/business/net" |
+    "color/business/new-construction" |
+    "color/business/nodes" |
+    "color/business/notes" |
+    "color/business/office-badge" |
+    "color/business/office" |
+    "color/business/office-chair" |
+    "color/business/office-pass" |
+    "color/business/online-banking" |
+    "color/business/payee" |
+    "color/business/payment" |
+    "color/business/payor" |
+    "color/business/paypal" |
+    "color/business/percentage-38" |
+    "color/business/percentage-39" |
+    "color/business/personal-trainer" |
+    "color/business/pig" |
+    "color/business/pin" |
+    "color/business/plug" |
+    "color/business/pos" |
+    "color/business/positive-judgement" |
+    "color/business/presentation" |
+    "color/business/privacy-policy" |
+    "color/business/progress" |
+    "color/business/puzzle-09" |
+    "color/business/puzzle-10" |
+    "color/business/ranking" |
+    "color/business/rate-down" |
+    "color/business/rate-up" |
+    "color/business/refund" |
+    "color/business/round-dollar" |
+    "color/business/round-euro" |
+    "color/business/round-pound" |
+    "color/business/round-yen" |
+    "color/business/safe" |
+    "color/business/savings" |
+    "color/business/scale" |
+    "color/business/sign" |
+    "color/business/signature" |
+    "color/business/solo" |
+    "color/business/statistics" |
+    "color/business/stock-market" |
+    "color/business/stripe" |
+    "color/business/tactic" |
+    "color/business/temple" |
+    "color/business/tie-01" |
+    "color/business/tie-02" |
+    "color/business/transaction" |
+    "color/business/transactions" |
+    "color/business/visa" |
+    "color/business/wallet-43" |
+    "color/business/wallet-44" |
+    "color/business/wallet-90" |
+    "color/education/abc" |
+    "color/education/agenda" |
+    "color/education/agenda-bookmark" |
+    "color/education/album" |
+    "color/education/astronomy" |
+    "color/education/atom" |
+    "color/education/award-49" |
+    "color/education/backpack-57" |
+    "color/education/backpack-58" |
+    "color/education/basketball" |
+    "color/education/biochemistry" |
+    "color/education/biology" |
+    "color/education/board-27" |
+    "color/education/board-51" |
+    "color/education/book-39" |
+    "color/education/book-bookmark" |
+    "color/education/book" |
+    "color/education/book-bookmark-2" |
+    "color/education/book-open-2" |
+    "color/education/book-open" |
+    "color/education/bookmark" |
+    "color/education/books" |
+    "color/education/books-46" |
+    "color/education/botany" |
+    "color/education/brush" |
+    "color/education/bus-front-12" |
+    "color/education/bus" |
+    "color/education/buzz" |
+    "color/education/calculator" |
+    "color/education/certificate" |
+    "color/education/chalkboard" |
+    "color/education/chemistry" |
+    "color/education/cockade" |
+    "color/education/collection" |
+    "color/education/compass" |
+    "color/education/design" |
+    "color/education/earth-science" |
+    "color/education/ecology" |
+    "color/education/equation" |
+    "color/education/eraser-32" |
+    "color/education/eraser-33" |
+    "color/education/flask" |
+    "color/education/function" |
+    "color/education/geometry" |
+    "color/education/glasses-2" |
+    "color/education/glasses" |
+    "color/education/globe-2" |
+    "color/education/globe" |
+    "color/education/grammar-check" |
+    "color/education/hat-3" |
+    "color/education/language" |
+    "color/education/logic" |
+    "color/education/marker" |
+    "color/education/math" |
+    "color/education/measure-02" |
+    "color/education/measure-17" |
+    "color/education/measure-big" |
+    "color/education/medal" |
+    "color/education/medicine" |
+    "color/education/microbiology" |
+    "color/education/microscope" |
+    "color/education/molecule" |
+    "color/education/notepad" |
+    "color/education/notes" |
+    "color/education/notification" |
+    "color/education/open-book" |
+    "color/education/paper-diploma" |
+    "color/education/paper" |
+    "color/education/paw" |
+    "color/education/pc-play-media" |
+    "color/education/pen-01" |
+    "color/education/pen-23" |
+    "color/education/pen-tool" |
+    "color/education/pencil" |
+    "color/education/pencil-47" |
+    "color/education/pendulum" |
+    "color/education/planet" |
+    "color/education/potion" |
+    "color/education/rat" |
+    "color/education/presentation" |
+    "color/education/read" |
+    "color/education/reading" |
+    "color/education/research" |
+    "color/education/saved-items" |
+    "color/education/school" |
+    "color/education/soccer-ball" |
+    "color/education/statistics" |
+    "color/education/survey" |
+    "color/education/telescope" |
+    "color/education/translation" |
+    "color/education/typography" |
+    "color/entertainment/3d-glasses" |
+    "color/entertainment/adult-content" |
+    "color/entertainment/arcade" |
+    "color/entertainment/archery-target" |
+    "color/entertainment/armchair" |
+    "color/entertainment/audio-mixer" |
+    "color/entertainment/baloon" |
+    "color/entertainment/board-game" |
+    "color/entertainment/bowling-pins" |
+    "color/entertainment/brush" |
+    "color/entertainment/camera" |
+    "color/entertainment/canvas" |
+    "color/entertainment/chess-knight" |
+    "color/entertainment/cinema" |
+    "color/entertainment/clapping-hands" |
+    "color/entertainment/dice" |
+    "color/entertainment/dice-2" |
+    "color/entertainment/exhibition" |
+    "color/entertainment/fairy-wand" |
+    "color/entertainment/fireworks" |
+    "color/entertainment/gaming-console" |
+    "color/entertainment/gaming-controller" |
+    "color/entertainment/guitar" |
+    "color/entertainment/handheld-console" |
+    "color/entertainment/magic-wand" |
+    "color/entertainment/mic" |
+    "color/entertainment/movie" |
+    "color/entertainment/music" |
+    "color/entertainment/open-book" |
+    "color/entertainment/party" |
+    "color/entertainment/play-movie" |
+    "color/entertainment/playing-cards" |
+    "color/entertainment/popcorn" |
+    "color/entertainment/projector" |
+    "color/entertainment/saxophone" |
+    "color/entertainment/show" |
+    "color/entertainment/speaker-2" |
+    "color/entertainment/temple" |
+    "color/entertainment/theater" |
+    "color/entertainment/theater-curtains" |
+    "fill/entertainment/3d-glasses" |
+    "fill/entertainment/adult-content" |
+    "fill/entertainment/arcade" |
+    "fill/entertainment/archery-target" |
+    "fill/entertainment/armchair" |
+    "fill/entertainment/audio-mixer" |
+    "fill/entertainment/baloon" |
+    "fill/entertainment/board-game" |
+    "fill/entertainment/bowling-pins" |
+    "fill/entertainment/brush" |
+    "fill/entertainment/camera" |
+    "fill/entertainment/canvas" |
+    "fill/entertainment/chess-knight" |
+    "fill/entertainment/cinema" |
+    "fill/entertainment/dice-2" |
+    "fill/entertainment/dice" |
+    "fill/entertainment/exhibition" |
+    "fill/entertainment/fairy-wand" |
+    "fill/entertainment/fireworks" |
+    "fill/entertainment/gaming-console" |
+    "fill/entertainment/gaming-controller" |
+    "fill/entertainment/guitar" |
+    "fill/entertainment/handheld-console" |
+    "fill/entertainment/magic-wand" |
+    "fill/entertainment/mic" |
+    "fill/entertainment/movie" |
+    "fill/entertainment/music" |
+    "fill/entertainment/open-book" |
+    "fill/entertainment/party" |
+    "fill/entertainment/play-movie" |
+    "fill/entertainment/playing-cards" |
+    "fill/entertainment/popcorn" |
+    "fill/entertainment/projector" |
+    "fill/entertainment/saxophone" |
+    "fill/entertainment/show" |
+    "fill/entertainment/speaker-2" |
+    "fill/entertainment/temple" |
+    "fill/entertainment/theater" |
+    "fill/entertainment/theater-curtains" |
+    "outline/entertainment/3d-glasses" |
+    "outline/entertainment/adult-content" |
+    "outline/entertainment/arcade" |
+    "outline/entertainment/archery-target" |
+    "outline/entertainment/armchair" |
+    "outline/entertainment/audio-mixer" |
+    "outline/entertainment/baloon" |
+    "outline/entertainment/board-game" |
+    "outline/entertainment/bowling-pins" |
+    "outline/entertainment/brush" |
+    "outline/entertainment/canvas" |
+    "outline/entertainment/camera" |
+    "outline/entertainment/chess-knight" |
+    "outline/entertainment/cinema" |
+    "outline/entertainment/dice-2" |
+    "outline/entertainment/dice" |
+    "outline/entertainment/exhibition" |
+    "outline/entertainment/fairy-wand" |
+    "outline/entertainment/fireworks" |
+    "outline/entertainment/gaming-console" |
+    "outline/entertainment/gaming-controller" |
+    "outline/entertainment/guitar" |
+    "outline/entertainment/handheld-console" |
+    "outline/entertainment/magic-wand" |
+    "outline/entertainment/mic" |
+    "outline/entertainment/movie" |
+    "outline/entertainment/music" |
+    "outline/entertainment/open-book" |
+    "outline/entertainment/party" |
+    "outline/entertainment/play-movie" |
+    "outline/entertainment/playing-cards" |
+    "outline/entertainment/popcorn" |
+    "outline/entertainment/projector" |
+    "outline/entertainment/saxophone" |
+    "outline/entertainment/show" |
+    "outline/entertainment/speaker-2" |
+    "outline/entertainment/temple" |
+    "outline/entertainment/theater" |
+    "outline/entertainment/theater-curtains" |
+    "color/transportation/air-baloon" |
+    "color/transportation/airbag" |
+    "color/transportation/airplane" |
+    "color/transportation/alien-33" |
+    "color/transportation/anchor" |
+    "color/transportation/baby-car-seat" |
+    "color/transportation/battery-level" |
+    "color/transportation/bike" |
+    "color/transportation/bike-bmx" |
+    "color/transportation/boat" |
+    "color/transportation/boat-front" |
+    "color/transportation/boat-small-02" |
+    "color/transportation/boat-small-03" |
+    "color/transportation/brakes" |
+    "color/transportation/bus-front-10" |
+    "color/transportation/bus-front-12" |
+    "color/transportation/bus" |
+    "color/transportation/car" |
+    "color/transportation/car-2" |
+    "color/transportation/car-accident" |
+    "color/transportation/car-connect" |
+    "color/transportation/car-door" |
+    "color/transportation/car-front" |
+    "color/transportation/car-lights" |
+    "color/transportation/car-parking" |
+    "color/transportation/car-simple" |
+    "color/transportation/car-sport" |
+    "color/transportation/car-ventilation" |
+    "color/transportation/car-wash" |
+    "color/transportation/cone" |
+    "color/transportation/control-panel" |
+    "color/transportation/cycling" |
+    "color/transportation/dashboard" |
+    "color/transportation/delivery" |
+    "color/transportation/drone-2" |
+    "color/transportation/drone" |
+    "color/transportation/engine-start" |
+    "color/transportation/engine" |
+    "color/transportation/flight" |
+    "color/transportation/flip-up" |
+    "color/transportation/fuel-2" |
+    "color/transportation/fuel" |
+    "color/transportation/fuel-electric" |
+    "color/transportation/helicopter" |
+    "color/transportation/helmet" |
+    "color/transportation/hybrid-car" |
+    "color/transportation/landing" |
+    "color/transportation/light-traffic" |
+    "color/transportation/love-car" |
+    "color/transportation/moto" |
+    "color/transportation/oil" |
+    "color/transportation/parking" |
+    "color/transportation/parking-sensors" |
+    "color/transportation/plane" |
+    "color/transportation/power-level" |
+    "color/transportation/racing-bike" |
+    "color/transportation/rim" |
+    "color/transportation/road-2" |
+    "color/transportation/road" |
+    "color/transportation/scooter" |
+    "color/transportation/seat" |
+    "color/transportation/seatbelt" |
+    "color/transportation/sensor" |
+    "color/transportation/shuttle" |
+    "color/transportation/skateboard-2" |
+    "color/transportation/skateboard" |
+    "color/transportation/speedometer" |
+    "color/transportation/steering-wheel" |
+    "color/transportation/stop-sign" |
+    "color/transportation/submarine" |
+    "color/transportation/take-off" |
+    "color/transportation/taxi" |
+    "color/transportation/tractor" |
+    "color/transportation/train-speed" |
+    "color/transportation/train" |
+    "color/transportation/tram" |
+    "color/transportation/truck-front" |
+    "color/transportation/trunk" |
+    "color/transportation/ventilation" |
+    "color/transportation/vespa-front" |
+    "color/transportation/vespa" |
+    "color/transportation/walk" |
+    "color/transportation/washing-fluid" |
+    "color/transportation/wheel" |
+    "color/transportation/wheel-2" |
+    "fill/transportation/air-baloon" |
+    "fill/transportation/airbag" |
+    "fill/transportation/airplane" |
+    "fill/transportation/alien-33" |
+    "fill/transportation/anchor" |
+    "fill/transportation/baby-car-seat" |
+    "fill/transportation/battery-level" |
+    "fill/transportation/bike" |
+    "fill/transportation/bike-bmx" |
+    "fill/transportation/boat" |
+    "fill/transportation/boat-front" |
+    "fill/transportation/boat-small-02" |
+    "fill/transportation/boat-small-03" |
+    "fill/transportation/brakes" |
+    "fill/transportation/bus-front-10" |
+    "fill/transportation/bus" |
+    "fill/transportation/bus-front-12" |
+    "fill/transportation/car-2" |
+    "fill/transportation/car-accident" |
+    "fill/transportation/car" |
+    "fill/transportation/car-connect" |
+    "fill/transportation/car-door" |
+    "fill/transportation/car-front" |
+    "fill/transportation/car-lights" |
+    "fill/transportation/car-parking" |
+    "fill/transportation/car-simple" |
+    "fill/transportation/car-sport" |
+    "fill/transportation/car-ventilation" |
+    "fill/transportation/car-wash" |
+    "fill/transportation/cone" |
+    "fill/transportation/control-panel" |
+    "fill/transportation/cycling" |
+    "fill/transportation/dashboard" |
+    "fill/transportation/delivery" |
+    "fill/transportation/drone-2" |
+    "fill/transportation/drone" |
+    "fill/transportation/engine-start" |
+    "fill/transportation/engine" |
+    "fill/transportation/flight" |
+    "fill/transportation/flip-up" |
+    "fill/transportation/fuel-2" |
+    "fill/transportation/fuel" |
+    "fill/transportation/fuel-electric" |
+    "fill/transportation/helicopter" |
+    "fill/transportation/helmet" |
+    "fill/transportation/hybrid-car" |
+    "fill/transportation/landing" |
+    "fill/transportation/light-traffic" |
+    "fill/transportation/love-car" |
+    "fill/transportation/moto" |
+    "fill/transportation/oil" |
+    "fill/transportation/parking" |
+    "fill/transportation/parking-sensors" |
+    "fill/transportation/plane" |
+    "fill/transportation/power-level" |
+    "fill/transportation/rim" |
+    "fill/transportation/road-2" |
+    "fill/transportation/road" |
+    "fill/transportation/scooter" |
+    "fill/transportation/seat" |
+    "fill/transportation/seatbelt" |
+    "fill/transportation/sensor" |
+    "fill/transportation/shuttle" |
+    "fill/transportation/skateboard" |
+    "fill/transportation/skateboard-2" |
+    "fill/transportation/speedometer" |
+    "fill/transportation/steering-wheel" |
+    "fill/transportation/stop-sign" |
+    "fill/transportation/submarine" |
+    "fill/transportation/take-off" |
+    "fill/transportation/taxi" |
+    "fill/transportation/tractor" |
+    "fill/transportation/train-speed" |
+    "fill/transportation/train" |
+    "fill/transportation/tram" |
+    "fill/transportation/truck-front" |
+    "fill/transportation/trunk" |
+    "fill/transportation/ventilation" |
+    "fill/transportation/vespa-front" |
+    "fill/transportation/vespa" |
+    "fill/transportation/walk" |
+    "fill/transportation/washing-fluid" |
+    "fill/transportation/wheel-2" |
+    "fill/transportation/wheel" |
+    "outline/transportation/air-baloon" |
+    "outline/transportation/airbag" |
+    "outline/transportation/airplane" |
+    "outline/transportation/alien-33" |
+    "outline/transportation/anchor" |
+    "outline/transportation/baby-car-seat" |
+    "outline/transportation/battery-level" |
+    "outline/transportation/bike" |
+    "outline/transportation/bike-bmx" |
+    "outline/transportation/boat" |
+    "outline/transportation/boat-front" |
+    "outline/transportation/boat-small-02" |
+    "outline/transportation/boat-small-03" |
+    "outline/transportation/brakes" |
+    "outline/transportation/bus-front-10" |
+    "outline/transportation/bus-front-12" |
+    "outline/transportation/bus" |
+    "outline/transportation/car" |
+    "outline/transportation/car-2" |
+    "outline/transportation/car-accident" |
+    "outline/transportation/car-connect" |
+    "outline/transportation/car-door" |
+    "outline/transportation/car-front" |
+    "outline/transportation/car-lights" |
+    "outline/transportation/car-parking" |
+    "outline/transportation/car-simple" |
+    "outline/transportation/car-sport" |
+    "outline/transportation/car-ventilation" |
+    "outline/transportation/car-wash" |
+    "outline/transportation/cone" |
+    "outline/transportation/control-panel" |
+    "outline/transportation/cycling" |
+    "outline/transportation/dashboard" |
+    "outline/transportation/delivery" |
+    "outline/transportation/drone-2" |
+    "outline/transportation/drone" |
+    "outline/transportation/engine" |
+    "outline/transportation/engine-start" |
+    "outline/transportation/flight" |
+    "outline/transportation/flip-up" |
+    "outline/transportation/fuel-2" |
+    "outline/transportation/fuel-electric" |
+    "outline/transportation/fuel" |
+    "outline/transportation/helicopter" |
+    "outline/transportation/helmet" |
+    "outline/transportation/hybrid-car" |
+    "outline/transportation/landing" |
+    "outline/transportation/light-traffic" |
+    "outline/transportation/love-car" |
+    "outline/transportation/moto" |
+    "outline/transportation/oil" |
+    "outline/transportation/parking-sensors" |
+    "outline/transportation/parking" |
+    "outline/transportation/plane" |
+    "outline/transportation/power-level" |
+    "outline/transportation/rim" |
+    "outline/transportation/road-2" |
+    "outline/transportation/road" |
+    "outline/transportation/scooter" |
+    "outline/transportation/seat" |
+    "outline/transportation/seatbelt" |
+    "outline/transportation/sensor" |
+    "outline/transportation/shuttle" |
+    "outline/transportation/skateboard" |
+    "outline/transportation/skateboard-2" |
+    "outline/transportation/speedometer" |
+    "outline/transportation/steering-wheel" |
+    "outline/transportation/stop-sign" |
+    "outline/transportation/submarine" |
+    "outline/transportation/take-off" |
+    "outline/transportation/taxi" |
+    "outline/transportation/tractor" |
+    "outline/transportation/train" |
+    "outline/transportation/train-speed" |
+    "outline/transportation/tram" |
+    "outline/transportation/truck-front" |
+    "outline/transportation/trunk" |
+    "outline/transportation/ventilation" |
+    "outline/transportation/vespa-front" |
+    "outline/transportation/vespa" |
+    "outline/transportation/walk" |
+    "outline/transportation/washing-fluid" |
+    "outline/transportation/wheel-2" |
+    "outline/transportation/wheel" |
+    "color/technology/3d-printing" |
+    "color/technology/ai" |
+    "color/technology/algorithm" |
+    "color/technology/ai-generated-img" |
+    "color/technology/android" |
+    "color/technology/antenna" |
+    "color/technology/api" |
+    "color/technology/app-services" |
+    "color/technology/apple" |
+    "color/technology/artificial-brain" |
+    "color/technology/artificial-intelligence" |
+    "color/technology/audio-jack" |
+    "color/technology/augmented-reality" |
+    "color/technology/automated-logistics" |
+    "color/technology/baby-monitor" |
+    "color/technology/battery-level" |
+    "color/technology/binary-code" |
+    "color/technology/block" |
+    "color/technology/blockchain" |
+    "color/technology/cable" |
+    "color/technology/cctv" |
+    "color/technology/cd-reader" |
+    "color/technology/charger-cable" |
+    "color/technology/chat-bot" |
+    "color/technology/cloud-mining" |
+    "color/technology/computer" |
+    "color/technology/computer-monitor" |
+    "color/technology/connection" |
+    "color/technology/contactless" |
+    "color/technology/content-360deg" |
+    "color/technology/content-delivery" |
+    "color/technology/control-panel" |
+    "color/technology/controller-2" |
+    "color/technology/controller" |
+    "color/technology/cpu" |
+    "color/technology/cryptography" |
+    "color/technology/cyborg" |
+    "color/technology/decentralize" |
+    "color/technology/decision-process" |
+    "color/technology/device-connection" |
+    "color/technology/digital-image" |
+    "color/technology/digital-key" |
+    "color/technology/disk-reader" |
+    "color/technology/disk" |
+    "color/technology/drone-2" |
+    "color/technology/drone" |
+    "color/technology/e-reader" |
+    "color/technology/earbuds" |
+    "color/technology/electronic-circuit" |
+    "color/technology/engine-start" |
+    "color/technology/eye-recognition" |
+    "color/technology/face-recognition" |
+    "color/technology/firewall" |
+    "color/technology/gaming-console" |
+    "color/technology/gaming-controller" |
+    "color/technology/graphics-tablet" |
+    "color/technology/hacker-v2" |
+    "color/technology/hacker" |
+    "color/technology/hair-clipper" |
+    "color/technology/handheld-console" |
+    "color/technology/hdmi" |
+    "color/technology/headphones-2" |
+    "color/technology/headphones-3" |
+    "color/technology/headphones" |
+    "color/technology/headset" |
+    "color/technology/humanoid" |
+    "color/technology/humanoid-v2" |
+    "color/technology/hybrid-car" |
+    "color/technology/keyboard-hide" |
+    "color/technology/keyboard" |
+    "color/technology/keyboard-mouse" |
+    "color/technology/keyboard-wired" |
+    "color/technology/keyboard-wireless" |
+    "color/technology/l-add" |
+    "color/technology/l-check" |
+    "color/technology/l-location" |
+    "color/technology/l-remove" |
+    "color/technology/l-search" |
+    "color/technology/l-security" |
+    "color/technology/l-settings" |
+    "color/technology/l-sync" |
+    "color/technology/l-system-update" |
+    "color/technology/landscape-orientation" |
+    "color/technology/laptop" |
+    "color/technology/laptop-1" |
+    "color/technology/laptop-2" |
+    "color/technology/license-key" |
+    "color/technology/live-streaming" |
+    "color/technology/lock-landscape" |
+    "color/technology/lock-orientation" |
+    "color/technology/lock-portrait" |
+    "color/technology/logic" |
+    "color/technology/machine-learning" |
+    "color/technology/media-player" |
+    "color/technology/messaging" |
+    "color/technology/metrics" |
+    "color/technology/mic" |
+    "color/technology/mic-2" |
+    "color/technology/migration" |
+    "color/technology/mobile-banking" |
+    "color/technology/mobile-chat" |
+    "color/technology/mobile-phone" |
+    "color/technology/mouse-2" |
+    "color/technology/mouse" |
+    "color/technology/music-player" |
+    "color/technology/navigation" |
+    "color/technology/nodes" |
+    "color/technology/offline" |
+    "color/technology/online-banking" |
+    "color/technology/open-ai" |
+    "color/technology/p-add" |
+    "color/technology/p-check" |
+    "color/technology/p-edit" |
+    "color/technology/p-heart" |
+    "color/technology/p-location" |
+    "color/technology/p-remove" |
+    "color/technology/p-search" |
+    "color/technology/p-settings" |
+    "color/technology/p-share" |
+    "color/technology/p-sync" |
+    "color/technology/p-system-update" |
+    "color/technology/p-time" |
+    "color/technology/parking-sensors" |
+    "color/technology/pattern-recognition" |
+    "color/technology/pc-monitor" |
+    "color/technology/pc-mouse" |
+    "color/technology/pc" |
+    "color/technology/pc-play-media" |
+    "color/technology/pci-card" |
+    "color/technology/phone-button" |
+    "color/technology/phone-camera-back" |
+    "color/technology/phone-camera-front" |
+    "color/technology/phone-charging-2" |
+    "color/technology/phone-charging" |
+    "color/technology/phone-charging-3" |
+    "color/technology/phone-dock" |
+    "color/technology/phone-toolbar" |
+    "color/technology/plug" |
+    "color/technology/plug-2" |
+    "color/technology/print" |
+    "color/technology/printer" |
+    "color/technology/projector" |
+    "color/technology/ram-2" |
+    "color/technology/ram" |
+    "color/technology/reading-tablet" |
+    "color/technology/remote-control" |
+    "color/technology/robot-cleaner" |
+    "color/technology/robotic-arm" |
+    "color/technology/router" |
+    "color/technology/satellite-dish" |
+    "color/technology/satellite" |
+    "color/technology/screen-reader" |
+    "color/technology/screen-rotation" |
+    "color/technology/screen-sharing-2" |
+    "color/technology/screen-sharing-off-2" |
+    "color/technology/send-to-phone" |
+    "color/technology/server" |
+    "color/technology/sensor" |
+    "color/technology/server-rack" |
+    "color/technology/signal" |
+    "color/technology/sim-card" |
+    "color/technology/smart-house" |
+    "color/technology/smartphone" |
+    "color/technology/smartwatch" |
+    "color/technology/socket-europe-1" |
+    "color/technology/socket" |
+    "color/technology/socket-europe-2" |
+    "color/technology/socket-uk" |
+    "color/technology/sparks" |
+    "color/technology/ssd" |
+    "color/technology/sync-devices" |
+    "color/technology/system-update" |
+    "color/technology/tablet-2" |
+    "color/technology/tablet" |
+    "color/technology/tablet-charging" |
+    "color/technology/tablet-toolbar" |
+    "color/technology/three-dimensional-object" |
+    "color/technology/three-dimensional-world" |
+    "color/technology/traffic" |
+    "color/technology/transactions" |
+    "color/technology/translation" |
+    "color/technology/tv" |
+    "color/technology/tv-stand" |
+    "color/technology/usb" |
+    "color/technology/video-off" |
+    "color/technology/video-player" |
+    "color/technology/vintage-computer" |
+    "color/technology/vintage-tv" |
+    "color/technology/virtual-assistant-2" |
+    "color/technology/virtual-assistant" |
+    "color/technology/virtual-environment" |
+    "color/technology/virtual-reality" |
+    "color/technology/voice-recognition" |
+    "color/technology/vpn" |
+    "color/technology/vr-controller" |
+    "color/technology/vr-headset" |
+    "color/technology/watch-2" |
+    "color/technology/watch" |
+    "color/technology/webcam-2" |
+    "color/technology/webcam" |
+    "color/technology/wifi-2" |
+    "color/technology/wifi-off" |
+    "color/technology/wifi-protected" |
+    "color/technology/wifi" |
+    "color/technology/wifi-router" |
+    "color/technology/wireless-charging" |
+    "color/sport/adaptive-bike" |
+    "color/sport/analytics" |
+    "color/sport/archer" |
+    "color/sport/archery-target" |
+    "color/sport/archery" |
+    "color/sport/athletics" |
+    "color/sport/balance" |
+    "color/sport/barbell" |
+    "color/sport/baseball-bat" |
+    "color/sport/baseball-pitch" |
+    "color/sport/baseball-player" |
+    "color/sport/baseball" |
+    "color/sport/basketball-board" |
+    "color/sport/basketball" |
+    "color/sport/basketball-player" |
+    "color/sport/basketball-ring" |
+    "color/sport/bicep-v2" |
+    "color/sport/bicep" |
+    "color/sport/bicep-v3" |
+    "color/sport/bike-bmx" |
+    "color/sport/bike" |
+    "color/sport/bikini" |
+    "color/sport/billiard-ball" |
+    "color/sport/blender" |
+    "color/sport/body-back-v2" |
+    "color/sport/body-back-v3" |
+    "color/sport/body-back" |
+    "color/sport/body-butt" |
+    "color/sport/body-butt-v2" |
+    "color/sport/body-butt-v3" |
+    "color/sport/bodybuilder" |
+    "color/sport/bowling-ball" |
+    "color/sport/bowling-pins" |
+    "color/sport/boxing" |
+    "color/sport/boxing-bag" |
+    "color/sport/boxing-glove" |
+    "color/sport/chequered-flag" |
+    "color/sport/chess-tower" |
+    "color/sport/climbing" |
+    "color/sport/cockade" |
+    "color/sport/cricket-bat" |
+    "color/sport/crown" |
+    "color/sport/crunches" |
+    "color/sport/curling" |
+    "color/sport/curling-stone" |
+    "color/sport/cycling-track" |
+    "color/sport/cycling" |
+    "color/sport/dancer" |
+    "color/sport/dart" |
+    "color/sport/deadlift" |
+    "color/sport/diet-food" |
+    "color/sport/diet" |
+    "color/sport/diet-plan" |
+    "color/sport/distance" |
+    "color/sport/drinking-bottle" |
+    "color/sport/dumbbell" |
+    "color/sport/elliptical-cross-trainer" |
+    "color/sport/energy" |
+    "color/sport/energy-drink" |
+    "color/sport/energy-shaker" |
+    "color/sport/energy-supplement" |
+    "color/sport/equestrian-helmet" |
+    "color/sport/exercise-bike" |
+    "color/sport/ez-bar" |
+    "color/sport/fencing" |
+    "color/sport/fencing-swords" |
+    "color/sport/final-score" |
+    "color/sport/flip-up" |
+    "color/sport/food-supplement" |
+    "color/sport/football-headguard" |
+    "color/sport/golf-ball" |
+    "color/sport/golf-club" |
+    "color/sport/golf-course" |
+    "color/sport/golf-player" |
+    "color/sport/golf-strike" |
+    "color/sport/gym" |
+    "color/sport/gym-class" |
+    "color/sport/gym-shoes" |
+    "color/sport/gymnastics" |
+    "color/sport/handball" |
+    "color/sport/heartbeat" |
+    "color/sport/helmet" |
+    "color/sport/hockey-stick" |
+    "color/sport/hockey" |
+    "color/sport/hoodie" |
+    "color/sport/hook" |
+    "color/sport/horse" |
+    "color/sport/ice-skates" |
+    "color/sport/jump-rope" |
+    "color/sport/karate" |
+    "color/sport/kettlebell" |
+    "color/sport/lat-station" |
+    "color/sport/leggins" |
+    "color/sport/lightning" |
+    "color/sport/man-up-front" |
+    "color/sport/man-up-front-v2" |
+    "color/sport/man-up-front-v3" |
+    "color/sport/mat" |
+    "color/sport/measurement" |
+    "color/sport/medal" |
+    "color/sport/medicine-ball" |
+    "color/sport/nutrition" |
+    "color/sport/olympic-flame" |
+    "color/sport/olympic-games" |
+    "color/sport/paralympic-games" |
+    "color/sport/pectoral-machine" |
+    "color/sport/pennant" |
+    "color/sport/personal-trainer" |
+    "color/sport/phone-heart" |
+    "color/sport/phone-heartbeat" |
+    "color/sport/podium-trophy" |
+    "color/sport/podium" |
+    "color/sport/power-lifting" |
+    "color/sport/power-rack" |
+    "color/sport/presentation" |
+    "color/sport/pulse" |
+    "color/sport/racing-bike" |
+    "color/sport/ranking" |
+    "color/sport/referee-v2" |
+    "color/sport/referee" |
+    "color/sport/referee-y-v2" |
+    "color/sport/referee-y" |
+    "color/sport/resistance-band" |
+    "color/sport/rings" |
+    "color/sport/row-machine" |
+    "color/sport/rowing" |
+    "color/sport/rowing-oars" |
+    "color/sport/rugby" |
+    "color/sport/rugby-ball" |
+    "color/sport/run-shoes" |
+    "color/sport/shaker" |
+    "color/sport/shorts" |
+    "color/sport/shuttlecock" |
+    "color/sport/skateboard-2" |
+    "color/sport/skateboard" |
+    "color/sport/skateboarding" |
+    "color/sport/skating" |
+    "color/sport/skiing" |
+    "color/sport/skipping-rope" |
+    "color/sport/snorkel-mask" |
+    "color/sport/snowboard" |
+    "color/sport/snowboarding" |
+    "color/sport/soccer-ball" |
+    "color/sport/soccer-field" |
+    "color/sport/soccer" |
+    "color/sport/spa" |
+    "color/sport/spinning-bike" |
+    "color/sport/sport-bag" |
+    "color/sport/sports-bra" |
+    "color/sport/sports-fan" |
+    "color/sport/sports-tank" |
+    "color/sport/stadium" |
+    "color/sport/stair-climber" |
+    "color/sport/steering-wheel" |
+    "color/sport/stopwatch" |
+    "color/sport/stretching" |
+    "color/sport/surfboard" |
+    "color/sport/swimming" |
+    "color/sport/swimming-pool" |
+    "color/sport/swimsuit" |
+    "color/sport/table-tennis-bat" |
+    "color/sport/tactic" |
+    "color/sport/tennis-ball" |
+    "color/sport/tennis-racket" |
+    "color/sport/tennis" |
+    "color/sport/ticket" |
+    "color/sport/timer" |
+    "color/sport/towel" |
+    "color/sport/treadmill" |
+    "color/sport/trophy" |
+    "color/sport/tshirt-sport" |
+    "color/sport/users-mm" |
+    "color/sport/users-ww" |
+    "color/sport/utility-bench" |
+    "color/sport/volleyball-player" |
+    "color/sport/volleyball" |
+    "color/sport/watch-heart" |
+    "color/sport/watch-heartbeat" |
+    "color/sport/water-aerobics" |
+    "color/sport/water-polo" |
+    "color/sport/water-polo-ball" |
+    "color/sport/weight-bench" |
+    "color/sport/weight-gain-v2" |
+    "color/sport/weight-gain" |
+    "color/sport/weight-gain-v3" |
+    "color/sport/weight-loss-v2" |
+    "color/sport/weight-loss-v3" |
+    "color/sport/weight-loss" |
+    "color/sport/weight-plate" |
+    "color/sport/weight-scale" |
+    "color/sport/whistle" |
+    "color/sport/windsurfing" |
+    "color/sport/winner" |
+    "color/sport/woman-up-front-v2" |
+    "color/sport/woman-up-front-v3" |
+    "color/sport/woman-up-front" |
+    "color/sport/workout-plan" |
+    "color/sport/yoga" |
+    "fill/sport/adaptive-bike" |
+    "fill/sport/analytics" |
+    "fill/sport/archer" |
+    "fill/sport/archery" |
+    "fill/sport/archery-target" |
+    "fill/sport/athletics" |
+    "fill/sport/balance" |
+    "fill/sport/barbell" |
+    "fill/sport/baseball" |
+    "fill/sport/baseball-bat" |
+    "fill/sport/baseball-pitch" |
+    "fill/sport/baseball-player" |
+    "fill/sport/basketball-board" |
+    "fill/sport/basketball" |
+    "fill/sport/basketball-player" |
+    "fill/sport/basketball-ring" |
+    "fill/sport/bicep" |
+    "fill/sport/bike" |
+    "fill/sport/bike-bmx" |
+    "fill/sport/bikini" |
+    "fill/sport/billiard-ball" |
+    "fill/sport/blender" |
+    "fill/sport/body-back" |
+    "fill/sport/body-butt" |
+    "fill/sport/bodybuilder" |
+    "fill/sport/bowling-ball" |
+    "fill/sport/bowling-pins" |
+    "fill/sport/boxing" |
+    "fill/sport/boxing-bag" |
+    "fill/sport/boxing-glove" |
+    "fill/sport/chequered-flag" |
+    "fill/sport/chess-tower" |
+    "fill/sport/climbing" |
+    "fill/sport/cockade" |
+    "fill/sport/cricket-bat" |
+    "fill/sport/crown" |
+    "fill/sport/crunches" |
+    "fill/sport/curling" |
+    "fill/sport/curling-stone" |
+    "fill/sport/cycling-track" |
+    "fill/sport/cycling" |
+    "fill/sport/dancer" |
+    "fill/sport/dart" |
+    "fill/sport/deadlift" |
+    "fill/sport/diet-food" |
+    "fill/sport/diet" |
+    "fill/sport/diet-plan" |
+    "fill/sport/distance" |
+    "fill/sport/drinking-bottle" |
+    "fill/sport/dumbbell" |
+    "fill/sport/elliptical-cross-trainer" |
+    "fill/sport/energy" |
+    "fill/sport/energy-drink" |
+    "fill/sport/energy-shaker" |
+    "fill/sport/energy-supplement" |
+    "fill/sport/equestrian-helmet" |
+    "fill/sport/exercise-bike" |
+    "fill/sport/ez-bar" |
+    "fill/sport/fencing-swords" |
+    "fill/sport/fencing" |
+    "fill/sport/final-score" |
+    "fill/sport/flip-up" |
+    "fill/sport/food-supplement" |
+    "fill/sport/football-headguard" |
+    "fill/sport/golf-ball" |
+    "fill/sport/golf-club" |
+    "fill/sport/golf-course" |
+    "fill/sport/golf-player" |
+    "fill/sport/golf-strike" |
+    "fill/sport/gym" |
+    "fill/sport/gym-class" |
+    "fill/sport/gym-shoes" |
+    "fill/sport/gymnastics" |
+    "fill/sport/handball" |
+    "fill/sport/heartbeat" |
+    "fill/sport/helmet" |
+    "fill/sport/hockey-stick" |
+    "fill/sport/hockey" |
+    "fill/sport/hoodie" |
+    "fill/sport/hook" |
+    "fill/sport/horse" |
+    "fill/sport/ice-skates" |
+    "fill/sport/jump-rope" |
+    "fill/sport/karate" |
+    "fill/sport/kettlebell" |
+    "fill/sport/lat-station" |
+    "fill/sport/leggins" |
+    "fill/sport/lightning" |
+    "fill/sport/man-up-front" |
+    "fill/sport/mat" |
+    "fill/sport/measurement" |
+    "fill/sport/medal" |
+    "fill/sport/medicine-ball" |
+    "fill/sport/nutrition" |
+    "fill/sport/olympic-flame" |
+    "fill/sport/paralympic-games" |
+    "fill/sport/pectoral-machine" |
+    "fill/sport/pennant" |
+    "fill/sport/personal-trainer" |
+    "fill/sport/phone-heart" |
+    "fill/sport/phone-heartbeat" |
+    "fill/sport/podium" |
+    "fill/sport/podium-trophy" |
+    "fill/sport/power-lifting" |
+    "fill/sport/power-rack" |
+    "fill/sport/presentation" |
+    "fill/sport/pulse" |
+    "fill/sport/ranking" |
+    "fill/sport/referee" |
+    "fill/sport/resistance-band" |
+    "fill/sport/rings" |
+    "fill/sport/row-machine" |
+    "fill/sport/rowing-oars" |
+    "fill/sport/rowing" |
+    "fill/sport/rugby-ball" |
+    "fill/sport/rugby" |
+    "fill/sport/run-shoes" |
+    "fill/sport/shaker" |
+    "fill/sport/shorts" |
+    "fill/sport/shuttlecock" |
+    "fill/sport/skateboard-2" |
+    "fill/sport/skateboard" |
+    "fill/sport/skateboarding" |
+    "fill/sport/skating" |
+    "fill/sport/skiing" |
+    "fill/sport/skipping-rope" |
+    "fill/sport/snorkel-mask" |
+    "fill/sport/snowboard" |
+    "fill/sport/snowboarding" |
+    "fill/sport/soccer" |
+    "fill/sport/soccer-ball" |
+    "fill/sport/soccer-field" |
+    "fill/sport/spa" |
+    "fill/sport/spinning-bike" |
+    "fill/sport/sport-bag" |
+    "fill/sport/sports-bra" |
+    "fill/sport/sports-fan" |
+    "fill/sport/sports-tank" |
+    "fill/sport/stadium" |
+    "fill/sport/stair-climber" |
+    "fill/sport/steering-wheel" |
+    "fill/sport/stopwatch" |
+    "fill/sport/stretching" |
+    "fill/sport/surfboard" |
+    "fill/sport/swimming" |
+    "fill/sport/swimming-pool" |
+    "fill/sport/swimsuit" |
+    "fill/sport/table-tennis-bat" |
+    "fill/sport/tactic" |
+    "fill/sport/tennis" |
+    "fill/sport/tennis-ball" |
+    "fill/sport/tennis-racket" |
+    "fill/sport/ticket" |
+    "fill/sport/timer" |
+    "fill/sport/towel" |
+    "fill/sport/treadmill" |
+    "fill/sport/trophy" |
+    "fill/sport/tshirt-sport" |
+    "fill/sport/users-mm" |
+    "fill/sport/users-ww" |
+    "fill/sport/utility-bench" |
+    "fill/sport/volleyball-player" |
+    "fill/sport/volleyball" |
+    "fill/sport/watch-heart" |
+    "fill/sport/watch-heartbeat" |
+    "fill/sport/water-aerobics" |
+    "fill/sport/water-polo-ball" |
+    "fill/sport/water-polo" |
+    "fill/sport/weight-bench" |
+    "fill/sport/weight-gain" |
+    "fill/sport/weight-loss" |
+    "fill/sport/weight-plate" |
+    "fill/sport/weight-scale" |
+    "fill/sport/whistle" |
+    "fill/sport/windsurfing" |
+    "fill/sport/winner" |
+    "fill/sport/woman-up-front" |
+    "fill/sport/workout-plan" |
+    "fill/sport/yoga" |
+    "outline/sport/adaptive-bike" |
+    "outline/sport/analytics" |
+    "outline/sport/archer" |
+    "outline/sport/archery" |
+    "outline/sport/archery-target" |
+    "outline/sport/athletics" |
+    "outline/sport/balance" |
+    "outline/sport/barbell" |
+    "outline/sport/baseball-bat" |
+    "outline/sport/baseball-pitch" |
+    "outline/sport/baseball-player" |
+    "outline/sport/baseball" |
+    "outline/sport/basketball-board" |
+    "outline/sport/basketball-player" |
+    "outline/sport/basketball-ring" |
+    "outline/sport/basketball" |
+    "outline/sport/bicep" |
+    "outline/sport/bike" |
+    "outline/sport/bike-bmx" |
+    "outline/sport/bikini" |
+    "outline/sport/billiard-ball" |
+    "outline/sport/blender" |
+    "outline/sport/body-back" |
+    "outline/sport/body-butt" |
+    "outline/sport/bodybuilder" |
+    "outline/sport/bowling-ball" |
+    "outline/sport/bowling-pins" |
+    "outline/sport/boxing" |
+    "outline/sport/boxing-bag" |
+    "outline/sport/boxing-glove" |
+    "outline/sport/chequered-flag" |
+    "outline/sport/chess-tower" |
+    "outline/sport/climbing" |
+    "outline/sport/cockade" |
+    "outline/sport/cricket-bat" |
+    "outline/sport/crown" |
+    "outline/sport/crunches" |
+    "outline/sport/curling-stone" |
+    "outline/sport/curling" |
+    "outline/sport/cycling" |
+    "outline/sport/cycling-track" |
+    "outline/sport/dancer" |
+    "outline/sport/dart" |
+    "outline/sport/deadlift" |
+    "outline/sport/diet-food" |
+    "outline/sport/diet" |
+    "outline/sport/diet-plan" |
+    "outline/sport/distance" |
+    "outline/sport/drinking-bottle" |
+    "outline/sport/dumbbell" |
+    "outline/sport/elliptical-cross-trainer" |
+    "outline/sport/energy" |
+    "outline/sport/energy-drink" |
+    "outline/sport/energy-shaker" |
+    "outline/sport/energy-supplement" |
+    "outline/sport/equestrian-helmet" |
+    "outline/sport/exercise-bike" |
+    "outline/sport/ez-bar" |
+    "outline/sport/fencing-swords" |
+    "outline/sport/fencing" |
+    "outline/sport/final-score" |
+    "outline/sport/flip-up" |
+    "outline/sport/food-supplement" |
+    "outline/sport/football-headguard" |
+    "outline/sport/golf-ball" |
+    "outline/sport/golf-club" |
+    "outline/sport/golf-course" |
+    "outline/sport/golf-player" |
+    "outline/sport/golf-strike" |
+    "outline/sport/gym" |
+    "outline/sport/gym-class" |
+    "outline/sport/gym-shoes" |
+    "outline/sport/gymnastics" |
+    "outline/sport/handball" |
+    "outline/sport/heartbeat" |
+    "outline/sport/helmet" |
+    "outline/sport/hockey-stick" |
+    "outline/sport/hockey" |
+    "outline/sport/hoodie" |
+    "outline/sport/hook" |
+    "outline/sport/horse" |
+    "outline/sport/ice-skates" |
+    "outline/sport/jump-rope" |
+    "outline/sport/karate" |
+    "outline/sport/kettlebell" |
+    "outline/sport/lat-station" |
+    "outline/sport/leggins" |
+    "outline/sport/lightning" |
+    "outline/sport/man-up-front" |
+    "outline/sport/mat" |
+    "outline/sport/measurement" |
+    "outline/sport/medal" |
+    "outline/sport/medicine-ball" |
+    "outline/sport/nutrition" |
+    "outline/sport/olympic-flame" |
+    "outline/sport/paralympic-games" |
+    "outline/sport/pectoral-machine" |
+    "outline/sport/pennant" |
+    "outline/sport/personal-trainer" |
+    "outline/sport/phone-heart" |
+    "outline/sport/phone-heartbeat" |
+    "outline/sport/podium" |
+    "outline/sport/podium-trophy" |
+    "outline/sport/power-lifting" |
+    "outline/sport/power-rack" |
+    "outline/sport/presentation" |
+    "outline/sport/pulse" |
+    "outline/sport/ranking" |
+    "outline/sport/referee" |
+    "outline/sport/resistance-band" |
+    "outline/sport/rings" |
+    "outline/sport/row-machine" |
+    "outline/sport/rowing-oars" |
+    "outline/sport/rowing" |
+    "outline/sport/rugby-ball" |
+    "outline/sport/rugby" |
+    "outline/sport/run-shoes" |
+    "outline/sport/shaker" |
+    "outline/sport/shorts" |
+    "outline/sport/shuttlecock" |
+    "outline/sport/skateboard-2" |
+    "outline/sport/skateboard" |
+    "outline/sport/skateboarding" |
+    "outline/sport/skating" |
+    "outline/sport/skiing" |
+    "outline/sport/skipping-rope" |
+    "outline/sport/snorkel-mask" |
+    "outline/sport/snowboard" |
+    "outline/sport/snowboarding" |
+    "outline/sport/soccer-ball" |
+    "outline/sport/soccer-field" |
+    "outline/sport/soccer" |
+    "outline/sport/spa" |
+    "outline/sport/spinning-bike" |
+    "outline/sport/sport-bag" |
+    "outline/sport/sports-bra" |
+    "outline/sport/sports-fan" |
+    "outline/sport/sports-tank" |
+    "outline/sport/stadium" |
+    "outline/sport/stair-climber" |
+    "outline/sport/steering-wheel" |
+    "outline/sport/stopwatch" |
+    "outline/sport/stretching" |
+    "outline/sport/surfboard" |
+    "outline/sport/swimming" |
+    "outline/sport/swimming-pool" |
+    "outline/sport/swimsuit" |
+    "outline/sport/table-tennis-bat" |
+    "outline/sport/tactic" |
+    "outline/sport/tennis-ball" |
+    "outline/sport/tennis-racket" |
+    "outline/sport/tennis" |
+    "outline/sport/ticket" |
+    "outline/sport/timer" |
+    "outline/sport/towel" |
+    "outline/sport/treadmill" |
+    "outline/sport/trophy" |
+    "outline/sport/tshirt-sport" |
+    "outline/sport/users-mm" |
+    "outline/sport/users-ww" |
+    "outline/sport/utility-bench" |
+    "outline/sport/volleyball" |
+    "outline/sport/volleyball-player" |
+    "outline/sport/watch-heart" |
+    "outline/sport/watch-heartbeat" |
+    "outline/sport/water-aerobics" |
+    "outline/sport/water-polo-ball" |
+    "outline/sport/water-polo" |
+    "outline/sport/weight-bench" |
+    "outline/sport/weight-gain" |
+    "outline/sport/weight-plate" |
+    "outline/sport/weight-loss" |
+    "outline/sport/weight-scale" |
+    "outline/sport/whistle" |
+    "outline/sport/windsurfing" |
+    "outline/sport/winner" |
+    "outline/sport/woman-up-front" |
+    "outline/sport/workout-plan" |
+    "outline/sport/yoga"
 
 
