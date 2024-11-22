@@ -18,6 +18,7 @@ interface SelectMultipleProps {
     helperTextColor?: string,
     style?: CSSProperties,
     handleSearch?: (e: string) => Promise<Array<OptionsItem>>,
+    handleLoadmore?: (onLoadMore: boolean, ev: React.UIEvent<HTMLDivElement, UIEvent>) => void,
     showClearValueButton?: boolean,
     popupClassName?: string
 }
@@ -236,7 +237,12 @@ export class SelectMultiple extends React.Component<SelectMultipleProps, SelectM
                                 }} className='button-text-3' style={{ color: _list.length ? 'var(--infor-main-color)' : 'var(--neutral-text-title-color)' }}>{_list.length && isSelectedAll ? 'Bỏ chọn tất cả' : 'Chọn tất cả'}</Text>
                             })()}
                         </div>
-                        <div className={`col ${styles['select-body']}`}>
+                        <div className={`col ${styles['select-body']}`} onScroll={this.props.handleLoadmore ? (ev) => {
+                            if (this.props.handleLoadmore) {
+                                let scrollElement = ev.target as HTMLDivElement
+                                this.props.handleLoadmore(Math.round(scrollElement.offsetHeight + scrollElement.scrollTop) >= (scrollElement.scrollHeight - 1), ev)
+                            }
+                        } : undefined}>
                             {(this.state.search ?? this.state.options).filter(e => !e.parentId).map(item => this.renderOptions(item))}
                             {(this.state.search?.length === 0 || this.props.options?.length === 0) && (
                                 <div className={styles['no-results-found']}>No result found</div>

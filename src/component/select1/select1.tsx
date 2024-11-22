@@ -24,6 +24,7 @@ interface Select1Props {
     helperTextColor?: string,
     style?: CSSProperties,
     handleSearch?: (e: string) => Promise<Array<OptionsItem>>,
+    handleLoadmore?: (onLoadMore: boolean, ev: React.UIEvent<HTMLDivElement, UIEvent>) => void,
     readOnly?: boolean,
     popupClassName?: string,
     prefix?: ReactNode,
@@ -129,7 +130,6 @@ export class Select1 extends React.Component<Select1Props, Select1State> {
     }
 
     private onKeyDown = (ev: React.KeyboardEvent<HTMLInputElement>) => {
-        console.log(ev.key)
         if ((this.state.options?.length || this.state.search?.length) && this.state.isOpen) {
             switch (ev.key.toLowerCase()) {
                 case "enter":
@@ -241,7 +241,12 @@ export class Select1 extends React.Component<Select1Props, Select1State> {
                         onMouseOver={ev => this.setState({ ...this.state, onSelect: ev.target })}
                         onMouseOut={() => this.setState({ ...this.state, onSelect: null })}
                     >
-                        <div className={`col ${styles['select-body']}`}>
+                        <div className={`col ${styles['select-body']}`} onScroll={this.props.handleLoadmore ? (ev) => {
+                            if (this.props.handleLoadmore) {
+                                let scrollElement = ev.target as HTMLDivElement
+                                this.props.handleLoadmore(Math.round(scrollElement.offsetHeight + scrollElement.scrollTop) >= (scrollElement.scrollHeight - 1), ev)
+                            }
+                        } : undefined}>
                             {(this.state.search ?? this.state.options).filter(e => !e.parentId).map(item => this.renderOptions(item))}
                             {(this.state.search?.length === 0 || this.props.options?.length === 0) && (
                                 <div className={styles['no-results-found']}>No result found</div>
