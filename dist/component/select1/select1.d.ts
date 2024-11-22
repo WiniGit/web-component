@@ -18,6 +18,7 @@ interface Select1Props {
     helperTextColor?: string;
     style?: CSSProperties;
     handleSearch?: (e: string) => Promise<Array<OptionsItem>>;
+    handleLoadmore?: (onLoadMore: boolean, ev: React.UIEvent<HTMLDivElement, UIEvent>) => void;
     readOnly?: boolean;
     popupClassName?: string;
     prefix?: ReactNode;

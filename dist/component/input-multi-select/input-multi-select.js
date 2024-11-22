@@ -306,7 +306,12 @@ var SelectMultiple = /** @class */ (function (_super) {
                                     _this.props.onChange(newValue);
                             }, className: 'button-text-3', style: { color: _list.length ? 'var(--infor-main-color)' : 'var(--neutral-text-title-color)' } }, _list.length && isSelectedAll ? 'Bỏ chọn tất cả' : 'Chọn tất cả');
                     })()),
-                    react_1.default.createElement("div", { className: "col ".concat(input_multi_select_module_css_1.default['select-body']) },
+                    react_1.default.createElement("div", { className: "col ".concat(input_multi_select_module_css_1.default['select-body']), onScroll: this.props.handleLoadmore ? function (ev) {
+                            if (_this.props.handleLoadmore) {
+                                var scrollElement = ev.target;
+                                _this.props.handleLoadmore(Math.round(scrollElement.offsetHeight + scrollElement.scrollTop) >= (scrollElement.scrollHeight - 1), ev);
+                            }
+                        } : undefined },
                         ((_g = this.state.search) !== null && _g !== void 0 ? _g : this.state.options).filter(function (e) { return !e.parentId; }).map(function (item) { return _this.renderOptions(item); }),
                         (((_h = this.state.search) === null || _h === void 0 ? void 0 : _h.length) === 0 || ((_j = this.props.options) === null || _j === void 0 ? void 0 : _j.length) === 0) && (react_1.default.createElement("div", { className: input_multi_select_module_css_1.default['no-results-found'] }, "No result found")))), document.body));
     };

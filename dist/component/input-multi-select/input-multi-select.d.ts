@@ -12,6 +12,7 @@ interface SelectMultipleProps {
     helperTextColor?: string;
     style?: CSSProperties;
     handleSearch?: (e: string) => Promise<Array<OptionsItem>>;
+    handleLoadmore?: (onLoadMore: boolean, ev: React.UIEvent<HTMLDivElement, UIEvent>) => void;
     showClearValueButton?: boolean;
     popupClassName?: string;
 }

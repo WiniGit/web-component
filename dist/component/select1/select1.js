@@ -105,7 +105,6 @@ var Select1 = /** @class */ (function (_super) {
         _this.inputRef = (0, react_1.createRef)();
         _this.onKeyDown = function (ev) {
             var _a, _b, _c, _d, _e, _f, _g;
-            console.log(ev.key);
             if ((((_a = _this.state.options) === null || _a === void 0 ? void 0 : _a.length) || ((_b = _this.state.search) === null || _b === void 0 ? void 0 : _b.length)) && _this.state.isOpen) {
                 switch (ev.key.toLowerCase()) {
                     case "enter":
@@ -303,7 +302,12 @@ var Select1 = /** @class */ (function (_super) {
                         left: this.state.offset.x + 'px',
                         width: this.state.offset.width,
                     }, onMouseOver: function (ev) { return _this.setState(__assign(__assign({}, _this.state), { onSelect: ev.target })); }, onMouseOut: function () { return _this.setState(__assign(__assign({}, _this.state), { onSelect: null })); } },
-                    react_1.default.createElement("div", { className: "col ".concat(select1_module_css_1.default['select-body']) },
+                    react_1.default.createElement("div", { className: "col ".concat(select1_module_css_1.default['select-body']), onScroll: this.props.handleLoadmore ? function (ev) {
+                            if (_this.props.handleLoadmore) {
+                                var scrollElement = ev.target;
+                                _this.props.handleLoadmore(Math.round(scrollElement.offsetHeight + scrollElement.scrollTop) >= (scrollElement.scrollHeight - 1), ev);
+                            }
+                        } : undefined },
                         ((_g = this.state.search) !== null && _g !== void 0 ? _g : this.state.options).filter(function (e) { return !e.parentId; }).map(function (item) { return _this.renderOptions(item); }),
                         (((_h = this.state.search) === null || _h === void 0 ? void 0 : _h.length) === 0 || ((_j = this.props.options) === null || _j === void 0 ? void 0 : _j.length) === 0) && (react_1.default.createElement("div", { className: select1_module_css_1.default['no-results-found'] }, "No result found")))), document.body));
     };
