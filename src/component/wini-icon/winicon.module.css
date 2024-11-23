@@ -6,6 +6,10 @@
     --color: var(--neutral-text-subtitle-color);
 }
 
+.wini-icon[class*="link-icon"] {
+    --size: 'undefined';
+}
+
 .wini-icon.clickable {
     cursor: pointer;
 }
