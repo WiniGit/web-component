@@ -279,7 +279,10 @@ var SelectMultiple = /** @class */ (function (_super) {
                     if (_this.state.value.length)
                         _this.setState(__assign(__assign({}, _this.state), { isOpen: true, value: [] }));
                 } },
-                react_1.default.createElement(winicon_1.Winicon, { src: "outline/user interface/c-remove", size: '1.6rem' })) : react_1.default.createElement("div", { className: 'row', style: { display: (this.containerRef.current && this.containerRef.current.getBoundingClientRect().width >= 120) ? "flex" : "none" } },
+                react_1.default.createElement(winicon_1.Winicon, { src: "outline/user interface/c-remove", size: '1.6rem' })) : react_1.default.createElement("div", { ref: function (iconRef) {
+                    if ((iconRef === null || iconRef === void 0 ? void 0 : iconRef.parentElement) && iconRef.parentElement.getBoundingClientRect().width < 100)
+                        iconRef.style.display = "none";
+                }, className: 'row' },
                 react_1.default.createElement(winicon_1.Winicon, { src: this.state.isOpen ? "fill/arrows/up-arrow" : "fill/arrows/down-arrow", size: '1.2rem' })),
             this.state.isOpen &&
                 react_dom_1.default.createPortal(react_1.default.createElement("div", { className: "".concat(input_multi_select_module_css_1.default['select-multi-popup'], " select-multi-popup col ").concat((_e = this.props.popupClassName) !== null && _e !== void 0 ? _e : ""), style: (_f = this.state.style) !== null && _f !== void 0 ? _f : {
@@ -304,7 +307,7 @@ var SelectMultiple = /** @class */ (function (_super) {
                                 _this.setState(__assign(__assign({}, _this.state), { value: newValue }));
                                 if (_this.props.onChange)
                                     _this.props.onChange(newValue);
-                            }, className: 'button-text-3', style: { color: _list.length ? 'var(--infor-main-color)' : 'var(--neutral-text-title-color)' } }, _list.length && isSelectedAll ? 'Bỏ chọn tất cả' : 'Chọn tất cả');
+                            }, className: 'button-text-3', style: { color: _list.length ? 'var(--infor-main-color)' : 'var(--neutral-text-title-color)' } }, _list.length && isSelectedAll ? 'Remove all' : 'Select all');
                     })()),
                     react_1.default.createElement("div", { className: "col ".concat(input_multi_select_module_css_1.default['select-body']), onScroll: this.props.handleLoadmore ? function (ev) {
                             if (_this.props.handleLoadmore) {

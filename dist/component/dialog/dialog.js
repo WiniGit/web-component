@@ -78,16 +78,19 @@ var Dialog = /** @class */ (function (_super) {
         return (react_1.default.createElement(react_1.default.Fragment, null, this.state.open &&
             react_dom_1.default.createPortal(react_1.default.createElement("div", { className: dialog_module_css_1.default['dialog-overlay'] },
                 react_1.default.createElement("div", { className: "".concat(dialog_module_css_1.default['dialog-container'], " col"), style: { width: '41.4rem', alignItems: this.state.alignment }, "dialog-type": this.state.status, onClick: function (e) { return e.stopPropagation(); } },
-                    react_1.default.createElement("div", { key: 'dialog-body', className: "".concat(dialog_module_css_1.default['dialog-body'], " col"), style: { alignItems: 'inherit' } },
+                    react_1.default.createElement("div", { className: "".concat(dialog_module_css_1.default['dialog-body'], " col"), style: { alignItems: 'inherit' } },
                         react_1.default.createElement("div", { className: "".concat(dialog_module_css_1.default['dialog-status'], " row") }, (0, index_1.getStatusIcon)(this.state.status)),
-                        react_1.default.createElement("div", { className: dialog_module_css_1.default['dialog-title'], style: { textAlign: this.state.alignment === DialogAlignment.center ? 'center' : 'start' } }, this.state.title),
-                        react_1.default.createElement("div", { className: dialog_module_css_1.default['dialog-content'], style: { textAlign: this.state.alignment === DialogAlignment.center ? 'center' : 'start' } }, this.state.content)),
-                    react_1.default.createElement("div", { key: 'dialog-footer', className: "".concat(dialog_module_css_1.default['dialog-footer'], " row") },
-                        react_1.default.createElement("button", { type: 'button', style: this.state.alignment === DialogAlignment.center ? { flex: 1, width: '100%' } : undefined, onClick: function () { return _this.setState({ open: false }); }, className: dialog_module_css_1.default['dialog-action'] }, (_a = this.state.cancelTitle) !== null && _a !== void 0 ? _a : "Quay lại"),
+                        react_1.default.createElement("div", { className: 'col' },
+                            react_1.default.createElement(index_1.Text, { className: 'heading-6', style: { textAlign: this.state.alignment === DialogAlignment.center ? 'center' : 'start' } }, this.state.title),
+                            react_1.default.createElement(index_1.Text, { className: 'body-3', style: { textAlign: this.state.alignment === DialogAlignment.center ? 'center' : 'start' } }, this.state.content))),
+                    react_1.default.createElement("div", { className: "".concat(dialog_module_css_1.default['dialog-footer'], " row") },
+                        react_1.default.createElement("button", { type: 'button', style: this.state.alignment === DialogAlignment.center ? { flex: 1, width: '100%' } : undefined, onClick: function () { return _this.setState({ open: false }); }, className: "".concat(dialog_module_css_1.default['dialog-action'], " row") },
+                            react_1.default.createElement(index_1.Text, { className: 'button-text-3' }, (_a = this.state.cancelTitle) !== null && _a !== void 0 ? _a : "Cancel")),
                         react_1.default.createElement("button", { type: 'button', style: this.state.alignment === DialogAlignment.center ? { flex: 1, width: '100%' } : undefined, onClick: function () {
                                 _this.state.onSubmit();
                                 _this.setState({ open: false });
-                            }, className: "".concat(dialog_module_css_1.default['dialog-action'], " ").concat(dialog_module_css_1.default['dialog-submit']) }, (_b = this.state.submitTitle) !== null && _b !== void 0 ? _b : 'Xác nhận')))), document.body)));
+                            }, className: "".concat(dialog_module_css_1.default['dialog-action'], " row ").concat(dialog_module_css_1.default['dialog-submit']) },
+                            react_1.default.createElement(index_1.Text, { className: 'button-text-3' }, (_b = this.state.submitTitle) !== null && _b !== void 0 ? _b : 'Submit'))))), document.body)));
     };
     return Dialog;
 }(react_1.default.Component));

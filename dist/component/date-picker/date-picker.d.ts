@@ -7,7 +7,10 @@ interface DatePickerProps {
     min?: Date;
     max?: Date;
     onChange?: (e?: string) => void;
+    onComplete?: React.KeyboardEventHandler<HTMLInputElement>;
+    onFocus?: React.FocusEventHandler<HTMLInputElement>;
     disabled?: boolean;
+    pickOnly?: boolean;
     helperText?: string;
     helperTextColor?: string;
     placeholder?: string;
@@ -27,6 +30,7 @@ export declare class DatePicker extends React.Component<DatePickerProps, DatePic
     constructor(props: DatePickerProps);
     getNewValue: (value?: string) => Date | undefined;
     componentDidUpdate(prevProps: DatePickerProps, prevState: DatePickerState): void;
+    private onOpenCalendar;
     render(): React.JSX.Element;
 }
 export {};

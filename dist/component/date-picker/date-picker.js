@@ -37,18 +37,6 @@ require("./date-picker.css");
 var index_1 = require("../../index");
 var calendar_1 = require("../calendar/calendar");
 var date_fns_1 = require("date-fns");
-var CalendarIcon = function (_a) {
-    var _b = _a.color, color = _b === void 0 ? '#00204D99' : _b, _c = _a.width, width = _c === void 0 ? '1.6rem' : _c, _d = _a.height, height = _d === void 0 ? '1.6rem' : _d;
-    return (react_1.default.createElement("svg", { xmlns: 'http://www.w3.org/2000/svg', width: '100%', height: '100%', viewBox: '0 0 17 16', fill: 'none', style: { width: width, height: height } },
-        react_1.default.createElement("path", { d: 'M12.3876 2.99967V1.88856C12.3876 1.74122 12.3291 1.59991 12.2249 1.49573C12.1207 1.39154 11.9794 1.33301 11.832 1.33301C11.6847 1.33301 11.5434 1.39154 11.4392 1.49573C11.335 1.59991 11.2765 1.74122 11.2765 1.88856V2.99967H12.3876Z', fill: color }),
-        react_1.default.createElement("path", { d: 'M5.72092 2.99967V1.88856C5.72092 1.74122 5.66239 1.59991 5.5582 1.49573C5.45401 1.39154 5.31271 1.33301 5.16536 1.33301C5.01802 1.33301 4.87671 1.39154 4.77253 1.49573C4.66834 1.59991 4.60981 1.74122 4.60981 1.88856V2.99967H5.72092Z', fill: color }),
-        react_1.default.createElement("path", { d: 'M13.4987 14.1108H3.4987C3.05667 14.1108 2.63275 13.9352 2.32019 13.6226C2.00763 13.3101 1.83203 12.8861 1.83203 12.4441V5.2219C1.83203 4.77987 2.00763 4.35595 2.32019 4.04339C2.63275 3.73082 3.05667 3.55523 3.4987 3.55523H13.4987C13.9407 3.55523 14.3646 3.73082 14.6772 4.04339C14.9898 4.35595 15.1654 4.77987 15.1654 5.2219V12.4441C15.1654 12.8861 14.9898 13.3101 14.6772 13.6226C14.3646 13.9352 13.9407 14.1108 13.4987 14.1108ZM14.0543 6.33301H2.94314V12.4441C2.94314 12.5915 3.00167 12.7328 3.10586 12.837C3.21005 12.9411 3.35136 12.9997 3.4987 12.9997H13.4987C13.646 12.9997 13.7873 12.9411 13.8915 12.837C13.9957 12.7328 14.0543 12.5915 14.0543 12.4441V6.33301Z', fill: color }),
-        react_1.default.createElement("path", { d: 'M6.27648 7.44412H4.05425V9.11079H6.27648V7.44412Z', fill: color }),
-        react_1.default.createElement("path", { d: 'M9.60981 7.44412H7.38759V9.11079H9.60981V7.44412Z', fill: color }),
-        react_1.default.createElement("path", { d: 'M6.27648 10.2219H4.05425V11.8886H6.27648V10.2219Z', fill: color }),
-        react_1.default.createElement("path", { d: 'M9.60981 10.2219H7.38759V11.8886H9.60981V10.2219Z', fill: color }),
-        react_1.default.createElement("path", { d: 'M12.9431 7.44412H10.7209V9.11079H12.9431V7.44412Z', fill: color })));
-};
 var dateToString = function (x, y) {
     if (y === void 0) { y = "dd/mm/yyyy"; }
     var splitDateTime = y.split(" ");
@@ -152,6 +140,11 @@ var DatePicker = /** @class */ (function (_super) {
             }
             return undefined;
         };
+        _this.onOpenCalendar = function (ev) {
+            if (!_this.state.isOpen) {
+                _this.setState(__assign(__assign({}, _this.state), { isOpen: true, style: undefined, offset: ev.target.closest('.date-picker-container').getBoundingClientRect() }));
+            }
+        };
         _this.state = {
             value: props.value,
             offset: {
@@ -216,7 +209,21 @@ var DatePicker = /** @class */ (function (_super) {
         }
         return react_1.default.createElement("div", { id: this.props.id, className: "date-picker-container row ".concat((_a = this.props.className) !== null && _a !== void 0 ? _a : 'body-3', " ").concat(this.props.disabled ? 'disabled' : '', " ").concat(((_b = this.props.helperText) === null || _b === void 0 ? void 0 : _b.length) && 'helper-text'), "helper-text": this.props.helperText, style: this.props.style ? __assign(__assign({}, { '--helper-text-color': (_c = this.props.helperTextColor) !== null && _c !== void 0 ? _c : '#e14337' }), this.props.style) : { '--helper-text-color': (_d = this.props.helperTextColor) !== null && _d !== void 0 ? _d : '#e14337' } },
             react_1.default.createElement("div", { className: 'input-field-value row', style: { height: '4rem' } },
-                react_1.default.createElement("input", { autoComplete: 'off', value: (_e = this.state.value) !== null && _e !== void 0 ? _e : '', onChange: function (ev) { return _this.setState(__assign(__assign({}, _this.state), { value: ev.target.value })); }, placeholder: this.props.placeholder, maxLength: maxLength, onBlur: function (ev) {
+                react_1.default.createElement("input", { autoComplete: 'off', value: (_e = this.state.value) !== null && _e !== void 0 ? _e : '', onChange: function (ev) { return _this.setState(__assign(__assign({}, _this.state), { value: ev.target.value })); }, placeholder: this.props.placeholder, maxLength: maxLength, readOnly: this.props.pickOnly, onFocus: this.props.pickOnly ? function (ev) {
+                        _this.onOpenCalendar(ev);
+                        if (_this.props.onFocus)
+                            _this.props.onFocus(ev);
+                    } : this.props.onFocus, onKeyDown: this.props.onComplete ? function (ev) {
+                        if (_this.props.onComplete) {
+                            switch (ev.key.toLowerCase()) {
+                                case "enter":
+                                    _this.props.onComplete(ev);
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    } : undefined, onBlur: function (ev) {
                         var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v;
                         var inputValue = ev.target.value.trim();
                         switch (_this.props.pickerType) {
@@ -298,13 +305,7 @@ var DatePicker = /** @class */ (function (_super) {
                                 break;
                         }
                     } })),
-            react_1.default.createElement("button", { type: 'button', onClick: function (ev) {
-                    var _a;
-                    if (!_this.state.isOpen) {
-                        _this.setState(__assign(__assign({}, _this.state), { isOpen: true, style: undefined, offset: ((_a = ev.target.closest('.date-picker-container')) !== null && _a !== void 0 ? _a : ev.target).getBoundingClientRect() }));
-                    }
-                }, className: 'row', style: { padding: '0.4rem' } },
-                react_1.default.createElement(CalendarIcon, null)),
+            react_1.default.createElement(index_1.Winicon, { src: "outline/user interface/".concat(this.props.pickerType === index_1.CalendarType.DATETIME ? "opening-times" : "calendar-date-2"), size: '1.6rem', onClick: this.onOpenCalendar }),
             this.state.isOpen &&
                 react_dom_1.default.createPortal(react_1.default.createElement("div", { className: "popup-overlay hidden-overlay", onClick: function (ev) {
                         if (ev.target.classList.contains('popup-overlay'))

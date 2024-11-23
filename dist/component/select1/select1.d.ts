@@ -22,6 +22,7 @@ interface Select1Props {
     readOnly?: boolean;
     popupClassName?: string;
     prefix?: ReactNode;
+    suffix?: ReactNode;
 }
 interface Select1State {
     value?: string | number;
