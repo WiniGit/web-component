@@ -226,11 +226,11 @@ export class Select1 extends React.Component<Select1Props, Select1State> {
                     else if (!this.state.onSelect) this.setState({ ...this.state, isOpen: false, onSelect: null })
                 }}
             /> : _value.name}
-            <div ref={iconRef => {
+            {this.props.suffix ?? <div ref={iconRef => {
                 if (iconRef?.parentElement && iconRef.parentElement.getBoundingClientRect().width < 100) iconRef.style.display = "none"
             }} className='row' >
                 <Winicon src={this.state.isOpen ? "fill/arrows/up-arrow" : "fill/arrows/down-arrow"} size={"1.2rem"} />
-            </div>
+            </div>}
             {this.state.isOpen &&
                 ReactDOM.createPortal(
                     <div className={`${styles['select1-popup']} select1-popup col ${this.props.popupClassName ?? ""}`}

@@ -63,8 +63,6 @@ export class CustomSlider extends React.Component<SliderProps, SliderState> {
         if (this.props.autoPlay) this.intervalPlay = setInterval(this.autoPlay, this.props.duration ?? 2000)
     }
 
-
-
     componentDidUpdate(prevProps: Readonly<SliderProps>, prevState: Readonly<SliderState>): void {
         if (this.props.autoPlay !== prevProps.autoPlay && !this.props.autoPlay) clearInterval(this.intervalPlay)
     }
