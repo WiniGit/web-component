@@ -223,7 +223,7 @@ var DatePicker = /** @class */ (function (_super) {
                                     break;
                             }
                         }
-                    } : undefined, onBlur: function (ev) {
+                    } : undefined, onBlur: this.props.pickOnly ? undefined : function (ev) {
                         var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v;
                         var inputValue = ev.target.value.trim();
                         switch (_this.props.pickerType) {
