@@ -205,7 +205,9 @@ export class SelectMultiple extends React.Component<SelectMultipleProps, SelectM
                 if (this.state.value.length) this.setState({ ...this.state, isOpen: true, value: [] })
             }}>
                 <Winicon src={"outline/user interface/c-remove"} size={'1.6rem'} />
-            </button> : <div className='row' style={{ display: (this.containerRef.current && this.containerRef.current.getBoundingClientRect().width >= 120) ? "flex" : "none" }} >
+            </button> : <div ref={iconRef => {
+                if (iconRef?.parentElement && iconRef.parentElement.getBoundingClientRect().width < 100) iconRef.style.display = "none"
+            }} className='row' >
                 <Winicon src={this.state.isOpen ? "fill/arrows/up-arrow" : "fill/arrows/down-arrow"} size={'1.2rem'} />
             </div>}
             {this.state.isOpen &&
@@ -234,7 +236,7 @@ export class SelectMultiple extends React.Component<SelectMultipleProps, SelectM
                                     }
                                     this.setState({ ...this.state, value: newValue })
                                     if (this.props.onChange) this.props.onChange(newValue)
-                                }} className='button-text-3' style={{ color: _list.length ? 'var(--infor-main-color)' : 'var(--neutral-text-title-color)' }}>{_list.length && isSelectedAll ? 'Bỏ chọn tất cả' : 'Chọn tất cả'}</Text>
+                                }} className='button-text-3' style={{ color: _list.length ? 'var(--infor-main-color)' : 'var(--neutral-text-title-color)' }}>{_list.length && isSelectedAll ? 'Remove all' : 'Select all'}</Text>
                             })()}
                         </div>
                         <div className={`col ${styles['select-body']}`} onScroll={this.props.handleLoadmore ? (ev) => {

@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import styles from './dialog.module.css'
-import { ComponentStatus, getStatusIcon } from '../../index'
+import { ComponentStatus, getStatusIcon, Text } from '../../index'
 
 
 export enum DialogAlignment {
@@ -65,18 +65,22 @@ export class Dialog extends React.Component<Object, DialogState> {
                     ReactDOM.createPortal(
                         <div className={styles['dialog-overlay']}>
                             <div className={`${styles['dialog-container']} col`} style={{ width: '41.4rem', alignItems: this.state.alignment }} dialog-type={this.state.status} onClick={e => e.stopPropagation()} >
-                                <div key={'dialog-body'} className={`${styles['dialog-body']} col`} style={{ alignItems: 'inherit' }}>
+                                <div className={`${styles['dialog-body']} col`} style={{ alignItems: 'inherit' }}>
                                     <div className={`${styles['dialog-status']} row`}>{getStatusIcon(this.state.status)}</div>
-                                    <div className={styles['dialog-title']} style={{ textAlign: this.state.alignment === DialogAlignment.center ? 'center' : 'start' }}>{this.state.title}</div>
-                                    <div className={styles['dialog-content']} style={{ textAlign: this.state.alignment === DialogAlignment.center ? 'center' : 'start' }}>{this.state.content}</div>
+                                    <div className='col'>
+                                        <Text className={'heading-6'} style={{ textAlign: this.state.alignment === DialogAlignment.center ? 'center' : 'start' }}>{this.state.title}</Text>
+                                        <Text className={'body-3'} style={{ textAlign: this.state.alignment === DialogAlignment.center ? 'center' : 'start' }}>{this.state.content}</Text>
+                                    </div>
                                 </div>
-                                <div key={'dialog-footer'} className={`${styles['dialog-footer']} row`}>
-                                    <button type='button' style={this.state.alignment === DialogAlignment.center ? { flex: 1, width: '100%' } : undefined} onClick={() => this.setState({ open: false })} className={styles['dialog-action']}>{this.state.cancelTitle ?? "Quay lại"}</button>
+                                <div className={`${styles['dialog-footer']} row`}>
+                                    <button type='button' style={this.state.alignment === DialogAlignment.center ? { flex: 1, width: '100%' } : undefined} onClick={() => this.setState({ open: false })} className={`${styles['dialog-action']} row`}>
+                                        <Text className='button-text-3'>{this.state.cancelTitle ?? "Cancel"}</Text>
+                                    </button>
                                     <button type='button' style={this.state.alignment === DialogAlignment.center ? { flex: 1, width: '100%' } : undefined} onClick={() => {
                                         this.state.onSubmit();
                                         this.setState({ open: false });
-                                    }} className={`${styles['dialog-action']} ${styles['dialog-submit']}`} >
-                                        {this.state.submitTitle ?? 'Xác nhận'}
+                                    }} className={`${styles['dialog-action']} row ${styles['dialog-submit']}`} >
+                                        <Text className='button-text-3'>{this.state.submitTitle ?? 'Submit'}</Text>
                                     </button>
                                 </div>
                             </div>

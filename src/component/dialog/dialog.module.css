@@ -13,11 +13,11 @@
 
 .dialog-container {
     position: relative;
-    background-color: #ffffff;
+    background-color: var(--neutral-absolute-background-color);
     padding: 2.4rem;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
-    row-gap: 2.4rem;
+    gap: 2.4rem;
     overflow: visible;
 }
 
@@ -28,7 +28,17 @@
 }
 
 .dialog-body {
-    row-gap: 1.6rem;
+    gap: 1.6rem;
+}
+
+.dialog-body>div:last-child {
+    width: 100%;
+    align-items: inherit;
+    gap: 8px;
+}
+
+.dialog-body>div:last-child>* {
+    width: 100%;
 }
 
 .dialog-body>.dialog-status {
@@ -39,36 +49,26 @@
     justify-content: center;
 }
 
-.dialog-body>.dialog-title {
-    font: 600 2rem/2.8rem 'Inter';
-    color: #00204D;
-}
-
-.dialog-body>.dialog-content {
-    font: 400 1.4rem/2.2rem 'Inter';
-    color: #00204DCC;
-}
-
 .dialog-footer {
-    gap: 0.8rem;
+    gap: 8px;
     justify-content: end;
     width: 100%;
 }
 
 .dialog-footer>.dialog-action {
-    display: flex;
     height: 4rem;
     justify-content: center;
     padding: 0 1.6rem;
     border-radius: 0.8rem;
-    background-color: #F2F5F8;
-    align-items: center;
-    font: 500 1.4rem/2.2rem 'Inter';
-    color: #00204D99;
+    background-color: var(--neutral-main-background-color);
 }
 
-.dialog-footer>.dialog-submit {
-    color: #ffffff;
+.dialog-footer>.dialog-action>* {
+    color: var(--neutral-text-subtitle-color);
+}
+
+.dialog-footer>.dialog-submit>* {
+    color: var(--neutral-text-title-reverse-color);
 }
 
 /* 
@@ -79,33 +79,33 @@ SUCCSESS = 4
 */
 
 .dialog-container[dialog-type="1"] .dialog-status {
-    background-color: #EDF2FD;
+    background-color: var(--infor-background);
 }
 
 .dialog-container[dialog-type="2"] .dialog-status {
-    background-color: #FCEEED;
+    background-color: var(--error-background);
 }
 
 .dialog-container[dialog-type="3"] .dialog-status {
-    background-color: #FFF3EB;
+    background-color: var(--warning-background);
 }
 
 .dialog-container[dialog-type="4"] .dialog-status {
-    background-color: #E8F7EF;
+    background-color: var(--success-background);
 }
 
 .dialog-container[dialog-type="1"] .dialog-footer>.dialog-submit {
-    background-color: #366AE2;
+    background-color: var(--infor-main-color);
 }
 
 .dialog-container[dialog-type="2"] .dialog-footer>.dialog-submit {
-    background-color: #E14337;
+    background-color: var(--error-main-color);
 }
 
 .dialog-container[dialog-type="3"] .dialog-footer>.dialog-submit {
-    background-color: #FC6B03;
+    background-color: var(--warning-main-color);
 }
 
 .dialog-container[dialog-type="4"] .dialog-footer>.dialog-submit {
-    background-color: #39AC6D;
+    background-color: var(--success-main-color);
 }
