@@ -275,7 +275,7 @@ var Select1 = /** @class */ (function (_super) {
     };
     Select1.prototype.render = function () {
         var _this = this;
-        var _a, _b, _c, _d, _e, _f, _g, _h, _j;
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
         var _value = this.state.options.find(function (e) { return e.id === _this.state.value; });
         return react_1.default.createElement("div", { id: this.props.id, ref: this.containerRef, className: "".concat(select1_module_css_1.default['select1-container'], " row ").concat(this.props.disabled ? select1_module_css_1.default['disabled'] : '', " ").concat(((_a = this.props.helperText) === null || _a === void 0 ? void 0 : _a.length) && select1_module_css_1.default['helper-text'], " ").concat((_b = this.props.className) !== null && _b !== void 0 ? _b : 'body-3'), "helper-text": this.props.helperText, style: this.props.style ? __assign(__assign({}, { '--helper-text-color': (_c = this.props.helperTextColor) !== null && _c !== void 0 ? _c : '#e14337' }), this.props.style) : { '--helper-text-color': (_d = this.props.helperTextColor) !== null && _d !== void 0 ? _d : '#e14337' }, onClick: function () {
                 var _a, _b, _c;
@@ -290,14 +290,13 @@ var Select1 = /** @class */ (function (_super) {
                         ev.target.focus();
                     else if (!_this.state.onSelect)
                         _this.setState(__assign(__assign({}, _this.state), { isOpen: false, onSelect: null }));
-                } }) : _value.name,
-            react_1.default.createElement("div", { ref: function (iconRef) {
-                    if ((iconRef === null || iconRef === void 0 ? void 0 : iconRef.parentElement) && iconRef.parentElement.getBoundingClientRect().width < 100)
-                        iconRef.style.display = "none";
-                }, className: 'row' },
-                react_1.default.createElement(winicon_1.Winicon, { src: this.state.isOpen ? "fill/arrows/up-arrow" : "fill/arrows/down-arrow", size: "1.2rem" })),
+                } }) : _value.name, (_e = this.props.suffix) !== null && _e !== void 0 ? _e : react_1.default.createElement("div", { ref: function (iconRef) {
+                if ((iconRef === null || iconRef === void 0 ? void 0 : iconRef.parentElement) && iconRef.parentElement.getBoundingClientRect().width < 100)
+                    iconRef.style.display = "none";
+            }, className: 'row' },
+            react_1.default.createElement(winicon_1.Winicon, { src: this.state.isOpen ? "fill/arrows/up-arrow" : "fill/arrows/down-arrow", size: "1.2rem" })),
             this.state.isOpen &&
-                react_dom_1.default.createPortal(react_1.default.createElement("div", { className: "".concat(select1_module_css_1.default['select1-popup'], " select1-popup col ").concat((_e = this.props.popupClassName) !== null && _e !== void 0 ? _e : ""), style: (_f = this.state.style) !== null && _f !== void 0 ? _f : {
+                react_dom_1.default.createPortal(react_1.default.createElement("div", { className: "".concat(select1_module_css_1.default['select1-popup'], " select1-popup col ").concat((_f = this.props.popupClassName) !== null && _f !== void 0 ? _f : ""), style: (_g = this.state.style) !== null && _g !== void 0 ? _g : {
                         top: this.state.offset.y + this.state.offset.height + 2 + 'px',
                         left: this.state.offset.x + 'px',
                         width: this.state.offset.width,
@@ -308,8 +307,8 @@ var Select1 = /** @class */ (function (_super) {
                                 _this.props.handleLoadmore(Math.round(scrollElement.offsetHeight + scrollElement.scrollTop) >= (scrollElement.scrollHeight - 1), ev);
                             }
                         } : undefined },
-                        ((_g = this.state.search) !== null && _g !== void 0 ? _g : this.state.options).filter(function (e) { return !e.parentId; }).map(function (item) { return _this.renderOptions(item); }),
-                        (((_h = this.state.search) === null || _h === void 0 ? void 0 : _h.length) === 0 || ((_j = this.props.options) === null || _j === void 0 ? void 0 : _j.length) === 0) && (react_1.default.createElement("div", { className: select1_module_css_1.default['no-results-found'] }, "No result found")))), document.body));
+                        ((_h = this.state.search) !== null && _h !== void 0 ? _h : this.state.options).filter(function (e) { return !e.parentId; }).map(function (item) { return _this.renderOptions(item); }),
+                        (((_j = this.state.search) === null || _j === void 0 ? void 0 : _j.length) === 0 || ((_k = this.props.options) === null || _k === void 0 ? void 0 : _k.length) === 0) && (react_1.default.createElement("div", { className: select1_module_css_1.default['no-results-found'] }, "No result found")))), document.body));
     };
     return Select1;
 }(react_1.default.Component));
