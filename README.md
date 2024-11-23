@@ -9,9 +9,9 @@ In the project directory, you can run:
 ### `npm i wini-web-components`
 
 ### Using Skin
-add this cdn link into your App.css file
-@import url(https://cdn.jsdelivr.net/gh/WiniGit/web-component@latest/src/skin/root.css);
-@import url(https://cdn.jsdelivr.net/gh/WiniGit/web-component@latest/src/skin/typography.css);
+add this cdn link into your App.css file. \
+@import url(https://cdn.jsdelivr.net/gh/WiniGit/web-component@latest/src/skin/root.css); \
+@import url(https://cdn.jsdelivr.net/gh/WiniGit/web-component@latest/src/skin/typography.css); \
 @import url(https://cdn.jsdelivr.net/gh/WiniGit/web-component@latest/src/skin/layout.css);
 
 

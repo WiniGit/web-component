@@ -238,7 +238,7 @@ export class DatePicker extends React.Component<DatePickerProps, DatePickerState
                             }
                         }
                     } : undefined}
-                    onBlur={ev => {
+                    onBlur={this.props.pickOnly ? undefined : (ev) => {
                         const inputValue = ev.target.value.trim()
                         switch (this.props.pickerType) {
                             case CalendarType.YEAR:
