@@ -95,7 +95,9 @@ export class Select1 extends React.Component<Select1Props, Select1State> {
             this.setState({ ...this.state, isOpen: false, onSelect: undefined, selected: undefined })
             this.inputRef.current?.blur()
         } else {
-            this.setState({ ...this.state, isOpen: false, value: item.id, onSelect: undefined, selected: undefined })
+            let newState = { ...this.state, isOpen: false, value: item.id, onSelect: undefined, selected: undefined }
+            if(!newState.options.some(e => e.id === item.id)) newState.options.push(item)
+            this.setState(newState)
             this.inputRef.current?.blur()
         }
         if (this.props.onChange) this.props.onChange(item)
