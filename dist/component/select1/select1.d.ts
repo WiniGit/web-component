@@ -3,7 +3,7 @@ export interface OptionsItem {
     id: string | number;
     parentId?: string;
     name: string | ReactNode;
-    title?: string | ReactNode;
+    title?: string | ((onSelect: (e: OptionsItem) => void) => ReactNode);
     disabled?: boolean;
 }
 interface Select1Props {
@@ -19,10 +19,12 @@ interface Select1Props {
     style?: CSSProperties;
     handleSearch?: (e: string) => Promise<Array<OptionsItem>>;
     handleLoadmore?: (onLoadMore: boolean, ev: React.UIEvent<HTMLDivElement, UIEvent>) => void;
+    handleLoadChildren?: () => {};
     readOnly?: boolean;
     popupClassName?: string;
     prefix?: ReactNode;
     suffix?: ReactNode;
+    onOpenOptions?: (popupRef: HTMLDivElement) => void;
 }
 interface Select1State {
     value?: string | number;
@@ -40,7 +42,6 @@ export declare class Select1 extends React.Component<Select1Props, Select1State>
     constructor(props: Select1Props);
     private search;
     private onSelect;
-    private renderOptions;
     private onKeyDown;
     componentDidUpdate(prevProps: Select1Props, prevState: Select1State): void;
     componentDidMount(): void;

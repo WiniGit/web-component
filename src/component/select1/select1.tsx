@@ -1,14 +1,14 @@
 import styles from './select1.module.css'
-import React, { createRef, CSSProperties, ReactNode } from 'react'
+import React, { createRef, CSSProperties, ReactNode, useState } from 'react'
 import ReactDOM from 'react-dom'
-import { Text } from '../text/text'
 import { Winicon } from '../wini-icon/winicon'
+import { Text } from '../text/text'
 
 export interface OptionsItem {
     id: string | number,
     parentId?: string,
     name: string | ReactNode,
-    title?: string | ReactNode,
+    title?: string | ((onSelect: (e: OptionsItem) => void) => ReactNode),
     disabled?: boolean
 }
 
@@ -25,10 +25,12 @@ interface Select1Props {
     style?: CSSProperties,
     handleSearch?: (e: string) => Promise<Array<OptionsItem>>,
     handleLoadmore?: (onLoadMore: boolean, ev: React.UIEvent<HTMLDivElement, UIEvent>) => void,
+    handleLoadChildren?: () => {}
     readOnly?: boolean,
     popupClassName?: string,
     prefix?: ReactNode,
     suffix?: ReactNode,
+    onOpenOptions?: (popupRef: HTMLDivElement) => void
 }
 
 interface Select1State {
@@ -67,6 +69,8 @@ export class Select1 extends React.Component<Select1Props, Select1State> {
             onSelect: null,
         }
         this.search = this.search.bind(this)
+        this.onSelect = this.onSelect.bind(this)
+        this.onKeyDown = this.onKeyDown.bind(this)
         if (this.inputRef.current) this.inputRef.current.value = `${this.state.options.find(e => e.id === this.state.value)?.name ?? ""}`
     }
 
@@ -95,39 +99,6 @@ export class Select1 extends React.Component<Select1Props, Select1State> {
             this.inputRef.current?.blur()
         }
         if (this.props.onChange) this.props.onChange(item)
-    }
-
-    private renderOptions(item: OptionsItem) {
-        let children: Array<OptionsItem> = []
-        if (!item.parentId) children = (this.state.search ?? this.state.options).filter(e => e.parentId === item.id)
-        // 
-        return <div key={item.id} className='col' style={{ width: '100%' }}>
-            <div className={`${styles['select-tile']} row ${item.disabled ? styles["disabled"] : ""}`} style={{ paddingLeft: item.parentId ? '4.4rem' : undefined, backgroundColor: this.state.selected === item.id ? "var(--neutral-selected-background-color)" : undefined }} onClick={children.length ? () => {
-                if (this.state.search) {
-                    this.setState({
-                        ...this.state, search: this.state.search.map(e => {
-                            if (e.id === item.id) return { ...e, isOpen: !(item as any).isOpen } as any
-                            else return e
-                        })
-                    })
-                } else {
-                    this.setState({
-                        ...this.state, options: this.state.options.map(e => {
-                            if (e.id === item.id) return { ...e, isOpen: !(item as any).isOpen } as any
-                            else return e
-                        })
-                    })
-                }
-            } : () => {
-                this.onSelect(item)
-            }}>
-                {(this.state.search ?? this.state.options).some(e => e.parentId) && <div className='row' style={{ width: '1.4rem', height: '1.4rem' }}>
-                    {children.length ? <Winicon src={(item as any).isOpen ? "fill/arrows/triangle-down" : "fill/arrows/triangle-right"} size={"1.2rem"} /> : null}
-                </div>}
-                <Text className='body-3'>{item.name}</Text>
-            </div>
-            <div className='col' style={{ display: (item as any).isOpen ? "flex" : "none", width: '100%' }}>{children.map(e => this.renderOptions(e))}</div>
-        </div>
     }
 
     private onKeyDown = (ev: React.KeyboardEvent<HTMLInputElement>) => {
@@ -233,7 +204,9 @@ export class Select1 extends React.Component<Select1Props, Select1State> {
             </div>}
             {this.state.isOpen &&
                 ReactDOM.createPortal(
-                    <div className={`${styles['select1-popup']} select1-popup col ${this.props.popupClassName ?? ""}`}
+                    <div ref={(popupRef) => {
+                        if (popupRef && this.props.onOpenOptions) this.props.onOpenOptions(popupRef)
+                    }} className={`${styles['select1-popup']} select1-popup col ${this.props.popupClassName ?? ""}`}
                         style={this.state.style ?? {
                             top: this.state.offset.y + this.state.offset.height + 2 + 'px',
                             left: this.state.offset.x + 'px',
@@ -248,7 +221,16 @@ export class Select1 extends React.Component<Select1Props, Select1State> {
                                 this.props.handleLoadmore(Math.round(scrollElement.offsetHeight + scrollElement.scrollTop) >= (scrollElement.scrollHeight - 1), ev)
                             }
                         } : undefined}>
-                            {(this.state.search ?? this.state.options).filter(e => !e.parentId).map(item => this.renderOptions(item))}
+                            {(this.state.search ?? this.state.options).filter(e => !e.parentId).map(item => {
+                                return <OptionsItemTile
+                                    key={item.id}
+                                    item={item}
+                                    children={(this.state.search ?? this.state.options).filter(e => e.parentId === item.id)}
+                                    selected={this.state.selected === item.id}
+                                    onClick={this.onSelect}
+                                    treeData={(this.state.search ?? this.state.options).some(e => !e.parentId)}
+                                />
+                            })}
                             {(this.state.search?.length === 0 || this.props.options?.length === 0) && (
                                 <div className={styles['no-results-found']}>No result found</div>
                             )}
@@ -258,4 +240,30 @@ export class Select1 extends React.Component<Select1Props, Select1State> {
                 )}
         </div>
     }
+}
+
+interface OptionTileProps {
+    item: OptionsItem,
+    children?: Array<OptionsItem>,
+    selected?: boolean,
+    onClick: (e: OptionsItem) => void,
+    treeData?: boolean
+}
+
+function OptionsItemTile({ item, children, selected, onClick, treeData }: OptionTileProps) {
+    const [isOpen, setIsOpen] = useState<boolean>(false)
+
+    return item.title && typeof item.title !== "string" ? <>{item.title(onClick)}</> : <div className='col' style={{ width: '100%' }}>
+        <div className={`${styles['select-tile']} row ${item.disabled ? styles["disabled"] : ""}`} style={{ paddingLeft: item.parentId ? '4.4rem' : undefined, backgroundColor: selected ? "var(--neutral-selected-background-color)" : undefined }} onClick={() => {
+            if (children?.length) {
+                setIsOpen(!isOpen)
+            } else onClick(item)
+        }}>
+            {treeData ? <div className='row' style={{ width: '1.4rem', height: '1.4rem' }}>
+                {children?.length ? <Winicon src={isOpen ? "fill/arrows/triangle-down" : "fill/arrows/triangle-right"} size={"1.2rem"} /> : null}
+            </div> : undefined}
+            <Text className='body-3'>{item.title && typeof item.title === "string" ? item.title : item.name}</Text>
+        </div>
+        {children?.length ? <div className='col' style={{ display: isOpen ? "flex" : "none", width: '100%' }}>{children.map(e => <OptionsItemTile key={e.id} item={e} onClick={onClick} />)}</div> : undefined}
+    </div>
 }
