@@ -193,7 +193,10 @@ var Select1 = /** @class */ (function (_super) {
             (_a = this.inputRef.current) === null || _a === void 0 ? void 0 : _a.blur();
         }
         else {
-            this.setState(__assign(__assign({}, this.state), { isOpen: false, value: item.id, onSelect: undefined, selected: undefined }));
+            var newState = __assign(__assign({}, this.state), { isOpen: false, value: item.id, onSelect: undefined, selected: undefined });
+            if (!newState.options.some(function (e) { return e.id === item.id; }))
+                newState.options.push(item);
+            this.setState(newState);
             (_b = this.inputRef.current) === null || _b === void 0 ? void 0 : _b.blur();
         }
         if (this.props.onChange)
