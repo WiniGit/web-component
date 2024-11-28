@@ -9,11 +9,6 @@ import { Winicon } from "../wini-icon/winicon";
 export function Pagination({ id, currentPage, itemPerPage, totalItem, onChangePage, hidePageSize = false, hideGoToPage = false, style }: { id?: string, currentPage: number, itemPerPage: number, totalItem: number, onChangePage: Function, hideGoToPage?: boolean, hidePageSize?: boolean, style: CSSProperties }) {
     const goToPageRef = useRef<TextField>()
 
-    if (currentPage > 1 && (totalItem === 0 || (Math.floor(totalItem / itemPerPage) + (totalItem % itemPerPage === 0 ? 0 : 1)) < currentPage)) {
-        onChangePage(1, itemPerPage);
-        return <div></div>;
-    }
-
     useEffect(() => {
         if (goToPageRef.current) {
             const _inputPage = goToPageRef.current.getInput()
@@ -21,7 +16,10 @@ export function Pagination({ id, currentPage, itemPerPage, totalItem, onChangePa
         }
     }, [currentPage])
 
-    if (totalItem > 0) {
+    if (currentPage > 1 && (totalItem === 0 || (Math.floor(totalItem / itemPerPage) + (totalItem % itemPerPage === 0 ? 0 : 1)) < currentPage)) {
+        onChangePage(1, itemPerPage);
+        return <div></div>;
+    } else if (totalItem > 0) {
         return <div id={id} className={`${styles['custom-pagination']} row`} style={style}>
             {hidePageSize ? null : <div className="row" style={{ gap: '0.8rem' }}>
                 <Select1

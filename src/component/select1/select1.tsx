@@ -230,7 +230,7 @@ export class Select1 extends React.Component<Select1Props, Select1State> {
                                     children={(this.state.search ?? this.state.options).filter(e => e.parentId === item.id)}
                                     selected={this.state.selected === item.id}
                                     onClick={this.onSelect}
-                                    treeData={(this.state.search ?? this.state.options).some(e => !e.parentId)}
+                                    treeData={(this.state.search ?? this.state.options).some(e => e.parentId)}
                                 />
                             })}
                             {(this.state.search?.length === 0 || this.props.options?.length === 0) && (
