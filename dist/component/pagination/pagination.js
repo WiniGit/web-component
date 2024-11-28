@@ -37,10 +37,6 @@ var winicon_1 = require("../wini-icon/winicon");
 function Pagination(_a) {
     var id = _a.id, currentPage = _a.currentPage, itemPerPage = _a.itemPerPage, totalItem = _a.totalItem, onChangePage = _a.onChangePage, _b = _a.hidePageSize, hidePageSize = _b === void 0 ? false : _b, _c = _a.hideGoToPage, hideGoToPage = _c === void 0 ? false : _c, style = _a.style;
     var goToPageRef = (0, react_1.useRef)();
-    if (currentPage > 1 && (totalItem === 0 || (Math.floor(totalItem / itemPerPage) + (totalItem % itemPerPage === 0 ? 0 : 1)) < currentPage)) {
-        onChangePage(1, itemPerPage);
-        return react_1.default.createElement("div", null);
-    }
     (0, react_1.useEffect)(function () {
         if (goToPageRef.current) {
             var _inputPage = goToPageRef.current.getInput();
@@ -48,7 +44,11 @@ function Pagination(_a) {
                 _inputPage.value = currentPage.toString();
         }
     }, [currentPage]);
-    if (totalItem > 0) {
+    if (currentPage > 1 && (totalItem === 0 || (Math.floor(totalItem / itemPerPage) + (totalItem % itemPerPage === 0 ? 0 : 1)) < currentPage)) {
+        onChangePage(1, itemPerPage);
+        return react_1.default.createElement("div", null);
+    }
+    else if (totalItem > 0) {
         return react_1.default.createElement("div", { id: id, className: "".concat(pagination_module_css_1.default['custom-pagination'], " row"), style: style },
             hidePageSize ? null : react_1.default.createElement("div", { className: "row", style: { gap: '0.8rem' } },
                 react_1.default.createElement(select1_1.Select1, { readOnly: true, placeholder: itemPerPage.toString(), options: [10, 20, 50, 80, 100, 150, 200].map(function (item, _) { return { id: item, name: item }; }), style: { borderRadius: '0.4rem', width: '5.6rem', padding: '0 0.8rem', height: '2.4rem' }, onChange: function (ev) {

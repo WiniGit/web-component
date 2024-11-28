@@ -285,7 +285,7 @@ var Select1 = /** @class */ (function (_super) {
                         } : undefined },
                         ((_h = this.state.search) !== null && _h !== void 0 ? _h : this.state.options).filter(function (e) { return !e.parentId; }).map(function (item) {
                             var _a, _b;
-                            return react_1.default.createElement(OptionsItemTile, { key: item.id, item: item, children: ((_a = _this.state.search) !== null && _a !== void 0 ? _a : _this.state.options).filter(function (e) { return e.parentId === item.id; }), selected: _this.state.selected === item.id, onClick: _this.onSelect, treeData: ((_b = _this.state.search) !== null && _b !== void 0 ? _b : _this.state.options).some(function (e) { return !e.parentId; }) });
+                            return react_1.default.createElement(OptionsItemTile, { key: item.id, item: item, children: ((_a = _this.state.search) !== null && _a !== void 0 ? _a : _this.state.options).filter(function (e) { return e.parentId === item.id; }), selected: _this.state.selected === item.id, onClick: _this.onSelect, treeData: ((_b = _this.state.search) !== null && _b !== void 0 ? _b : _this.state.options).some(function (e) { return e.parentId; }) });
                         }),
                         (((_j = this.state.search) === null || _j === void 0 ? void 0 : _j.length) === 0 || ((_k = this.props.options) === null || _k === void 0 ? void 0 : _k.length) === 0) && (react_1.default.createElement("div", { className: select1_module_css_1.default['no-results-found'] }, "No result found")))), document.body));
     };

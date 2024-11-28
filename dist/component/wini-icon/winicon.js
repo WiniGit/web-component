@@ -107,6 +107,6 @@ function Winicon(_a) {
             }); }); });
         }
     }, [src, link]);
-    return react_1.default.createElement("div", { id: id, onClick: onClick, className: "".concat(winicon_module_css_1.default['wini-icon'], " ").concat(onClick ? winicon_module_css_1.default['clickable'] : '', " ").concat(className !== null && className !== void 0 ? className : '', " ").concat(src ? src.split("/").map(function (e, i) { return i === 0 ? "".concat(e, "-icon") : e.replace(" ", "-"); }).join(" ") : '').concat(link ? ' link-icon' : ""), style: (style ? __assign(__assign({}, style), { '--size': size, '--color': color }) : { '--size': size, '--color': color }), dangerouslySetInnerHTML: { __html: svgData !== null && svgData !== void 0 ? svgData : '' } });
+    return react_1.default.createElement("div", { id: id, onClick: onClick, className: "".concat(winicon_module_css_1.default['wini-icon'], " ").concat(svgData ? "" : "skeleton-loading", " ").concat(onClick ? winicon_module_css_1.default['clickable'] : '', " ").concat(className !== null && className !== void 0 ? className : '', " ").concat(src ? src.split("/").map(function (e, i) { return i === 0 ? "".concat(e, "-icon") : e.replace(" ", "-"); }).join(" ") : '').concat(link ? ' link-icon' : ""), style: (style ? __assign(__assign({}, style), { '--size': size, '--color': color }) : { '--size': size, '--color': color }), dangerouslySetInnerHTML: { __html: svgData !== null && svgData !== void 0 ? svgData : '' } });
 }
 exports.Winicon = Winicon;
