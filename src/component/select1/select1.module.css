@@ -103,5 +103,5 @@
 .no-results-found {
     padding: 0.8rem;
     font: 400 1.4rem/2rem "Inter";
-    color: #1C2430;
+    color: var(--neutral-text-title-reverse-color);
 }

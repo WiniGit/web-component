@@ -23,6 +23,5 @@
     padding: 0;
     font-family: inherit;
     font-size: inherit;
-    -webkit-line-clamp: var(--max-line);
     -webkit-box-pack: inherit;
 }
