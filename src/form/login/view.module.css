@@ -60,7 +60,7 @@ button:disabled.login-btn {
     flex: 1;
     gap: 1.6rem;
     justify-content: center;
-    border: var(--neutral-bolder-border-color);
+    border: var(--neutral-bolder-border);
     background-color: transparent;
 }
 

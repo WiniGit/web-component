@@ -39,7 +39,7 @@
 
 .switch-container:has(> input:disabled:not(*:checked)) {
     pointer-events: none;
-    border: var(--neutral-bolder-border-color);
+    border: var(--neutral-bolder-border);
     background-color: var(--neutral-disable-background-color) !important;
 }
 

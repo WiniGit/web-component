@@ -2,7 +2,7 @@
     background-color: var(--neutral-absolute-background-color);
     border-radius: 0.8rem;
     align-items: stretch;
-    border: var(--neutral-bolder-border-color);
+    border: var(--neutral-bolder-border);
     width: fit-content;
 }
 
@@ -14,12 +14,12 @@
 }
 
 .calendar-container>.calendar-body:has(*:nth-child(2))>div[class*="row"]:first-child {
-    border-bottom: var(--neutral-bolder-border-color);
+    border-bottom: var(--neutral-bolder-border);
 }
 
 .calendar-sidebar-options {
     padding: 0.8rem 2.4rem 0.8rem 0;
-    border-right: var(--neutral-bolder-border-color);
+    border-right: var(--neutral-bolder-border);
 }
 
 .calendar-sidebar-options>.calendar-sidebar-option-buttton {
@@ -28,7 +28,7 @@
 }
 
 .picker-time-container {
-    border-left: var(--neutral-bolder-border-color);
+    border-left: var(--neutral-bolder-border);
     height: 34.2rem;
     align-items: center;
 }
@@ -36,7 +36,7 @@
 .picker-time-container>div[class*="heading-7"]:first-child {
     width: 100%;
     padding: 1.2rem 1.6rem;
-    border-bottom: var(--neutral-bolder-border-color);
+    border-bottom: var(--neutral-bolder-border);
     text-align: center;
 }
 
@@ -50,8 +50,8 @@
 }
 
 .picker-time-container .scroll-picker-minutes {
-    border-left: var(--neutral-bolder-border-color);
-    border-right: var(--neutral-bolder-border-color);
+    border-left: var(--neutral-bolder-border);
+    border-right: var(--neutral-bolder-border);
 }
 
 .picker-time-container div[class*="scroll-picker-"]>button {
@@ -68,7 +68,7 @@
     padding: 1.2rem 1.6rem;
     gap: 1.2rem;
     background-color: transparent !important;
-    border-bottom: var(--neutral-bolder-border-color);
+    border-bottom: var(--neutral-bolder-border);
 }
 
 .picker-date-header>span {
