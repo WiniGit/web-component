@@ -202,6 +202,14 @@ html.dark {
     --neutral-text-placeholder-color: #A2A2AA;
     --neutral-text-disabled-color: #878792;
     --neutral-text-stable-color: #FFFFFF;
+    /* reverse */
+    --neutral-text-title-reverse-color: #F4F4F5;
+    --neutral-text-subtitle-reverse-color: #A2A2AA;
+    --neutral-text-body-reverse-color: #D7D7DB;
+    --neutral-text-label-reverse-color: #EAEAEC;
+    --neutral-text-placeholder-reverse-color: #A2A2AA;
+    --neutral-text-disabled-reverse-color: #878792;
+    --neutral-text-stable-reverse-color: #000000;
     /* neutral-border */
     --neutral-bolder-border: 1px solid #494950;
     --neutral-main-border: 1px solid #313135;
