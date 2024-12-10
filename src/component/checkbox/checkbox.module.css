@@ -35,7 +35,7 @@
 
 .checkbox-container:has(> input:checked),
 .checkbox-container[is-null-value="true"] {
-    background-color: var(--infor-main-color);
+    background-color: var(--primary-main-color);
     border: none !important;
 }
 

@@ -21,8 +21,8 @@ interface RadioButtonProps {
 export class RadioButton extends React.Component<RadioButtonProps> {
     render(): React.ReactNode {
         let convertStyle: CSSProperties = {
-            '--off-color': this.props.offColor ?? '#ccd7e6',
-            '--active-color': this.props.activeColor ?? 'var(--infor-main-color)',
+            '--off-color': this.props.offColor ?? 'var(--neutral-bolder-border-color)',
+            '--active-color': this.props.activeColor ?? 'var(--primary-main-color)',
             '--size': this.props.size ? (typeof this.props.size === 'number') ? `${this.props.size}px` : this.props.size : '20px'
         } as CSSProperties
         if (this.props.style) {

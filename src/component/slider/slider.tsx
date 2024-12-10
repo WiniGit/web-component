@@ -50,7 +50,6 @@ export class CustomSlider extends React.Component<SliderProps, SliderState> {
         }
     }
 
-
     private autoPlay = () => {
         let index = this.state?.page ?? 0;
         if (this.props?.children && (index + 1) === this.props.children.length)

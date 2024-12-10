@@ -18,8 +18,10 @@
 }
 
 .radio-btn-container>.checkmark {
-    height: calc(max(var(--size), 14px) / 2);
-    width: calc(max(var(--size), 14px) / 2);
+    height: inherit;
+    width: inherit;
+    scale: 0.5;
+    transform-origin: center center;
     border-radius: 50%;
     aspect-ratio: 1 / 1;
     visibility: hidden;
@@ -40,10 +42,10 @@
 .radio-btn-container:has(input:disabled) {
     pointer-events: none !important;
     border-color: var(--off-color) !important;
-    background-color: #0035800A !important;
+    background-color: var(--neutral-disable-background-color) !important;
 }
 
 .radio-btn-container>input:disabled~.checkmark {
     display: block !important;
-    background-color: #00204D40;
+    background-color: var(--neutral-text-disabled-color);
 }
