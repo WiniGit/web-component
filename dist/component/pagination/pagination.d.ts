@@ -1,5 +1,5 @@
 import React, { CSSProperties } from "react";
-export declare function Pagination({ id, currentPage, itemPerPage, totalItem, onChangePage, hidePageSize, hideGoToPage, style }: {
+interface Props {
     id?: string;
     currentPage: number;
     itemPerPage: number;
@@ -8,4 +8,6 @@ export declare function Pagination({ id, currentPage, itemPerPage, totalItem, on
     hideGoToPage?: boolean;
     hidePageSize?: boolean;
     style: CSSProperties;
-}): React.JSX.Element;
+}
+export declare function Pagination({ id, currentPage, itemPerPage, totalItem, onChangePage, hidePageSize, hideGoToPage, style }: Props): React.JSX.Element;
+export {};

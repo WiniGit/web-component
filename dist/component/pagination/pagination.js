@@ -55,20 +55,18 @@ function Pagination(_a) {
                         onChangePage(currentPage, isNaN(parseInt(ev.id)) ? itemPerPage : parseInt(ev.id));
                     } }),
                 react_1.default.createElement(text_1.Text, { className: "body-3" },
-                    "of ",
+                    "of $",
                     totalItem,
                     " items")),
             react_1.default.createElement("div", { style: { flex: 1 } }),
             react_1.default.createElement(react_paginate_1.default, { onPageChange: function (ev) {
                     onChangePage(ev.selected + 1, itemPerPage);
-                }, forcePage: currentPage - 1, 
-                // initialPage={currentPage - 1}
-                breakClassName: "row button-text-3", breakLabel: "...", pageCount: Math.ceil(totalItem / itemPerPage), previousClassName: "row", previousLabel: react_1.default.createElement(winicon_1.Winicon, { src: "fill/arrows/left-arrow", size: "1.4rem" }), nextClassName: "row", nextLabel: react_1.default.createElement(winicon_1.Winicon, { src: "fill/arrows/right-arrow", size: "1.4rem" }), containerClassName: "".concat(pagination_module_css_1.default['pagination'], " row"), pageClassName: "row button-text-3", activeClassName: pagination_module_css_1.default['active'], hrefBuilder: function (pageIndex) {
+                }, forcePage: currentPage - 1, breakClassName: "row button-text-3", breakLabel: "...", pageCount: Math.ceil(totalItem / itemPerPage), previousClassName: "row", previousLabel: react_1.default.createElement(winicon_1.Winicon, { src: "fill/arrows/left-arrow", size: "1.4rem" }), nextClassName: "row", nextLabel: react_1.default.createElement(winicon_1.Winicon, { src: "fill/arrows/right-arrow", size: "1.4rem" }), containerClassName: "".concat(pagination_module_css_1.default['pagination'], " row"), pageClassName: "row button-text-3", activeClassName: pagination_module_css_1.default['active'], hrefBuilder: function (pageIndex) {
                     return pageIndex >= 1 && pageIndex <= Math.ceil(totalItem / itemPerPage) ? "/page/".concat(pageIndex) : '#';
                 }, renderOnZeroPageCount: null }),
             hideGoToPage ? null : react_1.default.createElement(react_1.default.Fragment, null,
-                react_1.default.createElement("div", { style: { height: '1.6rem', backgroundColor: "#00358033", width: 1 } }),
-                react_1.default.createElement(text_1.Text, { className: "label-3", style: { color: "#161C2499" } }, "Go to page"),
+                react_1.default.createElement("div", { style: { height: '1.6rem', backgroundColor: "var(--neutral-bolder-border-color)", width: 1 } }),
+                react_1.default.createElement(text_1.Text, { className: "label-3" }, "Go to page"),
                 react_1.default.createElement(text_field_1.TextField, { ref: goToPageRef, style: { width: '4.8rem', textAlign: "center", padding: 0, height: '2.4rem', borderRadius: '0.4rem' }, className: "body-3", type: "number", onBlur: function (ev) {
                         var _tmp = ev.target.value.trim().length ? parseInt(ev.target.value.trim()) : undefined;
                         if (_tmp && !isNaN(_tmp) && _tmp > 0 && _tmp <= Math.ceil(totalItem / itemPerPage)) {
