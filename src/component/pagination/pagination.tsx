@@ -42,7 +42,7 @@ export function Pagination({ id, currentPage, itemPerPage, totalItem, onChangePa
                         onChangePage(currentPage, isNaN(parseInt(ev.id)) ? itemPerPage : parseInt(ev.id));
                     }}
                 />
-                <Text className="body-3">of ${totalItem} items</Text>
+                <Text className="body-3">of {totalItem} items</Text>
             </div>}
             <div style={{ flex: 1 }} />
             <ReactPaginate

@@ -1,9 +1,9 @@
 import { CSSProperties, ReactNode, useState } from 'react'
-import './progress-bar.css'
+import styles from './progress-bar.css'
 import React from 'react'
 import { ComponentStatus, getStatusIcon, Winicon } from '../../index'
 
-export function ProgressBar({ id, status = ComponentStatus.INFOR, percent = 100, titleText, title, hideTitle = false, progressBarOnly = false, fullColor = 'var(--neutral-main-background-color)', percentColor = 'var(--infor-main-color)', style, progressBarStyle }: {
+export function ProgressBar({ id, status = ComponentStatus.INFOR, percent = 100, titleText, title, hideTitle = false, progressBarOnly = false, fullColor = 'var(--neutral-main-background-color)', percentColor = 'var(--primary-main-color)', style, progressBarStyle }: {
     id?: string,
     percent: number,
     titleText?: string,
@@ -18,15 +18,15 @@ export function ProgressBar({ id, status = ComponentStatus.INFOR, percent = 100,
 }) {
     const [openDetails, setOpenDetails] = useState(true)
 
-    return <div id={id} className="progress-bar-container col" style={style ? { padding: progressBarOnly ? '0' : '1.6rem 2.4rem', ...style } : { padding: progressBarOnly ? '0' : '1.6rem 2.4rem' }}>
-        {(hideTitle || progressBarOnly) ? null : (title ?? <div className="progress-bar-title row">
-            <div className="heading-text">{titleText}</div>
-            <button type="button" className="suffix-action" onClick={() => { setOpenDetails(!openDetails) }}><Winicon src={openDetails ? "fill/arrows/down-arrow" : "fill/arrows/up-arrow"} /></button>
+    return <div id={id} className={`col ${styles["progress-bar-container"]}`} style={style ? { padding: progressBarOnly ? '0' : '1.6rem 2.4rem', ...style } : { padding: progressBarOnly ? '0' : '1.6rem 2.4rem' }}>
+        {(hideTitle || progressBarOnly) ? null : (title ?? <div className={`row ${styles["progress-bar-title"]}`}>
+            <div className="heading-8">{titleText}</div>
+            <Winicon src={openDetails ? "fill/arrows/down-arrow" : "fill/arrows/up-arrow"} onClick={() => { setOpenDetails(!openDetails) }} />
         </div>)}
-        {openDetails ? <div className='progress-bar-tile row' >
-            <div className="progress-bar-value" style={{ '--percent-color': percentColor, '--full-color': fullColor, '--percent': `${percent}%`, ...(progressBarStyle ?? {}) } as CSSProperties}></div>
-            {progressBarOnly || status === ComponentStatus.INFOR ? null : <div className='status-icon'>{getStatusIcon(status)}</div>}
-            {progressBarOnly ? null : <div className='text-value'>{percent}/100</div>}
+        {openDetails ? <div className={`row ${styles["progress-bar-tile"]}`} >
+            <div className={styles["progress-bar-value"]} style={{ '--percent-color': percentColor, '--full-color': fullColor, '--percent': `${percent}%`, ...(progressBarStyle ?? {}) } as CSSProperties}></div>
+            {progressBarOnly || status === ComponentStatus.INFOR ? null : <div className={`${styles["status-icon"]}`}>{getStatusIcon(status)}</div>}
+            {progressBarOnly ? null : <div className='label-4'>{percent}/100</div>}
         </div> : null}
 
     </div>
