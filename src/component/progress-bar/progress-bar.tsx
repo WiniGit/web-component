@@ -1,5 +1,5 @@
 import { CSSProperties, ReactNode, useState } from 'react'
-import styles from './progress-bar.css'
+import styles from './progress-bar.module.css'
 import React from 'react'
 import { ComponentStatus, getStatusIcon, Winicon } from '../../index'
 

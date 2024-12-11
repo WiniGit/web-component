@@ -55,7 +55,7 @@ function Pagination(_a) {
                         onChangePage(currentPage, isNaN(parseInt(ev.id)) ? itemPerPage : parseInt(ev.id));
                     } }),
                 react_1.default.createElement(text_1.Text, { className: "body-3" },
-                    "of $",
+                    "of ",
                     totalItem,
                     " items")),
             react_1.default.createElement("div", { style: { flex: 1 } }),

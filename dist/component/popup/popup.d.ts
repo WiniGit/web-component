@@ -3,20 +3,22 @@ import './popup.css';
 interface PopupState {
     readonly open?: boolean;
     heading?: ReactNode;
+    body?: ReactNode;
     content?: ReactNode;
     footer?: ReactNode;
     clickOverlayClosePopup?: boolean;
     style?: CSSProperties;
     hideButtonClose?: boolean;
 }
-export declare const showPopup: ({ ref, heading, content, footer, clickOverlayClosePopup, style, hideButtonClose }: {
+export declare const showPopup: (props: {
     ref: React.MutableRefObject<Popup | undefined>;
     heading?: ReactNode;
     content?: ReactNode;
+    body?: ReactNode;
     footer?: ReactNode;
-    clickOverlayClosePopup?: boolean | undefined;
-    style?: React.CSSProperties | undefined;
-    hideButtonClose?: boolean | undefined;
+    clickOverlayClosePopup?: boolean;
+    style?: CSSProperties;
+    hideButtonClose?: boolean;
 }) => void;
 export declare const closePopup: (ref: React.MutableRefObject<Popup>) => void;
 export declare class Popup extends React.Component<Object, PopupState> {
