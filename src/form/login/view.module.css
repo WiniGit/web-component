@@ -58,7 +58,6 @@ button:disabled.login-btn {
 .login-social-media>button {
     height: 4.8rem;
     width: calc((100% - 1.6rem) / 2);
-    flex: 1;
     gap: 1.6rem;
     justify-content: center;
     border: var(--neutral-bolder-border);

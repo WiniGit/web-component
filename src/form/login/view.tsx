@@ -96,37 +96,40 @@ export function WLoginView(props: Props) {
                         <Text className={`button-text-3 ${styles['register-btn']}`} onClick={props.onRegister}>{props.registerText ?? "Sign up for Wini"}</Text>
                     </div>
                 </div>
-                <div className={`row ${styles['or-spacing']}`}>
-                    <div />
-                    <Text className="label-4">{props.orText ?? "Or"}</Text>
-                    <div />
-                </div>
-                {(props.loginWithGoogle || props.loginWithFacebook || props.loginWithApple || props.loginWithMicrosoft) ? <div className={`row ${styles['login-social-media']}`}>
-                    {props.loginWithGoogle && <Button
-                        className={`label-1`}
-                        onClick={props.loginWithGoogle}
-                        prefix={<Winicon src='color/social media/google' size={"2rem"} />}
-                        label="Google"
-                    />}
-                    {props.loginWithFacebook && <Button
-                        className={`label-1`}
-                        onClick={props.loginWithFacebook}
-                        prefix={<Winicon src='color/social media/logo-facebook' size={"2rem"} />}
-                        label="Facebook"
-                    />}
-                    {props.loginWithApple && <Button
-                        className={`label-1`}
-                        onClick={props.loginWithApple}
-                        prefix={<Winicon src='color/development/apple' size={"2rem"} />}
-                        label="Apple"
-                    />}
-                    {props.loginWithMicrosoft && <Button
-                        className={`label-1`}
-                        onClick={props.loginWithMicrosoft}
-                        prefix={<Winicon src='color/development/microsoft' size={"2rem"} />}
-                        label="Microsoft"
-                    />}
-                </div> : null}
+                {(props.loginWithGoogle || props.loginWithFacebook || props.loginWithApple || props.loginWithMicrosoft) ?
+                    <>
+                        <div className={`row ${styles['or-spacing']}`}>
+                            <div />
+                            <Text className="label-4">{props.orText ?? "Or"}</Text>
+                            <div />
+                        </div>
+                        <div className={`row ${styles['login-social-media']}`}>
+                            {props.loginWithGoogle && <Button
+                                className={`label-1`}
+                                onClick={props.loginWithGoogle}
+                                prefix={<Winicon src='color/social media/google' size={"2rem"} />}
+                                label="Google"
+                            />}
+                            {props.loginWithFacebook && <Button
+                                className={`label-1`}
+                                onClick={props.loginWithFacebook}
+                                prefix={<Winicon src='color/social media/logo-facebook' size={"2rem"} />}
+                                label="Facebook"
+                            />}
+                            {props.loginWithApple && <Button
+                                className={`label-1`}
+                                onClick={props.loginWithApple}
+                                prefix={<Winicon src='color/development/apple' size={"2rem"} />}
+                                label="Apple"
+                            />}
+                            {props.loginWithMicrosoft && <Button
+                                className={`label-1`}
+                                onClick={props.loginWithMicrosoft}
+                                prefix={<Winicon src='color/development/microsoft' size={"2rem"} />}
+                                label="Microsoft"
+                            />}
+                        </div>
+                    </> : null}
             </div>
         </div>
     </form>
