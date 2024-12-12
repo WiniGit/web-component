@@ -54,8 +54,10 @@ function WLoginView(props) {
                     react_1.default.createElement("div", null),
                     react_1.default.createElement(index_1.Text, { className: "label-4" }, (_v = props.orText) !== null && _v !== void 0 ? _v : "Or"),
                     react_1.default.createElement("div", null)),
-                react_1.default.createElement("div", { className: "row ".concat(view_module_css_1.default['login-social-media']) },
-                    react_1.default.createElement(index_1.Button, { className: "label-1", onClick: props.loginWithGoogle, prefix: react_1.default.createElement(index_1.Winicon, { src: 'color/social media/google', size: "2rem" }), label: "Google" }),
-                    react_1.default.createElement(index_1.Button, { className: "label-1", onClick: props.loginWithFacebook, prefix: react_1.default.createElement(index_1.Winicon, { src: 'color/social media/logo-facebook', size: "2rem" }), label: "Facebook" })))));
+                (props.loginWithGoogle || props.loginWithFacebook || props.loginWithApple || props.loginWithMicrosoft) ? react_1.default.createElement("div", { className: "row ".concat(view_module_css_1.default['login-social-media']) },
+                    props.loginWithGoogle && react_1.default.createElement(index_1.Button, { className: "label-1", onClick: props.loginWithGoogle, prefix: react_1.default.createElement(index_1.Winicon, { src: 'color/social media/google', size: "2rem" }), label: "Google" }),
+                    props.loginWithFacebook && react_1.default.createElement(index_1.Button, { className: "label-1", onClick: props.loginWithFacebook, prefix: react_1.default.createElement(index_1.Winicon, { src: 'color/social media/logo-facebook', size: "2rem" }), label: "Facebook" }),
+                    props.loginWithApple && react_1.default.createElement(index_1.Button, { className: "label-1", onClick: props.loginWithApple, prefix: react_1.default.createElement(index_1.Winicon, { src: 'color/development/apple', size: "2rem" }), label: "Apple" }),
+                    props.loginWithMicrosoft && react_1.default.createElement(index_1.Button, { className: "label-1", onClick: props.loginWithMicrosoft, prefix: react_1.default.createElement(index_1.Winicon, { src: 'color/development/microsoft', size: "2rem" }), label: "Microsoft" })) : null)));
 }
 exports.WLoginView = WLoginView;

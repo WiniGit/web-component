@@ -1,17 +1,18 @@
 import React, { CSSProperties } from 'react';
 import { ComponentStatus } from '../component-status';
-interface ObjWithKnownKeys {
-    [k: string]: any;
-}
 interface ImportFileState {
     status?: ComponentStatus;
-    preview: File | ObjWithKnownKeys | undefined | null;
+    preview: File | {
+        [k: string]: any;
+    } | undefined | null;
 }
 type ChangeFileFunction = (a?: File) => void;
 interface ImportFileProps {
     id?: string;
     status?: ComponentStatus;
-    value?: File | ObjWithKnownKeys;
+    value?: File | {
+        [k: string]: any;
+    };
     buttonOnly?: boolean;
     onChange?: ChangeFileFunction;
     label?: string;

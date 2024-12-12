@@ -25,6 +25,8 @@ interface Props {
     buttonLoginLabel?: string;
     loginWithGoogle?: React.MouseEventHandler<HTMLButtonElement>;
     loginWithFacebook?: React.MouseEventHandler<HTMLButtonElement>;
+    loginWithApple?: React.MouseEventHandler<HTMLButtonElement>;
+    loginWithMicrosoft?: React.MouseEventHandler<HTMLButtonElement>;
     onRegister?: React.MouseEventHandler<HTMLDivElement>;
     registerPrefixText?: string;
     registerText?: string;

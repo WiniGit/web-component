@@ -41,9 +41,6 @@ var fileSvg = (react_1.default.createElement("svg", { className: import_file_mod
     react_1.default.createElement("path", { d: 'M29.9264 10.7084H23.3469V4.12884L29.9264 10.7084Z', style: { fill: "var(--primary-main-color)" } })));
 var closeSvg = (react_1.default.createElement("svg", { width: '100%', height: '100%', style: { width: '2.4rem', height: '2.4rem' }, fill: 'none', xmlns: 'http://www.w3.org/2000/svg' },
     react_1.default.createElement("path", { d: 'M13.4144 12.0002L20.4144 5.00015L19.0002 3.58594L12.0002 10.5859L5.00015 3.58594L3.58594 5.00015L10.5859 12.0002L3.58594 19.0002L5.00015 20.4144L12.0002 13.4144L19.0002 20.4144L20.4144 19.0002L13.4144 12.0002Z', style: { fill: "var(--error-main-color)" } })));
-var uploadSvg = (react_1.default.createElement("svg", { width: '100%', height: '100%', style: { width: '1.4rem', height: '1.4rem' }, fill: 'none', xmlns: 'http://www.w3.org/2000/svg' },
-    react_1.default.createElement("path", { d: 'M3.66732 3.88889L7.00065 0L10.334 3.88889H7.55621V8.88889H6.4451V3.88889H3.66732Z', style: { fill: "var(--neutral-text-subtitle-color)" } }),
-    react_1.default.createElement("path", { d: 'M12.5562 11.1111H1.4451V7.77778H0.333984V11.6667C0.333984 11.9733 0.582873 12.2222 0.88954 12.2222H13.1118C13.4184 12.2222 13.6673 11.9733 13.6673 11.6667V7.77778H12.5562V11.1111Z', style: { fill: "var(--neutral-text-subtitle-color)" } })));
 var ImportFile = /** @class */ (function (_super) {
     __extends(ImportFile, _super);
     function ImportFile(props) {

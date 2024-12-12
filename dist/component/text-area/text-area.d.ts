@@ -21,6 +21,8 @@ interface TextAreaProps {
     register?: UseFormRegister<{}>;
 }
 export declare class TextArea extends React.Component<TextAreaProps> {
+    private containerRef;
+    getTextarea: () => HTMLTextAreaElement | null | undefined;
     render(): React.ReactNode;
 }
 export {};
