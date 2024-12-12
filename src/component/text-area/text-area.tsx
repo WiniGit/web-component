@@ -1,4 +1,4 @@
-import React, { CSSProperties } from "react";
+import React, { createRef, CSSProperties } from "react";
 import './text-area.css'
 import { UseFormRegister } from "react-hook-form";
 
@@ -23,8 +23,15 @@ interface TextAreaProps {
 }
 
 export class TextArea extends React.Component<TextAreaProps> {
+    private containerRef = createRef<HTMLDivElement>()
+
+    getTextarea = () => {
+        return this.containerRef.current?.querySelector("textarea")
+    }
+    
     render(): React.ReactNode {
         return <div
+            ref={this.containerRef}
             id={this.props.id}
             className={`text-area-container row ${this.props.className ?? 'body-3'} ${this.props.helperText?.length && 'helper-text'}`}
             helper-text={this.props.helperText}

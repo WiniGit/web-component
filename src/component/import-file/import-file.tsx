@@ -23,20 +23,9 @@ const closeSvg = (
     </svg>
 )
 
-const uploadSvg = (
-    <svg width='100%' height='100%' style={{ width: '1.4rem', height: '1.4rem' }} fill='none' xmlns='http://www.w3.org/2000/svg' >
-        <path d='M3.66732 3.88889L7.00065 0L10.334 3.88889H7.55621V8.88889H6.4451V3.88889H3.66732Z' style={{ fill: "var(--neutral-text-subtitle-color)" }} />
-        <path d='M12.5562 11.1111H1.4451V7.77778H0.333984V11.6667C0.333984 11.9733 0.582873 12.2222 0.88954 12.2222H13.1118C13.4184 12.2222 13.6673 11.9733 13.6673 11.6667V7.77778H12.5562V11.1111Z' style={{ fill: "var(--neutral-text-subtitle-color)" }} />
-    </svg>
-)
-
-interface ObjWithKnownKeys {
-    [k: string]: any;
-}
-
 interface ImportFileState {
     status?: ComponentStatus,
-    preview: File | ObjWithKnownKeys | undefined | null
+    preview: File | { [k: string]: any } | undefined | null
 }
 
 type ChangeFileFunction = (a?: File) => void;
@@ -44,7 +33,7 @@ type ChangeFileFunction = (a?: File) => void;
 interface ImportFileProps {
     id?: string,
     status?: ComponentStatus,
-    value?: File | ObjWithKnownKeys,
+    value?: File | { [k: string]: any },
     buttonOnly?: boolean,
     onChange?: ChangeFileFunction,
     label?: string,
