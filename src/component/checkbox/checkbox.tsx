@@ -1,9 +1,9 @@
-import React, { CSSProperties } from 'react';
+import React, { createRef, CSSProperties } from 'react';
 import styles from './checkbox.module.css';
 
 interface CheckboxProps {
     id?: string,
-    onChange?: (value: boolean) => void,
+    onChange?: (value: boolean, target: HTMLInputElement) => void,
     value?: boolean,
     checkColor?: string,
     disabled?: boolean,
@@ -19,14 +19,24 @@ interface CheckboxState {
 }
 
 export class Checkbox extends React.Component<CheckboxProps, CheckboxState> {
-    state: Readonly<CheckboxState> = {
-        value: this.props.value ?? false
+    private ref = createRef<HTMLLabelElement>()
+    constructor(props: CheckboxProps) {
+        super(props);
+        this.state = {
+            value: this.props.value ?? false
+        }
     }
 
     componentDidUpdate(prevProps: Readonly<CheckboxProps>): void {
         if (prevProps.value !== this.props.value) {
             this.setState({ value: this.props.value })
         }
+    }
+
+    onChange = () => {
+        const newValue = !this.state.value
+        this.setState({ value: newValue })
+        if (this.props.onChange && this.ref.current) this.props.onChange(newValue, this.ref.current.querySelector("input")!)
     }
 
     render() {
@@ -46,13 +56,13 @@ export class Checkbox extends React.Component<CheckboxProps, CheckboxState> {
                 ...convertStyle
             }
         }
-        return <label id={this.props.id} className={`${styles['checkbox-container']} row ${this.props.className ?? ''}`} style={convertStyle} is-null-value={`${this.state.value == undefined}`} onClick={this.props.onClick}>
+        return <label ref={this.ref} id={this.props.id} className={`${styles['checkbox-container']} row ${this.props.className ?? ''}`} style={convertStyle} is-null-value={`${this.state.value == undefined}`} onClick={this.props.onClick}>
             <input type="checkbox" checked={this.state.value ? true : false} disabled={this.props.disabled}
                 onChange={(ev) => {
                     ev.stopPropagation()
                     const newValue = !this.state.value
                     this.setState({ value: newValue })
-                    if (this.props.onChange) this.props.onChange(newValue)
+                    if (this.props.onChange) this.props.onChange(newValue, ev.target)
                 }}
             />
             <svg width="100%" height="100%" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ '--check-color': this.props.checkColor } as any}>

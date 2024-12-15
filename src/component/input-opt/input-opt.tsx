@@ -60,6 +60,7 @@ export class InputOpt extends React.Component<Props> {
             {Array.from({ length: this.props.length ?? 6 }).map((_, i) => <input
                 key={"opt-" + i}
                 disabled={this.props.disabled}
+                style={this.props.inputStyle}
                 onKeyDown={(ev: any) => {
                     const key = ev.key.toLowerCase()
                     switch (key) {
