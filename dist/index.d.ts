@@ -25,6 +25,7 @@ import { Button } from './component/button/button';
 import { Tag } from './component/tag/tag';
 import { Winicon } from './component/wini-icon/winicon';
 import { NumberPicker } from './component/number-picker/number-picker';
+import { InputOpt } from './component/input-opt/input-opt';
 import { WLoginView } from './form/login/view';
-export { Calendar, CalendarType, ComponentStatus, getStatusIcon, Checkbox, Select1, Switch, Popup, showPopup, closePopup, Dialog, showDialog, DialogAlignment, DatePicker, SelectMultiple, ProgressBar, Text, Pagination, Table, TbCell, TbHeader, TbBody, TbRow, CellAlignItems, TextField, RadioButton, TextArea, ImportFile, ToastMessage, InfiniteScroll, Rating, ProgressCircle, CustomSlider, ToastContainer, Button, Tag, Winicon, NumberPicker, WLoginView };
+export { Calendar, CalendarType, ComponentStatus, getStatusIcon, Checkbox, Select1, Switch, Popup, showPopup, closePopup, Dialog, showDialog, DialogAlignment, DatePicker, SelectMultiple, ProgressBar, Text, Pagination, Table, TbCell, TbHeader, TbBody, TbRow, CellAlignItems, TextField, RadioButton, TextArea, ImportFile, ToastMessage, InfiniteScroll, Rating, ProgressCircle, CustomSlider, ToastContainer, Button, Tag, Winicon, NumberPicker, InputOpt, WLoginView };
 export type { OptionsItem };
