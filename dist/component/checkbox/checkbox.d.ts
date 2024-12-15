@@ -1,7 +1,7 @@
 import React, { CSSProperties } from 'react';
 interface CheckboxProps {
     id?: string;
-    onChange?: (value: boolean) => void;
+    onChange?: (value: boolean, target: HTMLInputElement) => void;
     value?: boolean;
     checkColor?: string;
     disabled?: boolean;
@@ -15,8 +15,10 @@ interface CheckboxState {
     value?: boolean;
 }
 export declare class Checkbox extends React.Component<CheckboxProps, CheckboxState> {
-    state: Readonly<CheckboxState>;
+    private ref;
+    constructor(props: CheckboxProps);
     componentDidUpdate(prevProps: Readonly<CheckboxProps>): void;
+    onChange: () => void;
     render(): React.JSX.Element;
 }
 export {};

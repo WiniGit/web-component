@@ -25,18 +25,58 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Checkbox = void 0;
-var react_1 = __importDefault(require("react"));
+var react_1 = __importStar(require("react"));
 var checkbox_module_css_1 = __importDefault(require("./checkbox.module.css"));
 var Checkbox = /** @class */ (function (_super) {
     __extends(Checkbox, _super);
-    function Checkbox() {
+    function Checkbox(props) {
         var _a;
-        var _this = _super.apply(this, arguments) || this;
+        var _this = _super.call(this, props) || this;
+        _this.ref = (0, react_1.createRef)();
+        _this.onChange = function () {
+            var newValue = !_this.state.value;
+            _this.setState({ value: newValue });
+            if (_this.props.onChange && _this.ref.current)
+                _this.props.onChange(newValue, _this.ref.current.querySelector("input"));
+        };
         _this.state = {
             value: (_a = _this.props.value) !== null && _a !== void 0 ? _a : false
         };
@@ -63,13 +103,13 @@ var Checkbox = /** @class */ (function (_super) {
             delete this.props.style.maxHeight;
             convertStyle = __assign(__assign({}, this.props.style), convertStyle);
         }
-        return react_1.default.createElement("label", { id: this.props.id, className: "".concat(checkbox_module_css_1.default['checkbox-container'], " row ").concat((_c = this.props.className) !== null && _c !== void 0 ? _c : ''), style: convertStyle, "is-null-value": "".concat(this.state.value == undefined), onClick: this.props.onClick },
+        return react_1.default.createElement("label", { ref: this.ref, id: this.props.id, className: "".concat(checkbox_module_css_1.default['checkbox-container'], " row ").concat((_c = this.props.className) !== null && _c !== void 0 ? _c : ''), style: convertStyle, "is-null-value": "".concat(this.state.value == undefined), onClick: this.props.onClick },
             react_1.default.createElement("input", { type: "checkbox", checked: this.state.value ? true : false, disabled: this.props.disabled, onChange: function (ev) {
                     ev.stopPropagation();
                     var newValue = !_this.state.value;
                     _this.setState({ value: newValue });
                     if (_this.props.onChange)
-                        _this.props.onChange(newValue);
+                        _this.props.onChange(newValue, ev.target);
                 } }),
             react_1.default.createElement("svg", { width: "100%", height: "100%", viewBox: "0 0 20 20", fill: "none", xmlns: "http://www.w3.org/2000/svg", style: { '--check-color': this.props.checkColor } }, this.state.value === undefined ?
                 react_1.default.createElement("path", { fillRule: "evenodd", clipRule: "evenodd", d: "M4.79199 9.95298C4.79199 9.69148 5.00398 9.47949 5.26548 9.47949H14.7352C14.9967 9.47949 15.2087 9.69148 15.2087 9.95298C15.2087 10.2145 14.9967 10.4265 14.7352 10.4265H5.26548C5.00398 10.4265 4.79199 10.2145 4.79199 9.95298Z" }) :

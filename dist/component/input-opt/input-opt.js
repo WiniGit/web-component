@@ -118,7 +118,7 @@ var InputOpt = /** @class */ (function (_super) {
                     }
                     continue;
                 }
-            } }, Array.from({ length: (_e = this.props.length) !== null && _e !== void 0 ? _e : 6 }).map(function (_, i) { return react_1.default.createElement("input", { key: "opt-" + i, disabled: _this.props.disabled, onKeyDown: function (ev) {
+            } }, Array.from({ length: (_e = this.props.length) !== null && _e !== void 0 ? _e : 6 }).map(function (_, i) { return react_1.default.createElement("input", { key: "opt-" + i, disabled: _this.props.disabled, style: _this.props.inputStyle, onKeyDown: function (ev) {
                 var _a, _b;
                 var key = ev.key.toLowerCase();
                 switch (key) {
