@@ -94,10 +94,11 @@ var react_1 = __importStar(require("react"));
 var react_dom_1 = __importDefault(require("react-dom"));
 var winicon_1 = require("../wini-icon/winicon");
 var text_1 = require("../text/text");
+var react_i18next_1 = require("react-i18next");
 ;
-var Select1 = /** @class */ (function (_super) {
-    __extends(Select1, _super);
-    function Select1(props) {
+var TSelect1 = /** @class */ (function (_super) {
+    __extends(TSelect1, _super);
+    function TSelect1(props) {
         var _this = this;
         var _a, _b;
         _this = _super.call(this, props) || this;
@@ -160,7 +161,7 @@ var Select1 = /** @class */ (function (_super) {
             _this.inputRef.current.value = "".concat((_b = (_a = _this.state.options.find(function (e) { return e.id === _this.state.value; })) === null || _a === void 0 ? void 0 : _a.name) !== null && _b !== void 0 ? _b : "");
         return _this;
     }
-    Select1.prototype.search = function (ev) {
+    TSelect1.prototype.search = function (ev) {
         var _a;
         return __awaiter(this, void 0, void 0, function () {
             var res;
@@ -186,7 +187,7 @@ var Select1 = /** @class */ (function (_super) {
             });
         });
     };
-    Select1.prototype.onSelect = function (item) {
+    TSelect1.prototype.onSelect = function (item) {
         var _a, _b;
         if (item.disabled) {
             this.setState(__assign(__assign({}, this.state), { isOpen: false, onSelect: undefined, selected: undefined }));
@@ -202,7 +203,7 @@ var Select1 = /** @class */ (function (_super) {
         if (this.props.onChange)
             this.props.onChange(item);
     };
-    Select1.prototype.componentDidUpdate = function (prevProps, prevState) {
+    TSelect1.prototype.componentDidUpdate = function (prevProps, prevState) {
         var _this = this;
         var _a, _b, _c, _d, _e, _f, _g, _h;
         if (prevProps.options !== this.props.options) {
@@ -240,15 +241,16 @@ var Select1 = /** @class */ (function (_super) {
             }
         }
     };
-    Select1.prototype.componentDidMount = function () {
+    TSelect1.prototype.componentDidMount = function () {
         var _this = this;
         var _a, _b;
         if (this.inputRef.current)
             this.inputRef.current.value = "".concat((_b = (_a = this.state.options.find(function (e) { return e.id === _this.state.value; })) === null || _a === void 0 ? void 0 : _a.name) !== null && _b !== void 0 ? _b : "");
     };
-    Select1.prototype.render = function () {
+    TSelect1.prototype.render = function () {
         var _this = this;
         var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
+        var t = this.props.t;
         var _value = this.state.options.find(function (e) { return e.id === _this.state.value; });
         return react_1.default.createElement("div", { id: this.props.id, ref: this.containerRef, className: "".concat(select1_module_css_1.default['select1-container'], " row ").concat(this.props.disabled ? select1_module_css_1.default['disabled'] : '', " ").concat(((_a = this.props.helperText) === null || _a === void 0 ? void 0 : _a.length) && select1_module_css_1.default['helper-text'], " ").concat((_b = this.props.className) !== null && _b !== void 0 ? _b : 'body-3'), "helper-text": this.props.helperText, style: this.props.style ? __assign(__assign({}, { '--helper-text-color': (_c = this.props.helperTextColor) !== null && _c !== void 0 ? _c : '#e14337' }), this.props.style) : { '--helper-text-color': (_d = this.props.helperTextColor) !== null && _d !== void 0 ? _d : '#e14337' }, onClick: function () {
                 var _a, _b, _c;
@@ -264,7 +266,7 @@ var Select1 = /** @class */ (function (_super) {
                     else if (!_this.state.onSelect)
                         _this.setState(__assign(__assign({}, _this.state), { isOpen: false, onSelect: null }));
                 } }) : _value.name, (_e = this.props.suffix) !== null && _e !== void 0 ? _e : react_1.default.createElement("div", { ref: function (iconRef) {
-                if ((iconRef === null || iconRef === void 0 ? void 0 : iconRef.parentElement) && iconRef.parentElement.getBoundingClientRect().width < 100)
+                if ((iconRef === null || iconRef === void 0 ? void 0 : iconRef.parentElement) && iconRef.parentElement.getBoundingClientRect().width < 88)
                     iconRef.style.display = "none";
             }, className: 'row' },
             react_1.default.createElement(winicon_1.Winicon, { src: this.state.isOpen ? "fill/arrows/up-arrow" : "fill/arrows/down-arrow", size: "1.2rem" })),
@@ -287,11 +289,10 @@ var Select1 = /** @class */ (function (_super) {
                             var _a, _b;
                             return react_1.default.createElement(OptionsItemTile, { key: item.id, item: item, children: ((_a = _this.state.search) !== null && _a !== void 0 ? _a : _this.state.options).filter(function (e) { return e.parentId === item.id; }), selected: _this.state.selected === item.id, onClick: _this.onSelect, treeData: ((_b = _this.state.search) !== null && _b !== void 0 ? _b : _this.state.options).some(function (e) { return e.parentId; }) });
                         }),
-                        (((_j = this.state.search) === null || _j === void 0 ? void 0 : _j.length) === 0 || ((_k = this.props.options) === null || _k === void 0 ? void 0 : _k.length) === 0) && (react_1.default.createElement("div", { className: select1_module_css_1.default['no-results-found'] }, "No result found")))), document.body));
+                        (((_j = this.state.search) === null || _j === void 0 ? void 0 : _j.length) === 0 || ((_k = this.props.options) === null || _k === void 0 ? void 0 : _k.length) === 0) && (react_1.default.createElement("div", { className: select1_module_css_1.default['no-results-found'] }, t("noResultFound"))))), document.body));
     };
-    return Select1;
+    return TSelect1;
 }(react_1.default.Component));
-exports.Select1 = Select1;
 function OptionsItemTile(_a) {
     var item = _a.item, children = _a.children, selected = _a.selected, onClick = _a.onClick, treeData = _a.treeData;
     var _b = (0, react_1.useState)(false), isOpen = _b[0], setIsOpen = _b[1];
@@ -307,3 +308,4 @@ function OptionsItemTile(_a) {
             react_1.default.createElement(text_1.Text, { className: 'body-3' }, item.title && typeof item.title === "string" ? item.title : item.name)),
         (children === null || children === void 0 ? void 0 : children.length) ? react_1.default.createElement("div", { className: 'col', style: { display: isOpen ? "flex" : "none", width: '100%' } }, children.map(function (e) { return react_1.default.createElement(OptionsItemTile, { key: e.id, item: e, onClick: onClick }); })) : undefined);
 }
+exports.Select1 = (0, react_i18next_1.withTranslation)()(TSelect1);

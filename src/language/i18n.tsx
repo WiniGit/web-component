@@ -1,6 +1,5 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import { today } from './component/calendar/calendar';
 
 // Translation resources
 const resources = {

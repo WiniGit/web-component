@@ -1,5 +1,6 @@
 import React from 'react';
 import { ComponentStatus } from '../../index';
+import { WithTranslation } from 'react-i18next';
 export declare enum DialogAlignment {
     start = "start",
     center = "center",
@@ -16,7 +17,7 @@ interface DialogState {
     alignment?: DialogAlignment;
 }
 export declare const showDialog: ({ ref, title, status, content, onSubmit, submitTitle, cancelTitle, alignment }: {
-    ref: React.MutableRefObject<Dialog>;
+    ref: React.MutableRefObject<TDialog>;
     title?: string | undefined;
     status?: ComponentStatus | undefined;
     content?: string | undefined;
@@ -25,10 +26,11 @@ export declare const showDialog: ({ ref, title, status, content, onSubmit, submi
     cancelTitle?: string | undefined;
     alignment?: DialogAlignment | undefined;
 }) => void;
-export declare class Dialog extends React.Component<Object, DialogState> {
-    state: Readonly<DialogState>;
+declare class TDialog extends React.Component<WithTranslation, DialogState> {
+    constructor(props: WithTranslation);
     showDialogNoti(data: DialogState): void;
     closeDialog(): void;
     render(): React.JSX.Element;
 }
+export declare const Dialog: React.ComponentType<Omit<import("react-i18next/helpers").$Subtract<WithTranslation<undefined, undefined>, import("react-i18next").WithTranslationProps>, keyof WithTranslation<Ns, undefined>> & import("react-i18next").WithTranslationProps>;
 export {};

@@ -104,10 +104,11 @@ var input_multi_select_module_css_1 = __importDefault(require("./input-multi-sel
 var checkbox_1 = require("../checkbox/checkbox");
 var text_1 = require("../text/text");
 var winicon_1 = require("../wini-icon/winicon");
+var react_i18next_1 = require("react-i18next");
 ;
-var SelectMultiple = /** @class */ (function (_super) {
-    __extends(SelectMultiple, _super);
-    function SelectMultiple(props) {
+var TSelectMultiple = /** @class */ (function (_super) {
+    __extends(TSelectMultiple, _super);
+    function TSelectMultiple(props) {
         var _this = this;
         var _a;
         _this = _super.call(this, props) || this;
@@ -136,7 +137,7 @@ var SelectMultiple = /** @class */ (function (_super) {
         _this.onClickItem = _this.onClickItem.bind(_this);
         return _this;
     }
-    SelectMultiple.prototype.onCheck = function (value, list) {
+    TSelectMultiple.prototype.onCheck = function (value, list) {
         var newValue = [];
         if (value) {
             newValue = __spreadArray(__spreadArray([], this.state.value, true), list.map(function (e) { return e.id; }), true);
@@ -148,7 +149,7 @@ var SelectMultiple = /** @class */ (function (_super) {
         if (this.props.onChange)
             this.props.onChange(newValue);
     };
-    SelectMultiple.prototype.search = function (ev) {
+    TSelectMultiple.prototype.search = function (ev) {
         var _a;
         return __awaiter(this, void 0, void 0, function () {
             var res;
@@ -174,7 +175,7 @@ var SelectMultiple = /** @class */ (function (_super) {
             });
         });
     };
-    SelectMultiple.prototype.onClickItem = function (ev, item) {
+    TSelectMultiple.prototype.onClickItem = function (ev, item) {
         var _a, _b;
         ev.stopPropagation();
         var newValue = this.state.value.filter(function (vl) { return vl !== item; });
@@ -186,7 +187,7 @@ var SelectMultiple = /** @class */ (function (_super) {
         if (this.props.onChange)
             this.props.onChange(newValue);
     };
-    SelectMultiple.prototype.renderOptions = function (item) {
+    TSelectMultiple.prototype.renderOptions = function (item) {
         var _this = this;
         var _a, _b;
         var children = [];
@@ -217,7 +218,7 @@ var SelectMultiple = /** @class */ (function (_super) {
                 react_1.default.createElement(text_1.Text, { className: 'body-3' }, item.name)),
             react_1.default.createElement("div", { className: 'col', style: { display: item.isOpen ? "flex" : "none", width: '100%' } }, children.map(function (e) { return _this.renderOptions(e); })));
     };
-    SelectMultiple.prototype.componentDidUpdate = function (prevProps, prevState) {
+    TSelectMultiple.prototype.componentDidUpdate = function (prevProps, prevState) {
         var _a, _b, _c, _d, _e;
         if (prevProps.options !== this.props.options)
             this.setState(__assign(__assign({}, this.state), { options: this.props.options }));
@@ -253,9 +254,10 @@ var SelectMultiple = /** @class */ (function (_super) {
             }
         }
     };
-    SelectMultiple.prototype.render = function () {
+    TSelectMultiple.prototype.render = function () {
         var _this = this;
         var _a, _b, _c, _d, _e, _f, _g, _h, _j;
+        var t = this.props.t;
         return react_1.default.createElement("div", { id: this.props.id, ref: this.containerRef, className: "".concat(input_multi_select_module_css_1.default['select-multi-container'], " row ").concat(this.props.disabled ? input_multi_select_module_css_1.default['disabled'] : '', " ").concat(((_a = this.props.helperText) === null || _a === void 0 ? void 0 : _a.length) && input_multi_select_module_css_1.default['helper-text'], " ").concat((_b = this.props.className) !== null && _b !== void 0 ? _b : 'body-3'), "helper-text": this.props.helperText, style: this.props.style ? __assign(__assign({}, { '--helper-text-color': (_c = this.props.helperTextColor) !== null && _c !== void 0 ? _c : '#e14337' }), this.props.style) : { '--helper-text-color': (_d = this.props.helperTextColor) !== null && _d !== void 0 ? _d : '#e14337' }, onClick: function () {
                 var _a, _b;
                 if (!_this.state.isOpen)
@@ -307,7 +309,7 @@ var SelectMultiple = /** @class */ (function (_super) {
                                 _this.setState(__assign(__assign({}, _this.state), { value: newValue }));
                                 if (_this.props.onChange)
                                     _this.props.onChange(newValue);
-                            }, className: 'button-text-3', style: { color: _list.length ? 'var(--infor-main-color)' : 'var(--neutral-text-title-color)' } }, _list.length && isSelectedAll ? 'Remove all' : 'Select all');
+                            }, className: 'button-text-3', style: { color: _list.length ? 'var(--infor-main-color)' : 'var(--neutral-text-title-color)' } }, _list.length && isSelectedAll ? "".concat(t("remove"), " ").concat(t("all").toLowerCase()) : "".concat(t("select"), " ").concat(t("all").toLowerCase()));
                     })()),
                     react_1.default.createElement("div", { className: "col ".concat(input_multi_select_module_css_1.default['select-body']), onScroll: this.props.handleLoadmore ? function (ev) {
                             if (_this.props.handleLoadmore) {
@@ -316,8 +318,8 @@ var SelectMultiple = /** @class */ (function (_super) {
                             }
                         } : undefined },
                         ((_g = this.state.search) !== null && _g !== void 0 ? _g : this.state.options).filter(function (e) { return !e.parentId; }).map(function (item) { return _this.renderOptions(item); }),
-                        (((_h = this.state.search) === null || _h === void 0 ? void 0 : _h.length) === 0 || ((_j = this.props.options) === null || _j === void 0 ? void 0 : _j.length) === 0) && (react_1.default.createElement("div", { className: input_multi_select_module_css_1.default['no-results-found'] }, "No result found")))), document.body));
+                        (((_h = this.state.search) === null || _h === void 0 ? void 0 : _h.length) === 0 || ((_j = this.props.options) === null || _j === void 0 ? void 0 : _j.length) === 0) && (react_1.default.createElement("div", { className: input_multi_select_module_css_1.default['no-results-found'] }, t("noResultFound"))))), document.body));
     };
-    return SelectMultiple;
+    return TSelectMultiple;
 }(react_1.default.Component));
-exports.SelectMultiple = SelectMultiple;
+exports.SelectMultiple = (0, react_i18next_1.withTranslation)()(TSelectMultiple);

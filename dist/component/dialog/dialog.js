@@ -34,6 +34,7 @@ var react_1 = __importDefault(require("react"));
 var react_dom_1 = __importDefault(require("react-dom"));
 var dialog_module_css_1 = __importDefault(require("./dialog.module.css"));
 var index_1 = require("../../index");
+var react_i18next_1 = require("react-i18next");
 var DialogAlignment;
 (function (DialogAlignment) {
     DialogAlignment["start"] = "start";
@@ -53,10 +54,10 @@ var showDialog = function (_a) {
     });
 };
 exports.showDialog = showDialog;
-var Dialog = /** @class */ (function (_super) {
-    __extends(Dialog, _super);
-    function Dialog() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
+var TDialog = /** @class */ (function (_super) {
+    __extends(TDialog, _super);
+    function TDialog(props) {
+        var _this = _super.call(this, props) || this;
         _this.state = {
             open: false,
             title: '',
@@ -66,15 +67,16 @@ var Dialog = /** @class */ (function (_super) {
         };
         return _this;
     }
-    Dialog.prototype.showDialogNoti = function (data) {
+    TDialog.prototype.showDialogNoti = function (data) {
         this.setState(__assign({ open: true }, data));
     };
-    Dialog.prototype.closeDialog = function () {
+    TDialog.prototype.closeDialog = function () {
         this.setState({ open: false });
     };
-    Dialog.prototype.render = function () {
+    TDialog.prototype.render = function () {
         var _this = this;
         var _a, _b;
+        var t = this.props.t;
         return (react_1.default.createElement(react_1.default.Fragment, null, this.state.open &&
             react_dom_1.default.createPortal(react_1.default.createElement("div", { className: dialog_module_css_1.default['dialog-overlay'] },
                 react_1.default.createElement("div", { className: "".concat(dialog_module_css_1.default['dialog-container'], " col"), style: { width: '41.4rem', alignItems: this.state.alignment }, "dialog-type": this.state.status, onClick: function (e) { return e.stopPropagation(); } },
@@ -85,13 +87,13 @@ var Dialog = /** @class */ (function (_super) {
                             react_1.default.createElement(index_1.Text, { className: 'body-3', style: { textAlign: this.state.alignment === DialogAlignment.center ? 'center' : 'start' } }, this.state.content))),
                     react_1.default.createElement("div", { className: "".concat(dialog_module_css_1.default['dialog-footer'], " row") },
                         react_1.default.createElement("button", { type: 'button', style: this.state.alignment === DialogAlignment.center ? { flex: 1, width: '100%' } : undefined, onClick: function () { return _this.setState({ open: false }); }, className: "".concat(dialog_module_css_1.default['dialog-action'], " row") },
-                            react_1.default.createElement(index_1.Text, { className: 'button-text-3' }, (_a = this.state.cancelTitle) !== null && _a !== void 0 ? _a : "Cancel")),
+                            react_1.default.createElement(index_1.Text, { className: 'button-text-3' }, (_a = this.state.cancelTitle) !== null && _a !== void 0 ? _a : t("cancel"))),
                         react_1.default.createElement("button", { type: 'button', style: this.state.alignment === DialogAlignment.center ? { flex: 1, width: '100%' } : undefined, onClick: function () {
                                 _this.state.onSubmit();
                                 _this.setState({ open: false });
                             }, className: "".concat(dialog_module_css_1.default['dialog-action'], " row ").concat(dialog_module_css_1.default['dialog-submit']) },
-                            react_1.default.createElement(index_1.Text, { className: 'button-text-3' }, (_b = this.state.submitTitle) !== null && _b !== void 0 ? _b : 'Submit'))))), document.body)));
+                            react_1.default.createElement(index_1.Text, { className: 'button-text-3' }, (_b = this.state.submitTitle) !== null && _b !== void 0 ? _b : t('submit')))))), document.body)));
     };
-    return Dialog;
+    return TDialog;
 }(react_1.default.Component));
-exports.Dialog = Dialog;
+exports.Dialog = (0, react_i18next_1.withTranslation)()(TDialog);

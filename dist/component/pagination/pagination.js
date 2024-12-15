@@ -34,9 +34,11 @@ var select1_1 = require("../select1/select1");
 var text_1 = require("../text/text");
 var text_field_1 = require("../text-field/text-field");
 var winicon_1 = require("../wini-icon/winicon");
+var react_i18next_1 = require("react-i18next");
 function Pagination(_a) {
     var id = _a.id, currentPage = _a.currentPage, itemPerPage = _a.itemPerPage, totalItem = _a.totalItem, onChangePage = _a.onChangePage, _b = _a.hidePageSize, hidePageSize = _b === void 0 ? false : _b, _c = _a.hideGoToPage, hideGoToPage = _c === void 0 ? false : _c, style = _a.style;
     var goToPageRef = (0, react_1.useRef)();
+    var t = (0, react_i18next_1.useTranslation)().t;
     (0, react_1.useEffect)(function () {
         if (goToPageRef.current) {
             var _inputPage = goToPageRef.current.getInput();
@@ -54,10 +56,7 @@ function Pagination(_a) {
                 react_1.default.createElement(select1_1.Select1, { readOnly: true, placeholder: itemPerPage.toString(), options: [10, 20, 50, 80, 100, 150, 200].map(function (item, _) { return { id: item, name: item }; }), style: { borderRadius: '0.4rem', width: '5.6rem', padding: '0 0.8rem', height: '2.4rem' }, onChange: function (ev) {
                         onChangePage(currentPage, isNaN(parseInt(ev.id)) ? itemPerPage : parseInt(ev.id));
                     } }),
-                react_1.default.createElement(text_1.Text, { className: "body-3" },
-                    "of ",
-                    totalItem,
-                    " items")),
+                react_1.default.createElement(text_1.Text, { className: "body-3" }, t("ofItems", { totalItem: totalItem }))),
             react_1.default.createElement("div", { style: { flex: 1 } }),
             react_1.default.createElement(react_paginate_1.default, { onPageChange: function (ev) {
                     onChangePage(ev.selected + 1, itemPerPage);
@@ -66,7 +65,10 @@ function Pagination(_a) {
                 }, renderOnZeroPageCount: null }),
             hideGoToPage ? null : react_1.default.createElement(react_1.default.Fragment, null,
                 react_1.default.createElement("div", { style: { height: '1.6rem', backgroundColor: "var(--neutral-bolder-border-color)", width: 1 } }),
-                react_1.default.createElement(text_1.Text, { className: "label-3" }, "Go to page"),
+                react_1.default.createElement(text_1.Text, { className: "label-3" },
+                    t("go"),
+                    " ",
+                    t("page").toLowerCase()),
                 react_1.default.createElement(text_field_1.TextField, { ref: goToPageRef, style: { width: '4.8rem', textAlign: "center", padding: 0, height: '2.4rem', borderRadius: '0.4rem' }, className: "body-3", type: "number", onBlur: function (ev) {
                         var _tmp = ev.target.value.trim().length ? parseInt(ev.target.value.trim()) : undefined;
                         if (_tmp && !isNaN(_tmp) && _tmp > 0 && _tmp <= Math.ceil(totalItem / itemPerPage)) {

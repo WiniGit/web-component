@@ -37,6 +37,7 @@ require("./date-picker.css");
 var index_1 = require("../../index");
 var calendar_1 = require("../calendar/calendar");
 var date_fns_1 = require("date-fns");
+var react_i18next_1 = require("react-i18next");
 var dateToString = function (x, y) {
     if (y === void 0) { y = "dd/mm/yyyy"; }
     var splitDateTime = y.split(" ");
@@ -118,9 +119,9 @@ var stringToDate = function (_date, _format, _delimiter) {
     var formatedDate = new Date(parseInt(dateItems[yearIndex]), month, parseInt((_e = dateItems[dayIndex]) !== null && _e !== void 0 ? _e : '0'), hour, min, sec);
     return formatedDate;
 };
-var DatePicker = /** @class */ (function (_super) {
-    __extends(DatePicker, _super);
-    function DatePicker(props) {
+var TDatePicker = /** @class */ (function (_super) {
+    __extends(TDatePicker, _super);
+    function TDatePicker(props) {
         var _this = _super.call(this, props) || this;
         _this.getNewValue = function (value) {
             var _a, _b, _c, _d, _e, _f;
@@ -162,9 +163,10 @@ var DatePicker = /** @class */ (function (_super) {
             },
             isOpen: false,
         };
+        _this.getNewValue = _this.getNewValue.bind(_this);
         return _this;
     }
-    DatePicker.prototype.componentDidUpdate = function (prevProps, prevState) {
+    TDatePicker.prototype.componentDidUpdate = function (prevProps, prevState) {
         var _a;
         if (prevProps.value !== this.props.value) {
             this.setState(__assign(__assign({}, this.state), { value: this.props.value }));
@@ -190,9 +192,10 @@ var DatePicker = /** @class */ (function (_super) {
             }
         }
     };
-    DatePicker.prototype.render = function () {
+    TDatePicker.prototype.render = function () {
         var _this = this;
         var _a, _b, _c, _d, _e, _f, _g;
+        var t = this.props.t;
         var maxLength = 10;
         switch (this.props.pickerType) {
             case index_1.CalendarType.YEAR:
@@ -344,16 +347,16 @@ var DatePicker = /** @class */ (function (_super) {
                                         _this.setState(__assign(__assign({}, _this.state), { isOpen: false, value: dateToString(calendar_1.today, format) }));
                                         if (_this.props.onChange)
                                             _this.props.onChange(dateToString(calendar_1.today, format));
-                                    } }, "Today") : null,
+                                    } }, this.props.t('today')) : null,
                             this.props.pickerType === index_1.CalendarType.DATETIME ? react_1.default.createElement(react_1.default.Fragment, null,
                                 react_1.default.createElement("div", { style: { flex: 1 } }),
-                                react_1.default.createElement("button", { type: 'button', className: 'row button-primary', style: { padding: '0.6rem 0.8rem' }, onClick: function () {
+                                react_1.default.createElement("button", { type: 'button', className: 'row', style: { padding: '0.6rem 1.2rem', backgroundColor: "var(--primary-main-color)", borderRadius: "0.8rem" }, onClick: function () {
                                         _this.setState(__assign(__assign({}, _this.state), { isOpen: false }));
                                         if (_this.props.onChange)
                                             _this.props.onChange(_this.state.value);
                                     } },
-                                    react_1.default.createElement("div", { className: 'button-text-3' }, "Apply"))) : null) })), document.body));
+                                    react_1.default.createElement(index_1.Text, { className: 'button-text-3', style: { color: "var(--neutral-text-stable-color)" } }, t("apply")))) : null) })), document.body));
     };
-    return DatePicker;
+    return TDatePicker;
 }(react_1.default.Component));
-exports.DatePicker = DatePicker;
+exports.DatePicker = (0, react_i18next_1.withTranslation)()(TDatePicker);

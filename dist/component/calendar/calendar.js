@@ -34,6 +34,7 @@ var react_1 = __importDefault(require("react"));
 var calendar_module_css_1 = __importDefault(require("./calendar.module.css"));
 var date_fns_1 = require("date-fns");
 var winicon_1 = require("../wini-icon/winicon");
+var react_i18next_1 = require("react-i18next");
 exports.today = new Date();
 exports.startDate = new Date(exports.today.getFullYear() - 100, exports.today.getMonth(), exports.today.getDate());
 exports.endDate = new Date(exports.today.getFullYear() + 100, exports.today.getMonth(), exports.today.getDate());
@@ -46,12 +47,12 @@ var CalendarType;
     CalendarType[CalendarType["YEAR"] = 2] = "YEAR";
     CalendarType[CalendarType["DATETIME"] = 3] = "DATETIME";
 })(CalendarType = exports.CalendarType || (exports.CalendarType = {}));
-var Calendar = /** @class */ (function (_super) {
-    __extends(Calendar, _super);
-    function Calendar() {
+var TCalendar = /** @class */ (function (_super) {
+    __extends(TCalendar, _super);
+    function TCalendar(props) {
         var _this = this;
         var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
-        _this = _super.apply(this, arguments) || this;
+        _this = _super.call(this, props) || this;
         _this.state = {
             value: (_a = _this.props.value) !== null && _a !== void 0 ? _a : exports.today,
             selectDate: (_b = _this.props.value) !== null && _b !== void 0 ? _b : exports.today,
@@ -62,34 +63,38 @@ var Calendar = /** @class */ (function (_super) {
             selectMinutes: (_h = (_g = _this.props.value) === null || _g === void 0 ? void 0 : _g.getMinutes()) !== null && _h !== void 0 ? _h : 0,
             selectSeconds: (_k = (_j = _this.props.value) === null || _j === void 0 ? void 0 : _j.getSeconds()) !== null && _k !== void 0 ? _k : 0,
         };
+        _this.showDateInMonth = _this.showDateInMonth.bind(_this);
+        _this.showMonthInYear = _this.showMonthInYear.bind(_this);
+        _this.showYearInRange = _this.showYearInRange.bind(_this);
+        _this.getTitle = _this.getTitle.bind(_this);
         return _this;
     }
-    Calendar.prototype.showDateInMonth = function () {
+    TCalendar.prototype.showDateInMonth = function () {
         var _this = this;
         var firstDayOfMonth = new Date(this.state.selectYear, this.state.selectMonth, 1);
         return react_1.default.createElement(react_1.default.Fragment, null,
             Array.from({ length: 7 }).map(function (_, i) {
                 switch (i) {
                     case 0:
-                        var weekdayTitle = 'Su';
+                        var weekdayTitle = _this.props.t("su");
                         break;
                     case 1:
-                        weekdayTitle = 'Mo';
+                        weekdayTitle = _this.props.t("mo");
                         break;
                     case 2:
-                        weekdayTitle = 'Tu';
+                        weekdayTitle = _this.props.t("tu");
                         break;
                     case 3:
-                        weekdayTitle = 'We';
+                        weekdayTitle = _this.props.t("we");
                         break;
                     case 4:
-                        weekdayTitle = 'Th';
+                        weekdayTitle = _this.props.t("th");
                         break;
                     case 5:
-                        weekdayTitle = 'Fr';
+                        weekdayTitle = _this.props.t("fr");
                         break;
                     case 6:
-                        weekdayTitle = 'Sa';
+                        weekdayTitle = _this.props.t("sa");
                         break;
                     default:
                         weekdayTitle = '';
@@ -127,49 +132,49 @@ var Calendar = /** @class */ (function (_super) {
                     } }), timeValue.getDate());
             }));
     };
-    Calendar.prototype.showMonthInYear = function () {
+    TCalendar.prototype.showMonthInYear = function () {
         var _this = this;
         return react_1.default.createElement(react_1.default.Fragment, null, Array.from({ length: 12 }).map(function (_, i) {
             var _a, _b, _c;
-            var monthTitle = '';
             switch (i) {
                 case 0:
-                    monthTitle = 'Jan';
+                    var monthTitle = _this.props.i18n.language === "en" ? "Jan" : _this.props.t('january');
                     break;
                 case 1:
-                    monthTitle = 'Feb';
+                    monthTitle = _this.props.i18n.language === "en" ? "Feb" : _this.props.t('february');
                     break;
                 case 2:
-                    monthTitle = 'Mar';
+                    monthTitle = _this.props.i18n.language === "en" ? "Mar" : _this.props.t('march');
                     break;
                 case 3:
-                    monthTitle = 'Apr';
+                    monthTitle = _this.props.i18n.language === "en" ? "Apr" : _this.props.t('april');
                     break;
                 case 4:
-                    monthTitle = 'May';
+                    monthTitle = _this.props.i18n.language === "en" ? "May" : _this.props.t('may');
                     break;
                 case 5:
-                    monthTitle = 'Jun';
+                    monthTitle = _this.props.i18n.language === "en" ? "Jun" : _this.props.t('june');
                     break;
                 case 6:
-                    monthTitle = 'Jul';
+                    monthTitle = _this.props.i18n.language === "en" ? "Jul" : _this.props.t('july');
                     break;
                 case 7:
-                    monthTitle = 'Aug';
+                    monthTitle = _this.props.i18n.language === "en" ? "Aug" : _this.props.t('august');
                     break;
                 case 8:
-                    monthTitle = 'Sep';
+                    monthTitle = _this.props.i18n.language === "en" ? "Sep" : _this.props.t('september');
                     break;
                 case 9:
-                    monthTitle = 'Oct';
+                    monthTitle = _this.props.i18n.language === "en" ? "Oct" : _this.props.t('october');
                     break;
                 case 10:
-                    monthTitle = 'Nov';
+                    monthTitle = _this.props.i18n.language === "en" ? "Nov" : _this.props.t('november');
                     break;
                 case 11:
-                    monthTitle = 'Dec';
+                    monthTitle = _this.props.i18n.language === "en" ? "Dec" : _this.props.t('december');
                     break;
                 default:
+                    monthTitle = '';
                     break;
             }
             var timeValue = new Date(_this.state.selectYear, i, exports.today.getDate());
@@ -205,7 +210,7 @@ var Calendar = /** @class */ (function (_super) {
                 } }), monthTitle);
         }));
     };
-    Calendar.prototype.showYearInRange = function () {
+    TCalendar.prototype.showYearInRange = function () {
         var _this = this;
         return react_1.default.createElement(react_1.default.Fragment, null, Array.from({ length: 12 }).map(function (_, i) {
             var _a, _b;
@@ -235,7 +240,7 @@ var Calendar = /** @class */ (function (_super) {
                 } }), yearNumber);
         }));
     };
-    Calendar.prototype.getTitle = function () {
+    TCalendar.prototype.getTitle = function () {
         switch (this.state.type) {
             case CalendarType.YEAR:
                 var firstYearInTable = this.state.selectYear - ((this.state.selectYear - exports.startDate.getFullYear()) % 12);
@@ -245,56 +250,57 @@ var Calendar = /** @class */ (function (_super) {
             default:
                 switch (this.state.selectMonth) {
                     case 0:
-                        var monthName = 'January';
+                        var monthName = this.props.t('january');
                         break;
                     case 1:
-                        monthName = 'February';
+                        monthName = this.props.t('february');
                         break;
                     case 2:
-                        monthName = 'March';
+                        monthName = this.props.t('march');
                         break;
                     case 3:
-                        monthName = 'April';
+                        monthName = this.props.t('april');
                         break;
                     case 4:
-                        monthName = 'May';
+                        monthName = this.props.t('may');
                         break;
                     case 5:
-                        monthName = 'June';
+                        monthName = this.props.t('june');
                         break;
                     case 6:
-                        monthName = 'July';
+                        monthName = this.props.t('july');
                         break;
                     case 7:
-                        monthName = 'August';
+                        monthName = this.props.t('august');
                         break;
                     case 8:
-                        monthName = 'September';
+                        monthName = this.props.t('september');
                         break;
                     case 9:
-                        monthName = 'October';
+                        monthName = this.props.t('october');
                         break;
                     case 10:
-                        monthName = 'November';
+                        monthName = this.props.t('november');
                         break;
                     case 11:
-                        monthName = 'December';
+                        monthName = this.props.t('december');
                         break;
                     default:
                         monthName = '';
                         break;
                 }
-                return "".concat(monthName, " ").concat(this.state.selectYear);
+                return "".concat(monthName).concat(this.props.i18n.language === 'en' ? ' ' : '/').concat(this.state.selectYear);
         }
     };
-    Calendar.prototype.render = function () {
+    TCalendar.prototype.render = function () {
         var _this = this;
+        var t = this.props.t;
         return react_1.default.createElement("div", { id: this.props.id, className: "row ".concat(calendar_module_css_1.default['calendar-container'], " ").concat(this.props.className), style: this.props.style },
             this.props.showSidebar ? react_1.default.createElement("div", { className: "".concat(calendar_module_css_1.default['calendar-sidebar-options'], " col") },
-                react_1.default.createElement("button", { type: "button", onClick: function () { }, className: "label-4 ".concat(calendar_module_css_1.default['calendar-sidebar-option-buttton']) }, "Yesterday"),
-                react_1.default.createElement("button", { type: "button", className: "label-4 ".concat(calendar_module_css_1.default['calendar-sidebar-option-buttton']) }, "Last week"),
-                react_1.default.createElement("button", { type: "button", className: "label-4 ".concat(calendar_module_css_1.default['calendar-sidebar-option-buttton']) }, "Last month"),
-                react_1.default.createElement("button", { type: "button", className: "label-4 ".concat(calendar_module_css_1.default['calendar-sidebar-option-buttton']) }, "Last year")) : null,
+                react_1.default.createElement("button", { type: "button", onClick: function () { }, className: "label-4 ".concat(calendar_module_css_1.default['calendar-sidebar-option-buttton']) }, t("yesterday")),
+                react_1.default.createElement("button", { type: "button", className: "label-4 ".concat(calendar_module_css_1.default['calendar-sidebar-option-buttton']) }, t("lastWeek")),
+                react_1.default.createElement("button", { type: "button", className: "label-4 ".concat(calendar_module_css_1.default['calendar-sidebar-option-buttton']) }, t("lastMonth")),
+                react_1.default.createElement("button", { type: "button", className: "label-4 ".concat(calendar_module_css_1.default['calendar-sidebar-option-buttton']) }, t("lastYear"))) : null,
             react_1.default.createElement("div", { className: "".concat(calendar_module_css_1.default['calendar-body'], " col") },
                 react_1.default.createElement("div", { className: "row", style: { alignItems: 'start' } },
                     react_1.default.createElement("div", { className: "".concat(calendar_module_css_1.default['picker-date-container'], " col") },
@@ -427,6 +433,6 @@ var Calendar = /** @class */ (function (_super) {
                                 }, key: "hours-".concat(i), className: "label-4 ".concat(_this.state.selectSeconds === (i) ? calendar_module_css_1.default['selected'] : '') }, i < 10 ? "0".concat(i) : i); })))) : null),
                 this.props.footer));
     };
-    return Calendar;
+    return TCalendar;
 }(react_1.default.Component));
-exports.Calendar = Calendar;
+exports.Calendar = (0, react_i18next_1.withTranslation)()(TCalendar);

@@ -1,6 +1,7 @@
 import React, { CSSProperties } from 'react';
 import { OptionsItem } from '../select1/select1';
-interface SelectMultipleProps {
+import { WithTranslation } from 'react-i18next';
+interface SelectMultipleProps extends WithTranslation {
     id?: string;
     value?: Array<string | number>;
     options: Required<Array<OptionsItem>>;
@@ -16,23 +17,5 @@ interface SelectMultipleProps {
     showClearValueButton?: boolean;
     popupClassName?: string;
 }
-interface SelectMultipleState {
-    value: Array<string | number>;
-    options: Required<Array<OptionsItem>>;
-    offset: DOMRect;
-    isOpen: boolean;
-    onSelect: any;
-    search?: Array<OptionsItem>;
-    style?: Object;
-}
-export declare class SelectMultiple extends React.Component<SelectMultipleProps, SelectMultipleState> {
-    private containerRef;
-    constructor(props: SelectMultipleProps);
-    private onCheck;
-    private search;
-    private onClickItem;
-    private renderOptions;
-    componentDidUpdate(prevProps: SelectMultipleProps, prevState: SelectMultipleState): void;
-    render(): React.JSX.Element;
-}
+export declare const SelectMultiple: React.ComponentType<Omit<import("react-i18next/helpers").$Subtract<SelectMultipleProps, import("react-i18next").WithTranslationProps>, keyof WithTranslation<Ns, undefined>> & import("react-i18next").WithTranslationProps>;
 export {};

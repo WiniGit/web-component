@@ -1,4 +1,5 @@
 import React, { CSSProperties, ReactNode } from "react";
+import { WithTranslation } from 'react-i18next';
 export declare const today: Date;
 export declare const startDate: Date;
 export declare const endDate: Date;
@@ -9,7 +10,7 @@ export declare enum CalendarType {
     YEAR = 2,
     DATETIME = 3
 }
-interface CalendarProps {
+interface CalendarProps extends WithTranslation {
     id?: string;
     value?: Date;
     min?: Date;
@@ -25,22 +26,5 @@ interface CalendarProps {
     showSidebar?: boolean;
     footer?: ReactNode;
 }
-interface CalendarState {
-    value: Date;
-    selectDate?: Date;
-    selectMonth: number;
-    selectYear: number;
-    selectHours: number;
-    selectMinutes: number;
-    selectSeconds: number;
-    type: CalendarType;
-}
-export declare class Calendar extends React.Component<CalendarProps, CalendarState> {
-    state: Readonly<CalendarState>;
-    showDateInMonth(): React.JSX.Element;
-    showMonthInYear(): React.JSX.Element;
-    showYearInRange(): React.JSX.Element;
-    getTitle(): string | number;
-    render(): React.ReactNode;
-}
+export declare const Calendar: React.ComponentType<Omit<import("react-i18next/helpers").$Subtract<CalendarProps, import("react-i18next").WithTranslationProps>, keyof WithTranslation<Ns, undefined>> & import("react-i18next").WithTranslationProps>;
 export {};

@@ -1,7 +1,8 @@
 import React, { CSSProperties } from 'react';
 import './date-picker.css';
 import { CalendarType } from '../../index';
-interface DatePickerProps {
+import { WithTranslation } from 'react-i18next';
+interface DatePickerProps extends WithTranslation {
     id?: string;
     value?: string;
     min?: Date;
@@ -20,17 +21,5 @@ interface DatePickerProps {
     pickerType?: CalendarType;
     formatDate?: string;
 }
-interface DatePickerState {
-    value?: string;
-    offset: DOMRect;
-    isOpen: boolean;
-    style?: Object;
-}
-export declare class DatePicker extends React.Component<DatePickerProps, DatePickerState> {
-    constructor(props: DatePickerProps);
-    getNewValue: (value?: string) => Date | undefined;
-    componentDidUpdate(prevProps: DatePickerProps, prevState: DatePickerState): void;
-    private onOpenCalendar;
-    render(): React.JSX.Element;
-}
+export declare const DatePicker: React.ComponentType<Omit<import("react-i18next/helpers").$Subtract<DatePickerProps, import("react-i18next").WithTranslationProps>, keyof WithTranslation<Ns, undefined>> & import("react-i18next").WithTranslationProps>;
 export {};
