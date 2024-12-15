@@ -1,4 +1,4 @@
-import React, { CSSProperties, ReactNode } from 'react'
+import React, { createRef, CSSProperties, ReactNode } from 'react'
 import ReactDOM from 'react-dom'
 import './popup.css'
 
@@ -39,10 +39,9 @@ export const closePopup = (ref: React.MutableRefObject<Popup>) => {
 }
 
 export class Popup extends React.Component<Object, PopupState> {
-    private ref: React.RefObject<HTMLDivElement>;
+    private ref = createRef<HTMLDivElement>()
     constructor(props: Object | Readonly<Object>) {
         super(props);
-        this.ref = React.createRef();
     }
     state: Readonly<PopupState> = {
         open: false,

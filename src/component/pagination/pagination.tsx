@@ -19,7 +19,7 @@ interface Props {
 }
 
 export function Pagination({ id, currentPage, itemPerPage, totalItem, onChangePage, hidePageSize = false, hideGoToPage = false, style }: Props) {
-    const goToPageRef = useRef<TextField>()
+    const goToPageRef = useRef<TextField>(null)
     const { t } = useTranslation()
 
     useEffect(() => {

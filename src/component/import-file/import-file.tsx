@@ -1,4 +1,4 @@
-import React, { CSSProperties } from 'react'
+import React, { createRef, CSSProperties } from 'react'
 import styles from './import-file.module.css'
 import { ComponentStatus } from '../component-status'
 import { Button, Text, ToastMessage } from '../../index'
@@ -49,10 +49,9 @@ interface ImportFileProps extends WithTranslation {
 }
 
 class TImportFile extends React.Component<ImportFileProps, ImportFileState> {
-    private fileRef: React.RefObject<HTMLInputElement>;
+    private fileRef = createRef<HTMLInputElement>();
     constructor(props: ImportFileProps | Readonly<ImportFileProps>) {
         super(props);
-        this.fileRef = React.createRef();
         this.state = {
             preview: this.props.value
         }
@@ -108,7 +107,7 @@ class TImportFile extends React.Component<ImportFileProps, ImportFileState> {
                         <Text className={`${styles['subtitle-file']} subtitle-3`} style={{ maxWidth: '100%' }}>
                             {this.state.preview?.size
                                 ? `${this.state.preview?.size}KB`
-                                : (this.props.subTitle ?? (sizeTitle ? t("limitFileWarning",{sizeTitle: sizeTitle}) : ''))}
+                                : (this.props.subTitle ?? (sizeTitle ? t("limitFileWarning", { sizeTitle: sizeTitle }) : ''))}
                         </Text>
                     </div>
                 </>

@@ -70,5 +70,5 @@ var input_opt_1 = require("./component/input-opt/input-opt");
 Object.defineProperty(exports, "InputOpt", { enumerable: true, get: function () { return input_opt_1.InputOpt; } });
 var view_1 = require("./form/login/view");
 Object.defineProperty(exports, "WLoginView", { enumerable: true, get: function () { return view_1.WLoginView; } });
-var i18n_1 = require("./i18n");
+var i18n_1 = require("./language/i18n");
 Object.defineProperty(exports, "i18n", { enumerable: true, get: function () { return i18n_1.i18n; } });
