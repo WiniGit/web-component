@@ -26,9 +26,8 @@ var winicon_1 = require("../wini-icon/winicon");
 var CustomSlider = /** @class */ (function (_super) {
     __extends(CustomSlider, _super);
     function CustomSlider(props) {
-        var _this = this;
         var _a;
-        _this = _super.call(this, props) || this;
+        var _this = _super.call(this, props) || this;
         _this.nextPage = function () {
             var _a, _b, _c;
             var index = (_b = (_a = _this.state) === null || _a === void 0 ? void 0 : _a.page) !== null && _b !== void 0 ? _b : 0;

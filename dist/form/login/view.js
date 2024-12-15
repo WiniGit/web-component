@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.WLoginView = void 0;
+exports.WLoginView = WLoginView;
 var react_1 = __importDefault(require("react"));
 var index_1 = require("../../index");
 var view_module_css_1 = __importDefault(require("./view.module.css"));
@@ -64,4 +64,3 @@ function WLoginView(props) {
                             props.loginWithApple && react_1.default.createElement(index_1.Button, { className: "label-1", onClick: props.loginWithApple, prefix: react_1.default.createElement(index_1.Winicon, { src: 'color/development/apple', size: "2rem" }), label: "Apple" }),
                             props.loginWithMicrosoft && react_1.default.createElement(index_1.Button, { className: "label-1", onClick: props.loginWithMicrosoft, prefix: react_1.default.createElement(index_1.Winicon, { src: 'color/development/microsoft', size: "2rem" }), label: "Microsoft" }))) : null)));
 }
-exports.WLoginView = WLoginView;

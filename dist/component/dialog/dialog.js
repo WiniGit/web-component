@@ -40,7 +40,7 @@ var DialogAlignment;
     DialogAlignment["start"] = "start";
     DialogAlignment["center"] = "center";
     DialogAlignment["end"] = "end";
-})(DialogAlignment = exports.DialogAlignment || (exports.DialogAlignment = {}));
+})(DialogAlignment || (exports.DialogAlignment = DialogAlignment = {}));
 var showDialog = function (_a) {
     var ref = _a.ref, title = _a.title, status = _a.status, content = _a.content, onSubmit = _a.onSubmit, submitTitle = _a.submitTitle, cancelTitle = _a.cancelTitle, alignment = _a.alignment;
     ref.current.showDialogNoti({

@@ -35,9 +35,8 @@ var switch_module_css_1 = __importDefault(require("./switch.module.css"));
 var Switch = /** @class */ (function (_super) {
     __extends(Switch, _super);
     function Switch() {
-        var _this = this;
         var _a;
-        _this = _super.apply(this, arguments) || this;
+        var _this = _super.apply(this, arguments) || this;
         _this.state = {
             value: (_a = _this.props.value) !== null && _a !== void 0 ? _a : false
         };

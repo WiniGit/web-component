@@ -18,13 +18,13 @@ interface DialogState {
 }
 export declare const showDialog: ({ ref, title, status, content, onSubmit, submitTitle, cancelTitle, alignment }: {
     ref: React.MutableRefObject<TDialog>;
-    title?: string | undefined;
-    status?: ComponentStatus | undefined;
-    content?: string | undefined;
-    onSubmit?: Function | undefined;
-    submitTitle?: string | undefined;
-    cancelTitle?: string | undefined;
-    alignment?: DialogAlignment | undefined;
+    title?: string;
+    status?: ComponentStatus;
+    content?: string;
+    onSubmit?: Function;
+    submitTitle?: string;
+    cancelTitle?: string;
+    alignment?: DialogAlignment;
 }) => void;
 declare class TDialog extends React.Component<WithTranslation, DialogState> {
     constructor(props: WithTranslation);

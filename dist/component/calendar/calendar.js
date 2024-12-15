@@ -46,13 +46,12 @@ var CalendarType;
     CalendarType[CalendarType["MONTH"] = 1] = "MONTH";
     CalendarType[CalendarType["YEAR"] = 2] = "YEAR";
     CalendarType[CalendarType["DATETIME"] = 3] = "DATETIME";
-})(CalendarType = exports.CalendarType || (exports.CalendarType = {}));
+})(CalendarType || (exports.CalendarType = CalendarType = {}));
 var TCalendar = /** @class */ (function (_super) {
     __extends(TCalendar, _super);
     function TCalendar(props) {
-        var _this = this;
         var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
-        _this = _super.call(this, props) || this;
+        var _this = _super.call(this, props) || this;
         _this.state = {
             value: (_a = _this.props.value) !== null && _a !== void 0 ? _a : exports.today,
             selectDate: (_b = _this.props.value) !== null && _b !== void 0 ? _b : exports.today,

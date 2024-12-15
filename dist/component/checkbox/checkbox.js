@@ -35,9 +35,8 @@ var checkbox_module_css_1 = __importDefault(require("./checkbox.module.css"));
 var Checkbox = /** @class */ (function (_super) {
     __extends(Checkbox, _super);
     function Checkbox() {
-        var _this = this;
         var _a;
-        _this = _super.apply(this, arguments) || this;
+        var _this = _super.apply(this, arguments) || this;
         _this.state = {
             value: (_a = _this.props.value) !== null && _a !== void 0 ? _a : false
         };

@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ProgressBar = void 0;
+exports.ProgressBar = ProgressBar;
 var react_1 = require("react");
 var progress_bar_module_css_1 = __importDefault(require("./progress-bar.module.css"));
 var react_2 = __importDefault(require("react"));
@@ -33,4 +33,3 @@ function ProgressBar(_a) {
                 percent,
                 "/100")) : null);
 }
-exports.ProgressBar = ProgressBar;

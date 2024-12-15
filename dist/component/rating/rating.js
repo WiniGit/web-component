@@ -25,9 +25,8 @@ var autoKeyId = function () { return window.crypto.randomUUID().replace(/-/g, ''
 var Rating = /** @class */ (function (_super) {
     __extends(Rating, _super);
     function Rating() {
-        var _this = this;
         var _a;
-        _this = _super.apply(this, arguments) || this;
+        var _this = _super.apply(this, arguments) || this;
         _this.state = {
             value: (_a = _this.props.value) !== null && _a !== void 0 ? _a : 0
         };

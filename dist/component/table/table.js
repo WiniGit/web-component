@@ -37,7 +37,7 @@ var CellAlignItems;
     CellAlignItems["start"] = "start";
     CellAlignItems["center"] = "center";
     CellAlignItems["end"] = "end";
-})(CellAlignItems = exports.CellAlignItems || (exports.CellAlignItems = {}));
+})(CellAlignItems || (exports.CellAlignItems = CellAlignItems = {}));
 var TbCell = /** @class */ (function (_super) {
     __extends(TbCell, _super);
     function TbCell() {

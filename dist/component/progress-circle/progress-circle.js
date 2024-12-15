@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ProgressCircle = void 0;
+exports.ProgressCircle = ProgressCircle;
 require("./progress-circle.css");
 var react_1 = __importDefault(require("react"));
 function ProgressCircle(props) {
@@ -28,4 +28,3 @@ function ProgressCircle(props) {
         react_1.default.createElement("text", { x: "50%", y: "50%", dy: ".3em", textAnchor: "middle", fontSize: "1.6rem", fontWeight: '600', style: __assign({ fill: "var(neutral-text-title-color)" }, ((_j = props.textStyle) !== null && _j !== void 0 ? _j : {})) }, (_k = props.percent) !== null && _k !== void 0 ? _k : 0,
             "%"));
 }
-exports.ProgressCircle = ProgressCircle;

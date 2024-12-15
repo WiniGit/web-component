@@ -11,7 +11,7 @@ var ComponentStatus;
     ComponentStatus[ComponentStatus["ERROR"] = 2] = "ERROR";
     ComponentStatus[ComponentStatus["WARNING"] = 3] = "WARNING";
     ComponentStatus[ComponentStatus["SUCCSESS"] = 4] = "SUCCSESS";
-})(ComponentStatus = exports.ComponentStatus || (exports.ComponentStatus = {}));
+})(ComponentStatus || (exports.ComponentStatus = ComponentStatus = {}));
 var getStatusIcon = function (status) {
     switch (status) {
         case ComponentStatus.ERROR:

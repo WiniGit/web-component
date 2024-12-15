@@ -117,8 +117,8 @@ var resources = {
 // Initialize i18n
 i18next_1.default.use(react_i18next_1.initReactI18next).init({
     resources: resources,
-    lng: 'en',
-    fallbackLng: 'en',
+    lng: 'en', // Default language
+    fallbackLng: 'en', // Fallback language
     interpolation: {
         escapeValue: false, // React already escapes values
     },
