@@ -1,6 +1,3 @@
-// import './skin/root.css'
-// import './skin/layout.css'
-// import './skin/typography.css'
 import { Checkbox } from './component/checkbox/checkbox'
 import { Select1, OptionsItem } from './component/select1/select1'
 import { Switch } from './component/switch/switch'
@@ -30,6 +27,7 @@ import { Winicon } from './component/wini-icon/winicon'
 import { NumberPicker } from './component/number-picker/number-picker'
 import { InputOpt } from './component/input-opt/input-opt'
 import { WLoginView } from './form/login/view'
+import { i18n } from './i18n';
 
 
 export {
@@ -61,6 +59,7 @@ export {
   Winicon,
   NumberPicker,
   InputOpt,
-  WLoginView
+  WLoginView,
+  i18n
 }
 export type { OptionsItem }

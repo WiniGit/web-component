@@ -5,8 +5,9 @@ import { OptionsItem } from '../select1/select1'
 import { Checkbox } from '../checkbox/checkbox'
 import { Text } from '../text/text'
 import { Winicon } from '../wini-icon/winicon'
+import { WithTranslation, withTranslation } from 'react-i18next';
 
-interface SelectMultipleProps {
+interface SelectMultipleProps extends WithTranslation {
     id?: string,
     value?: Array<string | number>,
     options: Required<Array<OptionsItem>>,
@@ -33,7 +34,7 @@ interface SelectMultipleState {
     style?: Object
 };
 
-export class SelectMultiple extends React.Component<SelectMultipleProps, SelectMultipleState> {
+class TSelectMultiple extends React.Component<SelectMultipleProps, SelectMultipleState> {
     private containerRef = createRef<HTMLDivElement>()
     constructor(props: SelectMultipleProps) {
         super(props)
@@ -170,6 +171,7 @@ export class SelectMultiple extends React.Component<SelectMultipleProps, SelectM
     }
 
     render() {
+        const { t } = this.props;
         return <div
             id={this.props.id}
             ref={this.containerRef}
@@ -236,7 +238,7 @@ export class SelectMultiple extends React.Component<SelectMultipleProps, SelectM
                                     }
                                     this.setState({ ...this.state, value: newValue })
                                     if (this.props.onChange) this.props.onChange(newValue)
-                                }} className='button-text-3' style={{ color: _list.length ? 'var(--infor-main-color)' : 'var(--neutral-text-title-color)' }}>{_list.length && isSelectedAll ? 'Remove all' : 'Select all'}</Text>
+                                }} className='button-text-3' style={{ color: _list.length ? 'var(--infor-main-color)' : 'var(--neutral-text-title-color)' }}>{_list.length && isSelectedAll ? `${t("remove")} ${t("all").toLowerCase()}` : `${t("select")} ${t("all").toLowerCase()}`}</Text>
                             })()}
                         </div>
                         <div className={`col ${styles['select-body']}`} onScroll={this.props.handleLoadmore ? (ev) => {
@@ -247,7 +249,7 @@ export class SelectMultiple extends React.Component<SelectMultipleProps, SelectM
                         } : undefined}>
                             {(this.state.search ?? this.state.options).filter(e => !e.parentId).map(item => this.renderOptions(item))}
                             {(this.state.search?.length === 0 || this.props.options?.length === 0) && (
-                                <div className={styles['no-results-found']}>No result found</div>
+                                <div className={styles['no-results-found']}>{t("noResultFound")}</div>
                             )}
                         </div>
                     </div>,
@@ -256,3 +258,6 @@ export class SelectMultiple extends React.Component<SelectMultipleProps, SelectM
         </div>
     }
 }
+
+export const SelectMultiple = withTranslation()(TSelectMultiple)
+

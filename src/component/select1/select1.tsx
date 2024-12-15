@@ -3,6 +3,7 @@ import React, { createRef, CSSProperties, ReactNode, useState } from 'react'
 import ReactDOM from 'react-dom'
 import { Winicon } from '../wini-icon/winicon'
 import { Text } from '../text/text'
+import { WithTranslation, withTranslation } from 'react-i18next';
 
 export interface OptionsItem {
     id: string | number,
@@ -12,7 +13,7 @@ export interface OptionsItem {
     disabled?: boolean
 }
 
-interface Select1Props {
+interface Select1Props extends WithTranslation {
     id?: string,
     value?: string | number,
     options: Required<Array<OptionsItem>>,
@@ -44,7 +45,7 @@ interface Select1State {
     style?: Object
 };
 
-export class Select1 extends React.Component<Select1Props, Select1State> {
+class TSelect1 extends React.Component<Select1Props, Select1State> {
     private containerRef = createRef<HTMLDivElement>()
     private inputRef = createRef<HTMLInputElement>()
     constructor(props: Select1Props) {
@@ -96,7 +97,7 @@ export class Select1 extends React.Component<Select1Props, Select1State> {
             this.inputRef.current?.blur()
         } else {
             let newState = { ...this.state, isOpen: false, value: item.id, onSelect: undefined, selected: undefined }
-            if(!newState.options.some(e => e.id === item.id)) newState.options.push(item)
+            if (!newState.options.some(e => e.id === item.id)) newState.options.push(item)
             this.setState(newState)
             this.inputRef.current?.blur()
         }
@@ -172,6 +173,7 @@ export class Select1 extends React.Component<Select1Props, Select1State> {
     }
 
     render() {
+        const { t } = this.props;
         const _value = this.state.options.find(e => e.id === this.state.value)
         return <div
             id={this.props.id}
@@ -200,7 +202,7 @@ export class Select1 extends React.Component<Select1Props, Select1State> {
                 }}
             /> : _value.name}
             {this.props.suffix ?? <div ref={iconRef => {
-                if (iconRef?.parentElement && iconRef.parentElement.getBoundingClientRect().width < 100) iconRef.style.display = "none"
+                if (iconRef?.parentElement && iconRef.parentElement.getBoundingClientRect().width < 88) iconRef.style.display = "none"
             }} className='row' >
                 <Winicon src={this.state.isOpen ? "fill/arrows/up-arrow" : "fill/arrows/down-arrow"} size={"1.2rem"} />
             </div>}
@@ -234,7 +236,7 @@ export class Select1 extends React.Component<Select1Props, Select1State> {
                                 />
                             })}
                             {(this.state.search?.length === 0 || this.props.options?.length === 0) && (
-                                <div className={styles['no-results-found']}>No result found</div>
+                                <div className={styles['no-results-found']}>{t("noResultFound")}</div>
                             )}
                         </div>
                     </div>,
@@ -269,3 +271,5 @@ function OptionsItemTile({ item, children, selected, onClick, treeData }: Option
         {children?.length ? <div className='col' style={{ display: isOpen ? "flex" : "none", width: '100%' }}>{children.map(e => <OptionsItemTile key={e.id} item={e} onClick={onClick} />)}</div> : undefined}
     </div>
 }
+
+export const Select1 = withTranslation()(TSelect1)

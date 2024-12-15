@@ -3,6 +3,7 @@ import { Button, Text, TextField, Winicon } from '../../index'
 import styles from './view.module.css'
 import { FieldValues, useForm, UseFormReturn } from 'react-hook-form'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
     logo: React.ReactNode | string,
@@ -32,6 +33,7 @@ interface Props {
 export function WLoginView(props: Props) {
     const methods = useForm<any>({ shouldFocusError: false })
     const [isShowPass, setShowPass] = useState(false)
+    const { t } = useTranslation()
 
     const _onSubmit = (ev: FieldValues) => {
         if (props.onSubmit) props.onSubmit(ev, methods)
@@ -40,10 +42,10 @@ export function WLoginView(props: Props) {
     return <form id={props.id} className={`col login-view-container ${styles['login-view-container']} ${props.className ?? ''}`} style={props.style}>
         {typeof props.logo === "string" ? <img alt='logo' src={props.logo} height={"36rem"} /> : props.logo}
         <div className={`col login-view-form-container ${styles['login-view-form-container']}`}>
-            <Text className='heading-4'>{props.title ?? "Log in to Wini"}</Text>
+            <Text className='heading-4'>{props.title ?? `${t("loginTo")} Wini`}</Text>
             <div className='col'>
                 <div className='col' style={{ gap: "0.8rem", overflow: "visible" }}>
-                    <Text className='label-3'>{props.formData.username.label}</Text>
+                    <Text className='label-3'>{props.formData.username.label ?? t("username")}</Text>
                     <TextField
                         autoComplete='username'
                         className="placeholder-2"
@@ -60,7 +62,7 @@ export function WLoginView(props: Props) {
                     />
                 </div>
                 <div className='col' style={{ gap: "0.8rem", overflow: "visible" }}>
-                    <Text className='label-3'>{props.formData.password.label}</Text>
+                    <Text className='label-3'>{props.formData.password.label ?? t("password")}</Text>
                     <TextField
                         autoComplete='current-password'
                         className="placeholder-2"
@@ -83,24 +85,24 @@ export function WLoginView(props: Props) {
                         helperText={(props.methods ?? methods).formState.errors?.[props.formData.password.name]?.message as any}
                     />
                 </div>
-                <Text className={`button-text-3 ${styles['forgot-password-btn']}`} onClick={props.onForgotPassword}>{props.forgotPasswordText ?? "Forgot your password?"}</Text>
+                <Text className={`button-text-3 ${styles['forgot-password-btn']}`} onClick={props.onForgotPassword}>{props.forgotPasswordText ?? t("forgotPassword")}</Text>
                 <div className='col' style={{ gap: "1.6rem" }}>
                     <Button
                         disabled={(props.methods ?? methods).watch(props.formData.username.name)?.length && (props.methods ?? methods).watch(props.formData.password.name)?.length ? false : true}
                         className={`button-text-1 ${styles['login-btn']}`}
                         onClick={props.onSubmit && (props.methods ?? methods).handleSubmit(_onSubmit)}
-                        label={props.buttonLoginLabel ?? "Log In"}
+                        label={props.buttonLoginLabel ?? t("login")}
                     />
                     <div className='row' style={{ justifyContent: "center", gap: "0.4rem" }}>
-                        <Text className='label-4'>{props.registerPrefixText ?? "Don't have an account?"}</Text>
-                        <Text className={`button-text-3 ${styles['register-btn']}`} onClick={props.onRegister}>{props.registerText ?? "Sign up for Wini"}</Text>
+                        <Text className='label-4'>{props.registerPrefixText ?? t("dontHaveAccount")}</Text>
+                        <Text className={`button-text-3 ${styles['register-btn']}`} onClick={props.onRegister}>{props.registerText ?? `${t("signupFor")} Wini`}</Text>
                     </div>
                 </div>
                 {(props.loginWithGoogle || props.loginWithFacebook || props.loginWithApple || props.loginWithMicrosoft) ?
                     <>
                         <div className={`row ${styles['or-spacing']}`}>
                             <div />
-                            <Text className="label-4">{props.orText ?? "Or"}</Text>
+                            <Text className="label-4">{props.orText ?? t("or")}</Text>
                             <div />
                         </div>
                         <div className={`row ${styles['login-social-media']}`}>

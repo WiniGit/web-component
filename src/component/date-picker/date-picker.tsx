@@ -2,9 +2,10 @@
 import React, { CSSProperties } from 'react'
 import ReactDOM from 'react-dom'
 import './date-picker.css'
-import { CalendarType, Calendar, Winicon } from '../../index'
+import { CalendarType, Calendar, Winicon, Text } from '../../index'
 import { endDate, inRangeTime, startDate, today } from '../calendar/calendar'
 import { differenceInCalendarDays } from 'date-fns'
+import { WithTranslation, withTranslation } from 'react-i18next';
 
 const dateToString = (x: Date, y: string = "dd/mm/yyyy") => {
     let splitDateTime: Array<string> = y.split(" ");
@@ -83,7 +84,7 @@ const stringToDate = (_date: string, _format: string = "dd/MM/yyyy", _delimiter:
     return formatedDate;
 }
 
-interface DatePickerProps {
+interface DatePickerProps extends WithTranslation {
     id?: string,
     value?: string,
     min?: Date,
@@ -113,7 +114,7 @@ interface DatePickerState {
 }
 
 
-export class DatePicker extends React.Component<DatePickerProps, DatePickerState> {
+class TDatePicker extends React.Component<DatePickerProps, DatePickerState> {
     constructor(props: DatePickerProps) {
         super(props)
         this.state = {
@@ -133,9 +134,10 @@ export class DatePicker extends React.Component<DatePickerProps, DatePickerState
             },
             isOpen: false,
         }
+        this.getNewValue = this.getNewValue.bind(this)
     }
 
-    getNewValue = (value?: string) => {
+    private getNewValue = (value?: string) => {
         const params: string = value ?? this.state?.value ?? ''
         if (params.trim()?.length) {
             switch (this.props.pickerType) {
@@ -197,6 +199,7 @@ export class DatePicker extends React.Component<DatePickerProps, DatePickerState
     }
 
     render() {
+        const { t } = this.props;
         let maxLength = 10
         switch (this.props.pickerType) {
             case CalendarType.YEAR:
@@ -357,15 +360,15 @@ export class DatePicker extends React.Component<DatePickerProps, DatePickerState
                                             if (this.props.onChange) this.props.onChange(dateToString(today, format))
                                         }}
                                     >
-                                        Today
+                                        {this.props.t('today')}
                                     </button> : null}
                                 {this.props.pickerType === CalendarType.DATETIME ? <>
                                     <div style={{ flex: 1 }}></div>
-                                    <button type='button' className='row button-primary' style={{ padding: '0.6rem 0.8rem' }} onClick={() => {
+                                    <button type='button' className='row' style={{ padding: '0.6rem 1.2rem', backgroundColor: "var(--primary-main-color)", borderRadius: "0.8rem" }} onClick={() => {
                                         this.setState({ ...this.state, isOpen: false })
                                         if (this.props.onChange) this.props.onChange(this.state.value)
                                     }} >
-                                        <div className='button-text-3'>Apply</div>
+                                        <Text className='button-text-3' style={{ color: "var(--neutral-text-stable-color)" }}>{t("apply")}</Text>
                                     </button>
                                 </> : null}
                             </div>}
@@ -376,3 +379,5 @@ export class DatePicker extends React.Component<DatePickerProps, DatePickerState
         </div>
     }
 }
+
+export const DatePicker = withTranslation()(TDatePicker)

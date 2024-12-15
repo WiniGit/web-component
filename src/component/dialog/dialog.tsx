@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import styles from './dialog.module.css'
 import { ComponentStatus, getStatusIcon, Text } from '../../index'
-
+import { WithTranslation, withTranslation } from 'react-i18next';
 
 export enum DialogAlignment {
     start = 'start',
@@ -22,7 +22,7 @@ interface DialogState {
 }
 
 export const showDialog = ({ ref, title, status, content, onSubmit, submitTitle, cancelTitle, alignment }: {
-    ref: React.MutableRefObject<Dialog>,
+    ref: React.MutableRefObject<TDialog>,
     title?: string,
     status?: ComponentStatus,
     content?: string,
@@ -42,13 +42,16 @@ export const showDialog = ({ ref, title, status, content, onSubmit, submitTitle,
     })
 }
 
-export class Dialog extends React.Component<Object, DialogState> {
-    state: Readonly<DialogState> = {
-        open: false,
-        title: '',
-        status: ComponentStatus.INFOR,
-        content: '',
-        onSubmit: () => { }
+class TDialog extends React.Component<WithTranslation, DialogState> {
+    constructor(props: WithTranslation) {
+        super(props);
+        this.state = {
+            open: false,
+            title: '',
+            status: ComponentStatus.INFOR,
+            content: '',
+            onSubmit: () => { }
+        }
     }
     showDialogNoti(data: DialogState) {
         this.setState({ open: true, ...data })
@@ -59,6 +62,7 @@ export class Dialog extends React.Component<Object, DialogState> {
     }
 
     render() {
+        const { t } = this.props;
         return (
             <>
                 {this.state.open &&
@@ -74,13 +78,13 @@ export class Dialog extends React.Component<Object, DialogState> {
                                 </div>
                                 <div className={`${styles['dialog-footer']} row`}>
                                     <button type='button' style={this.state.alignment === DialogAlignment.center ? { flex: 1, width: '100%' } : undefined} onClick={() => this.setState({ open: false })} className={`${styles['dialog-action']} row`}>
-                                        <Text className='button-text-3'>{this.state.cancelTitle ?? "Cancel"}</Text>
+                                        <Text className='button-text-3'>{this.state.cancelTitle ?? t("cancel")}</Text>
                                     </button>
                                     <button type='button' style={this.state.alignment === DialogAlignment.center ? { flex: 1, width: '100%' } : undefined} onClick={() => {
                                         this.state.onSubmit();
                                         this.setState({ open: false });
                                     }} className={`${styles['dialog-action']} row ${styles['dialog-submit']}`} >
-                                        <Text className='button-text-3'>{this.state.submitTitle ?? 'Submit'}</Text>
+                                        <Text className='button-text-3'>{this.state.submitTitle ?? t('submit')}</Text>
                                     </button>
                                 </div>
                             </div>
@@ -91,3 +95,5 @@ export class Dialog extends React.Component<Object, DialogState> {
         )
     }
 }
+
+export const Dialog = withTranslation()(TDialog)

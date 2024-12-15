@@ -5,10 +5,12 @@
   "types": "dist/index.d.ts",
   "dependencies": {
     "date-fns": "^3.6.0",
+    "i18next": "^24.1.0",
     "react": "^18.0.0",
     "react-awesome-slider": "^4.1.0",
     "react-dom": "^18.0.0",
     "react-hook-form": "^7.52.0",
+    "react-i18next": "^15.2.0",
     "react-paginate": "^8.2.0",
     "react-scripts": "5.0.1",
     "react-toastify": "^10.0.5",

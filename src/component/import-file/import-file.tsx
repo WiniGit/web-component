@@ -2,6 +2,7 @@ import React, { CSSProperties } from 'react'
 import styles from './import-file.module.css'
 import { ComponentStatus } from '../component-status'
 import { Button, Text, ToastMessage } from '../../index'
+import { WithTranslation, withTranslation } from 'react-i18next';
 
 const cloudSvg = (
     <svg width='100%' height='100%' style={{ width: '3rem', height: '3rem' }} viewBox='0 0 36 36' fill='none' xmlns='http://www.w3.org/2000/svg' >
@@ -30,7 +31,7 @@ interface ImportFileState {
 
 type ChangeFileFunction = (a?: File) => void;
 
-interface ImportFileProps {
+interface ImportFileProps extends WithTranslation {
     id?: string,
     status?: ComponentStatus,
     value?: File | { [k: string]: any },
@@ -47,15 +48,14 @@ interface ImportFileProps {
     maxSize?: number
 }
 
-export class ImportFile extends React.Component<ImportFileProps, ImportFileState> {
+class TImportFile extends React.Component<ImportFileProps, ImportFileState> {
     private fileRef: React.RefObject<HTMLInputElement>;
     constructor(props: ImportFileProps | Readonly<ImportFileProps>) {
         super(props);
         this.fileRef = React.createRef();
-    }
-
-    state: Readonly<ImportFileState> = {
-        preview: this.props.value
+        this.state = {
+            preview: this.props.value
+        }
     }
 
     showFilePicker() {
@@ -69,6 +69,7 @@ export class ImportFile extends React.Component<ImportFileProps, ImportFileState
     }
 
     render() {
+        const { t } = this.props;
         let sizeTitle: string | undefined
         if (this.props.maxSize) {
             sizeTitle = this.props.maxSize > Math.pow(1024, 3) ? `${Math.round(this.props.maxSize / Math.pow(1024, 3))}TB` : this.props.maxSize > Math.pow(1024, 2) ? `${Math.round(this.props.maxSize / Math.pow(1024, 2))}GB` : this.props.maxSize > 1024 ? `${Math.round(this.props.maxSize / 1024)}MB` : `${this.props.maxSize}KB`
@@ -84,7 +85,7 @@ export class ImportFile extends React.Component<ImportFileProps, ImportFileState
                     file = ev.target.files[0]
                     if (this.props.maxSize) {
                         if (file.size > (this.props.maxSize * 1024)) {
-                            ToastMessage.errors(`File ${file.name} exceeds the maximum size of ${sizeTitle}`)
+                            ToastMessage.errors(t("limitFileError", { name: file.name, sizeTitle: sizeTitle }))
                             file = undefined
                         }
                     }
@@ -102,12 +103,12 @@ export class ImportFile extends React.Component<ImportFileProps, ImportFileState
                     </div>
                     <div className={`${styles['file-preview-content']} col`} >
                         <Text className={`${styles['title-file']} heading-8`} style={{ maxWidth: '100%' }}>
-                            {this.state.preview?.name ?? (this.props.label ?? 'Click or drag and drop to upload file')}
+                            {this.state.preview?.name ?? (this.props.label ?? t("uploadFileAction"))}
                         </Text>
                         <Text className={`${styles['subtitle-file']} subtitle-3`} style={{ maxWidth: '100%' }}>
                             {this.state.preview?.size
                                 ? `${this.state.preview?.size}KB`
-                                : (this.props.subTitle ?? (sizeTitle ? `File size should not exceed ${sizeTitle}.` : ''))}
+                                : (this.props.subTitle ?? (sizeTitle ? t("limitFileWarning",{sizeTitle: sizeTitle}) : ''))}
                         </Text>
                     </div>
                 </>
@@ -122,7 +123,7 @@ export class ImportFile extends React.Component<ImportFileProps, ImportFileState
                 </button>
             </div>
                 : <Button
-                    label={this.state.preview ? 'Remove file' : 'Choose file'}
+                    label={this.state.preview ? `${t("remove")} ${t("file").toLowerCase()}` : `${t("choose")} ${t("file").toLowerCase()}`}
                     style={{ padding: "1.2rem" }}
                     className='button-text-4'
                     onClick={() => {
@@ -136,3 +137,4 @@ export class ImportFile extends React.Component<ImportFileProps, ImportFileState
     }
 }
 
+export const ImportFile = withTranslation()(TImportFile)

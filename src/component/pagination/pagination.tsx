@@ -5,6 +5,7 @@ import { Select1 } from "../select1/select1";
 import { Text } from "../text/text";
 import { TextField } from "../text-field/text-field";
 import { Winicon } from "../wini-icon/winicon";
+import { useTranslation } from "react-i18next";
 
 interface Props {
     id?: string,
@@ -19,6 +20,7 @@ interface Props {
 
 export function Pagination({ id, currentPage, itemPerPage, totalItem, onChangePage, hidePageSize = false, hideGoToPage = false, style }: Props) {
     const goToPageRef = useRef<TextField>()
+    const { t } = useTranslation()
 
     useEffect(() => {
         if (goToPageRef.current) {
@@ -42,7 +44,7 @@ export function Pagination({ id, currentPage, itemPerPage, totalItem, onChangePa
                         onChangePage(currentPage, isNaN(parseInt(ev.id)) ? itemPerPage : parseInt(ev.id));
                     }}
                 />
-                <Text className="body-3">of {totalItem} items</Text>
+                <Text className="body-3">{t("ofItems", { totalItem: totalItem })}</Text>
             </div>}
             <div style={{ flex: 1 }} />
             <ReactPaginate
@@ -67,7 +69,7 @@ export function Pagination({ id, currentPage, itemPerPage, totalItem, onChangePa
             />
             {hideGoToPage ? null : <>
                 <div style={{ height: '1.6rem', backgroundColor: "var(--neutral-bolder-border-color)", width: 1 }} />
-                <Text className="label-3">Go to page</Text>
+                <Text className="label-3">{t("go")} {t("page").toLowerCase()}</Text>
                 <TextField
                     ref={goToPageRef as any}
                     style={{ width: '4.8rem', textAlign: "center", padding: 0, height: '2.4rem', borderRadius: '0.4rem' }}

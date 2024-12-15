@@ -2,6 +2,7 @@ import React, { CSSProperties, ReactNode } from "react"
 import styles from './calendar.module.css'
 import { differenceInCalendarDays } from "date-fns"
 import { Winicon } from "../wini-icon/winicon"
+import { WithTranslation, withTranslation } from 'react-i18next';
 
 export const today = new Date()
 export const startDate = new Date(
@@ -23,7 +24,7 @@ export enum CalendarType {
     YEAR = 2,
     DATETIME = 3
 }
-interface CalendarProps {
+interface CalendarProps extends WithTranslation {
     id?: string,
     value?: Date,
     min?: Date,
@@ -51,43 +52,51 @@ interface CalendarState {
     type: CalendarType,
 }
 
-export class Calendar extends React.Component<CalendarProps, CalendarState> {
-    state: Readonly<CalendarState> = {
-        value: this.props.value ?? today,
-        selectDate: this.props.value ?? today,
-        selectMonth: (this.props.value ?? today).getMonth(),
-        selectYear: (this.props.value ?? today).getFullYear(),
-        type: CalendarType.DATE,
-        selectHours: this.props.value?.getHours() ?? 0,
-        selectMinutes: this.props.value?.getMinutes() ?? 0,
-        selectSeconds: this.props.value?.getSeconds() ?? 0,
+class TCalendar extends React.Component<CalendarProps, CalendarState> {
+
+    constructor(props: CalendarProps) {
+        super(props);
+        this.state = {
+            value: this.props.value ?? today,
+            selectDate: this.props.value ?? today,
+            selectMonth: (this.props.value ?? today).getMonth(),
+            selectYear: (this.props.value ?? today).getFullYear(),
+            type: CalendarType.DATE,
+            selectHours: this.props.value?.getHours() ?? 0,
+            selectMinutes: this.props.value?.getMinutes() ?? 0,
+            selectSeconds: this.props.value?.getSeconds() ?? 0,
+        }
+        this.showDateInMonth = this.showDateInMonth.bind(this)
+        this.showMonthInYear = this.showMonthInYear.bind(this)
+        this.showYearInRange = this.showYearInRange.bind(this)
+        this.getTitle = this.getTitle.bind(this)
     }
 
-    showDateInMonth() {
+    private showDateInMonth() {
         let firstDayOfMonth = new Date(this.state.selectYear, this.state.selectMonth, 1)
         return <>
             {Array.from({ length: 7 }).map((_, i) => {
                 switch (i) {
                     case 0:
-                        var weekdayTitle = 'Su'
+                        var weekdayTitle = this.props.t("su")
                         break
                     case 1:
-                        weekdayTitle = 'Mo'
+                        weekdayTitle = this.props.t("mo")
                         break
                     case 2:
-                        weekdayTitle = 'Tu'
+                        weekdayTitle = this.props.t("tu")
                         break
                     case 3:
-                        weekdayTitle = 'We'
+                        weekdayTitle = this.props.t("we")
                         break
                     case 4:
-                        weekdayTitle = 'Th'
+                        weekdayTitle = this.props.t("th")
                         break
                     case 5:
-                        weekdayTitle = 'Fr'
+                        weekdayTitle = this.props.t("fr")
                         break
                     case 6:
-                        weekdayTitle = 'Sa'
+                        weekdayTitle = this.props.t("sa")
                         break
                     default:
                         weekdayTitle = ''
@@ -131,48 +140,48 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
         </>
     }
 
-    showMonthInYear() {
+    private showMonthInYear() {
         return <>
             {Array.from({ length: 12 }).map((_, i) => {
-                let monthTitle: string = ''
                 switch (i) {
                     case 0:
-                        monthTitle = 'Jan'
+                        var monthTitle = this.props.i18n.language === "en" ? "Jan" : this.props.t('january')
                         break
                     case 1:
-                        monthTitle = 'Feb'
+                        monthTitle = this.props.i18n.language === "en" ? "Feb" : this.props.t('february')
                         break
                     case 2:
-                        monthTitle = 'Mar'
+                        monthTitle = this.props.i18n.language === "en" ? "Mar" : this.props.t('march')
                         break
                     case 3:
-                        monthTitle = 'Apr'
+                        monthTitle = this.props.i18n.language === "en" ? "Apr" : this.props.t('april')
                         break
                     case 4:
-                        monthTitle = 'May'
+                        monthTitle = this.props.i18n.language === "en" ? "May" : this.props.t('may')
                         break
                     case 5:
-                        monthTitle = 'Jun'
+                        monthTitle = this.props.i18n.language === "en" ? "Jun" : this.props.t('june')
                         break
                     case 6:
-                        monthTitle = 'Jul'
+                        monthTitle = this.props.i18n.language === "en" ? "Jul" : this.props.t('july')
                         break
                     case 7:
-                        monthTitle = 'Aug'
+                        monthTitle = this.props.i18n.language === "en" ? "Aug" : this.props.t('august')
                         break
                     case 8:
-                        monthTitle = 'Sep'
+                        monthTitle = this.props.i18n.language === "en" ? "Sep" : this.props.t('september')
                         break
                     case 9:
-                        monthTitle = 'Oct'
+                        monthTitle = this.props.i18n.language === "en" ? "Oct" : this.props.t('october')
                         break
                     case 10:
-                        monthTitle = 'Nov'
+                        monthTitle = this.props.i18n.language === "en" ? "Nov" : this.props.t('november')
                         break
                     case 11:
-                        monthTitle = 'Dec'
+                        monthTitle = this.props.i18n.language === "en" ? "Dec" : this.props.t('december')
                         break
                     default:
+                        monthTitle = ''
                         break
                 }
                 const timeValue = new Date(this.state.selectYear, i, today.getDate())
@@ -210,7 +219,7 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
         </>
     }
 
-    showYearInRange() {
+    private showYearInRange() {
         return <>
             {Array.from({ length: 12 }).map((_, i) => {
                 let firstYearInTable = this.state.selectYear - ((this.state.selectYear - startDate.getFullYear()) % 12)
@@ -242,7 +251,7 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
         </>
     }
 
-    getTitle() {
+    private getTitle() {
         switch (this.state.type) {
             case CalendarType.YEAR:
                 let firstYearInTable = this.state.selectYear - ((this.state.selectYear - startDate.getFullYear()) % 12)
@@ -252,56 +261,57 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
             default:
                 switch (this.state.selectMonth) {
                     case 0:
-                        var monthName = 'January'
+                        var monthName = this.props.t('january')
                         break
                     case 1:
-                        monthName = 'February'
+                        monthName = this.props.t('february')
                         break
                     case 2:
-                        monthName = 'March'
+                        monthName = this.props.t('march')
                         break
                     case 3:
-                        monthName = 'April'
+                        monthName = this.props.t('april')
                         break
                     case 4:
-                        monthName = 'May'
+                        monthName = this.props.t('may')
                         break
                     case 5:
-                        monthName = 'June'
+                        monthName = this.props.t('june')
                         break
                     case 6:
-                        monthName = 'July'
+                        monthName = this.props.t('july')
                         break
                     case 7:
-                        monthName = 'August'
+                        monthName = this.props.t('august')
                         break
                     case 8:
-                        monthName = 'September'
+                        monthName = this.props.t('september')
                         break
                     case 9:
-                        monthName = 'October'
+                        monthName = this.props.t('october')
                         break
                     case 10:
-                        monthName = 'November'
+                        monthName = this.props.t('november')
                         break
                     case 11:
-                        monthName = 'December'
+                        monthName = this.props.t('december')
                         break
                     default:
                         monthName = ''
                         break
                 }
-                return `${monthName} ${this.state.selectYear}`
+                return `${monthName}${this.props.i18n.language === 'en' ? ' ' : '/'}${this.state.selectYear}`
         }
     }
 
     render(): React.ReactNode {
+        const { t } = this.props;
         return <div id={this.props.id} className={`row ${styles['calendar-container']} ${this.props.className}`} style={this.props.style}>
             {this.props.showSidebar ? <div className={`${styles['calendar-sidebar-options']} col`}>
-                <button type="button" onClick={() => { }} className={`label-4 ${styles['calendar-sidebar-option-buttton']}`}>Yesterday</button>
-                <button type="button" className={`label-4 ${styles['calendar-sidebar-option-buttton']}`}>Last week</button>
-                <button type="button" className={`label-4 ${styles['calendar-sidebar-option-buttton']}`}>Last month</button>
-                <button type="button" className={`label-4 ${styles['calendar-sidebar-option-buttton']}`}>Last year</button>
+                <button type="button" onClick={() => { }} className={`label-4 ${styles['calendar-sidebar-option-buttton']}`}>{t("yesterday")}</button>
+                <button type="button" className={`label-4 ${styles['calendar-sidebar-option-buttton']}`}>{t("lastWeek")}</button>
+                <button type="button" className={`label-4 ${styles['calendar-sidebar-option-buttton']}`}>{t("lastMonth")}</button>
+                <button type="button" className={`label-4 ${styles['calendar-sidebar-option-buttton']}`}>{t("lastYear")}</button>
             </div> : null}
             <div className={`${styles['calendar-body']} col`}>
                 <div className="row" style={{ alignItems: 'start' }} >
@@ -445,3 +455,5 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
         </div>
     }
 }
+
+export const Calendar = withTranslation()(TCalendar)
