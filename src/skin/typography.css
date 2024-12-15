@@ -74,6 +74,7 @@
 }
 
 .medium1,
+.heading-9,
 .button-text-5 {
     line-height: 2rem;
     font-size: 1.2rem;
@@ -82,6 +83,7 @@
 }
 
 .medium2,
+.heading-8,
 .button-text-3,
 .label-3 {
     line-height: 2.2rem;
@@ -91,6 +93,7 @@
 }
 
 .medium3,
+.heading-7,
 .button-text-2,
 .label-1 {
     line-height: 2.4rem;
@@ -100,6 +103,7 @@
 }
 
 .medium4,
+.heading-6,
 .highlight-6 {
     line-height: 2.8rem;
     font-size: 2rem;
@@ -108,6 +112,7 @@
 }
 
 .medium5,
+.heading-5,
 .highlight-5 {
     line-height: 3.2rem;
     font-size: 2.4rem;
@@ -116,6 +121,7 @@
 }
 
 .medium6,
+.heading-4,
 .highlight-4 {
     line-height: 3.8rem;
     font-size: 3rem;
@@ -124,6 +130,7 @@
 }
 
 .medium7,
+.heading-3,
 .highlight-3 {
     line-height: 4.6rem;
     font-size: 3.8rem;
@@ -132,6 +139,7 @@
 }
 
 .medium8,
+.heading-2,
 .highlight-2 {
     line-height: 5.6rem;
     font-size: 4.6rem;
@@ -147,16 +155,14 @@
     color: var(--neutral-text-title-color);
 }
 
-.semibold1,
-.heading-9 {
+.semibold1 {
     line-height: 2rem;
     font-size: 1.2rem;
     font-weight: 600;
     color: var(--neutral-text-title-color);
 }
 
-.semibold2,
-.heading-8 {
+.semibold2 {
     line-height: 2.2rem;
     font-size: 1.4rem;
     font-weight: 600;
@@ -164,7 +170,6 @@
 }
 
 .semibold3,
-.heading-7,
 .button-text-1 {
     line-height: 2.4rem;
     font-size: 1.6rem;
@@ -172,40 +177,35 @@
     color: var(--neutral-text-title-color);
 }
 
-.semibold4,
-.heading-6 {
+.semibold4 {
     line-height: 2.8rem;
     font-size: 2rem;
     font-weight: 600;
     color: var(--neutral-text-title-color);
 }
 
-.semibold5,
-.heading-5 {
+.semibold5 {
     line-height: 3.2rem;
     font-size: 2.4rem;
     font-weight: 600;
     color: var(--neutral-text-title-color);
 }
 
-.semibold6,
-.heading-4 {
+.semibold6 {
     line-height: 3.8rem;
     font-size: 3rem;
     font-weight: 600;
     color: var(--neutral-text-title-color);
 }
 
-.semibold7,
-.heading-3 {
+.semibold7 {
     line-height: 4.6rem;
     font-size: 3.8rem;
     font-weight: 600;
     color: var(--neutral-text-title-color);
 }
 
-.semibold8,
-.heading-2 {
+.semibold8 {
     line-height: 5.6rem;
     font-size: 4.6rem;
     font-weight: 600;

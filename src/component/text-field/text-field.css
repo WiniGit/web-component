@@ -44,11 +44,6 @@ input::-webkit-inner-spin-button {
     border-color: var(--helper-text-color) !important;
 }
 
-.text-field-container.helper-text {
-    overflow: visible !important;
-    border-color: var(--helper-text-color) !important;
-}
-
 .text-field-container.helper-text::after {
     content: attr(helper-text);
     color: var(--helper-text-color);
