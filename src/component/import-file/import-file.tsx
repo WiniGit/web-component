@@ -54,7 +54,7 @@ class TImportFile extends React.Component<ImportFileProps, ImportFileState> {
     constructor(props: ImportFileProps | Readonly<ImportFileProps>) {
         super(props);
         this.state = {
-            preview: Array.isArray(this.props.value) ? this.props.value : [this.props.value]
+            preview: this.props.value ? Array.isArray(this.props.value) ? this.props.value : [this.props.value] : undefined
         }
     }
 
@@ -105,33 +105,33 @@ class TImportFile extends React.Component<ImportFileProps, ImportFileState> {
                 ? null
                 : this.props.multiple && this.state.preview?.length ? <div className='row' style={{ flex: 1, flexWrap: "wrap", gap: "0.8rem" }}>
                     {this.state.preview.map(f => {
-                        return <div key={`${f.name}-${f.size}-${f.lastModified}`} className='row col8' style={{ gap: "0.8rem", padding: "0.4rem 0.8rem", borderRadius: 2, border: "var(--neutral-main-border)" }}>
-                            <Winicon src='outline/multimedia/image' size={"1.4rem"} />
+                        return <div key={`${f.name}-${f.size}-${f.lastModified}`} className='row col6' style={{ "--gutter": "0.8rem", gap: "0.8rem", padding: "0.6rem 0.8rem", borderRadius: "0.4rem", border: "var(--neutral-main-border)" } as any}>
+                            <Winicon src={`outline/${f.type?.includes('image') ? "multimedia/image" : "files/file-export"}`} size={"1.4rem"} />
                             <Text className='subtitle-4' style={{ flex: 1, width: "100%" }} maxLine={1}>{f.name}</Text>
                             <Winicon src='fill/user interface/e-remove' size={"1.4rem"} onClick={() => {
                                 const newValue = this.state.preview?.filter(e => e.name !== f.name && e.size !== f.size && e.lastModified !== f.lastModified)
                                 this.setState({ ...this.state, preview: newValue })
                                 if (this.props.onChange) this.props.onChange(newValue)
-                            }} />
+                            }} color='#E14337' />
                         </div>
                     })}
                 </div> : <>
                     <div className={`${styles['import-file-prefix']} row`}>
-                        {this.state.preview ? this.state.preview[0].type?.includes('image') ? <img src={this.state.preview[0] instanceof File ? URL.createObjectURL(this.state.preview[0]) : this.state.preview?.[0]?.url} /> : fileSvg : cloudSvg}
+                        {this.state.preview?.length ? this.state.preview[0].type?.includes('image') ? <img src={this.state.preview[0] instanceof File ? URL.createObjectURL(this.state.preview[0]) : this.state.preview?.[0]?.url} /> : fileSvg : cloudSvg}
                     </div>
                     <div className={`${styles['file-preview-content']} col`} >
                         <Text className={`${styles['title-file']} heading-8`} style={{ maxWidth: '100%' }}>
-                            {this.state.preview?.[0].name ?? (this.props.label ?? t("uploadFileAction"))}
+                            {this.state.preview?.[0]?.name ?? (this.props.label ?? t("uploadFileAction"))}
                         </Text>
                         <Text className={`${styles['subtitle-file']} subtitle-3`} style={{ maxWidth: '100%' }}>
-                            {this.state.preview?.[0].size
+                            {this.state.preview?.[0]?.size
                                 ? `${this.state.preview?.[0].size}KB`
                                 : (this.props.subTitle ?? (sizeTitle ? t("limitFileWarning", { sizeTitle: sizeTitle }) : ''))}
                         </Text>
                     </div>
                 </>
             }
-            {this.state.preview && this.props.buttonOnly && !this.props.multiple ? <div className='row' style={{ gap: "0.4rem" }}>
+            {this.state.preview?.length && this.props.buttonOnly && !this.props.multiple ? <div className='row' style={{ gap: "0.4rem" }}>
                 <Text className='button-text-6'>{this.state.preview?.[0].name ?? ''}</Text>
                 <button type='button' className={`${styles['remove-preview-file']}`} onClick={() => {
                     this.setState({ ...this.state, preview: undefined })
@@ -141,7 +141,7 @@ class TImportFile extends React.Component<ImportFileProps, ImportFileState> {
                 </button>
             </div>
                 : <Button
-                    label={this.state.preview ? this.props.multiple ? `${t("add")} ${t("file").toLowerCase()}` : `${t("remove")} ${t("file").toLowerCase()}` : `${t("choose")} ${t("file").toLowerCase()}`}
+                    label={this.state.preview?.length ? this.props.multiple ? `${t("add")} ${t("file").toLowerCase()}` : `${t("remove")} ${t("file").toLowerCase()}` : `${t("choose")} ${t("file").toLowerCase()}`}
                     style={{ padding: "1.2rem" }}
                     className='button-text-4'
                     onClick={() => {
