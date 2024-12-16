@@ -90,7 +90,7 @@ var TImportFile = /** @class */ (function (_super) {
         var _this = _super.call(this, props) || this;
         _this.fileRef = (0, react_1.createRef)();
         _this.state = {
-            preview: Array.isArray(_this.props.value) ? _this.props.value : [_this.props.value]
+            preview: _this.props.value ? Array.isArray(_this.props.value) ? _this.props.value : [_this.props.value] : undefined
         };
         return _this;
     }
@@ -105,7 +105,7 @@ var TImportFile = /** @class */ (function (_super) {
     };
     TImportFile.prototype.render = function () {
         var _this = this;
-        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p;
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u;
         var t = this.props.t;
         var sizeTitle;
         if (this.props.maxSize) {
@@ -144,8 +144,9 @@ var TImportFile = /** @class */ (function (_super) {
             this.props.buttonOnly
                 ? null
                 : this.props.multiple && ((_c = this.state.preview) === null || _c === void 0 ? void 0 : _c.length) ? react_1.default.createElement("div", { className: 'row', style: { flex: 1, flexWrap: "wrap", gap: "0.8rem" } }, this.state.preview.map(function (f) {
-                    return react_1.default.createElement("div", { key: "".concat(f.name, "-").concat(f.size, "-").concat(f.lastModified), className: 'row col8', style: { gap: "0.8rem", padding: "0.4rem 0.8rem", borderRadius: 2, border: "var(--neutral-main-border)" } },
-                        react_1.default.createElement(index_1.Winicon, { src: 'outline/multimedia/image', size: "1.4rem" }),
+                    var _a;
+                    return react_1.default.createElement("div", { key: "".concat(f.name, "-").concat(f.size, "-").concat(f.lastModified), className: 'row col6', style: { "--gutter": "0.8rem", gap: "0.8rem", padding: "0.6rem 0.8rem", borderRadius: "0.4rem", border: "var(--neutral-main-border)" } },
+                        react_1.default.createElement(index_1.Winicon, { src: "outline/".concat(((_a = f.type) === null || _a === void 0 ? void 0 : _a.includes('image')) ? "multimedia/image" : "files/file-export"), size: "1.4rem" }),
                         react_1.default.createElement(index_1.Text, { className: 'subtitle-4', style: { flex: 1, width: "100%" }, maxLine: 1 }, f.name),
                         react_1.default.createElement(index_1.Winicon, { src: 'fill/user interface/e-remove', size: "1.4rem", onClick: function () {
                                 var _a;
@@ -153,22 +154,22 @@ var TImportFile = /** @class */ (function (_super) {
                                 _this.setState(__assign(__assign({}, _this.state), { preview: newValue }));
                                 if (_this.props.onChange)
                                     _this.props.onChange(newValue);
-                            } }));
+                            }, color: '#E14337' }));
                 })) : react_1.default.createElement(react_1.default.Fragment, null,
-                    react_1.default.createElement("div", { className: "".concat(import_file_module_css_1.default['import-file-prefix'], " row") }, this.state.preview ? ((_d = this.state.preview[0].type) === null || _d === void 0 ? void 0 : _d.includes('image')) ? react_1.default.createElement("img", { src: this.state.preview[0] instanceof File ? URL.createObjectURL(this.state.preview[0]) : (_f = (_e = this.state.preview) === null || _e === void 0 ? void 0 : _e[0]) === null || _f === void 0 ? void 0 : _f.url }) : fileSvg : cloudSvg),
+                    react_1.default.createElement("div", { className: "".concat(import_file_module_css_1.default['import-file-prefix'], " row") }, ((_d = this.state.preview) === null || _d === void 0 ? void 0 : _d.length) ? ((_e = this.state.preview[0].type) === null || _e === void 0 ? void 0 : _e.includes('image')) ? react_1.default.createElement("img", { src: this.state.preview[0] instanceof File ? URL.createObjectURL(this.state.preview[0]) : (_g = (_f = this.state.preview) === null || _f === void 0 ? void 0 : _f[0]) === null || _g === void 0 ? void 0 : _g.url }) : fileSvg : cloudSvg),
                     react_1.default.createElement("div", { className: "".concat(import_file_module_css_1.default['file-preview-content'], " col") },
-                        react_1.default.createElement(index_1.Text, { className: "".concat(import_file_module_css_1.default['title-file'], " heading-8"), style: { maxWidth: '100%' } }, (_h = (_g = this.state.preview) === null || _g === void 0 ? void 0 : _g[0].name) !== null && _h !== void 0 ? _h : ((_j = this.props.label) !== null && _j !== void 0 ? _j : t("uploadFileAction"))),
-                        react_1.default.createElement(index_1.Text, { className: "".concat(import_file_module_css_1.default['subtitle-file'], " subtitle-3"), style: { maxWidth: '100%' } }, ((_k = this.state.preview) === null || _k === void 0 ? void 0 : _k[0].size)
-                            ? "".concat((_l = this.state.preview) === null || _l === void 0 ? void 0 : _l[0].size, "KB")
-                            : ((_m = this.props.subTitle) !== null && _m !== void 0 ? _m : (sizeTitle ? t("limitFileWarning", { sizeTitle: sizeTitle }) : ''))))),
-            this.state.preview && this.props.buttonOnly && !this.props.multiple ? react_1.default.createElement("div", { className: 'row', style: { gap: "0.4rem" } },
-                react_1.default.createElement(index_1.Text, { className: 'button-text-6' }, (_p = (_o = this.state.preview) === null || _o === void 0 ? void 0 : _o[0].name) !== null && _p !== void 0 ? _p : ''),
+                        react_1.default.createElement(index_1.Text, { className: "".concat(import_file_module_css_1.default['title-file'], " heading-8"), style: { maxWidth: '100%' } }, (_k = (_j = (_h = this.state.preview) === null || _h === void 0 ? void 0 : _h[0]) === null || _j === void 0 ? void 0 : _j.name) !== null && _k !== void 0 ? _k : ((_l = this.props.label) !== null && _l !== void 0 ? _l : t("uploadFileAction"))),
+                        react_1.default.createElement(index_1.Text, { className: "".concat(import_file_module_css_1.default['subtitle-file'], " subtitle-3"), style: { maxWidth: '100%' } }, ((_o = (_m = this.state.preview) === null || _m === void 0 ? void 0 : _m[0]) === null || _o === void 0 ? void 0 : _o.size)
+                            ? "".concat((_p = this.state.preview) === null || _p === void 0 ? void 0 : _p[0].size, "KB")
+                            : ((_q = this.props.subTitle) !== null && _q !== void 0 ? _q : (sizeTitle ? t("limitFileWarning", { sizeTitle: sizeTitle }) : ''))))),
+            ((_r = this.state.preview) === null || _r === void 0 ? void 0 : _r.length) && this.props.buttonOnly && !this.props.multiple ? react_1.default.createElement("div", { className: 'row', style: { gap: "0.4rem" } },
+                react_1.default.createElement(index_1.Text, { className: 'button-text-6' }, (_t = (_s = this.state.preview) === null || _s === void 0 ? void 0 : _s[0].name) !== null && _t !== void 0 ? _t : ''),
                 react_1.default.createElement("button", { type: 'button', className: "".concat(import_file_module_css_1.default['remove-preview-file']), onClick: function () {
                         _this.setState(__assign(__assign({}, _this.state), { preview: undefined }));
                         if (_this.props.onChange)
                             _this.props.onChange(undefined);
                     } }, closeSvg))
-                : react_1.default.createElement(index_1.Button, { label: this.state.preview ? this.props.multiple ? "".concat(t("add"), " ").concat(t("file").toLowerCase()) : "".concat(t("remove"), " ").concat(t("file").toLowerCase()) : "".concat(t("choose"), " ").concat(t("file").toLowerCase()), style: { padding: "1.2rem" }, className: 'button-text-4', onClick: function () {
+                : react_1.default.createElement(index_1.Button, { label: ((_u = this.state.preview) === null || _u === void 0 ? void 0 : _u.length) ? this.props.multiple ? "".concat(t("add"), " ").concat(t("file").toLowerCase()) : "".concat(t("remove"), " ").concat(t("file").toLowerCase()) : "".concat(t("choose"), " ").concat(t("file").toLowerCase()), style: { padding: "1.2rem" }, className: 'button-text-4', onClick: function () {
                         if (_this.state.preview && !_this.props.multiple) {
                             _this.setState(__assign(__assign({}, _this.state), { preview: undefined }));
                             if (_this.props.onChange)
