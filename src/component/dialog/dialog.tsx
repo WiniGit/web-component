@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { createRef } from 'react'
 import ReactDOM from 'react-dom'
 import styles from './dialog.module.css'
 import { ComponentStatus, getStatusIcon, Text } from '../../index'
-import { WithTranslation, withTranslation } from 'react-i18next';
+import { useTranslation, WithTranslation } from 'react-i18next';
 
 export enum DialogAlignment {
     start = 'start',
@@ -19,27 +19,6 @@ interface DialogState {
     submitTitle?: string,
     cancelTitle?: string,
     alignment?: DialogAlignment,
-}
-
-export const showDialog = ({ ref, title, status, content, onSubmit, submitTitle, cancelTitle, alignment }: {
-    ref: React.MutableRefObject<TDialog>,
-    title?: string,
-    status?: ComponentStatus,
-    content?: string,
-    onSubmit?: Function,
-    submitTitle?: string,
-    cancelTitle?: string,
-    alignment?: DialogAlignment
-}) => {
-    ref.current.showDialogNoti({
-        title: title ?? '',
-        status: status ?? ComponentStatus.INFOR,
-        content: content ?? '',
-        onSubmit: onSubmit ?? (() => { }),
-        submitTitle: submitTitle,
-        cancelTitle: cancelTitle,
-        alignment: alignment
-    })
 }
 
 class TDialog extends React.Component<WithTranslation, DialogState> {
@@ -96,4 +75,29 @@ class TDialog extends React.Component<WithTranslation, DialogState> {
     }
 }
 
-export const Dialog = withTranslation()(TDialog)
+const dialogRef = createRef<TDialog>()
+export const Dialog = () => {
+    const { t, i18n } = useTranslation()
+    return <TDialog ref={dialogRef} t={t} i18n={i18n} tReady={true} />
+}
+
+export const showDialog = (props: {
+    title?: string,
+    status?: ComponentStatus,
+    content?: string,
+    onSubmit?: Function,
+    submitTitle?: string,
+    cancelTitle?: string,
+    alignment?: DialogAlignment
+}) => {
+    if (dialogRef.current)
+        dialogRef.current.showDialogNoti({
+            title: props.title ?? '',
+            status: props.status ?? ComponentStatus.INFOR,
+            content: props.content ?? '',
+            onSubmit: props.onSubmit ?? (() => { }),
+            submitTitle: props.submitTitle,
+            cancelTitle: props.cancelTitle,
+            alignment: props.alignment
+        })
+}
