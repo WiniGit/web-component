@@ -1,23 +1,12 @@
 import React from 'react';
 import { ComponentStatus } from '../../index';
-import { WithTranslation } from 'react-i18next';
 export declare enum DialogAlignment {
     start = "start",
     center = "center",
     end = "end"
 }
-interface DialogState {
-    readonly open?: boolean;
-    title: string;
-    status: ComponentStatus;
-    content: string;
-    onSubmit: Function;
-    submitTitle?: string;
-    cancelTitle?: string;
-    alignment?: DialogAlignment;
-}
-export declare const showDialog: ({ ref, title, status, content, onSubmit, submitTitle, cancelTitle, alignment }: {
-    ref: React.MutableRefObject<TDialog>;
+export declare const Dialog: () => React.JSX.Element;
+export declare const showDialog: (props: {
     title?: string;
     status?: ComponentStatus;
     content?: string;
@@ -26,11 +15,3 @@ export declare const showDialog: ({ ref, title, status, content, onSubmit, submi
     cancelTitle?: string;
     alignment?: DialogAlignment;
 }) => void;
-declare class TDialog extends React.Component<WithTranslation, DialogState> {
-    constructor(props: WithTranslation);
-    showDialogNoti(data: DialogState): void;
-    closeDialog(): void;
-    render(): React.JSX.Element;
-}
-export declare const Dialog: React.ComponentType<Omit<import("react-i18next/helpers").$Subtract<WithTranslation<undefined, undefined>, import("react-i18next").WithTranslationProps>, keyof WithTranslation<Ns, undefined>> & import("react-i18next").WithTranslationProps>;
-export {};

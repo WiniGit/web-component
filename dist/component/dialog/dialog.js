@@ -25,12 +25,45 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Dialog = exports.showDialog = exports.DialogAlignment = void 0;
-var react_1 = __importDefault(require("react"));
+exports.showDialog = exports.Dialog = exports.DialogAlignment = void 0;
+var react_1 = __importStar(require("react"));
 var react_dom_1 = __importDefault(require("react-dom"));
 var dialog_module_css_1 = __importDefault(require("./dialog.module.css"));
 var index_1 = require("../../index");
@@ -41,19 +74,6 @@ var DialogAlignment;
     DialogAlignment["center"] = "center";
     DialogAlignment["end"] = "end";
 })(DialogAlignment || (exports.DialogAlignment = DialogAlignment = {}));
-var showDialog = function (_a) {
-    var ref = _a.ref, title = _a.title, status = _a.status, content = _a.content, onSubmit = _a.onSubmit, submitTitle = _a.submitTitle, cancelTitle = _a.cancelTitle, alignment = _a.alignment;
-    ref.current.showDialogNoti({
-        title: title !== null && title !== void 0 ? title : '',
-        status: status !== null && status !== void 0 ? status : index_1.ComponentStatus.INFOR,
-        content: content !== null && content !== void 0 ? content : '',
-        onSubmit: onSubmit !== null && onSubmit !== void 0 ? onSubmit : (function () { }),
-        submitTitle: submitTitle,
-        cancelTitle: cancelTitle,
-        alignment: alignment
-    });
-};
-exports.showDialog = showDialog;
 var TDialog = /** @class */ (function (_super) {
     __extends(TDialog, _super);
     function TDialog(props) {
@@ -96,4 +116,23 @@ var TDialog = /** @class */ (function (_super) {
     };
     return TDialog;
 }(react_1.default.Component));
-exports.Dialog = (0, react_i18next_1.withTranslation)()(TDialog);
+var dialogRef = (0, react_1.createRef)();
+var Dialog = function () {
+    var _a = (0, react_i18next_1.useTranslation)(), t = _a.t, i18n = _a.i18n;
+    return react_1.default.createElement(TDialog, { ref: dialogRef, t: t, i18n: i18n, tReady: true });
+};
+exports.Dialog = Dialog;
+var showDialog = function (props) {
+    var _a, _b, _c, _d;
+    if (dialogRef.current)
+        dialogRef.current.showDialogNoti({
+            title: (_a = props.title) !== null && _a !== void 0 ? _a : '',
+            status: (_b = props.status) !== null && _b !== void 0 ? _b : index_1.ComponentStatus.INFOR,
+            content: (_c = props.content) !== null && _c !== void 0 ? _c : '',
+            onSubmit: (_d = props.onSubmit) !== null && _d !== void 0 ? _d : (function () { }),
+            submitTitle: props.submitTitle,
+            cancelTitle: props.cancelTitle,
+            alignment: props.alignment
+        });
+};
+exports.showDialog = showDialog;
