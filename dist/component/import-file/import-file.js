@@ -144,7 +144,7 @@ var TImportFile = /** @class */ (function (_super) {
             this.props.buttonOnly
                 ? null
                 : this.props.multiple && ((_c = this.state.preview) === null || _c === void 0 ? void 0 : _c.length) ? react_1.default.createElement("div", { className: 'row', style: { flex: 1, flexWrap: "wrap", gap: "0.8rem" } }, this.state.preview.map(function (f) {
-                    return react_1.default.createElement("div", { key: "".concat(f.name, "-").concat(f.size, "-").concat(f.lastModified), className: 'row', style: { gap: "0.8rem", padding: "0.4rem 0.8rem", borderRadius: 2, border: "var(--neutral-main-border)" } },
+                    return react_1.default.createElement("div", { key: "".concat(f.name, "-").concat(f.size, "-").concat(f.lastModified), className: 'row col8', style: { gap: "0.8rem", padding: "0.4rem 0.8rem", borderRadius: 2, border: "var(--neutral-main-border)" } },
                         react_1.default.createElement(index_1.Winicon, { src: 'outline/multimedia/image', size: "1.4rem" }),
                         react_1.default.createElement(index_1.Text, { className: 'subtitle-4', style: { flex: 1, width: "100%" }, maxLine: 1 }, f.name),
                         react_1.default.createElement(index_1.Winicon, { src: 'fill/user interface/e-remove', size: "1.4rem", onClick: function () {
