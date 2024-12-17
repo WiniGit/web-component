@@ -134,6 +134,8 @@ var InputOpt = /** @class */ (function (_super) {
                         ev.target.value = "";
                         break;
                     default:
+                        ev.preventDefault();
+                        ev.stopPropagation();
                         var numberCheck = /[0-9]/g;
                         if (numberCheck.test(key)) {
                             if (!ev.target.value.length)
@@ -143,8 +145,6 @@ var InputOpt = /** @class */ (function (_super) {
                             else
                                 ev.target.blur();
                         }
-                        else
-                            ev.preventDefault();
                         break;
                 }
             }, onBlur: function () {
