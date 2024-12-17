@@ -73,12 +73,14 @@ export class InputOpt extends React.Component<Props> {
                             ev.target.value = ""
                             break;
                         default:
+                            ev.preventDefault()
+                            ev.stopPropagation()
                             const numberCheck = /[0-9]/g
                             if (numberCheck.test(key)) {
                                 if (!ev.target.value.length) ev.target.value = key
                                 if (ev.target.nextSibling?.localName === "input" && !ev.target.nextSibling.value.length) ev.target.nextSibling.focus()
                                 else ev.target.blur()
-                            } else ev.preventDefault()
+                            }
                             break;
                     }
                 }}
