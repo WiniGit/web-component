@@ -142,7 +142,7 @@ class TImportFile extends React.Component<ImportFileProps, ImportFileState> {
             </div>
                 : <Button
                     label={this.state.preview?.length ? this.props.multiple ? `${t("add")} ${t("file").toLowerCase()}` : `${t("remove")} ${t("file").toLowerCase()}` : `${t("choose")} ${t("file").toLowerCase()}`}
-                    style={{ padding: "1.2rem" }}
+                    style={{ padding: "1.2rem", backgroundColor: "var(--neutral-main-background-color)" }}
                     className='button-text-4'
                     onClick={() => {
                         if (this.state.preview && !this.props.multiple) {
