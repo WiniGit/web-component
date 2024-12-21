@@ -254,6 +254,7 @@ html.dark {
 }
 
 .skeleton-loading {
+    pointer-events: none;
     animation: skeleton-animation 8s linear infinite forwards;
     background: linear-gradient(to right, #D7D7DB 8%, #F4F4F5 18%, #D7D7DB 33%);
 }
