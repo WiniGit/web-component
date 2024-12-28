@@ -38,18 +38,18 @@ export class TextField extends React.Component<TextFieldProps> {
         return <div
             ref={this.containerRef}
             id={this.props.id}
-            className={`text-field-container row ${this.props.className ?? 'body-3'} ${this.props.helperText?.length && 'helper-text'}`}
+            className={`text-field-container row ${this.props.className ?? 'body-3'} ${this.props.helperText?.length ? 'helper-text' : ""}`}
             helper-text={this.props.helperText}
             style={this.props.style ? { ...({ '--helper-text-color': this.props.helperTextColor ?? '#e14337' } as CSSProperties), ...this.props.style } : ({ '--helper-text-color': this.props.helperTextColor ?? '#e14337' } as CSSProperties)}
         >
             {this.props.prefix}
             {this.props.register ?
                 <input
+                    name={this.props.name}
                     {...this.props.register}
                     autoComplete={this.props.autoComplete}
                     autoFocus={this.props.autoFocus}
                     maxLength={this.props.maxLength}
-                    name={this.props.name}
                     type={this.props.type ?? 'text'}
                     placeholder={this.props.placeholder}
                     readOnly={this.props.readOnly}

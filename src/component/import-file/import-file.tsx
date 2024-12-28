@@ -43,6 +43,9 @@ interface ImportFileProps extends WithTranslation {
     allowType?: Array<string>,
     subTitle?: string,
     multiple?: boolean,
+    helperText?: string,
+    helperTextColor?: string,
+    disabled?: boolean,
     /**
     * maxSize unit: kb (kilobytes)
     */
@@ -74,12 +77,17 @@ class TImportFile extends React.Component<ImportFileProps, ImportFileState> {
         if (this.props.maxSize) {
             sizeTitle = this.props.maxSize > Math.pow(1024, 3) ? `${Math.round(this.props.maxSize / Math.pow(1024, 3))}TB` : this.props.maxSize > Math.pow(1024, 2) ? `${Math.round(this.props.maxSize / Math.pow(1024, 2))}GB` : this.props.maxSize > 1024 ? `${Math.round(this.props.maxSize / 1024)}MB` : `${this.props.maxSize}KB`
         }
-        return <div id={this.props.id} className={`${styles['import-file-container']} ${this.props.className ?? 'row'} ${this.props.buttonOnly ? styles['button-only'] : ''}`} style={this.state.preview ? this.props.style : { cursor: 'pointer', ...this.props.style }}
+        let _style = this.state.preview ? (this.props.style ?? {}) : { cursor: 'pointer', ...(this.props.style ?? {}) }
+        return <div
+            id={this.props.id}
+            className={`${styles['import-file-container']} ${this.props.className ?? 'row'} ${this.props.buttonOnly ? styles['button-only'] : ''} ${this.props.helperText?.length ? styles['helper-text'] : ""}`}
+            style={{ '--helper-text-color': this.props.helperTextColor ?? '#e14337', ..._style } as CSSProperties}
+            helper-text={this.props.helperText}
             onClick={() => {
                 if (!this.state.preview && !this.props.buttonOnly) this.showFilePicker()
             }}
         >
-            <input type='file' multiple={this.props.multiple} accept={(this.props.allowType ?? []).join(',')} ref={this.fileRef} onChange={(ev) => {
+            <input disabled={this.props.disabled} type='file' multiple={this.props.multiple} accept={(this.props.allowType ?? []).join(',')} ref={this.fileRef} onChange={(ev) => {
                 let files: Array<File> | undefined
                 if (ev.target.files?.length) {
                     files = [...(ev.target.files as any)]

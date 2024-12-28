@@ -1,10 +1,16 @@
 .import-file-container {
+    position: relative;
     align-items: center;
     justify-content: center;
 }
 
 .import-file-container input {
     display: none;
+}
+
+.import-file-container:has(input:disabled) {
+    background-color: var(--neutral-disable-background-color) !important;
+    pointer-events: none !important;
 }
 
 .import-file-container:not(.button-only) {
@@ -56,4 +62,22 @@
 
 div[class*="Toastify__toast-body"]>div:last-child {
     font: 500 1.2rem/1.6rem;
+}
+
+.import-file-container.helper-text {
+    overflow: visible !important;
+    border-color: var(--helper-text-color) !important;
+}
+
+.import-file-container.helper-text::after {
+    content: attr(helper-text);
+    color: var(--helper-text-color);
+    position: absolute;
+    left: 0;
+    bottom: -0.4rem;
+    width: max-content;
+    font-size: 1.2rem;
+    line-height: 1.6rem;
+    font-family: inherit;
+    transform: translateY(100%);
 }

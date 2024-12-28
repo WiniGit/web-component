@@ -1,0 +1,206 @@
+.editor-container {
+    position: relative;
+    --ck-color-text: var(--neutral-text-title-color);
+    width: 100%;
+    height: 400px;
+    max-height: 600px;
+    border-radius: 0.8rem;
+    border: var(--neutral-bolder-border);
+    overflow: visible;
+}
+
+.editor-container:has(.ck-read-only) {
+    background-color: var(--neutral-disable-background-color) !important;
+    pointer-events: none !important;
+}
+
+.editor-container:focus-within {
+    border-color: var(--primary-main-color);
+}
+
+.editor-container.helper-text {
+    overflow: visible !important;
+    border-color: var(--helper-text-color) !important;
+}
+
+.editor-container.helper-text::after {
+    content: attr(helper-text);
+    color: var(--helper-text-color);
+    position: absolute;
+    left: 0;
+    bottom: -0.4rem;
+    width: max-content;
+    font-size: 1.2rem;
+    line-height: 1.6rem;
+    font-family: inherit;
+    transform: translateY(100%);
+}
+
+.ck-content {
+    font-family: 'Inter';
+    line-height: 1.6;
+    word-break: break-word;
+}
+
+.ck-content h3.category {
+    font-family: 'Inter';
+    font-size: 20px;
+    font-weight: bold;
+    color: #555;
+    letter-spacing: 10px;
+    margin: 0;
+    padding: 0;
+}
+
+.ck-content h2.document-title {
+    font-family: 'Inter';
+    font-size: 50px;
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+.ck-content h3.document-subtitle {
+    font-family: 'Inter';
+    font-size: 20px;
+    color: #555;
+    margin: 0 0 1em;
+    font-weight: bold;
+    padding: 0;
+}
+
+.ck-content blockquote.side-quote {
+    font-family: 'Inter';
+    font-style: normal;
+    float: right;
+    width: 35%;
+    position: relative;
+    border: 0;
+    overflow: visible;
+    z-index: 1;
+    margin-left: 1em;
+}
+
+.ck-content blockquote.side-quote::before {
+    content: '“';
+    position: absolute;
+    top: -37px;
+    left: -10px;
+    display: block;
+    font-size: 200px;
+    color: #e7e7e7;
+    z-index: -1;
+    line-height: 1;
+}
+
+.ck-content blockquote.side-quote p {
+    font-size: 2em;
+    line-height: 1;
+}
+
+.ck-content blockquote.side-quote p:last-child:not(:first-child) {
+    font-size: 1.3em;
+    text-align: right;
+    color: #555;
+}
+
+.ck-content span.marker {
+    background: yellow;
+}
+
+.ck-content span.spoiler {
+    background: #000;
+    color: #000;
+}
+
+.ck-content span.spoiler:hover {
+    background: #000;
+    color: #fff;
+}
+
+.ck-content pre.fancy-code {
+    border: 0;
+    margin-left: 2em;
+    margin-right: 2em;
+    border-radius: 10px;
+}
+
+.ck-content pre.fancy-code::before {
+    content: '';
+    display: block;
+    height: 13px;
+    background: url(data:image/svg+xml;base64,PHN2ZyBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1NCAxMyI+CiAgPGNpcmNsZSBjeD0iNi41IiBjeT0iNi41IiByPSI2LjUiIGZpbGw9IiNGMzZCNUMiLz4KICA8Y2lyY2xlIGN4PSIyNi41IiBjeT0iNi41IiByPSI2LjUiIGZpbGw9IiNGOUJFNEQiLz4KICA8Y2lyY2xlIGN4PSI0Ny41IiBjeT0iNi41IiByPSI2LjUiIGZpbGw9IiM1NkM0NTMiLz4KPC9zdmc+Cg==);
+    margin-bottom: 8px;
+    background-repeat: no-repeat;
+}
+
+.ck-content pre.fancy-code-dark {
+    background: #272822;
+    color: #fff;
+    box-shadow: 5px 5px 0 #0000001f;
+}
+
+.ck-content pre.fancy-code-bright {
+    background: #dddfe0;
+    color: #000;
+    box-shadow: 5px 5px 0 #b3b3b3;
+}
+
+.editor-container_classic-editor .editor-container__editor .ck-editor .ck-editor__editable {
+    border-radius: 0;
+}
+
+.ck-editor-container {
+    --ck-font-size-base: 1.4rem;
+}
+
+.editor-container__editor {
+    flex: 1;
+    height: 100%;
+    overflow: hidden !important;
+    display: flex;
+    flex-direction: column;
+}
+
+.editor-container__editor>div,
+.ck.ck-reset.ck-editor.ck-rounded-corners {
+    flex: 1;
+    height: 100%;
+    overflow: hidden !important;
+    display: flex;
+    flex-direction: column;
+}
+
+.ck.ck-editor__main>.ck.ck-content.ck-rounded-corners {
+    min-height: 100%;
+}
+
+.ck.ck-toolbar {
+    background-color: var(--neutral-absolute-background-color);
+    border-radius: 0.8rem 0.8rem 0 0 !important;
+}
+
+.ck.ck-editor__top .ck-sticky-panel .ck-sticky-panel__content {
+    height: 40px;
+    border: none !important;
+    border-radius: 0.8rem 0.8rem 0 0 !important;
+    border-bottom: var(--neutral-bolder-border) !important;
+}
+
+.ck.ck-editor__main {
+    flex: 1;
+    height: 100% !important;
+    overflow: hidden auto !important;
+}
+
+.ck.ck-editor__main>div {
+    background-color: transparent !important;
+    border: none !important;
+    font-size: 16px !important;
+}
+
+.ck.ck-color-grid>button {
+    border: var(--neutral-bolder-border);
+    border-radius: 0.4rem !important;
+}
