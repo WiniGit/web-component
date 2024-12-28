@@ -14,12 +14,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = CustomCkEditor5;
+exports.CustomCkEditor5 = CustomCkEditor5;
 var react_1 = __importDefault(require("react"));
 var react_2 = require("react");
 var ckeditor5_react_1 = require("@ckeditor/ckeditor5-react");
 var ckeditor5_1 = require("ckeditor5");
-require("ckeditor5/ckeditor5.css");
 require("./ck-editor.css");
 var react_i18next_1 = require("react-i18next");
 /**

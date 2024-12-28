@@ -80,7 +80,6 @@ import {
     WordCount,
     EventInfo
 } from 'ckeditor5';
-import 'ckeditor5/ckeditor5.css';
 import './ck-editor.css';
 import { useTranslation } from 'react-i18next';
 

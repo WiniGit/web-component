@@ -14,5 +14,8 @@ add this cdn link into your App.css file. \
 @import url(https://cdn.jsdelivr.net/gh/WiniGit/web-component@latest/src/skin/typography.css); \
 @import url(https://cdn.jsdelivr.net/gh/WiniGit/web-component@latest/src/skin/layout.css);
 
+add this import css into your App.js \
+import 'ckeditor5/ckeditor5.css';
+
 
 

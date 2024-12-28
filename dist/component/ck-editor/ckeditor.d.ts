@@ -1,6 +1,5 @@
 import React, { CSSProperties } from 'react';
 import { ClassicEditor, EventInfo } from 'ckeditor5';
-import 'ckeditor5/ckeditor5.css';
 import './ck-editor.css';
 /**
  * Please update the following values with your tokens.
@@ -33,5 +32,5 @@ interface Props {
     helperText?: string;
     helperTextColor?: string;
 }
-export default function CustomCkEditor5(props: Props): React.JSX.Element;
+export declare function CustomCkEditor5(props: Props): React.JSX.Element;
 export {};
