@@ -27,6 +27,7 @@ import { Winicon } from './component/wini-icon/winicon'
 import { NumberPicker } from './component/number-picker/number-picker'
 import { InputOpt } from './component/input-opt/input-opt'
 import { WLoginView } from './form/login/view'
+import { CustomCkEditor5 } from './component/ck-editor/ckeditor'
 
 
 export {
@@ -59,6 +60,7 @@ export {
   NumberPicker,
   InputOpt,
   WLoginView,
+  CustomCkEditor5
 }
 export type { OptionsItem }
 export { i18n } from './language/i18n';

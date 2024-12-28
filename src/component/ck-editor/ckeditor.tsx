@@ -117,7 +117,7 @@ interface Props {
     helperTextColor?: string,
 }
 
-export default function CustomCkEditor5(props: Props) {
+export function CustomCkEditor5(props: Props) {
     const editorContainerRef = useRef(null);
     const editorRef = useRef(null);
     // const editorWordCountRef = useRef(null);
