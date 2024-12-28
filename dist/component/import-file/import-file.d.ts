@@ -20,6 +20,9 @@ interface ImportFileProps extends WithTranslation {
     allowType?: Array<string>;
     subTitle?: string;
     multiple?: boolean;
+    helperText?: string;
+    helperTextColor?: string;
+    disabled?: boolean;
     /**
     * maxSize unit: kb (kilobytes)
     */

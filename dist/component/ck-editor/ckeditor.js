@@ -1,140 +1,46 @@
-import React, { CSSProperties } from 'react';
-import { useState, useEffect, useRef, useMemo } from 'react';
-import { CKEditor } from '@ckeditor/ckeditor5-react';
-import {
-    ClassicEditor,
-    Alignment,
-    Autoformat,
-    AutoImage,
-    AutoLink,
-    Autosave,
-    BalloonToolbar,
-    BlockQuote,
-    Bold,
-    Bookmark,
-    Code,
-    CodeBlock,
-    Essentials,
-    FindAndReplace,
-    FontBackgroundColor,
-    FontColor,
-    FontFamily,
-    FontSize,
-    FullPage,
-    GeneralHtmlSupport,
-    Heading,
-    Highlight,
-    HorizontalLine,
-    HtmlComment,
-    HtmlEmbed,
-    ImageBlock,
-    ImageCaption,
-    ImageInline,
-    ImageInsert,
-    ImageInsertViaUrl,
-    ImageResize,
-    ImageStyle,
-    ImageTextAlternative,
-    ImageToolbar,
-    ImageUpload,
-    Indent,
-    IndentBlock,
-    Italic,
-    Link,
-    LinkImage,
-    List,
-    ListProperties,
-    Markdown,
-    MediaEmbed,
-    Mention,
-    PageBreak,
-    Paragraph,
-    PasteFromMarkdownExperimental,
-    PasteFromOffice,
-    PictureEditing,
-    RemoveFormat,
-    ShowBlocks,
-    SourceEditing,
-    SpecialCharacters,
-    SpecialCharactersArrows,
-    SpecialCharactersCurrency,
-    SpecialCharactersEssentials,
-    SpecialCharactersLatin,
-    SpecialCharactersMathematical,
-    SpecialCharactersText,
-    Strikethrough,
-    Style,
-    Subscript,
-    Superscript,
-    Table,
-    TableCaption,
-    TableCellProperties,
-    TableColumnResize,
-    TableProperties,
-    TableToolbar,
-    TextPartLanguage,
-    TextTransformation,
-    // Title,
-    TodoList,
-    Underline,
-    WordCount,
-    EventInfo
-} from 'ckeditor5';
-import 'ckeditor5/ckeditor5.css';
-import './ck-editor.css';
-import { useTranslation } from 'react-i18next';
-
+"use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = CustomCkEditor5;
+var react_1 = __importDefault(require("react"));
+var react_2 = require("react");
+var ckeditor5_react_1 = require("@ckeditor/ckeditor5-react");
+var ckeditor5_1 = require("ckeditor5");
+require("ckeditor5/ckeditor5.css");
+require("./ck-editor.css");
+var react_i18next_1 = require("react-i18next");
 /**
  * Create a free account with a trial: https://portal.ckeditor.com/checkout?plan=free
  */
-const LICENSE_KEY = 'GPL'; // or <YOUR_LICENSE_KEY>.
-
-/**
- * Please update the following values with your tokens.
- * Instructions on how to obtain them: https://ckeditor.com/docs/trial/latest/guides/real-time/quick-start.html
- */
-
-// wordCount = editor.plugins.get('WordCount');
-interface Props {
-    style?: CSSProperties,
-    className?: string,
-    value?: string,
-    placeholder?: string,
-    disabled?: boolean,
-    menuBar?: boolean,
-    onChange?: (event: EventInfo, editor: ClassicEditor) => void,
-    onFocus?: (event: EventInfo, editor: ClassicEditor) => void,
-    onBlur?: (event: EventInfo, editor: ClassicEditor) => void,
-    onError?: (error: Error, details: any) => void,
-    onReady?: (editor: ClassicEditor) => void,
-    onAfterDestroy?: (editor: ClassicEditor) => void,
-    extraPlugins?: Array<any>,
-    fontFamily?: Array<string>,
-    fontSize?: Array<number | "default">,
-    fontColors?: Array<{ color: string, label: string }>,
-    fontBgColors?: Array<{ color: string, label: string }>,
-    helperText?: string,
-    helperTextColor?: string,
-}
-
-export default function CustomCkEditor5(props: Props) {
-    const editorContainerRef = useRef(null);
-    const editorRef = useRef(null);
+var LICENSE_KEY = 'GPL'; // or <YOUR_LICENSE_KEY>.
+function CustomCkEditor5(props) {
+    var _a, _b, _c, _d;
+    var editorContainerRef = (0, react_2.useRef)(null);
+    var editorRef = (0, react_2.useRef)(null);
     // const editorWordCountRef = useRef(null);
-    const [isLayoutReady, setIsLayoutReady] = useState(false);
-    const { i18n } = useTranslation()
-
-    useEffect(() => {
+    var _e = (0, react_2.useState)(false), isLayoutReady = _e[0], setIsLayoutReady = _e[1];
+    var i18n = (0, react_i18next_1.useTranslation)().i18n;
+    (0, react_2.useEffect)(function () {
         setIsLayoutReady(true);
-
-        return () => setIsLayoutReady(false);
+        return function () { return setIsLayoutReady(false); };
     }, []);
-
-    const { editorConfig } = useMemo(() => {
+    var editorConfig = (0, react_2.useMemo)(function () {
         if (!isLayoutReady) {
             return {};
         }
-
         return {
             editorConfig: {
                 toolbar: {
@@ -185,81 +91,81 @@ export default function CustomCkEditor5(props: Props) {
                     shouldNotGroupWhenFull: false,
                 },
                 plugins: [
-                    Alignment,
-                    Autoformat,
-                    AutoImage,
-                    AutoLink,
-                    Autosave,
-                    BalloonToolbar,
-                    BlockQuote,
-                    Bold,
-                    Bookmark,
-                    Code,
-                    CodeBlock,
-                    Essentials,
-                    FindAndReplace,
-                    FontBackgroundColor,
-                    FontColor,
-                    FontFamily,
-                    FontSize,
-                    FullPage,
-                    GeneralHtmlSupport,
-                    Heading,
-                    Highlight,
-                    HorizontalLine,
-                    HtmlComment,
-                    HtmlEmbed,
-                    ImageBlock,
-                    ImageCaption,
-                    ImageInline,
-                    ImageInsert,
-                    ImageInsertViaUrl,
-                    ImageResize,
-                    ImageStyle,
-                    ImageTextAlternative,
-                    ImageToolbar,
-                    ImageUpload,
-                    Indent,
-                    IndentBlock,
-                    Italic,
-                    Link,
-                    LinkImage,
-                    List,
-                    ListProperties,
-                    Markdown,
-                    MediaEmbed,
-                    Mention,
-                    PageBreak,
-                    Paragraph,
-                    PasteFromMarkdownExperimental,
-                    PasteFromOffice,
-                    PictureEditing,
-                    RemoveFormat,
-                    ShowBlocks,
-                    SourceEditing,
-                    SpecialCharacters,
-                    SpecialCharactersArrows,
-                    SpecialCharactersCurrency,
-                    SpecialCharactersEssentials,
-                    SpecialCharactersLatin,
-                    SpecialCharactersMathematical,
-                    SpecialCharactersText,
-                    Strikethrough,
-                    Style,
-                    Subscript,
-                    Superscript,
-                    Table,
-                    TableCaption,
-                    TableCellProperties,
-                    TableColumnResize,
-                    TableProperties,
-                    TableToolbar,
-                    TextPartLanguage,
-                    TextTransformation,
+                    ckeditor5_1.Alignment,
+                    ckeditor5_1.Autoformat,
+                    ckeditor5_1.AutoImage,
+                    ckeditor5_1.AutoLink,
+                    ckeditor5_1.Autosave,
+                    ckeditor5_1.BalloonToolbar,
+                    ckeditor5_1.BlockQuote,
+                    ckeditor5_1.Bold,
+                    ckeditor5_1.Bookmark,
+                    ckeditor5_1.Code,
+                    ckeditor5_1.CodeBlock,
+                    ckeditor5_1.Essentials,
+                    ckeditor5_1.FindAndReplace,
+                    ckeditor5_1.FontBackgroundColor,
+                    ckeditor5_1.FontColor,
+                    ckeditor5_1.FontFamily,
+                    ckeditor5_1.FontSize,
+                    ckeditor5_1.FullPage,
+                    ckeditor5_1.GeneralHtmlSupport,
+                    ckeditor5_1.Heading,
+                    ckeditor5_1.Highlight,
+                    ckeditor5_1.HorizontalLine,
+                    ckeditor5_1.HtmlComment,
+                    ckeditor5_1.HtmlEmbed,
+                    ckeditor5_1.ImageBlock,
+                    ckeditor5_1.ImageCaption,
+                    ckeditor5_1.ImageInline,
+                    ckeditor5_1.ImageInsert,
+                    ckeditor5_1.ImageInsertViaUrl,
+                    ckeditor5_1.ImageResize,
+                    ckeditor5_1.ImageStyle,
+                    ckeditor5_1.ImageTextAlternative,
+                    ckeditor5_1.ImageToolbar,
+                    ckeditor5_1.ImageUpload,
+                    ckeditor5_1.Indent,
+                    ckeditor5_1.IndentBlock,
+                    ckeditor5_1.Italic,
+                    ckeditor5_1.Link,
+                    ckeditor5_1.LinkImage,
+                    ckeditor5_1.List,
+                    ckeditor5_1.ListProperties,
+                    ckeditor5_1.Markdown,
+                    ckeditor5_1.MediaEmbed,
+                    ckeditor5_1.Mention,
+                    ckeditor5_1.PageBreak,
+                    ckeditor5_1.Paragraph,
+                    ckeditor5_1.PasteFromMarkdownExperimental,
+                    ckeditor5_1.PasteFromOffice,
+                    ckeditor5_1.PictureEditing,
+                    ckeditor5_1.RemoveFormat,
+                    ckeditor5_1.ShowBlocks,
+                    ckeditor5_1.SourceEditing,
+                    ckeditor5_1.SpecialCharacters,
+                    ckeditor5_1.SpecialCharactersArrows,
+                    ckeditor5_1.SpecialCharactersCurrency,
+                    ckeditor5_1.SpecialCharactersEssentials,
+                    ckeditor5_1.SpecialCharactersLatin,
+                    ckeditor5_1.SpecialCharactersMathematical,
+                    ckeditor5_1.SpecialCharactersText,
+                    ckeditor5_1.Strikethrough,
+                    ckeditor5_1.Style,
+                    ckeditor5_1.Subscript,
+                    ckeditor5_1.Superscript,
+                    ckeditor5_1.Table,
+                    ckeditor5_1.TableCaption,
+                    ckeditor5_1.TableCellProperties,
+                    ckeditor5_1.TableColumnResize,
+                    ckeditor5_1.TableProperties,
+                    ckeditor5_1.TableToolbar,
+                    ckeditor5_1.TextPartLanguage,
+                    ckeditor5_1.TextTransformation,
                     // Title,
-                    TodoList,
-                    Underline,
-                    WordCount
+                    ckeditor5_1.TodoList,
+                    ckeditor5_1.Underline,
+                    ckeditor5_1.WordCount
                 ],
                 balloonToolbar: ['bold', 'italic', '|', 'link', 'insertImage', '|', 'bulletedList', 'numberedList'],
                 extraPlugins: props.extraPlugins,
@@ -269,15 +175,13 @@ export default function CustomCkEditor5(props: Props) {
                         {
                             name: "youtube",
                             url: /^https:\/\/www\.youtube\.com\/watch\?v=([\w-]+)/,
-                            html: (match: any) => {
-                                const id = match[1];
-                                return (
-                                    '<div style="position: relative; padding-bottom: 56.25%; height: 0;">' +
-                                    `<iframe src="https://www.youtube.com/embed/${id}" ` +
+                            html: function (match) {
+                                var id = match[1];
+                                return ('<div style="position: relative; padding-bottom: 56.25%; height: 0;">' +
+                                    "<iframe src=\"https://www.youtube.com/embed/".concat(id, "\" ") +
                                     'style="position: absolute; width: 100%; height: 100%; left: 0;" ' +
                                     'frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>' +
-                                    "</div>"
-                                );
+                                    "</div>");
                             },
                         },
                     ],
@@ -493,30 +397,8 @@ export default function CustomCkEditor5(props: Props) {
                 },
             }
         };
-    }, [isLayoutReady, i18n.language]);
-
-    return <div
-        ref={editorContainerRef}
-        className={`col editor-container editor-container_classic-editor editor-container_include-style ${props.className ?? ""} ${props.helperText?.length ? 'helper-text' : ""}`}
-        helper-text={props.helperText}
-        style={props.style ? { ...({ '--helper-text-color': props.helperTextColor ?? '#e14337' } as CSSProperties), ...props.style } : ({ '--helper-text-color': props.helperTextColor ?? '#e14337' } as CSSProperties)}
-    >
-        <div className="editor-container__editor">
-            <div ref={editorRef}>
-                {editorConfig && (
-                    <CKEditor
-                        onReady={props.onReady}
-                        onAfterDestroy={props.onAfterDestroy}
-                        onFocus={props.onFocus}
-                        onChange={props.onChange}
-                        onBlur={props.onBlur}
-                        editor={ClassicEditor}
-                        onError={props.onError}
-                        config={editorConfig as any}
-                        {...{ data: props.value, disabled: props.disabled }}
-                    />
-                )}
-            </div>
-        </div>
-    </div>
+    }, [isLayoutReady, i18n.language]).editorConfig;
+    return react_1.default.createElement("div", { ref: editorContainerRef, className: "col editor-container editor-container_classic-editor editor-container_include-style ".concat((_a = props.className) !== null && _a !== void 0 ? _a : "", " ").concat(((_b = props.helperText) === null || _b === void 0 ? void 0 : _b.length) ? 'helper-text' : ""), "helper-text": props.helperText, style: props.style ? __assign(__assign({}, { '--helper-text-color': (_c = props.helperTextColor) !== null && _c !== void 0 ? _c : '#e14337' }), props.style) : { '--helper-text-color': (_d = props.helperTextColor) !== null && _d !== void 0 ? _d : '#e14337' } },
+        react_1.default.createElement("div", { className: "editor-container__editor" },
+            react_1.default.createElement("div", { ref: editorRef }, editorConfig && (react_1.default.createElement(ckeditor5_react_1.CKEditor, { onReady: props.onReady, onAfterDestroy: props.onAfterDestroy, onFocus: props.onFocus, onChange: props.onChange, onBlur: props.onBlur, editor: ckeditor5_1.ClassicEditor, onError: props.onError, config: editorConfig, data: props.value, disabled: props.disabled })))));
 }

@@ -105,17 +105,18 @@ var TImportFile = /** @class */ (function (_super) {
     };
     TImportFile.prototype.render = function () {
         var _this = this;
-        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u;
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y;
         var t = this.props.t;
         var sizeTitle;
         if (this.props.maxSize) {
             sizeTitle = this.props.maxSize > Math.pow(1024, 3) ? "".concat(Math.round(this.props.maxSize / Math.pow(1024, 3)), "TB") : this.props.maxSize > Math.pow(1024, 2) ? "".concat(Math.round(this.props.maxSize / Math.pow(1024, 2)), "GB") : this.props.maxSize > 1024 ? "".concat(Math.round(this.props.maxSize / 1024), "MB") : "".concat(this.props.maxSize, "KB");
         }
-        return react_1.default.createElement("div", { id: this.props.id, className: "".concat(import_file_module_css_1.default['import-file-container'], " ").concat((_a = this.props.className) !== null && _a !== void 0 ? _a : 'row', " ").concat(this.props.buttonOnly ? import_file_module_css_1.default['button-only'] : ''), style: this.state.preview ? this.props.style : __assign({ cursor: 'pointer' }, this.props.style), onClick: function () {
+        var _style = this.state.preview ? ((_a = this.props.style) !== null && _a !== void 0 ? _a : {}) : __assign({ cursor: 'pointer' }, ((_b = this.props.style) !== null && _b !== void 0 ? _b : {}));
+        return react_1.default.createElement("div", { id: this.props.id, className: "".concat(import_file_module_css_1.default['import-file-container'], " ").concat((_c = this.props.className) !== null && _c !== void 0 ? _c : 'row', " ").concat(this.props.buttonOnly ? import_file_module_css_1.default['button-only'] : '', " ").concat(((_d = this.props.helperText) === null || _d === void 0 ? void 0 : _d.length) ? import_file_module_css_1.default['helper-text'] : ""), style: __assign({ '--helper-text-color': (_e = this.props.helperTextColor) !== null && _e !== void 0 ? _e : '#e14337' }, _style), "helper-text": this.props.helperText, onClick: function () {
                 if (!_this.state.preview && !_this.props.buttonOnly)
                     _this.showFilePicker();
             } },
-            react_1.default.createElement("input", { type: 'file', multiple: this.props.multiple, accept: ((_b = this.props.allowType) !== null && _b !== void 0 ? _b : []).join(','), ref: this.fileRef, onChange: function (ev) {
+            react_1.default.createElement("input", { disabled: this.props.disabled, type: 'file', multiple: this.props.multiple, accept: ((_f = this.props.allowType) !== null && _f !== void 0 ? _f : []).join(','), ref: this.fileRef, onChange: function (ev) {
                     var _a, _b, _c, _d;
                     var files;
                     if ((_a = ev.target.files) === null || _a === void 0 ? void 0 : _a.length) {
@@ -143,7 +144,7 @@ var TImportFile = /** @class */ (function (_super) {
                 } }),
             this.props.buttonOnly
                 ? null
-                : this.props.multiple && ((_c = this.state.preview) === null || _c === void 0 ? void 0 : _c.length) ? react_1.default.createElement("div", { className: 'row', style: { flex: 1, flexWrap: "wrap", gap: "0.8rem" } }, this.state.preview.map(function (f) {
+                : this.props.multiple && ((_g = this.state.preview) === null || _g === void 0 ? void 0 : _g.length) ? react_1.default.createElement("div", { className: 'row', style: { flex: 1, flexWrap: "wrap", gap: "0.8rem" } }, this.state.preview.map(function (f) {
                     var _a;
                     return react_1.default.createElement("div", { key: "".concat(f.name, "-").concat(f.size, "-").concat(f.lastModified), className: 'row col6', style: { "--gutter": "0.8rem", gap: "0.8rem", padding: "0.6rem 0.8rem", borderRadius: "0.4rem", border: "var(--neutral-main-border)" } },
                         react_1.default.createElement(index_1.Winicon, { src: "outline/".concat(((_a = f.type) === null || _a === void 0 ? void 0 : _a.includes('image')) ? "multimedia/image" : "files/file-export"), size: "1.4rem" }),
@@ -156,20 +157,20 @@ var TImportFile = /** @class */ (function (_super) {
                                     _this.props.onChange(newValue);
                             }, color: '#E14337' }));
                 })) : react_1.default.createElement(react_1.default.Fragment, null,
-                    react_1.default.createElement("div", { className: "".concat(import_file_module_css_1.default['import-file-prefix'], " row") }, ((_d = this.state.preview) === null || _d === void 0 ? void 0 : _d.length) ? ((_e = this.state.preview[0].type) === null || _e === void 0 ? void 0 : _e.includes('image')) ? react_1.default.createElement("img", { src: this.state.preview[0] instanceof File ? URL.createObjectURL(this.state.preview[0]) : (_g = (_f = this.state.preview) === null || _f === void 0 ? void 0 : _f[0]) === null || _g === void 0 ? void 0 : _g.url }) : fileSvg : cloudSvg),
+                    react_1.default.createElement("div", { className: "".concat(import_file_module_css_1.default['import-file-prefix'], " row") }, ((_h = this.state.preview) === null || _h === void 0 ? void 0 : _h.length) ? ((_j = this.state.preview[0].type) === null || _j === void 0 ? void 0 : _j.includes('image')) ? react_1.default.createElement("img", { src: this.state.preview[0] instanceof File ? URL.createObjectURL(this.state.preview[0]) : (_l = (_k = this.state.preview) === null || _k === void 0 ? void 0 : _k[0]) === null || _l === void 0 ? void 0 : _l.url }) : fileSvg : cloudSvg),
                     react_1.default.createElement("div", { className: "".concat(import_file_module_css_1.default['file-preview-content'], " col") },
-                        react_1.default.createElement(index_1.Text, { className: "".concat(import_file_module_css_1.default['title-file'], " heading-8"), style: { maxWidth: '100%' } }, (_k = (_j = (_h = this.state.preview) === null || _h === void 0 ? void 0 : _h[0]) === null || _j === void 0 ? void 0 : _j.name) !== null && _k !== void 0 ? _k : ((_l = this.props.label) !== null && _l !== void 0 ? _l : t("uploadFileAction"))),
-                        react_1.default.createElement(index_1.Text, { className: "".concat(import_file_module_css_1.default['subtitle-file'], " subtitle-3"), style: { maxWidth: '100%' } }, ((_o = (_m = this.state.preview) === null || _m === void 0 ? void 0 : _m[0]) === null || _o === void 0 ? void 0 : _o.size)
-                            ? "".concat((_p = this.state.preview) === null || _p === void 0 ? void 0 : _p[0].size, "KB")
-                            : ((_q = this.props.subTitle) !== null && _q !== void 0 ? _q : (sizeTitle ? t("limitFileWarning", { sizeTitle: sizeTitle }) : ''))))),
-            ((_r = this.state.preview) === null || _r === void 0 ? void 0 : _r.length) && this.props.buttonOnly && !this.props.multiple ? react_1.default.createElement("div", { className: 'row', style: { gap: "0.4rem" } },
-                react_1.default.createElement(index_1.Text, { className: 'button-text-6' }, (_t = (_s = this.state.preview) === null || _s === void 0 ? void 0 : _s[0].name) !== null && _t !== void 0 ? _t : ''),
+                        react_1.default.createElement(index_1.Text, { className: "".concat(import_file_module_css_1.default['title-file'], " heading-8"), style: { maxWidth: '100%' } }, (_p = (_o = (_m = this.state.preview) === null || _m === void 0 ? void 0 : _m[0]) === null || _o === void 0 ? void 0 : _o.name) !== null && _p !== void 0 ? _p : ((_q = this.props.label) !== null && _q !== void 0 ? _q : t("uploadFileAction"))),
+                        react_1.default.createElement(index_1.Text, { className: "".concat(import_file_module_css_1.default['subtitle-file'], " subtitle-3"), style: { maxWidth: '100%' } }, ((_s = (_r = this.state.preview) === null || _r === void 0 ? void 0 : _r[0]) === null || _s === void 0 ? void 0 : _s.size)
+                            ? "".concat((_t = this.state.preview) === null || _t === void 0 ? void 0 : _t[0].size, "KB")
+                            : ((_u = this.props.subTitle) !== null && _u !== void 0 ? _u : (sizeTitle ? t("limitFileWarning", { sizeTitle: sizeTitle }) : ''))))),
+            ((_v = this.state.preview) === null || _v === void 0 ? void 0 : _v.length) && this.props.buttonOnly && !this.props.multiple ? react_1.default.createElement("div", { className: 'row', style: { gap: "0.4rem" } },
+                react_1.default.createElement(index_1.Text, { className: 'button-text-6' }, (_x = (_w = this.state.preview) === null || _w === void 0 ? void 0 : _w[0].name) !== null && _x !== void 0 ? _x : ''),
                 react_1.default.createElement("button", { type: 'button', className: "".concat(import_file_module_css_1.default['remove-preview-file']), onClick: function () {
                         _this.setState(__assign(__assign({}, _this.state), { preview: undefined }));
                         if (_this.props.onChange)
                             _this.props.onChange(undefined);
                     } }, closeSvg))
-                : react_1.default.createElement(index_1.Button, { label: ((_u = this.state.preview) === null || _u === void 0 ? void 0 : _u.length) ? this.props.multiple ? "".concat(t("add"), " ").concat(t("file").toLowerCase()) : "".concat(t("remove"), " ").concat(t("file").toLowerCase()) : "".concat(t("choose"), " ").concat(t("file").toLowerCase()), style: { padding: "1.2rem" }, className: 'button-text-4', onClick: function () {
+                : react_1.default.createElement(index_1.Button, { label: ((_y = this.state.preview) === null || _y === void 0 ? void 0 : _y.length) ? this.props.multiple ? "".concat(t("add"), " ").concat(t("file").toLowerCase()) : "".concat(t("remove"), " ").concat(t("file").toLowerCase()) : "".concat(t("choose"), " ").concat(t("file").toLowerCase()), style: { padding: "1.2rem", backgroundColor: "var(--neutral-main-background-color)" }, className: 'button-text-4', onClick: function () {
                         if (_this.state.preview && !_this.props.multiple) {
                             _this.setState(__assign(__assign({}, _this.state), { preview: undefined }));
                             if (_this.props.onChange)
