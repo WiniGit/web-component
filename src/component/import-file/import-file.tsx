@@ -67,7 +67,7 @@ class TImportFile extends React.Component<ImportFileProps, ImportFileState> {
 
     componentDidUpdate(prevProps: Readonly<ImportFileProps>, prevState: Readonly<ImportFileState>): void {
         if (prevProps.value !== this.props.value || prevProps.status !== this.props.status) {
-            this.setState({ ...this.state, status: this.props.status, preview: Array.isArray(this.props.value) ? this.props.value : [this.props.value] })
+            this.setState({ ...this.state, status: this.props.status, preview: this.props.value ? Array.isArray(this.props.value) ? this.props.value : [this.props.value] : undefined })
         }
     }
 

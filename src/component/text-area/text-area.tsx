@@ -28,7 +28,7 @@ export class TextArea extends React.Component<TextAreaProps> {
     getTextarea = () => {
         return this.containerRef.current?.querySelector("textarea")
     }
-    
+
     render(): React.ReactNode {
         return <div
             ref={this.containerRef}
@@ -39,10 +39,10 @@ export class TextArea extends React.Component<TextAreaProps> {
         >
             {this.props.register ?
                 <textarea
+                    name={this.props.name}
                     autoFocus={this.props.autoFocus}
                     {...this.props.register}
                     maxLength={this.props.maxLength}
-                    name={this.props.name}
                     placeholder={this.props.placeholder}
                     readOnly={this.props.readOnly}
                     disabled={this.props.disabled}
