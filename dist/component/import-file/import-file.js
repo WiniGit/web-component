@@ -100,7 +100,7 @@ var TImportFile = /** @class */ (function (_super) {
     };
     TImportFile.prototype.componentDidUpdate = function (prevProps, prevState) {
         if (prevProps.value !== this.props.value || prevProps.status !== this.props.status) {
-            this.setState(__assign(__assign({}, this.state), { status: this.props.status, preview: Array.isArray(this.props.value) ? this.props.value : [this.props.value] }));
+            this.setState(__assign(__assign({}, this.state), { status: this.props.status, preview: this.props.value ? Array.isArray(this.props.value) ? this.props.value : [this.props.value] : undefined }));
         }
     };
     TImportFile.prototype.render = function () {
