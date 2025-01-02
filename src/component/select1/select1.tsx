@@ -235,7 +235,7 @@ class TSelect1 extends React.Component<Select1Props, Select1State> {
                                     treeData={(this.state.search ?? this.state.options).some(e => e.parentId)}
                                 />
                             })}
-                            {(this.state.search?.length === 0 || this.props.options?.length === 0) && (
+                            {(!this.state.search?.length && !this.props.options?.length) && (
                                 <div className={styles['no-results-found']}>{t("noResultFound")}</div>
                             )}
                         </div>
@@ -266,7 +266,7 @@ function OptionsItemTile({ item, children, selected, onClick, treeData }: Option
             {treeData ? <div className='row' style={{ width: '1.4rem', height: '1.4rem' }}>
                 {children?.length ? <Winicon src={isOpen ? "fill/arrows/triangle-down" : "fill/arrows/triangle-right"} size={"1.2rem"} /> : null}
             </div> : undefined}
-            <Text className='body-3'>{item.title && typeof item.title === "string" ? item.title : item.name}</Text>
+            {((item.title && typeof item.title === "string") || typeof item.name === "string") ? <Text className='body-3'>{item.title && typeof item.title === "string" ? item.title : item.name}</Text> : item.name}
         </div>
         {children?.length ? <div className='col' style={{ display: isOpen ? "flex" : "none", width: '100%' }}>{children.map(e => <OptionsItemTile key={e.id} item={e} onClick={onClick} />)}</div> : undefined}
     </div>

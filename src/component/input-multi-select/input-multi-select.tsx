@@ -248,7 +248,7 @@ class TSelectMultiple extends React.Component<SelectMultipleProps, SelectMultipl
                             }
                         } : undefined}>
                             {(this.state.search ?? this.state.options).filter(e => !e.parentId).map(item => this.renderOptions(item))}
-                            {(this.state.search?.length === 0 || this.props.options?.length === 0) && (
+                            {(!this.state.search?.length && !this.props.options?.length) && (
                                 <div className={styles['no-results-found']}>{t("noResultFound")}</div>
                             )}
                         </div>

@@ -52,6 +52,15 @@ interface ImportFileProps extends WithTranslation {
     maxSize?: number,
 }
 
+const formatFileSize = (bytes: number, decimalPoint?: number) => {
+    if (bytes == 0) return '0 Bytes';
+    var k = 1000,
+        dm = decimalPoint || 2,
+        sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
+        i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+}
+
 class TImportFile extends React.Component<ImportFileProps, ImportFileState> {
     private fileRef = createRef<HTMLInputElement>();
     constructor(props: ImportFileProps | Readonly<ImportFileProps>) {
@@ -74,9 +83,7 @@ class TImportFile extends React.Component<ImportFileProps, ImportFileState> {
     render() {
         const { t } = this.props;
         let sizeTitle: string | undefined
-        if (this.props.maxSize) {
-            sizeTitle = this.props.maxSize > Math.pow(1024, 3) ? `${Math.round(this.props.maxSize / Math.pow(1024, 3))}TB` : this.props.maxSize > Math.pow(1024, 2) ? `${Math.round(this.props.maxSize / Math.pow(1024, 2))}GB` : this.props.maxSize > 1024 ? `${Math.round(this.props.maxSize / 1024)}MB` : `${this.props.maxSize}KB`
-        }
+        if (this.props.maxSize) sizeTitle = formatFileSize(this.props.maxSize)
         let _style = this.state.preview ? (this.props.style ?? {}) : { cursor: 'pointer', ...(this.props.style ?? {}) }
         return <div
             id={this.props.id}
