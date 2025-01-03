@@ -327,7 +327,7 @@ var TSelectMultiple = /** @class */ (function (_super) {
                             }
                         } : undefined },
                         ((_g = this.state.search) !== null && _g !== void 0 ? _g : this.state.options).filter(function (e) { return !e.parentId; }).map(function (item) { return _this.renderOptions(item); }),
-                        (((_h = this.state.search) === null || _h === void 0 ? void 0 : _h.length) === 0 || ((_j = this.props.options) === null || _j === void 0 ? void 0 : _j.length) === 0) && (react_1.default.createElement("div", { className: input_multi_select_module_css_1.default['no-results-found'] }, t("noResultFound"))))), document.body));
+                        (!((_h = this.state.search) === null || _h === void 0 ? void 0 : _h.length) && !((_j = this.props.options) === null || _j === void 0 ? void 0 : _j.length)) && (react_1.default.createElement("div", { className: input_multi_select_module_css_1.default['no-results-found'] }, t("noResultFound"))))), document.body));
     };
     return TSelectMultiple;
 }(react_1.default.Component));

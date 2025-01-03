@@ -84,6 +84,12 @@ var fileSvg = (react_1.default.createElement("svg", { className: import_file_mod
     react_1.default.createElement("path", { d: 'M29.9264 10.7084H23.3469V4.12884L29.9264 10.7084Z', style: { fill: "var(--primary-main-color)" } })));
 var closeSvg = (react_1.default.createElement("svg", { width: '100%', height: '100%', style: { width: '2.4rem', height: '2.4rem' }, fill: 'none', xmlns: 'http://www.w3.org/2000/svg' },
     react_1.default.createElement("path", { d: 'M13.4144 12.0002L20.4144 5.00015L19.0002 3.58594L12.0002 10.5859L5.00015 3.58594L3.58594 5.00015L10.5859 12.0002L3.58594 19.0002L5.00015 20.4144L12.0002 13.4144L19.0002 20.4144L20.4144 19.0002L13.4144 12.0002Z', style: { fill: "var(--error-main-color)" } })));
+var formatFileSize = function (bytes, decimalPoint) {
+    if (bytes == 0)
+        return '0 Bytes';
+    var k = 1000, dm = decimalPoint || 2, sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'], i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+};
 var TImportFile = /** @class */ (function (_super) {
     __extends(TImportFile, _super);
     function TImportFile(props) {
@@ -108,9 +114,8 @@ var TImportFile = /** @class */ (function (_super) {
         var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y;
         var t = this.props.t;
         var sizeTitle;
-        if (this.props.maxSize) {
-            sizeTitle = this.props.maxSize > Math.pow(1024, 3) ? "".concat(Math.round(this.props.maxSize / Math.pow(1024, 3)), "TB") : this.props.maxSize > Math.pow(1024, 2) ? "".concat(Math.round(this.props.maxSize / Math.pow(1024, 2)), "GB") : this.props.maxSize > 1024 ? "".concat(Math.round(this.props.maxSize / 1024), "MB") : "".concat(this.props.maxSize, "KB");
-        }
+        if (this.props.maxSize)
+            sizeTitle = formatFileSize(this.props.maxSize);
         var _style = this.state.preview ? ((_a = this.props.style) !== null && _a !== void 0 ? _a : {}) : __assign({ cursor: 'pointer' }, ((_b = this.props.style) !== null && _b !== void 0 ? _b : {}));
         return react_1.default.createElement("div", { id: this.props.id, className: "".concat(import_file_module_css_1.default['import-file-container'], " ").concat((_c = this.props.className) !== null && _c !== void 0 ? _c : 'row', " ").concat(this.props.buttonOnly ? import_file_module_css_1.default['button-only'] : '', " ").concat(((_d = this.props.helperText) === null || _d === void 0 ? void 0 : _d.length) ? import_file_module_css_1.default['helper-text'] : ""), style: __assign({ '--helper-text-color': (_e = this.props.helperTextColor) !== null && _e !== void 0 ? _e : '#e14337' }, _style), "helper-text": this.props.helperText, onClick: function () {
                 if (!_this.state.preview && !_this.props.buttonOnly)

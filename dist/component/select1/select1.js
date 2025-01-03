@@ -298,7 +298,7 @@ var TSelect1 = /** @class */ (function (_super) {
                             var _a, _b;
                             return react_1.default.createElement(OptionsItemTile, { key: item.id, item: item, children: ((_a = _this.state.search) !== null && _a !== void 0 ? _a : _this.state.options).filter(function (e) { return e.parentId === item.id; }), selected: _this.state.selected === item.id, onClick: _this.onSelect, treeData: ((_b = _this.state.search) !== null && _b !== void 0 ? _b : _this.state.options).some(function (e) { return e.parentId; }) });
                         }),
-                        (((_j = this.state.search) === null || _j === void 0 ? void 0 : _j.length) === 0 || ((_k = this.props.options) === null || _k === void 0 ? void 0 : _k.length) === 0) && (react_1.default.createElement("div", { className: select1_module_css_1.default['no-results-found'] }, t("noResultFound"))))), document.body));
+                        (!((_j = this.state.search) === null || _j === void 0 ? void 0 : _j.length) && !((_k = this.props.options) === null || _k === void 0 ? void 0 : _k.length)) && (react_1.default.createElement("div", { className: select1_module_css_1.default['no-results-found'] }, t("noResultFound"))))), document.body));
     };
     return TSelect1;
 }(react_1.default.Component));
@@ -314,7 +314,7 @@ function OptionsItemTile(_a) {
                     onClick(item);
             } },
             treeData ? react_1.default.createElement("div", { className: 'row', style: { width: '1.4rem', height: '1.4rem' } }, (children === null || children === void 0 ? void 0 : children.length) ? react_1.default.createElement(winicon_1.Winicon, { src: isOpen ? "fill/arrows/triangle-down" : "fill/arrows/triangle-right", size: "1.2rem" }) : null) : undefined,
-            react_1.default.createElement(text_1.Text, { className: 'body-3' }, item.title && typeof item.title === "string" ? item.title : item.name)),
+            ((item.title && typeof item.title === "string") || typeof item.name === "string") ? react_1.default.createElement(text_1.Text, { className: 'body-3' }, item.title && typeof item.title === "string" ? item.title : item.name) : item.name),
         (children === null || children === void 0 ? void 0 : children.length) ? react_1.default.createElement("div", { className: 'col', style: { display: isOpen ? "flex" : "none", width: '100%' } }, children.map(function (e) { return react_1.default.createElement(OptionsItemTile, { key: e.id, item: e, onClick: onClick }); })) : undefined);
 }
 exports.Select1 = (0, react_i18next_1.withTranslation)()(TSelect1);
