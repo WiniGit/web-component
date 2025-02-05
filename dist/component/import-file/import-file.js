@@ -151,7 +151,7 @@ var TImportFile = /** @class */ (function (_super) {
                 ? null
                 : this.props.multiple && ((_g = this.state.preview) === null || _g === void 0 ? void 0 : _g.length) ? react_1.default.createElement("div", { className: 'row', style: { flex: 1, flexWrap: "wrap", gap: "0.8rem" } }, this.state.preview.map(function (f) {
                     var _a;
-                    return react_1.default.createElement("div", { key: "".concat(f.name, "-").concat(f.size, "-").concat(f.lastModified), className: 'row col6', style: { "--gutter": "0.8rem", gap: "0.8rem", padding: "0.6rem 0.8rem", borderRadius: "0.4rem", border: "var(--neutral-main-border)" } },
+                    return react_1.default.createElement("div", { key: "".concat(f.name, "-").concat(f.size, "-").concat(f.lastModified), className: 'row', style: { gap: "0.8rem", padding: "0.6rem 0.8rem", borderRadius: "0.4rem", border: "var(--neutral-main-border)", flex: "0 calc((100% * 6 / 24) - 0.8rem * 3 / 4)", width: "auto", minWidth: 120 } },
                         react_1.default.createElement(index_1.Winicon, { src: "outline/".concat(((_a = f.type) === null || _a === void 0 ? void 0 : _a.includes('image')) ? "multimedia/image" : "files/file-export"), size: "1.4rem" }),
                         react_1.default.createElement(index_1.Text, { className: 'subtitle-4', style: { flex: 1, width: "100%" }, maxLine: 1 }, f.name),
                         react_1.default.createElement(index_1.Winicon, { src: 'fill/user interface/e-remove', size: "1.4rem", onClick: function () {
