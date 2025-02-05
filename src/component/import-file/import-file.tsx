@@ -120,7 +120,7 @@ class TImportFile extends React.Component<ImportFileProps, ImportFileState> {
                 ? null
                 : this.props.multiple && this.state.preview?.length ? <div className='row' style={{ flex: 1, flexWrap: "wrap", gap: "0.8rem" }}>
                     {this.state.preview.map(f => {
-                        return <div key={`${f.name}-${f.size}-${f.lastModified}`} className='row col6' style={{ "--gutter": "0.8rem", gap: "0.8rem", padding: "0.6rem 0.8rem", borderRadius: "0.4rem", border: "var(--neutral-main-border)" } as any}>
+                        return <div key={`${f.name}-${f.size}-${f.lastModified}`} className='row' style={{ gap: "0.8rem", padding: "0.6rem 0.8rem", borderRadius: "0.4rem", border: "var(--neutral-main-border)", flex: "0 calc((100% * 6 / 24) - 0.8rem * 3 / 4)", width: "auto", minWidth: 120 }}>
                             <Winicon src={`outline/${f.type?.includes('image') ? "multimedia/image" : "files/file-export"}`} size={"1.4rem"} />
                             <Text className='subtitle-4' style={{ flex: 1, width: "100%" }} maxLine={1}>{f.name}</Text>
                             <Winicon src='fill/user interface/e-remove' size={"1.4rem"} onClick={() => {

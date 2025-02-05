@@ -6,7 +6,7 @@
     max-height: 600px;
     border-radius: 0.8rem;
     border: var(--neutral-bolder-border);
-    overflow: visible;
+    overflow: hidden visible;
 }
 
 .editor-container:has(.ck-read-only) {
