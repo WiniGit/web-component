@@ -297,9 +297,9 @@
 }
 
 .placeholder-1 {
-    color: var(--neutral-text-subtitle-color);
+    color: var(--neutral-text-placeholder-color);
 }
 
 .placeholder-2 {
-    color: var(--neutral-text-subtitle-color);
+    color: var(--neutral-text-placeholder-color);
 }

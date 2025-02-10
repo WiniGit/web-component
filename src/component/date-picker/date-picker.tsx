@@ -323,10 +323,9 @@ class TDatePicker extends React.Component<DatePickerProps, DatePickerState> {
                             min={this.props.min}
                             max={this.props.max}
                             value={this.getNewValue()}
-                            type={this.props.pickerType ?? CalendarType.DATE}
                             className='date-picker-popup-container'
                             style={this.state.style ?? { top: this.state.offset.y + this.state.offset.height + 2 + 'px', left: this.state.offset.x + 'px', border: 'none', boxShadow: '-20px 20px 40px -4px rgba(145, 158, 171, 0.24), 0px 0px 2px 0px rgba(145, 158, 171, 0.24)' }}
-                            onSelect={(dateValue: Date) => {
+                            onSelect={(dateValue: any) => {
                                 switch (this.props.pickerType) {
                                     case CalendarType.YEAR:
                                         this.setState({ ...this.state, value: dateValue.getFullYear().toString(), isOpen: false })

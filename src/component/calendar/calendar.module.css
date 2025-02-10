@@ -2,24 +2,13 @@
     background-color: var(--neutral-absolute-background-color);
     border-radius: 0.8rem;
     align-items: stretch;
-    border: var(--neutral-bolder-border);
+    border: var(--neutral-main-border);
     width: fit-content;
-}
-
-.calendar-container button {
-    outline: none;
-    padding: 0;
-    border: none;
-    cursor: pointer;
-}
-
-.calendar-container>.calendar-body:has(*:nth-child(2))>div[class*="row"]:first-child {
-    border-bottom: var(--neutral-bolder-border);
 }
 
 .calendar-sidebar-options {
     padding: 0.8rem 2.4rem 0.8rem 0;
-    border-right: var(--neutral-bolder-border);
+    border-right: var(--neutral-main-border);
 }
 
 .calendar-sidebar-options>.calendar-sidebar-option-buttton {
@@ -28,7 +17,7 @@
 }
 
 .picker-time-container {
-    border-left: var(--neutral-bolder-border);
+    border-left: var(--neutral-main-border);
     height: 34.2rem;
     align-items: center;
 }
@@ -36,7 +25,7 @@
 .picker-time-container>div[class*="heading-7"]:first-child {
     width: 100%;
     padding: 1.2rem 1.6rem;
-    border-bottom: var(--neutral-bolder-border);
+    border-bottom: var(--neutral-main-border);
     text-align: center;
 }
 
@@ -50,8 +39,8 @@
 }
 
 .picker-time-container .scroll-picker-minutes {
-    border-left: var(--neutral-bolder-border);
-    border-right: var(--neutral-bolder-border);
+    border-left: var(--neutral-main-border);
+    border-right: var(--neutral-main-border);
 }
 
 .picker-time-container div[class*="scroll-picker-"]>button {
@@ -60,22 +49,29 @@
 }
 
 .picker-time-container div[class*="scroll-picker-"]>button.selected {
-    background-color: var(--infor-background);
-    color: var(--infor-main-color);
+    background-color: var(--primary-background);
+    color: var(--primary-main-color);
 }
 
 .picker-date-header {
     padding: 1.2rem 1.6rem;
     gap: 1.2rem;
     background-color: transparent !important;
-    border-bottom: var(--neutral-bolder-border);
+    border-bottom: var(--neutral-main-border);
+    justify-content: space-between;
 }
 
 .picker-date-header>span {
     width: 100%;
+    max-width: 15rem;
     flex: 1;
     text-align: center;
     cursor: pointer;
+    border-radius: 0.8rem;
+}
+
+.picker-date-header>span:hover {
+    background-color: var(--neutral-hover-background-color);
 }
 
 .picker-date-header>button {
@@ -95,40 +91,63 @@
 .picker-date-body {
     padding: 1.2rem 1.6rem;
     width: 31.2rem;
-    gap: 0.8rem;
     flex-wrap: wrap;
+    gap: 0.8rem 0;
+}
+
+.picker-date-body>div {
+    height: 3.2rem;
+    padding: 0 0.4rem;
+    display: flex;
+}
+
+.picker-date-body>div>* {
+    border: 1px solid transparent;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
 }
 
 .date-picker-circle {
-    width: calc((100% - 0.8rem * 6) / 7);
-    height: 3.2rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width: calc(100% / 7);
+}
+
+.date-picker-circle>* {
     border-radius: 50%;
 }
 
 .month-picker-circle,
 .year-picker-circle {
-    width: calc((100% - 0.8rem * 2) / 3);
-    height: 3.2rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width: calc(100% / 3);
+}
+
+.month-picker-circle>*,
+.year-picker-circle>* {
     border-radius: 2.4rem;
-    color: var(--neutral-text-title-color);
 }
 
-button[class*="-picker-circle"] {
-    border: 1px solid transparent;
+.picker-date-body>.in-range {
+    background-color: var(--neutral-main-background-color);
 }
 
-button[class*="-picker-circle"].selected {
-    background-color: var(--infor-main-color);
+.picker-date-body:has(>.in-range, >.end-range)>.start-range {
+    background-image: linear-gradient(to right, transparent 50%, var(--neutral-main-background-color) 50%);
+}
+
+.end-range {
+    background-image: linear-gradient(to left, transparent 50%, var(--neutral-main-background-color) 50%) !important;
+}
+
+.picker-date-body>.today>* {
+    border-color: var(--primary-main-color)
+}
+
+.picker-date-body>.selected>* {
+    background-color: var(--primary-main-color);
     color: var(--neutral-absolute-background-color);
 }
 
-button[class*="-picker-circle"][in-range="false"] {
+.picker-date-body>.invalid {
     opacity: 0.24 !important;
     pointer-events: none !important;
 }

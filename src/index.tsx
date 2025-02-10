@@ -25,7 +25,7 @@ import { Button } from './component/button/button'
 import { Tag } from './component/tag/tag'
 import { Winicon } from './component/wini-icon/winicon'
 import { NumberPicker } from './component/number-picker/number-picker'
-import { InputOpt } from './component/input-opt/input-opt'
+import { InputOtp } from './component/input-otp/input-otp'
 import { WLoginView } from './form/login/view'
 import { CustomCkEditor5 } from './component/ck-editor/ckeditor'
 
@@ -58,7 +58,7 @@ export {
   Tag,
   Winicon,
   NumberPicker,
-  InputOpt,
+  InputOtp,
   WLoginView,
   CustomCkEditor5
 }

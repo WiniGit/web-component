@@ -1,8 +1,8 @@
 import React, { CSSProperties, ReactNode } from "react"
 import styles from './calendar.module.css'
 import { differenceInCalendarDays } from "date-fns"
-import { Winicon } from "../wini-icon/winicon"
 import { WithTranslation, withTranslation } from 'react-i18next';
+import { Winicon } from "../wini-icon/winicon";
 
 export const today = new Date()
 export const startDate = new Date(
@@ -24,52 +24,82 @@ export enum CalendarType {
     YEAR = 2,
     DATETIME = 3
 }
+
+enum CalendarTab {
+    DATE = 0,
+    MONTH = 1,
+    YEAR = 2,
+}
+
 interface CalendarProps extends WithTranslation {
     id?: string,
-    value?: Date,
+    value?: Date | { sTime: Date, eTime: Date },
+    range?: boolean,
     min?: Date,
     max?: Date,
-    onSelect?: (props: Date) => void,
+    onSelect?: (props: Date | { sTime: Date, eTime: Date }) => void,
     disabled?: boolean,
     helperText?: string,
     helperTextColor?: string,
     placeholder?: string,
     className?: string,
     style?: CSSProperties,
-    type: CalendarType,
-    showSidebar?: boolean,
-    footer?: ReactNode
+    header?: ReactNode,
+    footer?: ReactNode,
 }
 
 interface CalendarState {
-    value: Date,
-    selectDate?: Date,
+    value?: Date | { sTime: Date, eTime: Date },
     selectMonth: number,
     selectYear: number,
-    selectHours: number,
-    selectMinutes: number,
-    selectSeconds: number,
-    type: CalendarType,
+    tab: CalendarTab,
+}
+
+const stateValue = (minDate: Date, maxDate: Date, value?: Date | { sTime: Date, eTime: Date }, range?: boolean) => {
+    let defaultValue: Date | { sTime: Date, eTime: Date }
+    if (value) {
+        if (range) {
+            if (value instanceof Date) defaultValue = { sTime: value, eTime: value }
+            else defaultValue = value
+            if (defaultValue.sTime.getTime() < minDate.getTime()) defaultValue.sTime = minDate
+            if (defaultValue.eTime.getTime() > maxDate.getTime()) defaultValue.eTime = maxDate
+        } else {
+            if (value instanceof Date) defaultValue = value
+            else defaultValue = value.sTime
+            if (defaultValue.getTime() < minDate.getTime()) defaultValue = minDate
+            if (defaultValue.getTime() > maxDate.getTime()) defaultValue = maxDate
+        }
+    } else {
+        defaultValue = range ? { sTime: today, eTime: today } : today
+    }
+    const defaultMonth = defaultValue instanceof Date ? defaultValue.getMonth() : defaultValue.sTime.getMonth()
+    const defaultYear = defaultValue instanceof Date ? defaultValue.getFullYear() : defaultValue.sTime.getFullYear()
+    return {
+        value: value ? defaultValue : undefined,
+        selectMonth: defaultMonth,
+        selectYear: defaultYear,
+        tab: CalendarTab.DATE,
+    }
 }
 
 class TCalendar extends React.Component<CalendarProps, CalendarState> {
-
+    private minDate: Date;
+    private maxDate: Date;
     constructor(props: CalendarProps) {
         super(props);
-        this.state = {
-            value: this.props.value ?? today,
-            selectDate: this.props.value ?? today,
-            selectMonth: (this.props.value ?? today).getMonth(),
-            selectYear: (this.props.value ?? today).getFullYear(),
-            type: CalendarType.DATE,
-            selectHours: this.props.value?.getHours() ?? 0,
-            selectMinutes: this.props.value?.getMinutes() ?? 0,
-            selectSeconds: this.props.value?.getSeconds() ?? 0,
-        }
+        this.minDate = !this.props.min || this.props.min.getTime() < startDate.getTime() ? startDate : this.props.min
+        this.maxDate = !this.props.max || this.props.max.getTime() > endDate.getTime() ? endDate : this.props.max
+        this.state = stateValue(this.minDate, this.maxDate, this.props.value, this.props.range)
         this.showDateInMonth = this.showDateInMonth.bind(this)
         this.showMonthInYear = this.showMonthInYear.bind(this)
         this.showYearInRange = this.showYearInRange.bind(this)
         this.getTitle = this.getTitle.bind(this)
+    }
+
+    componentDidUpdate(prevProps: Readonly<CalendarProps>, prevState: Readonly<CalendarState>, snapshot?: any): void {
+        if (prevProps.value !== this.props.value) {
+            this.setState(stateValue(this.minDate, this.maxDate, this.props.value, this.props.range))
+        }
     }
 
     private showDateInMonth() {
@@ -102,40 +132,45 @@ class TCalendar extends React.Component<CalendarProps, CalendarState> {
                         weekdayTitle = ''
                         break
                 }
-                return <div key={'dtwk-' + i} className={`${styles['date-picker-circle']} label-4`} style={{ color: 'var(--neutral-text-title-color)' }}>
-                    {weekdayTitle}
-                </div>
+                return <div key={'dtwk-' + i} className={`${styles['date-picker-circle']} date-picker-circle`}><span className="label-4 row">{weekdayTitle}</span></div>
             })}
             {Array.from({ length: 42 }).map((_, i) => {
                 let dateNumber = (i % 7) + (Math.floor(i / 7) * 7) - firstDayOfMonth.getDay()
-                const timeValue = new Date(this.state.selectYear, this.state.selectMonth, dateNumber + 1, this.state.selectHours, this.state.selectMinutes, this.state.selectSeconds)
-                let style = {}
-                let additionProps = {}
-                let selected = false
+                const timeValue = new Date(this.state.selectYear, this.state.selectMonth, dateNumber + 1)
+                let className = `${styles['date-picker-circle']} date-picker-circle`
+                let typoClassName = "body-3"
                 if (dateNumber + 1 === today.getDate() && this.state.selectMonth === today.getMonth() && this.state.selectYear === today.getFullYear()) {
-                    style = { borderColor: 'var(--infor-main-color)' }
+                    className += ` ${styles['today']}`
                 }
-                if (!inRangeTime(timeValue, startDate, endDate)) {
-                    additionProps = { 'in-range': 'false' }
-                } else if (!inRangeTime(timeValue, this.props.min ?? startDate, this.props.max ?? endDate)) {
-                    style = {
-                        ...style,
-                        color: 'var(--neutral-text-disabled-color)',
-                        pointerEvents: 'none'
-                    }
-                } else if (this.state.value.valueOf() === timeValue.valueOf()) {
-                    additionProps = { ...additionProps }
-                    selected = true
-                } else if (timeValue.getMonth() !== this.state.selectMonth) {
-                    style = { ...style, color: 'var(--neutral-text-subtitle-color)' }
+                let style: CSSProperties | undefined;
+                if (!inRangeTime(timeValue, this.minDate, this.maxDate)) {
+                    className += ` ${styles['invalid']}`
+                } else if (this.state.value instanceof Date) {
+                    if (this.state.value.getTime() === timeValue.getTime()) className += ` ${styles['selected']}`
+                } else if (this.state.value?.sTime.getTime() === timeValue.getTime() || this.state.value?.eTime.getTime() === timeValue.getTime()) {
+                    className += ` ${styles['selected']} ${styles[`${this.state.value?.sTime.getTime() === timeValue.getTime() ? "start" : "end"}-range`]}`
+                } else if (this.state.value && inRangeTime(timeValue, this.state.value.sTime, this.state.value.eTime)) {
+                    className += ` ${styles['in-range']}`
                 }
-                return <button type="button" key={timeValue.toString()} className={`${styles['date-picker-circle']} date-picker-circle body-3 ${selected ? styles['selected'] : ''}`} style={style} {...additionProps}
-                    onClick={() => {
-                        this.setState({ ...this.state, value: timeValue })
-                        if (this.props.onSelect) this.props.onSelect(timeValue)
-                    }} >
-                    {timeValue.getDate()}
-                </button>
+                if (timeValue.getMonth() !== this.state.selectMonth) {
+                    typoClassName = "placeholder-2"
+                }
+                return <div key={timeValue.toString()} className={className} style={style}>
+                    <button type="button" className={`${typoClassName} row`}
+                        onClick={() => {
+                            const currentValue = this.state.value as any
+                            if (this.props.range) {
+                                const newValue = (!currentValue || timeValue.getTime() < currentValue.sTime.getTime()) ? { sTime: timeValue, eTime: timeValue } : { sTime: currentValue.sTime, eTime: timeValue }
+                                this.setState({ ...this.state, value: newValue })
+                                if (this.props.onSelect) this.props.onSelect(newValue)
+                            } else {
+                                this.setState({ ...this.state, value: timeValue })
+                                if (this.props.onSelect) this.props.onSelect(timeValue)
+                            }
+                        }} >
+                        {timeValue.getDate()}
+                    </button>
+                </div>
             })}
         </>
     }
@@ -184,79 +219,60 @@ class TCalendar extends React.Component<CalendarProps, CalendarState> {
                         monthTitle = ''
                         break
                 }
-                const timeValue = new Date(this.state.selectYear, i, today.getDate())
-                let additionProps = {}
-                let style = {}
-                let selected = false
+                const timeValue = new Date(this.state.selectYear, i)
+                let className = `${styles['month-picker-circle']} month-picker-circle`
                 if (this.state.selectYear === today.getFullYear() && today.getMonth() === i) {
-                    style = { borderColor: 'var(--infor-main-color)' }
-                } if (!inRangeTime(timeValue, startDate, endDate)) {
-                    additionProps = { 'in-range': 'false' }
-                } else if (!inRangeTime(new Date(this.state.selectYear, this.state.selectMonth), this.props.min ?? startDate, this.props.max ?? endDate)) {
-                    if (this.state.selectYear === this.state.selectDate?.getFullYear() && this.state.selectDate.getMonth() === i) {
-                        style = {
-                            color: 'var(--neutral-text-disabled-color)',
-                            pointerEvents: 'none'
-                        }
-                    }
+                    className += ` ${styles['today']}`
                 }
-                if (this.state.selectYear === this.state.value.getFullYear() && i === this.state.value.getMonth()) {
-                    selected = true
+                if (!inRangeTime(timeValue, this.minDate, this.maxDate)) {
+                    className += ` ${styles['invalid']}`
+                } else if (this.state.value instanceof Date) {
+                    if (this.state.selectYear === this.state.value.getFullYear() && i === this.state.value.getMonth()) className += ` ${styles['selected']}`
+                } else if (this.state.value && ((i === this.state.value.sTime.getMonth() && this.state.value.sTime.getFullYear() === this.state.selectYear) || (i === this.state.value.eTime.getMonth() && this.state.value.eTime.getFullYear() === this.state.selectYear))) {
+                    className += ` ${styles['selected']} ${styles[`${i === this.state.value.sTime.getMonth() && this.state.value.sTime.getFullYear() === this.state.selectYear ? "start" : "end"}-range`]}`
+                } else if (this.state.value && inRangeTime(timeValue, this.state.value.sTime, this.state.value.eTime)) {
+                    className += ` ${styles['in-range']}`
                 }
-                return <button type="button" key={timeValue.toString()} className={`${styles['month-picker-circle']} month-picker-circle body-3 row ${selected ? styles['selected'] : ''}`} style={style} {...additionProps}
-                    onClick={() => {
-                        if (this.props.type === CalendarType.MONTH) {
-                            this.setState({ ...this.state, value: timeValue })
-                            if (this.props.onSelect) this.props.onSelect(timeValue)
-                        } else {
-                            this.setState({ ...this.state, selectMonth: i, type: CalendarType.DATE })
-                        }
-                    }}
-                >
-                    {monthTitle}
-                </button>
+                return <div key={timeValue.toString()} className={className}>
+                    <button type="button" className="body-3 row" onClick={() => { this.setState({ ...this.state, selectMonth: i, tab: CalendarTab.DATE }) }}>
+                        {monthTitle}
+                    </button>
+                </div>
             })}
         </>
     }
 
     private showYearInRange() {
-        return <>
-            {Array.from({ length: 12 }).map((_, i) => {
-                let firstYearInTable = this.state.selectYear - ((this.state.selectYear - startDate.getFullYear()) % 12)
-                let yearNumber = i + firstYearInTable
-                let additionProps = {}
-                let style = {}
-                let selected = false
-                if (yearNumber === today.getFullYear()) {
-                    style = { borderColor: 'var(--infor-main-color)' }
-                } else if (yearNumber < ((this.props.min ?? startDate).getFullYear()) || yearNumber > ((this.props.max ?? endDate).getFullYear())) {
-                    additionProps = { 'in-range': 'false' }
-                }
-                if (yearNumber === this.state.value.getFullYear()) {
-                    selected = true
-                }
-                return <button type="button" key={yearNumber.toString()} className={`${styles['year-picker-circle']} year-picker-circle body-3 row ${selected ? styles['selected'] : ''}`} style={style} {...additionProps}
-                    onClick={() => {
-                        if (this.props.type === CalendarType.YEAR) {
-                            this.setState({ ...this.state, value: new Date(yearNumber) })
-                            if (this.props.onSelect) this.props.onSelect(new Date(yearNumber))
-                        } else {
-                            this.setState({ ...this.state, type: CalendarType.MONTH, selectYear: yearNumber })
-                        }
-                    }}
-                >
+        return Array.from({ length: 12 }).map((_, i) => {
+            let firstYearInTable = this.state.selectYear - ((this.state.selectYear - startDate.getFullYear()) % 12)
+            let yearNumber = i + firstYearInTable
+            let className = `${styles['year-picker-circle']} year-picker-circle`
+            if (yearNumber === today.getFullYear()) {
+                className += ` ${styles['today']}`
+            }
+            if (yearNumber < this.minDate.getFullYear() || yearNumber > this.maxDate.getFullYear()) {
+                className += ` ${styles['invalid']}`
+            } else if (this.state.value instanceof Date) {
+                if (yearNumber === this.state.value.getFullYear()) className += ` ${styles['selected']}`
+            } else if (yearNumber === this.state.value?.sTime.getFullYear() || yearNumber === this.state.value?.eTime.getFullYear()) {
+                className += ` ${styles['selected']} ${styles[`${yearNumber === this.state.value?.sTime.getFullYear() ? "start" : "end"}-range`]}`
+            } else if (this.state.value && yearNumber > this.state.value.sTime.getFullYear() && yearNumber < this.state.value.eTime.getFullYear()) {
+                className += ` ${styles['in-range']}`
+            }
+            return <div key={yearNumber.toString()} className={className}>
+                <button type="button" className="body-3 row" onClick={() => { this.setState({ ...this.state, tab: CalendarTab.MONTH, selectYear: yearNumber }) }}>
                     {yearNumber}
                 </button>
-            })}
-        </>
+            </div>
+        })
     }
 
     private getTitle() {
-        switch (this.state.type) {
-            case CalendarType.YEAR:
+        switch (this.state.tab) {
+            case CalendarTab.YEAR:
                 let firstYearInTable = this.state.selectYear - ((this.state.selectYear - startDate.getFullYear()) % 12)
                 return `${firstYearInTable}-${firstYearInTable + 11}`
-            case CalendarType.MONTH:
+            case CalendarTab.MONTH:
                 return this.state.selectYear
             default:
                 switch (this.state.selectMonth) {
@@ -305,153 +321,74 @@ class TCalendar extends React.Component<CalendarProps, CalendarState> {
     }
 
     render(): React.ReactNode {
-        const { t } = this.props;
-        return <div id={this.props.id} className={`row ${styles['calendar-container']} ${this.props.className}`} style={this.props.style}>
-            {this.props.showSidebar ? <div className={`${styles['calendar-sidebar-options']} col`}>
-                <button type="button" onClick={() => { }} className={`label-4 ${styles['calendar-sidebar-option-buttton']}`}>{t("yesterday")}</button>
-                <button type="button" className={`label-4 ${styles['calendar-sidebar-option-buttton']}`}>{t("lastWeek")}</button>
-                <button type="button" className={`label-4 ${styles['calendar-sidebar-option-buttton']}`}>{t("lastMonth")}</button>
-                <button type="button" className={`label-4 ${styles['calendar-sidebar-option-buttton']}`}>{t("lastYear")}</button>
-            </div> : null}
-            <div className={`${styles['calendar-body']} col`}>
-                <div className="row" style={{ alignItems: 'start' }} >
-                    <div className={`${styles['picker-date-container']} col`}>
-                        <div className={`${styles['picker-date-header']} row`}>
-                            <button type='button'
-                                onClick={() => {
-                                    switch (this.state.type) {
-                                        case CalendarType.YEAR:
-                                            if (this.state.selectYear - 20 < startDate.getFullYear()) {
-                                                this.setState({ ...this.state, selectYear: startDate.getFullYear() })
-                                            } else {
-                                                this.setState({ ...this.state, selectYear: this.state.selectYear - 20 })
-                                            }
-                                            break
-                                        case CalendarType.MONTH:
-                                            if (this.state.selectYear - 10 < startDate.getFullYear()) {
-                                                this.setState({ ...this.state, selectYear: startDate.getFullYear() })
-                                            } else {
-                                                this.setState({ ...this.state, selectYear: this.state.selectYear - 10 })
-                                            }
-                                            break
-                                        default:
-                                            this.setState({ ...this.state, selectYear: this.state.selectYear - 1 })
-                                            break
-                                    }
-                                }}
-                            >
-                                <Winicon src={"fill/arrows/double-arrow-left"} size={'1.4rem'} />
-                            </button>
-                            <button type='button'
-                                onClick={() => {
-                                    switch (this.state.type) {
-                                        case CalendarType.YEAR:
-                                            if (this.state.selectYear - 10 < startDate.getFullYear()) {
-                                                this.setState({ ...this.state, selectYear: startDate.getFullYear() })
-                                            } else {
-                                                this.setState({ ...this.state, selectYear: this.state.selectYear - 10 })
-                                            }
-                                            break
-                                        case CalendarType.MONTH:
-                                            if (this.state.selectYear - 1 >= startDate.getFullYear()) {
-                                                this.setState({ ...this.state, selectYear: this.state.selectYear - 1 })
-                                            }
-                                            break
-                                        default:
-                                            const newDataVl = new Date(this.state.selectYear, this.state.selectMonth - 1, 1)
-                                            this.setState({ ...this.state, selectMonth: newDataVl.getMonth(), selectYear: newDataVl.getFullYear() })
-                                            break
-                                    }
-                                }}
-                            >
-                                <Winicon src={"fill/arrows/left-arrow"} size={'1.4rem'} />
-                            </button>
-                            <span className="heading-7" onClick={() => {
-                                if (this.state.type !== CalendarType.YEAR)
-                                    this.setState({ ...this.state, type: this.state.type === CalendarType.DATE ? CalendarType.MONTH : CalendarType.YEAR })
-                            }} >
-                                {this.getTitle()}
-                            </span>
-                            <button type='button'
-                                onClick={() => {
-                                    switch (this.state.type) {
-                                        case CalendarType.YEAR:
-                                            if (this.state.selectYear + 10 > endDate.getFullYear()) {
-                                                this.setState({ ...this.state, selectYear: endDate.getFullYear() })
-                                            } else {
-                                                this.setState({ ...this.state, selectYear: this.state.selectYear + 10 })
-                                            }
-                                            break
-                                        case CalendarType.MONTH:
-                                            if (this.state.selectYear + 1 <= endDate.getFullYear()) {
-                                                this.setState({ ...this.state, selectYear: this.state.selectYear + 1 })
-                                            }
-                                            break
-                                        default:
-                                            const newDataVl = new Date(this.state.selectYear, this.state.selectMonth + 1, 1)
-                                            this.setState({ ...this.state, selectMonth: newDataVl.getMonth(), selectYear: newDataVl.getFullYear() })
-                                            break
-                                    }
-                                }}
-                            >
-                                <Winicon src={"fill/arrows/right-arrow"} size={'1.4rem'} />
-                            </button>
-                            <button type='button'
-                                onClick={() => {
-                                    switch (this.state.type) {
-                                        case CalendarType.YEAR:
-                                            if (this.state.selectYear + 20 > endDate.getFullYear()) {
-                                                this.setState({ ...this.state, selectYear: endDate.getFullYear() })
-                                            } else {
-                                                this.setState({ ...this.state, selectYear: this.state.selectYear + 20 })
-                                            }
-                                            break
-                                        case CalendarType.MONTH:
-                                            if (this.state.selectYear + 10 < endDate.getFullYear()) {
-                                                this.setState({ ...this.state, selectYear: endDate.getFullYear() })
-                                            } else {
-                                                this.setState({ ...this.state, selectYear: this.state.selectYear + 10 })
-                                            }
-                                            break
-                                        default:
-                                            this.setState({ ...this.state, selectYear: this.state.selectYear + 1 })
-                                            break
-                                    }
-                                }}
-                            >
-                                <Winicon src={"fill/arrows/double-arrow-right"} size={'1.4rem'} />
-                            </button>
-                        </div>
-                        <div className={`${styles['picker-date-body']} row`} >
-                            {this.state.type === CalendarType.YEAR ? this.showYearInRange() : this.state.type === CalendarType.MONTH ? this.showMonthInYear() : this.showDateInMonth()}
-                        </div>
-                    </div>
-                    {this.props.type === CalendarType.DATETIME ? <div className={`${styles['picker-time-container']} col`}>
-                        <div className="heading-7">{this.state.selectHours < 10 ? `0${this.state.selectHours}` : this.state.selectHours}:{this.state.selectMinutes < 10 ? `0${this.state.selectMinutes}` : this.state.selectMinutes}:{this.state.selectSeconds < 10 ? `0${this.state.selectSeconds}` : this.state.selectSeconds}</div>
-                        <div className="row" style={{ alignItems: 'start', flex: 1, height: '100%' }}>
-                            <div className={`${styles['scroll-picker-hours']} scroll-picker-hours col`}>{Array.from({ length: 24 }).map((_, i) => <button type="button" onClick={() => {
-                                let newValue = this.state.value
-                                newValue.setHours(i)
-                                this.setState({ ...this.state, selectHours: i, value: newValue })
-                                if (this.props.onSelect) this.props.onSelect(newValue)
-                            }} key={`hours-${i}`} className={`label-4 ${this.state.selectHours === (i) ? styles['selected'] : ''}`} >{i < 10 ? `0${i}` : i}</button>)}</div>
-                            <div className={`${styles['scroll-picker-minutes']} scroll-picker-minutes col`}>{Array.from({ length: 60 }).map((_, i) => <button type="button" onClick={() => {
-                                let newValue = this.state.value
-                                newValue.setMinutes(i)
-                                this.setState({ ...this.state, selectMinutes: i, value: newValue })
-                                if (this.props.onSelect) this.props.onSelect(newValue)
-                            }} key={`hours-${i}`} className={`label-4 ${this.state.selectMinutes === (i) ? styles['selected'] : ''}`} >{i < 10 ? `0${i}` : i}</button>)}</div>
-                            <div className={`${styles['scroll-picker-seconds']} scroll-picker-seconds col`}>{Array.from({ length: 60 }).map((_, i) => <button type="button" onClick={() => {
-                                let newValue = this.state.value
-                                newValue.setSeconds(i)
-                                this.setState({ ...this.state, selectSeconds: i, value: newValue })
-                                if (this.props.onSelect) this.props.onSelect(newValue)
-                            }} key={`hours-${i}`} className={`label-4 ${this.state.selectSeconds === (i) ? styles['selected'] : ''}`} >{i < 10 ? `0${i}` : i}</button>)}</div>
-                        </div>
-                    </div> : null}
-                </div>
-                {this.props.footer}
+        return <div className={`${styles['calendar-container']} col`}>
+            {this.props.header}
+            <div className={`${styles['picker-date-header']} row`}>
+                <button type='button'
+                    onClick={() => {
+                        switch (this.state.tab) {
+                            case CalendarTab.YEAR:
+                                if (this.state.selectYear - 10 < startDate.getFullYear()) {
+                                    this.setState({ ...this.state, selectYear: startDate.getFullYear() })
+                                } else {
+                                    this.setState({ ...this.state, selectYear: this.state.selectYear - 10 })
+                                }
+                                break
+                            case CalendarTab.MONTH:
+                                const newTime = new Date(this.state.selectYear, this.state.selectMonth - 1)
+                                if (newTime.getTime() >= startDate.getTime()) {
+                                    this.setState({ ...this.state, selectYear: this.state.selectYear - 1 })
+                                }
+                                break
+                            default:
+                                const newDataVl = new Date(this.state.selectYear, this.state.selectMonth - 1)
+                                if (newDataVl.getTime() >= startDate.getTime()) {
+                                    this.setState({ ...this.state, selectMonth: newDataVl.getMonth(), selectYear: newDataVl.getFullYear() })
+                                }
+                                break
+                        }
+                    }}
+                >
+                    <Winicon src={"fill/arrows/left-arrow"} size={'1.4rem'} />
+                </button>
+                <span className="heading-7" onClick={() => {
+                    if (this.state.tab !== CalendarTab.YEAR)
+                        this.setState({ ...this.state, tab: this.state.tab === CalendarTab.DATE ? CalendarTab.MONTH : CalendarTab.YEAR })
+                }}>
+                    {this.getTitle()}
+                </span>
+                <button type='button'
+                    onClick={() => {
+                        switch (this.state.tab) {
+                            case CalendarTab.YEAR:
+                                if (this.state.selectYear + 10 > endDate.getFullYear()) {
+                                    this.setState({ ...this.state, selectYear: endDate.getFullYear() })
+                                } else {
+                                    this.setState({ ...this.state, selectYear: this.state.selectYear + 10 })
+                                }
+                                break
+                            case CalendarTab.MONTH:
+                                const newTime = new Date(this.state.selectYear, this.state.selectMonth + 1)
+                                if (newTime.getTime() <= endDate.getTime()) {
+                                    this.setState({ ...this.state, selectYear: this.state.selectYear + 1 })
+                                }
+                                break
+                            default:
+                                const newDataVl = new Date(this.state.selectYear, this.state.selectMonth + 1)
+                                if (newDataVl.getTime() <= endDate.getTime()) {
+                                    this.setState({ ...this.state, selectMonth: newDataVl.getMonth(), selectYear: newDataVl.getFullYear() })
+                                }
+                                break
+                        }
+                    }}
+                >
+                    <Winicon src={"fill/arrows/right-arrow"} size={'1.4rem'} />
+                </button>
             </div>
+            <div className={`${styles['picker-date-body']} row`} >
+                {this.state.tab === CalendarTab.YEAR ? this.showYearInRange() : this.state.tab === CalendarTab.MONTH ? this.showMonthInYear() : this.showDateInMonth()}
+            </div>
+            {this.props.footer}
         </div>
     }
 }

@@ -10,6 +10,10 @@ interface ButtonProps {
     disabled?: boolean,
     style?: CSSProperties,
     type?: "button" | "reset" | "submit",
+    /** 
+     * default: size32: button-text-3 \
+     * recommend: size64: button-text-1 | size56: button-text-1 | size48: button-text-1 | size40: button-text-3 | size32: button-text-3 | size24: button-text-5
+     * */ 
     className?: string,
     onClick?: React.MouseEventHandler<HTMLButtonElement>
 }
@@ -23,5 +27,3 @@ export class Button extends React.Component<ButtonProps> {
         </button>
     }
 }
-
-

@@ -16,6 +16,7 @@ interface DialogState {
     status: ComponentStatus,
     content: string,
     onSubmit: Function,
+    onCancel?: Function,
     submitTitle?: string,
     cancelTitle?: string,
     alignment?: DialogAlignment,
@@ -56,7 +57,10 @@ class TDialog extends React.Component<WithTranslation, DialogState> {
                                     </div>
                                 </div>
                                 <div className={`${styles['dialog-footer']} row`}>
-                                    <button type='button' style={this.state.alignment === DialogAlignment.center ? { flex: 1, width: '100%' } : undefined} onClick={() => this.setState({ open: false })} className={`${styles['dialog-action']} row`}>
+                                    <button type='button' style={this.state.alignment === DialogAlignment.center ? { flex: 1, width: '100%' } : undefined} onClick={() => {
+                                        if (this.state.onCancel) this.state.onCancel();
+                                        this.setState({ open: false });
+                                    }} className={`${styles['dialog-action']} row`}>
                                         <Text className='button-text-3'>{this.state.cancelTitle ?? t("cancel")}</Text>
                                     </button>
                                     <button type='button' style={this.state.alignment === DialogAlignment.center ? { flex: 1, width: '100%' } : undefined} onClick={() => {
@@ -86,6 +90,7 @@ export const showDialog = (props: {
     status?: ComponentStatus,
     content?: string,
     onSubmit?: Function,
+    onCancel?: Function,
     submitTitle?: string,
     cancelTitle?: string,
     alignment?: DialogAlignment
@@ -96,6 +101,7 @@ export const showDialog = (props: {
             status: props.status ?? ComponentStatus.INFOR,
             content: props.content ?? '',
             onSubmit: props.onSubmit ?? (() => { }),
+            onCancel: props.onCancel,
             submitTitle: props.submitTitle,
             cancelTitle: props.cancelTitle,
             alignment: props.alignment

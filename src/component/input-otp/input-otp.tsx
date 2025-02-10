@@ -1,5 +1,5 @@
 import React, { createRef, CSSProperties, ReactNode } from "react";
-import styles from './input-opt.module.css'
+import styles from './input-otp.module.css'
 
 interface Props {
     id?: string,
@@ -14,7 +14,7 @@ interface Props {
     helperTextColor?: string
 }
 
-export class InputOpt extends React.Component<Props> {
+export class InputOtp extends React.Component<Props> {
     private containerRef = createRef<HTMLDivElement>()
     constructor(props: Props | Readonly<Props>) {
         super(props);
