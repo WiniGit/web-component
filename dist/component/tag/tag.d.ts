@@ -7,6 +7,10 @@ interface TagProps {
     suffix?: ReactNode;
     disabled?: boolean;
     style?: CSSProperties;
+    /**
+     * default: size24: button-text-6 \
+     * recommend: size24: button-text-6 | size32: button-text-4
+     * */
     className?: string;
     status?: ComponentStatus;
     onClick?: React.MouseEventHandler<HTMLDivElement>;

@@ -12,18 +12,24 @@ export declare enum CalendarType {
 }
 interface CalendarProps extends WithTranslation {
     id?: string;
-    value?: Date;
+    value?: Date | {
+        sTime: Date;
+        eTime: Date;
+    };
+    range?: boolean;
     min?: Date;
     max?: Date;
-    onSelect?: (props: Date) => void;
+    onSelect?: (props: Date | {
+        sTime: Date;
+        eTime: Date;
+    }) => void;
     disabled?: boolean;
     helperText?: string;
     helperTextColor?: string;
     placeholder?: string;
     className?: string;
     style?: CSSProperties;
-    type: CalendarType;
-    showSidebar?: boolean;
+    header?: ReactNode;
     footer?: ReactNode;
 }
 export declare const Calendar: React.ComponentType<Omit<import("react-i18next/helpers").$Subtract<CalendarProps, import("react-i18next").WithTranslationProps>, keyof WithTranslation<Ns, undefined>> & import("react-i18next").WithTranslationProps>;

@@ -106,7 +106,11 @@ var TDialog = /** @class */ (function (_super) {
                             react_1.default.createElement(index_1.Text, { className: 'heading-6', style: { textAlign: this.state.alignment === DialogAlignment.center ? 'center' : 'start' } }, this.state.title),
                             react_1.default.createElement(index_1.Text, { className: 'body-3', style: { textAlign: this.state.alignment === DialogAlignment.center ? 'center' : 'start' } }, this.state.content))),
                     react_1.default.createElement("div", { className: "".concat(dialog_module_css_1.default['dialog-footer'], " row") },
-                        react_1.default.createElement("button", { type: 'button', style: this.state.alignment === DialogAlignment.center ? { flex: 1, width: '100%' } : undefined, onClick: function () { return _this.setState({ open: false }); }, className: "".concat(dialog_module_css_1.default['dialog-action'], " row") },
+                        react_1.default.createElement("button", { type: 'button', style: this.state.alignment === DialogAlignment.center ? { flex: 1, width: '100%' } : undefined, onClick: function () {
+                                if (_this.state.onCancel)
+                                    _this.state.onCancel();
+                                _this.setState({ open: false });
+                            }, className: "".concat(dialog_module_css_1.default['dialog-action'], " row") },
                             react_1.default.createElement(index_1.Text, { className: 'button-text-3' }, (_a = this.state.cancelTitle) !== null && _a !== void 0 ? _a : t("cancel"))),
                         react_1.default.createElement("button", { type: 'button', style: this.state.alignment === DialogAlignment.center ? { flex: 1, width: '100%' } : undefined, onClick: function () {
                                 _this.state.onSubmit();
@@ -130,6 +134,7 @@ var showDialog = function (props) {
             status: (_b = props.status) !== null && _b !== void 0 ? _b : index_1.ComponentStatus.INFOR,
             content: (_c = props.content) !== null && _c !== void 0 ? _c : '',
             onSubmit: (_d = props.onSubmit) !== null && _d !== void 0 ? _d : (function () { }),
+            onCancel: props.onCancel,
             submitTitle: props.submitTitle,
             cancelTitle: props.cancelTitle,
             alignment: props.alignment

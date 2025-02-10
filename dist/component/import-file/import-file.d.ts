@@ -23,6 +23,7 @@ interface ImportFileProps extends WithTranslation {
     helperText?: string;
     helperTextColor?: string;
     disabled?: boolean;
+    fileTagStyle?: CSSProperties;
     /**
     * maxSize unit: kb (kilobytes)
     */

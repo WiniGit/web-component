@@ -11,6 +11,7 @@ export declare const showDialog: (props: {
     status?: ComponentStatus;
     content?: string;
     onSubmit?: Function;
+    onCancel?: Function;
     submitTitle?: string;
     cancelTitle?: string;
     alignment?: DialogAlignment;
