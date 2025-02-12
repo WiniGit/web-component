@@ -50,69 +50,69 @@
 }
 
 button[class~="button-grey"] {
-    background-color: var(--neutral-main-background-color);
+    background-color: var(--neutral-main-background-color) !important;
 }
 
 button[class~="button-grey"] * {
-    color: var(--neutral-text-subtitle-color);
-    --color: var(--neutral-text-subtitle-color);
+    color: var(--neutral-text-subtitle-color) !important;
+    --color: var(--neutral-text-subtitle-color) !important;
 }
 
 button[class~="button-primary"] {
-    background-color: var(--primary-main-color);
-    border-color: var(--primary-main-color);
+    background-color: var(--primary-main-color) !important;
+    border-color: var(--primary-main-color) !important;
 }
 
 button[class~="button-primary"] * {
-    color: var(--neutral-text-stable-color);
-    --color: var(--neutral-text-stable-color);
+    color: var(--neutral-text-stable-color) !important;
+    --color: var(--neutral-text-stable-color) !important;
 }
 
 button[class~="button-neutral"] {
-    border-color: var(--neutral-bolder-border-color);
+    border-color: var(--neutral-bolder-border-color) !important;
 }
 
 button[class~="button-neutral"] * {
-    color: var(--neutral-text-subtitle-color);
-    --color: var(--neutral-text-subtitle-color);
+    color: var(--neutral-text-subtitle-color) !important;
+    --color: var(--neutral-text-subtitle-color) !important;
 }
 
 button[class~="button-infor"] {
-    background-color: var(--infor-background);
-    border-color: var(--infor-main-color);
+    background-color: var(--infor-background) !important;
+    border-color: var(--infor-main-color) !important;
 }
 
 button[class~="button-infor"] * {
-    color: var(--infor-main-color);
-    --color: var(--infor-main-color);
+    color: var(--infor-main-color) !important;
+    --color: var(--infor-main-color) !important;
 }
 
 button[class~="button-warning"] {
-    background-color: var(--warning-background);
-    border-color: var(--warning-main-color);
+    background-color: var(--warning-background) !important;
+    border-color: var(--warning-main-color) !important;
 }
 
 button[class~="button-warning"] * {
-    color: var(--warning-main-color);
-    --color: var(--warning-main-color);
+    color: var(--warning-main-color) !important;
+    --color: var(--warning-main-color) !important;
 }
 
 button[class~="button-error"] {
-    background-color: var(--error-background);
-    border-color: var(--error-main-color);
+    background-color: var(--error-background) !important;
+    border-color: var(--error-main-color) !important;
 }
 
 button[class~="button-error"] * {
-    color: var(--error-main-color);
-    --color: var(--error-main-color);
+    color: var(--error-main-color) !important;
+    --color: var(--error-main-color) !important;
 }
 
 button[class~="button-success"] {
-    background-color: var(--success-background);
-    border-color: var(--success-main-color);
+    background-color: var(--success-background) !important;
+    border-color: var(--success-main-color) !important;
 }
 
 button[class~="button-success"] * {
-    color: var(--success-main-color);
-    --color: var(--success-main-color);
+    color: var(--success-main-color) !important;
+    --color: var(--success-main-color) !important;
 }
