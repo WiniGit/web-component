@@ -331,7 +331,8 @@ var TCalendar = /** @class */ (function (_super) {
     };
     TCalendar.prototype.render = function () {
         var _this = this;
-        return react_1.default.createElement("div", { className: "".concat(calendar_module_css_1.default['calendar-container'], " col") },
+        var _a;
+        return react_1.default.createElement("div", { className: "".concat(calendar_module_css_1.default['calendar-container'], " col ").concat((_a = this.props.className) !== null && _a !== void 0 ? _a : ""), style: this.props.style },
             this.props.header,
             react_1.default.createElement("div", { className: "".concat(calendar_module_css_1.default['picker-date-header'], " row") },
                 react_1.default.createElement("button", { type: 'button', onClick: function () {
