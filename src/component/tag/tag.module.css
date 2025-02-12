@@ -5,7 +5,7 @@
     justify-content: center;
 }
 
-.tag-container.size32 {
+.tag-container[class~="size32"] {
     padding: 4px 11px;
     gap: 8px;
 }

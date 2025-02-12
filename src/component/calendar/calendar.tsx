@@ -321,7 +321,7 @@ class TCalendar extends React.Component<CalendarProps, CalendarState> {
     }
 
     render(): React.ReactNode {
-        return <div className={`${styles['calendar-container']} col`}>
+        return <div className={`${styles['calendar-container']} col ${this.props.className ?? ""}`} style={this.props.style}>
             {this.props.header}
             <div className={`${styles['picker-date-header']} row`}>
                 <button type='button'

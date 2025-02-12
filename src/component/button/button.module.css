@@ -4,25 +4,30 @@
     gap: 0.8rem;
     justify-content: center;
     color: var(--neutral-text-subtitle-color, #61616B);
+    width: fit-content;
 }
 
-.button-container.size64 {
+.button-container[class~="border"] {
+    border: var(--neutral-main-border);
+}
+
+.button-container[class~="size64"] {
     padding: 2rem 2.4rem;
 }
 
-.button-container.size56 {
+.button-container[class~="size56"] {
     padding: 1.6rem 2rem;
 }
 
-.button-container.size48 {
+.button-container[class~="size48"] {
     padding: 1.2rem 2rem;
 }
 
-.button-container.size40 {
+.button-container[class~="size40"] {
     padding: 0.9rem 1.6rem;
 }
 
-.button-container.size24 {
+.button-container[class~="size24"] {
     padding: 0.4rem 0.8rem;
 }
 
@@ -42,4 +47,72 @@
 .button-container:disabled {
     background-color: var(--neutral-disable-background-color, #dddde1);
     color: var(--neutral-text-disabled-color);
+}
+
+button[class~="button-grey"] {
+    background-color: var(--neutral-main-background-color);
+}
+
+button[class~="button-grey"] * {
+    color: var(--neutral-text-subtitle-color);
+    --color: var(--neutral-text-subtitle-color);
+}
+
+button[class~="button-primary"] {
+    background-color: var(--primary-main-color);
+    border-color: var(--primary-main-color);
+}
+
+button[class~="button-primary"] * {
+    color: var(--neutral-text-stable-color);
+    --color: var(--neutral-text-stable-color);
+}
+
+button[class~="button-neutral"] {
+    border-color: var(--neutral-bolder-border-color);
+}
+
+button[class~="button-neutral"] * {
+    color: var(--neutral-text-subtitle-color);
+    --color: var(--neutral-text-subtitle-color);
+}
+
+button[class~="button-infor"] {
+    background-color: var(--infor-background);
+    border-color: var(--infor-main-color);
+}
+
+button[class~="button-infor"] * {
+    color: var(--infor-main-color);
+    --color: var(--infor-main-color);
+}
+
+button[class~="button-warning"] {
+    background-color: var(--warning-background);
+    border-color: var(--warning-main-color);
+}
+
+button[class~="button-warning"] * {
+    color: var(--warning-main-color);
+    --color: var(--warning-main-color);
+}
+
+button[class~="button-error"] {
+    background-color: var(--error-background);
+    border-color: var(--error-main-color);
+}
+
+button[class~="button-error"] * {
+    color: var(--error-main-color);
+    --color: var(--error-main-color);
+}
+
+button[class~="button-success"] {
+    background-color: var(--success-background);
+    border-color: var(--success-main-color);
+}
+
+button[class~="button-success"] * {
+    color: var(--success-main-color);
+    --color: var(--success-main-color);
 }
