@@ -6,6 +6,7 @@ import { Checkbox } from '../checkbox/checkbox'
 import { Text } from '../text/text'
 import { Winicon } from '../wini-icon/winicon'
 import { WithTranslation, withTranslation } from 'react-i18next';
+import { PopupOverlay } from '../popup/popup'
 
 interface SelectMultipleProps extends WithTranslation {
     id?: string,
@@ -36,6 +37,7 @@ interface SelectMultipleState {
 
 class TSelectMultiple extends React.Component<SelectMultipleProps, SelectMultipleState> {
     private containerRef = createRef<HTMLDivElement>()
+    private inputRef = createRef<HTMLInputElement>()
     constructor(props: SelectMultipleProps) {
         super(props)
         this.state = {
@@ -195,10 +197,9 @@ class TSelectMultiple extends React.Component<SelectMultipleProps, SelectMultipl
                         <Winicon src={"outline/user interface/e-remove"} size={'1.2rem'} />
                     </div>
                 })}
-                {(!this.state.value.length || this.state.isOpen) && <input autoFocus={this.state.value.length > 0} onChange={this.search} placeholder={this.state.value.length ? undefined : this.props.placeholder}
+                {(!this.state.value.length || this.state.isOpen) && <input ref={this.inputRef} autoFocus={this.state.value.length > 0} onChange={this.search} placeholder={this.state.value.length ? undefined : this.props.placeholder}
                     onBlur={ev => {
-                        if (this.state.onSelect) ev.target.focus()
-                        else this.setState({ ...this.state, isOpen: false, onSelect: null })
+                        if (this.state.isOpen) ev.target.focus()
                     }}
                 />}
             </div>
@@ -214,16 +215,17 @@ class TSelectMultiple extends React.Component<SelectMultipleProps, SelectMultipl
             </div>}
             {this.state.isOpen &&
                 ReactDOM.createPortal(
-                    <div className={`${styles['select-multi-popup']} select-multi-popup col ${this.props.popupClassName ?? ""}`}
+                    <PopupOverlay className={`${styles['select-multi-popup']} select-multi-popup col ${this.props.popupClassName ?? ""}`}
                         style={this.state.style ?? {
                             top: this.state.offset.y + this.state.offset.height + 2 + 'px',
                             left: this.state.offset.x + 'px',
                             width: this.state.offset.width,
                         }}
-                        onMouseOver={ev => this.setState({ ...this.state, onSelect: ev.target })}
-                        onMouseOut={() => this.setState({ ...this.state, onSelect: null })}
+                        onClose={(ev) => {
+                            if (ev.target !== this.inputRef.current) this.setState({ ...this.state, isOpen: false })
+                        }}
                     >
-                        <div style={{ padding: '1.2rem 1.6rem', width: '100%', borderBottom: '1px solid #161D2414' }}>
+                        <div style={{ padding: '1.2rem 1.6rem', width: '100%', borderBottom: "var(--neutral-main-border)" }}>
                             {(() => {
                                 const _list = (this.state.search ?? this.props.options ?? [])
                                 const isSelectedAll = _list.every(item => this.state.value.some(vl => vl === item.id))
@@ -252,7 +254,7 @@ class TSelectMultiple extends React.Component<SelectMultipleProps, SelectMultipl
                                 <div className={styles['no-results-found']}>{t("noResultFound")}</div>
                             )}
                         </div>
-                    </div>,
+                    </PopupOverlay>,
                     document.body
                 )}
         </div>

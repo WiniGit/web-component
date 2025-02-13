@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom'
 import { Winicon } from '../wini-icon/winicon'
 import { Text } from '../text/text'
 import { WithTranslation, withTranslation } from 'react-i18next';
+import { PopupOverlay } from '../popup/popup'
 
 export interface OptionsItem {
     id: string | number,
@@ -195,10 +196,8 @@ class TSelect1 extends React.Component<Select1Props, Select1State> {
         >
             {this.props.prefix}
             {(!_value || typeof _value.name === "string" || typeof _value.name === "number") ? <input ref={this.inputRef} readOnly={this.props.readOnly} onChange={this.search} placeholder={this.props.placeholder}
-                onKeyDown={this.onKeyDown}
                 onBlur={ev => {
                     if (this.state.onSelect && !this.props.readOnly) ev.target.focus()
-                    else if (!this.state.onSelect) this.setState({ ...this.state, isOpen: false, onSelect: null })
                 }}
             /> : _value.name}
             {this.props.suffix ?? <div ref={iconRef => {
@@ -208,16 +207,17 @@ class TSelect1 extends React.Component<Select1Props, Select1State> {
             </div>}
             {this.state.isOpen &&
                 ReactDOM.createPortal(
-                    <div ref={(popupRef) => {
-                        if (popupRef && this.props.onOpenOptions) this.props.onOpenOptions(popupRef)
-                    }} className={`${styles['select1-popup']} select1-popup col ${this.props.popupClassName ?? ""}`}
+                    <PopupOverlay
+                        onOpen={this.props.onOpenOptions}
+                        className={`${styles['select1-popup']} select1-popup col ${this.props.popupClassName ?? ""}`}
                         style={this.state.style ?? {
                             top: this.state.offset.y + this.state.offset.height + 2 + 'px',
                             left: this.state.offset.x + 'px',
                             width: this.state.offset.width,
                         }}
-                        onMouseOver={ev => this.setState({ ...this.state, onSelect: ev.target })}
-                        onMouseOut={() => this.setState({ ...this.state, onSelect: null })}
+                        onClose={(ev) => {
+                            if (ev.target !== this.inputRef.current) this.setState({ ...this.state, isOpen: false })
+                        }}
                     >
                         <div className={`col ${styles['select-body']}`} onScroll={this.props.handleLoadmore ? (ev) => {
                             if (this.props.handleLoadmore) {
@@ -239,7 +239,7 @@ class TSelect1 extends React.Component<Select1Props, Select1State> {
                                 <div className={styles['no-results-found']}>{t("noResultFound")}</div>
                             )}
                         </div>
-                    </div>,
+                    </PopupOverlay>,
                     document.body
                 )}
         </div>

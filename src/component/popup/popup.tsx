@@ -103,21 +103,28 @@ export class Popup extends React.Component<Object, PopupState> {
     }
 }
 
-function PopupOverlay({ children, onClose, className }: { children?: ReactNode, className?: string, onClose?: () => void }) {
+export function PopupOverlay({ children, onClose, className, style, onOpen }: { children?: ReactNode, className?: string, onClose?: (ev: MouseEvent) => void, style?: CSSProperties, onOpen?: (ev: HTMLDivElement) => void }) {
     const overlayRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
         if (overlayRef.current && onClose) {
             const onClickDropDown = (ev: any) => {
-                if (ev.target !== overlayRef.current && !overlayRef.current!.contains(ev.target)) onClose()
+                if (ev.target !== overlayRef.current && !overlayRef.current!.contains(ev.target)) onClose(ev)
             }
-            window.document.body.addEventListener("click", onClickDropDown)
+            window.document.body.addEventListener("mousedown", onClickDropDown)
             return () => {
-                window.document.body.removeEventListener("click", onClickDropDown)
+                window.document.body.removeEventListener("mousedown", onClickDropDown)
             }
         }
     }, [overlayRef])
 
-    return <div ref={overlayRef} className={`popup-overlay ${className ?? ""}`}>{children}</div>
+    useEffect(() => {
+        if (overlayRef.current && onOpen) onOpen(overlayRef.current)
+    }, [overlayRef, onOpen])
 
+    return <div
+        ref={overlayRef}
+        className={`popup-overlay ${className ?? ""}`}
+        style={style}
+    >{children}</div>
 }

@@ -32,6 +32,8 @@ export class CustomSlider extends React.Component<SliderProps, SliderState> {
             page: 0
         }
         this.autoPlay = this.autoPlay.bind(this)
+        this.nextPage = this.nextPage.bind(this)
+        this.previousPage = this.previousPage.bind(this)
     }
 
     nextPage = () => {
