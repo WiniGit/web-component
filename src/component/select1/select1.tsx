@@ -209,35 +209,36 @@ class TSelect1 extends React.Component<Select1Props, Select1State> {
                 ReactDOM.createPortal(
                     <PopupOverlay
                         onOpen={this.props.onOpenOptions}
-                        className={`${styles['select1-popup']} hidden-overlay select1-popup col ${this.props.popupClassName ?? ""}`}
-                        style={this.state.style ?? {
-                            top: this.state.offset.y + this.state.offset.height + 2 + 'px',
-                            left: this.state.offset.x + 'px',
-                            width: this.state.offset.width,
-                        }}
+                        className={`hidden-overlay`}
                         onClose={(ev) => {
                             if (ev.target !== this.inputRef.current) this.setState({ ...this.state, isOpen: false })
                         }}
                     >
-                        <div className={`col ${styles['select-body']}`} onScroll={this.props.handleLoadmore ? (ev) => {
-                            if (this.props.handleLoadmore) {
-                                let scrollElement = ev.target as HTMLDivElement
-                                this.props.handleLoadmore(Math.round(scrollElement.offsetHeight + scrollElement.scrollTop) >= (scrollElement.scrollHeight - 1), ev)
-                            }
-                        } : undefined}>
-                            {(this.state.search ?? this.state.options).filter(e => !e.parentId).map(item => {
-                                return <OptionsItemTile
-                                    key={item.id}
-                                    item={item}
-                                    children={(this.state.search ?? this.state.options).filter(e => e.parentId === item.id)}
-                                    selected={this.state.selected === item.id}
-                                    onClick={this.onSelect}
-                                    treeData={(this.state.search ?? this.state.options).some(e => e.parentId)}
-                                />
-                            })}
-                            {(!this.state.search?.length && !this.props.options?.length) && (
-                                <div className={styles['no-results-found']}>{t("noResultFound")}</div>
-                            )}
+                        <div className={`${styles['select1-popup']} select1-popup col ${this.props.popupClassName ?? ""}`} style={this.state.style ?? {
+                            top: this.state.offset.y + this.state.offset.height + 2 + 'px',
+                            left: this.state.offset.x + 'px',
+                            width: this.state.offset.width,
+                        }}>
+                            <div className={`col ${styles['select-body']}`} onScroll={this.props.handleLoadmore ? (ev) => {
+                                if (this.props.handleLoadmore) {
+                                    let scrollElement = ev.target as HTMLDivElement
+                                    this.props.handleLoadmore(Math.round(scrollElement.offsetHeight + scrollElement.scrollTop) >= (scrollElement.scrollHeight - 1), ev)
+                                }
+                            } : undefined}>
+                                {(this.state.search ?? this.state.options).filter(e => !e.parentId).map(item => {
+                                    return <OptionsItemTile
+                                        key={item.id}
+                                        item={item}
+                                        children={(this.state.search ?? this.state.options).filter(e => e.parentId === item.id)}
+                                        selected={this.state.selected === item.id}
+                                        onClick={this.onSelect}
+                                        treeData={(this.state.search ?? this.state.options).some(e => e.parentId)}
+                                    />
+                                })}
+                                {(!this.state.search?.length && !this.props.options?.length) && (
+                                    <div className={styles['no-results-found']}>{t("noResultFound")}</div>
+                                )}
+                            </div>
                         </div>
                     </PopupOverlay>,
                     document.body
