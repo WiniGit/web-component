@@ -215,7 +215,7 @@ class TSelectMultiple extends React.Component<SelectMultipleProps, SelectMultipl
             </div>}
             {this.state.isOpen &&
                 ReactDOM.createPortal(
-                    <PopupOverlay className={`${styles['select-multi-popup']} select-multi-popup col ${this.props.popupClassName ?? ""}`}
+                    <PopupOverlay className={`${styles['select-multi-popup']} hidden-overlay select-multi-popup col ${this.props.popupClassName ?? ""}`}
                         style={this.state.style ?? {
                             top: this.state.offset.y + this.state.offset.height + 2 + 'px',
                             left: this.state.offset.x + 'px',

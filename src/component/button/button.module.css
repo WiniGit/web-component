@@ -49,70 +49,84 @@
     color: var(--neutral-text-disabled-color);
 }
 
-button[class~="button-grey"] {
+button[class~="button-grey"],
+a[class~="button-grey"] {
     background-color: var(--neutral-main-background-color) !important;
 }
 
-button[class~="button-grey"] * {
+button[class~="button-grey"] *,
+a[class~="button-grey"] * {
     color: var(--neutral-text-subtitle-color) !important;
     --color: var(--neutral-text-subtitle-color) !important;
 }
 
-button[class~="button-primary"] {
+button[class~="button-primary"],
+a[class~="button-primary"] {
     background-color: var(--primary-main-color) !important;
     border-color: var(--primary-main-color) !important;
 }
 
-button[class~="button-primary"] * {
+button[class~="button-primary"] *,
+a[class~="button-primary"] * {
     color: var(--neutral-text-stable-color) !important;
     --color: var(--neutral-text-stable-color) !important;
 }
 
-button[class~="button-neutral"] {
+button[class~="button-neutral"],
+a[class~="button-neutral"] {
     border-color: var(--neutral-bolder-border-color) !important;
 }
 
-button[class~="button-neutral"] * {
+button[class~="button-neutral"] *,
+a[class~="button-neutral"] * {
     color: var(--neutral-text-subtitle-color) !important;
     --color: var(--neutral-text-subtitle-color) !important;
 }
 
-button[class~="button-infor"] {
+button[class~="button-infor"],
+a[class~="button-infor"] {
     background-color: var(--infor-background) !important;
     border-color: var(--infor-main-color) !important;
 }
 
-button[class~="button-infor"] * {
+button[class~="button-infor"] *,
+a[class~="button-infor"] * {
     color: var(--infor-main-color) !important;
     --color: var(--infor-main-color) !important;
 }
 
-button[class~="button-warning"] {
+button[class~="button-warning"],
+a[class~="button-warning"] {
     background-color: var(--warning-background) !important;
     border-color: var(--warning-main-color) !important;
 }
 
-button[class~="button-warning"] * {
+button[class~="button-warning"] *,
+a[class~="button-warning"] * {
     color: var(--warning-main-color) !important;
     --color: var(--warning-main-color) !important;
 }
 
-button[class~="button-error"] {
+button[class~="button-error"],
+a[class~="button-error"] {
     background-color: var(--error-background) !important;
     border-color: var(--error-main-color) !important;
 }
 
-button[class~="button-error"] * {
+button[class~="button-error"] *,
+a[class~="button-error"] * {
     color: var(--error-main-color) !important;
     --color: var(--error-main-color) !important;
 }
 
-button[class~="button-success"] {
+button[class~="button-success"],
+a[class~="button-success"] {
     background-color: var(--success-background) !important;
     border-color: var(--success-main-color) !important;
 }
 
-button[class~="button-success"] * {
+button[class~="button-success"] *,
+a[class~="button-success"] * {
     color: var(--success-main-color) !important;
     --color: var(--success-main-color) !important;
 }

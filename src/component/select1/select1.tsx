@@ -209,7 +209,7 @@ class TSelect1 extends React.Component<Select1Props, Select1State> {
                 ReactDOM.createPortal(
                     <PopupOverlay
                         onOpen={this.props.onOpenOptions}
-                        className={`${styles['select1-popup']} select1-popup col ${this.props.popupClassName ?? ""}`}
+                        className={`${styles['select1-popup']} hidden-overlay select1-popup col ${this.props.popupClassName ?? ""}`}
                         style={this.state.style ?? {
                             top: this.state.offset.y + this.state.offset.height + 2 + 'px',
                             left: this.state.offset.x + 'px',
