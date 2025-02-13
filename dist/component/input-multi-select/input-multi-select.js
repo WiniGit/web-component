@@ -296,41 +296,42 @@ var TSelectMultiple = /** @class */ (function (_super) {
                 }, className: 'row' },
                 react_1.default.createElement(winicon_1.Winicon, { src: this.state.isOpen ? "fill/arrows/up-arrow" : "fill/arrows/down-arrow", size: '1.2rem' })),
             this.state.isOpen &&
-                react_dom_1.default.createPortal(react_1.default.createElement(popup_1.PopupOverlay, { className: "".concat(input_multi_select_module_css_1.default['select-multi-popup'], " hidden-overlay select-multi-popup col ").concat((_e = this.props.popupClassName) !== null && _e !== void 0 ? _e : ""), style: (_f = this.state.style) !== null && _f !== void 0 ? _f : {
-                        top: this.state.offset.y + this.state.offset.height + 2 + 'px',
-                        left: this.state.offset.x + 'px',
-                        width: this.state.offset.width,
-                    }, onClose: function (ev) {
+                react_dom_1.default.createPortal(react_1.default.createElement(popup_1.PopupOverlay, { className: "hidden-overlay", onClose: function (ev) {
                         if (ev.target !== _this.inputRef.current)
                             _this.setState(__assign(__assign({}, _this.state), { isOpen: false }));
                     } },
-                    react_1.default.createElement("div", { style: { padding: '1.2rem 1.6rem', width: '100%', borderBottom: "var(--neutral-main-border)" } }, (function () {
-                        var _a, _b;
-                        var _list = ((_b = (_a = _this.state.search) !== null && _a !== void 0 ? _a : _this.props.options) !== null && _b !== void 0 ? _b : []);
-                        var isSelectedAll = _list.every(function (item) { return _this.state.value.some(function (vl) { return vl === item.id; }); });
-                        return react_1.default.createElement(text_1.Text, { onClick: function () {
-                                var newValue = [];
-                                if (_list.length) {
-                                    if (isSelectedAll) {
-                                        newValue = _this.state.value.filter(function (vl) { return _list.every(function (item) { return vl !== item.id || item.disabled; }); });
+                    react_1.default.createElement("div", { className: "".concat(input_multi_select_module_css_1.default['select-multi-popup'], " select-multi-popup col ").concat((_e = this.props.popupClassName) !== null && _e !== void 0 ? _e : ""), style: (_f = this.state.style) !== null && _f !== void 0 ? _f : {
+                            top: this.state.offset.y + this.state.offset.height + 2 + 'px',
+                            left: this.state.offset.x + 'px',
+                            width: this.state.offset.width,
+                        } },
+                        react_1.default.createElement("div", { style: { padding: '1.2rem 1.6rem', width: '100%', borderBottom: "var(--neutral-main-border)" } }, (function () {
+                            var _a, _b;
+                            var _list = ((_b = (_a = _this.state.search) !== null && _a !== void 0 ? _a : _this.props.options) !== null && _b !== void 0 ? _b : []);
+                            var isSelectedAll = _list.every(function (item) { return _this.state.value.some(function (vl) { return vl === item.id; }); });
+                            return react_1.default.createElement(text_1.Text, { onClick: function () {
+                                    var newValue = [];
+                                    if (_list.length) {
+                                        if (isSelectedAll) {
+                                            newValue = _this.state.value.filter(function (vl) { return _list.every(function (item) { return vl !== item.id || item.disabled; }); });
+                                        }
+                                        else {
+                                            newValue = __spreadArray(__spreadArray([], _this.state.value, true), _list.filter(function (item) { return _this.state.value.every(function (vl) { return vl !== item.id; }) && !item.disabled; }).map(function (e) { return e.id; }), true);
+                                        }
                                     }
-                                    else {
-                                        newValue = __spreadArray(__spreadArray([], _this.state.value, true), _list.filter(function (item) { return _this.state.value.every(function (vl) { return vl !== item.id; }) && !item.disabled; }).map(function (e) { return e.id; }), true);
-                                    }
+                                    _this.setState(__assign(__assign({}, _this.state), { value: newValue }));
+                                    if (_this.props.onChange)
+                                        _this.props.onChange(newValue);
+                                }, className: 'button-text-3', style: { color: _list.length ? 'var(--infor-main-color)' : 'var(--neutral-text-title-color)' } }, _list.length && isSelectedAll ? "".concat(t("remove"), " ").concat(t("all").toLowerCase()) : "".concat(t("select"), " ").concat(t("all").toLowerCase()));
+                        })()),
+                        react_1.default.createElement("div", { className: "col ".concat(input_multi_select_module_css_1.default['select-body']), onScroll: this.props.handleLoadmore ? function (ev) {
+                                if (_this.props.handleLoadmore) {
+                                    var scrollElement = ev.target;
+                                    _this.props.handleLoadmore(Math.round(scrollElement.offsetHeight + scrollElement.scrollTop) >= (scrollElement.scrollHeight - 1), ev);
                                 }
-                                _this.setState(__assign(__assign({}, _this.state), { value: newValue }));
-                                if (_this.props.onChange)
-                                    _this.props.onChange(newValue);
-                            }, className: 'button-text-3', style: { color: _list.length ? 'var(--infor-main-color)' : 'var(--neutral-text-title-color)' } }, _list.length && isSelectedAll ? "".concat(t("remove"), " ").concat(t("all").toLowerCase()) : "".concat(t("select"), " ").concat(t("all").toLowerCase()));
-                    })()),
-                    react_1.default.createElement("div", { className: "col ".concat(input_multi_select_module_css_1.default['select-body']), onScroll: this.props.handleLoadmore ? function (ev) {
-                            if (_this.props.handleLoadmore) {
-                                var scrollElement = ev.target;
-                                _this.props.handleLoadmore(Math.round(scrollElement.offsetHeight + scrollElement.scrollTop) >= (scrollElement.scrollHeight - 1), ev);
-                            }
-                        } : undefined },
-                        ((_g = this.state.search) !== null && _g !== void 0 ? _g : this.state.options).filter(function (e) { return !e.parentId; }).map(function (item) { return _this.renderOptions(item); }),
-                        (!((_h = this.state.search) === null || _h === void 0 ? void 0 : _h.length) && !((_j = this.props.options) === null || _j === void 0 ? void 0 : _j.length)) && (react_1.default.createElement("div", { className: input_multi_select_module_css_1.default['no-results-found'] }, t("noResultFound"))))), document.body));
+                            } : undefined },
+                            ((_g = this.state.search) !== null && _g !== void 0 ? _g : this.state.options).filter(function (e) { return !e.parentId; }).map(function (item) { return _this.renderOptions(item); }),
+                            (!((_h = this.state.search) === null || _h === void 0 ? void 0 : _h.length) && !((_j = this.props.options) === null || _j === void 0 ? void 0 : _j.length)) && (react_1.default.createElement("div", { className: input_multi_select_module_css_1.default['no-results-found'] }, t("noResultFound")))))), document.body));
     };
     return TSelectMultiple;
 }(react_1.default.Component));
