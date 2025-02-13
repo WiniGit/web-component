@@ -1,4 +1,4 @@
-import React, { createRef, CSSProperties, ReactNode } from 'react'
+import React, { createRef, CSSProperties, ReactNode, useEffect, useRef } from 'react'
 import ReactDOM from 'react-dom'
 import './popup.css'
 
@@ -14,7 +14,7 @@ interface PopupState {
 }
 
 export const showPopup = (props: {
-    ref: React.MutableRefObject<Popup | undefined>,
+    ref: React.RefObject<Popup | undefined>,
     heading?: ReactNode,
     content?: ReactNode,
     body?: ReactNode,
@@ -34,7 +34,7 @@ export const showPopup = (props: {
     })
 }
 
-export const closePopup = (ref: React.MutableRefObject<Popup>) => {
+export const closePopup = (ref: React.RefObject<Popup>) => {
     ref.current.onClose()
 }
 
@@ -84,10 +84,7 @@ export class Popup extends React.Component<Object, PopupState> {
             <>
                 {this.state.open &&
                     ReactDOM.createPortal(
-                        <div className={`popup-overlay ${this.state.clickOverlayClosePopup ? 'hidden-overlay' : ''}`} onClick={this.state.clickOverlayClosePopup ? (ev) => {
-                            if ((ev.target as HTMLElement).classList.contains('popup-overlay'))
-                                this.onClose()
-                        } : undefined}>
+                        <PopupOverlay className={this.state.clickOverlayClosePopup ? 'hidden-overlay' : ''} onClose={this.state.clickOverlayClosePopup ? () => { this.onClose() } : undefined}>
                             {this.state.content ?? <div ref={this.ref} className='popup-container col' onClick={e => e.stopPropagation()} style={this.state.style} >
                                 {this.state.heading}
                                 {this.state.body}
@@ -98,10 +95,29 @@ export class Popup extends React.Component<Object, PopupState> {
                                     </svg>
                                 </button>}
                             </div>}
-                        </div>,
+                        </PopupOverlay>,
                         document.body
                     )}
             </>
         )
     }
+}
+
+function PopupOverlay({ children, onClose, className }: { children?: ReactNode, className?: string, onClose?: () => void }) {
+    const overlayRef = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+        if (overlayRef.current && onClose) {
+            const onClickDropDown = (ev: any) => {
+                if (ev.target !== overlayRef.current && !overlayRef.current!.contains(ev.target)) onClose()
+            }
+            window.document.body.addEventListener("click", onClickDropDown)
+            return () => {
+                window.document.body.removeEventListener("click", onClickDropDown)
+            }
+        }
+    }, [overlayRef])
+
+    return <div ref={overlayRef} className={`popup-overlay ${className ?? ""}`}>{children}</div>
+
 }

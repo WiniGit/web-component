@@ -5,6 +5,10 @@
     justify-content: center;
 }
 
+.tag-container[class~="border"] {
+    border: var(--neutral-main-border);
+}
+
 .tag-container[class~="size32"] {
     padding: 4px 11px;
     gap: 8px;
