@@ -63,6 +63,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Popup = exports.closePopup = exports.showPopup = void 0;
+exports.PopupOverlay = PopupOverlay;
 var react_1 = __importStar(require("react"));
 var react_dom_1 = __importDefault(require("react-dom"));
 require("./popup.css");
@@ -134,19 +135,23 @@ var Popup = /** @class */ (function (_super) {
 }(react_1.default.Component));
 exports.Popup = Popup;
 function PopupOverlay(_a) {
-    var children = _a.children, onClose = _a.onClose, className = _a.className;
+    var children = _a.children, onClose = _a.onClose, className = _a.className, style = _a.style, onOpen = _a.onOpen;
     var overlayRef = (0, react_1.useRef)(null);
     (0, react_1.useEffect)(function () {
         if (overlayRef.current && onClose) {
             var onClickDropDown_1 = function (ev) {
                 if (ev.target !== overlayRef.current && !overlayRef.current.contains(ev.target))
-                    onClose();
+                    onClose(ev);
             };
-            window.document.body.addEventListener("click", onClickDropDown_1);
+            window.document.body.addEventListener("mousedown", onClickDropDown_1);
             return function () {
-                window.document.body.removeEventListener("click", onClickDropDown_1);
+                window.document.body.removeEventListener("mousedown", onClickDropDown_1);
             };
         }
     }, [overlayRef]);
-    return react_1.default.createElement("div", { ref: overlayRef, className: "popup-overlay ".concat(className !== null && className !== void 0 ? className : "") }, children);
+    (0, react_1.useEffect)(function () {
+        if (overlayRef.current && onOpen)
+            onOpen(overlayRef.current);
+    }, [overlayRef, onOpen]);
+    return react_1.default.createElement("div", { ref: overlayRef, className: "popup-overlay ".concat(className !== null && className !== void 0 ? className : ""), style: style }, children);
 }

@@ -30,4 +30,11 @@ export declare class Popup extends React.Component<Object, PopupState> {
     componentDidUpdate(prevProps: Readonly<Object>, prevState: Readonly<PopupState>): void;
     render(): React.JSX.Element;
 }
+export declare function PopupOverlay({ children, onClose, className, style, onOpen }: {
+    children?: ReactNode;
+    className?: string;
+    onClose?: (ev: MouseEvent) => void;
+    style?: CSSProperties;
+    onOpen?: (ev: HTMLDivElement) => void;
+}): React.JSX.Element;
 export {};

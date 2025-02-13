@@ -105,6 +105,7 @@ var react_dom_1 = __importDefault(require("react-dom"));
 var winicon_1 = require("../wini-icon/winicon");
 var text_1 = require("../text/text");
 var react_i18next_1 = require("react-i18next");
+var popup_1 = require("../popup/popup");
 ;
 var TSelect1 = /** @class */ (function (_super) {
     __extends(TSelect1, _super);
@@ -269,25 +270,23 @@ var TSelect1 = /** @class */ (function (_super) {
                 }
             } },
             this.props.prefix,
-            (!_value || typeof _value.name === "string" || typeof _value.name === "number") ? react_1.default.createElement("input", { ref: this.inputRef, readOnly: this.props.readOnly, onChange: this.search, placeholder: this.props.placeholder, onKeyDown: this.onKeyDown, onBlur: function (ev) {
+            (!_value || typeof _value.name === "string" || typeof _value.name === "number") ? react_1.default.createElement("input", { ref: this.inputRef, readOnly: this.props.readOnly, onChange: this.search, placeholder: this.props.placeholder, onBlur: function (ev) {
                     if (_this.state.onSelect && !_this.props.readOnly)
                         ev.target.focus();
-                    else if (!_this.state.onSelect)
-                        _this.setState(__assign(__assign({}, _this.state), { isOpen: false, onSelect: null }));
                 } }) : _value.name, (_e = this.props.suffix) !== null && _e !== void 0 ? _e : react_1.default.createElement("div", { ref: function (iconRef) {
                 if ((iconRef === null || iconRef === void 0 ? void 0 : iconRef.parentElement) && iconRef.parentElement.getBoundingClientRect().width < 88)
                     iconRef.style.display = "none";
             }, className: 'row' },
             react_1.default.createElement(winicon_1.Winicon, { src: this.state.isOpen ? "fill/arrows/up-arrow" : "fill/arrows/down-arrow", size: "1.2rem" })),
             this.state.isOpen &&
-                react_dom_1.default.createPortal(react_1.default.createElement("div", { ref: function (popupRef) {
-                        if (popupRef && _this.props.onOpenOptions)
-                            _this.props.onOpenOptions(popupRef);
-                    }, className: "".concat(select1_module_css_1.default['select1-popup'], " select1-popup col ").concat((_f = this.props.popupClassName) !== null && _f !== void 0 ? _f : ""), style: (_g = this.state.style) !== null && _g !== void 0 ? _g : {
+                react_dom_1.default.createPortal(react_1.default.createElement(popup_1.PopupOverlay, { onOpen: this.props.onOpenOptions, className: "".concat(select1_module_css_1.default['select1-popup'], " select1-popup col ").concat((_f = this.props.popupClassName) !== null && _f !== void 0 ? _f : ""), style: (_g = this.state.style) !== null && _g !== void 0 ? _g : {
                         top: this.state.offset.y + this.state.offset.height + 2 + 'px',
                         left: this.state.offset.x + 'px',
                         width: this.state.offset.width,
-                    }, onMouseOver: function (ev) { return _this.setState(__assign(__assign({}, _this.state), { onSelect: ev.target })); }, onMouseOut: function () { return _this.setState(__assign(__assign({}, _this.state), { onSelect: null })); } },
+                    }, onClose: function (ev) {
+                        if (ev.target !== _this.inputRef.current)
+                            _this.setState(__assign(__assign({}, _this.state), { isOpen: false }));
+                    } },
                     react_1.default.createElement("div", { className: "col ".concat(select1_module_css_1.default['select-body']), onScroll: this.props.handleLoadmore ? function (ev) {
                             if (_this.props.handleLoadmore) {
                                 var scrollElement = ev.target;

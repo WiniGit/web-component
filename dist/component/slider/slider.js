@@ -60,6 +60,8 @@ var CustomSlider = /** @class */ (function (_super) {
             page: 0
         };
         _this.autoPlay = _this.autoPlay.bind(_this);
+        _this.nextPage = _this.nextPage.bind(_this);
+        _this.previousPage = _this.previousPage.bind(_this);
         return _this;
     }
     CustomSlider.prototype.componentDidMount = function () {

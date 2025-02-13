@@ -115,6 +115,7 @@ var checkbox_1 = require("../checkbox/checkbox");
 var text_1 = require("../text/text");
 var winicon_1 = require("../wini-icon/winicon");
 var react_i18next_1 = require("react-i18next");
+var popup_1 = require("../popup/popup");
 ;
 var TSelectMultiple = /** @class */ (function (_super) {
     __extends(TSelectMultiple, _super);
@@ -122,6 +123,7 @@ var TSelectMultiple = /** @class */ (function (_super) {
         var _a;
         var _this = _super.call(this, props) || this;
         _this.containerRef = (0, react_1.createRef)();
+        _this.inputRef = (0, react_1.createRef)();
         _this.state = {
             value: (_a = props.value) !== null && _a !== void 0 ? _a : [],
             options: props.options,
@@ -279,11 +281,9 @@ var TSelectMultiple = /** @class */ (function (_super) {
                         react_1.default.createElement(text_1.Text, { style: { color: "var(--neutral-text-title-color)", fontSize: '1.2rem', lineHeight: '1.4rem' } }, optionItem === null || optionItem === void 0 ? void 0 : optionItem.name),
                         react_1.default.createElement(winicon_1.Winicon, { src: "outline/user interface/e-remove", size: '1.2rem' }));
                 }),
-                (!this.state.value.length || this.state.isOpen) && react_1.default.createElement("input", { autoFocus: this.state.value.length > 0, onChange: this.search, placeholder: this.state.value.length ? undefined : this.props.placeholder, onBlur: function (ev) {
-                        if (_this.state.onSelect)
+                (!this.state.value.length || this.state.isOpen) && react_1.default.createElement("input", { ref: this.inputRef, autoFocus: this.state.value.length > 0, onChange: this.search, placeholder: this.state.value.length ? undefined : this.props.placeholder, onBlur: function (ev) {
+                        if (_this.state.isOpen)
                             ev.target.focus();
-                        else
-                            _this.setState(__assign(__assign({}, _this.state), { isOpen: false, onSelect: null }));
                     } })),
             this.props.showClearValueButton && this.state.value.length ? react_1.default.createElement("button", { type: 'button', className: 'row', style: { padding: '0.4rem' }, onClick: function (ev) {
                     ev.stopPropagation();
@@ -296,12 +296,15 @@ var TSelectMultiple = /** @class */ (function (_super) {
                 }, className: 'row' },
                 react_1.default.createElement(winicon_1.Winicon, { src: this.state.isOpen ? "fill/arrows/up-arrow" : "fill/arrows/down-arrow", size: '1.2rem' })),
             this.state.isOpen &&
-                react_dom_1.default.createPortal(react_1.default.createElement("div", { className: "".concat(input_multi_select_module_css_1.default['select-multi-popup'], " select-multi-popup col ").concat((_e = this.props.popupClassName) !== null && _e !== void 0 ? _e : ""), style: (_f = this.state.style) !== null && _f !== void 0 ? _f : {
+                react_dom_1.default.createPortal(react_1.default.createElement(popup_1.PopupOverlay, { className: "".concat(input_multi_select_module_css_1.default['select-multi-popup'], " select-multi-popup col ").concat((_e = this.props.popupClassName) !== null && _e !== void 0 ? _e : ""), style: (_f = this.state.style) !== null && _f !== void 0 ? _f : {
                         top: this.state.offset.y + this.state.offset.height + 2 + 'px',
                         left: this.state.offset.x + 'px',
                         width: this.state.offset.width,
-                    }, onMouseOver: function (ev) { return _this.setState(__assign(__assign({}, _this.state), { onSelect: ev.target })); }, onMouseOut: function () { return _this.setState(__assign(__assign({}, _this.state), { onSelect: null })); } },
-                    react_1.default.createElement("div", { style: { padding: '1.2rem 1.6rem', width: '100%', borderBottom: '1px solid #161D2414' } }, (function () {
+                    }, onClose: function (ev) {
+                        if (ev.target !== _this.inputRef.current)
+                            _this.setState(__assign(__assign({}, _this.state), { isOpen: false }));
+                    } },
+                    react_1.default.createElement("div", { style: { padding: '1.2rem 1.6rem', width: '100%', borderBottom: "var(--neutral-main-border)" } }, (function () {
                         var _a, _b;
                         var _list = ((_b = (_a = _this.state.search) !== null && _a !== void 0 ? _a : _this.props.options) !== null && _b !== void 0 ? _b : []);
                         var isSelectedAll = _list.every(function (item) { return _this.state.value.some(function (vl) { return vl === item.id; }); });
