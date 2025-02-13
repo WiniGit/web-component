@@ -5,6 +5,8 @@ interface ButtonProps {
     prefix?: ReactNode;
     suffix?: ReactNode;
     disabled?: boolean;
+    linkTo?: string;
+    target?: string;
     style?: CSSProperties;
     type?: "button" | "reset" | "submit";
     /**

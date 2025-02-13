@@ -296,7 +296,7 @@ var TSelectMultiple = /** @class */ (function (_super) {
                 }, className: 'row' },
                 react_1.default.createElement(winicon_1.Winicon, { src: this.state.isOpen ? "fill/arrows/up-arrow" : "fill/arrows/down-arrow", size: '1.2rem' })),
             this.state.isOpen &&
-                react_dom_1.default.createPortal(react_1.default.createElement(popup_1.PopupOverlay, { className: "".concat(input_multi_select_module_css_1.default['select-multi-popup'], " select-multi-popup col ").concat((_e = this.props.popupClassName) !== null && _e !== void 0 ? _e : ""), style: (_f = this.state.style) !== null && _f !== void 0 ? _f : {
+                react_dom_1.default.createPortal(react_1.default.createElement(popup_1.PopupOverlay, { className: "".concat(input_multi_select_module_css_1.default['select-multi-popup'], " hidden-overlay select-multi-popup col ").concat((_e = this.props.popupClassName) !== null && _e !== void 0 ? _e : ""), style: (_f = this.state.style) !== null && _f !== void 0 ? _f : {
                         top: this.state.offset.y + this.state.offset.height + 2 + 'px',
                         left: this.state.offset.x + 'px',
                         width: this.state.offset.width,
