@@ -122,10 +122,7 @@ var Popup = /** @class */ (function (_super) {
         var _this = this;
         var _a;
         return (react_1.default.createElement(react_1.default.Fragment, null, this.state.open &&
-            react_dom_1.default.createPortal(react_1.default.createElement("div", { className: "popup-overlay ".concat(this.state.clickOverlayClosePopup ? 'hidden-overlay' : ''), onClick: this.state.clickOverlayClosePopup ? function (ev) {
-                    if (ev.target.classList.contains('popup-overlay'))
-                        _this.onClose();
-                } : undefined }, (_a = this.state.content) !== null && _a !== void 0 ? _a : react_1.default.createElement("div", { ref: this.ref, className: 'popup-container col', onClick: function (e) { return e.stopPropagation(); }, style: this.state.style },
+            react_dom_1.default.createPortal(react_1.default.createElement(PopupOverlay, { className: this.state.clickOverlayClosePopup ? 'hidden-overlay' : '', onClose: this.state.clickOverlayClosePopup ? function () { _this.onClose(); } : undefined }, (_a = this.state.content) !== null && _a !== void 0 ? _a : react_1.default.createElement("div", { ref: this.ref, className: 'popup-container col', onClick: function (e) { return e.stopPropagation(); }, style: this.state.style },
                 this.state.heading,
                 this.state.body,
                 this.state.footer,
@@ -136,3 +133,20 @@ var Popup = /** @class */ (function (_super) {
     return Popup;
 }(react_1.default.Component));
 exports.Popup = Popup;
+function PopupOverlay(_a) {
+    var children = _a.children, onClose = _a.onClose, className = _a.className;
+    var overlayRef = (0, react_1.useRef)(null);
+    (0, react_1.useEffect)(function () {
+        if (overlayRef.current && onClose) {
+            var onClickDropDown_1 = function (ev) {
+                if (ev.target !== overlayRef.current && !overlayRef.current.contains(ev.target))
+                    onClose();
+            };
+            window.document.body.addEventListener("click", onClickDropDown_1);
+            return function () {
+                window.document.body.removeEventListener("click", onClickDropDown_1);
+            };
+        }
+    }, [overlayRef]);
+    return react_1.default.createElement("div", { ref: overlayRef, className: "popup-overlay ".concat(className !== null && className !== void 0 ? className : "") }, children);
+}

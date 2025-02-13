@@ -11,7 +11,7 @@ interface PopupState {
     hideButtonClose?: boolean;
 }
 export declare const showPopup: (props: {
-    ref: React.MutableRefObject<Popup | undefined>;
+    ref: React.RefObject<Popup | undefined>;
     heading?: ReactNode;
     content?: ReactNode;
     body?: ReactNode;
@@ -20,7 +20,7 @@ export declare const showPopup: (props: {
     style?: CSSProperties;
     hideButtonClose?: boolean;
 }) => void;
-export declare const closePopup: (ref: React.MutableRefObject<Popup>) => void;
+export declare const closePopup: (ref: React.RefObject<Popup>) => void;
 export declare class Popup extends React.Component<Object, PopupState> {
     private ref;
     constructor(props: Object | Readonly<Object>);
