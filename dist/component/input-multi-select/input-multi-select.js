@@ -236,7 +236,7 @@ var TSelectMultiple = /** @class */ (function (_super) {
             this.setState(__assign(__assign({}, this.state), { value: (_a = this.props.value) !== null && _a !== void 0 ? _a : [] }));
         //
         if (this.state.isOpen && (prevState.isOpen !== this.state.isOpen || prevState.value.length !== this.state.value.length)) {
-            var thisPopupRect = (_b = document.body.querySelector(":scope > .select-multi-popup")) === null || _b === void 0 ? void 0 : _b.getBoundingClientRect();
+            var thisPopupRect = (_b = this.containerRef.current.querySelector(".select-multi-popup")) === null || _b === void 0 ? void 0 : _b.getBoundingClientRect();
             if (thisPopupRect) {
                 var style = void 0;
                 if (prevState.isOpen !== this.state.isOpen && thisPopupRect.right > document.body.offsetWidth) {
