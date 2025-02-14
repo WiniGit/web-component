@@ -75,7 +75,6 @@
     height: fit-content;
     box-shadow: 0 0 12px 0 #00204d1f;
     align-items: center;
-    padding: 0.8rem 0;
     box-shadow: -20px 20px 40px -4px rgba(145, 158, 171, 0.24), 0px 0px 2px 0px rgba(145, 158, 171, 0.24);
 }
 
@@ -86,7 +85,7 @@
     max-height: 28rem;
     min-height: 8rem;
     width: 100%;
-    padding: 0.6rem 0;
+    padding: 0.4rem 0;
     overflow: hidden auto;
 }
 
