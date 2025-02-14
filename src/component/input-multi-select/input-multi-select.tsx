@@ -143,7 +143,7 @@ class TSelectMultiple extends React.Component<SelectMultipleProps, SelectMultipl
         if (prevProps.value !== this.props.value) this.setState({ ...this.state, value: this.props.value ?? [] })
         //
         if (this.state.isOpen && (prevState.isOpen !== this.state.isOpen || prevState.value.length !== this.state.value.length)) {
-            const thisPopupRect = document.body.querySelector(`:scope > .select-multi-popup`)?.getBoundingClientRect()
+            const thisPopupRect = this.containerRef.current!.querySelector(`.select-multi-popup`)?.getBoundingClientRect()
             if (thisPopupRect) {
                 let style: { top?: string, left?: string, right?: string, bottom?: string, width?: string, height?: string } | undefined;
                 if (prevState.isOpen !== this.state.isOpen && thisPopupRect.right > document.body.offsetWidth) {
