@@ -220,6 +220,15 @@
     color: var(--neutral-text-title-color);
 }
 
+.highlight-1,
+.highlight-2,
+.highlight-3,
+.highlight-4,
+.highlight-5,
+.highlight-6 {
+    font-weight: 700;
+}
+
 .subtitle-1 {
     color: var(--neutral-text-subtitle-color);
 }
