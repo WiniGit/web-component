@@ -213,53 +213,49 @@ class TSelectMultiple extends React.Component<SelectMultipleProps, SelectMultipl
             }} className='row' >
                 <Winicon src={this.state.isOpen ? "fill/arrows/up-arrow" : "fill/arrows/down-arrow"} size={'1.2rem'} />
             </div>}
-            {this.state.isOpen &&
-                ReactDOM.createPortal(
-                    <PopupOverlay
-                        className={`hidden-overlay`}
-                        onClose={(ev) => {
-                            if (ev.target !== this.inputRef.current) this.setState({ ...this.state, isOpen: false })
-                        }}
-                    >
-                        <div className={`${styles['select-multi-popup']} select-multi-popup col ${this.props.popupClassName ?? ""}`}
-                            style={this.state.style ?? {
-                                top: this.state.offset.y + this.state.offset.height + 2 + 'px',
-                                left: this.state.offset.x + 'px',
-                                width: this.state.offset.width,
-                            }}>
-                            <div style={{ padding: '1.2rem 1.6rem', width: '100%', borderBottom: "var(--neutral-main-border)" }}>
-                                {(() => {
-                                    const _list = (this.state.search ?? this.props.options ?? [])
-                                    const isSelectedAll = _list.every(item => this.state.value.some(vl => vl === item.id))
-                                    return <Text onClick={() => {
-                                        let newValue: Array<string | number> = []
-                                        if (_list.length) {
-                                            if (isSelectedAll) {
-                                                newValue = this.state.value.filter(vl => _list.every(item => vl !== item.id || item.disabled))
-                                            } else {
-                                                newValue = [...this.state.value, ..._list.filter(item => this.state.value.every(vl => vl !== item.id) && !item.disabled).map(e => e.id)]
-                                            }
-                                        }
-                                        this.setState({ ...this.state, value: newValue })
-                                        if (this.props.onChange) this.props.onChange(newValue)
-                                    }} className='button-text-3' style={{ color: _list.length ? 'var(--infor-main-color)' : 'var(--neutral-text-title-color)' }}>{_list.length && isSelectedAll ? `${t("remove")} ${t("all").toLowerCase()}` : `${t("select")} ${t("all").toLowerCase()}`}</Text>
-                                })()}
-                            </div>
-                            <div className={`col ${styles['select-body']}`} onScroll={this.props.handleLoadmore ? (ev) => {
-                                if (this.props.handleLoadmore) {
-                                    let scrollElement = ev.target as HTMLDivElement
-                                    this.props.handleLoadmore(Math.round(scrollElement.offsetHeight + scrollElement.scrollTop) >= (scrollElement.scrollHeight - 1), ev)
+            {this.state.isOpen && <PopupOverlay
+                className={`hidden-overlay`}
+                onClose={(ev) => {
+                    if (ev.target !== this.inputRef.current) this.setState({ ...this.state, isOpen: false })
+                }}
+            >
+                <div className={`${styles['select-multi-popup']} select-multi-popup col ${this.props.popupClassName ?? ""}`}
+                    style={this.state.style ?? {
+                        top: this.state.offset.y + this.state.offset.height + 2 + 'px',
+                        left: this.state.offset.x + 'px',
+                        width: this.state.offset.width,
+                    }}>
+                    <div style={{ padding: '1.2rem 1.6rem', width: '100%', borderBottom: "var(--neutral-main-border)" }}>
+                        {(() => {
+                            const _list = (this.state.search ?? this.props.options ?? [])
+                            const isSelectedAll = _list.every(item => this.state.value.some(vl => vl === item.id))
+                            return <Text onClick={() => {
+                                let newValue: Array<string | number> = []
+                                if (_list.length) {
+                                    if (isSelectedAll) {
+                                        newValue = this.state.value.filter(vl => _list.every(item => vl !== item.id || item.disabled))
+                                    } else {
+                                        newValue = [...this.state.value, ..._list.filter(item => this.state.value.every(vl => vl !== item.id) && !item.disabled).map(e => e.id)]
+                                    }
                                 }
-                            } : undefined}>
-                                {(this.state.search ?? this.state.options).filter(e => !e.parentId).map(item => this.renderOptions(item))}
-                                {(!this.state.search?.length && !this.props.options?.length) && (
-                                    <div className={styles['no-results-found']}>{t("noResultFound")}</div>
-                                )}
-                            </div>
-                        </div>
-                    </PopupOverlay>,
-                    document.body
-                )}
+                                this.setState({ ...this.state, value: newValue })
+                                if (this.props.onChange) this.props.onChange(newValue)
+                            }} className='button-text-3' style={{ color: _list.length ? 'var(--infor-main-color)' : 'var(--neutral-text-title-color)' }}>{_list.length && isSelectedAll ? `${t("remove")} ${t("all").toLowerCase()}` : `${t("select")} ${t("all").toLowerCase()}`}</Text>
+                        })()}
+                    </div>
+                    <div className={`col ${styles['select-body']}`} onScroll={this.props.handleLoadmore ? (ev) => {
+                        if (this.props.handleLoadmore) {
+                            let scrollElement = ev.target as HTMLDivElement
+                            this.props.handleLoadmore(Math.round(scrollElement.offsetHeight + scrollElement.scrollTop) >= (scrollElement.scrollHeight - 1), ev)
+                        }
+                    } : undefined}>
+                        {(this.state.search ?? this.state.options).filter(e => !e.parentId).map(item => this.renderOptions(item))}
+                        {(!this.state.search?.length && !this.props.options?.length) && (
+                            <div className={styles['no-results-found']}>{t("noResultFound")}</div>
+                        )}
+                    </div>
+                </div>
+            </PopupOverlay>}
         </div>
     }
 }
