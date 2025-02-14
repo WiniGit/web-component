@@ -101,7 +101,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Select1 = void 0;
 var select1_module_css_1 = __importDefault(require("./select1.module.css"));
 var react_1 = __importStar(require("react"));
-var react_dom_1 = __importDefault(require("react-dom"));
 var winicon_1 = require("../wini-icon/winicon");
 var text_1 = require("../text/text");
 var react_i18next_1 = require("react-i18next");
@@ -278,27 +277,26 @@ var TSelect1 = /** @class */ (function (_super) {
                     iconRef.style.display = "none";
             }, className: 'row' },
             react_1.default.createElement(winicon_1.Winicon, { src: this.state.isOpen ? "fill/arrows/up-arrow" : "fill/arrows/down-arrow", size: "1.2rem" })),
-            this.state.isOpen &&
-                react_dom_1.default.createPortal(react_1.default.createElement(popup_1.PopupOverlay, { onOpen: this.props.onOpenOptions, className: "hidden-overlay", onClose: function (ev) {
-                        if (ev.target !== _this.inputRef.current)
-                            _this.setState(__assign(__assign({}, _this.state), { isOpen: false }));
+            this.state.isOpen && react_1.default.createElement(popup_1.PopupOverlay, { onOpen: this.props.onOpenOptions, className: "hidden-overlay", onClose: function (ev) {
+                    if (ev.target !== _this.inputRef.current)
+                        _this.setState(__assign(__assign({}, _this.state), { isOpen: false }));
+                } },
+                react_1.default.createElement("div", { className: "".concat(select1_module_css_1.default['select1-popup'], " select1-popup col ").concat((_f = this.props.popupClassName) !== null && _f !== void 0 ? _f : ""), style: (_g = this.state.style) !== null && _g !== void 0 ? _g : {
+                        top: this.state.offset.y + this.state.offset.height + 2 + 'px',
+                        left: this.state.offset.x + 'px',
+                        width: this.state.offset.width,
                     } },
-                    react_1.default.createElement("div", { className: "".concat(select1_module_css_1.default['select1-popup'], " select1-popup col ").concat((_f = this.props.popupClassName) !== null && _f !== void 0 ? _f : ""), style: (_g = this.state.style) !== null && _g !== void 0 ? _g : {
-                            top: this.state.offset.y + this.state.offset.height + 2 + 'px',
-                            left: this.state.offset.x + 'px',
-                            width: this.state.offset.width,
-                        } },
-                        react_1.default.createElement("div", { className: "col ".concat(select1_module_css_1.default['select-body']), onScroll: this.props.handleLoadmore ? function (ev) {
-                                if (_this.props.handleLoadmore) {
-                                    var scrollElement = ev.target;
-                                    _this.props.handleLoadmore(Math.round(scrollElement.offsetHeight + scrollElement.scrollTop) >= (scrollElement.scrollHeight - 1), ev);
-                                }
-                            } : undefined },
-                            ((_h = this.state.search) !== null && _h !== void 0 ? _h : this.state.options).filter(function (e) { return !e.parentId; }).map(function (item) {
-                                var _a, _b;
-                                return react_1.default.createElement(OptionsItemTile, { key: item.id, item: item, children: ((_a = _this.state.search) !== null && _a !== void 0 ? _a : _this.state.options).filter(function (e) { return e.parentId === item.id; }), selected: _this.state.selected === item.id, onClick: _this.onSelect, treeData: ((_b = _this.state.search) !== null && _b !== void 0 ? _b : _this.state.options).some(function (e) { return e.parentId; }) });
-                            }),
-                            (!((_j = this.state.search) === null || _j === void 0 ? void 0 : _j.length) && !((_k = this.props.options) === null || _k === void 0 ? void 0 : _k.length)) && (react_1.default.createElement("div", { className: select1_module_css_1.default['no-results-found'] }, t("noResultFound")))))), document.body));
+                    react_1.default.createElement("div", { className: "col ".concat(select1_module_css_1.default['select-body']), onScroll: this.props.handleLoadmore ? function (ev) {
+                            if (_this.props.handleLoadmore) {
+                                var scrollElement = ev.target;
+                                _this.props.handleLoadmore(Math.round(scrollElement.offsetHeight + scrollElement.scrollTop) >= (scrollElement.scrollHeight - 1), ev);
+                            }
+                        } : undefined },
+                        ((_h = this.state.search) !== null && _h !== void 0 ? _h : this.state.options).filter(function (e) { return !e.parentId; }).map(function (item) {
+                            var _a, _b;
+                            return react_1.default.createElement(OptionsItemTile, { key: item.id, item: item, children: ((_a = _this.state.search) !== null && _a !== void 0 ? _a : _this.state.options).filter(function (e) { return e.parentId === item.id; }), selected: _this.state.selected === item.id, onClick: _this.onSelect, treeData: ((_b = _this.state.search) !== null && _b !== void 0 ? _b : _this.state.options).some(function (e) { return e.parentId; }) });
+                        }),
+                        (!((_j = this.state.search) === null || _j === void 0 ? void 0 : _j.length) && !((_k = this.props.options) === null || _k === void 0 ? void 0 : _k.length)) && (react_1.default.createElement("div", { className: select1_module_css_1.default['no-results-found'] }, t("noResultFound")))))));
     };
     return TSelect1;
 }(react_1.default.Component));
