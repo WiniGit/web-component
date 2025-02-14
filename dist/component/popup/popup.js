@@ -58,14 +58,10 @@ var __importStar = (this && this.__importStar) || (function () {
         return result;
     };
 })();
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Popup = exports.closePopup = exports.showPopup = void 0;
 exports.PopupOverlay = PopupOverlay;
 var react_1 = __importStar(require("react"));
-var react_dom_1 = __importDefault(require("react-dom"));
 require("./popup.css");
 var showPopup = function (props) {
     var _a, _b;
@@ -123,13 +119,13 @@ var Popup = /** @class */ (function (_super) {
         var _this = this;
         var _a;
         return (react_1.default.createElement(react_1.default.Fragment, null, this.state.open &&
-            react_dom_1.default.createPortal(react_1.default.createElement(PopupOverlay, { className: this.state.clickOverlayClosePopup ? 'hidden-overlay' : '', onClose: this.state.clickOverlayClosePopup ? function () { _this.onClose(); } : undefined }, (_a = this.state.content) !== null && _a !== void 0 ? _a : react_1.default.createElement("div", { ref: this.ref, className: 'popup-container col', onClick: function (e) { return e.stopPropagation(); }, style: this.state.style },
+            react_1.default.createElement(PopupOverlay, { className: this.state.clickOverlayClosePopup ? 'hidden-overlay' : '', onClose: this.state.clickOverlayClosePopup ? function () { _this.onClose(); } : undefined }, (_a = this.state.content) !== null && _a !== void 0 ? _a : react_1.default.createElement("div", { ref: this.ref, className: 'popup-container col', onClick: function (e) { return e.stopPropagation(); }, style: this.state.style },
                 this.state.heading,
                 this.state.body,
                 this.state.footer,
                 this.state.hideButtonClose ? null : react_1.default.createElement("button", { type: 'button', onClick: function () { return _this.onClose(); }, className: 'popup-close-btn row' },
                     react_1.default.createElement("svg", { width: '100%', height: '100%', viewBox: '0 0 20 20', fill: 'none', xmlns: 'http://www.w3.org/2000/svg', style: { width: '2rem', height: '2rem' } },
-                        react_1.default.createElement("path", { fillRule: 'evenodd', clipRule: 'evenodd', d: 'M16.4223 4.7559C16.7477 4.43047 16.7477 3.90283 16.4223 3.57739C16.0968 3.25195 15.5692 3.25195 15.2438 3.57739L9.99967 8.82147L4.7556 3.57739C4.43016 3.25195 3.90252 3.25195 3.57709 3.57739C3.25165 3.90283 3.25165 4.43047 3.57709 4.7559L8.82116 9.99998L3.57709 15.2441C3.25165 15.5695 3.25165 16.0971 3.57709 16.4226C3.90252 16.748 4.43016 16.748 4.7556 16.4226L9.99967 11.1785L15.2438 16.4226C15.5692 16.748 16.0968 16.748 16.4223 16.4226C16.7477 16.0971 16.7477 15.5695 16.4223 15.2441L11.1782 9.99998L16.4223 4.7559Z', fill: '#00204D', fillOpacity: 0.6 }))))), document.body)));
+                        react_1.default.createElement("path", { fillRule: 'evenodd', clipRule: 'evenodd', d: 'M16.4223 4.7559C16.7477 4.43047 16.7477 3.90283 16.4223 3.57739C16.0968 3.25195 15.5692 3.25195 15.2438 3.57739L9.99967 8.82147L4.7556 3.57739C4.43016 3.25195 3.90252 3.25195 3.57709 3.57739C3.25165 3.90283 3.25165 4.43047 3.57709 4.7559L8.82116 9.99998L3.57709 15.2441C3.25165 15.5695 3.25165 16.0971 3.57709 16.4226C3.90252 16.748 4.43016 16.748 4.7556 16.4226L9.99967 11.1785L15.2438 16.4226C15.5692 16.748 16.0968 16.748 16.4223 16.4226C16.7477 16.0971 16.7477 15.5695 16.4223 15.2441L11.1782 9.99998L16.4223 4.7559Z', fill: '#00204D', fillOpacity: 0.6 })))))));
     };
     return Popup;
 }(react_1.default.Component));
