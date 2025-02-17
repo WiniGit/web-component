@@ -44,11 +44,6 @@
     font-style: inherit;
 }
 
-.button-container:disabled {
-    background-color: var(--neutral-disable-background-color, #dddde1);
-    color: var(--neutral-text-disabled-color);
-}
-
 button[class~="button-grey"],
 a[class~="button-grey"] {
     background-color: var(--neutral-main-background-color) !important;
@@ -129,4 +124,9 @@ button[class~="button-success"] *,
 a[class~="button-success"] * {
     color: var(--success-main-color) !important;
     --color: var(--success-main-color) !important;
+}
+
+.button-container:disabled {
+    background-color: var(--neutral-disable-background-color, #dddde1) !important;
+    color: var(--neutral-text-disabled-color) !important;
 }
