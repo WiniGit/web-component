@@ -128,5 +128,9 @@ a[class~="button-success"] * {
 
 .button-container:disabled {
     background-color: var(--neutral-disable-background-color, #dddde1) !important;
+}
+
+.button-container:disabled * {
     color: var(--neutral-text-disabled-color) !important;
+    --color: var(--neutral-text-disabled-color) !important;
 }
