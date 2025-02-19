@@ -126,6 +126,42 @@ a[class~="button-success"] * {
     --color: var(--success-main-color) !important;
 }
 
+button[class~="button-infor-main"],
+a[class~="button-infor-main"] {
+    background-color: var(--infor-main-color) !important;
+    border: var(--infor-main-color) !important;
+}
+
+button[class~="button-warning-main"],
+a[class~="button-warning-main"] {
+    background-color: var(--warning-main-color) !important;
+    border: var(--warning-main-color) !important;
+}
+
+button[class~="button-error-main"],
+a[class~="button-error-main"] {
+    background-color: var(--error-main-color) !important;
+    border: var(--error-main-color) !important;
+}
+
+button[class~="button-success-main"],
+a[class~="button-success-main"] {
+    background-color: var(--success-main-color) !important;
+    border-color: var(--success-main-color) !important;
+}
+
+button[class~="button-infor"] *,
+a[class~="button-infor"] *,
+button[class~="button-warning-main"] *,
+a[class~="button-warning-main"] *,
+button[class~="button-error-main"] *,
+a[class~="button-error-main"] *,
+button[class~="button-success-main"] *,
+a[class~="button-success-main"] * {
+    color: var(--neutral-text-stable-color) !important;
+    --color: var(--neutral-text-stable-color) !important;
+}
+
 .button-container:disabled {
     background-color: var(--neutral-disable-background-color, #dddde1) !important;
 }

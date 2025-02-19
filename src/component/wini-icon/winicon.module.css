@@ -26,3 +26,17 @@
 .wini-icon[class*="outline-icon"]>svg>*[stroke^="#"] {
     stroke: var(--color, "#61616B");
 }
+
+.wini-icon[tooltip-value]::after {
+    content: attr(tooltip-value);
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--neutral-text-subtitle-color);
+}

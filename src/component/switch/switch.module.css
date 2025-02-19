@@ -49,5 +49,5 @@
 
 .switch-container:has(> input:disabled:checked) {
     pointer-events: none;
-    background-color: var(--primary-sub-color) !important;
+    background-color: var(--primary-lighter-color) !important;
 }
