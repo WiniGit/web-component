@@ -27,16 +27,28 @@
     stroke: var(--color, "#61616B");
 }
 
-.wini-icon[tooltip-value]::after {
-    content: attr(tooltip-value);
+@keyframes on-open-tooltip {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.tooltip-container {
     position: fixed;
-    z-index: 9999;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: var(--neutral-text-subtitle-color);
+    z-index: 999;
+    animation: on-open-tooltip 0.2s ease-in-out;
+    animation-fill-mode: forwards;
+}
+
+.tooltip-container>.tooltip-message {
+    color: var(--neutral-text-body-reverse-color);
+    background-color: var(--neutral-main-reverse-background-color);
+    padding: 0.4rem 1.2rem;
+    border-radius: 0.8rem;
+    max-width: 21.2rem;
+    text-align: center;
 }

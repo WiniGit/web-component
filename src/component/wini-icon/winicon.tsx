@@ -48,7 +48,7 @@ export function Winicon({ id, src, link, className, style, size, color, alt, onC
             style={(style ? { ...style, '--size': size, '--color': color } : { '--size': size, '--color': color }) as any} dangerouslySetInnerHTML={{ __html: svgData ?? '' }}
             {...extendAttribute}
         />
-        {tooltip && ReactDOM.createPortal((() => {
+        {tooltip && showTooltip && ReactDOM.createPortal((() => {
             if (!ref.current) return null
             const rect = ref.current.getBoundingClientRect()
             let pos = tooltip.position ?? "bottom"
@@ -72,9 +72,9 @@ export function Winicon({ id, src, link, className, style, size, color, alt, onC
                                 r.style.alignItems = "end"
                             }
                         }
-                    }} className="col" style={{ alignItems: "center", position: "fixed", bottom: document.body.offsetHeight - rect.top - 4, left: rect.left + (rect.width / 2), transform: "translateX(-50%)" }}>
-                        <Text className="body-3" style={{ color: "var(--neutral-text-body-reverse-color)", padding: "0.4rem 1.2rem", borderRadius: "0.8rem", maxWidth: "21.2rem", textAlign: "center" }} maxLine={2}>{tooltip.message}</Text>
-                        <div className="row" style={{ padding: "0 1.2rem" }}><div style={{ borderLeft: "0.6rem solid transparent", borderRight: "0.6rem solid transparent", borderTop: "0.8rem solid var(--neutral-main-reverse-background-color)", borderRadius: 2 }} /></div>
+                    }} className={`col ${styles['tooltip-container']}`} style={{ alignItems: "center", bottom: document.body.offsetHeight - rect.top - 4, left: rect.left + (rect.width / 2), transform: "translateX(-50%)" }}>
+                        <Text className={`body-3 ${styles['tooltip-message']}`} maxLine={2}>{tooltip.message}</Text>
+                        <div className="row" style={{ padding: "0 1.2rem", transform: "translateY(-0.2rem)" }}><div style={{ borderLeft: "0.6rem solid transparent", borderRight: "0.6rem solid transparent", borderTop: "0.8rem solid var(--neutral-main-reverse-background-color)", borderRadius: 2 }} /></div>
                     </div>
                 case "bottom":
                     return <div ref={r => {
@@ -91,9 +91,9 @@ export function Winicon({ id, src, link, className, style, size, color, alt, onC
                                 r.style.alignItems = "end"
                             }
                         }
-                    }} className="col" style={{ alignItems: "center", position: "fixed", top: rect.bottom - 4, left: rect.left + (rect.width / 2), transform: "translateX(-50%)" }}>
-                        <div className="row" style={{ padding: "0 1.2rem" }}><div style={{ borderLeft: "0.6rem solid transparent", borderRight: "0.6rem solid transparent", borderBottom: "0.8rem solid var(--neutral-main-reverse-background-color)", borderRadius: 2 }} /></div>
-                        <Text className="body-3" style={{ color: "var(--neutral-text-body-reverse-color)", padding: "0.4rem 1.2rem", borderRadius: "0.8rem", maxWidth: "21.2rem", textAlign: "center" }} maxLine={2}>{tooltip.message}</Text>
+                    }} className={`col ${styles['tooltip-container']}`} style={{ alignItems: "center", top: rect.bottom + 4, left: rect.left + (rect.width / 2), transform: "translateX(-50%)" }}>
+                        <div className="row" style={{ padding: "0 1.2rem", transform: "translateY(0.2rem)" }}><div style={{ borderLeft: "0.6rem solid transparent", borderRight: "0.6rem solid transparent", borderBottom: "0.8rem solid var(--neutral-main-reverse-background-color)", borderRadius: 2 }} /></div>
+                        <Text className={`body-3 ${styles['tooltip-message']}`} maxLine={2}>{tooltip.message}</Text>
                     </div>
                 case "left":
                     return <div ref={r => {
@@ -110,9 +110,9 @@ export function Winicon({ id, src, link, className, style, size, color, alt, onC
                                 r.style.alignItems = "end"
                             }
                         }
-                    }} className="row" style={{ position: "fixed", top: rect.top + (rect.height / 2), right: document.body.offsetWidth - rect.left - 4, transform: "translateY(-50%)" }}>
-                        <Text className="body-3" style={{ color: "var(--neutral-text-body-reverse-color)", padding: "0.4rem 1.2rem", borderRadius: "0.8rem", maxWidth: "21.2rem", textAlign: "center" }} maxLine={2}>{tooltip.message}</Text>
-                        <div className="row" style={{ padding: "0 1.2rem" }}><div style={{ borderTop: "0.6rem solid transparent", borderBottom: "0.6rem solid transparent", borderLeft: "0.8rem solid var(--neutral-main-reverse-background-color)", borderRadius: 2 }} /></div>
+                    }} className={`row ${styles['tooltip-container']}`} style={{ top: rect.top + (rect.height / 2), right: document.body.offsetWidth - rect.left - 4, transform: "translateY(-50%)" }}>
+                        <Text className={`body-3 ${styles['tooltip-message']}`} maxLine={2}>{tooltip.message}</Text>
+                        <div className="row" style={{ padding: "0 1.2rem", transform: "translateX(-0.2rem)" }}><div style={{ borderTop: "0.6rem solid transparent", borderBottom: "0.6rem solid transparent", borderLeft: "0.8rem solid var(--neutral-main-reverse-background-color)", borderRadius: 2 }} /></div>
                     </div>
                 case "right":
                     return <div ref={r => {
@@ -129,9 +129,9 @@ export function Winicon({ id, src, link, className, style, size, color, alt, onC
                                 r.style.alignItems = "end"
                             }
                         }
-                    }} className="row" style={{ position: "fixed", top: rect.top + (rect.height / 2), left: rect.right - 4, transform: "translateY(-50%)" }}>
-                        <div className="row" style={{ padding: "0 1.2rem" }}><div style={{ borderTop: "0.6rem solid transparent", borderBottom: "0.6rem solid transparent", borderRight: "0.8rem solid var(--neutral-main-reverse-background-color)", borderRadius: 2 }} /></div>
-                        <Text className="body-3" style={{ color: "var(--neutral-text-body-reverse-color)", padding: "0.4rem 1.2rem", borderRadius: "0.8rem", maxWidth: "21.2rem", textAlign: "center" }} maxLine={2}>{tooltip.message}</Text>
+                    }} className={`row ${styles['tooltip-container']}`} style={{ top: rect.top + (rect.height / 2), left: rect.right + 4, transform: "translateY(-50%)" }}>
+                        <div className="row" style={{ padding: "0 1.2rem", transform: "translateX(0.2rem)" }}><div style={{ borderTop: "0.6rem solid transparent", borderBottom: "0.6rem solid transparent", borderRight: "0.8rem solid var(--neutral-main-reverse-background-color)", borderRadius: 2 }} /></div>
+                        <Text className={`body-3 ${styles['tooltip-message']}`} maxLine={2}>{tooltip.message}</Text>
                     </div>
                 default:
                     return <div />
