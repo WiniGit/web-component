@@ -84,13 +84,26 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Winicon = Winicon;
+var react_dom_1 = __importDefault(require("react-dom"));
 var react_1 = __importStar(require("react"));
 var winicon_module_css_1 = __importDefault(require("./winicon.module.css"));
+var text_1 = require("../text/text");
 function Winicon(_a) {
     var _this = this;
-    var id = _a.id, src = _a.src, link = _a.link, className = _a.className, style = _a.style, size = _a.size, color = _a.color, alt = _a.alt, onClick = _a.onClick;
+    var id = _a.id, src = _a.src, link = _a.link, className = _a.className, style = _a.style, size = _a.size, color = _a.color, alt = _a.alt, onClick = _a.onClick, tooltip = _a.tooltip;
+    var ref = (0, react_1.useRef)(null);
     var _b = (0, react_1.useState)(), svgData = _b[0], setSvgData = _b[1];
+    var _c = (0, react_1.useState)(false), showTooltip = _c[0], setShowTooltip = _c[1];
     var cdnSrc = "https://cdn.jsdelivr.net/gh/WiniGit/icon-library@latest/";
+    var extendAttribute = (0, react_1.useMemo)(function () {
+        if (tooltip)
+            return {
+                "tooltip-value": tooltip,
+                onMouseOver: function () { setShowTooltip(true); },
+                onMouseOut: function () { setShowTooltip(false); }
+            };
+        return {};
+    }, [tooltip]);
     (0, react_1.useEffect)(function () {
         if (src) {
             fetch(cdnSrc + src + ".svg").then(function (res) { return __awaiter(_this, void 0, void 0, function () { var _a; return __generator(this, function (_b) {
@@ -117,5 +130,105 @@ function Winicon(_a) {
             }); }); });
         }
     }, [src, link]);
-    return react_1.default.createElement("div", { id: id, onClick: onClick, className: "".concat(winicon_module_css_1.default['wini-icon'], " ").concat(svgData ? "" : "skeleton-loading", " ").concat(onClick ? winicon_module_css_1.default['clickable'] : '', " ").concat(className !== null && className !== void 0 ? className : '', " ").concat(src ? src.split("/").map(function (e, i) { return i === 0 ? "".concat(e, "-icon") : e.replace(" ", "-"); }).join(" ") : '').concat(link ? ' link-icon' : ""), style: (style ? __assign(__assign({}, style), { '--size': size, '--color': color }) : { '--size': size, '--color': color }), dangerouslySetInnerHTML: { __html: svgData !== null && svgData !== void 0 ? svgData : '' } });
+    return react_1.default.createElement(react_1.default.Fragment, null,
+        react_1.default.createElement("div", __assign({ ref: ref, id: id, onClick: onClick, className: "".concat(winicon_module_css_1.default['wini-icon'], " ").concat(svgData ? "" : "skeleton-loading", " ").concat(onClick ? winicon_module_css_1.default['clickable'] : '', " ").concat(className !== null && className !== void 0 ? className : '', " ").concat(src ? src.split("/").map(function (e, i) { return i === 0 ? "".concat(e, "-icon") : e.replace(" ", "-"); }).join(" ") : '').concat(link ? ' link-icon' : ""), style: (style ? __assign(__assign({}, style), { '--size': size, '--color': color }) : { '--size': size, '--color': color }), dangerouslySetInnerHTML: { __html: svgData !== null && svgData !== void 0 ? svgData : '' } }, extendAttribute)),
+        tooltip && react_dom_1.default.createPortal((function () {
+            var _a;
+            if (!ref.current)
+                return null;
+            var rect = ref.current.getBoundingClientRect();
+            var pos = (_a = tooltip.position) !== null && _a !== void 0 ? _a : "bottom";
+            if (document.body.offsetHeight - rect.bottom < 100 && pos === "bottom")
+                pos = "top";
+            else if (rect.top < 100 && pos === "top")
+                pos = "bottom";
+            if (document.body.offsetWidth - rect.right < 100 && pos === "right")
+                pos = "left";
+            else if (rect.left < 100 && pos === "left")
+                pos = "right";
+            switch (pos) {
+                case "top":
+                    return react_1.default.createElement("div", { ref: function (r) {
+                            if (r) {
+                                var _r = r.getBoundingClientRect();
+                                if (_r.x < 0) {
+                                    r.style.left = "0px";
+                                    r.style.transform = "translateX(0)";
+                                    r.style.alignItems = "start";
+                                }
+                                else if (_r.right > document.body.offsetWidth) {
+                                    r.style.left = "unset";
+                                    r.style.right = "0px";
+                                    r.style.transform = "translateX(0)";
+                                    r.style.alignItems = "end";
+                                }
+                            }
+                        }, className: "col", style: { alignItems: "center", position: "fixed", bottom: document.body.offsetHeight - rect.top - 4, left: rect.left + (rect.width / 2), transform: "translateX(-50%)" } },
+                        react_1.default.createElement(text_1.Text, { className: "body-3", style: { color: "var(--neutral-text-body-reverse-color)", padding: "0.4rem 1.2rem", borderRadius: "0.8rem", maxWidth: "21.2rem", textAlign: "center" }, maxLine: 2 }, tooltip.message),
+                        react_1.default.createElement("div", { className: "row", style: { padding: "0 1.2rem" } },
+                            react_1.default.createElement("div", { style: { borderLeft: "0.6rem solid transparent", borderRight: "0.6rem solid transparent", borderTop: "0.8rem solid var(--neutral-main-reverse-background-color)", borderRadius: 2 } })));
+                case "bottom":
+                    return react_1.default.createElement("div", { ref: function (r) {
+                            if (r) {
+                                var _r = r.getBoundingClientRect();
+                                if (_r.x < 0) {
+                                    r.style.left = "0px";
+                                    r.style.transform = "translateX(0)";
+                                    r.style.alignItems = "start";
+                                }
+                                else if (_r.right > document.body.offsetWidth) {
+                                    r.style.left = "unset";
+                                    r.style.right = "0px";
+                                    r.style.transform = "translateX(0)";
+                                    r.style.alignItems = "end";
+                                }
+                            }
+                        }, className: "col", style: { alignItems: "center", position: "fixed", top: rect.bottom - 4, left: rect.left + (rect.width / 2), transform: "translateX(-50%)" } },
+                        react_1.default.createElement("div", { className: "row", style: { padding: "0 1.2rem" } },
+                            react_1.default.createElement("div", { style: { borderLeft: "0.6rem solid transparent", borderRight: "0.6rem solid transparent", borderBottom: "0.8rem solid var(--neutral-main-reverse-background-color)", borderRadius: 2 } })),
+                        react_1.default.createElement(text_1.Text, { className: "body-3", style: { color: "var(--neutral-text-body-reverse-color)", padding: "0.4rem 1.2rem", borderRadius: "0.8rem", maxWidth: "21.2rem", textAlign: "center" }, maxLine: 2 }, tooltip.message));
+                case "left":
+                    return react_1.default.createElement("div", { ref: function (r) {
+                            if (r) {
+                                var _r = r.getBoundingClientRect();
+                                if (_r.y < 0) {
+                                    r.style.top = "0px";
+                                    r.style.transform = "translateY(0)";
+                                    r.style.alignItems = "start";
+                                }
+                                else if (_r.right > document.body.offsetWidth) {
+                                    r.style.top = "unset";
+                                    r.style.bottom = "0px";
+                                    r.style.transform = "translateY(0)";
+                                    r.style.alignItems = "end";
+                                }
+                            }
+                        }, className: "row", style: { position: "fixed", top: rect.top + (rect.height / 2), right: document.body.offsetWidth - rect.left - 4, transform: "translateY(-50%)" } },
+                        react_1.default.createElement(text_1.Text, { className: "body-3", style: { color: "var(--neutral-text-body-reverse-color)", padding: "0.4rem 1.2rem", borderRadius: "0.8rem", maxWidth: "21.2rem", textAlign: "center" }, maxLine: 2 }, tooltip.message),
+                        react_1.default.createElement("div", { className: "row", style: { padding: "0 1.2rem" } },
+                            react_1.default.createElement("div", { style: { borderTop: "0.6rem solid transparent", borderBottom: "0.6rem solid transparent", borderLeft: "0.8rem solid var(--neutral-main-reverse-background-color)", borderRadius: 2 } })));
+                case "right":
+                    return react_1.default.createElement("div", { ref: function (r) {
+                            if (r) {
+                                var _r = r.getBoundingClientRect();
+                                if (_r.y < 0) {
+                                    r.style.top = "0px";
+                                    r.style.transform = "translateY(0)";
+                                    r.style.alignItems = "start";
+                                }
+                                else if (_r.right > document.body.offsetWidth) {
+                                    r.style.top = "unset";
+                                    r.style.bottom = "0px";
+                                    r.style.transform = "translateY(0)";
+                                    r.style.alignItems = "end";
+                                }
+                            }
+                        }, className: "row", style: { position: "fixed", top: rect.top + (rect.height / 2), left: rect.right - 4, transform: "translateY(-50%)" } },
+                        react_1.default.createElement("div", { className: "row", style: { padding: "0 1.2rem" } },
+                            react_1.default.createElement("div", { style: { borderTop: "0.6rem solid transparent", borderBottom: "0.6rem solid transparent", borderRight: "0.8rem solid var(--neutral-main-reverse-background-color)", borderRadius: 2 } })),
+                        react_1.default.createElement(text_1.Text, { className: "body-3", style: { color: "var(--neutral-text-body-reverse-color)", padding: "0.4rem 1.2rem", borderRadius: "0.8rem", maxWidth: "21.2rem", textAlign: "center" }, maxLine: 2 }, tooltip.message));
+                default:
+                    return react_1.default.createElement("div", null);
+            }
+        })(), document.body));
 }
