@@ -150,8 +150,8 @@ a[class~="button-success-main"] {
     border-color: var(--success-main-color) !important;
 }
 
-button[class~="button-infor"] *,
-a[class~="button-infor"] *,
+button[class~="button-infor-main"] *,
+a[class~="button-infor-main"] *,
 button[class~="button-warning-main"] *,
 a[class~="button-warning-main"] *,
 button[class~="button-error-main"] *,
