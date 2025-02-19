@@ -97,22 +97,7 @@ var Popup = /** @class */ (function (_super) {
         this.setState({ open: false });
     };
     Popup.prototype.componentDidUpdate = function (prevProps, prevState) {
-        var _a;
         if (prevState.open !== this.state.open && this.state.open && this.state.style) {
-            var thisPopupRect = (_a = this.ref.current) === null || _a === void 0 ? void 0 : _a.getBoundingClientRect();
-            if (thisPopupRect) {
-                var style = void 0;
-                if (thisPopupRect.right > document.body.offsetWidth) {
-                    style = __assign(__assign({}, this.state.style), { right: '0.4rem' });
-                    delete style.left;
-                }
-                if (thisPopupRect.bottom > document.body.offsetHeight) {
-                    style = style ? __assign(__assign({}, style), { bottom: '0.4rem' }) : __assign(__assign({}, this.state.style), { bottom: '0.4rem' });
-                    delete style.top;
-                }
-                if (style)
-                    this.setState(__assign(__assign({}, this.state), { style: style }));
-            }
         }
     };
     Popup.prototype.render = function () {
@@ -149,5 +134,19 @@ function PopupOverlay(_a) {
         if (overlayRef.current && onOpen)
             onOpen(overlayRef.current);
     }, [overlayRef, onOpen]);
+    (0, react_1.useEffect)(function () {
+        if (overlayRef.current && overlayRef.current.firstChild) {
+            var popupContent = overlayRef.current.firstChild;
+            var rect = popupContent.getBoundingClientRect();
+            if (rect.x < 0)
+                popupContent.style.left = "0px";
+            else if (rect.right > document.body.offsetWidth)
+                popupContent.style.right = "0px";
+            if (rect.y < 0)
+                popupContent.style.top = "0px";
+            else if (rect.bottom > document.body.offsetHeight)
+                popupContent.style.bottom = "0px";
+        }
+    }, [overlayRef]);
     return react_1.default.createElement("div", { ref: overlayRef, className: "popup-overlay ".concat(className !== null && className !== void 0 ? className : ""), style: style }, children);
 }

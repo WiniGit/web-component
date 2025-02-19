@@ -57,25 +57,7 @@ export class Popup extends React.Component<Object, PopupState> {
 
     componentDidUpdate(prevProps: Readonly<Object>, prevState: Readonly<PopupState>) {
         if (prevState.open !== this.state.open && this.state.open && this.state.style) {
-            const thisPopupRect = this.ref.current?.getBoundingClientRect()
-            if (thisPopupRect) {
-                let style: CSSProperties | undefined;
-                if (thisPopupRect.right > document.body.offsetWidth) {
-                    style = { ...this.state.style, right: '0.4rem' }
-                    delete style.left
-                }
-                if (thisPopupRect.bottom > document.body.offsetHeight) {
-                    style = style ? {
-                        ...style,
-                        bottom: '0.4rem'
-                    } : {
-                        ...this.state.style,
-                        bottom: '0.4rem'
-                    }
-                    delete style.top
-                }
-                if (style) this.setState({ ...this.state, style: style })
-            }
+
         }
     }
 
@@ -118,6 +100,17 @@ export function PopupOverlay({ children, onClose, className, style, onOpen }: { 
     useEffect(() => {
         if (overlayRef.current && onOpen) onOpen(overlayRef.current)
     }, [overlayRef, onOpen])
+
+    useEffect(() => {
+        if (overlayRef.current && overlayRef.current.firstChild) {
+            const popupContent = overlayRef.current.firstChild as HTMLElement
+            const rect = popupContent.getBoundingClientRect()
+            if (rect.x < 0) popupContent.style.left = "0px"
+            else if (rect.right > document.body.offsetWidth) popupContent.style.right = "0px"
+            if (rect.y < 0) popupContent.style.top = "0px"
+            else if (rect.bottom > document.body.offsetHeight) popupContent.style.bottom = "0px"
+        }
+    }, [overlayRef])
 
     return <div
         ref={overlayRef}
