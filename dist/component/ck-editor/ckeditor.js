@@ -1,42 +1,31 @@
 "use strict";
-var __assign = (this && this.__assign) || function () {
-    __assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CustomCkEditor5 = CustomCkEditor5;
-var react_1 = __importDefault(require("react"));
-var react_2 = require("react");
-var ckeditor5_react_1 = require("@ckeditor/ckeditor5-react");
-var ckeditor5_1 = require("ckeditor5");
+const react_1 = __importDefault(require("react"));
+const react_2 = require("react");
+const ckeditor5_react_1 = require("@ckeditor/ckeditor5-react");
+const ckeditor5_1 = require("ckeditor5");
 require("./ck-editor.css");
-var react_i18next_1 = require("react-i18next");
+const react_i18next_1 = require("react-i18next");
 /**
  * Create a free account with a trial: https://portal.ckeditor.com/checkout?plan=free
  */
-var LICENSE_KEY = 'GPL'; // or <YOUR_LICENSE_KEY>.
+const LICENSE_KEY = 'GPL'; // or <YOUR_LICENSE_KEY>.
 function CustomCkEditor5(props) {
     var _a, _b, _c, _d;
-    var editorContainerRef = (0, react_2.useRef)(null);
-    var editorRef = (0, react_2.useRef)(null);
+    const editorContainerRef = (0, react_2.useRef)(null);
+    const editorRef = (0, react_2.useRef)(null);
     // const editorWordCountRef = useRef(null);
-    var _e = (0, react_2.useState)(false), isLayoutReady = _e[0], setIsLayoutReady = _e[1];
-    var i18n = (0, react_i18next_1.useTranslation)().i18n;
-    (0, react_2.useEffect)(function () {
+    const [isLayoutReady, setIsLayoutReady] = (0, react_2.useState)(false);
+    const { i18n } = (0, react_i18next_1.useTranslation)();
+    (0, react_2.useEffect)(() => {
         setIsLayoutReady(true);
-        return function () { return setIsLayoutReady(false); };
+        return () => setIsLayoutReady(false);
     }, []);
-    var editorConfig = (0, react_2.useMemo)(function () {
+    const { editorConfig } = (0, react_2.useMemo)(() => {
         if (!isLayoutReady) {
             return {};
         }
@@ -174,10 +163,10 @@ function CustomCkEditor5(props) {
                         {
                             name: "youtube",
                             url: /^https:\/\/www\.youtube\.com\/watch\?v=([\w-]+)/,
-                            html: function (match) {
-                                var id = match[1];
+                            html: (match) => {
+                                const id = match[1];
                                 return ('<div style="position: relative; padding-bottom: 56.25%; height: 0;">' +
-                                    "<iframe src=\"https://www.youtube.com/embed/".concat(id, "\" ") +
+                                    `<iframe src="https://www.youtube.com/embed/${id}" ` +
                                     'style="position: absolute; width: 100%; height: 100%; left: 0;" ' +
                                     'frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>' +
                                     "</div>");
@@ -396,8 +385,8 @@ function CustomCkEditor5(props) {
                 },
             }
         };
-    }, [isLayoutReady, i18n.language]).editorConfig;
-    return react_1.default.createElement("div", { ref: editorContainerRef, className: "col editor-container editor-container_classic-editor editor-container_include-style ".concat((_a = props.className) !== null && _a !== void 0 ? _a : "", " ").concat(((_b = props.helperText) === null || _b === void 0 ? void 0 : _b.length) ? 'helper-text' : ""), "helper-text": props.helperText, style: props.style ? __assign(__assign({}, { '--helper-text-color': (_c = props.helperTextColor) !== null && _c !== void 0 ? _c : '#e14337' }), props.style) : { '--helper-text-color': (_d = props.helperTextColor) !== null && _d !== void 0 ? _d : '#e14337' } },
+    }, [isLayoutReady, i18n.language]);
+    return react_1.default.createElement("div", { ref: editorContainerRef, className: `col editor-container editor-container_classic-editor editor-container_include-style ${(_a = props.className) !== null && _a !== void 0 ? _a : ""} ${((_b = props.helperText) === null || _b === void 0 ? void 0 : _b.length) ? 'helper-text' : ""}`, "helper-text": props.helperText, style: props.style ? Object.assign(Object.assign({}, { '--helper-text-color': (_c = props.helperTextColor) !== null && _c !== void 0 ? _c : '#e14337' }), props.style) : { '--helper-text-color': (_d = props.helperTextColor) !== null && _d !== void 0 ? _d : '#e14337' } },
         react_1.default.createElement("div", { className: "editor-container__editor" },
             react_1.default.createElement("div", { ref: editorRef }, editorConfig && (react_1.default.createElement(ckeditor5_react_1.CKEditor, { onReady: props.onReady, onAfterDestroy: props.onAfterDestroy, onFocus: props.onFocus, onChange: props.onChange, onBlur: props.onBlur, editor: ckeditor5_1.ClassicEditor, onError: props.onError, config: editorConfig, data: props.value, disabled: props.disabled })))));
 }

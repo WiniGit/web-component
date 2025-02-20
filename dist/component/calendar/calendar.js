@@ -1,44 +1,18 @@
 "use strict";
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        if (typeof b !== "function" && b !== null)
-            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-var __assign = (this && this.__assign) || function () {
-    __assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Calendar = exports.CalendarType = exports.inRangeTime = exports.endDate = exports.startDate = exports.today = void 0;
-var react_1 = __importDefault(require("react"));
-var calendar_module_css_1 = __importDefault(require("./calendar.module.css"));
-var date_fns_1 = require("date-fns");
-var react_i18next_1 = require("react-i18next");
-var winicon_1 = require("../wini-icon/winicon");
+const react_1 = __importDefault(require("react"));
+const calendar_module_css_1 = __importDefault(require("./calendar.module.css"));
+const date_fns_1 = require("date-fns");
+const react_i18next_1 = require("react-i18next");
+const winicon_1 = require("../wini-icon/winicon");
 exports.today = new Date();
 exports.startDate = new Date(exports.today.getFullYear() - 100, exports.today.getMonth(), exports.today.getDate());
 exports.endDate = new Date(exports.today.getFullYear() + 100, exports.today.getMonth(), exports.today.getDate());
-var inRangeTime = function (date, startDate, endDate) { return ((0, date_fns_1.differenceInCalendarDays)(date, startDate) > -1 && (0, date_fns_1.differenceInCalendarDays)(endDate, date) > -1); };
+const inRangeTime = (date, startDate, endDate) => ((0, date_fns_1.differenceInCalendarDays)(date, startDate) > -1 && (0, date_fns_1.differenceInCalendarDays)(endDate, date) > -1);
 exports.inRangeTime = inRangeTime;
 var CalendarType;
 (function (CalendarType) {
@@ -53,8 +27,8 @@ var CalendarTab;
     CalendarTab[CalendarTab["MONTH"] = 1] = "MONTH";
     CalendarTab[CalendarTab["YEAR"] = 2] = "YEAR";
 })(CalendarTab || (CalendarTab = {}));
-var stateValue = function (minDate, maxDate, value, range) {
-    var defaultValue;
+const stateValue = (minDate, maxDate, value, range) => {
+    let defaultValue;
     if (value) {
         if (range) {
             if (value instanceof Date)
@@ -80,8 +54,8 @@ var stateValue = function (minDate, maxDate, value, range) {
     else {
         defaultValue = range ? { sTime: exports.today, eTime: exports.today } : exports.today;
     }
-    var defaultMonth = defaultValue instanceof Date ? defaultValue.getMonth() : defaultValue.sTime.getMonth();
-    var defaultYear = defaultValue instanceof Date ? defaultValue.getFullYear() : defaultValue.sTime.getFullYear();
+    const defaultMonth = defaultValue instanceof Date ? defaultValue.getMonth() : defaultValue.sTime.getMonth();
+    const defaultYear = defaultValue instanceof Date ? defaultValue.getFullYear() : defaultValue.sTime.getFullYear();
     return {
         value: value ? defaultValue : undefined,
         selectMonth: defaultMonth,
@@ -89,199 +63,194 @@ var stateValue = function (minDate, maxDate, value, range) {
         tab: CalendarTab.DATE,
     };
 };
-var TCalendar = /** @class */ (function (_super) {
-    __extends(TCalendar, _super);
-    function TCalendar(props) {
-        var _this = _super.call(this, props) || this;
-        _this.minDate = !_this.props.min || _this.props.min.getTime() < exports.startDate.getTime() ? exports.startDate : _this.props.min;
-        _this.maxDate = !_this.props.max || _this.props.max.getTime() > exports.endDate.getTime() ? exports.endDate : _this.props.max;
-        _this.state = stateValue(_this.minDate, _this.maxDate, _this.props.value, _this.props.range);
-        _this.showDateInMonth = _this.showDateInMonth.bind(_this);
-        _this.showMonthInYear = _this.showMonthInYear.bind(_this);
-        _this.showYearInRange = _this.showYearInRange.bind(_this);
-        _this.getTitle = _this.getTitle.bind(_this);
-        return _this;
+class TCalendar extends react_1.default.Component {
+    constructor(props) {
+        super(props);
+        this.minDate = !this.props.min || this.props.min.getTime() < exports.startDate.getTime() ? exports.startDate : this.props.min;
+        this.maxDate = !this.props.max || this.props.max.getTime() > exports.endDate.getTime() ? exports.endDate : this.props.max;
+        this.state = stateValue(this.minDate, this.maxDate, this.props.value, this.props.range);
+        this.showDateInMonth = this.showDateInMonth.bind(this);
+        this.showMonthInYear = this.showMonthInYear.bind(this);
+        this.showYearInRange = this.showYearInRange.bind(this);
+        this.getTitle = this.getTitle.bind(this);
     }
-    TCalendar.prototype.componentDidUpdate = function (prevProps, prevState, snapshot) {
+    componentDidUpdate(prevProps, prevState, snapshot) {
         if (prevProps.value !== this.props.value) {
             this.setState(stateValue(this.minDate, this.maxDate, this.props.value, this.props.range));
         }
-    };
-    TCalendar.prototype.showDateInMonth = function () {
-        var _this = this;
-        var firstDayOfMonth = new Date(this.state.selectYear, this.state.selectMonth, 1);
+    }
+    showDateInMonth() {
+        let firstDayOfMonth = new Date(this.state.selectYear, this.state.selectMonth, 1);
         return react_1.default.createElement(react_1.default.Fragment, null,
-            Array.from({ length: 7 }).map(function (_, i) {
+            Array.from({ length: 7 }).map((_, i) => {
                 switch (i) {
                     case 0:
-                        var weekdayTitle = _this.props.t("su");
+                        var weekdayTitle = this.props.t("su");
                         break;
                     case 1:
-                        weekdayTitle = _this.props.t("mo");
+                        weekdayTitle = this.props.t("mo");
                         break;
                     case 2:
-                        weekdayTitle = _this.props.t("tu");
+                        weekdayTitle = this.props.t("tu");
                         break;
                     case 3:
-                        weekdayTitle = _this.props.t("we");
+                        weekdayTitle = this.props.t("we");
                         break;
                     case 4:
-                        weekdayTitle = _this.props.t("th");
+                        weekdayTitle = this.props.t("th");
                         break;
                     case 5:
-                        weekdayTitle = _this.props.t("fr");
+                        weekdayTitle = this.props.t("fr");
                         break;
                     case 6:
-                        weekdayTitle = _this.props.t("sa");
+                        weekdayTitle = this.props.t("sa");
                         break;
                     default:
                         weekdayTitle = '';
                         break;
                 }
-                return react_1.default.createElement("div", { key: 'dtwk-' + i, className: "".concat(calendar_module_css_1.default['date-picker-circle'], " date-picker-circle") },
+                return react_1.default.createElement("div", { key: 'dtwk-' + i, className: `${calendar_module_css_1.default['date-picker-circle']} date-picker-circle` },
                     react_1.default.createElement("span", { className: "label-4 row" }, weekdayTitle));
             }),
-            Array.from({ length: 42 }).map(function (_, i) {
+            Array.from({ length: 42 }).map((_, i) => {
                 var _a, _b, _c;
-                var dateNumber = (i % 7) + (Math.floor(i / 7) * 7) - firstDayOfMonth.getDay();
-                var timeValue = new Date(_this.state.selectYear, _this.state.selectMonth, dateNumber + 1);
-                var className = "".concat(calendar_module_css_1.default['date-picker-circle'], " date-picker-circle");
-                var typoClassName = "body-3";
-                if (dateNumber + 1 === exports.today.getDate() && _this.state.selectMonth === exports.today.getMonth() && _this.state.selectYear === exports.today.getFullYear()) {
-                    className += " ".concat(calendar_module_css_1.default['today']);
+                let dateNumber = (i % 7) + (Math.floor(i / 7) * 7) - firstDayOfMonth.getDay();
+                const timeValue = new Date(this.state.selectYear, this.state.selectMonth, dateNumber + 1);
+                let className = `${calendar_module_css_1.default['date-picker-circle']} date-picker-circle`;
+                let typoClassName = "body-3";
+                if (dateNumber + 1 === exports.today.getDate() && this.state.selectMonth === exports.today.getMonth() && this.state.selectYear === exports.today.getFullYear()) {
+                    className += ` ${calendar_module_css_1.default['today']}`;
                 }
-                var style;
-                if (!(0, exports.inRangeTime)(timeValue, _this.minDate, _this.maxDate)) {
-                    className += " ".concat(calendar_module_css_1.default['invalid']);
+                let style;
+                if (!(0, exports.inRangeTime)(timeValue, this.minDate, this.maxDate)) {
+                    className += ` ${calendar_module_css_1.default['invalid']}`;
                 }
-                else if (_this.state.value instanceof Date) {
-                    if (_this.state.value.getTime() === timeValue.getTime())
-                        className += " ".concat(calendar_module_css_1.default['selected']);
+                else if (this.state.value instanceof Date) {
+                    if (this.state.value.getTime() === timeValue.getTime())
+                        className += ` ${calendar_module_css_1.default['selected']}`;
                 }
-                else if (((_a = _this.state.value) === null || _a === void 0 ? void 0 : _a.sTime.getTime()) === timeValue.getTime() || ((_b = _this.state.value) === null || _b === void 0 ? void 0 : _b.eTime.getTime()) === timeValue.getTime()) {
-                    className += " ".concat(calendar_module_css_1.default['selected'], " ").concat(calendar_module_css_1.default["".concat(((_c = _this.state.value) === null || _c === void 0 ? void 0 : _c.sTime.getTime()) === timeValue.getTime() ? "start" : "end", "-range")]);
+                else if ((((_a = this.state.value) === null || _a === void 0 ? void 0 : _a.sTime.getDate()) === timeValue.getDate() && (Math.abs((0, date_fns_1.differenceInCalendarDays)(timeValue, this.state.value.sTime))) < 1) || (((_b = this.state.value) === null || _b === void 0 ? void 0 : _b.eTime.getDate()) === timeValue.getDate() && (Math.abs((0, date_fns_1.differenceInCalendarDays)(timeValue, this.state.value.eTime))) < 1)) {
+                    className += ` ${calendar_module_css_1.default['selected']} ${calendar_module_css_1.default[`${((_c = this.state.value) === null || _c === void 0 ? void 0 : _c.sTime.getDate()) === timeValue.getDate() && (Math.abs((0, date_fns_1.differenceInCalendarDays)(timeValue, this.state.value.sTime))) < 1 ? "start" : "end"}-range`]}`;
                 }
-                else if (_this.state.value && (0, exports.inRangeTime)(timeValue, _this.state.value.sTime, _this.state.value.eTime)) {
-                    className += " ".concat(calendar_module_css_1.default['in-range']);
+                else if (this.state.value && (0, exports.inRangeTime)(timeValue, this.state.value.sTime, this.state.value.eTime)) {
+                    className += ` ${calendar_module_css_1.default['in-range']}`;
                 }
-                if (timeValue.getMonth() !== _this.state.selectMonth) {
+                if (timeValue.getMonth() !== this.state.selectMonth) {
                     typoClassName = "placeholder-2";
                 }
                 return react_1.default.createElement("div", { key: timeValue.toString(), className: className, style: style },
-                    react_1.default.createElement("button", { type: "button", className: "".concat(typoClassName, " row"), onClick: function () {
-                            var currentValue = _this.state.value;
-                            if (_this.props.range) {
-                                var newValue = (!currentValue || timeValue.getTime() < currentValue.sTime.getTime()) ? { sTime: timeValue, eTime: timeValue } : { sTime: currentValue.sTime, eTime: timeValue };
-                                _this.setState(__assign(__assign({}, _this.state), { value: newValue }));
-                                if (_this.props.onSelect)
-                                    _this.props.onSelect(newValue);
+                    react_1.default.createElement("button", { type: "button", className: `${typoClassName} row`, onClick: () => {
+                            const currentValue = this.state.value;
+                            if (this.props.range) {
+                                const newValue = (!currentValue || timeValue.getTime() < currentValue.sTime.getTime()) ? { sTime: timeValue, eTime: timeValue } : { sTime: currentValue.sTime, eTime: timeValue };
+                                this.setState(Object.assign(Object.assign({}, this.state), { value: newValue }));
+                                if (this.props.onSelect)
+                                    this.props.onSelect(newValue);
                             }
                             else {
-                                _this.setState(__assign(__assign({}, _this.state), { value: timeValue }));
-                                if (_this.props.onSelect)
-                                    _this.props.onSelect(timeValue);
+                                this.setState(Object.assign(Object.assign({}, this.state), { value: timeValue }));
+                                if (this.props.onSelect)
+                                    this.props.onSelect(timeValue);
                             }
                         } }, timeValue.getDate()));
             }));
-    };
-    TCalendar.prototype.showMonthInYear = function () {
-        var _this = this;
-        return react_1.default.createElement(react_1.default.Fragment, null, Array.from({ length: 12 }).map(function (_, i) {
+    }
+    showMonthInYear() {
+        return react_1.default.createElement(react_1.default.Fragment, null, Array.from({ length: 12 }).map((_, i) => {
             switch (i) {
                 case 0:
-                    var monthTitle = _this.props.i18n.language === "en" ? "Jan" : _this.props.t('january');
+                    var monthTitle = this.props.i18n.language === "en" ? "Jan" : this.props.t('january');
                     break;
                 case 1:
-                    monthTitle = _this.props.i18n.language === "en" ? "Feb" : _this.props.t('february');
+                    monthTitle = this.props.i18n.language === "en" ? "Feb" : this.props.t('february');
                     break;
                 case 2:
-                    monthTitle = _this.props.i18n.language === "en" ? "Mar" : _this.props.t('march');
+                    monthTitle = this.props.i18n.language === "en" ? "Mar" : this.props.t('march');
                     break;
                 case 3:
-                    monthTitle = _this.props.i18n.language === "en" ? "Apr" : _this.props.t('april');
+                    monthTitle = this.props.i18n.language === "en" ? "Apr" : this.props.t('april');
                     break;
                 case 4:
-                    monthTitle = _this.props.i18n.language === "en" ? "May" : _this.props.t('may');
+                    monthTitle = this.props.i18n.language === "en" ? "May" : this.props.t('may');
                     break;
                 case 5:
-                    monthTitle = _this.props.i18n.language === "en" ? "Jun" : _this.props.t('june');
+                    monthTitle = this.props.i18n.language === "en" ? "Jun" : this.props.t('june');
                     break;
                 case 6:
-                    monthTitle = _this.props.i18n.language === "en" ? "Jul" : _this.props.t('july');
+                    monthTitle = this.props.i18n.language === "en" ? "Jul" : this.props.t('july');
                     break;
                 case 7:
-                    monthTitle = _this.props.i18n.language === "en" ? "Aug" : _this.props.t('august');
+                    monthTitle = this.props.i18n.language === "en" ? "Aug" : this.props.t('august');
                     break;
                 case 8:
-                    monthTitle = _this.props.i18n.language === "en" ? "Sep" : _this.props.t('september');
+                    monthTitle = this.props.i18n.language === "en" ? "Sep" : this.props.t('september');
                     break;
                 case 9:
-                    monthTitle = _this.props.i18n.language === "en" ? "Oct" : _this.props.t('october');
+                    monthTitle = this.props.i18n.language === "en" ? "Oct" : this.props.t('october');
                     break;
                 case 10:
-                    monthTitle = _this.props.i18n.language === "en" ? "Nov" : _this.props.t('november');
+                    monthTitle = this.props.i18n.language === "en" ? "Nov" : this.props.t('november');
                     break;
                 case 11:
-                    monthTitle = _this.props.i18n.language === "en" ? "Dec" : _this.props.t('december');
+                    monthTitle = this.props.i18n.language === "en" ? "Dec" : this.props.t('december');
                     break;
                 default:
                     monthTitle = '';
                     break;
             }
-            var timeValue = new Date(_this.state.selectYear, i);
-            var className = "".concat(calendar_module_css_1.default['month-picker-circle'], " month-picker-circle");
-            if (_this.state.selectYear === exports.today.getFullYear() && exports.today.getMonth() === i) {
-                className += " ".concat(calendar_module_css_1.default['today']);
+            const timeValue = new Date(this.state.selectYear, i);
+            let className = `${calendar_module_css_1.default['month-picker-circle']} month-picker-circle`;
+            if (this.state.selectYear === exports.today.getFullYear() && exports.today.getMonth() === i) {
+                className += ` ${calendar_module_css_1.default['today']}`;
             }
-            if (!(0, exports.inRangeTime)(timeValue, _this.minDate, _this.maxDate)) {
-                className += " ".concat(calendar_module_css_1.default['invalid']);
+            if (!(0, exports.inRangeTime)(timeValue, this.minDate, this.maxDate)) {
+                className += ` ${calendar_module_css_1.default['invalid']}`;
             }
-            else if (_this.state.value instanceof Date) {
-                if (_this.state.selectYear === _this.state.value.getFullYear() && i === _this.state.value.getMonth())
-                    className += " ".concat(calendar_module_css_1.default['selected']);
+            else if (this.state.value instanceof Date) {
+                if (this.state.selectYear === this.state.value.getFullYear() && i === this.state.value.getMonth())
+                    className += ` ${calendar_module_css_1.default['selected']}`;
             }
-            else if (_this.state.value && ((i === _this.state.value.sTime.getMonth() && _this.state.value.sTime.getFullYear() === _this.state.selectYear) || (i === _this.state.value.eTime.getMonth() && _this.state.value.eTime.getFullYear() === _this.state.selectYear))) {
-                className += " ".concat(calendar_module_css_1.default['selected'], " ").concat(calendar_module_css_1.default["".concat(i === _this.state.value.sTime.getMonth() && _this.state.value.sTime.getFullYear() === _this.state.selectYear ? "start" : "end", "-range")]);
+            else if (this.state.value && ((i === this.state.value.sTime.getMonth() && this.state.value.sTime.getFullYear() === this.state.selectYear) || (i === this.state.value.eTime.getMonth() && this.state.value.eTime.getFullYear() === this.state.selectYear))) {
+                className += ` ${calendar_module_css_1.default['selected']} ${calendar_module_css_1.default[`${i === this.state.value.sTime.getMonth() && this.state.value.sTime.getFullYear() === this.state.selectYear ? "start" : "end"}-range`]}`;
             }
-            else if (_this.state.value && (0, exports.inRangeTime)(timeValue, _this.state.value.sTime, _this.state.value.eTime)) {
-                className += " ".concat(calendar_module_css_1.default['in-range']);
+            else if (this.state.value && (0, exports.inRangeTime)(timeValue, this.state.value.sTime, this.state.value.eTime)) {
+                className += ` ${calendar_module_css_1.default['in-range']}`;
             }
             return react_1.default.createElement("div", { key: timeValue.toString(), className: className },
-                react_1.default.createElement("button", { type: "button", className: "body-3 row", onClick: function () { _this.setState(__assign(__assign({}, _this.state), { selectMonth: i, tab: CalendarTab.DATE })); } }, monthTitle));
+                react_1.default.createElement("button", { type: "button", className: "body-3 row", onClick: () => { this.setState(Object.assign(Object.assign({}, this.state), { selectMonth: i, tab: CalendarTab.DATE })); } }, monthTitle));
         }));
-    };
-    TCalendar.prototype.showYearInRange = function () {
-        var _this = this;
-        return Array.from({ length: 12 }).map(function (_, i) {
+    }
+    showYearInRange() {
+        return Array.from({ length: 12 }).map((_, i) => {
             var _a, _b, _c;
-            var firstYearInTable = _this.state.selectYear - ((_this.state.selectYear - exports.startDate.getFullYear()) % 12);
-            var yearNumber = i + firstYearInTable;
-            var className = "".concat(calendar_module_css_1.default['year-picker-circle'], " year-picker-circle");
+            let firstYearInTable = this.state.selectYear - ((this.state.selectYear - exports.startDate.getFullYear()) % 12);
+            let yearNumber = i + firstYearInTable;
+            let className = `${calendar_module_css_1.default['year-picker-circle']} year-picker-circle`;
             if (yearNumber === exports.today.getFullYear()) {
-                className += " ".concat(calendar_module_css_1.default['today']);
+                className += ` ${calendar_module_css_1.default['today']}`;
             }
-            if (yearNumber < _this.minDate.getFullYear() || yearNumber > _this.maxDate.getFullYear()) {
-                className += " ".concat(calendar_module_css_1.default['invalid']);
+            if (yearNumber < this.minDate.getFullYear() || yearNumber > this.maxDate.getFullYear()) {
+                className += ` ${calendar_module_css_1.default['invalid']}`;
             }
-            else if (_this.state.value instanceof Date) {
-                if (yearNumber === _this.state.value.getFullYear())
-                    className += " ".concat(calendar_module_css_1.default['selected']);
+            else if (this.state.value instanceof Date) {
+                if (yearNumber === this.state.value.getFullYear())
+                    className += ` ${calendar_module_css_1.default['selected']}`;
             }
-            else if (yearNumber === ((_a = _this.state.value) === null || _a === void 0 ? void 0 : _a.sTime.getFullYear()) || yearNumber === ((_b = _this.state.value) === null || _b === void 0 ? void 0 : _b.eTime.getFullYear())) {
-                className += " ".concat(calendar_module_css_1.default['selected'], " ").concat(calendar_module_css_1.default["".concat(yearNumber === ((_c = _this.state.value) === null || _c === void 0 ? void 0 : _c.sTime.getFullYear()) ? "start" : "end", "-range")]);
+            else if (yearNumber === ((_a = this.state.value) === null || _a === void 0 ? void 0 : _a.sTime.getFullYear()) || yearNumber === ((_b = this.state.value) === null || _b === void 0 ? void 0 : _b.eTime.getFullYear())) {
+                className += ` ${calendar_module_css_1.default['selected']} ${calendar_module_css_1.default[`${yearNumber === ((_c = this.state.value) === null || _c === void 0 ? void 0 : _c.sTime.getFullYear()) ? "start" : "end"}-range`]}`;
             }
-            else if (_this.state.value && yearNumber > _this.state.value.sTime.getFullYear() && yearNumber < _this.state.value.eTime.getFullYear()) {
-                className += " ".concat(calendar_module_css_1.default['in-range']);
+            else if (this.state.value && yearNumber > this.state.value.sTime.getFullYear() && yearNumber < this.state.value.eTime.getFullYear()) {
+                className += ` ${calendar_module_css_1.default['in-range']}`;
             }
             return react_1.default.createElement("div", { key: yearNumber.toString(), className: className },
-                react_1.default.createElement("button", { type: "button", className: "body-3 row", onClick: function () { _this.setState(__assign(__assign({}, _this.state), { tab: CalendarTab.MONTH, selectYear: yearNumber })); } }, yearNumber));
+                react_1.default.createElement("button", { type: "button", className: "body-3 row", onClick: () => { this.setState(Object.assign(Object.assign({}, this.state), { tab: CalendarTab.MONTH, selectYear: yearNumber })); } }, yearNumber));
         });
-    };
-    TCalendar.prototype.getTitle = function () {
+    }
+    getTitle() {
         switch (this.state.tab) {
             case CalendarTab.YEAR:
-                var firstYearInTable = this.state.selectYear - ((this.state.selectYear - exports.startDate.getFullYear()) % 12);
-                return "".concat(firstYearInTable, "-").concat(firstYearInTable + 11);
+                let firstYearInTable = this.state.selectYear - ((this.state.selectYear - exports.startDate.getFullYear()) % 12);
+                return `${firstYearInTable}-${firstYearInTable + 11}`;
             case CalendarTab.MONTH:
                 return this.state.selectYear;
             default:
@@ -326,72 +295,70 @@ var TCalendar = /** @class */ (function (_super) {
                         monthName = '';
                         break;
                 }
-                return "".concat(monthName).concat(this.props.i18n.language === 'en' ? ' ' : '/').concat(this.state.selectYear);
+                return `${monthName}${this.props.i18n.language === 'en' ? ' ' : '/'}${this.state.selectYear}`;
         }
-    };
-    TCalendar.prototype.render = function () {
-        var _this = this;
+    }
+    render() {
         var _a;
-        return react_1.default.createElement("div", { className: "".concat(calendar_module_css_1.default['calendar-container'], " col ").concat((_a = this.props.className) !== null && _a !== void 0 ? _a : ""), style: this.props.style },
+        return react_1.default.createElement("div", { className: `${calendar_module_css_1.default['calendar-container']} col ${(_a = this.props.className) !== null && _a !== void 0 ? _a : ""}`, style: this.props.style },
             this.props.header,
-            react_1.default.createElement("div", { className: "".concat(calendar_module_css_1.default['picker-date-header'], " row") },
-                react_1.default.createElement("button", { type: 'button', onClick: function () {
-                        switch (_this.state.tab) {
+            react_1.default.createElement("div", { className: `${calendar_module_css_1.default['picker-date-header']} row` },
+                react_1.default.createElement("button", { type: 'button', onClick: () => {
+                        switch (this.state.tab) {
                             case CalendarTab.YEAR:
-                                if (_this.state.selectYear - 10 < exports.startDate.getFullYear()) {
-                                    _this.setState(__assign(__assign({}, _this.state), { selectYear: exports.startDate.getFullYear() }));
+                                if (this.state.selectYear - 10 < exports.startDate.getFullYear()) {
+                                    this.setState(Object.assign(Object.assign({}, this.state), { selectYear: exports.startDate.getFullYear() }));
                                 }
                                 else {
-                                    _this.setState(__assign(__assign({}, _this.state), { selectYear: _this.state.selectYear - 10 }));
+                                    this.setState(Object.assign(Object.assign({}, this.state), { selectYear: this.state.selectYear - 10 }));
                                 }
                                 break;
                             case CalendarTab.MONTH:
-                                var newTime = new Date(_this.state.selectYear, _this.state.selectMonth - 1);
+                                const newTime = new Date(this.state.selectYear, this.state.selectMonth - 1);
                                 if (newTime.getTime() >= exports.startDate.getTime()) {
-                                    _this.setState(__assign(__assign({}, _this.state), { selectYear: _this.state.selectYear - 1 }));
+                                    this.setState(Object.assign(Object.assign({}, this.state), { selectYear: this.state.selectYear - 1 }));
                                 }
                                 break;
                             default:
-                                var newDataVl = new Date(_this.state.selectYear, _this.state.selectMonth - 1);
+                                const newDataVl = new Date(this.state.selectYear, this.state.selectMonth - 1);
                                 if (newDataVl.getTime() >= exports.startDate.getTime()) {
-                                    _this.setState(__assign(__assign({}, _this.state), { selectMonth: newDataVl.getMonth(), selectYear: newDataVl.getFullYear() }));
+                                    this.setState(Object.assign(Object.assign({}, this.state), { selectMonth: newDataVl.getMonth(), selectYear: newDataVl.getFullYear() }));
                                 }
                                 break;
                         }
                     } },
                     react_1.default.createElement(winicon_1.Winicon, { src: "fill/arrows/left-arrow", size: '1.4rem' })),
-                react_1.default.createElement("span", { className: "heading-7", onClick: function () {
-                        if (_this.state.tab !== CalendarTab.YEAR)
-                            _this.setState(__assign(__assign({}, _this.state), { tab: _this.state.tab === CalendarTab.DATE ? CalendarTab.MONTH : CalendarTab.YEAR }));
+                react_1.default.createElement("span", { className: "heading-7", onClick: () => {
+                        if (this.state.tab !== CalendarTab.YEAR)
+                            this.setState(Object.assign(Object.assign({}, this.state), { tab: this.state.tab === CalendarTab.DATE ? CalendarTab.MONTH : CalendarTab.YEAR }));
                     } }, this.getTitle()),
-                react_1.default.createElement("button", { type: 'button', onClick: function () {
-                        switch (_this.state.tab) {
+                react_1.default.createElement("button", { type: 'button', onClick: () => {
+                        switch (this.state.tab) {
                             case CalendarTab.YEAR:
-                                if (_this.state.selectYear + 10 > exports.endDate.getFullYear()) {
-                                    _this.setState(__assign(__assign({}, _this.state), { selectYear: exports.endDate.getFullYear() }));
+                                if (this.state.selectYear + 10 > exports.endDate.getFullYear()) {
+                                    this.setState(Object.assign(Object.assign({}, this.state), { selectYear: exports.endDate.getFullYear() }));
                                 }
                                 else {
-                                    _this.setState(__assign(__assign({}, _this.state), { selectYear: _this.state.selectYear + 10 }));
+                                    this.setState(Object.assign(Object.assign({}, this.state), { selectYear: this.state.selectYear + 10 }));
                                 }
                                 break;
                             case CalendarTab.MONTH:
-                                var newTime = new Date(_this.state.selectYear, _this.state.selectMonth + 1);
+                                const newTime = new Date(this.state.selectYear, this.state.selectMonth + 1);
                                 if (newTime.getTime() <= exports.endDate.getTime()) {
-                                    _this.setState(__assign(__assign({}, _this.state), { selectYear: _this.state.selectYear + 1 }));
+                                    this.setState(Object.assign(Object.assign({}, this.state), { selectYear: this.state.selectYear + 1 }));
                                 }
                                 break;
                             default:
-                                var newDataVl = new Date(_this.state.selectYear, _this.state.selectMonth + 1);
+                                const newDataVl = new Date(this.state.selectYear, this.state.selectMonth + 1);
                                 if (newDataVl.getTime() <= exports.endDate.getTime()) {
-                                    _this.setState(__assign(__assign({}, _this.state), { selectMonth: newDataVl.getMonth(), selectYear: newDataVl.getFullYear() }));
+                                    this.setState(Object.assign(Object.assign({}, this.state), { selectMonth: newDataVl.getMonth(), selectYear: newDataVl.getFullYear() }));
                                 }
                                 break;
                         }
                     } },
                     react_1.default.createElement(winicon_1.Winicon, { src: "fill/arrows/right-arrow", size: '1.4rem' }))),
-            react_1.default.createElement("div", { className: "".concat(calendar_module_css_1.default['picker-date-body'], " row") }, this.state.tab === CalendarTab.YEAR ? this.showYearInRange() : this.state.tab === CalendarTab.MONTH ? this.showMonthInYear() : this.showDateInMonth()),
+            react_1.default.createElement("div", { className: `${calendar_module_css_1.default['picker-date-body']} row` }, this.state.tab === CalendarTab.YEAR ? this.showYearInRange() : this.state.tab === CalendarTab.MONTH ? this.showMonthInYear() : this.showDateInMonth()),
             this.props.footer);
-    };
-    return TCalendar;
-}(react_1.default.Component));
+    }
+}
 exports.Calendar = (0, react_i18next_1.withTranslation)()(TCalendar);

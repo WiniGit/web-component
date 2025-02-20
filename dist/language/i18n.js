@@ -4,11 +4,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.i18n = void 0;
-var i18next_1 = __importDefault(require("i18next"));
+const i18next_1 = __importDefault(require("i18next"));
 exports.i18n = i18next_1.default;
-var react_i18next_1 = require("react-i18next");
+const react_i18next_1 = require("react-i18next");
 // Translation resources
-var resources = {
+const resources = {
     en: {
         translation: {
             su: 'Su',
@@ -118,7 +118,7 @@ var resources = {
 };
 // Initialize i18n
 i18next_1.default.use(react_i18next_1.initReactI18next).init({
-    resources: resources,
+    resources,
     lng: 'en', // Default language
     fallbackLng: 'en', // Fallback language
     interpolation: {

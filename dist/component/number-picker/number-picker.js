@@ -1,15 +1,4 @@
 "use strict";
-var __assign = (this && this.__assign) || function () {
-    __assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
-};
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -48,21 +37,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.NumberPicker = void 0;
-var react_1 = __importStar(require("react"));
-var number_picker_module_css_1 = __importDefault(require("./number-picker.module.css"));
-var NumberPicker = function (_a) {
-    var id = _a.id, value = _a.value, onChange = _a.onChange, disabled = _a.disabled, readOnly = _a.readOnly, className = _a.className, helperText = _a.helperText, helperTextColor = _a.helperTextColor, max = _a.max, min = _a.min, style = _a.style, _b = _a.type, type = _b === void 0 ? "icon-button" : _b, _c = _a.volume, volume = _c === void 0 ? 1 : _c;
-    var _d = (0, react_1.useState)(0), val = _d[0], setValue = _d[1];
-    var inputRef = (0, react_1.useRef)(null);
-    (0, react_1.useEffect)(function () {
+const react_1 = __importStar(require("react"));
+const number_picker_module_css_1 = __importDefault(require("./number-picker.module.css"));
+const NumberPicker = ({ id, value, onChange, disabled, readOnly, className, helperText, helperTextColor, max, min, style, type = "icon-button", volume = 1 }) => {
+    const [val, setValue] = (0, react_1.useState)(0);
+    const inputRef = (0, react_1.useRef)(null);
+    (0, react_1.useEffect)(() => {
         if (inputRef.current) {
             setValue(value !== null && value !== void 0 ? value : 0);
-            inputRef.current.value = "".concat(value !== null && value !== void 0 ? value : 0);
+            inputRef.current.value = `${value !== null && value !== void 0 ? value : 0}`;
         }
     }, [value, inputRef]);
-    return react_1.default.createElement("div", { id: id, className: "row ".concat(number_picker_module_css_1.default["number-picker-container"], " ").concat(className !== null && className !== void 0 ? className : "body-2", " ").concat((helperText === null || helperText === void 0 ? void 0 : helperText.length) && number_picker_module_css_1.default['helper-text']), "number-picker-type": type !== null && type !== void 0 ? type : "icon-button", "helper-text": helperText, style: style ? __assign(__assign({}, { '--helper-text-color': helperTextColor !== null && helperTextColor !== void 0 ? helperTextColor : '#e14337' }), style) : { '--helper-text-color': helperTextColor !== null && helperTextColor !== void 0 ? helperTextColor : '#e14337' } },
-        react_1.default.createElement("div", { className: "row", onClick: function () {
-                var newValue = val - volume;
+    return react_1.default.createElement("div", { id: id, className: `row ${number_picker_module_css_1.default["number-picker-container"]} ${className !== null && className !== void 0 ? className : "body-2"} ${(helperText === null || helperText === void 0 ? void 0 : helperText.length) && number_picker_module_css_1.default['helper-text']}`, "number-picker-type": type !== null && type !== void 0 ? type : "icon-button", "helper-text": helperText, style: style ? Object.assign(Object.assign({}, { '--helper-text-color': helperTextColor !== null && helperTextColor !== void 0 ? helperTextColor : '#e14337' }), style) : { '--helper-text-color': helperTextColor !== null && helperTextColor !== void 0 ? helperTextColor : '#e14337' } },
+        react_1.default.createElement("div", { className: "row", onClick: () => {
+                let newValue = val - volume;
                 if (min === undefined || newValue >= min) {
                     if (volume % 1 === 0)
                         newValue = Math.round(newValue);
@@ -70,14 +58,14 @@ var NumberPicker = function (_a) {
                         newValue = parseFloat(newValue.toFixed(1));
                     setValue(newValue);
                     if (inputRef.current)
-                        inputRef.current.value = "".concat(newValue);
+                        inputRef.current.value = `${newValue}`;
                     if (onChange)
                         onChange(newValue);
                 }
             } },
             react_1.default.createElement("svg", { width: "16", height: "16", viewBox: "0 0 16 16", fill: "none", xmlns: "http://www.w3.org/2000/svg" },
                 react_1.default.createElement("path", { fillRule: "evenodd", clipRule: "evenodd", d: "M1.3335 7.93907C1.3335 7.60435 1.60484 7.33301 1.93956 7.33301H14.0608C14.3955 7.33301 14.6668 7.60435 14.6668 7.93907C14.6668 8.27379 14.3955 8.54513 14.0608 8.54513H1.93956C1.60484 8.54513 1.3335 8.27379 1.3335 7.93907Z" }))),
-        react_1.default.createElement("input", { ref: inputRef, readOnly: readOnly, disabled: disabled, onKeyDown: function (ev) {
+        react_1.default.createElement("input", { ref: inputRef, readOnly: readOnly, disabled: disabled, onKeyDown: (ev) => {
                 switch (ev.key.toLowerCase()) {
                     case "enter":
                         ev.target.blur();
@@ -85,10 +73,10 @@ var NumberPicker = function (_a) {
                     default:
                         break;
                 }
-            }, onFocus: function (ev) { ev.target.select(); }, onBlur: function (ev) {
-                var newValue = volume % 1 === 0 ? parseInt(ev.target.value.trim()) : parseFloat(ev.target.value.trim());
+            }, onFocus: (ev) => { ev.target.select(); }, onBlur: (ev) => {
+                let newValue = volume % 1 === 0 ? parseInt(ev.target.value.trim()) : parseFloat(ev.target.value.trim());
                 if (isNaN(newValue))
-                    ev.target.value = "".concat(val);
+                    ev.target.value = `${val}`;
                 else {
                     if (volume % 1 === 0)
                         newValue = Math.round(newValue);
@@ -97,28 +85,28 @@ var NumberPicker = function (_a) {
                     if (min !== undefined && newValue < min) {
                         setValue(min);
                         if (inputRef.current)
-                            inputRef.current.value = "".concat(min);
+                            inputRef.current.value = `${min}`;
                         if (onChange)
                             onChange(min);
                     }
                     else if (max !== undefined && newValue > max) {
                         setValue(max);
                         if (inputRef.current)
-                            inputRef.current.value = "".concat(max);
+                            inputRef.current.value = `${max}`;
                         if (onChange)
                             onChange(max);
                     }
                     else {
                         setValue(newValue);
                         if (inputRef.current)
-                            inputRef.current.value = "".concat(newValue);
+                            inputRef.current.value = `${newValue}`;
                         if (onChange)
                             onChange(newValue);
                     }
                 }
             } }),
-        react_1.default.createElement("div", { className: "row", onClick: function () {
-                var newValue = val + volume;
+        react_1.default.createElement("div", { className: "row", onClick: () => {
+                let newValue = val + volume;
                 if (max === undefined || newValue <= max) {
                     if (volume % 1 === 0)
                         newValue = Math.round(newValue);
@@ -126,7 +114,7 @@ var NumberPicker = function (_a) {
                         newValue = parseFloat(newValue.toFixed(1));
                     setValue(newValue);
                     if (inputRef.current)
-                        inputRef.current.value = "".concat(newValue);
+                        inputRef.current.value = `${newValue}`;
                     if (onChange)
                         onChange(newValue);
                 }

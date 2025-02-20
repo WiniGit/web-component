@@ -8,6 +8,7 @@ interface PopupState {
     footer?: ReactNode;
     clickOverlayClosePopup?: boolean;
     style?: CSSProperties;
+    className?: string;
     hideButtonClose?: boolean;
 }
 export declare const showPopup: (props: {
@@ -18,6 +19,7 @@ export declare const showPopup: (props: {
     footer?: ReactNode;
     clickOverlayClosePopup?: boolean;
     style?: CSSProperties;
+    className?: string;
     hideButtonClose?: boolean;
 }) => void;
 export declare const closePopup: (ref: React.RefObject<Popup>) => void;
@@ -27,7 +29,6 @@ export declare class Popup extends React.Component<Object, PopupState> {
     state: Readonly<PopupState>;
     onOpen(data: PopupState): void;
     onClose(): void;
-    componentDidUpdate(prevProps: Readonly<Object>, prevState: Readonly<PopupState>): void;
     render(): React.JSX.Element;
 }
 export declare function PopupOverlay({ children, onClose, className, style, onOpen }: {

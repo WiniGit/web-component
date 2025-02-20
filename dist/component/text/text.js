@@ -1,51 +1,20 @@
 "use strict";
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        if (typeof b !== "function" && b !== null)
-            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-var __assign = (this && this.__assign) || function () {
-    __assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Text = void 0;
-var react_1 = __importDefault(require("react"));
+const react_1 = __importDefault(require("react"));
 require("./text.css");
-var Text = /** @class */ (function (_super) {
-    __extends(Text, _super);
-    function Text() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    Text.prototype.render = function () {
+class Text extends react_1.default.Component {
+    render() {
         var _a, _b, _c;
-        var convertStyle = (_a = this.props.style) !== null && _a !== void 0 ? _a : {};
+        let convertStyle = (_a = this.props.style) !== null && _a !== void 0 ? _a : {};
         if (this.props.maxLine) {
-            convertStyle = __assign(__assign({}, convertStyle), { '--max-line': this.props.maxLine });
+            convertStyle = Object.assign(Object.assign({}, convertStyle), { '--max-line': this.props.maxLine });
         }
-        return this.props.html ? react_1.default.createElement("div", { dangerouslySetInnerHTML: { __html: this.props.html }, id: this.props.id, onMouseOver: this.props.onHover, onClick: this.props.onClick, className: "comp-text innerhtml ".concat(this.props.onClick ? 'type-button' : '', " ").concat((_b = this.props.className) !== null && _b !== void 0 ? _b : ''), style: convertStyle }) :
-            react_1.default.createElement("div", { id: this.props.id, onMouseOver: this.props.onHover, onClick: this.props.onClick, className: "comp-text ".concat(this.props.onClick ? 'type-button' : '', " ").concat((_c = this.props.className) !== null && _c !== void 0 ? _c : ''), style: convertStyle }, this.props.children);
-    };
-    return Text;
-}(react_1.default.Component));
+        return this.props.html ? react_1.default.createElement("div", { dangerouslySetInnerHTML: { __html: this.props.html }, id: this.props.id, onMouseOver: this.props.onHover, onClick: this.props.onClick, className: `comp-text innerhtml ${this.props.onClick ? 'type-button' : ''} ${(_b = this.props.className) !== null && _b !== void 0 ? _b : ''}`, style: convertStyle }) :
+            react_1.default.createElement("div", { id: this.props.id, onMouseOver: this.props.onHover, onClick: this.props.onClick, className: `comp-text ${this.props.onClick ? 'type-button' : ''} ${(_c = this.props.className) !== null && _c !== void 0 ? _c : ''}`, style: convertStyle }, this.props.children);
+    }
+}
 exports.Text = Text;
