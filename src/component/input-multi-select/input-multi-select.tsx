@@ -1,5 +1,4 @@
 import React, { createRef, CSSProperties } from 'react'
-import ReactDOM from 'react-dom'
 import styles from './input-multi-select.module.css'
 import { OptionsItem } from '../select1/select1'
 import { Checkbox } from '../checkbox/checkbox'

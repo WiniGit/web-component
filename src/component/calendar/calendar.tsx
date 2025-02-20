@@ -147,8 +147,8 @@ class TCalendar extends React.Component<CalendarProps, CalendarState> {
                     className += ` ${styles['invalid']}`
                 } else if (this.state.value instanceof Date) {
                     if (this.state.value.getTime() === timeValue.getTime()) className += ` ${styles['selected']}`
-                } else if (this.state.value?.sTime.getTime() === timeValue.getTime() || this.state.value?.eTime.getTime() === timeValue.getTime()) {
-                    className += ` ${styles['selected']} ${styles[`${this.state.value?.sTime.getTime() === timeValue.getTime() ? "start" : "end"}-range`]}`
+                } else if ((this.state.value?.sTime.getDate() === timeValue.getDate() && (Math.abs(differenceInCalendarDays(timeValue, this.state.value.sTime))) < 1) || (this.state.value?.eTime.getDate() === timeValue.getDate() && (Math.abs(differenceInCalendarDays(timeValue, this.state.value.eTime))) < 1)) {
+                    className += ` ${styles['selected']} ${styles[`${this.state.value?.sTime.getDate() === timeValue.getDate() && (Math.abs(differenceInCalendarDays(timeValue, this.state.value.sTime))) < 1 ? "start" : "end"}-range`]}`
                 } else if (this.state.value && inRangeTime(timeValue, this.state.value.sTime, this.state.value.eTime)) {
                     className += ` ${styles['in-range']}`
                 }

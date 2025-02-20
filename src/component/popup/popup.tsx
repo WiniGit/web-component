@@ -1,5 +1,4 @@
 import React, { createRef, CSSProperties, ReactNode, useEffect, useRef } from 'react'
-import ReactDOM from 'react-dom'
 import './popup.css'
 
 interface PopupState {
@@ -10,6 +9,7 @@ interface PopupState {
     footer?: ReactNode,
     clickOverlayClosePopup?: boolean,
     style?: CSSProperties,
+    className?: string,
     hideButtonClose?: boolean,
 }
 
@@ -21,6 +21,7 @@ export const showPopup = (props: {
     footer?: ReactNode,
     clickOverlayClosePopup?: boolean,
     style?: CSSProperties,
+    className?: string,
     hideButtonClose?: boolean
 }) => {
     props.ref?.current?.onOpen({
@@ -30,6 +31,7 @@ export const showPopup = (props: {
         footer: props.footer,
         clickOverlayClosePopup: props.clickOverlayClosePopup,
         style: props.style,
+        className: props.className,
         hideButtonClose: props.hideButtonClose
     })
 }
@@ -55,18 +57,12 @@ export class Popup extends React.Component<Object, PopupState> {
         this.setState({ open: false })
     }
 
-    componentDidUpdate(prevProps: Readonly<Object>, prevState: Readonly<PopupState>) {
-        if (prevState.open !== this.state.open && this.state.open && this.state.style) {
-
-        }
-    }
-
     render() {
         return (
             <>
                 {this.state.open &&
                     <PopupOverlay className={this.state.clickOverlayClosePopup ? 'hidden-overlay' : ''} onClose={this.state.clickOverlayClosePopup ? () => { this.onClose() } : undefined}>
-                        {this.state.content ?? <div ref={this.ref} className='popup-container col' onClick={e => e.stopPropagation()} style={this.state.style} >
+                        {this.state.content ?? <div ref={this.ref} className={`popup-container col ${this.state.className ?? ""}`} onClick={e => e.stopPropagation()} style={this.state.style} >
                             {this.state.heading}
                             {this.state.body}
                             {this.state.footer}
@@ -105,10 +101,20 @@ export function PopupOverlay({ children, onClose, className, style, onOpen }: { 
         if (overlayRef.current && overlayRef.current.firstChild) {
             const popupContent = overlayRef.current.firstChild as HTMLElement
             const rect = popupContent.getBoundingClientRect()
-            if (rect.x < 0) popupContent.style.left = "0px"
-            else if (rect.right > document.body.offsetWidth) popupContent.style.right = "0px"
-            if (rect.y < 0) popupContent.style.top = "0px"
-            else if (rect.bottom > document.body.offsetHeight) popupContent.style.bottom = "0px"
+            if (rect.x < 0) {
+                popupContent.style.left = "0px"
+                popupContent.style.right = "unset"
+            } else if (rect.right > document.body.offsetWidth) {
+                popupContent.style.right = "0px"
+                popupContent.style.left = "unset"
+            }
+            if (rect.y < 0) {
+                popupContent.style.top = "0px"
+                popupContent.style.bottom = "unset"
+            } else if (rect.bottom > document.body.offsetHeight) {
+                popupContent.style.bottom = "0px"
+                popupContent.style.top = "unset"
+            }
         }
     }, [overlayRef])
 

@@ -1,6 +1,5 @@
 import styles from './select1.module.css'
 import React, { createRef, CSSProperties, ReactNode, useState } from 'react'
-import ReactDOM from 'react-dom'
 import { Winicon } from '../wini-icon/winicon'
 import { Text } from '../text/text'
 import { WithTranslation, withTranslation } from 'react-i18next';

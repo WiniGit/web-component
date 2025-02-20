@@ -73,3 +73,39 @@
 .popup-overlay.hidden-overlay>.popup-container .popup-close-btn {
     display: none !important;
 }
+
+@keyframes open-drawer-right-to-left {
+    0% {
+        transform: translateX(100%);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+.right-drawer {
+    top: 0;
+    right: 0;
+    height: 100dvh;
+    animation: open-drawer-right-to-left 0.6s ease-in-out;
+    animation-fill-mode: forwards;
+}
+
+@keyframes open-drawer-left-to-right {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+.left-drawer {
+    top: 0;
+    left: 0;
+    height: 100dvh;
+    animation: open-drawer-left-to-right 0.6s ease-in-out;
+    animation-fill-mode: forwards;
+}
