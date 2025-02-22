@@ -1,8 +1,9 @@
 .wini-icon {
+    --size: 2.4rem;
     display: flex;
-    width: fit-content;
-    height: fit-content;
-    --size: 1.6rem;
+    width: var(--size) !important;
+    height: var(--size) !important;
+    padding: 0.2rem;
     --color: var(--neutral-text-subtitle-color);
 }
 
@@ -15,8 +16,8 @@
 }
 
 .wini-icon>svg {
-    width: var(--size, inherit) !important;
-    height: var(--size, inherit) !important;
+    width: 100% !important;
+    height: 100% !important;
 }
 
 .wini-icon[class*="fill-icon"]>svg>*[fill^="#"] {

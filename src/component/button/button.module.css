@@ -1,34 +1,39 @@
 .button-container {
-    padding: 0.5rem 1.2rem;
+    padding: 0.4rem 1.2rem;
     border-radius: 0.8rem;
     gap: 0.8rem;
     justify-content: center;
     color: var(--neutral-text-subtitle-color, #61616B);
     width: fit-content;
+    border: 1px solid transparent;
 }
 
 .button-container[class~="border"] {
-    border: var(--neutral-main-border);
+    border: var(--neutral-bolder-border);
+}
+
+.tag-container[class~="dashed"] {
+    border: 1px dashed var(--neutral-bolder-border-color);
 }
 
 .button-container[class~="size64"] {
-    padding: 2rem 2.4rem;
+    padding: 1.9rem 2.4rem;
 }
 
 .button-container[class~="size56"] {
-    padding: 1.6rem 2rem;
+    padding: 1.5rem 2rem;
 }
 
 .button-container[class~="size48"] {
-    padding: 1.2rem 2rem;
+    padding: 1.1rem 2rem;
 }
 
 .button-container[class~="size40"] {
-    padding: 0.9rem 1.6rem;
+    padding: 0.8rem 1.6rem;
 }
 
 .button-container[class~="size24"] {
-    padding: 0.4rem 0.8rem;
+    padding: 0.3rem 0.8rem;
 }
 
 .button-container>.button-label {
@@ -162,7 +167,20 @@ a[class~="button-success-main"] * {
     --color: var(--neutral-text-stable-color) !important;
 }
 
+button.button-container:hover {
+    opacity: 0.95;
+}
+
+button.button-container:focus {
+    box-shadow: 0px 4px 20px 0px #0000001A inset;
+}
+
+a.button-container {
+    text-decoration: underline;
+}
+
 .button-container:disabled {
+    pointer-events: none;
     background-color: var(--neutral-disable-background-color, #dddde1) !important;
 }
 

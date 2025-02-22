@@ -109,3 +109,21 @@
     animation: open-drawer-left-to-right 0.6s ease-in-out;
     animation-fill-mode: forwards;
 }
+
+@keyframes show-dropdown-popup {
+    0% {
+        opacity: 0;
+        height: 0;
+        width: 0;
+        transform: scale(0);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.dropdown-popup {
+    animation: show-dropdown-popup 0.4s ease-in-out;
+}

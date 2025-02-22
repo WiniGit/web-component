@@ -3,7 +3,7 @@ import { Select1, OptionsItem } from './component/select1/select1'
 import { Switch } from './component/switch/switch'
 import { showPopup, closePopup, Popup } from './component/popup/popup'
 import { showDialog, Dialog, DialogAlignment } from './component/dialog/dialog'
-import { DatePicker } from './component/date-picker/date-picker'
+import { DateTimePicker } from './component/date-time-picker/date-time-picker'
 import { SelectMultiple } from './component/input-multi-select/input-multi-select'
 import { ProgressBar } from './component/progress-bar/progress-bar'
 import { ComponentStatus, getStatusIcon } from './component/component-status'
@@ -15,7 +15,7 @@ import { RadioButton } from './component/radio-button/radio-button'
 import { TextArea } from './component/text-area/text-area'
 import { ImportFile } from './component/import-file/import-file'
 import { ToastMessage } from './component/toast-noti/toast-noti'
-import { Calendar, CalendarType } from './component/calendar/calendar'
+import { Calendar } from './component/calendar/calendar'
 import { InfiniteScroll } from './component/infinite-scroll/infinite-scroll'
 import { Rating } from './component/rating/rating'
 import { ProgressCircle } from './component/progress-circle/progress-circle'
@@ -31,14 +31,14 @@ import { CustomCkEditor5 } from './component/ck-editor/ckeditor'
 
 
 export {
-  Calendar, CalendarType,
+  Calendar,
   ComponentStatus,
   getStatusIcon,
   Checkbox,
   Select1, Switch,
   Popup, showPopup, closePopup,
   Dialog, showDialog, DialogAlignment,
-  DatePicker,
+  DateTimePicker,
   SelectMultiple,
   ProgressBar,
   Text,

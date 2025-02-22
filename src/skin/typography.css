@@ -76,7 +76,7 @@
 .medium1,
 .heading-9,
 .button-text-5 {
-    line-height: 2rem;
+    line-height: 1.6rem;
     font-size: 1.2rem;
     font-weight: 500;
     color: var(--neutral-text-title-color);

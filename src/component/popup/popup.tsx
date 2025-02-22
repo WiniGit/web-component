@@ -1,4 +1,4 @@
-import React, { createRef, CSSProperties, ReactNode, useEffect, useRef } from 'react'
+import React, { CSSProperties, ReactNode, useEffect, useRef } from 'react'
 import './popup.css'
 
 interface PopupState {
@@ -41,7 +41,6 @@ export const closePopup = (ref: React.RefObject<Popup>) => {
 }
 
 export class Popup extends React.Component<Object, PopupState> {
-    private ref = createRef<HTMLDivElement>()
     constructor(props: Object | Readonly<Object>) {
         super(props);
     }
@@ -62,7 +61,7 @@ export class Popup extends React.Component<Object, PopupState> {
             <>
                 {this.state.open &&
                     <PopupOverlay className={this.state.clickOverlayClosePopup ? 'hidden-overlay' : ''} onClose={this.state.clickOverlayClosePopup ? () => { this.onClose() } : undefined}>
-                        {this.state.content ?? <div ref={this.ref} className={`popup-container col ${this.state.className ?? ""}`} onClick={e => e.stopPropagation()} style={this.state.style} >
+                        {this.state.content ?? <div className={`popup-container col ${this.state.className ?? ""}`} onClick={e => e.stopPropagation()} style={this.state.style} >
                             {this.state.heading}
                             {this.state.body}
                             {this.state.footer}
