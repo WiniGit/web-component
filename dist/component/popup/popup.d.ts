@@ -24,7 +24,6 @@ export declare const showPopup: (props: {
 }) => void;
 export declare const closePopup: (ref: React.RefObject<Popup>) => void;
 export declare class Popup extends React.Component<Object, PopupState> {
-    private ref;
     constructor(props: Object | Readonly<Object>);
     state: Readonly<PopupState>;
     onOpen(data: PopupState): void;

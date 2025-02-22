@@ -4,12 +4,6 @@ export declare const today: Date;
 export declare const startDate: Date;
 export declare const endDate: Date;
 export declare const inRangeTime: (date: Date, startDate: Date, endDate: Date) => boolean;
-export declare enum CalendarType {
-    DATE = 0,
-    MONTH = 1,
-    YEAR = 2,
-    DATETIME = 3
-}
 interface CalendarProps extends WithTranslation {
     id?: string;
     value?: Date | {

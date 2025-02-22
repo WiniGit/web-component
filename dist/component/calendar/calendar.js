@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Calendar = exports.CalendarType = exports.inRangeTime = exports.endDate = exports.startDate = exports.today = void 0;
+exports.Calendar = exports.inRangeTime = exports.endDate = exports.startDate = exports.today = void 0;
 const react_1 = __importDefault(require("react"));
 const calendar_module_css_1 = __importDefault(require("./calendar.module.css"));
 const date_fns_1 = require("date-fns");
@@ -14,13 +14,6 @@ exports.startDate = new Date(exports.today.getFullYear() - 100, exports.today.ge
 exports.endDate = new Date(exports.today.getFullYear() + 100, exports.today.getMonth(), exports.today.getDate());
 const inRangeTime = (date, startDate, endDate) => ((0, date_fns_1.differenceInCalendarDays)(date, startDate) > -1 && (0, date_fns_1.differenceInCalendarDays)(endDate, date) > -1);
 exports.inRangeTime = inRangeTime;
-var CalendarType;
-(function (CalendarType) {
-    CalendarType[CalendarType["DATE"] = 0] = "DATE";
-    CalendarType[CalendarType["MONTH"] = 1] = "MONTH";
-    CalendarType[CalendarType["YEAR"] = 2] = "YEAR";
-    CalendarType[CalendarType["DATETIME"] = 3] = "DATETIME";
-})(CalendarType || (exports.CalendarType = CalendarType = {}));
 var CalendarTab;
 (function (CalendarTab) {
     CalendarTab[CalendarTab["DATE"] = 0] = "DATE";

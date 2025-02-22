@@ -58,7 +58,6 @@ exports.closePopup = closePopup;
 class Popup extends react_1.default.Component {
     constructor(props) {
         super(props);
-        this.ref = (0, react_1.createRef)();
         this.state = {
             open: false,
         };
@@ -72,7 +71,7 @@ class Popup extends react_1.default.Component {
     render() {
         var _a, _b;
         return (react_1.default.createElement(react_1.default.Fragment, null, this.state.open &&
-            react_1.default.createElement(PopupOverlay, { className: this.state.clickOverlayClosePopup ? 'hidden-overlay' : '', onClose: this.state.clickOverlayClosePopup ? () => { this.onClose(); } : undefined }, (_a = this.state.content) !== null && _a !== void 0 ? _a : react_1.default.createElement("div", { ref: this.ref, className: `popup-container col ${(_b = this.state.className) !== null && _b !== void 0 ? _b : ""}`, onClick: e => e.stopPropagation(), style: this.state.style },
+            react_1.default.createElement(PopupOverlay, { className: this.state.clickOverlayClosePopup ? 'hidden-overlay' : '', onClose: this.state.clickOverlayClosePopup ? () => { this.onClose(); } : undefined }, (_a = this.state.content) !== null && _a !== void 0 ? _a : react_1.default.createElement("div", { className: `popup-container col ${(_b = this.state.className) !== null && _b !== void 0 ? _b : ""}`, onClick: e => e.stopPropagation(), style: this.state.style },
                 this.state.heading,
                 this.state.body,
                 this.state.footer,

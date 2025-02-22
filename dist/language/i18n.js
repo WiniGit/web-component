@@ -60,6 +60,15 @@ const resources = {
             loginTo: "Log in to",
             signup: "Sign up",
             signupFor: "Sign up for",
+            "start-date": "Start date",
+            "end-date": "End date",
+            reset: "Reset",
+            date: "Date",
+            on: "On",
+            daily: "Daily",
+            weekly: "Weekly",
+            monthly: "Monthly",
+            last: "Last",
         },
     },
     vi: {
@@ -112,7 +121,16 @@ const resources = {
             login: "Đăng nhập",
             loginTo: "Đăng nhập vào",
             signup: "Đăng ký",
-            signupFor: "Đăng ký"
+            signupFor: "Đăng ký",
+            "start-date": "Ngày bắt đầu",
+            "end-date": "Ngày kết thúc",
+            reset: "Mặc định",
+            date: "Ngày",
+            on: "Vào",
+            daily: "Hàng ngày",
+            weekly: "Hàng tuần",
+            monthly: "Hàng tháng",
+            last: "Cuối tháng",
         },
     },
 };
@@ -121,6 +139,7 @@ i18next_1.default.use(react_i18next_1.initReactI18next).init({
     resources,
     lng: 'en', // Default language
     fallbackLng: 'en', // Fallback language
+    // backend: {loadPath: "somevariables"},
     interpolation: {
         escapeValue: false, // React already escapes values
     },
