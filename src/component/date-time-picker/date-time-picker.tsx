@@ -186,7 +186,11 @@ export function DateTimePicker(props: DateTimePickerProps) {
     const returnUI = () => {
         switch (props.pickerType) {
             case "date":
-                return <div id={props.id} className={`row ${styles["date-time-picker"]} ${props.className ?? "body-3"}`} style={props.style}
+                return <div
+                    id={props.id}
+                    className={`row ${styles["date-time-picker"]} ${props.className ?? "body-3"} ${props.helperText?.length ? styles['helper-text'] : ""}`}
+                    helper-text={props.helperText}
+                    style={props.style ? { ...({ '--helper-text-color': props.helperTextColor ?? '#e14337' } as CSSProperties), ...props.style } : ({ '--helper-text-color': props.helperTextColor ?? '#e14337' } as CSSProperties)}
                     onClick={(ev: any) => {
                         const rect = ev.target.closest("div").getBoundingClientRect()
                         showCalendar(rect)
@@ -330,6 +334,7 @@ const PopupDateTimePicker = forwardRef(function PopupDateTimePicker({ value, sty
             header={pickerType !== "date" && <div className='row' style={{ flexWrap: "wrap", gap: "0.8rem 1.2rem", padding: "1.6rem", borderBottom: "var(--neutral-main-border)" }}>
                 <TextField
                     ref={inputStartRef}
+                    autoComplete="off"
                     className='col12 body-3'
                     style={{ "--gutter": "1.2rem", padding: "0.4rem 1.2rem" } as any}
                     placeholder={pickerType.includes("range") || pickerType === "auto" ? t("start-date") : "dd/mm/yyyy"}
@@ -346,26 +351,29 @@ const PopupDateTimePicker = forwardRef(function PopupDateTimePicker({ value, sty
                         } else ev.target.value = dateToString(methods.getValues('date-start'))
                     }}
                 />
-                {(pickerType.includes("range") || pickerType === "auto") && <TextField
-                    ref={inputEndRef}
-                    className='col12 body-3'
-                    style={{ "--gutter": "1.2rem", padding: "0.4rem 1.2rem" } as any}
-                    placeholder={t("end-date")}
-                    onComplete={(ev: any) => ev.target.blur()}
-                    onBlur={(ev) => {
-                        const inputValue = ev.target.value
-                        if (regexDate.test(inputValue)) {
-                            const dateValue = stringToDate(inputValue, 'dd/mm/yyyy', '/')
-                            if (differenceInCalendarDays(dateValue, methods.getValues('date-start')) < 0) {
-                                methods.setValue('date-start', dateValue)
-                                inputStartRef.current!.getInput()!.value = dateToString(dateValue)
-                            }
-                            methods.setValue('date-end', dateValue)
-                        } else ev.target.value = dateToString(methods.getValues('date-end'))
-                    }}
-                />}
+                {(pickerType.includes("range") || pickerType === "auto") &&
+                    <TextField
+                        ref={inputEndRef}
+                        autoComplete="off"
+                        className='col12 body-3'
+                        style={{ "--gutter": "1.2rem", padding: "0.4rem 1.2rem" } as any}
+                        placeholder={t("end-date")}
+                        onComplete={(ev: any) => ev.target.blur()}
+                        onBlur={(ev) => {
+                            const inputValue = ev.target.value
+                            if (regexDate.test(inputValue)) {
+                                const dateValue = stringToDate(inputValue, 'dd/mm/yyyy', '/')
+                                if (differenceInCalendarDays(dateValue, methods.getValues('date-start')) < 0) {
+                                    methods.setValue('date-start', dateValue)
+                                    inputStartRef.current!.getInput()!.value = dateToString(dateValue)
+                                }
+                                methods.setValue('date-end', dateValue)
+                            } else ev.target.value = dateToString(methods.getValues('date-end'))
+                        }}
+                    />}
                 {selectTime && <>
                     <TextField
+                        autoComplete="off"
                         name='time-start'
                         style={{ "--gutter": "1.2rem", padding: "0.4rem 1.2rem" } as any}
                         onComplete={(ev: any) => { ev.target.blur() }}
@@ -401,42 +409,44 @@ const PopupDateTimePicker = forwardRef(function PopupDateTimePicker({ value, sty
                             }, 168)
                         }}
                     />
-                    {(pickerType.includes("range") || pickerType === "auto") && <TextField
-                        name='time-end'
-                        style={{ "--gutter": "1.2rem", padding: "0.4rem 1.2rem" } as any}
-                        onComplete={(ev: any) => { ev.target.blur() }}
-                        register={methods.register("time-end", {
-                            onChange: (ev) => ev.target.value = ev.target.value.trim(),
-                            onBlur: (ev) => {
-                                if (regexTime.test(ev.target.value)) {
-                                    methods.setValue('time-end', ev.target.value)
-                                } else ev.target.value = ""
-                                setDropdownChildren(undefined)
-                            }
-                        }) as any}
-                        className='col12 body-3'
-                        placeholder={"hh:mm"}
-                        onFocus={(ev) => {
-                            const rect = ev.target.closest("div")!.getBoundingClientRect()
-                            setTimeout(() => {
-                                setDropdownChildren({
-                                    style: { maxHeight: "24rem", top: rect.bottom + 2, right: document.body.offsetWidth - rect.right, width: rect.width },
-                                    data: <>
-                                        {Array.from({ length: 48 }).map((_, i) => {
-                                            if (i % 2 === 0) var timeValue = `${(i / 2) < 9 ? `0${i / 2}` : (i / 2)}:00`
-                                            else timeValue = `${((i - 1) / 2) < 9 ? `0${(i - 1) / 2}` : ((i - 1) / 2)}:30`
-                                            return <button key={"time-" + i} type="button" className="row" onClick={() => {
-                                                methods.setValue("time-end", timeValue)
-                                                setDropdownChildren(undefined)
-                                            }}>
-                                                <Text className="button-text-3">{timeValue}</Text>
-                                            </button>
-                                        })}
-                                    </>
-                                })
-                            }, 168)
-                        }}
-                    />}
+                    {(pickerType.includes("range") || pickerType === "auto") &&
+                        <TextField
+                            autoComplete="off"
+                            name='time-end'
+                            style={{ "--gutter": "1.2rem", padding: "0.4rem 1.2rem" } as any}
+                            onComplete={(ev: any) => { ev.target.blur() }}
+                            register={methods.register("time-end", {
+                                onChange: (ev) => ev.target.value = ev.target.value.trim(),
+                                onBlur: (ev) => {
+                                    if (regexTime.test(ev.target.value)) {
+                                        methods.setValue('time-end', ev.target.value)
+                                    } else ev.target.value = ""
+                                    setDropdownChildren(undefined)
+                                }
+                            }) as any}
+                            className='col12 body-3'
+                            placeholder={"hh:mm"}
+                            onFocus={(ev) => {
+                                const rect = ev.target.closest("div")!.getBoundingClientRect()
+                                setTimeout(() => {
+                                    setDropdownChildren({
+                                        style: { maxHeight: "24rem", top: rect.bottom + 2, right: document.body.offsetWidth - rect.right, width: rect.width },
+                                        data: <>
+                                            {Array.from({ length: 48 }).map((_, i) => {
+                                                if (i % 2 === 0) var timeValue = `${(i / 2) < 9 ? `0${i / 2}` : (i / 2)}:00`
+                                                else timeValue = `${((i - 1) / 2) < 9 ? `0${(i - 1) / 2}` : ((i - 1) / 2)}:30`
+                                                return <button key={"time-" + i} type="button" className="row" onClick={() => {
+                                                    methods.setValue("time-end", timeValue)
+                                                    setDropdownChildren(undefined)
+                                                }}>
+                                                    <Text className="button-text-3">{timeValue}</Text>
+                                                </button>
+                                            })}
+                                        </>
+                                    })
+                                }, 168)
+                            }}
+                        />}
                 </>}
             </div>}
             footer={pickerType !== "date" && <>

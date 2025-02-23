@@ -36,7 +36,7 @@
 }
 
 .date-time-picker:has(>input) {
-    padding: 0.6rem 1.6rem;
+    padding: 0.7rem 1.6rem;
     border: var(--neutral-main-border);
 }
 
@@ -56,4 +56,23 @@ button.date-time-picker:hover {
 
 button.date-time-picker:focus {
     box-shadow: 0px 4px 20px 0px #0000001A inset;
+}
+
+.date-time-picker.helper-text {
+    position: relative;
+    overflow: visible !important;
+    border-color: var(--helper-text-color) !important;
+}
+
+.date-time-picker.helper-text::after {
+    content: attr(helper-text);
+    color: var(--helper-text-color);
+    position: absolute;
+    left: 0;
+    bottom: -0.4rem;
+    width: max-content;
+    font-size: 1.2rem;
+    line-height: 1.6rem;
+    font-family: inherit;
+    transform: translateY(100%);
 }
