@@ -56,7 +56,8 @@ export class InputOtp extends React.Component<Props> {
                     }
                     continue;
                 }
-            }}>
+            }}
+        >
             {Array.from({ length: this.props.length ?? 6 }).map((_, i) => <input
                 key={"opt-" + i}
                 disabled={this.props.disabled}
@@ -75,11 +76,24 @@ export class InputOtp extends React.Component<Props> {
                         default:
                             ev.preventDefault()
                             ev.stopPropagation()
-                            const numberCheck = /[0-9]/g
-                            if (numberCheck.test(key)) {
-                                if (!ev.target.value.length) ev.target.value = key
-                                if (ev.target.nextSibling?.localName === "input" && !ev.target.nextSibling.value.length) ev.target.nextSibling.focus()
-                                else ev.target.blur()
+                            if (key === "v" && ev.ctrlKey) {
+                                return navigator.clipboard.readText().then(text => {
+                                    const otpRegex = /^\d{6}$/g
+                                    if (otpRegex.test(text)) {
+                                        const inputList: any = [...ev.target.closest("div").childNodes]
+                                        inputList.forEach((input: any, i: number) => {
+                                            input.value = text[i]
+                                            input.focus()
+                                        })
+                                    }
+                                })
+                            } else {
+                                const numberCheck = /[0-9]/g
+                                if (numberCheck.test(key) && !key.startsWith("f")) {
+                                    if (!ev.target.value.length) ev.target.value = key
+                                    if (ev.target.nextSibling?.localName === "input" && !ev.target.nextSibling.value.length) ev.target.nextSibling.focus()
+                                    else ev.target.blur()
+                                }
                             }
                             break;
                     }
