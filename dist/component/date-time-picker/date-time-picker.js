@@ -111,7 +111,7 @@ function DateTimePicker(props) {
             return react_2.default.createElement(text_1.Text, { className: date_time_picker_module_css_1.default["value"] }, dateToString(value, `dd/mm/yyyy${((_b = props.pickerType) === null || _b === void 0 ? void 0 : _b.includes("time")) ? " hh:mm" : ""}`));
         else
             return react_2.default.createElement(react_2.default.Fragment, null,
-                react_2.default.createElement(text_1.Text, { className: date_time_picker_module_css_1.default["value"] },
+                react_2.default.createElement(text_1.Text, { className: date_time_picker_module_css_1.default["value"], style: { flex: "none", width: "fit-content" } },
                     dateToString((_c = value.start) !== null && _c !== void 0 ? _c : new Date(), `dd/mm/yyyy${(((_d = props.pickerType) === null || _d === void 0 ? void 0 : _d.includes("time")) || props.pickerType === "auto") ? " hh:mm" : ""}`),
                     " - ",
                     dateToString((_e = value.end) !== null && _e !== void 0 ? _e : new Date(), `dd/mm/yyyy${(((_f = props.pickerType) === null || _f === void 0 ? void 0 : _f.includes("time")) || props.pickerType === "auto") ? " hh:mm" : ""}`)),
@@ -140,7 +140,7 @@ function DateTimePicker(props) {
         (0, popup_1.showPopup)({
             ref: popupRef,
             clickOverlayClosePopup: true,
-            content: react_2.default.createElement(PopupDateTimePicker, { ref: popupRef, value: value instanceof Date ? value : value === null || value === void 0 ? void 0 : value.start, endValue: value instanceof Date ? undefined : value === null || value === void 0 ? void 0 : value.end, pickerType: props.pickerType, enableRepeat: props.enableRepeat, style: { top: rect.bottom + 2, left: rect.left + 16 }, onApply: (ev) => {
+            content: react_2.default.createElement(PopupDateTimePicker, { ref: popupRef, max: props.max, min: props.min, value: value instanceof Date ? value : value === null || value === void 0 ? void 0 : value.start, endValue: value instanceof Date ? undefined : value === null || value === void 0 ? void 0 : value.end, pickerType: props.pickerType, enableRepeat: props.enableRepeat, style: { top: rect.bottom + 2, left: rect.left + 16 }, onApply: (ev) => {
                     setValue(ev);
                     (0, popup_1.closePopup)(popupRef);
                     if (props.onChange)
@@ -210,7 +210,6 @@ const PopupDateTimePicker = (0, react_1.forwardRef)(function PopupDateTimePicker
     const inputStartRef = (0, react_1.useRef)(null);
     const inputEndRef = (0, react_1.useRef)(null);
     const { t } = (0, react_i18next_1.useTranslation)();
-    const [dropdownChildren, setDropdownChildren] = (0, react_1.useState)();
     const regexDate = /[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{4}/g;
     const regexTime = /^(?:[01]\d|2[0-3]):[0-5]\d(?:[:][0-5]\d)?$/g;
     (0, react_1.useEffect)(() => {
@@ -266,7 +265,6 @@ const PopupDateTimePicker = (0, react_1.forwardRef)(function PopupDateTimePicker
     }, [endValue, inputEndRef, pickerType]);
     return react_2.default.createElement("div", { className: "col", style: Object.assign({ width: "31.2rem" }, style) },
         react_2.default.createElement(popup_1.Popup, { ref: popupRef }),
-        dropdownChildren ? react_2.default.createElement(Dropdown, { style: dropdownChildren.style, children: dropdownChildren.data, onClose: () => { setDropdownChildren(undefined); } }) : null,
         react_2.default.createElement(calendar_1.Calendar, { min: min, max: max, range: pickerType.includes("range") || pickerType === "auto", value: pickerType === "date" || pickerType === "datetime" ? methods.watch('date-start') : (methods.watch('date-start') && methods.watch('date-end') ? { sTime: methods.watch('date-start'), eTime: methods.watch('date-end') } : undefined), header: pickerType !== "date" && react_2.default.createElement("div", { className: 'row', style: { flexWrap: "wrap", gap: "0.8rem 1.2rem", padding: "1.6rem", borderBottom: "var(--neutral-main-border)" } },
                 react_2.default.createElement(text_field_1.TextField, { ref: inputStartRef, autoComplete: "off", className: 'col12 body-3', style: { "--gutter": "1.2rem", padding: "0.4rem 1.2rem" }, placeholder: pickerType.includes("range") || pickerType === "auto" ? t("start-date") : "dd/mm/yyyy", onComplete: (ev) => ev.target.blur(), onBlur: (ev) => {
                         const inputValue = ev.target.value;
@@ -279,7 +277,7 @@ const PopupDateTimePicker = (0, react_1.forwardRef)(function PopupDateTimePicker
                             methods.setValue('date-start', dateValue);
                         }
                         else
-                            ev.target.value = dateToString(methods.getValues('date-start'));
+                            ev.target.value = methods.getValues('date-start') ? dateToString(methods.getValues('date-start')) : "";
                     } }),
                 (pickerType.includes("range") || pickerType === "auto") &&
                     react_2.default.createElement(text_field_1.TextField, { ref: inputEndRef, autoComplete: "off", className: 'col12 body-3', style: { "--gutter": "1.2rem", padding: "0.4rem 1.2rem" }, placeholder: t("end-date"), onComplete: (ev) => ev.target.blur(), onBlur: (ev) => {
@@ -293,7 +291,7 @@ const PopupDateTimePicker = (0, react_1.forwardRef)(function PopupDateTimePicker
                                 methods.setValue('date-end', dateValue);
                             }
                             else
-                                ev.target.value = dateToString(methods.getValues('date-end'));
+                                ev.target.value = methods.getValues('date-end') ? dateToString(methods.getValues('date-end')) : "";
                         } }),
                 selectTime && react_2.default.createElement(react_2.default.Fragment, null,
                     react_2.default.createElement(text_field_1.TextField, { autoComplete: "off", name: 'time-start', style: { "--gutter": "1.2rem", padding: "0.4rem 1.2rem" }, onComplete: (ev) => { ev.target.blur(); }, register: methods.register("time-start", {
@@ -304,26 +302,24 @@ const PopupDateTimePicker = (0, react_1.forwardRef)(function PopupDateTimePicker
                                 }
                                 else
                                     ev.target.value = "";
-                                setDropdownChildren(undefined);
                             }
                         }), className: 'col12 body-3', placeholder: "hh:mm", onFocus: (ev) => {
                             const rect = ev.target.closest("div").getBoundingClientRect();
-                            setTimeout(() => {
-                                setDropdownChildren({
-                                    style: { maxHeight: "24rem", top: rect.bottom + 2, right: document.body.offsetWidth - rect.right, width: rect.width },
-                                    data: react_2.default.createElement(react_2.default.Fragment, null, Array.from({ length: 48 }).map((_, i) => {
-                                        if (i % 2 === 0)
-                                            var timeValue = `${(i / 2) < 9 ? `0${i / 2}` : (i / 2)}:00`;
-                                        else
-                                            timeValue = `${((i - 1) / 2) < 9 ? `0${(i - 1) / 2}` : ((i - 1) / 2)}:30`;
-                                        return react_2.default.createElement("button", { key: "time-" + i, type: "button", className: "row", onClick: () => {
-                                                methods.setValue("time-start", timeValue);
-                                                setDropdownChildren(undefined);
-                                            } },
-                                            react_2.default.createElement(text_1.Text, { className: "button-text-3" }, timeValue));
-                                    }))
-                                });
-                            }, 168);
+                            (0, popup_1.showPopup)({
+                                ref: popupRef,
+                                clickOverlayClosePopup: true,
+                                content: react_2.default.createElement("div", { className: `col ${date_time_picker_module_css_1.default['popup-actions']}`, style: { maxHeight: "24rem", top: rect.bottom + 2, right: document.body.offsetWidth - rect.right, width: rect.width, overflow: "hidden auto", backgroundColor: "var(--neutral-absolute-background-color)", borderRadius: "0.8rem" } }, Array.from({ length: 48 }).map((_, i) => {
+                                    if (i % 2 === 0)
+                                        var timeValue = `${(i / 2) < 9 ? `0${i / 2}` : (i / 2)}:00`;
+                                    else
+                                        timeValue = `${((i - 1) / 2) < 9 ? `0${(i - 1) / 2}` : ((i - 1) / 2)}:30`;
+                                    return react_2.default.createElement("button", { key: "time-" + i, type: "button", className: "row", onClick: () => {
+                                            methods.setValue("time-start", timeValue);
+                                            (0, popup_1.closePopup)(popupRef);
+                                        } },
+                                        react_2.default.createElement(text_1.Text, { className: "body-3" }, timeValue));
+                                }))
+                            });
                         } }),
                     (pickerType.includes("range") || pickerType === "auto") &&
                         react_2.default.createElement(text_field_1.TextField, { autoComplete: "off", name: 'time-end', style: { "--gutter": "1.2rem", padding: "0.4rem 1.2rem" }, onComplete: (ev) => { ev.target.blur(); }, register: methods.register("time-end", {
@@ -334,26 +330,24 @@ const PopupDateTimePicker = (0, react_1.forwardRef)(function PopupDateTimePicker
                                     }
                                     else
                                         ev.target.value = "";
-                                    setDropdownChildren(undefined);
                                 }
                             }), className: 'col12 body-3', placeholder: "hh:mm", onFocus: (ev) => {
                                 const rect = ev.target.closest("div").getBoundingClientRect();
-                                setTimeout(() => {
-                                    setDropdownChildren({
-                                        style: { maxHeight: "24rem", top: rect.bottom + 2, right: document.body.offsetWidth - rect.right, width: rect.width },
-                                        data: react_2.default.createElement(react_2.default.Fragment, null, Array.from({ length: 48 }).map((_, i) => {
-                                            if (i % 2 === 0)
-                                                var timeValue = `${(i / 2) < 9 ? `0${i / 2}` : (i / 2)}:00`;
-                                            else
-                                                timeValue = `${((i - 1) / 2) < 9 ? `0${(i - 1) / 2}` : ((i - 1) / 2)}:30`;
-                                            return react_2.default.createElement("button", { key: "time-" + i, type: "button", className: "row", onClick: () => {
-                                                    methods.setValue("time-end", timeValue);
-                                                    setDropdownChildren(undefined);
-                                                } },
-                                                react_2.default.createElement(text_1.Text, { className: "button-text-3" }, timeValue));
-                                        }))
-                                    });
-                                }, 168);
+                                (0, popup_1.showPopup)({
+                                    ref: popupRef,
+                                    clickOverlayClosePopup: true,
+                                    content: react_2.default.createElement("div", { className: `col ${date_time_picker_module_css_1.default['popup-actions']}`, style: { maxHeight: "24rem", top: rect.bottom + 2, right: document.body.offsetWidth - rect.right, width: rect.width, overflow: "hidden auto", backgroundColor: "var(--neutral-absolute-background-color)", borderRadius: "0.8rem" } }, Array.from({ length: 48 }).map((_, i) => {
+                                        if (i % 2 === 0)
+                                            var timeValue = `${(i / 2) < 9 ? `0${i / 2}` : (i / 2)}:00`;
+                                        else
+                                            timeValue = `${((i - 1) / 2) < 9 ? `0${(i - 1) / 2}` : ((i - 1) / 2)}:30`;
+                                        return react_2.default.createElement("button", { key: "time-" + i, type: "button", className: "row", onClick: () => {
+                                                methods.setValue("time-end", timeValue);
+                                                (0, popup_1.closePopup)(popupRef);
+                                            } },
+                                            react_2.default.createElement(text_1.Text, { className: "body-3" }, timeValue));
+                                    }))
+                                });
                             } }))), footer: pickerType !== "date" && react_2.default.createElement(react_2.default.Fragment, null,
                 isRepeat && react_2.default.createElement("div", { className: 'col', style: { borderTop: "var(--neutral-main-border)" } },
                     react_2.default.createElement("div", { className: 'row', style: { gap: 4, padding: "1.2rem 1.6rem" } },
@@ -506,7 +500,7 @@ const PopupDateTimePicker = (0, react_1.forwardRef)(function PopupDateTimePicker
                                 let timeEndValue = selectTime ? (((_b = methods.getValues("time-end")) === null || _b === void 0 ? void 0 : _b.length) ? methods.getValues("time-end") : "23:59") : "23:59";
                                 dateEndValue.setHours(parseInt(timeEndValue.split(':')[0]), parseInt(timeEndValue.split(':')[1]), selectTime ? 59 : 0, 0);
                             }
-                            onApply(!pickerType.includes("range") ? dateStartValue : { start: dateStartValue, end: dateEndValue, repeatData: isRepeat ? repeatData : undefined });
+                            onApply(!pickerType.includes("range") && pickerType !== "auto" ? dateStartValue : { start: dateStartValue, end: dateEndValue, repeatData: isRepeat ? repeatData : undefined });
                             (0, popup_1.closePopup)(ref);
                         } }))), onSelect: (ev) => {
                 if (pickerType !== "date") {
@@ -532,43 +526,3 @@ const PopupDateTimePicker = (0, react_1.forwardRef)(function PopupDateTimePicker
                 }
             } }));
 });
-const Dropdown = (props) => {
-    var _a;
-    const containerRef = (0, react_1.useRef)(null);
-    (0, react_1.useEffect)(() => {
-        if (containerRef.current) {
-            function onClickDropDown(ev) {
-                var _a;
-                if (ev.target !== containerRef.current && !((_a = containerRef.current) === null || _a === void 0 ? void 0 : _a.contains(ev.target)))
-                    props.onClose();
-            }
-            window.document.body.addEventListener("click", onClickDropDown);
-            return () => {
-                window.document.body.removeEventListener("click", onClickDropDown);
-            };
-        }
-    }, [containerRef]);
-    (0, react_1.useEffect)(() => {
-        if (containerRef.current && containerRef.current.firstChild) {
-            const popupContent = containerRef.current.firstChild;
-            const rect = popupContent.getBoundingClientRect();
-            if (rect.x < 0) {
-                popupContent.style.left = "0px";
-                popupContent.style.right = "unset";
-            }
-            else if (rect.right > document.body.offsetWidth) {
-                popupContent.style.right = "0px";
-                popupContent.style.left = "unset";
-            }
-            if (rect.y < 0) {
-                popupContent.style.top = "0px";
-                popupContent.style.bottom = "unset";
-            }
-            else if (rect.bottom > document.body.offsetHeight) {
-                popupContent.style.bottom = "0px";
-                popupContent.style.top = "unset";
-            }
-        }
-    }, [containerRef]);
-    return react_2.default.createElement("div", { ref: containerRef, className: "col popup-actions", style: Object.assign({ position: "fixed", zIndex: 99, backgroundColor: "var(--neutral-absolute-background-color)", overflow: "hidden auto", borderRadius: "0.8rem", boxShadow: "0 2px 8px rgba(0, 0, 0, 0.25)" }, ((_a = props.style) !== null && _a !== void 0 ? _a : {})) }, props.children);
-};

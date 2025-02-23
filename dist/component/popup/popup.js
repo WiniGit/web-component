@@ -86,7 +86,7 @@ function PopupOverlay({ children, onClose, className, style, onOpen }) {
     (0, react_1.useEffect)(() => {
         if (overlayRef.current && onClose) {
             const onClickDropDown = (ev) => {
-                if (ev.target !== overlayRef.current && !overlayRef.current.contains(ev.target))
+                if (ev.target === overlayRef.current || !overlayRef.current.contains(ev.target))
                     onClose(ev);
             };
             window.document.body.addEventListener("mousedown", onClickDropDown);
@@ -94,11 +94,11 @@ function PopupOverlay({ children, onClose, className, style, onOpen }) {
                 window.document.body.removeEventListener("mousedown", onClickDropDown);
             };
         }
-    }, [overlayRef]);
+    }, [overlayRef.current]);
     (0, react_1.useEffect)(() => {
         if (overlayRef.current && onOpen)
             onOpen(overlayRef.current);
-    }, [overlayRef, onOpen]);
+    }, [overlayRef.current, onOpen]);
     (0, react_1.useEffect)(() => {
         if (overlayRef.current && overlayRef.current.firstChild) {
             const popupContent = overlayRef.current.firstChild;
