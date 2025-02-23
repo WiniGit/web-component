@@ -52,6 +52,7 @@
 button[class~="button-grey"],
 a[class~="button-grey"] {
     background-color: var(--neutral-main-background-color) !important;
+    border-color: var(--neutral-main-background-color) !important;
 }
 
 button[class~="button-grey"] *,
@@ -85,7 +86,6 @@ a[class~="button-neutral"] * {
 
 button[class~="button-infor"],
 a[class~="button-infor"] {
-    background-color: var(--infor-background) !important;
     border-color: var(--infor-main-color) !important;
 }
 
@@ -97,7 +97,6 @@ a[class~="button-infor"] * {
 
 button[class~="button-warning"],
 a[class~="button-warning"] {
-    background-color: var(--warning-background) !important;
     border-color: var(--warning-main-color) !important;
 }
 
@@ -109,7 +108,6 @@ a[class~="button-warning"] * {
 
 button[class~="button-error"],
 a[class~="button-error"] {
-    background-color: var(--error-background) !important;
     border-color: var(--error-main-color) !important;
 }
 
@@ -121,7 +119,6 @@ a[class~="button-error"] * {
 
 button[class~="button-success"],
 a[class~="button-success"] {
-    background-color: var(--success-background) !important;
     border-color: var(--success-main-color) !important;
 }
 
@@ -175,13 +172,10 @@ button.button-container:focus {
     box-shadow: 0px 4px 20px 0px #0000001A inset;
 }
 
-a.button-container {
-    text-decoration: underline;
-}
-
 .button-container:disabled {
     pointer-events: none;
     background-color: var(--neutral-disable-background-color, #dddde1) !important;
+    border-color: var(--neutral-bolder-border-color, #D7D7DB) !important;
 }
 
 .button-container:disabled * {

@@ -157,7 +157,7 @@ export function DateTimePicker(props: DateTimePickerProps) {
                 setValue(props.value)
                 break;
             default:
-                setValue({ start: props.value, end: props.endValue, repeatData: props.pickerType === "auto" ? props.repeatValue : undefined })
+                setValue((!props.value || !props.endValue) ? undefined : { start: props.value, end: props.endValue, repeatData: props.pickerType === "auto" ? props.repeatValue : undefined })
                 break;
         }
     }, [props.value, props.endValue, props.repeatValue, props.pickerType])
