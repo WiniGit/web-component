@@ -151,13 +151,13 @@ function DateTimePicker(props) {
         });
     };
     const returnUI = () => {
-        var _a, _b, _c, _d;
+        var _a, _b, _c, _d, _e, _f, _g;
         switch (props.pickerType) {
             case "date":
-                return react_2.default.createElement("div", { id: props.id, className: `row ${date_time_picker_module_css_1.default["date-time-picker"]} ${(_a = props.className) !== null && _a !== void 0 ? _a : "body-3"}`, style: props.style, onClick: (ev) => {
+                return react_2.default.createElement("div", { id: props.id, className: `row ${date_time_picker_module_css_1.default["date-time-picker"]} ${(_a = props.className) !== null && _a !== void 0 ? _a : "body-3"} ${((_b = props.helperText) === null || _b === void 0 ? void 0 : _b.length) ? date_time_picker_module_css_1.default['helper-text'] : ""}`, "helper-text": props.helperText, style: props.style ? Object.assign(Object.assign({}, { '--helper-text-color': (_c = props.helperTextColor) !== null && _c !== void 0 ? _c : '#e14337' }), props.style) : { '--helper-text-color': (_d = props.helperTextColor) !== null && _d !== void 0 ? _d : '#e14337' }, onClick: (ev) => {
                         const rect = ev.target.closest("div").getBoundingClientRect();
                         showCalendar(rect);
-                    } }, (_b = props.prefix) !== null && _b !== void 0 ? _b : react_2.default.createElement(winicon_1.Winicon, { className: date_time_picker_module_css_1.default["prefix-icon"], src: "outline/user interface/calendar-date", size: "1.2rem" }),
+                    } }, (_e = props.prefix) !== null && _e !== void 0 ? _e : react_2.default.createElement(winicon_1.Winicon, { className: date_time_picker_module_css_1.default["prefix-icon"], src: "outline/user interface/calendar-date", size: "1.2rem" }),
                     react_2.default.createElement("input", { className: date_time_picker_module_css_1.default["value"], ref: inputRef, autoComplete: 'off', disabled: props.disabled, placeholder: props.placeholder, readOnly: props.pickOnly, onKeyDown: (ev) => {
                             switch (ev.key.toLowerCase()) {
                                 case "enter":
@@ -189,10 +189,10 @@ function DateTimePicker(props) {
                                 props.onChange(dateValue);
                         } }));
             default:
-                return react_2.default.createElement("button", { id: props.id, type: "button", disabled: props.disabled, className: `row ${date_time_picker_module_css_1.default["date-time-picker"]} ${(_c = props.className) !== null && _c !== void 0 ? _c : "body-3"}`, style: props.style, onClick: (ev) => {
+                return react_2.default.createElement("button", { id: props.id, type: "button", disabled: props.disabled, className: `row ${date_time_picker_module_css_1.default["date-time-picker"]} ${(_f = props.className) !== null && _f !== void 0 ? _f : "body-3"}`, style: props.style, onClick: (ev) => {
                         const rect = ev.target.closest("button").getBoundingClientRect();
                         showCalendar(rect);
-                    } }, (_d = props.prefix) !== null && _d !== void 0 ? _d : react_2.default.createElement(winicon_1.Winicon, { className: date_time_picker_module_css_1.default["prefix-icon"], src: "outline/user interface/calendar-date", size: "1.2rem" }),
+                    } }, (_g = props.prefix) !== null && _g !== void 0 ? _g : react_2.default.createElement(winicon_1.Winicon, { className: date_time_picker_module_css_1.default["prefix-icon"], src: "outline/user interface/calendar-date", size: "1.2rem" }),
                     txtValue);
         }
     };
@@ -268,7 +268,7 @@ const PopupDateTimePicker = (0, react_1.forwardRef)(function PopupDateTimePicker
         react_2.default.createElement(popup_1.Popup, { ref: popupRef }),
         dropdownChildren ? react_2.default.createElement(Dropdown, { style: dropdownChildren.style, children: dropdownChildren.data, onClose: () => { setDropdownChildren(undefined); } }) : null,
         react_2.default.createElement(calendar_1.Calendar, { min: min, max: max, range: pickerType.includes("range") || pickerType === "auto", value: pickerType === "date" || pickerType === "datetime" ? methods.watch('date-start') : (methods.watch('date-start') && methods.watch('date-end') ? { sTime: methods.watch('date-start'), eTime: methods.watch('date-end') } : undefined), header: pickerType !== "date" && react_2.default.createElement("div", { className: 'row', style: { flexWrap: "wrap", gap: "0.8rem 1.2rem", padding: "1.6rem", borderBottom: "var(--neutral-main-border)" } },
-                react_2.default.createElement(text_field_1.TextField, { ref: inputStartRef, className: 'col12 body-3', style: { "--gutter": "1.2rem", padding: "0.4rem 1.2rem" }, placeholder: pickerType.includes("range") || pickerType === "auto" ? t("start-date") : "dd/mm/yyyy", onComplete: (ev) => ev.target.blur(), onBlur: (ev) => {
+                react_2.default.createElement(text_field_1.TextField, { ref: inputStartRef, autoComplete: "off", className: 'col12 body-3', style: { "--gutter": "1.2rem", padding: "0.4rem 1.2rem" }, placeholder: pickerType.includes("range") || pickerType === "auto" ? t("start-date") : "dd/mm/yyyy", onComplete: (ev) => ev.target.blur(), onBlur: (ev) => {
                         const inputValue = ev.target.value;
                         if (regexDate.test(inputValue)) {
                             const dateValue = stringToDate(inputValue, 'dd/mm/yyyy', '/');
@@ -281,21 +281,22 @@ const PopupDateTimePicker = (0, react_1.forwardRef)(function PopupDateTimePicker
                         else
                             ev.target.value = dateToString(methods.getValues('date-start'));
                     } }),
-                (pickerType.includes("range") || pickerType === "auto") && react_2.default.createElement(text_field_1.TextField, { ref: inputEndRef, className: 'col12 body-3', style: { "--gutter": "1.2rem", padding: "0.4rem 1.2rem" }, placeholder: t("end-date"), onComplete: (ev) => ev.target.blur(), onBlur: (ev) => {
-                        const inputValue = ev.target.value;
-                        if (regexDate.test(inputValue)) {
-                            const dateValue = stringToDate(inputValue, 'dd/mm/yyyy', '/');
-                            if ((0, date_fns_1.differenceInCalendarDays)(dateValue, methods.getValues('date-start')) < 0) {
-                                methods.setValue('date-start', dateValue);
-                                inputStartRef.current.getInput().value = dateToString(dateValue);
+                (pickerType.includes("range") || pickerType === "auto") &&
+                    react_2.default.createElement(text_field_1.TextField, { ref: inputEndRef, autoComplete: "off", className: 'col12 body-3', style: { "--gutter": "1.2rem", padding: "0.4rem 1.2rem" }, placeholder: t("end-date"), onComplete: (ev) => ev.target.blur(), onBlur: (ev) => {
+                            const inputValue = ev.target.value;
+                            if (regexDate.test(inputValue)) {
+                                const dateValue = stringToDate(inputValue, 'dd/mm/yyyy', '/');
+                                if ((0, date_fns_1.differenceInCalendarDays)(dateValue, methods.getValues('date-start')) < 0) {
+                                    methods.setValue('date-start', dateValue);
+                                    inputStartRef.current.getInput().value = dateToString(dateValue);
+                                }
+                                methods.setValue('date-end', dateValue);
                             }
-                            methods.setValue('date-end', dateValue);
-                        }
-                        else
-                            ev.target.value = dateToString(methods.getValues('date-end'));
-                    } }),
+                            else
+                                ev.target.value = dateToString(methods.getValues('date-end'));
+                        } }),
                 selectTime && react_2.default.createElement(react_2.default.Fragment, null,
-                    react_2.default.createElement(text_field_1.TextField, { name: 'time-start', style: { "--gutter": "1.2rem", padding: "0.4rem 1.2rem" }, onComplete: (ev) => { ev.target.blur(); }, register: methods.register("time-start", {
+                    react_2.default.createElement(text_field_1.TextField, { autoComplete: "off", name: 'time-start', style: { "--gutter": "1.2rem", padding: "0.4rem 1.2rem" }, onComplete: (ev) => { ev.target.blur(); }, register: methods.register("time-start", {
                             onChange: (ev) => ev.target.value = ev.target.value.trim(),
                             onBlur: (ev) => {
                                 if (regexTime.test(ev.target.value)) {
@@ -324,35 +325,36 @@ const PopupDateTimePicker = (0, react_1.forwardRef)(function PopupDateTimePicker
                                 });
                             }, 168);
                         } }),
-                    (pickerType.includes("range") || pickerType === "auto") && react_2.default.createElement(text_field_1.TextField, { name: 'time-end', style: { "--gutter": "1.2rem", padding: "0.4rem 1.2rem" }, onComplete: (ev) => { ev.target.blur(); }, register: methods.register("time-end", {
-                            onChange: (ev) => ev.target.value = ev.target.value.trim(),
-                            onBlur: (ev) => {
-                                if (regexTime.test(ev.target.value)) {
-                                    methods.setValue('time-end', ev.target.value);
+                    (pickerType.includes("range") || pickerType === "auto") &&
+                        react_2.default.createElement(text_field_1.TextField, { autoComplete: "off", name: 'time-end', style: { "--gutter": "1.2rem", padding: "0.4rem 1.2rem" }, onComplete: (ev) => { ev.target.blur(); }, register: methods.register("time-end", {
+                                onChange: (ev) => ev.target.value = ev.target.value.trim(),
+                                onBlur: (ev) => {
+                                    if (regexTime.test(ev.target.value)) {
+                                        methods.setValue('time-end', ev.target.value);
+                                    }
+                                    else
+                                        ev.target.value = "";
+                                    setDropdownChildren(undefined);
                                 }
-                                else
-                                    ev.target.value = "";
-                                setDropdownChildren(undefined);
-                            }
-                        }), className: 'col12 body-3', placeholder: "hh:mm", onFocus: (ev) => {
-                            const rect = ev.target.closest("div").getBoundingClientRect();
-                            setTimeout(() => {
-                                setDropdownChildren({
-                                    style: { maxHeight: "24rem", top: rect.bottom + 2, right: document.body.offsetWidth - rect.right, width: rect.width },
-                                    data: react_2.default.createElement(react_2.default.Fragment, null, Array.from({ length: 48 }).map((_, i) => {
-                                        if (i % 2 === 0)
-                                            var timeValue = `${(i / 2) < 9 ? `0${i / 2}` : (i / 2)}:00`;
-                                        else
-                                            timeValue = `${((i - 1) / 2) < 9 ? `0${(i - 1) / 2}` : ((i - 1) / 2)}:30`;
-                                        return react_2.default.createElement("button", { key: "time-" + i, type: "button", className: "row", onClick: () => {
-                                                methods.setValue("time-end", timeValue);
-                                                setDropdownChildren(undefined);
-                                            } },
-                                            react_2.default.createElement(text_1.Text, { className: "button-text-3" }, timeValue));
-                                    }))
-                                });
-                            }, 168);
-                        } }))), footer: pickerType !== "date" && react_2.default.createElement(react_2.default.Fragment, null,
+                            }), className: 'col12 body-3', placeholder: "hh:mm", onFocus: (ev) => {
+                                const rect = ev.target.closest("div").getBoundingClientRect();
+                                setTimeout(() => {
+                                    setDropdownChildren({
+                                        style: { maxHeight: "24rem", top: rect.bottom + 2, right: document.body.offsetWidth - rect.right, width: rect.width },
+                                        data: react_2.default.createElement(react_2.default.Fragment, null, Array.from({ length: 48 }).map((_, i) => {
+                                            if (i % 2 === 0)
+                                                var timeValue = `${(i / 2) < 9 ? `0${i / 2}` : (i / 2)}:00`;
+                                            else
+                                                timeValue = `${((i - 1) / 2) < 9 ? `0${(i - 1) / 2}` : ((i - 1) / 2)}:30`;
+                                            return react_2.default.createElement("button", { key: "time-" + i, type: "button", className: "row", onClick: () => {
+                                                    methods.setValue("time-end", timeValue);
+                                                    setDropdownChildren(undefined);
+                                                } },
+                                                react_2.default.createElement(text_1.Text, { className: "button-text-3" }, timeValue));
+                                        }))
+                                    });
+                                }, 168);
+                            } }))), footer: pickerType !== "date" && react_2.default.createElement(react_2.default.Fragment, null,
                 isRepeat && react_2.default.createElement("div", { className: 'col', style: { borderTop: "var(--neutral-main-border)" } },
                     react_2.default.createElement("div", { className: 'row', style: { gap: 4, padding: "1.2rem 1.6rem" } },
                         react_2.default.createElement(text_1.Text, { className: 'heading-8', style: { flex: 1 } }, "L\u1EB7p l\u1EA1i"),
