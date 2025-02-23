@@ -17,7 +17,5 @@ interface ButtonProps {
     className?: string;
     onClick?: React.MouseEventHandler<HTMLButtonElement | HTMLAnchorElement>;
 }
-export declare class Button extends React.Component<ButtonProps> {
-    render(): React.JSX.Element;
-}
+export declare function Button(props: ButtonProps): React.JSX.Element;
 export {};

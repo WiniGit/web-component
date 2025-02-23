@@ -97,14 +97,28 @@ class InputOtp extends react_1.default.Component {
                     default:
                         ev.preventDefault();
                         ev.stopPropagation();
-                        const numberCheck = /[0-9]/g;
-                        if (numberCheck.test(key)) {
-                            if (!ev.target.value.length)
-                                ev.target.value = key;
-                            if (((_b = ev.target.nextSibling) === null || _b === void 0 ? void 0 : _b.localName) === "input" && !ev.target.nextSibling.value.length)
-                                ev.target.nextSibling.focus();
-                            else
-                                ev.target.blur();
+                        if (key === "v" && ev.ctrlKey) {
+                            return navigator.clipboard.readText().then(text => {
+                                const otpRegex = /^\d{6}$/g;
+                                if (otpRegex.test(text)) {
+                                    const inputList = [...ev.target.closest("div").childNodes];
+                                    inputList.forEach((input, i) => {
+                                        input.value = text[i];
+                                        input.focus();
+                                    });
+                                }
+                            });
+                        }
+                        else {
+                            const numberCheck = /[0-9]/g;
+                            if (numberCheck.test(key) && !key.startsWith("f")) {
+                                if (!ev.target.value.length)
+                                    ev.target.value = key;
+                                if (((_b = ev.target.nextSibling) === null || _b === void 0 ? void 0 : _b.localName) === "input" && !ev.target.nextSibling.value.length)
+                                    ev.target.nextSibling.focus();
+                                else
+                                    ev.target.blur();
+                            }
                         }
                         break;
                 }
