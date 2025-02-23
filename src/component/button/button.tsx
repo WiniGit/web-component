@@ -1,4 +1,4 @@
-import React, { CSSProperties, ReactNode } from 'react';
+import React, { CSSProperties, ReactNode, useEffect, useRef } from 'react';
 import { Text } from '../text/text';
 import styles from './button.module.css'
 
@@ -21,16 +21,37 @@ interface ButtonProps {
     onClick?: React.MouseEventHandler<HTMLButtonElement | HTMLAnchorElement>
 }
 
-export class Button extends React.Component<ButtonProps> {
-    render() {
-        return this.props.linkTo ? <a id={this.props.id} href={this.props.disabled ? undefined : this.props.linkTo} target={this.props.target} className={`${styles['button-container']} row ${this.props.className ?? "button-text-3"}`} style={this.props.style} onClick={this.props.onClick}>
-            {this.props.prefix}
-            <Text maxLine={1} className={styles['button-label']}>{this.props.label}</Text>
-            {this.props.suffix}
-        </a> : <button id={this.props.id} type={this.props.type ?? "button"} disabled={this.props.disabled} className={`${styles['button-container']} row ${this.props.className ?? "button-text-3"}`} style={this.props.style} onClick={this.props.onClick}>
-            {this.props.prefix}
-            <Text maxLine={1} className={styles['button-label']}>{this.props.label}</Text>
-            {this.props.suffix}
-        </button>
-    }
+export function Button(props: ButtonProps) {
+    const btnRef = useRef<HTMLButtonElement>(null)
+
+    useEffect(() => {
+        if (btnRef.current) {
+            switch (props.type) {
+                case "submit":
+                    function handleSubmit(ev: any) {
+                        switch (ev.key.toLowerCase()) {
+                            case "enter":
+                                btnRef.current!.click()
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    window.addEventListener("keydown", handleSubmit)
+                    return () => { window.removeEventListener("keydown", handleSubmit) }
+                default:
+                    break;
+            }
+        }
+    }, [props.type, btnRef.current])
+
+    return props.linkTo ? <a id={props.id} href={props.disabled ? undefined : props.linkTo} target={props.target} className={`${styles['button-container']} row ${props.className ?? "button-text-3"}`} style={props.style} onClick={props.onClick}>
+        {props.prefix}
+        <Text maxLine={1} className={styles['button-label']}>{props.label}</Text>
+        {props.suffix}
+    </a> : <button ref={btnRef} id={props.id} type={props.type ?? "button"} disabled={props.disabled} className={`${styles['button-container']} row ${props.className ?? "button-text-3"}`} style={props.style} onClick={props.onClick}>
+        {props.prefix}
+        <Text maxLine={1} className={styles['button-label']}>{props.label}</Text>
+        {props.suffix}
+    </button>
 }
