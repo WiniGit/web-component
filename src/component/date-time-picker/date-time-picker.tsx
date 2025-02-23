@@ -138,7 +138,7 @@ export function DateTimePicker(props: DateTimePickerProps) {
         if (!value) return <Text className={styles["value"]} style={{ color: "var(--neutral-text-subtitle-color)" }}>{props.placeholder ?? ""}</Text>
         if (value instanceof Date) return <Text className={styles["value"]}>{dateToString(value, `dd/mm/yyyy${props.pickerType?.includes("time") ? " hh:mm" : ""}`)}</Text>
         else return <>
-            <Text className={styles["value"]}>{dateToString(value.start ?? new Date(), `dd/mm/yyyy${(props.pickerType?.includes("time") || props.pickerType === "auto") ? " hh:mm" : ""}`)} - {dateToString(value.end ?? new Date(), `dd/mm/yyyy${(props.pickerType?.includes("time") || props.pickerType === "auto") ? " hh:mm" : ""}`)}</Text>
+            <Text className={styles["value"]} style={{ flex: "none", width: "fit-content" }}>{dateToString(value.start ?? new Date(), `dd/mm/yyyy${(props.pickerType?.includes("time") || props.pickerType === "auto") ? " hh:mm" : ""}`)} - {dateToString(value.end ?? new Date(), `dd/mm/yyyy${(props.pickerType?.includes("time") || props.pickerType === "auto") ? " hh:mm" : ""}`)}</Text>
             {value.repeatData && <Winicon src="outline/arrows/loop-2" size={"1.2rem"} />}
         </>
     }, [value])
@@ -168,6 +168,8 @@ export function DateTimePicker(props: DateTimePickerProps) {
             clickOverlayClosePopup: true,
             content: <PopupDateTimePicker
                 ref={popupRef}
+                max={props.max}
+                min={props.min}
                 value={value instanceof Date ? value : value?.start}
                 endValue={value instanceof Date ? undefined : value?.end}
                 pickerType={props.pickerType}
@@ -271,7 +273,6 @@ const PopupDateTimePicker = forwardRef(function PopupDateTimePicker({ value, sty
     const inputStartRef = useRef<TextField>(null)
     const inputEndRef = useRef<TextField>(null)
     const { t } = useTranslation()
-    const [dropdownChildren, setDropdownChildren] = useState<{ style?: CSSProperties, data: ReactNode }>()
     const regexDate = /[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{4}/g
     const regexTime = /^(?:[01]\d|2[0-3]):[0-5]\d(?:[:][0-5]\d)?$/g
 
@@ -325,7 +326,6 @@ const PopupDateTimePicker = forwardRef(function PopupDateTimePicker({ value, sty
 
     return <div className="col" style={{ width: "31.2rem", ...style }}>
         <Popup ref={popupRef} />
-        {dropdownChildren ? <Dropdown style={dropdownChildren.style} children={dropdownChildren.data} onClose={() => { setDropdownChildren(undefined) }} /> : null}
         <Calendar
             min={min}
             max={max}
@@ -348,7 +348,7 @@ const PopupDateTimePicker = forwardRef(function PopupDateTimePicker({ value, sty
                                 inputEndRef.current!.getInput()!.value = dateToString(dateValue)
                             }
                             methods.setValue('date-start', dateValue)
-                        } else ev.target.value = dateToString(methods.getValues('date-start'))
+                        } else ev.target.value = methods.getValues('date-start') ? dateToString(methods.getValues('date-start')) : ""
                     }}
                 />
                 {(pickerType.includes("range") || pickerType === "auto") &&
@@ -368,7 +368,7 @@ const PopupDateTimePicker = forwardRef(function PopupDateTimePicker({ value, sty
                                     inputStartRef.current!.getInput()!.value = dateToString(dateValue)
                                 }
                                 methods.setValue('date-end', dateValue)
-                            } else ev.target.value = dateToString(methods.getValues('date-end'))
+                            } else ev.target.value = methods.getValues('date-end') ? dateToString(methods.getValues('date-end')) : ""
                         }}
                     />}
                 {selectTime && <>
@@ -383,30 +383,28 @@ const PopupDateTimePicker = forwardRef(function PopupDateTimePicker({ value, sty
                                 if (regexTime.test(ev.target.value)) {
                                     methods.setValue('time-start', ev.target.value)
                                 } else ev.target.value = ""
-                                setDropdownChildren(undefined)
                             }
                         }) as any}
                         className='col12 body-3'
                         placeholder={"hh:mm"}
                         onFocus={(ev) => {
                             const rect = ev.target.closest("div")!.getBoundingClientRect()
-                            setTimeout(() => {
-                                setDropdownChildren({
-                                    style: { maxHeight: "24rem", top: rect.bottom + 2, right: document.body.offsetWidth - rect.right, width: rect.width },
-                                    data: <>
-                                        {Array.from({ length: 48 }).map((_, i) => {
-                                            if (i % 2 === 0) var timeValue = `${(i / 2) < 9 ? `0${i / 2}` : (i / 2)}:00`
-                                            else timeValue = `${((i - 1) / 2) < 9 ? `0${(i - 1) / 2}` : ((i - 1) / 2)}:30`
-                                            return <button key={"time-" + i} type="button" className="row" onClick={() => {
-                                                methods.setValue("time-start", timeValue)
-                                                setDropdownChildren(undefined)
-                                            }}>
-                                                <Text className="button-text-3">{timeValue}</Text>
-                                            </button>
-                                        })}
-                                    </>
-                                })
-                            }, 168)
+                            showPopup({
+                                ref: popupRef,
+                                clickOverlayClosePopup: true,
+                                content: <div className={`col ${styles['popup-actions']}`} style={{ maxHeight: "24rem", top: rect.bottom + 2, right: document.body.offsetWidth - rect.right, width: rect.width, overflow: "hidden auto", backgroundColor: "var(--neutral-absolute-background-color)", borderRadius: "0.8rem" }}>
+                                    {Array.from({ length: 48 }).map((_, i) => {
+                                        if (i % 2 === 0) var timeValue = `${(i / 2) < 9 ? `0${i / 2}` : (i / 2)}:00`
+                                        else timeValue = `${((i - 1) / 2) < 9 ? `0${(i - 1) / 2}` : ((i - 1) / 2)}:30`
+                                        return <button key={"time-" + i} type="button" className="row" onClick={() => {
+                                            methods.setValue("time-start", timeValue)
+                                            closePopup(popupRef)
+                                        }}>
+                                            <Text className="body-3">{timeValue}</Text>
+                                        </button>
+                                    })}
+                                </div>
+                            })
                         }}
                     />
                     {(pickerType.includes("range") || pickerType === "auto") &&
@@ -421,30 +419,28 @@ const PopupDateTimePicker = forwardRef(function PopupDateTimePicker({ value, sty
                                     if (regexTime.test(ev.target.value)) {
                                         methods.setValue('time-end', ev.target.value)
                                     } else ev.target.value = ""
-                                    setDropdownChildren(undefined)
                                 }
                             }) as any}
                             className='col12 body-3'
                             placeholder={"hh:mm"}
                             onFocus={(ev) => {
                                 const rect = ev.target.closest("div")!.getBoundingClientRect()
-                                setTimeout(() => {
-                                    setDropdownChildren({
-                                        style: { maxHeight: "24rem", top: rect.bottom + 2, right: document.body.offsetWidth - rect.right, width: rect.width },
-                                        data: <>
-                                            {Array.from({ length: 48 }).map((_, i) => {
-                                                if (i % 2 === 0) var timeValue = `${(i / 2) < 9 ? `0${i / 2}` : (i / 2)}:00`
-                                                else timeValue = `${((i - 1) / 2) < 9 ? `0${(i - 1) / 2}` : ((i - 1) / 2)}:30`
-                                                return <button key={"time-" + i} type="button" className="row" onClick={() => {
-                                                    methods.setValue("time-end", timeValue)
-                                                    setDropdownChildren(undefined)
-                                                }}>
-                                                    <Text className="button-text-3">{timeValue}</Text>
-                                                </button>
-                                            })}
-                                        </>
-                                    })
-                                }, 168)
+                                showPopup({
+                                    ref: popupRef,
+                                    clickOverlayClosePopup: true,
+                                    content: <div className={`col ${styles['popup-actions']}`} style={{ maxHeight: "24rem", top: rect.bottom + 2, right: document.body.offsetWidth - rect.right, width: rect.width, overflow: "hidden auto", backgroundColor: "var(--neutral-absolute-background-color)", borderRadius: "0.8rem" }}>
+                                        {Array.from({ length: 48 }).map((_, i) => {
+                                            if (i % 2 === 0) var timeValue = `${(i / 2) < 9 ? `0${i / 2}` : (i / 2)}:00`
+                                            else timeValue = `${((i - 1) / 2) < 9 ? `0${(i - 1) / 2}` : ((i - 1) / 2)}:30`
+                                            return <button key={"time-" + i} type="button" className="row" onClick={() => {
+                                                methods.setValue("time-end", timeValue)
+                                                closePopup(popupRef)
+                                            }}>
+                                                <Text className="body-3">{timeValue}</Text>
+                                            </button>
+                                        })}
+                                    </div>
+                                })
                             }}
                         />}
                 </>}
@@ -639,7 +635,7 @@ const PopupDateTimePicker = forwardRef(function PopupDateTimePicker({ value, sty
                                 let timeEndValue = selectTime ? (methods.getValues("time-end")?.length ? methods.getValues("time-end") : "23:59") : "23:59"
                                 dateEndValue.setHours(parseInt(timeEndValue.split(':')[0]), parseInt(timeEndValue.split(':')[1]), selectTime ? 59 : 0, 0)
                             }
-                            onApply(!pickerType.includes("range") ? dateStartValue : { start: dateStartValue, end: dateEndValue, repeatData: isRepeat ? repeatData : undefined })
+                            onApply(!pickerType.includes("range") && pickerType !== "auto" ? dateStartValue : { start: dateStartValue, end: dateEndValue, repeatData: isRepeat ? repeatData : undefined })
                             closePopup(ref)
                         }}
                     />
@@ -666,42 +662,3 @@ const PopupDateTimePicker = forwardRef(function PopupDateTimePicker({ value, sty
         />
     </div>
 })
-
-const Dropdown = (props: { children: ReactNode, onClose: () => void, style?: CSSProperties }) => {
-    const containerRef = useRef<HTMLDivElement>(null)
-
-    useEffect(() => {
-        if (containerRef.current) {
-            function onClickDropDown(ev: any) {
-                if (ev.target !== containerRef.current && !containerRef.current?.contains(ev.target)) props.onClose()
-            }
-            window.document.body.addEventListener("click", onClickDropDown)
-            return () => {
-                window.document.body.removeEventListener("click", onClickDropDown)
-            }
-        }
-    }, [containerRef])
-
-    useEffect(() => {
-        if (containerRef.current && containerRef.current.firstChild) {
-            const popupContent = containerRef.current.firstChild as HTMLElement
-            const rect = popupContent.getBoundingClientRect()
-            if (rect.x < 0) {
-                popupContent.style.left = "0px"
-                popupContent.style.right = "unset"
-            } else if (rect.right > document.body.offsetWidth) {
-                popupContent.style.right = "0px"
-                popupContent.style.left = "unset"
-            }
-            if (rect.y < 0) {
-                popupContent.style.top = "0px"
-                popupContent.style.bottom = "unset"
-            } else if (rect.bottom > document.body.offsetHeight) {
-                popupContent.style.bottom = "0px"
-                popupContent.style.top = "unset"
-            }
-        }
-    }, [containerRef])
-
-    return <div ref={containerRef} className="col popup-actions" style={{ position: "fixed", zIndex: 99, backgroundColor: "var(--neutral-absolute-background-color)", overflow: "hidden auto", borderRadius: "0.8rem", boxShadow: "0 2px 8px rgba(0, 0, 0, 0.25)", ...(props.style ?? {}) }}>{props.children}</div>
-}

@@ -83,18 +83,18 @@ export function PopupOverlay({ children, onClose, className, style, onOpen }: { 
     useEffect(() => {
         if (overlayRef.current && onClose) {
             const onClickDropDown = (ev: any) => {
-                if (ev.target !== overlayRef.current && !overlayRef.current!.contains(ev.target)) onClose(ev)
+                if (ev.target === overlayRef.current || !overlayRef.current!.contains(ev.target)) onClose(ev)
             }
             window.document.body.addEventListener("mousedown", onClickDropDown)
             return () => {
                 window.document.body.removeEventListener("mousedown", onClickDropDown)
             }
         }
-    }, [overlayRef])
+    }, [overlayRef.current])
 
     useEffect(() => {
         if (overlayRef.current && onOpen) onOpen(overlayRef.current)
-    }, [overlayRef, onOpen])
+    }, [overlayRef.current, onOpen])
 
     useEffect(() => {
         if (overlayRef.current && overlayRef.current.firstChild) {

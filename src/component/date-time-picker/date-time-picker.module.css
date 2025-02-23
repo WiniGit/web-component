@@ -76,3 +76,19 @@ button.date-time-picker:focus {
     font-family: inherit;
     transform: translateY(100%);
 }
+
+.popup-actions {
+    padding: 0.4rem 0;
+    max-height: 28rem;
+    min-width: 10rem;
+    background-color: var(--neutral-absolute-background-color);
+}
+
+.popup-actions>button {
+    padding: 0.8rem;
+    gap: 0.8rem;
+}
+
+.popup-actions>button:hover {
+    background-color: var(--neutral-hover-background-color);
+}
