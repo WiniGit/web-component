@@ -245,7 +245,7 @@ class TSelectMultiple extends react_1.default.Component {
                                 this.setState(Object.assign(Object.assign({}, this.state), { value: newValue }));
                                 if (this.props.onChange)
                                     this.props.onChange(newValue);
-                            }, className: 'button-text-3', style: { color: _list.length ? 'var(--infor-main-color)' : 'var(--neutral-text-title-color)' } }, _list.length && isSelectedAll ? `${t("remove")} ${t("all").toLowerCase()}` : `${t("select")} ${t("all").toLowerCase()}`);
+                            }, className: 'button-text-3', style: { color: _list.length ? undefined : 'var(--neutral-text-title-color)' } }, _list.length && isSelectedAll ? `${t("remove")} ${t("all").toLowerCase()}` : `${t("select")} ${t("all").toLowerCase()}`);
                     })()),
                     react_1.default.createElement("div", { className: `col ${input_multi_select_module_css_1.default['select-body']}`, onScroll: this.props.handleLoadmore ? (ev) => {
                             if (this.props.handleLoadmore) {
