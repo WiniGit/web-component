@@ -63,10 +63,10 @@
     z-index: 10;
     background-color: var(--neutral-absolute-background-color);
     border-radius: 0.8rem;
+    border: var(--neutral-main-border);
     height: fit-content;
     box-shadow: 0 0 12px 0 #00204d1f;
     align-items: center;
-    box-shadow: -20px 20px 40px -4px rgba(145, 158, 171, 0.24), 0px 0px 2px 0px rgba(145, 158, 171, 0.24);
 }
 
 .select1-popup>.select-body {

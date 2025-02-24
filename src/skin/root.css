@@ -284,3 +284,11 @@ html.dark {
 input::placeholder {
     color: var(--neutral-text-placeholder-color);
 }
+
+.default-hover:hover {
+    background-color: var(--neutral-hover-background-color);
+}
+
+.opacity-hover:hover {
+    opacity: 0.95;
+}

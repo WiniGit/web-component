@@ -17,6 +17,7 @@
     position: relative;
     background-color: var(--neutral-absolute-background-color);
     border-radius: 0.8rem;
+    border: var(--neutral-main-border);
     overflow: visible;
     max-width: 86%;
     max-height: 80%;
@@ -33,7 +34,6 @@
     column-gap: 0.8rem;
     justify-content: end;
     padding: 1.2rem 2.4rem;
-    box-shadow: 0 -1px 6px 0 #2D32390F;
     border-top: var(--neutral-main-border);
 }
 
@@ -61,11 +61,13 @@
 .popup-overlay.hidden-overlay>* {
     position: fixed !important;
     z-index: 99;
-    box-shadow: var(--shadow-dropdown);
+    border-radius: 0.8rem;
+    background-color: var(--neutral-absolute-background-color);
 }
 
 .popup-overlay>* {
     transition: width 0.8s ease-in-out, max-width 0.8s ease-in-out, height 0.8s ease-in-out, max-height 0.8s ease-in-out, border-radius 0.8s ease-in-out;
+    box-shadow: 2px 0px 16px 0px hsla(0, 0%, 0%, 0.04);
 }
 
 .popup-overlay.hidden-overlay>.popup-container {

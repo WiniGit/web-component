@@ -239,7 +239,7 @@ class TSelectMultiple extends React.Component<SelectMultipleProps, SelectMultipl
                                 }
                                 this.setState({ ...this.state, value: newValue })
                                 if (this.props.onChange) this.props.onChange(newValue)
-                            }} className='button-text-3' style={{ color: _list.length ? 'var(--infor-main-color)' : 'var(--neutral-text-title-color)' }}>{_list.length && isSelectedAll ? `${t("remove")} ${t("all").toLowerCase()}` : `${t("select")} ${t("all").toLowerCase()}`}</Text>
+                            }} className='button-text-3' style={{ color: _list.length ? undefined : 'var(--neutral-text-title-color)' }}>{_list.length && isSelectedAll ? `${t("remove")} ${t("all").toLowerCase()}` : `${t("select")} ${t("all").toLowerCase()}`}</Text>
                         })()}
                     </div>
                     <div className={`col ${styles['select-body']}`} onScroll={this.props.handleLoadmore ? (ev) => {
