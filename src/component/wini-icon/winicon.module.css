@@ -1,5 +1,7 @@
 .wini-icon {
     display: flex;
+    justify-content: center;
+    align-items: center;
     width: fit-content;
     height: fit-content;
     padding: 0.2rem;
@@ -7,13 +9,8 @@
     --color: var(--neutral-text-subtitle-color);
 }
 
-.wini-icon[class*="link-icon"] {
+.wini-icon[class~="link-icon"] {
     --size: 'undefined';
-}
-
-.wini-icon.clickable {
-    cursor: pointer;
-    border-radius: 50%;
 }
 
 .wini-icon>svg {
@@ -27,6 +24,59 @@
 
 .wini-icon[class*="outline-icon"]>svg>*[stroke^="#"] {
     stroke: var(--color, "#61616B");
+}
+
+.wini-icon.clickable {
+    cursor: pointer;
+}
+
+.wini-icon[class~="icon-button"] {
+    border-radius: 50%;
+    background-color: var(--neutral-main-background-color);
+}
+
+.wini-icon[class~="border"] {
+    border: var(--neutral-bolder-border);
+}
+
+.wini-icon[class~="dashed"] {
+    border-style: dashed;
+}
+
+.wini-icon[class~="size64"] {
+    width: 6.4rem;
+    height: 6.4rem;
+    --size: 1.6rem;
+}
+
+.wini-icon[class~="size56"] {
+    width: 5.6rem;
+    height: 5.6rem;
+    --size: 1.6rem;
+}
+
+.wini-icon[class~="size48"] {
+    width: 4.8rem;
+    height: 4.8rem;
+    --size: 1.6rem;
+}
+
+.wini-icon[class~="size40"] {
+    width: 4rem;
+    height: 4rem;
+    --size: 1.4rem;
+}
+
+.wini-icon[class~="size32"] {
+    width: 3.2rem;
+    height: 3.2rem;
+    --size: 1.4rem;
+}
+
+.wini-icon[class~="size24"] {
+    width: 2.4rem;
+    height: 2.4rem;
+    --size: 1rem;
 }
 
 @keyframes on-open-tooltip {

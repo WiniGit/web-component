@@ -9,7 +9,7 @@
 }
 
 .button-container[class~="border"] {
-border: var(--neutral-bolder-border);
+    border: var(--neutral-bolder-border);
 }
 
 .button-container[class~="dashed"] {
