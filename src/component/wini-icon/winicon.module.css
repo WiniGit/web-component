@@ -104,3 +104,7 @@
     max-width: 21.2rem;
     text-align: center;
 }
+
+.wini-icon[class~="icon-button"]:hover {
+    background-color: var(--neutral-hover-background-color);
+}

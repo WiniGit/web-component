@@ -1,5 +1,5 @@
 import React, { createRef, CSSProperties, ReactNode } from "react";
-import './text-field.css'
+import styles from './text-field.module.css'
 import { UseFormRegister } from "react-hook-form";
 
 interface TextFieldProps {
@@ -14,6 +14,10 @@ interface TextFieldProps {
     placeholder?: string,
     disabled?: boolean,
     readOnly?: boolean,
+    /** 
+     * default: size40: body-3
+     * recommend: size48: body-3 | size32: body-3 | size24: body-3
+     *  */
     className?: string,
     helperText?: string,
     name?: string,
@@ -38,7 +42,7 @@ export class TextField extends React.Component<TextFieldProps> {
         return <div
             ref={this.containerRef}
             id={this.props.id}
-            className={`text-field-container row ${this.props.className ?? 'body-3'} ${this.props.helperText?.length ? 'helper-text' : ""}`}
+            className={`${styles['text-field-container']} row ${this.props.className ?? 'body-3'} ${this.props.helperText?.length ? styles['helper-text'] : ""}`}
             helper-text={this.props.helperText}
             style={this.props.style ? { ...({ '--helper-text-color': this.props.helperTextColor ?? '#e14337' } as CSSProperties), ...this.props.style } : ({ '--helper-text-color': this.props.helperTextColor ?? '#e14337' } as CSSProperties)}
         >

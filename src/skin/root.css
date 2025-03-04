@@ -281,7 +281,7 @@ html.dark {
     background: linear-gradient(to right, #D7D7DB 8%, #F4F4F5 18%, #D7D7DB 33%);
 }
 
-input::placeholder {
+input::placeholder, textarea::placeholder {
     color: var(--neutral-text-placeholder-color);
 }
 
@@ -290,5 +290,5 @@ input::placeholder {
 }
 
 .opacity-hover:hover {
-    opacity: 0.95;
+    opacity: 0.86;
 }

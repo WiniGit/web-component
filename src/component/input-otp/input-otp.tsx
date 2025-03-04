@@ -11,7 +11,8 @@ interface Props {
     style?: CSSProperties,
     className?: string,
     helperText?: string,
-    helperTextColor?: string
+    helperTextColor?: string,
+    autoFocus?: boolean
 }
 
 export class InputOtp extends React.Component<Props> {
@@ -60,6 +61,7 @@ export class InputOtp extends React.Component<Props> {
         >
             {Array.from({ length: this.props.length ?? 6 }).map((_, i) => <input
                 key={"opt-" + i}
+                autoFocus={i === 0 && this.props.autoFocus}
                 disabled={this.props.disabled}
                 style={this.props.inputStyle}
                 onKeyDown={(ev: any) => {

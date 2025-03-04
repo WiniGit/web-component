@@ -10,6 +10,7 @@
 
 .text-area-container:has(> textarea:disabled) {
     background-color: var(--neutral-disable-background-color) !important;
+    color: var(--neutral-text-disabled-color) !important;
     pointer-events: none !important;
 }
 
@@ -35,10 +36,6 @@
     text-align: inherit;
     text-overflow: inherit;
     resize: inherit;
-}
-
-.text-field-container>textarea::placeholder {
-    opacity: 0.4;
 }
 
 .text-area-container.helper-text {

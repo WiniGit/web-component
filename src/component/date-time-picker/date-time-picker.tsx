@@ -392,7 +392,7 @@ const PopupDateTimePicker = forwardRef(function PopupDateTimePicker({ value, sty
                             showPopup({
                                 ref: popupRef,
                                 clickOverlayClosePopup: true,
-                                content: <div className={`col ${styles['popup-actions']}`} style={{ maxHeight: "24rem", top: rect.bottom + 2, right: document.body.offsetWidth - rect.right, width: rect.width, overflow: "hidden auto", backgroundColor: "var(--neutral-absolute-background-color)", borderRadius: "0.8rem" }}>
+                                content: <div className={`col ${styles['popup-actions']}`} style={{ maxHeight: "24rem", top: rect.bottom + 2, right: document.body.offsetWidth - rect.right, width: rect.width, overflow: "hidden auto", border: "var(--neutral-main-border)" }}>
                                     {Array.from({ length: 48 }).map((_, i) => {
                                         if (i % 2 === 0) var timeValue = `${(i / 2) < 9 ? `0${i / 2}` : (i / 2)}:00`
                                         else timeValue = `${((i - 1) / 2) < 9 ? `0${(i - 1) / 2}` : ((i - 1) / 2)}:30`
@@ -428,7 +428,7 @@ const PopupDateTimePicker = forwardRef(function PopupDateTimePicker({ value, sty
                                 showPopup({
                                     ref: popupRef,
                                     clickOverlayClosePopup: true,
-                                    content: <div className={`col ${styles['popup-actions']}`} style={{ maxHeight: "24rem", top: rect.bottom + 2, right: document.body.offsetWidth - rect.right, width: rect.width, overflow: "hidden auto", backgroundColor: "var(--neutral-absolute-background-color)", borderRadius: "0.8rem" }}>
+                                    content: <div className={`col ${styles['popup-actions']}`} style={{ maxHeight: "24rem", top: rect.bottom + 2, right: document.body.offsetWidth - rect.right, width: rect.width, overflow: "hidden auto", border: "var(--neutral-main-border)" }}>
                                         {Array.from({ length: 48 }).map((_, i) => {
                                             if (i % 2 === 0) var timeValue = `${(i / 2) < 9 ? `0${i / 2}` : (i / 2)}:00`
                                             else timeValue = `${((i - 1) / 2) < 9 ? `0${(i - 1) / 2}` : ((i - 1) / 2)}:30`

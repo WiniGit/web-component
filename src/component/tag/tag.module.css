@@ -48,6 +48,16 @@
     --color: var(--neutral-text-stable-color) !important;
 }
 
+.tag-container[class~="tag-grey"] {
+    border-color: var(--neutral-bolder-border-color) !important;
+    background-color: var(--neutral-main-background-color) !important;
+}
+
+.tag-container[class~="tag-grey"] * {
+    color: var(--neutral-text-subtitle-color) !important;
+    --color: var(--neutral-text-subtitle-color) !important;
+}
+
 .tag-container[class~="tag-neutral"] {
     border-color: var(--neutral-bolder-border-color) !important;
 }
@@ -58,7 +68,7 @@
 }
 
 .tag-container[class~="tag-infor"] {
-    background-color: var(--infor-background) !important;
+    background-color: var(--infor-background);
     border-color: var(--infor-main-color) !important;
 }
 
@@ -68,7 +78,7 @@
 }
 
 .tag-container[class~="tag-warning"] {
-    background-color: var(--warning-background) !important;
+    background-color: var(--warning-background);
     border-color: var(--warning-main-color) !important;
 }
 
@@ -78,7 +88,7 @@
 }
 
 .tag-container[class~="tag-error"] {
-    background-color: var(--error-background) !important;
+    background-color: var(--error-background);
     border-color: var(--error-main-color) !important;
 }
 
@@ -88,7 +98,7 @@
 }
 
 .tag-container[class~="tag-success"] {
-    background-color: var(--success-background) !important;
+    background-color: var(--success-background);
     border-color: var(--success-main-color) !important;
 }
 

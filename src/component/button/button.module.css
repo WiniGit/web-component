@@ -6,6 +6,7 @@
     color: var(--neutral-text-subtitle-color, #61616B);
     width: fit-content;
     border: 1px solid transparent;
+    outline: none;
 }
 
 .button-container[class~="border"] {
@@ -14,6 +15,7 @@
 
 .button-container[class~="dashed"] {
     border-style: dashed;
+    color: hsla(hue, saturation, lightness, alpha);
 }
 
 .button-container[class~="size64"] {
@@ -84,9 +86,33 @@ a[class~="button-neutral"] * {
     --color: var(--neutral-text-subtitle-color) !important;
 }
 
-button[class~="button-infor"],
-a[class~="button-infor"] {
-    border-color: var(--infor-main-color) !important;
+button[class~="button-neutral"],
+a[class~="button-neutral"] {
+    border-color: var(--neutral-bolder-border-color) !important;
+}
+
+button[class~="button-black"] *,
+a[class~="button-black"] * {
+    color: var(--neutral-text-title-reverse-color) !important;
+    --color: var(--neutral-text-title-reverse-color) !important;
+}
+
+button[class~="button-black"],
+a[class~="button-black"] {
+    background-color: var(--neutral-absolute-reverse-background-color) !important;
+    border-color: var(--neutral-bolder-reverse-border-color) !important;
+}
+
+button[class~="button-white"] *,
+a[class~="button-white"] * {
+    color: var(--neutral-text-title-reverse-color) !important;
+    --color: var(--neutral-text-title-reverse-color) !important;
+}
+
+button[class~="button-white"],
+a[class~="button-white"] {
+    background-color: var(--neutral-absolute-background-color) !important;
+    border-color: var(--neutral-bolder-border-color) !important;
 }
 
 button[class~="button-infor"] *,
@@ -165,7 +191,7 @@ a[class~="button-success-main"] * {
 }
 
 button.button-container:hover {
-    opacity: 0.95;
+    opacity: 0.86;
 }
 
 button.button-container:focus {
