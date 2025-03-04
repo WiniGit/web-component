@@ -5,6 +5,10 @@ interface Props {
     onChange?: (ev: number) => void;
     disabled?: boolean;
     readOnly?: boolean;
+    /**
+     * default: size32: body-3 \
+     * recommend: size40: body-2 | size24: body-3
+     * */
     className?: string;
     helperText?: string;
     helperTextColor?: string;

@@ -10,6 +10,7 @@ interface Props {
     className?: string;
     helperText?: string;
     helperTextColor?: string;
+    autoFocus?: boolean;
 }
 export declare class InputOtp extends React.Component<Props> {
     private containerRef;

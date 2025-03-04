@@ -308,7 +308,7 @@ const PopupDateTimePicker = (0, react_1.forwardRef)(function PopupDateTimePicker
                             (0, popup_1.showPopup)({
                                 ref: popupRef,
                                 clickOverlayClosePopup: true,
-                                content: react_2.default.createElement("div", { className: `col ${date_time_picker_module_css_1.default['popup-actions']}`, style: { maxHeight: "24rem", top: rect.bottom + 2, right: document.body.offsetWidth - rect.right, width: rect.width, overflow: "hidden auto", backgroundColor: "var(--neutral-absolute-background-color)", borderRadius: "0.8rem" } }, Array.from({ length: 48 }).map((_, i) => {
+                                content: react_2.default.createElement("div", { className: `col ${date_time_picker_module_css_1.default['popup-actions']}`, style: { maxHeight: "24rem", top: rect.bottom + 2, right: document.body.offsetWidth - rect.right, width: rect.width, overflow: "hidden auto", border: "var(--neutral-main-border)" } }, Array.from({ length: 48 }).map((_, i) => {
                                     if (i % 2 === 0)
                                         var timeValue = `${(i / 2) < 9 ? `0${i / 2}` : (i / 2)}:00`;
                                     else
@@ -336,7 +336,7 @@ const PopupDateTimePicker = (0, react_1.forwardRef)(function PopupDateTimePicker
                                 (0, popup_1.showPopup)({
                                     ref: popupRef,
                                     clickOverlayClosePopup: true,
-                                    content: react_2.default.createElement("div", { className: `col ${date_time_picker_module_css_1.default['popup-actions']}`, style: { maxHeight: "24rem", top: rect.bottom + 2, right: document.body.offsetWidth - rect.right, width: rect.width, overflow: "hidden auto", backgroundColor: "var(--neutral-absolute-background-color)", borderRadius: "0.8rem" } }, Array.from({ length: 48 }).map((_, i) => {
+                                    content: react_2.default.createElement("div", { className: `col ${date_time_picker_module_css_1.default['popup-actions']}`, style: { maxHeight: "24rem", top: rect.bottom + 2, right: document.body.offsetWidth - rect.right, width: rect.width, overflow: "hidden auto", border: "var(--neutral-main-border)" } }, Array.from({ length: 48 }).map((_, i) => {
                                         if (i % 2 === 0)
                                             var timeValue = `${(i / 2) < 9 ? `0${i / 2}` : (i / 2)}:00`;
                                         else

@@ -79,7 +79,7 @@ class InputOtp extends react_1.default.Component {
                     }
                     continue;
                 }
-            } }, Array.from({ length: (_e = this.props.length) !== null && _e !== void 0 ? _e : 6 }).map((_, i) => react_1.default.createElement("input", { key: "opt-" + i, disabled: this.props.disabled, style: this.props.inputStyle, onKeyDown: (ev) => {
+            } }, Array.from({ length: (_e = this.props.length) !== null && _e !== void 0 ? _e : 6 }).map((_, i) => react_1.default.createElement("input", { key: "opt-" + i, autoFocus: i === 0 && this.props.autoFocus, disabled: this.props.disabled, style: this.props.inputStyle, onKeyDown: (ev) => {
                 var _a, _b;
                 const key = ev.key.toLowerCase();
                 switch (key) {

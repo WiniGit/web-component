@@ -9,7 +9,8 @@ interface TagProps {
     style?: CSSProperties;
     /**
      * default: size24: button-text-6 \
-     * recommend: size24: button-text-6 | size32: button-text-4
+     * recommend: size24: button-text-6 | size32: button-text-4 \
+     * status tag: tag-primary | tag-infor | tag-warning | tag-error | tag-success | tag-grey | tag-neutral | tag-infor-main | tag-warning-main | tag-error-main | tag-success-main
      * */
     className?: string;
     status?: ComponentStatus;
