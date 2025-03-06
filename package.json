@@ -1,16 +1,24 @@
 {
   "name": "wini-web-components",
-  "version": "2.8.6",
-  "main": "dist/index.js",
-  "module": "dist/index.esm.js",
+  "private": false,
+  "description": "A simple ui library for React",
+  "version": "2.9.2",
+  "main": "dist/index.umd.js",
+  "module": "dist/index.es.js",
   "types": "dist/index.d.ts",
   "files": [
-    "dist",
-    "global.d.ts"
+    "/dist"
   ],
-  "sideEffects": ["**/*.css"],
+  "exports": {
+    ".": {
+      "import": "./dist/index.es.js",
+      "require": "./dist/index.umd.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "scripts": {
     "build": "tsc && vite build",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "prepublishOnly": "npm run build"
   },
   "peerDependencies": {

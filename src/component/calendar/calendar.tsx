@@ -89,7 +89,7 @@ class TCalendar extends React.Component<CalendarProps, CalendarState> {
         this.getTitle = this.getTitle.bind(this)
     }
 
-    componentDidUpdate(prevProps: Readonly<CalendarProps>, prevState: Readonly<CalendarState>, snapshot?: any): void {
+    componentDidUpdate(prevProps: Readonly<CalendarProps>): void {
         if (prevProps.value !== this.props.value) {
             this.setState(stateValue(this.minDate, this.maxDate, this.props.value, this.props.range))
         }

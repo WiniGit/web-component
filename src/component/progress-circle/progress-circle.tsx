@@ -1,6 +1,5 @@
 import { CSSProperties } from 'react'
 import './progress-circle.css'
-import React from 'react'
 
 export function ProgressCircle(props: {
     id?: string,

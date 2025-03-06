@@ -1,6 +1,5 @@
 import { CSSProperties, ReactNode, useState } from 'react'
 import styles from './progress-bar.module.css'
-import React from 'react'
 import { ComponentStatus, getStatusIcon, Winicon } from '../../index'
 
 export function ProgressBar({ id, status = ComponentStatus.INFOR, percent = 100, titleText, title, hideTitle = false, progressBarOnly = false, fullColor = 'var(--neutral-main-background-color)', percentColor = 'var(--primary-main-color)', style, progressBarStyle }: {

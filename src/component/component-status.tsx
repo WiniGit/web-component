@@ -1,5 +1,3 @@
-import React from "react"
-
 export enum ComponentStatus {
     INFOR = 1,
     ERROR = 2,

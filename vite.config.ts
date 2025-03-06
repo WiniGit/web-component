@@ -8,31 +8,32 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 export default defineConfig({
-  plugins: [react()],
-  resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "src"),
-    },
-  },
-  css: {
-    preprocessorOptions: {
-      scss: {
-        additionalData: `@import "react-awesome-slider/dist/styles.css";`,
-      },
-    },
-    modules: {
-      localsConvention: "camelCase", // Allows camelCase imports
-    },
-  },
+  plugins: [react(), dts()],
+  // plugins: [react(), dts({ insertTypesEntry: true, outDir: "dist" })],
+  // resolve: {
+  //   alias: {
+  //     "@": path.resolve(__dirname, "src"),
+  //   },
+  // },
+  // css: {
+  //   preprocessorOptions: {
+  //     scss: {
+  //       additionalData: `@import "react-awesome-slider/dist/styles.css";`,
+  //     },
+  //   },
+  //   modules: {
+  //     localsConvention: "camelCase", // Allows camelCase imports
+  //   },
+  // },
   build: {
     lib: {
-      entry: './src/index.tsx',
+      entry: path.resolve(__dirname, "src/index.tsx"),
       name: "wini-web-components",
-      fileName: "index.js",
+      fileName: (format) => `index.${format}.js`,
       formats: ["es", "cjs"],
     },
     rollupOptions: {
-      external: ["react", "react-dom", "@ckeditor/ckeditor5-react", "ckeditor5", "react-awesome-slider"],
+      external: ["react", "react-dom"],
       output: {
         globals: {
           react: "React",
@@ -40,5 +41,7 @@ export default defineConfig({
         },
       },
     },
+    sourcemap: true,
+    emptyOutDir: true,
   },
 });
