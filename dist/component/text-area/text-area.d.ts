@@ -21,7 +21,7 @@ interface TextAreaProps {
 }
 export declare class TextArea extends React.Component<TextAreaProps> {
     private containerRef;
-    getTextarea: () => HTMLTextAreaElement;
+    getTextarea: () => HTMLTextAreaElement | null | undefined;
     render(): React.ReactNode;
 }
 export {};

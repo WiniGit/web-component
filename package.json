@@ -1,6 +1,6 @@
 {
   "name": "wini-web-components",
-  "version": "2.7.4",
+  "version": "2.8.0",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
@@ -10,12 +10,6 @@
   "scripts": {
     "build": "tsc && vite build",
     "prepublishOnly": "npm run build"
-  },
-  "exports": {
-    ".": {
-      "import": "./dist/index.esm.js",
-      "require": "./dist/index.js"
-    }
   },
   "peerDependencies": {
     "react": "^18.0.0",
@@ -50,5 +44,21 @@
     "vite": "^6.2.0",
     "vite-plugin-dts": "^4.5.3"
   },
-  "license": "MIT"
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WiniGit/web-component.git"
+  },
+  "keywords": [
+    "wini"
+  ],
+  "author": "thunt",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/WiniGit/web-component/issues"
+  },
+  "homepage": "https://github.com/WiniGit/web-component#readme"
 }

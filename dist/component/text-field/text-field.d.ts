@@ -30,7 +30,7 @@ interface TextFieldProps {
 }
 export declare class TextField extends React.Component<TextFieldProps> {
     private containerRef;
-    getInput: () => HTMLInputElement;
+    getInput: () => HTMLInputElement | null | undefined;
     render(): React.ReactNode;
 }
 export {};
