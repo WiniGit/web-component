@@ -1,15 +1,21 @@
 {
   "name": "wini-web-components",
-  "version": "2.7.2",
-  "main": "dist/wini-web-components.umd.js",
-  "module": "dist/wini-web-components.es.js",
-  "types": "dist/types/index.d.ts",
+  "version": "2.7.3",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "vite build",
+    "build": "tsc && vite build",
     "prepublishOnly": "npm run build"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.esm.js",
+      "require": "./dist/index.js"
+    }
   },
   "peerDependencies": {
     "react": "^18.0.0",
@@ -38,7 +44,7 @@
     "globals": "^15.15.0",
     "path": "^0.12.7",
     "sass": "^1.85.1",
-    "typescript": "~5.7.2",
+    "typescript": "^5.8.2",
     "typescript-eslint": "^8.24.1",
     "url": "^0.11.4",
     "vite": "^6.2.0",
