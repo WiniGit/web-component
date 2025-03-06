@@ -1,6 +1,6 @@
 {
   "name": "wini-web-components",
-  "version": "2.7.3",
+  "version": "2.7.4",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
