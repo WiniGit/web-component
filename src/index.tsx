@@ -19,7 +19,7 @@ import { Calendar } from './component/calendar/calendar'
 import { InfiniteScroll } from './component/infinite-scroll/infinite-scroll'
 import { Rating } from './component/rating/rating'
 import { ProgressCircle } from './component/progress-circle/progress-circle'
-import { CustomSlider } from './component/slider/slider'
+import { Carousel } from './component/carousel/carousel'
 import { ToastContainer } from 'react-toastify'
 import { Button } from './component/button/button'
 import { Tag } from './component/tag/tag'
@@ -52,7 +52,7 @@ export {
   InfiniteScroll,
   Rating,
   ProgressCircle,
-  CustomSlider,
+  Carousel,
   ToastContainer,
   Button,
   Tag,

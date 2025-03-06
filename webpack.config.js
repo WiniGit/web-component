@@ -16,7 +16,7 @@ module.exports = (env, argv) => {
       globalObject: 'this',
     },
     resolve: {
-      extensions: ['.tsx', '.ts', '.js', '.css']
+      extensions: ['.tsx', '.ts', '.js', '.css', '.sass', '.scss'],
     },
     module: {
       rules: [

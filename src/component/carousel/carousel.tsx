@@ -1,9 +1,13 @@
 import React, { CSSProperties, ReactNode } from 'react';
 import AwesomeSlider from 'react-awesome-slider';
 import './slider.css';
+import ScaleOutAnimation from 'react-awesome-slider/src/styled/scale-out-animation.scss';
+import CubeAnimation from 'react-awesome-slider/src/styled/cube-animation.scss';
+import FoldOutAnimation from 'react-awesome-slider/src/styled/fold-out-animation.scss';
+import FallAnimation from 'react-awesome-slider/src/styled/fall-animation.scss';
 import { Winicon } from '../wini-icon/winicon';
 
-interface SliderProps {
+interface CarouselProps {
     id?: string,
     children?: Array<ReactNode>,
     autoPlay?: boolean,
@@ -16,16 +20,17 @@ interface SliderProps {
     nextButton?: ReactNode,
     style?: CSSProperties,
     buttons?: boolean,
-    onChage?: (i: number) => void
+    onChage?: (i: number) => void,
+    animation: "basic" | "scaleOut" | "cubeAnimation" | "foldOut" | "fall"
 }
 
 interface SliderState {
     page: number
 }
 
-export class CustomSlider extends React.Component<SliderProps, SliderState> {
+export class Carousel extends React.Component<CarouselProps, SliderState> {
     private intervalPlay: any
-    constructor(props: SliderProps) {
+    constructor(props: CarouselProps) {
         super(props)
         props.buttons ??= true
         this.state = {
@@ -64,13 +69,29 @@ export class CustomSlider extends React.Component<SliderProps, SliderState> {
         if (this.props.autoPlay) this.intervalPlay = setInterval(this.autoPlay, this.props.duration ?? 2000)
     }
 
-    componentDidUpdate(prevProps: Readonly<SliderProps>, prevState: Readonly<SliderState>): void {
+    componentDidUpdate(prevProps: Readonly<CarouselProps>, prevState: Readonly<SliderState>): void {
         if (this.props.autoPlay !== prevProps.autoPlay && !this.props.autoPlay) clearInterval(this.intervalPlay)
     }
 
     render() {
+        let animation = undefined
+        switch (this.props.animation) {
+            case "scaleOut":
+                animation = ScaleOutAnimation
+                break;
+            case "cubeAnimation":
+                animation = CubeAnimation
+            case "foldOut":
+                animation = FoldOutAnimation
+            case "fall":
+                animation = FallAnimation
+                break;
+            default:
+                break;
+        }
         return <AwesomeSlider
             style={this.props.style}
+            cssModule={animation}
             className={`custom-slider-container ${this.props.className ?? ''}`}
             selected={this.state.page}
             bullets={false}

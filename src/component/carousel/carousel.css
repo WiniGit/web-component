@@ -20,7 +20,7 @@
     --organic-arrow-thickness: 4px;
     --organic-arrow-height: 40px;
     --slider-height-percentage: 60%;
-    --loader-bar-color: #851515;
+    --loader-bar-color: var(--primary-main-color, #851515);
     --loader-bar-height: 6px;
     --control-button-width: 10%;
     --control-button-height: 25%;

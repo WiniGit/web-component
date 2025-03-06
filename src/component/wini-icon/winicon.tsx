@@ -48,96 +48,98 @@ export function Winicon({ id, src, link, className, style, size, color, alt, onC
             style={(style ? { ...style, '--size': size, '--color': color } : { '--size': size, '--color': color }) as any} dangerouslySetInnerHTML={{ __html: svgData ?? '' }}
             {...extendAttribute}
         />
-        {tooltip && showTooltip && ReactDOM.createPortal((() => {
-            if (!ref.current) return null
-            const rect = ref.current.getBoundingClientRect()
-            let pos = tooltip.position ?? "bottom"
-            if (document.body.offsetHeight - rect.bottom < 100 && pos === "bottom") pos = "top"
-            else if (rect.top < 100 && pos === "top") pos = "bottom"
-            if (document.body.offsetWidth - rect.right < 100 && pos === "right") pos = "left"
-            else if (rect.left < 100 && pos === "left") pos = "right"
-            switch (pos) {
-                case "top":
-                    return <div ref={r => {
-                        if (r) {
-                            const _r = r.getBoundingClientRect()
-                            if (_r.x < 0) {
-                                r.style.left = (rect.x + rect.width / 2) + "px"
-                                r.style.transform = "translateX(-1.8rem)"
-                                r.style.alignItems = "start"
-                            } else if (_r.right > document.body.offsetWidth) {
-                                r.style.left = "unset"
-                                r.style.right = (document.body.offsetWidth - rect.right - rect.width / 2) + "px"
-                                r.style.transform = "translateX(-1.4rem)"
-                                r.style.alignItems = "end"
-                            }
-                        }
-                    }} className={`col ${styles['tooltip-container']}`} style={{ alignItems: "center", bottom: document.body.offsetHeight - rect.top - 4, left: rect.left + (rect.width / 2), transform: "translateX(-50%)" }}>
-                        <Text className={`body-3 ${styles['tooltip-message']}`} maxLine={2}>{tooltip.message}</Text>
-                        <div className="row" style={{ padding: "0 1.2rem", transform: "translateY(-0.2rem)" }}><div style={{ borderLeft: "0.6rem solid transparent", borderRight: "0.6rem solid transparent", borderTop: "0.8rem solid var(--neutral-main-reverse-background-color)", borderRadius: 2 }} /></div>
-                    </div>
-                case "bottom":
-                    return <div ref={r => {
-                        if (r) {
-                            const _r = r.getBoundingClientRect()
-                            if (_r.x < 0) {
-                                r.style.left = (rect.x + rect.width / 2) + "px"
-                                r.style.transform = "translateX(-1.8rem)"
-                                r.style.alignItems = "start"
-                            } else if (_r.right > document.body.offsetWidth) {
-                                r.style.left = "unset"
-                                r.style.right = (document.body.offsetWidth - rect.right - rect.width / 2) + "px"
-                                r.style.transform = "translateX(-1.4rem)"
-                                r.style.alignItems = "end"
-                            }
-                        }
-                    }} className={`col ${styles['tooltip-container']}`} style={{ alignItems: "center", top: rect.bottom + 4, left: rect.left + (rect.width / 2), transform: "translateX(-50%)" }}>
-                        <div className="row" style={{ padding: "0 1.2rem", transform: "translateY(0.2rem)" }}><div style={{ borderLeft: "0.6rem solid transparent", borderRight: "0.6rem solid transparent", borderBottom: "0.8rem solid var(--neutral-main-reverse-background-color)", borderRadius: 2 }} /></div>
-                        <Text className={`body-3 ${styles['tooltip-message']}`} maxLine={2}>{tooltip.message}</Text>
-                    </div >
-                case "left":
-                    return <div ref={r => {
-                        if (r) {
-                            const _r = r.getBoundingClientRect()
-                            if (_r.y < 0) {
-                                r.style.top = (rect.y + rect.height / 2) + "px"
-                                r.style.transform = "translateY(-1.8rem)"
-                                r.style.alignItems = "start"
-                            } else if (_r.bottom > document.body.offsetHeight) {
-                                r.style.top = "unset"
-                                r.style.bottom = (document.body.offsetHeight - rect.bottom - rect.height / 2) + "px"
-                                r.style.transform = "translateY(-1.4rem)"
-                                r.style.alignItems = "end"
-                            }
-                        }
-                    }} className={`row ${styles['tooltip-container']}`} style={{ top: rect.top + (rect.height / 2), right: document.body.offsetWidth - rect.left - 4, transform: "translateY(-50%)" }}>
-                        <Text className={`body-3 ${styles['tooltip-message']}`} maxLine={2}>{tooltip.message}</Text>
-                        <div className="row" style={{ padding: "1.2rem 0", transform: "translateX(-0.2rem)" }}><div style={{ borderTop: "0.6rem solid transparent", borderBottom: "0.6rem solid transparent", borderLeft: "0.8rem solid var(--neutral-main-reverse-background-color)", borderRadius: 2 }} /></div>
-                    </div>
-                case "right":
-                    return <div ref={r => {
-                        if (r) {
-                            const _r = r.getBoundingClientRect()
-                            if (_r.y < 0) {
-                                r.style.top = (rect.y + rect.height / 2) + "px"
-                                r.style.transform = "translateY(-1.8rem)"
-                                r.style.alignItems = "start"
-                            } else if (_r.bottom > document.body.offsetHeight) {
-                                r.style.top = "unset"
-                                r.style.bottom = (document.body.offsetHeight - rect.bottom - rect.height / 2) + "px"
-                                r.style.transform = "translateY(-1.4rem)"
-                                r.style.alignItems = "end"
-                            }
-                        }
-                    }} className={`row ${styles['tooltip-container']}`} style={{ top: rect.top + (rect.height / 2), left: rect.right + 4, transform: "translateY(-50%)" }}>
-                        <div className="row" style={{ padding: "1.2rem 0", transform: "translateX(0.2rem)" }}><div style={{ borderTop: "0.6rem solid transparent", borderBottom: "0.6rem solid transparent", borderRight: "0.8rem solid var(--neutral-main-reverse-background-color)", borderRadius: 2 }} /></div>
-                        <Text className={`body-3 ${styles['tooltip-message']}`} maxLine={2}>{tooltip.message}</Text>
-                    </div>
-                default:
-                    return <div />
-            }
-        })(), document.body)}
+        {tooltip && showTooltip && ReactDOM.createPortal(showTooltipElement({ element: ref.current, tooltip: tooltip }), document.body)}
     </>
+}
+
+export const showTooltipElement = ({ element, tooltip }: { element: any, tooltip: { message: string, position?: "top" | "bottom" | "left" | "right" } }) => {
+    if (!element) return null
+    const rect = element.getBoundingClientRect()
+    let pos = tooltip.position ?? "bottom"
+    if (document.body.offsetHeight - rect.bottom < 100 && pos === "bottom") pos = "top"
+    else if (rect.top < 100 && pos === "top") pos = "bottom"
+    if (document.body.offsetWidth - rect.right < 100 && pos === "right") pos = "left"
+    else if (rect.left < 100 && pos === "left") pos = "right"
+    switch (pos) {
+        case "top":
+            return <div ref={r => {
+                if (r) {
+                    const _r = r.getBoundingClientRect()
+                    if (_r.x < 0) {
+                        r.style.left = (rect.x + rect.width / 2) + "px"
+                        r.style.transform = "translateX(-1.8rem)"
+                        r.style.alignItems = "start"
+                    } else if (_r.right > document.body.offsetWidth) {
+                        r.style.left = "unset"
+                        r.style.right = (document.body.offsetWidth - rect.right - rect.width / 2) + "px"
+                        r.style.transform = "translateX(-1.4rem)"
+                        r.style.alignItems = "end"
+                    }
+                }
+            }} className={`col ${styles['tooltip-container']}`} style={{ alignItems: "center", bottom: document.body.offsetHeight - rect.top - 4, left: rect.left + (rect.width / 2), transform: "translateX(-50%)" }}>
+                <Text className={`body-3 ${styles['tooltip-message']}`} maxLine={2}>{tooltip.message}</Text>
+                <div className="row" style={{ padding: "0 1.2rem", transform: "translateY(-0.2rem)" }}><div style={{ borderLeft: "0.6rem solid transparent", borderRight: "0.6rem solid transparent", borderTop: "0.8rem solid var(--neutral-main-reverse-background-color)", borderRadius: 2 }} /></div>
+            </div>
+        case "bottom":
+            return <div ref={r => {
+                if (r) {
+                    const _r = r.getBoundingClientRect()
+                    if (_r.x < 0) {
+                        r.style.left = (rect.x + rect.width / 2) + "px"
+                        r.style.transform = "translateX(-1.8rem)"
+                        r.style.alignItems = "start"
+                    } else if (_r.right > document.body.offsetWidth) {
+                        r.style.left = "unset"
+                        r.style.right = (document.body.offsetWidth - rect.right - rect.width / 2) + "px"
+                        r.style.transform = "translateX(-1.4rem)"
+                        r.style.alignItems = "end"
+                    }
+                }
+            }} className={`col ${styles['tooltip-container']}`} style={{ alignItems: "center", top: rect.bottom + 4, left: rect.left + (rect.width / 2), transform: "translateX(-50%)" }}>
+                <div className="row" style={{ padding: "0 1.2rem", transform: "translateY(0.2rem)" }}><div style={{ borderLeft: "0.6rem solid transparent", borderRight: "0.6rem solid transparent", borderBottom: "0.8rem solid var(--neutral-main-reverse-background-color)", borderRadius: 2 }} /></div>
+                <Text className={`body-3 ${styles['tooltip-message']}`} maxLine={2}>{tooltip.message}</Text>
+            </div >
+        case "left":
+            return <div ref={r => {
+                if (r) {
+                    const _r = r.getBoundingClientRect()
+                    if (_r.y < 0) {
+                        r.style.top = (rect.y + rect.height / 2) + "px"
+                        r.style.transform = "translateY(-1.8rem)"
+                        r.style.alignItems = "start"
+                    } else if (_r.bottom > document.body.offsetHeight) {
+                        r.style.top = "unset"
+                        r.style.bottom = (document.body.offsetHeight - rect.bottom - rect.height / 2) + "px"
+                        r.style.transform = "translateY(-1.4rem)"
+                        r.style.alignItems = "end"
+                    }
+                }
+            }} className={`row ${styles['tooltip-container']}`} style={{ top: rect.top + (rect.height / 2), right: document.body.offsetWidth - rect.left - 4, transform: "translateY(-50%)" }}>
+                <Text className={`body-3 ${styles['tooltip-message']}`} maxLine={2}>{tooltip.message}</Text>
+                <div className="row" style={{ padding: "1.2rem 0", transform: "translateX(-0.2rem)" }}><div style={{ borderTop: "0.6rem solid transparent", borderBottom: "0.6rem solid transparent", borderLeft: "0.8rem solid var(--neutral-main-reverse-background-color)", borderRadius: 2 }} /></div>
+            </div>
+        case "right":
+            return <div ref={r => {
+                if (r) {
+                    const _r = r.getBoundingClientRect()
+                    if (_r.y < 0) {
+                        r.style.top = (rect.y + rect.height / 2) + "px"
+                        r.style.transform = "translateY(-1.8rem)"
+                        r.style.alignItems = "start"
+                    } else if (_r.bottom > document.body.offsetHeight) {
+                        r.style.top = "unset"
+                        r.style.bottom = (document.body.offsetHeight - rect.bottom - rect.height / 2) + "px"
+                        r.style.transform = "translateY(-1.4rem)"
+                        r.style.alignItems = "end"
+                    }
+                }
+            }} className={`row ${styles['tooltip-container']}`} style={{ top: rect.top + (rect.height / 2), left: rect.right + 4, transform: "translateY(-50%)" }}>
+                <div className="row" style={{ padding: "1.2rem 0", transform: "translateX(0.2rem)" }}><div style={{ borderTop: "0.6rem solid transparent", borderBottom: "0.6rem solid transparent", borderRight: "0.8rem solid var(--neutral-main-reverse-background-color)", borderRadius: 2 }} /></div>
+                <Text className={`body-3 ${styles['tooltip-message']}`} maxLine={2}>{tooltip.message}</Text>
+            </div>
+        default:
+            return <div />
+    }
 }
 
 export type WiniIconName = "color/accessibility/accessibility-lift" |

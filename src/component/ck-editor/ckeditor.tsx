@@ -82,6 +82,7 @@ import {
 } from 'ckeditor5';
 import './ck-editor.css';
 import { useTranslation } from 'react-i18next';
+import 'ckeditor5/ckeditor5.css';
 
 /**
  * Create a free account with a trial: https://portal.ckeditor.com/checkout?plan=free
