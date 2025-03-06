@@ -1,11 +1,14 @@
 {
   "name": "wini-web-components",
-  "version": "2.8.1",
+  "version": "2.8.5",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "src",
+    "styles",
+    "*.css"
   ],
   "scripts": {
     "build": "tsc && vite build",
@@ -38,6 +41,7 @@
     "globals": "^15.15.0",
     "path": "^0.12.7",
     "sass": "^1.85.1",
+    "tsup": "^8.4.0",
     "typescript": "^5.8.2",
     "typescript-eslint": "^8.24.1",
     "url": "^0.11.4",

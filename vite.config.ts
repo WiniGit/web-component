@@ -20,6 +20,9 @@ export default defineConfig({
         additionalData: `@import "react-awesome-slider/dist/styles.css";`,
       },
     },
+    modules: {
+      localsConvention: "camelCase", // Allows camelCase imports
+    },
   },
   build: {
     lib: {
