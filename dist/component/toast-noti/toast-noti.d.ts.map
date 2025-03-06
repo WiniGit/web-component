@@ -1,1 +1,0 @@
-{"version":3,"file":"toast-noti.d.ts","sourceRoot":"","sources":["../../../src/component/toast-noti/toast-noti.tsx"],"names":[],"mappings":"AACA,OAAO,kBAAkB,CAAC;AAE1B,qBAAa,YAAY;IACrB,MAAM,CAAC,OAAO,CAAC,OAAO,EAAE,MAAM;IAQ9B,MAAM,CAAC,MAAM,CAAC,OAAO,EAAE,MAAM;CAShC"}
