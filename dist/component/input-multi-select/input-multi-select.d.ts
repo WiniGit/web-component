@@ -17,6 +17,6 @@ interface SelectMultipleProps extends WithTranslation {
     showClearValueButton?: boolean;
     popupClassName?: string;
 }
-export declare const SelectMultiple: React.ComponentType<Omit<import('react-i18next/helpers').$Subtract<SelectMultipleProps, import('react-i18next').WithTranslationProps>, keyof WithTranslation<Ns, undefined>> & import('react-i18next').WithTranslationProps>;
+export declare const SelectMultiple: React.ComponentType<Omit<import('../../../node_modules/react-i18next/helpers').$Subtract<SelectMultipleProps, import('react-i18next').WithTranslationProps>, keyof WithTranslation<Ns, undefined>> & import('react-i18next').WithTranslationProps>;
 export {};
 //# sourceMappingURL=input-multi-select.d.ts.map

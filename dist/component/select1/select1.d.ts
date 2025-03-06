@@ -27,6 +27,6 @@ interface Select1Props extends WithTranslation {
     suffix?: ReactNode;
     onOpenOptions?: (popupRef: HTMLDivElement) => void;
 }
-export declare const Select1: React.ComponentType<Omit<import('react-i18next/helpers').$Subtract<Select1Props, import('react-i18next').WithTranslationProps>, keyof WithTranslation<Ns, undefined>> & import('react-i18next').WithTranslationProps>;
+export declare const Select1: React.ComponentType<Omit<import('../../../node_modules/react-i18next/helpers').$Subtract<Select1Props, import('react-i18next').WithTranslationProps>, keyof WithTranslation<Ns, undefined>> & import('react-i18next').WithTranslationProps>;
 export {};
 //# sourceMappingURL=select1.d.ts.map

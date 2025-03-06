@@ -26,6 +26,6 @@ interface CalendarProps extends WithTranslation {
     header?: ReactNode;
     footer?: ReactNode;
 }
-export declare const Calendar: React.ComponentType<Omit<import('react-i18next/helpers').$Subtract<CalendarProps, import('react-i18next').WithTranslationProps>, keyof WithTranslation<Ns, undefined>> & import('react-i18next').WithTranslationProps>;
+export declare const Calendar: React.ComponentType<Omit<import('../../../node_modules/react-i18next/helpers').$Subtract<CalendarProps, import('react-i18next').WithTranslationProps>, keyof WithTranslation<Ns, undefined>> & import('react-i18next').WithTranslationProps>;
 export {};
 //# sourceMappingURL=calendar.d.ts.map
