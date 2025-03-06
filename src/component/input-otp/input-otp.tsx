@@ -28,7 +28,7 @@ export class InputOtp extends React.Component<Props> {
         else return this.props.value ?? ""
     }
 
-    componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<{}>, snapshot?: any): void {
+    componentDidUpdate(prevProps: Readonly<Props>): void {
         if (prevProps.value !== this.props.value && this.containerRef.current) {
             const inputList = [...(this.containerRef.current.querySelectorAll("input") as any)]
             if (this.props.value?.length) {

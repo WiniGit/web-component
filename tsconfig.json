@@ -1,19 +1,7 @@
 {
-  "compilerOptions": {
-    "outDir": "./dist/",
-    "module": "commonjs",
-    "target": "es2015",
-    "declaration": true,
-    "jsx": "react",
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "strict": true,
-    "skipLibCheck": true,
-    "baseUrl": "./",
-    "paths": {
-      "*": ["node_modules/*"]
-    }
-  },
-  "include": ["src/**/*", "global.d.ts"],
-  "exclude": ["node_modules", "**/*.spec.ts"]
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ]
 }

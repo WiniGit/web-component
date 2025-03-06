@@ -3,7 +3,6 @@ import { CSSProperties, forwardRef, ReactNode, useEffect, useMemo, useRef, useSt
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { differenceInCalendarDays } from "date-fns"
-import React from "react"
 import { closePopup, Popup, showPopup } from "../popup/popup"
 import { Text } from "../text/text"
 import { Winicon } from "../wini-icon/winicon"

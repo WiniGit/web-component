@@ -1,4 +1,4 @@
-import React, { CSSProperties, useEffect, useRef } from "react";
+import { CSSProperties, useEffect, useRef } from "react";
 import ReactPaginate from "react-paginate";
 import styles from './pagination.module.css';
 import { Select1 } from "../select1/select1";
