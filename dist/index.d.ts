@@ -28,7 +28,8 @@ import { NumberPicker } from './component/number-picker/number-picker';
 import { InputOtp } from './component/input-otp/input-otp';
 import { WLoginView } from './form/login/view';
 import { CustomCkEditor5 } from './component/ck-editor/ckeditor';
-export { Calendar, ComponentStatus, getStatusIcon, Checkbox, Select1, Switch, Popup, showPopup, closePopup, Dialog, showDialog, DialogAlignment, DateTimePicker, SelectMultiple, ProgressBar, Text, Pagination, Table, TbCell, TbHeader, TbBody, TbRow, CellAlignItems, TextField, RadioButton, TextArea, ImportFile, ToastMessage, InfiniteScroll, Rating, ProgressCircle, Carousel, ToastContainer, Button, Tag, Winicon, NumberPicker, InputOtp, WLoginView, CustomCkEditor5 };
+import { Slider } from './component/slider/slider';
+export { Calendar, ComponentStatus, getStatusIcon, Checkbox, Select1, Switch, Popup, showPopup, closePopup, Dialog, showDialog, DialogAlignment, DateTimePicker, SelectMultiple, ProgressBar, Text, Pagination, Table, TbCell, TbHeader, TbBody, TbRow, CellAlignItems, TextField, RadioButton, TextArea, ImportFile, ToastMessage, InfiniteScroll, Rating, ProgressCircle, Carousel, ToastContainer, Button, Tag, Winicon, NumberPicker, InputOtp, WLoginView, CustomCkEditor5, Slider };
 export type { OptionsItem };
 export { i18n } from './language/i18n';
 //# sourceMappingURL=index.d.ts.map
