@@ -76,7 +76,7 @@
 .wini-icon[class~="size24"] {
     width: 2.4rem;
     height: 2.4rem;
-    --size: 1rem;
+    --size: 1.2rem;
 }
 
 @keyframes on-open-tooltip {
