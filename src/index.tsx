@@ -28,6 +28,7 @@ import { NumberPicker } from './component/number-picker/number-picker'
 import { InputOtp } from './component/input-otp/input-otp'
 import { WLoginView } from './form/login/view'
 import { CustomCkEditor5 } from './component/ck-editor/ckeditor'
+import { Slider } from './component/slider/slider'
 
 
 export {
@@ -60,7 +61,8 @@ export {
   NumberPicker,
   InputOtp,
   WLoginView,
-  CustomCkEditor5
+  CustomCkEditor5,
+  Slider
 }
 export type { OptionsItem }
 export { i18n } from './language/i18n';
