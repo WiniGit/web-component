@@ -1,6 +1,7 @@
 import React, { CSSProperties, ReactNode } from 'react';
 import AwesomeSlider from "react-awesome-slider";
 import "react-awesome-slider/dist/styles.css";
+import './carousel.css'
 import "react-awesome-slider/dist/custom-animations/scale-out-animation.css";
 import "react-awesome-slider/dist/custom-animations/fold-out-animation.css";
 import "react-awesome-slider/dist/custom-animations/cube-animation.css";
