@@ -2784,7 +2784,7 @@ function LZ(n) {
         s(n.value);
         break;
       default:
-        s(!n.value || !n.endValue ? void 0 : { start: n.value, end: n.endValue, repeatData: n.pickerType === "auto" ? n.repeatValue : void 0 });
+        s(!n.value || !n.endValue ? void 0 : { start: n.value, end: n.endValue, repeatData: n.pickerType === "auto" || !n.pickerType ? n.repeatValue : void 0 });
         break;
     }
   }, [n.value, n.endValue, n.repeatValue, n.pickerType]);
@@ -2801,7 +2801,8 @@ function LZ(n) {
           value: i instanceof Date ? i : i == null ? void 0 : i.start,
           endValue: i instanceof Date || i == null ? void 0 : i.end,
           pickerType: n.pickerType,
-          enableRepeat: n.enableRepeat,
+          enableRepeat: n.enableRepeat || !!(!(i instanceof Date) && (i != null && i.repeatData)),
+          repeatValue: i instanceof Date || i == null ? void 0 : i.repeatData,
           style: { top: l.bottom + 2, left: l.left + 16 },
           onApply: (c) => {
             s(c), Ss(t), n.onChange && n.onChange(c), e.current && e.current.focus();

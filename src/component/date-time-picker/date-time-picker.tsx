@@ -156,7 +156,7 @@ export function DateTimePicker(props: DateTimePickerProps) {
                 setValue(props.value)
                 break;
             default:
-                setValue((!props.value || !props.endValue) ? undefined : { start: props.value, end: props.endValue, repeatData: props.pickerType === "auto" ? props.repeatValue : undefined })
+                setValue((!props.value || !props.endValue) ? undefined : { start: props.value, end: props.endValue, repeatData: props.pickerType === "auto" || !props.pickerType ? props.repeatValue : undefined })
                 break;
         }
     }, [props.value, props.endValue, props.repeatValue, props.pickerType])
@@ -172,7 +172,8 @@ export function DateTimePicker(props: DateTimePickerProps) {
                 value={value instanceof Date ? value : value?.start}
                 endValue={value instanceof Date ? undefined : value?.end}
                 pickerType={props.pickerType}
-                enableRepeat={props.enableRepeat}
+                enableRepeat={props.enableRepeat || !!(!(value instanceof Date) && value?.repeatData)}
+                repeatValue={(value instanceof Date ? undefined : value?.repeatData) as any}
                 style={{ top: rect.bottom + 2, left: rect.left + 16 }}
                 onApply={(ev) => {
                     setValue(ev)
