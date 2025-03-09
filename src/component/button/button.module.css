@@ -115,6 +115,11 @@ a[class~="button-white"] {
     border-color: var(--neutral-bolder-border-color) !important;
 }
 
+button[class~="button-infor"],
+a[class~="button-infor"] {
+    border-color: var(--infor-main-color) !important;
+}
+
 button[class~="button-infor"] *,
 a[class~="button-infor"] * {
     color: var(--infor-main-color) !important;
@@ -157,19 +162,19 @@ a[class~="button-success"] * {
 button[class~="button-infor-main"],
 a[class~="button-infor-main"] {
     background-color: var(--infor-main-color) !important;
-    border: var(--infor-main-color) !important;
+    border-color: var(--infor-main-color) !important;
 }
 
 button[class~="button-warning-main"],
 a[class~="button-warning-main"] {
     background-color: var(--warning-main-color) !important;
-    border: var(--warning-main-color) !important;
+    border-color: var(--warning-main-color) !important;
 }
 
 button[class~="button-error-main"],
 a[class~="button-error-main"] {
     background-color: var(--error-main-color) !important;
-    border: var(--error-main-color) !important;
+    border-color: var(--error-main-color) !important;
 }
 
 button[class~="button-success-main"],
