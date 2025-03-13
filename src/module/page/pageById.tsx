@@ -161,7 +161,10 @@ export const PageById = (props: PageByIdProps) => {
             layerController.getListSimple({ page: 1, size: 2000, query: `(@Id:{${layoutId}}) | (@LayoutId:{${layoutId}})` }),
             layerController.getListSimple({ page: 1, size: 1000, query: `@PageId:{${pageItem!.Id}}` })
         ])
-        if (res[0].code === 200 && res[1].code === 200) setData({ layout: res[0].data, layers: res[1].data })
+        if (res[0].code === 200 && res[1].code === 200) setData({
+            layout: res[0].data.map((e: any) => ({ ...e, Setting: JSON.parse(e.Setting) })),
+            layers: res[1].data.map((e: any) => ({ ...e, Setting: JSON.parse(e.Setting) })),
+        })
     }
 
     useEffect(() => {
@@ -199,7 +202,10 @@ export const PageByUrl = (props: PageByUrlProps) => {
             layerController.getListSimple({ page: 1, size: 2000, query: `(@Id:{${layoutId}}) | (@LayoutId:{${layoutId}})` }),
             layerController.getListSimple({ page: 1, size: 1000, query: `@PageId:{${pageItem!.Id}}` })
         ])
-        if (res[0].code === 200 && res[1].code === 200) setData({ layout: res[0].data, layers: res[1].data })
+        if (res[0].code === 200 && res[1].code === 200) setData({
+            layout: res[0].data.map((e: any) => ({ ...e, Setting: JSON.parse(e.Setting) })),
+            layers: res[1].data.map((e: any) => ({ ...e, Setting: JSON.parse(e.Setting) })),
+        })
     }
 
     useEffect(() => {
