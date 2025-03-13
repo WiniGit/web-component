@@ -29,7 +29,8 @@ import { InputOtp } from './component/input-otp/input-otp'
 import { WLoginView } from './form/login/view'
 import { CustomCkEditor5 } from './component/ck-editor/ckeditor'
 import { Slider } from './component/slider/slider'
-
+import { TextFieldForm, InputPasswordForm, TextAreaForm, DateTimePickerForm, CKEditorForm, Select1Form, SelectMultipleForm, SwitchForm, RateForm, CheckboxForm, RadioButtonForm, GroupRadioButtonForm, ImportFileForm, RangeForm, GroupCheckboxForm, ColorPickerForm } from './component/component-form'
+import { EmptyPage } from './component/empty-page'
 
 export {
   Calendar,
@@ -62,7 +63,24 @@ export {
   InputOtp,
   WLoginView,
   CustomCkEditor5,
-  Slider
+  Slider,
+  TextFieldForm,
+  InputPasswordForm,
+  TextAreaForm,
+  DateTimePickerForm,
+  CKEditorForm,
+  Select1Form,
+  SelectMultipleForm,
+  SwitchForm,
+  RateForm,
+  CheckboxForm,
+  RadioButtonForm,
+  GroupRadioButtonForm,
+  ImportFileForm,
+  RangeForm,
+  GroupCheckboxForm,
+  ColorPickerForm,
+  EmptyPage
 }
 export type { OptionsItem }
 export { i18n } from './language/i18n';
