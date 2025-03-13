@@ -2,12 +2,12 @@
   "name": "wini-web-components",
   "private": false,
   "description": "A simple ui library for React",
-  "version": "3.0.0",
+  "version": "3.0.4",
   "main": "dist/index.umd.js",
   "module": "dist/index.es.js",
   "types": "dist/index.d.ts",
   "files": [
-    "/dist"
+    "dist"
   ],
   "exports": {
     ".": {
@@ -21,14 +21,11 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "prepublishOnly": "npm run build"
   },
-  "peerDependencies": {
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0"
-  },
   "dependencies": {
     "@ckeditor/ckeditor5-react": "^9.5.0",
     "ckeditor5": "^44.3.0",
     "date-fns": "^4.1.0",
+    "i18next": "^24.2.3",
     "react": "^18.0.0",
     "react-awesome-slider": "^4.1.0",
     "react-dom": "^18.0.0",
@@ -36,6 +33,10 @@
     "react-i18next": "^15.4.1",
     "react-paginate": "^8.3.0",
     "react-toastify": "^11.0.5"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",
