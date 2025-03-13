@@ -29,7 +29,9 @@ import { InputOtp } from './component/input-otp/input-otp';
 import { WLoginView } from './form/login/view';
 import { CustomCkEditor5 } from './component/ck-editor/ckeditor';
 import { Slider } from './component/slider/slider';
-export { Calendar, ComponentStatus, getStatusIcon, Checkbox, Select1, Switch, Popup, showPopup, closePopup, Dialog, showDialog, DialogAlignment, DateTimePicker, SelectMultiple, ProgressBar, Text, Pagination, Table, TbCell, TbHeader, TbBody, TbRow, CellAlignItems, TextField, RadioButton, TextArea, ImportFile, ToastMessage, InfiniteScroll, Rating, ProgressCircle, Carousel, ToastContainer, Button, Tag, Winicon, NumberPicker, InputOtp, WLoginView, CustomCkEditor5, Slider };
+import { TextFieldForm, InputPasswordForm, TextAreaForm, DateTimePickerForm, CKEditorForm, Select1Form, SelectMultipleForm, SwitchForm, RateForm, CheckboxForm, RadioButtonForm, GroupRadioButtonForm, ImportFileForm, RangeForm, GroupCheckboxForm, ColorPickerForm } from './component/component-form';
+import { EmptyPage } from './component/empty-page';
+export { Calendar, ComponentStatus, getStatusIcon, Checkbox, Select1, Switch, Popup, showPopup, closePopup, Dialog, showDialog, DialogAlignment, DateTimePicker, SelectMultiple, ProgressBar, Text, Pagination, Table, TbCell, TbHeader, TbBody, TbRow, CellAlignItems, TextField, RadioButton, TextArea, ImportFile, ToastMessage, InfiniteScroll, Rating, ProgressCircle, Carousel, ToastContainer, Button, Tag, Winicon, NumberPicker, InputOtp, WLoginView, CustomCkEditor5, Slider, TextFieldForm, InputPasswordForm, TextAreaForm, DateTimePickerForm, CKEditorForm, Select1Form, SelectMultipleForm, SwitchForm, RateForm, CheckboxForm, RadioButtonForm, GroupRadioButtonForm, ImportFileForm, RangeForm, GroupCheckboxForm, ColorPickerForm, EmptyPage };
 export type { OptionsItem };
 export { i18n } from './language/i18n';
 //# sourceMappingURL=index.d.ts.map
