@@ -31,6 +31,14 @@ import { CustomCkEditor5 } from './component/ck-editor/ckeditor'
 import { Slider } from './component/slider/slider'
 import { TextFieldForm, InputPasswordForm, TextAreaForm, DateTimePickerForm, CKEditorForm, Select1Form, SelectMultipleForm, SwitchForm, RateForm, CheckboxForm, RadioButtonForm, GroupRadioButtonForm, ImportFileForm, RangeForm, GroupCheckboxForm, ColorPickerForm } from './component/component-form'
 import { EmptyPage } from './component/empty-page'
+import { BaseDA, CkEditorUploadAdapter, imgFileTypes } from './controller/config'
+import { Util, formatNumberConvert, randomGID, inputMoneyPattern } from './controller/utils'
+import { DataController, SettingDataController } from './controller/data'
+import { CardById } from './module/card/cardById'
+import { ChartById } from './module/chart/chartById'
+import { FormById } from './module/form/formById'
+import { PageById, PageByUrl } from './module/page/pageById'
+import { WiniProvider } from './module/WiniProvider'
 
 export {
   Calendar,
@@ -80,7 +88,23 @@ export {
   RangeForm,
   GroupCheckboxForm,
   ColorPickerForm,
-  EmptyPage
+  EmptyPage,
+  // module
+  BaseDA,
+  CkEditorUploadAdapter,
+  imgFileTypes,
+  Util,
+  formatNumberConvert,
+  randomGID,
+  inputMoneyPattern,
+  DataController,
+  SettingDataController,
+  CardById,
+  ChartById,
+  FormById,
+  PageById,
+  PageByUrl
 }
 export type { OptionsItem }
 export { i18n } from './language/i18n';
+export default WiniProvider

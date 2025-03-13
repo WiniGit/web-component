@@ -23,6 +23,8 @@
   },
   "dependencies": {
     "@ckeditor/ckeditor5-react": "^9.5.0",
+    "axios": "^1.8.3",
+    "bcryptjs": "^3.0.2",
     "ckeditor5": "^44.3.0",
     "date-fns": "^4.1.0",
     "i18next": "^24.2.3",
@@ -32,7 +34,8 @@
     "react-hook-form": "^7.54.2",
     "react-i18next": "^15.4.1",
     "react-paginate": "^8.3.0",
-    "react-toastify": "^11.0.5"
+    "react-toastify": "^11.0.5",
+    "validate.js": "^0.13.1"
   },
   "peerDependencies": {
     "react": "^18.0.0",

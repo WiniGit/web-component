@@ -16,6 +16,7 @@ import { Checkbox } from "./checkbox/checkbox";
 import { RadioButton } from "./radio-button/radio-button";
 import { ComponentStatus } from "./component-status";
 import { ImportFile } from "./import-file/import-file";
+import { CkEditorUploadAdapter } from "../controller/config";
 
 interface DateRangeProps {
     start?: Date,
@@ -254,7 +255,11 @@ export function CKEditorForm(params: CKEditorFormProps) {
                     style={params.className?.includes("row") ? { flex: 1, overflow: "hidden visible" } : undefined}
                     value={field.value}
                     disabled={params.disabled}
-                    extraPlugins={params.ckEditorUploadPlugin}
+                    extraPlugins={params.ckEditorUploadPlugin ?? [function (editor: { plugins: { get: (arg0: string) => { (): any; new(): any; createUploadAdapter: (loader: any) => CkEditorUploadAdapter; }; }; }) {
+                        editor.plugins.get('FileRepository').createUploadAdapter = (loader: any) => {
+                            return new CkEditorUploadAdapter(loader);
+                        };
+                    }]}
                     onBlur={(_: any, editor: any) => { field.onChange(editor.getData()) }}
                     placeholder={params.placeholder ? params.placeholder : params.label ? `${t("input")} ${params.label.toLowerCase()}` : ''}
                     helperText={_covertErrors && (_covertErrors?.message?.length ? _covertErrors?.message : `${t("input")} ${(params.placeholder ? params.placeholder : params.label ? `${params.label}` : t('value')).toLowerCase()}`)} />
