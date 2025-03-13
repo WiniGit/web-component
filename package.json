@@ -2,7 +2,7 @@
   "name": "wini-web-components",
   "private": false,
   "description": "A simple ui library for React",
-  "version": "3.0.6",
+  "version": "3.0.8",
   "main": "dist/index.umd.js",
   "module": "dist/index.es.js",
   "types": "dist/index.d.ts",
