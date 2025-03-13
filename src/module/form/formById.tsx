@@ -1,6 +1,5 @@
 import { ReactNode } from "react";
 import { useForm, UseFormReturn } from "react-hook-form";
-import { RangeForm, Select1Form, SelectMultipleForm, ToastMessage } from "wini-web-components";
 import { hashPassword, regexGetVariableByThis, RenderComponentByType, validateForm } from "./config";
 import { ComponentType, FEDataType } from "../da";
 import { CSSProperties, useEffect, useMemo, useRef, useState } from "react";
@@ -9,6 +8,10 @@ import { randomGID, Util } from "../../controller/utils";
 import { TableController } from "../../controller/setting";
 import { BaseDA, ConfigData } from "../../controller/config";
 import { DataController, SettingDataController } from "../../controller/data";
+import { ToastMessage } from "../../component/toast-noti/toast-noti";
+import { RangeForm } from "../../component/component-form";
+import { SelectMultipleForm } from "../../component/component-form";
+import { Select1Form } from "../../component/component-form";
 
 interface Props {
     className?: string,

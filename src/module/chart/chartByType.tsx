@@ -1,6 +1,7 @@
 import { CSSProperties, useRef } from "react";
 import ReactEcharts from "echarts-for-react";
-import { Text, Winicon } from "wini-web-components";
+import { Text } from "../../component/text/text";
+import { Winicon } from "../../component/wini-icon/winicon";
 
 export interface DatasetItem {
     id: string | number,
