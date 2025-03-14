@@ -188,6 +188,7 @@ export const PageById = (props: PageByIdProps) => {
     }, [pageItem])
 
     return pageItem && data ? <RenderPageView
+        key={pageItem.LayoutId}
         layers={data.layout}
         {...props}
     >
@@ -230,6 +231,7 @@ export const PageByUrl = (props: PageByUrlProps) => {
     }, [pageItem])
 
     return pageItem && data ? <RenderPageView
+        key={pageItem.LayoutId}
         layers={data.layout}
         {...props}
     >
