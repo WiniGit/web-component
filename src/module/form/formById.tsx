@@ -393,7 +393,7 @@ function FormByType(props: FormByTypeProps) {
     }, [props.data, cols.length, params.toString()])
     const rangeComponent = [FEDataType.DATE, FEDataType.DATETIME, FEDataType.NUMBER, FEDataType.MONEY]
 
-    return <form className={`col ${props.className ?? ""}`} style={props.style}>
+    return <form id={props.formItem.Id} className={`col ${props.className ?? ""}`} style={props.style}>
         {watchRel.length ? <GetWatchRelValues
             methods={methods}
             watchRel={watchRel}

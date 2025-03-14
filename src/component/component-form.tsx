@@ -17,6 +17,7 @@ import { RadioButton } from "./radio-button/radio-button";
 import { ComponentStatus } from "./component-status";
 import { ImportFile } from "./import-file/import-file";
 import { CkEditorUploadAdapter } from "../controller/config";
+import { Util } from "../controller/utils";
 
 interface DateRangeProps {
     start?: Date,
@@ -51,18 +52,6 @@ interface TextFieldFormProps extends SimpleFormProps {
     textFieldClassName?: string,
 }
 
-const convertMoney = (number: number | string) => {
-    if (number) {
-        if (typeof number === "string") {
-            return number.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-        } else if (!isNaN(number)) {
-            number = number.toFixed(2);
-            return number.toString().replace(".00", "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        }
-    }
-    return 0;
-}
-
 export function TextFieldForm(params: TextFieldFormProps) {
     const { t } = useTranslation()
 
@@ -91,7 +80,7 @@ export function TextFieldForm(params: TextFieldFormProps) {
                     let newPrice = ev.target.value.trim().replaceAll(',', '')
                     ev.target.type = "text"
                     if (!isNaN(parseFloat(newPrice))) {
-                        ev.target.value = convertMoney(parseFloat(newPrice))
+                        ev.target.value = Util.money(parseFloat(newPrice))
                     } else {
                         ev.target.value = ''
                     }
@@ -537,7 +526,7 @@ export function RangeForm(params: RangeFormProps) {
                                             params.methods.setError(params.name, { message: 'From value must be less than To value' })
                                         }
                                     }
-                                    if (params.type === 'money') ev.target.value = convertMoney(newValue)
+                                    if (params.type === 'money') ev.target.value = Util.money(newValue)
                                 } else {
                                     ev.target.value = ""
                                 }
@@ -571,7 +560,7 @@ export function RangeForm(params: RangeFormProps) {
                                             params.methods.setError(params.name, { message: 'From value must be less than To value' })
                                         }
                                     }
-                                    if (params.type === 'money') ev.target.value = convertMoney(newValue)
+                                    if (params.type === 'money') ev.target.value = Util.money(newValue)
                                 } else {
                                     ev.target.value = ""
                                 }
@@ -641,19 +630,6 @@ interface ColorPickerForm extends SimpleFormProps {
     textFieldStyle?: CSSProperties
 }
 
-const percentToHex = (p: number) => {
-    // const percent = Math.max(0, Math.min(100, p)); // bound percent from 0 to 100
-    const intValue = Math.round(p / 100 * 255); // map percent to nearest integer (0 - 255)
-    const hexValue = intValue.toString(16); // get hexadecimal representation
-    return hexValue.padStart(2, '0').toUpperCase(); // format with leading 0 and upper case characters
-}
-
-const hexToPercent = (h: string) => {
-    const pValue = parseInt(h, 16);
-    const percent = Math.round(pValue / 255 * 100);
-    return percent;
-}
-
 export const ColorPickerForm = (props: ColorPickerForm) => {
     const colorPickerRef = useRef<any>(null)
     const { t } = useTranslation()
@@ -663,7 +639,7 @@ export const ColorPickerForm = (props: ColorPickerForm) => {
         if (propsValue && colorPickerRef.current) {
             colorPickerRef.current.querySelector('input[type="color"]').value = propsValue.slice(0, 7)
             colorPickerRef.current.querySelector('input[type="text"]').value = propsValue.slice(0, 7)
-            colorPickerRef.current.querySelector('input[type="number"]').value = hexToPercent(propsValue.slice(7))
+            colorPickerRef.current.querySelector('input[type="number"]').value = Util.hexToPercent(propsValue.slice(7))
         } else if (colorPickerRef.current) {
             colorPickerRef.current.querySelector('input[type="color"]').value = '#000000'
             colorPickerRef.current.querySelector('input[type="text"]').value = ''
@@ -690,7 +666,7 @@ export const ColorPickerForm = (props: ColorPickerForm) => {
                     onBlur={(ev) => {
                         const newVl = ev.target.value.replaceAll("#", "").substring(0, 6);
                         const _opacityValue = colorPickerRef.current.querySelector('input[type="number"]');
-                        field.onChange(`#${newVl}${percentToHex(parseInt(_opacityValue.value?.length ? _opacityValue.value : "100")).toLowerCase()}`);
+                        field.onChange(`#${newVl}${Util.percentToHex(parseInt(_opacityValue.value?.length ? _opacityValue.value : "100")).toLowerCase()}`);
                         if (props.onChange) props.onChange(field.value)
                     }}
                     style={{ flex: 1, width: "100%", ...(props.textFieldStyle ?? {}) }}
@@ -702,7 +678,7 @@ export const ColorPickerForm = (props: ColorPickerForm) => {
                             style={{ visibility: 'hidden' }}
                             onChange={(ev) => {
                                 const _opacityValue = colorPickerRef.current.querySelector('input[type="number"]');
-                                field.onChange(`${ev.target.value}${percentToHex(parseInt(_opacityValue.value?.length ? _opacityValue.value : "100")).toLowerCase()}`);
+                                field.onChange(`${ev.target.value}${Util.percentToHex(parseInt(_opacityValue.value?.length ? _opacityValue.value : "100")).toLowerCase()}`);
                                 if (props.onChange) props.onChange(field.value)
                             }} />
                     </label>}
@@ -719,7 +695,7 @@ export const ColorPickerForm = (props: ColorPickerForm) => {
                                 if (isNaN(_vl) || _vl > 100) _vl = 100;
                                 else if (_vl < 0) _vl = 0;
                                 const _colorValue = colorPickerRef.current?.querySelector('input[type="color"]').value;
-                                field.onChange(`${_colorValue}${percentToHex(_vl).toLowerCase()}`);
+                                field.onChange(`${_colorValue}${Util.percentToHex(_vl).toLowerCase()}`);
                                 if (props.onChange) props.onChange(field.value)
                             }} />
                         <Text className='regular1'>%</Text>

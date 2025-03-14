@@ -11,20 +11,29 @@ import { showPopup } from "../../component/popup/popup"
 import { closePopup } from "../../component/popup/popup"
 
 interface Props {
+    /**
+     * replace children of parent layer by id. Ex: { "gid": <Text className="heading-7">Example</Text> }
+     * */
     childrenData?: { [p: string]: ReactNode },
+    /**
+     * custom style layer by id. Ex: { "gid": { width: "60rem", backgroundColor: "red" } }
+     * */
     styleData?: { [p: string]: CSSProperties },
+    /**
+     * replace layer by id. Ex: { "gid": <Text className="heading-7">Example</Text> }
+     * */
     itemData?: { [p: string]: ReactNode }
 }
 
 interface RenderPageProps extends Props {
     layers: Array<{ [p: string]: any }>,
-    layout: Array<{ [p: string]: any }>,
+    children?: ReactNode
 }
 
-const RenderPageView = ({ childrenData, styleData, itemData, layers = [], layout = [] }: RenderPageProps) => {
+const RenderPageView = ({ childrenData, styleData, itemData, layers = [], children }: RenderPageProps) => {
     const renderPageView = (item: { [p: string]: any }, list: Array<{ [p: string]: any }> = []) => {
         if (itemData?.[item.Id]) return itemData[item.Id]
-        const children = list.filter(e => e.ParentId === item.Id)
+        const childrenLayers = list.filter(e => e.ParentId === item.Id)
         let _props = { ...item.Setting }
         _props.style ??= {}
         if (styleData && styleData[item.Id]) _props.style = { ..._props.style, ...styleData[item.Id] }
@@ -57,9 +66,12 @@ const RenderPageView = ({ childrenData, styleData, itemData, layers = [], layout
                                         }
                                         return;
                                     case ActionType.showPopup:
-                                        const popupElement = document.getElementById(actItem.To)
-                                        const openPopupBtn = popupElement?.querySelector(`:scope > button.open`) as any
+                                        const openPopupBtn = document.querySelector(`.open-${actItem.To}`) as any
                                         if (openPopupBtn) openPopupBtn.click()
+                                        return;
+                                    case ActionType.closePopup:
+                                        const closePopupBtn = document.querySelector(`.close-${actItem.To}`) as any
+                                        if (closePopupBtn) closePopupBtn.click()
                                         return;
                                     default:
                                         break;
@@ -80,62 +92,65 @@ const RenderPageView = ({ childrenData, styleData, itemData, layers = [], layout
         delete _props.action
         switch (item.Type) {
             case ComponentType.container:
-                if (_props) _props['component-type'] = item.Type
                 if (childrenData) var childComponent = childrenData[item.Id]
                 return <div key={item.Id} {..._props}>
-                    {
-                        childComponent ?? (item.Setting?.className?.includes("layout-body") ?
-                            layers.filter(e => !e.ParentId).map(e => renderPageView(e, layers)) :
-                            children.map(e => renderPageView(e, list)))
-                    }
+                    {childComponent ??
+                        (
+                            item.Setting?.className?.includes("layout-body") ?
+                                children :
+                                childrenLayers.map(e => renderPageView(e, list))
+                        )}
                 </div>
             case ComponentType.text:
                 return <Text key={item.Id} {..._props}>{item.Setting?.value ?? ""}</Text>
             case ComponentType.img:
-                return <img key={item.Id} alt="" draggable={false} {..._props} />
+                return <img
+                    key={item.Id}
+                    alt=""
+                    onError={(ev) => { ev.currentTarget.src = "https://cdn.jsdelivr.net/gh/WiniGit/icon-library@latest/color/multimedia/image.svg" }}
+                    {..._props}
+                />
+            case ComponentType.icon:
+                return <Winicon key={item.Id} {..._props} />
             case ComponentType.chart:
+                _props.id = item.Id
                 return <ChartById key={item.Id} {..._props} />
             case ComponentType.form:
                 _props.id = item.Id
                 return <FormById key={item.Id} {..._props} />
             case ComponentType.card:
+                _props.id = item.Id
                 return <CardById key={item.Id} {..._props} />
-            case ComponentType.icon:
-                return <Winicon key={item.Id} {..._props} />
             case ComponentType.popup:
                 _props.id = item.Id
                 return <ActionPopup key={item.Id} {..._props} >
-                    {
-                        item.Setting?.className?.includes("layout-body") ?
-                            layers.filter(e => !e.ParentId).map(e => renderPageView(e, layers)) :
-                            children.map(e => renderPageView(e, list))
-                    }
+                    {childrenLayers.map(e => renderPageView(e, list))}
                 </ActionPopup>
             default:
                 return <div key={item.Id} {..._props} />
         }
     }
 
-    return layout.filter(e => !e.ParentId).map(e => renderPageView(e, layout))
+    return layers.filter(e => !e.ParentId).map(e => renderPageView(e, layers))
 }
 
-const ActionPopup = ({ id, children, className = "" }: { id: string, children: ReactNode, className?: string }) => {
+const ActionPopup = ({ id, children }: { id: string, children: ReactNode, className?: string }) => {
     const ref = useRef<any>(null)
 
     useEffect(() => {
         if (ref.current) ref.current.setState({ ...ref.current.state, content: children })
     }, [children])
 
-    return <div id={id} className={"action-popup-container " + className}>
+    return <>
         <Popup ref={ref} />
-        <button hidden type="button" className="open" onClick={() => {
+        <button hidden type="button" className={`open-${id}`} onClick={() => {
             showPopup({
                 ref: ref,
                 content: children ?? <div />
             })
         }} />
-        <button hidden type="button" className="close" onClick={() => { closePopup(ref) }} />
-    </div>
+        <button hidden type="button" className={`close-${id}`} onClick={() => { closePopup(ref) }} />
+    </>
 }
 
 interface PageByIdProps extends Props {
@@ -159,7 +174,7 @@ export const PageById = (props: PageByIdProps) => {
         const layerController = new TableController("layer")
         const res = await Promise.all([
             layerController.getListSimple({ page: 1, size: 2000, query: `(@Id:{${layoutId}}) | (@LayoutId:{${layoutId}})` }),
-            layerController.getListSimple({ page: 1, size: 1000, query: `@PageId:{${pageItem!.Id}}` })
+            layerController.getListSimple({ page: 1, size: 5000, query: `@PageId:{${pageItem!.Id}}` })
         ])
         if (res[0].code === 200 && res[1].code === 200) setData({
             layout: res[0].data.map((e: any) => ({ ...e, Setting: JSON.parse(e.Setting) })),
@@ -173,10 +188,11 @@ export const PageById = (props: PageByIdProps) => {
     }, [pageItem])
 
     return pageItem && data ? <RenderPageView
-        layout={data.layout}
-        layers={data.layers}
+        layers={data.layout}
         {...props}
-    /> : null
+    >
+        <RenderPageView layers={data.layers} {...props} />
+    </RenderPageView> : null
 }
 
 interface PageByUrlProps extends Props {
@@ -214,8 +230,9 @@ export const PageByUrl = (props: PageByUrlProps) => {
     }, [pageItem])
 
     return pageItem && data ? <RenderPageView
-        layout={data.layout}
-        layers={data.layers}
+        layers={data.layout}
         {...props}
-    /> : null
+    >
+        <RenderPageView layers={data.layers} {...props} />
+    </RenderPageView> : null
 }

@@ -33,7 +33,7 @@ import { TextFieldForm, InputPasswordForm, TextAreaForm, DateTimePickerForm, CKE
 import { EmptyPage } from './component/empty-page'
 import { BaseDA, CkEditorUploadAdapter, imgFileTypes } from './controller/config'
 import { Util, formatNumberConvert, randomGID, inputMoneyPattern } from './controller/utils'
-import { DataController, SettingDataController } from './controller/data'
+import { DataController, SettingDataController, AccountController } from './controller/data'
 import { CardById } from './module/card/cardById'
 import { ChartById } from './module/chart/chartById'
 import { FormById } from './module/form/formById'
@@ -97,6 +97,7 @@ export {
   formatNumberConvert,
   randomGID,
   inputMoneyPattern,
+  AccountController,
   DataController,
   SettingDataController,
   CardById,

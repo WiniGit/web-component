@@ -1,4 +1,5 @@
 import { BaseDA, ConfigData } from "./config";
+import { Util } from "./utils";
 
 export class DataController {
     private module: string;
@@ -131,7 +132,6 @@ export class DataController {
         return res
     }
 }
-
 export class SettingDataController {
     private setting: "model" | "reducer" | "chart" | "form" | "card";
     private type: string;
@@ -161,6 +161,29 @@ export class SettingDataController {
         const res = await BaseDA.post(ConfigData.url + `data/${this.type === "report" ? `${this.type}/${this.setting}` : this.type}/getByIds`, {
             headers: { pid: ConfigData.pid },
             body: { ids: ids }
+        })
+        return res
+    }
+}
+
+export class AccountController {
+    async login(body: { type: "phone" | "apple" | "google" | "microsoft", token?: string, deviceToken?: string, ggClientId?: string, phone?: string }, resolve?: () => void) {
+        const res = await BaseDA.post(ConfigData.url + 'data/login', {
+            headers: { module: 'Customer', pid: ConfigData.pid },
+            body: body
+        })
+        if (res.code === 200 && !resolve) {
+            Object.keys(res.data).forEach(key => {
+                Util.setCookie(key, res.data[key])
+            })
+            Util.setCookie("timeRefresh", Date.now() / 1000 + 9 * 60)
+        }
+        return res
+    }
+
+    async getInfor() {
+        const res = await BaseDA.get(ConfigData.url + 'data/getInfo', {
+            headers: { module: 'Customer', pid: ConfigData.pid },
         })
         return res
     }
