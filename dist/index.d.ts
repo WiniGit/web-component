@@ -33,13 +33,13 @@ import { TextFieldForm, InputPasswordForm, TextAreaForm, DateTimePickerForm, CKE
 import { EmptyPage } from './component/empty-page';
 import { BaseDA, CkEditorUploadAdapter, imgFileTypes } from './controller/config';
 import { Util, formatNumberConvert, randomGID, inputMoneyPattern } from './controller/utils';
-import { DataController, SettingDataController } from './controller/data';
+import { DataController, SettingDataController, AccountController } from './controller/data';
 import { CardById } from './module/card/cardById';
 import { ChartById } from './module/chart/chartById';
 import { FormById } from './module/form/formById';
 import { PageById, PageByUrl } from './module/page/pageById';
 import { WiniProvider } from './module/WiniProvider';
-export { Calendar, ComponentStatus, getStatusIcon, Checkbox, Select1, Switch, Popup, showPopup, closePopup, Dialog, showDialog, DialogAlignment, DateTimePicker, SelectMultiple, ProgressBar, Text, Pagination, Table, TbCell, TbHeader, TbBody, TbRow, CellAlignItems, TextField, RadioButton, TextArea, ImportFile, ToastMessage, InfiniteScroll, Rating, ProgressCircle, Carousel, ToastContainer, Button, Tag, Winicon, NumberPicker, InputOtp, WLoginView, CustomCkEditor5, Slider, TextFieldForm, InputPasswordForm, TextAreaForm, DateTimePickerForm, CKEditorForm, Select1Form, SelectMultipleForm, SwitchForm, RateForm, CheckboxForm, RadioButtonForm, GroupRadioButtonForm, ImportFileForm, RangeForm, GroupCheckboxForm, ColorPickerForm, EmptyPage, BaseDA, CkEditorUploadAdapter, imgFileTypes, Util, formatNumberConvert, randomGID, inputMoneyPattern, DataController, SettingDataController, CardById, ChartById, FormById, PageById, PageByUrl };
+export { Calendar, ComponentStatus, getStatusIcon, Checkbox, Select1, Switch, Popup, showPopup, closePopup, Dialog, showDialog, DialogAlignment, DateTimePicker, SelectMultiple, ProgressBar, Text, Pagination, Table, TbCell, TbHeader, TbBody, TbRow, CellAlignItems, TextField, RadioButton, TextArea, ImportFile, ToastMessage, InfiniteScroll, Rating, ProgressCircle, Carousel, ToastContainer, Button, Tag, Winicon, NumberPicker, InputOtp, WLoginView, CustomCkEditor5, Slider, TextFieldForm, InputPasswordForm, TextAreaForm, DateTimePickerForm, CKEditorForm, Select1Form, SelectMultipleForm, SwitchForm, RateForm, CheckboxForm, RadioButtonForm, GroupRadioButtonForm, ImportFileForm, RangeForm, GroupCheckboxForm, ColorPickerForm, EmptyPage, BaseDA, CkEditorUploadAdapter, imgFileTypes, Util, formatNumberConvert, randomGID, inputMoneyPattern, AccountController, DataController, SettingDataController, CardById, ChartById, FormById, PageById, PageByUrl };
 export type { OptionsItem };
 export { i18n } from './language/i18n';
 export default WiniProvider;

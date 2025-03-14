@@ -1,6 +1,31 @@
-import { CSSProperties } from 'react';
+import { CSSProperties, ReactNode } from 'react';
 interface Props {
-    dataItem?: {
+    /**
+    * replace children of parent layer by id. Ex: { "gid": <Text className="heading-7">Example</Text> }
+    * */
+    childrenData?: {
+        [p: string]: (itemData: {
+            [p: string]: any;
+        }, index: number) => ReactNode;
+    };
+    /**
+     * custom style layer by id. Ex: { "gid": { width: "60rem", backgroundColor: "red" } }
+     * */
+    styleData?: {
+        [p: string]: CSSProperties;
+    };
+    /**
+     * replace layer by id. Ex: { "gid": <Text className="heading-7">Example</Text> }
+     * */
+    itemData?: {
+        [p: string]: (indexItem: {
+            [p: string]: any;
+        }, index: number) => ReactNode;
+    };
+    /**
+     * json object data. Ex: {Id: 1, Name: "Example", ...}
+     * */
+    cardData?: {
         [p: string]: any;
     };
     style?: CSSProperties;

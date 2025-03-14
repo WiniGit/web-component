@@ -71,4 +71,14 @@ export declare class SettingDataController {
     } | undefined): Promise<any>;
     getByIds(ids: Array<string>): Promise<any>;
 }
+export declare class AccountController {
+    login(body: {
+        type: "phone" | "apple" | "google" | "microsoft";
+        token?: string;
+        deviceToken?: string;
+        ggClientId?: string;
+        phone?: string;
+    }, resolve?: () => void): Promise<any>;
+    getInfor(): Promise<any>;
+}
 //# sourceMappingURL=data.d.ts.map

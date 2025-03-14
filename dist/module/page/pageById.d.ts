@@ -1,11 +1,20 @@
 import { CSSProperties, ReactNode } from 'react';
 interface Props {
+    /**
+     * replace children of parent layer by id. Ex: { "gid": <Text className="heading-7">Example</Text> }
+     * */
     childrenData?: {
         [p: string]: ReactNode;
     };
+    /**
+     * custom style layer by id. Ex: { "gid": { width: "60rem", backgroundColor: "red" } }
+     * */
     styleData?: {
         [p: string]: CSSProperties;
     };
+    /**
+     * replace layer by id. Ex: { "gid": <Text className="heading-7">Example</Text> }
+     * */
     itemData?: {
         [p: string]: ReactNode;
     };

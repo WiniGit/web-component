@@ -206,7 +206,7 @@ export const PageByUrl = (props: PageByUrlProps) => {
 
     useEffect(() => {
         const pageController = new TableController("page")
-        pageController.getListSimple({ page: 1, size: 1, query: `@Url:{${props.url.length ? props.url : "\\/"}}` }).then(res => {
+        pageController.getListSimple({ page: 1, size: 1, query: `@Url:{${props.url.length && props.url !== "/" ? props.url : "\\/"}}` }).then(res => {
             if (res.code === 200) setPageItem(res.data[0])
             else setPageItem(undefined)
         })
