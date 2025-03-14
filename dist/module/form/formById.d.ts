@@ -1,6 +1,7 @@
 import { ReactNode, CSSProperties } from 'react';
 import { UseFormReturn } from 'react-hook-form';
 interface Props {
+    id?: string;
     className?: string;
     style?: CSSProperties;
     data?: {
@@ -21,7 +22,7 @@ interface Props {
     }) => void;
 }
 interface FormByIdProps extends Props {
-    id: string;
+    formId: string;
 }
 export declare const FormById: (props: FormByIdProps) => import("react/jsx-runtime").JSX.Element | null;
 export {};

@@ -51,7 +51,7 @@ const RenderPageView = ({ childrenData, styleData, itemData, layers = [], childr
                                             if (actItem.To.includes("https")) window.open(actItem.To, "_blank")
                                             else {
                                                 const navLink = document.createElement("a")
-                                                navLink.href = `/${actItem.To}`
+                                                navLink.href = actItem.To.startsWith("/") ? actItem.To : `/${actItem.To}`
                                                 navLink.click()
                                             }
                                         }
@@ -156,40 +156,41 @@ interface PageByIdProps extends Props {
 
 export const PageById = (props: PageByIdProps) => {
     const [pageItem, setPageItem] = useState<{ [p: string]: any }>()
-    const [data, setData] = useState<{ layout: Array<{ [p: string]: any }>, layers: Array<{ [p: string]: any }> }>()
+    const [layout, setLayout] = useState<Array<{ [p: string]: any }>>([])
+    const [layers, setLayers] = useState<Array<{ [p: string]: any }>>([])
 
     useEffect(() => {
         const pageController = new TableController("page")
         pageController.getByListId([props.id]).then(res => {
-            if (res.code === 200) setPageItem(res.data[0])
-            else setPageItem(undefined)
+            if (res.code === 200 && res.data[0]) {
+                const thisPage = res.data[0]
+                setPageItem(thisPage)
+                const layerController = new TableController("layer")
+                if (thisPage.LayoutId !== pageItem?.LayoutId) {
+                    Promise.all([
+                        layerController.getListSimple({ page: 1, size: 2000, query: `(@Id:{${thisPage.LayoutId}}) | (@LayoutId:{${thisPage.LayoutId}})` }),
+                        layerController.getListSimple({ page: 1, size: 1000, query: `@PageId:{${thisPage!.Id}}` })
+                    ]).then(resLayer => {
+                        if (resLayer[0].code === 200 && resLayer[1].code === 200) {
+                            setLayout(resLayer[0].data.map((e: any) => ({ ...e, Setting: JSON.parse(e.Setting) })))
+                            setLayers(resLayer[1].data.map((e: any) => ({ ...e, Setting: JSON.parse(e.Setting) })))
+                        }
+                    })
+                } else {
+                    layerController.getListSimple({ page: 1, size: 1000, query: `@PageId:{${thisPage!.Id}}` }).then(resLayer => {
+                        if (resLayer.code === 200) setLayers(resLayer.data.map((e: any) => ({ ...e, Setting: JSON.parse(e.Setting) })))
+                    })
+                }
+            } else setPageItem(undefined)
         })
     }, [props.id])
 
-    const getData = async () => {
-        const layoutId = pageItem!.LayoutId
-        const layerController = new TableController("layer")
-        const res = await Promise.all([
-            layerController.getListSimple({ page: 1, size: 2000, query: `(@Id:{${layoutId}}) | (@LayoutId:{${layoutId}})` }),
-            layerController.getListSimple({ page: 1, size: 5000, query: `@PageId:{${pageItem!.Id}}` })
-        ])
-        if (res[0].code === 200 && res[1].code === 200) setData({
-            layout: res[0].data.map((e: any) => ({ ...e, Setting: JSON.parse(e.Setting) })),
-            layers: res[1].data.map((e: any) => ({ ...e, Setting: JSON.parse(e.Setting) })),
-        })
-    }
-
-    useEffect(() => {
-        if (pageItem) getData()
-        else if (data) setData(undefined)
-    }, [pageItem])
-
-    return pageItem && data ? <RenderPageView
+    return pageItem && !!layout.length ? <RenderPageView
         key={pageItem.LayoutId}
-        layers={data.layout}
+        layers={layout}
         {...props}
     >
-        <RenderPageView layers={data.layers} {...props} />
+        <RenderPageView layers={layers} {...props} />
     </RenderPageView> : null
 }
 
@@ -199,39 +200,40 @@ interface PageByUrlProps extends Props {
 
 export const PageByUrl = (props: PageByUrlProps) => {
     const [pageItem, setPageItem] = useState<{ [p: string]: any }>()
-    const [data, setData] = useState<{ layout: Array<{ [p: string]: any }>, layers: Array<{ [p: string]: any }> }>()
+    const [layout, setLayout] = useState<Array<{ [p: string]: any }>>([])
+    const [layers, setLayers] = useState<Array<{ [p: string]: any }>>([])
 
     useEffect(() => {
         const pageController = new TableController("page")
-        pageController.getListSimple({ page: 1, size: 1, query: `@Url:{${props.url.length && props.url !== "/" ? props.url : "\\/"}}` }).then(res => {
-            if (res.code === 200) setPageItem(res.data[0])
-            else setPageItem(undefined)
+        pageController.getListSimple({ page: 1, size: 1, query: `@Url:{${props.url.length ? props.url.replace(/\//g, "\\/") : "\\/"}}` }).then(res => {
+            if (res.code === 200 && res.data[0]) {
+                const thisPage = res.data[0]
+                setPageItem(thisPage)
+                const layerController = new TableController("layer")
+                if (thisPage.LayoutId !== pageItem?.LayoutId) {
+                    Promise.all([
+                        layerController.getListSimple({ page: 1, size: 2000, query: `(@Id:{${thisPage.LayoutId}}) | (@LayoutId:{${thisPage.LayoutId}})` }),
+                        layerController.getListSimple({ page: 1, size: 1000, query: `@PageId:{${thisPage!.Id}}` })
+                    ]).then(resLayer => {
+                        if (resLayer[0].code === 200 && resLayer[1].code === 200) {
+                            setLayout(resLayer[0].data.map((e: any) => ({ ...e, Setting: JSON.parse(e.Setting) })))
+                            setLayers(resLayer[1].data.map((e: any) => ({ ...e, Setting: JSON.parse(e.Setting) })))
+                        }
+                    })
+                } else {
+                    layerController.getListSimple({ page: 1, size: 1000, query: `@PageId:{${thisPage!.Id}}` }).then(resLayer => {
+                        if (resLayer.code === 200) setLayers(resLayer.data.map((e: any) => ({ ...e, Setting: JSON.parse(e.Setting) })))
+                    })
+                }
+            } else setPageItem(undefined)
         })
     }, [props.url])
 
-    const getData = async () => {
-        const layoutId = pageItem!.LayoutId
-        const layerController = new TableController("layer")
-        const res = await Promise.all([
-            layerController.getListSimple({ page: 1, size: 2000, query: `(@Id:{${layoutId}}) | (@LayoutId:{${layoutId}})` }),
-            layerController.getListSimple({ page: 1, size: 1000, query: `@PageId:{${pageItem!.Id}}` })
-        ])
-        if (res[0].code === 200 && res[1].code === 200) setData({
-            layout: res[0].data.map((e: any) => ({ ...e, Setting: JSON.parse(e.Setting) })),
-            layers: res[1].data.map((e: any) => ({ ...e, Setting: JSON.parse(e.Setting) })),
-        })
-    }
-
-    useEffect(() => {
-        if (pageItem) getData()
-        else if (data) setData(undefined)
-    }, [pageItem])
-
-    return pageItem && data ? <RenderPageView
+    return pageItem && !!layout.length ? <RenderPageView
         key={pageItem.LayoutId}
-        layers={data.layout}
+        layers={layout}
         {...props}
     >
-        <RenderPageView layers={data.layers} {...props} />
+        <RenderPageView key={pageItem.Id} layers={layers} {...props} />
     </RenderPageView> : null
 }

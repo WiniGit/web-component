@@ -167,15 +167,19 @@ const RenderComponentByLayer = (props: RenderComponentByLayerProps) => {
                                     case ActionType.navigate:
                                         if (actItem.To) {
                                             if (regexUrlWithVariables.test(actItem.To)) {
-                                                const url = actItem.To.replace(regexGetVariableByThis, (m: string) => props.indexItem ? props.indexItem[regexGetVariableByThis.exec(m)![1]] : m)
+                                                const url = actItem.To.replace(regexGetVariableByThis, (m: string) => {
+                                                    const execRegex = regexGetVariableByThis.exec(m)
+                                                    return props.indexItem && execRegex?.[1] ? props.indexItem[execRegex[1]] : m
+                                                })
                                                 if (url.includes("https")) window.open(url, "_blank")
                                                 else {
                                                     const navLink = document.createElement("a")
-                                                    navLink.href = url
+                                                    navLink.href = url.split("/").filter((e: string) => !!e.trim()).join("/")
                                                     navLink.click()
                                                 }
-                                            } if (actItem.To.includes("https")) window.open(actItem.To, "_blank")
-                                            else {
+                                            } else if (actItem.To.includes("https")) {
+                                                window.open(actItem.To, "_blank")
+                                            } else {
                                                 const navLink = document.createElement("a")
                                                 navLink.href = `/${actItem.To}`
                                                 navLink.click()
