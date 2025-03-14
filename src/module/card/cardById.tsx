@@ -51,7 +51,7 @@ function RenderCard({ layers = [], cardItem, style, className, cardData, control
     const mapColumnData = async () => {
         const _colController = new TableController("column")
         const _colRes = await _colController.getListSimple({ page: 1, size: 200, query: `@TableName:{${cardItem.TbName}}` })
-        if (_colRes.code !== 200) setCols(_colRes.data)
+        if (_colRes.code === 200) setCols(_colRes.data)
     }
 
     useEffect(() => {
@@ -92,6 +92,7 @@ function RenderCard({ layers = [], cardItem, style, className, cardData, control
                 })
             }
         }
+        setData(tmp)
     }
 
     useEffect(() => {
@@ -153,7 +154,7 @@ const RenderComponentByLayer = (props: RenderComponentByLayerProps) => {
         _props.style ??= {}
         if (props.styleData && props.styleData[props.item.Id]) _props.style = { ..._props.style, ...props.styleData[props.item.Id] }
         if (props.style && !props.item.ParentId) _props.style = { ..._props.style, ...props.style }
-        if (props.className) _props.className = [..._props.className.split(" "), props.className].join(" ")
+        if (props.className?.length && !props.item.ParentId) _props.className = [..._props.className.split(" "), ...props.className.split(" ")].filter(e => !!e.trim()).join(" ")
         if (_props.action && Array.isArray(_props.action)) {
             Object.values(TriggerType).forEach(trigger => {
                 const triggerActions = _props.action.filter((e: any) => e.Type === trigger)
@@ -240,8 +241,9 @@ const RenderComponentByLayer = (props: RenderComponentByLayerProps) => {
                     }
                     break;
             }
+            return tmpValue
         }
-    }, [props.indexItem, props.item, props.cols])
+    }, [props.indexItem, props.item, props.cols, props.methods.watch("_files")])
 
     if (props.itemData && props.itemData[props.item.Id]) {
         return props.itemData[props.item.Id](props.indexItem, props.index)
@@ -259,13 +261,15 @@ const RenderComponentByLayer = (props: RenderComponentByLayerProps) => {
                 </div>
             case ComponentType.text:
                 if (dataValue && typeof dataValue !== "string" && dataValue?.["__html"]) return <Text {...customProps} html={dataValue["__html"]} />
-                else return <Text {...customProps}>{dataValue ?? props.item.Setting?.value ?? ""}</Text>
+                else {
+                    return <Text {...customProps}>{dataValue ?? props.item.Setting?.value ?? ""}</Text>
+                }
             case ComponentType.icon:
                 return <Winicon {...({ ...customProps, src: dataValue ?? customProps.src })} />
             case ComponentType.img:
                 return (dataValue && Array.isArray(dataValue)) ?
                     dataValue.map((e: any) => {
-                        const eProps = { ...customProps, src: e.startsWith("http") ? e : (ConfigData.imgUrlId + e) }
+                        const eProps = { ...customProps, src: ConfigData.imgUrlId + e.Id }
                         return <img
                             key={e.Id}
                             alt=""
@@ -305,8 +309,8 @@ export const CardById = (props: CardProps) => {
 
     return cardItem ? <RenderCard
         key={cardItem.Id}
+        {...props}
         cardItem={cardItem}
         layers={cardItem.Props}
-        {...props}
     /> : null
 }

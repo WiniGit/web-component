@@ -113,14 +113,11 @@ const RenderPageView = ({ childrenData, styleData, itemData, layers = [], childr
             case ComponentType.icon:
                 return <Winicon key={item.Id} {..._props} />
             case ComponentType.chart:
-                _props.id = item.Id
-                return <ChartById key={item.Id} {..._props} />
+                return <ChartById key={item.Id} {..._props} id={_props.chartId} />
             case ComponentType.form:
-                _props.id = item.Id
-                return <FormById key={item.Id} {..._props} />
+                return <FormById key={item.Id} id={item.Id} {..._props} />
             case ComponentType.card:
-                _props.id = item.Id
-                return <CardById key={item.Id} {..._props} />
+                return <CardById key={item.Id} {..._props} id={_props.cardId} />
             case ComponentType.popup:
                 _props.id = item.Id
                 return <ActionPopup key={item.Id} {..._props} >

@@ -14,6 +14,7 @@ import { SelectMultipleForm } from "../../component/component-form";
 import { Select1Form } from "../../component/component-form";
 
 interface Props {
+    id?: string,
     className?: string,
     style?: CSSProperties,
     data?: { [p: string]: any },
@@ -393,7 +394,7 @@ function FormByType(props: FormByTypeProps) {
     }, [props.data, cols.length, params.toString()])
     const rangeComponent = [FEDataType.DATE, FEDataType.DATETIME, FEDataType.NUMBER, FEDataType.MONEY]
 
-    return <form id={props.formItem.Id} className={`col ${props.className ?? ""}`} style={props.style}>
+    return <form id={props.id} className={`col ${props.className ?? ""}`} style={props.style}>
         {watchRel.length ? <GetWatchRelValues
             methods={methods}
             watchRel={watchRel}
@@ -506,16 +507,16 @@ const GetWatchRelValues = (props: { methods: UseFormReturn, watchRel: Array<{ [p
 }
 
 interface FormByIdProps extends Props {
-    id: string
+    formId: string
 }
 
 export const FormById = (props: FormByIdProps) => {
     const [formItem, setFormItem] = useState<{ [p: string]: any }>()
 
     useEffect(() => {
-        if (props.id) {
+        if (props.formId) {
             const _settingDataController = new SettingDataController("form")
-            _settingDataController.getByIds([props.id]).then(async (res) => {
+            _settingDataController.getByIds([props.formId]).then(async (res) => {
                 if (res.code === 200) {
                     let _formItem = res.data[0]
                     if (typeof _formItem.Props === "string") _formItem.Props = JSON.parse(_formItem.Props)
@@ -523,7 +524,7 @@ export const FormById = (props: FormByIdProps) => {
                 }
             })
         } else if (formItem) setFormItem(undefined)
-    }, [props.id])
+    }, [props.formId])
 
     return formItem ? <FormByType
         key={formItem.Id}
