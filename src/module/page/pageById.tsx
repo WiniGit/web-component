@@ -9,6 +9,7 @@ import { Winicon } from "../../component/wini-icon/winicon"
 import { Popup } from "../../component/popup/popup"
 import { showPopup } from "../../component/popup/popup"
 import { closePopup } from "../../component/popup/popup"
+import { useNavigate } from "react-router-dom"
 
 interface Props {
     /**
@@ -31,6 +32,7 @@ interface RenderPageProps extends Props {
 }
 
 const RenderPageView = ({ childrenData, styleData, itemData, layers = [], children }: RenderPageProps) => {
+    const navigate = useNavigate()
     const renderPageView = (item: { [p: string]: any }, list: Array<{ [p: string]: any }> = []) => {
         if (itemData?.[item.Id]) return itemData[item.Id]
         const childrenLayers = list.filter(e => e.ParentId === item.Id)
@@ -50,9 +52,7 @@ const RenderPageView = ({ childrenData, styleData, itemData, layers = [], childr
                                         if (actItem.To) {
                                             if (actItem.To.includes("https")) window.open(actItem.To, "_blank")
                                             else {
-                                                const navLink = document.createElement("a")
-                                                navLink.href = actItem.To.startsWith("/") ? actItem.To : `/${actItem.To}`
-                                                navLink.click()
+                                                navigate(actItem.To.startsWith("/") ? actItem.To : `/${actItem.To}`)
                                             }
                                         }
                                         break;

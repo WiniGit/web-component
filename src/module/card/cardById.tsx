@@ -8,6 +8,7 @@ import { regexGetVariableByThis, regexUrlWithVariables } from "./config"
 import { Util } from "../../controller/utils"
 import { Text } from "../../component/text/text"
 import { Winicon } from "../../component/wini-icon/winicon"
+import { useNavigate } from "react-router-dom"
 
 interface Props {
     /**
@@ -149,6 +150,7 @@ interface RenderComponentByLayerProps extends RenderDetailProps {
 }
 
 const RenderComponentByLayer = (props: RenderComponentByLayerProps) => {
+    const navigate = useNavigate()
     const customProps = useMemo(() => {
         let _props = { ...props.item.Setting }
         _props.style ??= {}
@@ -173,16 +175,12 @@ const RenderComponentByLayer = (props: RenderComponentByLayerProps) => {
                                                 })
                                                 if (url.includes("https")) window.open(url, "_blank")
                                                 else {
-                                                    const navLink = document.createElement("a")
-                                                    navLink.href = url.split("/").filter((e: string) => !!e.trim()).join("/")
-                                                    navLink.click()
+                                                    navigate(url.split("/").filter((e: string) => !!e.trim()).join("/"))
                                                 }
                                             } else if (actItem.To.includes("https")) {
                                                 window.open(actItem.To, "_blank")
                                             } else {
-                                                const navLink = document.createElement("a")
-                                                navLink.href = `/${actItem.To}`
-                                                navLink.click()
+                                                navigate(actItem.To.startsWith("/") ? actItem.To : `/${actItem.To}`)
                                             }
                                         }
                                         break;

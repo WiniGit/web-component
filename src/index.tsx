@@ -108,4 +108,5 @@ export {
 }
 export type { OptionsItem }
 export { i18n } from './language/i18n';
+export { Routes, Route, useNavigate, useParams, useLocation, useSearchParams, Navigate, NavLink } from 'react-router-dom'
 export default WiniProvider

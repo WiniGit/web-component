@@ -12,6 +12,7 @@ import { ToastMessage } from "../../component/toast-noti/toast-noti";
 import { RangeForm } from "../../component/component-form";
 import { SelectMultipleForm } from "../../component/component-form";
 import { Select1Form } from "../../component/component-form";
+import { useLocation, useNavigate } from "react-router-dom";
 
 interface Props {
     id?: string,
@@ -40,7 +41,9 @@ function FormByType(props: FormByTypeProps) {
     const _relController = new TableController("rel")
     const successBtnRef = useRef<any>(null)
     const resetBtnRef = useRef<any>(null)
-    const params = new URLSearchParams(window.location.search);
+    const location = useLocation()
+    const params = new URLSearchParams(location.search);
+    const navigate = useNavigate()
     const { t } = useTranslation()
 
     const _onSubmit = async (ev: { [k: string]: any }) => {
@@ -107,11 +110,7 @@ function FormByType(props: FormByTypeProps) {
                 delete dataItem.Id
                 // 
                 if (props.onSubmit) props.onSubmit(dataItem)
-                else {
-                    const navLink = document.createElement("a")
-                    navLink.href = `?${params.toString()}`
-                    navLink.click()
-                }
+                else navigate(`?${params.toString()}`)
                 // 
                 if (successBtnRef.current) successBtnRef.current.click()
                 break;

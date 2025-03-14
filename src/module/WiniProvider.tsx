@@ -1,6 +1,9 @@
 import { useEffect } from "react"
+import { BrowserRouter, Routes } from "react-router-dom"
 import { ConfigData } from "../controller/config"
 import { TableController } from "../controller/setting"
+import { Dialog } from "../component/dialog/dialog"
+import { ToastContainer } from 'react-toastify'
 
 interface Props {
     /**
@@ -21,7 +24,7 @@ export const WiniProvider = (props: Props) => {
     ConfigData.url = props.url
     ConfigData.imgUrlId = props.imgUrlId
     if (props.onInvalidToken) ConfigData.onInvalidToken = props.onInvalidToken
-    
+
     useEffect(() => {
         ConfigData.pid = props.pid
         const _desginTokenController = new TableController("designtoken")
@@ -55,5 +58,9 @@ export const WiniProvider = (props: Props) => {
         if (props.onInvalidToken) ConfigData.onInvalidToken = props.onInvalidToken
     }, [props.onInvalidToken])
 
-    return <>{props.children}</>
+    return <BrowserRouter>
+        <ToastContainer />
+        <Dialog />
+        <Routes>{props.children}</Routes>
+    </BrowserRouter>
 }
