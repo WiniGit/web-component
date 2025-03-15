@@ -8,7 +8,7 @@ interface PopupState {
     clickOverlayClosePopup?: boolean;
     style?: CSSProperties;
     className?: string;
-    hideButtonClose?: boolean;
+    hideOverlay?: boolean;
 }
 export declare const showPopup: (props: {
     ref: React.RefObject<Popup | undefined>;
@@ -19,7 +19,7 @@ export declare const showPopup: (props: {
     clickOverlayClosePopup?: boolean;
     style?: CSSProperties;
     className?: string;
-    hideButtonClose?: boolean;
+    hideOverlay?: boolean;
 }) => void;
 export declare const closePopup: (ref: React.RefObject<Popup>) => void;
 export declare class Popup extends React.Component<Object, PopupState> {

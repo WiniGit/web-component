@@ -164,7 +164,7 @@ export function DateTimePicker(props: DateTimePickerProps) {
     const showCalendar = (rect: any) => {
         showPopup({
             ref: popupRef,
-            clickOverlayClosePopup: true,
+            hideOverlay: true,
             content: <PopupDateTimePicker
                 ref={popupRef}
                 max={props.max}
@@ -391,7 +391,7 @@ const PopupDateTimePicker = forwardRef(function PopupDateTimePicker({ value, sty
                             const rect = ev.target.closest("div")!.getBoundingClientRect()
                             showPopup({
                                 ref: popupRef,
-                                clickOverlayClosePopup: true,
+                                hideOverlay: true,
                                 content: <div className={`col ${styles['popup-actions']}`} style={{ maxHeight: "24rem", top: rect.bottom + 2, right: document.body.offsetWidth - rect.right, width: rect.width, overflow: "hidden auto", border: "var(--neutral-main-border)" }}>
                                     {Array.from({ length: 48 }).map((_, i) => {
                                         if (i % 2 === 0) var timeValue = `${(i / 2) < 9 ? `0${i / 2}` : (i / 2)}:00`
@@ -427,7 +427,7 @@ const PopupDateTimePicker = forwardRef(function PopupDateTimePicker({ value, sty
                                 const rect = ev.target.closest("div")!.getBoundingClientRect()
                                 showPopup({
                                     ref: popupRef,
-                                    clickOverlayClosePopup: true,
+                                    hideOverlay: true,
                                     content: <div className={`col ${styles['popup-actions']}`} style={{ maxHeight: "24rem", top: rect.bottom + 2, right: document.body.offsetWidth - rect.right, width: rect.width, overflow: "hidden auto", border: "var(--neutral-main-border)" }}>
                                         {Array.from({ length: 48 }).map((_, i) => {
                                             if (i % 2 === 0) var timeValue = `${(i / 2) < 9 ? `0${i / 2}` : (i / 2)}:00`
@@ -468,7 +468,7 @@ const PopupDateTimePicker = forwardRef(function PopupDateTimePicker({ value, sty
                                 const rect = ev.target.closest("button").getBoundingClientRect()
                                 showPopup({
                                     ref: popupRef,
-                                    clickOverlayClosePopup: true,
+                                    hideOverlay: true,
                                     style: { position: "absolute", top: rect.bottom + 2, left: rect.x + 8 },
                                     body: <div className="col popup-actions">
                                         {Array.from({ length: 3 }).map((_, num) => {
@@ -566,7 +566,7 @@ const PopupDateTimePicker = forwardRef(function PopupDateTimePicker({ value, sty
                                             const rect = ev.target.closest("button").getBoundingClientRect()
                                             showPopup({
                                                 ref: popupRef,
-                                                clickOverlayClosePopup: true,
+                                                hideOverlay: true,
                                                 style: { top: rect.bottom + 2, right: document.body.offsetWidth - rect.right, maxHeight: "30.4rem" },
                                                 body: <div className="col popup-actions" style={{ flex: 1, overflow: "hidden auto" }}>
                                                     {Array.from({ length: 29 }).map((_, num) => {

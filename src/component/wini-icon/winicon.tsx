@@ -38,7 +38,6 @@ export function Winicon({ id, src, link, className, style, size, color, alt, onC
         // Check if the image is already cached
         const cachedResponse = await cache.match(url);
         if (cachedResponse) {
-            console.log('Serving from cache:', url);
             return cachedResponse;
         }
 
@@ -46,7 +45,6 @@ export function Winicon({ id, src, link, className, style, size, color, alt, onC
         const response = await fetch(url);
         if (response.ok) {
             await cache.put(url, response.clone());
-            console.log('Image cached:', url);
         }
 
         return response;
