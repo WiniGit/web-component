@@ -31,11 +31,32 @@ export function Winicon({ id, src, link, className, style, size, color, alt, onC
         return {}
     }, [tooltip])
 
+    const cacheImage = async (url: string) => {
+        const cacheName = url.replace(cdnSrc, "");
+        const cache = await caches.open(cacheName);
+
+        // Check if the image is already cached
+        const cachedResponse = await cache.match(url);
+        if (cachedResponse) {
+            console.log('Serving from cache:', url);
+            return cachedResponse;
+        }
+
+        // Fetch and cache the image
+        const response = await fetch(url);
+        if (response.ok) {
+            await cache.put(url, response.clone());
+            console.log('Image cached:', url);
+        }
+
+        return response;
+    }
+
     useEffect(() => {
         if (src) {
-            fetch(cdnSrc + src + ".svg").then(async (res) => { setSvgData(await res.text()) }).catch(() => { setSvgData(alt ?? "error") })
+            cacheImage(cdnSrc + src + ".svg").then(async (res) => { setSvgData(await res.text()) }).catch(() => { setSvgData(alt ?? "error") })
         } else if (link) {
-            fetch(link).then(async (res) => { setSvgData(await res.text()) })
+            fetch(link).then(async (res) => { setSvgData(await res.text()) }).catch(() => { setSvgData(alt ?? "error") })
         }
     }, [src, link])
 

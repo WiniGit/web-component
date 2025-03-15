@@ -42,6 +42,6 @@ import { WiniProvider } from './module/WiniProvider';
 export { Calendar, ComponentStatus, getStatusIcon, Checkbox, Select1, Switch, Popup, showPopup, closePopup, Dialog, showDialog, DialogAlignment, DateTimePicker, SelectMultiple, ProgressBar, Text, Pagination, Table, TbCell, TbHeader, TbBody, TbRow, CellAlignItems, TextField, RadioButton, TextArea, ImportFile, ToastMessage, InfiniteScroll, Rating, ProgressCircle, Carousel, ToastContainer, Button, Tag, Winicon, NumberPicker, InputOtp, WLoginView, CustomCkEditor5, Slider, TextFieldForm, InputPasswordForm, TextAreaForm, DateTimePickerForm, CKEditorForm, Select1Form, SelectMultipleForm, SwitchForm, RateForm, CheckboxForm, RadioButtonForm, GroupRadioButtonForm, ImportFileForm, RangeForm, GroupCheckboxForm, ColorPickerForm, EmptyPage, BaseDA, CkEditorUploadAdapter, imgFileTypes, Util, formatNumberConvert, randomGID, inputMoneyPattern, AccountController, DataController, SettingDataController, CardById, ChartById, FormById, PageById, PageByUrl };
 export type { OptionsItem };
 export { i18n } from './language/i18n';
-export { Routes, Route, useNavigate, useParams, useLocation, useSearchParams, Navigate, NavLink } from 'react-router-dom';
+export { Routes, Route, useNavigate, useParams, useLocation, useSearchParams, Navigate, NavLink, Outlet } from 'react-router-dom';
 export default WiniProvider;
 //# sourceMappingURL=index.d.ts.map
