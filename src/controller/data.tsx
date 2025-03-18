@@ -167,7 +167,7 @@ export class SettingDataController {
 }
 
 export class AccountController {
-    async login(body: { type: "phone" | "apple" | "google" | "microsoft", token?: string, deviceToken?: string, ggClientId?: string, phone?: string }, resolve?: () => void) {
+    async login(body: { type: "phone" | "apple" | "google" | "microsoft" | "account", token?: string, deviceToken?: string, ggClientId?: string, phone?: string, password?: string, email?: string }, resolve?: () => void) {
         const res = await BaseDA.post(ConfigData.url + 'data/login', {
             headers: { module: 'Customer', pid: ConfigData.pid },
             body: body
@@ -185,6 +185,11 @@ export class AccountController {
         const res = await BaseDA.get(ConfigData.url + 'data/getInfo', {
             headers: { module: 'Customer', pid: ConfigData.pid },
         })
+        return res
+    }
+
+    async hashPassword(password: string) {
+        const res = await BaseDA.get(ConfigData.url + `data/bcrypt?password=${password}`)
         return res
     }
 }

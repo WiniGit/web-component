@@ -8,7 +8,8 @@ import { regexGetVariableByThis, regexUrlWithVariables } from "./config"
 import { Util } from "../../controller/utils"
 import { Text } from "../../component/text/text"
 import { Winicon } from "../../component/wini-icon/winicon"
-import { useNavigate } from "react-router-dom"
+import { NavLink, useNavigate } from "react-router-dom"
+import { Button } from "../../component/button/button"
 
 interface Props {
     /**
@@ -251,6 +252,16 @@ const RenderComponentByLayer = (props: RenderComponentByLayerProps) => {
         return props.itemData[props.item.Id](props.indexItem, props.index)
     } else {
         switch (props.item.Type) {
+            case ComponentType.navLink:
+                return <NavLink {...customProps}>
+                    {(props.childrenData && props.childrenData[props.item.Id]) ?
+                        props.childrenData[props.item.Id](props.indexItem, props.index) :
+                        <RenderCardByLayers
+                            {...props}
+                            layers={props.layers}
+                            parentId={props.item.Id}
+                        />}
+                </NavLink>
             case ComponentType.container:
                 return <div {...customProps}>
                     {(props.childrenData && props.childrenData[props.item.Id]) ?
@@ -272,16 +283,22 @@ const RenderComponentByLayer = (props: RenderComponentByLayerProps) => {
                 return (dataValue && Array.isArray(dataValue)) ?
                     dataValue.map((e: any) => {
                         const eProps = { ...customProps, src: ConfigData.imgUrlId + e.Id }
-                        return <img
-                            key={e.Id}
-                            alt=""
-                            {...eProps}
+                        return <img key={e.Id} alt="" {...eProps}
                             onError={(ev) => { ev.currentTarget.src = "https://cdn.jsdelivr.net/gh/WiniGit/icon-library@latest/color/multimedia/image.svg" }}
                         />
                     }) :
                     <img alt="" {...customProps}
                         onError={(ev) => { ev.currentTarget.src = "https://cdn.jsdelivr.net/gh/WiniGit/icon-library@latest/color/multimedia/image.svg" }}
                     />
+            case ComponentType.button:
+                const icons = props.layers.filter(e => e.ParentId === props.item.Id)
+                if (icons.length) {
+                    const iconPrefix = icons.find(e => e.Setting.type === "prefix")
+                    const iconSuffix = icons.find(e => e.Setting.type === "suffix")
+                    if (iconPrefix) customProps.prefix = <RenderComponentByLayer key={iconPrefix.Id} {...props} item={iconPrefix} />
+                    if (iconSuffix) customProps.suffix = <RenderComponentByLayer key={iconSuffix.Id} {...props} item={iconSuffix} />
+                }
+                return <Button {...customProps} />
             default:
                 return <div {...customProps} />
         }

@@ -1,7 +1,6 @@
 import { CheckboxForm, DateTimePickerForm, ImportFileForm, GroupCheckboxForm, RangeForm, Select1Form, SelectMultipleForm, SwitchForm, TextAreaForm, TextFieldForm, CKEditorForm, RateForm, ColorPickerForm, GroupRadioButtonForm, InputPasswordForm } from "../../component/component-form";
 import { differenceInCalendarDays, differenceInMinutes } from "date-fns";
 import { validate } from "validate.js";
-import bcrypt from 'bcryptjs';
 import { ComponentType, FEDataType, ValidateType } from "../da";
 import { UseFormReturn } from "react-hook-form";
 import { CSSProperties } from "react";
@@ -191,19 +190,6 @@ export function RenderComponentByType({ fieldItem, methods, className, style = {
     }
 }
 
-export const hashPassword = async (password: string) => {
-    const saltRounds = 10; // Số vòng lặp để tạo muối
-    try {
-        // Generate a salt and hash the password
-        const salt = await bcrypt.genSalt(saltRounds);
-        const hashedPassword = await bcrypt.hash(password, salt);
-        return hashedPassword;
-    } catch (error) {
-        console.error("Hashing error:", error);
-        return undefined
-    }
-}
-
 // {Name:, Validate}
 export async function validateForm({ list = [], formdata }: { list?: Array<{ [p: string]: any }>, formdata?: { [p: string]: any } }) {
     const val = validate as any
@@ -233,10 +219,10 @@ function validateByType({ list = [] }: { list?: Array<{ [p: string]: any }> }) {
                     eValidateConfig.email = { message: el.message ?? 'Invalid email' }
                     break;
                 case ValidateType.minLength:
-                    eValidateConfig.length = { ...(eValidateConfig.length ?? {}), minimum: el.value, tooShort: el.message ?? `Tối thiểu ${el.value} ký tự` }
+                    eValidateConfig.length = { ...(eValidateConfig.length ?? {}), minimum: el.value, tooShort: el.message ?? `At least ${el.value} characters` }
                     break;
                 case ValidateType.maxLength:
-                    eValidateConfig.length = { ...(eValidateConfig.length ?? {}), maximum: el.value, tooLong: el.message ?? `Tối da ${el.value} ký tự` }
+                    eValidateConfig.length = { ...(eValidateConfig.length ?? {}), maximum: el.value, tooLong: el.message ?? `At most ${el.value} characters` }
                     break;
                 case ValidateType.number:
                     eValidateConfig.format = { pattern: "[0-9]+", flags: "i", message: el.message ?? `Only number` }
@@ -263,16 +249,16 @@ function validateByType({ list = [] }: { list?: Array<{ [p: string]: any }> }) {
                 //     eValidateConfig.customDate = { latest: el.value, tooLate: el.message ?? `Không được sau ${Util.datetoString(new Date(el.value))}` }
                 //     break;
                 case ValidateType.greaterThan:
-                    eValidateConfig.numericality = { ...(eValidateConfig.numericality ?? {}), greaterThan: el.value, notGreaterThan: el.message ?? `Giá trị phải lớn hơn ${el.value}` }
+                    eValidateConfig.numericality = { ...(eValidateConfig.numericality ?? {}), greaterThan: el.value, notGreaterThan: el.message ?? `Value must be greater than ${el.value}` }
                     break;
                 case ValidateType.greaterThanOrEqualTo:
-                    eValidateConfig.numericality = { ...(eValidateConfig.numericality ?? {}), greaterThanOrEqualTo: el.value, notGreaterThan: el.message ?? `Giá trị không được nhỏ hơn ${el.value}` }
+                    eValidateConfig.numericality = { ...(eValidateConfig.numericality ?? {}), greaterThanOrEqualTo: el.value, notGreaterThan: el.message ?? `Value must be greater than or equal to ${el.value}` }
                     break;
                 case ValidateType.lessThan:
-                    eValidateConfig.numericality = { ...(eValidateConfig.numericality ?? {}), lessThan: el.value, notLessThan: el.message ?? `Giá trị phải nhỏ hơn ${el.value}` }
+                    eValidateConfig.numericality = { ...(eValidateConfig.numericality ?? {}), lessThan: el.value, notLessThan: el.message ?? `Value must be less than ${el.value}` }
                     break;
                 case ValidateType.lessThanOrEqualTo:
-                    eValidateConfig.numericality = { ...(eValidateConfig.numericality ?? {}), lessThanOrEqualTo: el.value, notLessThanOrEqualTo: el.message ?? `Giá trị không được lớn hơn ${el.value}` }
+                    eValidateConfig.numericality = { ...(eValidateConfig.numericality ?? {}), lessThanOrEqualTo: el.value, notLessThanOrEqualTo: el.message ?? `Value must be less than or equal to ${el.value}` }
                     break;
                 // case ValidateType.async:
                 //     asyncValidator[e.Name] = { myAsyncValidator: { url: el.value } }

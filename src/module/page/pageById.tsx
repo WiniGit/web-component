@@ -9,7 +9,8 @@ import { Winicon } from "../../component/wini-icon/winicon"
 import { Popup } from "../../component/popup/popup"
 import { showPopup } from "../../component/popup/popup"
 import { closePopup } from "../../component/popup/popup"
-import { useNavigate } from "react-router-dom"
+import { NavLink, useNavigate } from "react-router-dom"
+import { Button } from "../../component/button/button"
 
 interface Props {
     /**
@@ -91,6 +92,16 @@ const RenderPageView = ({ childrenData, styleData, itemData, layers = [], childr
         }
         delete _props.action
         switch (item.Type) {
+            case ComponentType.navLink:
+                if (childrenData) var childComponent = childrenData[item.Id]
+                return <NavLink key={item.Id} {..._props}>
+                    {childComponent ??
+                        (
+                            item.Setting?.className?.includes("layout-body") ?
+                                children :
+                                childrenLayers.map(e => renderPageView(e, list))
+                        )}
+                </NavLink>
             case ComponentType.container:
                 if (childrenData) var childComponent = childrenData[item.Id]
                 return <div key={item.Id} {..._props}>
@@ -123,6 +134,14 @@ const RenderPageView = ({ childrenData, styleData, itemData, layers = [], childr
                 return <ActionPopup key={item.Id} {..._props} >
                     {childrenLayers.map(e => renderPageView(e, list))}
                 </ActionPopup>
+            case ComponentType.button:
+                if (childrenLayers.length) {
+                    const iconPrefix = childrenLayers.find(e => e.Setting.type === "prefix")
+                    const iconSuffix = childrenLayers.find(e => e.Setting.type === "suffix")
+                    if (iconPrefix) _props.prefix = renderPageView(iconPrefix, list)
+                    if (iconSuffix) _props.suffix = renderPageView(iconSuffix, list)
+                }
+                return <Button {..._props} />
             default:
                 return <div key={item.Id} {..._props} />
         }

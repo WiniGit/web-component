@@ -59,7 +59,7 @@ export class BaseDA {
                     data: options?.body
                 }
             } else if (response.status === 401) {
-                ToastMessage.errors('Không có quyền truy cập')
+                ToastMessage.errors('Unauthorized access')
                 window.location.replace('/login')
             } else {
                 console.log("error: ??: ", response.statusText)
@@ -85,7 +85,7 @@ export class BaseDA {
                     data: options?.body
                 }
             } else if (response.status === 401) {
-                ToastMessage.errors('Không có quyền truy cập')
+                ToastMessage.errors('Unauthorized access')
                 window.location.replace('/login')
             } else {
                 console.log("error: ??: ", response.statusText)
@@ -110,7 +110,7 @@ export class BaseDA {
                     // data: options?.body
                 }
             } else if (response.status === 401) {
-                ToastMessage.errors('Không có quyền truy cập')
+                ToastMessage.errors('Unauthorized access')
                 window.location.replace('/login')
             } else {
                 console.log("error: ??: ", response.statusText)

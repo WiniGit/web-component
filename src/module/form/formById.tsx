@@ -1,13 +1,13 @@
 import { ReactNode } from "react";
 import { useForm, UseFormReturn } from "react-hook-form";
-import { hashPassword, regexGetVariableByThis, RenderComponentByType, validateForm } from "./config";
+import { regexGetVariableByThis, RenderComponentByType, validateForm } from "./config";
 import { ComponentType, FEDataType } from "../da";
 import { CSSProperties, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { randomGID, Util } from "../../controller/utils";
 import { TableController } from "../../controller/setting";
 import { BaseDA, ConfigData } from "../../controller/config";
-import { DataController, SettingDataController } from "../../controller/data";
+import { AccountController, DataController, SettingDataController } from "../../controller/data";
 import { ToastMessage } from "../../component/toast-noti/toast-noti";
 import { RangeForm } from "../../component/component-form";
 import { SelectMultipleForm } from "../../component/component-form";
@@ -39,6 +39,7 @@ function FormByType(props: FormByTypeProps) {
     const staticRel = useMemo<Array<any>>(() => rels.filter(e => !e.Query?.length || !e.Query.match(regexGetVariableByThis)?.length), [rels.length])
     const _colController = new TableController("column")
     const _relController = new TableController("rel")
+    const accountController = new AccountController()
     const successBtnRef = useRef<any>(null)
     const resetBtnRef = useRef<any>(null)
     const location = useLocation()
@@ -168,7 +169,8 @@ function FormByType(props: FormByTypeProps) {
                                     else delete dataItem[_col.Name]
                                     break;
                                 case FEDataType.PASSWORD:
-                                    dataItem[_col.Name] = await hashPassword(dataItem[_col.Name])
+                                    const getHashPassword = await accountController.hashPassword(dataItem[_col.Name])
+                                    dataItem[_col.Name] = getHashPassword.data
                                     break;
                                 case FEDataType.FILE:
                                     if (ev[_col.Name] && Array.isArray(ev[_col.Name])) {
