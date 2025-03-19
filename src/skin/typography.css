@@ -9,7 +9,7 @@
 .subtitle-4,
 .button-text-6,
 .label-5 {
-    line-height: 1.6rem;
+    line-height: 1.33;
     font-size: 1.2rem;
     color: var(--neutral-text-title-color);
 }
@@ -76,7 +76,7 @@
 .medium1,
 .heading-9,
 .button-text-5 {
-    line-height: 1.6rem;
+    line-height: 1.33;
     font-size: 1.2rem;
     font-weight: 500;
     color: var(--neutral-text-title-color);
