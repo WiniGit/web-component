@@ -8,7 +8,6 @@ export declare function RenderComponentByType({ fieldItem, methods, className, s
     labelStyle?: CSSProperties;
     label?: string;
 }): import("react/jsx-runtime").JSX.Element;
-export declare const hashPassword: (password: string) => Promise<string | undefined>;
 export declare function validateForm({ list, formdata }: {
     list?: Array<{
         [p: string]: any;

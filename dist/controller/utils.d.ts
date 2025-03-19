@@ -23,9 +23,16 @@ export declare class Util {
      * action with localStorage
      *  */
     static setStorage(key: string, value: string): void;
-    static getStorage(key: string): void;
+    static getStorage: (key: string) => string | null;
     static clearStorage(): void;
     static removeStorage(key: string): void;
+    /**
+     * action with sessionStorage, The data is deleted when the browser is closed
+     *  */
+    static setSession(key: string, value: string): void;
+    static getSession: (key: string) => string | null;
+    static clearSession(): void;
+    static removeSession(key: string): void;
     /**
      * action with cookie
      * */

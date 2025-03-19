@@ -73,12 +73,15 @@ export declare class SettingDataController {
 }
 export declare class AccountController {
     login(body: {
-        type: "phone" | "apple" | "google" | "microsoft";
+        type: "phone" | "apple" | "google" | "microsoft" | "account";
         token?: string;
         deviceToken?: string;
         ggClientId?: string;
         phone?: string;
+        password?: string;
+        email?: string;
     }, resolve?: () => void): Promise<any>;
     getInfor(): Promise<any>;
+    hashPassword(password: string): Promise<any>;
 }
 //# sourceMappingURL=data.d.ts.map
