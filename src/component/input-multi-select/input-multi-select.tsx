@@ -1,4 +1,4 @@
-import React, { createRef, CSSProperties } from 'react'
+import React, { createRef, CSSProperties, useEffect, useMemo, useState } from 'react'
 import styles from './input-multi-select.module.css'
 import { OptionsItem } from '../select1/select1'
 import { Checkbox } from '../checkbox/checkbox'
@@ -82,7 +82,9 @@ class TSelectMultiple extends React.Component<SelectMultipleProps, SelectMultipl
             } else {
                 this.setState({
                     ...this.state,
-                    search: this.props.options.filter(e => typeof e.name === "string" && e.name.toLowerCase().includes(ev.target.value.trim().toLowerCase()))
+                    search: this.props.options.filter((e, _, arr) => {
+                        return typeof e.name === "string" && (e.name.toLowerCase().includes(ev.target.value.trim().toLowerCase()) || arr.filter(el => el.parentId === e.id).some(el => typeof el.name === "string" && el.name.toLowerCase().includes(ev.target.value.trim().toLowerCase())))
+                    })
                 })
             }
         } else {
@@ -103,38 +105,6 @@ class TSelectMultiple extends React.Component<SelectMultipleProps, SelectMultipl
             })
         })
         if (this.props.onChange) this.props.onChange(newValue)
-    }
-
-    private renderOptions(item: OptionsItem) {
-        let children: Array<OptionsItem> = []
-        if (!item.parentId) children = (this.state.search ?? this.state.options).filter(e => e.parentId === item.id)
-        // 
-        return <div key={item.id} className='col' style={{ width: '100%' }}>
-            <div className={`${styles['select-tile']} row ${item.disabled ? styles["disabled"] : ""}`} style={{ paddingLeft: item.parentId ? '4.4rem' : undefined }} onClick={children.length ? () => {
-                if (this.state.search) {
-                    this.setState({
-                        ...this.state, search: this.state.search.map(e => {
-                            if (e.id === item.id) return { ...e, isOpen: !(item as any).isOpen } as any
-                            else return e
-                        })
-                    })
-                } else {
-                    this.setState({
-                        ...this.state, options: this.state.options.map(e => {
-                            if (e.id === item.id) return { ...e, isOpen: !(item as any).isOpen } as any
-                            else return e
-                        })
-                    })
-                }
-            } : undefined}>
-                {(this.state.search ?? this.state.options).some(e => e.parentId) && <div className='row' style={{ width: '1.4rem', height: '1.4rem' }}>
-                    {children.length ? <Winicon src={(item as any).isOpen ? 'fill/arrows/triangle-down' : 'fill/arrows/triangle-right'} size={'1.2rem'} /> : null}
-                </div>}
-                <Checkbox disabled={item.disabled} value={children.length ? (children.every((e) => this.state.value.includes(e.id)) ? true : children.some((e) => this.state.value.includes(e.id)) ? undefined : false) : this.state.value.includes(item.id)} onChange={(v) => { this.onCheck(v, [item, ...children]) }} size={'2rem'} />
-                <Text className='body-3'>{item.name}</Text>
-            </div>
-            <div className='col' style={{ display: (item as any).isOpen ? "flex" : "none", width: '100%' }}>{children.map(e => this.renderOptions(e))}</div>
-        </div>
     }
 
     componentDidUpdate(prevProps: SelectMultipleProps, prevState: SelectMultipleState) {
@@ -248,7 +218,9 @@ class TSelectMultiple extends React.Component<SelectMultipleProps, SelectMultipl
                             this.props.handleLoadmore(Math.round(scrollElement.offsetHeight + scrollElement.scrollTop) >= (scrollElement.scrollHeight - 1), ev)
                         }
                     } : undefined}>
-                        {(this.state.search ?? this.state.options).filter(e => !e.parentId).map(item => this.renderOptions(item))}
+                        {(this.state.search ?? this.state.options).filter(e => !e.parentId).map(item => {
+                            return <RenderOptions key={item.id} item={item} onCheck={this.onCheck} value={this.state.value} listOptions={this.state.search ?? this.state.options} />
+                        })}
                         {(!this.state.search?.length && !this.props.options?.length) && (
                             <div className={styles['no-results-found']}>{t("noResultFound")}</div>
                         )}
@@ -257,6 +229,31 @@ class TSelectMultiple extends React.Component<SelectMultipleProps, SelectMultipl
             </PopupOverlay>}
         </div>
     }
+}
+
+const RenderOptions = ({ item, listOptions = [], value = [], onCheck }: { item: OptionsItem, listOptions?: Array<OptionsItem>, value: Array<string | number>, onCheck: (value: boolean, list: Array<OptionsItem>) => void }) => {
+    const [isOpen, setIsOpen] = useState(false)
+    const children = useMemo(() => {
+        if (!item.parentId) return listOptions.filter(e => e.parentId === item.id)
+        return []
+    }, [listOptions, item])
+
+    useEffect(() => {
+        if (!isOpen && children.some((e) => value.includes(e.id))) setIsOpen(true)
+    }, [value, children.length])
+
+    return <div className='col' style={{ width: '100%' }}>
+        <div className={`${styles['select-tile']} row ${item.disabled ? styles["disabled"] : ""}`} style={{ paddingLeft: item.parentId ? '4.4rem' : undefined }} onClick={children.length ? () => { setIsOpen(!isOpen) } : undefined}>
+            {listOptions.some(e => e.parentId) && <div className='row' style={{ width: '1.4rem', height: '1.4rem' }}>
+                {children.length ? <Winicon src={(item as any).isOpen ? 'fill/arrows/triangle-down' : 'fill/arrows/triangle-right'} size={'1.2rem'} /> : null}
+            </div>}
+            <Checkbox disabled={item.disabled} value={children.length ? (children.every((e) => value.includes(e.id)) ? true : children.some((e) => value.includes(e.id)) ? undefined : false) : value.includes(item.id)} onChange={(v) => { onCheck(v, [item, ...children]) }} size={'2rem'} />
+            <Text className='body-3'>{item.name}</Text>
+        </div>
+        <div className='col' style={{ display: (item as any).isOpen ? "flex" : "none", width: '100%' }}>
+            {children.map(e => <RenderOptions key={e.id} item={e} onCheck={onCheck} value={value} listOptions={listOptions} />)}
+        </div>
+    </div>
 }
 
 export const SelectMultiple = withTranslation()(TSelectMultiple)

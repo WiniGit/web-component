@@ -664,10 +664,11 @@ export const ColorPickerForm = (props: ColorPickerForm) => {
                     onFocus={(ev) => ev.target.select()}
                     disabled={props.disabled}
                     onBlur={(ev) => {
-                        const newVl = ev.target.value.replaceAll("#", "").substring(0, 6);
+                        const newVl = ev.target.value.replace(/#/g, "").substring(0, 6);
                         const _opacityValue = colorPickerRef.current.querySelector('input[type="number"]');
-                        field.onChange(`#${newVl}${Util.percentToHex(parseInt(_opacityValue.value?.length ? _opacityValue.value : "100")).toLowerCase()}`);
-                        if (props.onChange) props.onChange(field.value)
+                        const newValue = `#${newVl}${Util.percentToHex(parseInt(_opacityValue.value?.length ? _opacityValue.value : "100")).toLowerCase()}`
+                        field.onChange(newValue);
+                        if (props.onChange) props.onChange(newValue)
                     }}
                     style={{ flex: 1, width: "100%", ...(props.textFieldStyle ?? {}) }}
                     maxLength={7}
@@ -678,8 +679,9 @@ export const ColorPickerForm = (props: ColorPickerForm) => {
                             style={{ visibility: 'hidden' }}
                             onChange={(ev) => {
                                 const _opacityValue = colorPickerRef.current.querySelector('input[type="number"]');
-                                field.onChange(`${ev.target.value}${Util.percentToHex(parseInt(_opacityValue.value?.length ? _opacityValue.value : "100")).toLowerCase()}`);
-                                if (props.onChange) props.onChange(field.value)
+                                const newValue = `${ev.target.value}${Util.percentToHex(parseInt(_opacityValue.value?.length ? _opacityValue.value : "100")).toLowerCase()}`
+                                field.onChange(newValue);
+                                if (props.onChange) props.onChange(newValue)
                             }} />
                     </label>}
                     suffix={<>
@@ -695,8 +697,9 @@ export const ColorPickerForm = (props: ColorPickerForm) => {
                                 if (isNaN(_vl) || _vl > 100) _vl = 100;
                                 else if (_vl < 0) _vl = 0;
                                 const _colorValue = colorPickerRef.current?.querySelector('input[type="color"]').value;
-                                field.onChange(`${_colorValue}${Util.percentToHex(_vl).toLowerCase()}`);
-                                if (props.onChange) props.onChange(field.value)
+                                const newValue = `${_colorValue}${Util.percentToHex(_vl).toLowerCase()}`
+                                field.onChange(newValue);
+                                if (props.onChange) props.onChange(newValue)
                             }} />
                         <Text className='regular1'>%</Text>
                     </>}

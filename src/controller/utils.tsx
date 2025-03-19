@@ -196,9 +196,16 @@ export class Util {
      * action with localStorage
      *  */
     static setStorage(key: string, value: string) { localStorage.setItem(key, value) }
-    static getStorage(key: string) { localStorage.getItem(key) }
+    static getStorage = (key: string) => localStorage.getItem(key)
     static clearStorage() { localStorage.clear() }
     static removeStorage(key: string) { localStorage.removeItem(key) }
+    /**
+     * action with sessionStorage, The data is deleted when the browser is closed
+     *  */
+    static setSession(key: string, value: string) { sessionStorage.setItem(key, value) }
+    static getSession = (key: string) => sessionStorage.getItem(key)
+    static clearSession() { sessionStorage.clear() }
+    static removeSession(key: string) { sessionStorage.removeItem(key) }
 
     /**  
      * action with cookie
