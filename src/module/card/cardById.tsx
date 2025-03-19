@@ -1,4 +1,4 @@
-import { CSSProperties, ReactNode, useEffect, useMemo, useState } from "react"
+import { CSSProperties, MouseEventHandler, ReactNode, useEffect, useMemo, useState } from "react"
 import { DataController, SettingDataController } from "../../controller/data"
 import { useForm, UseFormReturn } from "react-hook-form"
 import { TableController } from "../../controller/setting"
@@ -17,9 +17,9 @@ interface Props {
     * */
     childrenData?: { [p: string]: (itemData: { [p: string]: any }, index: number) => ReactNode },
     /**
-     * custom style layer by id. Ex: { "gid": { width: "60rem", backgroundColor: "red" } }
+     * custom props of layer by id. Ex: { "gid": { style: { width: "60rem", backgroundColor: "red" }, className: "my-class" } }
      * */
-    styleData?: { [p: string]: CSSProperties },
+    propsData?: { [p: string]: { style?: CSSProperties, className?: string, onCLick?: (ev: MouseEventHandler) => void, [p: string]: any } },
     /**
      * replace layer by id. Ex: { "gid": <Text className="heading-7">Example</Text> }
      * */
@@ -38,7 +38,7 @@ interface RenderCardProps extends Props {
     cardItem: { [p: string]: any },
 }
 
-function RenderCard({ layers = [], cardItem, style, className, cardData, controller = "all", childrenData, styleData, itemData }: RenderCardProps) {
+function RenderCard({ layers = [], cardItem, style, className, cardData, controller = "all", childrenData, propsData, itemData }: RenderCardProps) {
     const methods = useForm({ shouldFocusError: false })
     const [data, setData] = useState<{ data: Array<{ [p: string]: any }>, totalCount?: number }>({ data: [], totalCount: undefined })
     const [_rels, setRels] = useState<Array<{ [p: string]: any }>>([])
@@ -114,7 +114,7 @@ function RenderCard({ layers = [], cardItem, style, className, cardData, control
             methods={methods}
             childrenData={childrenData}
             itemData={itemData}
-            styleData={styleData}
+            propsData={propsData}
         />
     })
 }
@@ -126,7 +126,7 @@ interface RenderDetailProps {
     style?: CSSProperties,
     methods: UseFormReturn<any>,
     childrenData?: { [p: string]: (itemData: { [p: string]: any }, index: number) => ReactNode },
-    styleData?: { [p: string]: CSSProperties },
+    propsData?: { [p: string]: { style?: CSSProperties, className?: string, onCLick?: (ev: MouseEventHandler) => void, [p: string]: any } },
     itemData?: { [p: string]: (indexItem: { [p: string]: any }, index: number) => ReactNode },
     indexItem: { [p: string]: any },
     index: number,
@@ -155,7 +155,6 @@ const RenderComponentByLayer = (props: RenderComponentByLayerProps) => {
     const customProps = useMemo(() => {
         let _props = { ...props.item.Setting }
         _props.style ??= {}
-        if (props.styleData && props.styleData[props.item.Id]) _props.style = { ..._props.style, ...props.styleData[props.item.Id] }
         if (props.style && !props.item.ParentId) _props.style = { ..._props.style, ...props.style }
         if (props.className?.length && !props.item.ParentId) _props.className = [..._props.className.split(" "), ...props.className.split(" ")].filter(e => !!e.trim()).join(" ")
         if (_props.action && Array.isArray(_props.action)) {
@@ -201,6 +200,8 @@ const RenderComponentByLayer = (props: RenderComponentByLayerProps) => {
                 }
             })
         }
+        delete _props.action
+        if (props.propsData && props.propsData[props.item.Id]) _props = { ..._props, ...props.propsData[props.item.Id] }
         return _props
     }, [props.style, props.className, props.indexItem, props.item])
     const dataValue: any = useMemo(() => {

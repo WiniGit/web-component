@@ -1,4 +1,4 @@
-import { CSSProperties, ReactNode, useEffect, useRef, useState } from "react"
+import { CSSProperties, MouseEventHandler, ReactNode, useEffect, useRef, useState } from "react"
 import { ActionType, ComponentType, TriggerType } from "../da"
 import { FormById } from "../form/formById"
 import { CardById } from "../card/cardById"
@@ -18,9 +18,9 @@ interface Props {
      * */
     childrenData?: { [p: string]: ReactNode },
     /**
-     * custom style layer by id. Ex: { "gid": { width: "60rem", backgroundColor: "red" } }
+     * custom props of layer by id. Ex: { "gid": { style: { width: "60rem", backgroundColor: "red" }, className: "my-class" } }
      * */
-    styleData?: { [p: string]: CSSProperties },
+    propsData?: { [p: string]: { style?: CSSProperties, className?: string, onCLick?: (ev: MouseEventHandler) => void, [p: string]: any } },
     /**
      * replace layer by id. Ex: { "gid": <Text className="heading-7">Example</Text> }
      * */
@@ -32,14 +32,13 @@ interface RenderPageProps extends Props {
     children?: ReactNode
 }
 
-const RenderPageView = ({ childrenData, styleData, itemData, layers = [], children }: RenderPageProps) => {
+const RenderPageView = ({ childrenData, propsData, itemData, layers = [], children }: RenderPageProps) => {
     const navigate = useNavigate()
     const renderPageView = (item: { [p: string]: any }, list: Array<{ [p: string]: any }> = []) => {
         if (itemData?.[item.Id]) return itemData[item.Id]
         const childrenLayers = list.filter(e => e.ParentId === item.Id)
         let _props = { ...item.Setting }
         _props.style ??= {}
-        if (styleData && styleData[item.Id]) _props.style = { ..._props.style, ...styleData[item.Id] }
         if (_props.action?.length && Array.isArray(_props.action)) {
             Object.values(TriggerType).forEach(trigger => {
                 const triggerActions = _props.action.filter((e: any) => e.Type === trigger)
@@ -91,6 +90,7 @@ const RenderPageView = ({ childrenData, styleData, itemData, layers = [], childr
             })
         }
         delete _props.action
+        if (propsData && propsData[item.Id]) _props = { ..._props, ...propsData[item.Id] }
         switch (item.Type) {
             case ComponentType.navLink:
                 if (childrenData) var childComponent = childrenData[item.Id]
@@ -141,7 +141,7 @@ const RenderPageView = ({ childrenData, styleData, itemData, layers = [], childr
                     if (iconPrefix) _props.prefix = renderPageView(iconPrefix, list)
                     if (iconSuffix) _props.suffix = renderPageView(iconSuffix, list)
                 }
-                return <Button {..._props} />
+                return <Button key={item.Id} {..._props} />
             default:
                 return <div key={item.Id} {..._props} />
         }
