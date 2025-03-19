@@ -11,6 +11,7 @@ import { showPopup } from "../../component/popup/popup"
 import { closePopup } from "../../component/popup/popup"
 import { NavLink, useNavigate } from "react-router-dom"
 import { Button } from "../../component/button/button"
+import { useForm, UseFormReturn } from "react-hook-form"
 
 interface Props {
     /**
@@ -24,7 +25,8 @@ interface Props {
     /**
      * replace layer by id. Ex: { "gid": <Text className="heading-7">Example</Text> }
      * */
-    itemData?: { [p: string]: ReactNode }
+    itemData?: { [p: string]: ReactNode },
+    methods: UseFormReturn
 }
 
 interface RenderPageProps extends Props {
@@ -32,7 +34,7 @@ interface RenderPageProps extends Props {
     children?: ReactNode
 }
 
-const RenderPageView = ({ childrenData, propsData, itemData, layers = [], children }: RenderPageProps) => {
+const RenderPageView = ({ childrenData, propsData, itemData, layers = [], children, methods }: RenderPageProps) => {
     const navigate = useNavigate()
     const renderPageView = (item: { [p: string]: any }, list: Array<{ [p: string]: any }> = []) => {
         if (itemData?.[item.Id]) return itemData[item.Id]
@@ -72,6 +74,9 @@ const RenderPageView = ({ childrenData, propsData, itemData, layers = [], childr
                                     case ActionType.closePopup:
                                         const closePopupBtn = document.querySelector(`.close-${actItem.To}`) as any
                                         if (closePopupBtn) closePopupBtn.click()
+                                        return;
+                                    case ActionType.setValue:
+                                        methods.setValue(actItem.NameField, eval(actItem.CaculateValue))
                                         return;
                                     default:
                                         break;
@@ -170,10 +175,12 @@ const ActionPopup = ({ id, children }: { id: string, children: ReactNode, classN
 }
 
 interface PageByIdProps extends Props {
-    id: string
+    id: string,
+    method?: UseFormReturn
 }
 
 export const PageById = (props: PageByIdProps) => {
+    const methods = useForm({ shouldFocusError: false })
     const [pageItem, setPageItem] = useState<{ [p: string]: any }>()
     const [layout, setLayout] = useState<Array<{ [p: string]: any }>>([])
     const [layers, setLayers] = useState<Array<{ [p: string]: any }>>([])
@@ -208,16 +215,19 @@ export const PageById = (props: PageByIdProps) => {
         key={pageItem.LayoutId}
         layers={layout}
         {...props}
+        methods={props.method ?? methods}
     >
-        <RenderPageView layers={layers} {...props} />
+        <RenderPageView layers={layers} {...props} methods={props.method ?? methods} />
     </RenderPageView> : null
 }
 
 interface PageByUrlProps extends Props {
-    url: string
+    url: string,
+    method?: UseFormReturn
 }
 
 export const PageByUrl = (props: PageByUrlProps) => {
+    const methods = useForm({ shouldFocusError: false })
     const [pageItem, setPageItem] = useState<{ [p: string]: any }>()
     const [layout, setLayout] = useState<Array<{ [p: string]: any }>>([])
     const [layers, setLayers] = useState<Array<{ [p: string]: any }>>([])
@@ -252,7 +262,8 @@ export const PageByUrl = (props: PageByUrlProps) => {
         key={pageItem.LayoutId}
         layers={layout}
         {...props}
+        methods={props.method ?? methods}
     >
-        <RenderPageView key={pageItem.Id} layers={layers} {...props} />
+        <RenderPageView key={pageItem.Id} layers={layers} {...props} methods={props.method ?? methods} />
     </RenderPageView> : null
 }

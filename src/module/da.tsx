@@ -89,4 +89,5 @@ export enum ActionType {
     mousedown = "mousedown",
     mouseup = "mouseup",
     submit = "submit",
+    setValue = "setValue",
 }
