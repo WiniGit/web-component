@@ -1,4 +1,4 @@
-import { CSSProperties, ReactNode } from 'react';
+import { CSSProperties, MouseEventHandler, ReactNode } from 'react';
 interface Props {
     /**
     * replace children of parent layer by id. Ex: { "gid": <Text className="heading-7">Example</Text> }
@@ -9,10 +9,15 @@ interface Props {
         }, index: number) => ReactNode;
     };
     /**
-     * custom style layer by id. Ex: { "gid": { width: "60rem", backgroundColor: "red" } }
+     * custom props of layer by id. Ex: { "gid": { style: { width: "60rem", backgroundColor: "red" }, className: "my-class" } }
      * */
-    styleData?: {
-        [p: string]: CSSProperties;
+    propsData?: {
+        [p: string]: {
+            style?: CSSProperties;
+            className?: string;
+            onCLick?: (ev: MouseEventHandler) => void;
+            [p: string]: any;
+        };
     };
     /**
      * replace layer by id. Ex: { "gid": <Text className="heading-7">Example</Text> }
