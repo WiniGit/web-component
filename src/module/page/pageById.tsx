@@ -100,12 +100,7 @@ const RenderPageView = ({ childrenData, propsData, itemData, layers = [], childr
             case ComponentType.navLink:
                 if (childrenData) var childComponent = childrenData[item.Id]
                 return <NavLink key={item.Id} {..._props}>
-                    {childComponent ??
-                        (
-                            item.Setting?.className?.includes("layout-body") ?
-                                children :
-                                childrenLayers.map(e => renderPageView(e, list))
-                        )}
+                    {childComponent ?? childrenLayers.map(e => renderPageView(e, list))}
                 </NavLink>
             case ComponentType.container:
                 if (childrenData) var childComponent = childrenData[item.Id]
@@ -113,7 +108,10 @@ const RenderPageView = ({ childrenData, propsData, itemData, layers = [], childr
                     {childComponent ??
                         (
                             item.Setting?.className?.includes("layout-body") ?
-                                children :
+                                <>
+                                    {childrenLayers.map(e => renderPageView(e, list))}
+                                    {children}
+                                </> :
                                 childrenLayers.map(e => renderPageView(e, list))
                         )}
                 </div>
