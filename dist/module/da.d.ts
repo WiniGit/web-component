@@ -77,6 +77,7 @@ export declare enum ActionType {
     closePopup = "closePopup",
     mousedown = "mousedown",
     mouseup = "mouseup",
-    submit = "submit"
+    submit = "submit",
+    setValue = "setValue"
 }
 //# sourceMappingURL=da.d.ts.map
