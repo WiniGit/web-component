@@ -140,13 +140,3 @@
     border-radius: 0.8rem;
     padding: 4px;
 }
-
-.dropdown-popup button {
-    padding: 0.8rem 1.2rem;
-    border-radius: 0.8rem;
-    min-width: 8rem;
-}
-
-.dropdown-popup button:hover {
-    background-color: var(--neutral-hover-background-color);
-}
