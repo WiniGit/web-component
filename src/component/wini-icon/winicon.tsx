@@ -63,7 +63,7 @@ export function Winicon({ id, src, link, className, style, size, color, alt, onC
             ref={ref}
             id={id}
             onClick={onClick}
-            className={`${styles['wini-icon']} ${svgData ? "" : "skeleton-loading"} ${onClick ? styles['clickable'] : ''} ${className ?? ''} ${src ? src.split("/").map((e, i) => i === 0 ? `${e}-icon` : e.replace(" ", "-")).join(" ") : ''}${link ? ' link-icon' : ""}`}
+            className={`${styles['wini-icon']} ${svgData ? "" : "skeleton-loading"} ${onClick ? styles['clickable'] : ''} ${className ?? ''} ${src ? `${src.split("/")[0]}-icon` : ''}${link ? ' link-icon' : ""}`}
             style={(style ? { ...style, '--size': size, '--color': color } : { '--size': size, '--color': color }) as any} dangerouslySetInnerHTML={{ __html: svgData ?? '' }}
             {...extendAttribute}
         />

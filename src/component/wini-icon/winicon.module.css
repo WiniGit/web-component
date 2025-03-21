@@ -18,11 +18,11 @@
     height: var(--size, inherit) !important;
 }
 
-.wini-icon[class*="fill-icon"]>svg>*[fill^="#"] {
+.wini-icon[class~="fill-icon"]>svg>*[fill^="#"] {
     fill: var(--color, "#61616B");
 }
 
-.wini-icon[class*="outline-icon"]>svg>*[stroke^="#"] {
+.wini-icon[class~="outline-icon"]>svg>*[stroke^="#"] {
     stroke: var(--color, "#61616B");
 }
 
@@ -33,6 +33,10 @@
 .wini-icon[class~="icon-button"] {
     border-radius: 50%;
     background-color: var(--neutral-main-background-color);
+}
+
+.wini-icon[class~="icon-button"][class~="light"] {
+    background-color: var(--neutral-absolute-background-color);
 }
 
 .wini-icon[class~="border"] {
@@ -107,4 +111,10 @@
 
 .wini-icon[class~="icon-button"]:hover {
     background-color: var(--neutral-hover-background-color);
+}
+
+.wini-icon[class~="icon-button"][class~="light"]:hover {
+    background-color: var(--neutral-absolute-background-color);
+    opacity: 0.8;
+    box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, .09);
 }
