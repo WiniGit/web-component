@@ -21,12 +21,12 @@ interface Props {
     /**
      * custom props of layer by id. Ex: { "gid": { style: { width: "60rem", backgroundColor: "red" }, className: "my-class" } }
      * */
-    propsData?: { [p: string]: { style?: CSSProperties, className?: string, onCLick?: (ev: MouseEventHandler) => void, [p: string]: any } },
+    propsData?: { [p: string]: { style?: CSSProperties, className?: string, onClick?: (ev: MouseEventHandler) => void, [p: string]: any } },
     /**
      * replace layer by id. Ex: { "gid": <Text className="heading-7">Example</Text> }
      * */
     itemData?: { [p: string]: ReactNode },
-    methods: UseFormReturn
+    methods?: UseFormReturn
 }
 
 interface RenderPageProps extends Props {
@@ -96,7 +96,7 @@ const RenderLayerElement = (props: RenderLayerElementProps) => {
                                         if (closePopupBtn) closePopupBtn.click()
                                         return;
                                     case ActionType.setValue:
-                                        props.methods.setValue(actItem.NameField, eval(actItem.CaculateValue))
+                                        props.methods!.setValue(actItem.NameField, eval(actItem.CaculateValue))
                                         return;
                                     default:
                                         break;
@@ -198,7 +198,6 @@ const ActionPopup = ({ id, children }: { id: string, children: ReactNode, classN
 
 interface PageByIdProps extends Props {
     id: string,
-    method?: UseFormReturn
 }
 
 export const PageById = (props: PageByIdProps) => {
@@ -237,15 +236,14 @@ export const PageById = (props: PageByIdProps) => {
         key={pageItem.LayoutId}
         layers={layout}
         {...props}
-        methods={props.method ?? methods}
+        methods={props.methods ?? methods}
     >
-        <RenderPageView layers={layers} {...props} methods={props.method ?? methods} bodyId={layout.find(e => e.Setting?.className?.includes("layout-body"))?.Id} />
+        <RenderPageView layers={layers} {...props} methods={props.methods ?? methods} bodyId={layout.find(e => e.Setting?.className?.includes("layout-body"))?.Id} />
     </RenderPageView> : null
 }
 
 interface PageByUrlProps extends Props {
     url: string,
-    method?: UseFormReturn
 }
 
 export const PageByUrl = (props: PageByUrlProps) => {
@@ -284,8 +282,8 @@ export const PageByUrl = (props: PageByUrlProps) => {
         key={pageItem.LayoutId}
         layers={layout}
         {...props}
-        methods={props.method ?? methods}
+        methods={props.methods ?? methods}
     >
-        <RenderPageView key={pageItem.Id} layers={layers} {...props} methods={props.method ?? methods} bodyId={layout.find(e => e.Setting?.className?.includes("layout-body"))?.Id} />
+        <RenderPageView key={pageItem.Id} layers={layers} {...props} methods={props.methods ?? methods} bodyId={layout.find(e => e.Setting?.className?.includes("layout-body"))?.Id} />
     </RenderPageView> : null
 }

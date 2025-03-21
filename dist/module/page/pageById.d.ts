@@ -14,7 +14,7 @@ interface Props {
         [p: string]: {
             style?: CSSProperties;
             className?: string;
-            onCLick?: (ev: MouseEventHandler) => void;
+            onClick?: (ev: MouseEventHandler) => void;
             [p: string]: any;
         };
     };
@@ -24,16 +24,14 @@ interface Props {
     itemData?: {
         [p: string]: ReactNode;
     };
-    methods: UseFormReturn;
+    methods?: UseFormReturn;
 }
 interface PageByIdProps extends Props {
     id: string;
-    method?: UseFormReturn;
 }
 export declare const PageById: (props: PageByIdProps) => import("react/jsx-runtime").JSX.Element | null;
 interface PageByUrlProps extends Props {
     url: string;
-    method?: UseFormReturn;
 }
 export declare const PageByUrl: (props: PageByUrlProps) => import("react/jsx-runtime").JSX.Element | null;
 export {};
