@@ -1,9 +1,10 @@
 import { useEffect } from "react"
 import { BrowserRouter, Routes } from "react-router-dom"
 import { ConfigData } from "../controller/config"
-import { TableController } from "../controller/setting"
+import { TableController, WiniController } from "../controller/setting"
 import { Dialog } from "../component/dialog/dialog"
 import { ToastContainer } from 'react-toastify'
+import { ProjectItem } from "./da"
 
 interface Props {
     /**
@@ -16,7 +17,8 @@ interface Props {
     url: string,
     imgUrlId: string,
     onInvalidToken?: () => void,
-    children?: React.ReactNode
+    children?: React.ReactNode,
+    onProjectLoaded?: (item: ProjectItem) => void
 }
 
 export const WiniProvider = (props: Props) => {
@@ -42,6 +44,14 @@ export const WiniProvider = (props: Props) => {
                     styleElement.classList.add("designTokens")
                     document.head.appendChild(styleElement)
                 }
+            }
+        })
+        const projectController = new WiniController("Project")
+        projectController.getByIds([props.pid]).then(res => {
+            if (res.code === 200 && res.data[0]) {
+                (document.head.querySelector(`:scope > link[rel="icon"]`) as HTMLLinkElement)!.href = ConfigData.imgUrlId + res.data[0].LogoId;
+                (document.head.querySelector(`:scope > title`) as HTMLTitleElement)!.innerHTML = res.data[0].Name;
+                if (props.onProjectLoaded) props.onProjectLoaded(res.data[0])
             }
         })
     }, [props.pid])

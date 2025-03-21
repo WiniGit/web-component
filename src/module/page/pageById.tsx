@@ -1,4 +1,4 @@
-import { CSSProperties, MouseEventHandler, ReactNode, useEffect, useRef, useState } from "react"
+import { CSSProperties, MouseEventHandler, ReactNode, useEffect, useMemo, useRef, useState } from "react"
 import { ActionType, ComponentType, TriggerType } from "../da"
 import { FormById } from "../form/formById"
 import { CardById } from "../card/cardById"
@@ -31,15 +31,35 @@ interface Props {
 
 interface RenderPageProps extends Props {
     layers: Array<{ [p: string]: any }>,
+    bodyId?: string
     children?: ReactNode
 }
 
-const RenderPageView = ({ childrenData, propsData, itemData, layers = [], children, methods }: RenderPageProps) => {
+const RenderPageView = ({ childrenData, propsData, itemData, layers = [], children, methods, bodyId }: RenderPageProps) => {
+
+    return layers.filter(e => !e.ParentId || e.ParentId === bodyId).map(e => <RenderLayerElement
+        key={e.Id}
+        item={e}
+        list={layers}
+        methods={methods}
+        bodyChildren={children}
+        childrenData={childrenData}
+        itemData={itemData}
+        propsData={propsData}
+    />)
+}
+
+interface RenderLayerElementProps extends Props {
+    item: { [p: string]: any },
+    list: Array<{ [p: string]: any }>,
+    bodyChildren?: ReactNode,
+}
+
+const RenderLayerElement = (props: RenderLayerElementProps) => {
     const navigate = useNavigate()
-    const renderPageView = (item: { [p: string]: any }, list: Array<{ [p: string]: any }> = []) => {
-        if (itemData?.[item.Id]) return itemData[item.Id]
-        const childrenLayers = list.filter(e => e.ParentId === item.Id)
-        let _props = { ...item.Setting }
+    const children = useMemo(() => props.list.filter(e => e.ParentId === props.item.Id), [props.list, props.item])
+    const customProps = useMemo(() => {
+        let _props = { ...props.item.Setting }
         _props.style ??= {}
         if (_props.action?.length && Array.isArray(_props.action)) {
             Object.values(TriggerType).forEach(trigger => {
@@ -76,7 +96,7 @@ const RenderPageView = ({ childrenData, propsData, itemData, layers = [], childr
                                         if (closePopupBtn) closePopupBtn.click()
                                         return;
                                     case ActionType.setValue:
-                                        methods.setValue(actItem.NameField, eval(actItem.CaculateValue))
+                                        props.methods.setValue(actItem.NameField, eval(actItem.CaculateValue))
                                         return;
                                     default:
                                         break;
@@ -95,62 +115,66 @@ const RenderPageView = ({ childrenData, propsData, itemData, layers = [], childr
             })
         }
         delete _props.action
-        if (propsData && propsData[item.Id]) _props = { ..._props, ...propsData[item.Id] }
-        switch (item.Type) {
+        if (props.propsData && props.propsData[props.item.Id]) _props = { ..._props, ...props.propsData[props.item.Id] }
+        return _props
+    }, [props.item, props.propsData, props.methods])
+
+    // renderUI
+    if (props.itemData?.[props.item.Id]) return props.itemData[props.item.Id]
+    else {
+        switch (props.item.Type) {
             case ComponentType.navLink:
-                if (childrenData) var childComponent = childrenData[item.Id]
-                return <NavLink key={item.Id} {..._props}>
-                    {childComponent ?? childrenLayers.map(e => renderPageView(e, list))}
+                if (props.childrenData) var childComponent = props.childrenData[props.item.Id]
+                return <NavLink {...customProps}>
+                    {childComponent ?? children.map(e => <RenderLayerElement key={e.Id} {...props} item={e} />)}
                 </NavLink>
             case ComponentType.container:
-                if (childrenData) var childComponent = childrenData[item.Id]
-                return <div key={item.Id} {..._props}>
+                if (props.childrenData) var childComponent = props.childrenData[props.item.Id]
+                return <div {...customProps}>
                     {childComponent ??
                         (
-                            item.Setting?.className?.includes("layout-body") ?
+                            customProps.className?.includes("layout-body") ?
                                 <>
-                                    {childrenLayers.map(e => renderPageView(e, list))}
-                                    {children}
+                                    {children.map(e => <RenderLayerElement key={e.Id} {...props} item={e} />)}
+                                    {props.bodyChildren}
                                 </> :
-                                childrenLayers.map(e => renderPageView(e, list))
+                                children.map(e => <RenderLayerElement key={e.Id} {...props} item={e} />)
                         )}
                 </div>
             case ComponentType.text:
-                return <Text key={item.Id} {..._props}>{item.Setting?.value ?? ""}</Text>
+                return <Text {...customProps}>{customProps.value ?? ""}</Text>
             case ComponentType.img:
                 return <img
-                    key={item.Id}
                     alt=""
                     onError={(ev) => { ev.currentTarget.src = "https://cdn.jsdelivr.net/gh/WiniGit/icon-library@latest/color/multimedia/image.svg" }}
-                    {..._props}
+                    {...customProps}
                 />
             case ComponentType.icon:
-                return <Winicon key={item.Id} {..._props} />
+                return <Winicon {...customProps} />
             case ComponentType.chart:
-                return <ChartById key={item.Id} {..._props} id={_props.chartId} />
+                return <ChartById {...customProps} id={customProps.chartId} />
             case ComponentType.form:
-                return <FormById key={item.Id} id={item.Id} {..._props} />
+                return <FormById id={props.item.Id} {...customProps} />
             case ComponentType.card:
-                return <CardById key={item.Id} {..._props} id={_props.cardId} />
+                return <CardById {...customProps} id={customProps.cardId} />
             case ComponentType.popup:
-                _props.id = item.Id
-                return <ActionPopup key={item.Id} {..._props} >
-                    {childrenLayers.map(e => renderPageView(e, list))}
+                customProps.id = props.item.Id
+                return <ActionPopup {...customProps} >
+                    {children.map(e => <RenderLayerElement key={e.Id} {...props} item={e} />)}
                 </ActionPopup>
             case ComponentType.button:
-                if (childrenLayers.length) {
-                    const iconPrefix = childrenLayers.find(e => e.Setting.type === "prefix")
-                    const iconSuffix = childrenLayers.find(e => e.Setting.type === "suffix")
-                    if (iconPrefix) _props.prefix = renderPageView(iconPrefix, list)
-                    if (iconSuffix) _props.suffix = renderPageView(iconSuffix, list)
+                let btnProps = { ...customProps }
+                if (children.length) {
+                    const iconPrefix = children.find(e => e.Setting.type === "prefix")
+                    const iconSuffix = children.find(e => e.Setting.type === "suffix")
+                    if (iconPrefix) btnProps.prefix = <RenderLayerElement {...props} item={iconPrefix} />
+                    if (iconSuffix) btnProps.suffix = <RenderLayerElement {...props} item={iconSuffix} />
                 }
-                return <Button key={item.Id} {..._props} />
+                return <Button {...btnProps} />
             default:
-                return <div key={item.Id} {..._props} />
+                return <div {...customProps} />
         }
     }
-
-    return layers.filter(e => !e.ParentId).map(e => renderPageView(e, layers))
 }
 
 const ActionPopup = ({ id, children }: { id: string, children: ReactNode, className?: string }) => {
@@ -215,7 +239,7 @@ export const PageById = (props: PageByIdProps) => {
         {...props}
         methods={props.method ?? methods}
     >
-        <RenderPageView layers={layers} {...props} methods={props.method ?? methods} />
+        <RenderPageView layers={layers} {...props} methods={props.method ?? methods} bodyId={layout.find(e => e.Setting?.className?.includes("layout-body"))?.Id} />
     </RenderPageView> : null
 }
 
@@ -262,6 +286,6 @@ export const PageByUrl = (props: PageByUrlProps) => {
         {...props}
         methods={props.method ?? methods}
     >
-        <RenderPageView key={pageItem.Id} layers={layers} {...props} methods={props.method ?? methods} />
+        <RenderPageView key={pageItem.Id} layers={layers} {...props} methods={props.method ?? methods} bodyId={layout.find(e => e.Setting?.className?.includes("layout-body"))?.Id} />
     </RenderPageView> : null
 }

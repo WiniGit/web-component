@@ -25,4 +25,27 @@ export declare class TableController {
     }>): Promise<any>;
     delete(ids: Array<string>): Promise<any>;
 }
+export declare class WiniController {
+    private module;
+    constructor(module: "Project" | "ProjectCustomer" | "Customer");
+    getAll(): Promise<any>;
+    getListSimple(options?: {
+        page?: number;
+        size?: number;
+        query?: string;
+        returns?: Array<string>;
+        sortby?: {
+            BY: string;
+            DIRECTION?: "ASC" | "DESC";
+        };
+    }): Promise<any>;
+    add(data: Array<{
+        [p: string]: any;
+    }>): Promise<any>;
+    edit(data: Array<{
+        [p: string]: any;
+    }>): Promise<any>;
+    delete(ids: Array<string>): Promise<any>;
+    getByIds(ids: Array<string>): Promise<any>;
+}
 //# sourceMappingURL=setting.d.ts.map

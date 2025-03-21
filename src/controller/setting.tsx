@@ -82,3 +82,57 @@ export class TableController {
         return res
     }
 }
+
+export class WiniController {
+    private module: string;
+    constructor(module: "Project" | "ProjectCustomer" | "Customer") {
+        this.module = module
+    }
+
+    async getAll() {
+        const res = await BaseDA.get(ConfigData.url + 'wini/getAll', {
+            headers: { module: this.module }
+        })
+        return res
+    }
+
+    async getListSimple(options?: { page?: number, size?: number, query?: string, returns?: Array<string>, sortby?: { BY: string, DIRECTION?: "ASC" | "DESC" } }) {
+        const res = await BaseDA.post(ConfigData.url + 'wini/getListSimple', {
+            headers: { module: this.module },
+            body: { searchRaw: options?.query ?? "*", page: options?.page ?? 1, size: options?.size ?? 10, returns: options?.returns, sortby: options?.sortby }
+        })
+        return res
+    }
+
+    async add(data: Array<{ [p: string]: any }>) {
+        const res = await BaseDA.post(ConfigData.url + 'wini/action?action=add', {
+            headers: { module: this.module },
+            body: { data: data }
+        })
+        return res
+    }
+
+    async edit(data: Array<{ [p: string]: any }>) {
+        const res = await BaseDA.post(ConfigData.url + 'wini/action?action=edit', {
+            headers: { module: this.module },
+            body: { data: data }
+        })
+        return res
+    }
+
+    async delete(ids: Array<string>) {
+        const res = await BaseDA.post(ConfigData.url + 'wini/action?action=delete', {
+            headers: { module: this.module },
+            body: { ids: ids }
+        })
+        return res
+    }
+
+    async getByIds(ids: Array<string>) {
+        const res = await BaseDA.post(ConfigData.url + 'wini/getByIds', {
+            headers: { module: this.module },
+            body: { ids: ids }
+        })
+        return res
+    }
+}

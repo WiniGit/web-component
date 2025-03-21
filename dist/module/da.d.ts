@@ -80,4 +80,15 @@ export declare enum ActionType {
     submit = "submit",
     setValue = "setValue"
 }
+export interface ProjectItem {
+    Id: string;
+    Name: string;
+    CustomerId: string;
+    DateCreated: number;
+    Description: string;
+    LogoId: string;
+    Sort?: number;
+    Domain: string;
+    Sologan?: string;
+}
 //# sourceMappingURL=da.d.ts.map
