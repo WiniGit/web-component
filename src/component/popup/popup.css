@@ -92,6 +92,7 @@
 }
 
 .right-drawer {
+    position: fixed;
     top: 0;
     right: 0;
     height: 100dvh;
@@ -110,6 +111,7 @@
 }
 
 .left-drawer {
+    position: fixed;
     top: 0;
     left: 0;
     height: 100dvh;
@@ -133,4 +135,18 @@
 
 .dropdown-popup {
     animation: show-dropdown-popup 0.4s ease-in-out;
+    position: fixed;
+    border: var(--neutral-main-border);
+    border-radius: 0.8rem;
+    padding: 4px;
+}
+
+.dropdown-popup button {
+    padding: 0.8rem 1.2rem;
+    border-radius: 0.8rem;
+    min-width: 8rem;
+}
+
+.dropdown-popup button:hover {
+    background-color: var(--neutral-hover-background-color);
 }
