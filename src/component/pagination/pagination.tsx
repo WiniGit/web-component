@@ -43,7 +43,7 @@ export function Pagination({ id, currentPage, itemPerPage, totalItem, onChangePa
                     readOnly
                     value={itemPerPage}
                     options={[10, 20, 50, 100, 200].map((item, _) => { return { id: item, name: item } })}
-                    style={{ borderRadius: '0.8rem', width: '6rem', padding: '0 0.8rem', height: '2.4rem' }}
+                    style={{ width: '6.8rem', padding: '0 0.8rem', height: '2.4rem' }}
                     suffix={<Winicon src={"fill/arrows/down-arrow"} size={"1.2rem"} />}
                     onChange={(ev: any) => {
                         onChangePage(currentPage, isNaN(parseInt(ev.id)) ? itemPerPage : parseInt(ev.id));
