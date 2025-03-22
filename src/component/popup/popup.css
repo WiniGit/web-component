@@ -13,10 +13,13 @@
     z-index: 99;
 }
 
-.popup-container {
-    position: relative;
+.popup-overlay>div {
     background-color: var(--neutral-absolute-background-color);
     border-radius: 0.8rem;
+}
+
+.popup-container {
+    position: relative;
     border: var(--neutral-main-border);
     overflow: visible;
     max-width: 86%;
@@ -96,6 +99,7 @@
     top: 0;
     right: 0;
     height: 100dvh;
+    border-radius: 0;
     animation: open-drawer-right-to-left 0.6s ease-in-out;
     animation-fill-mode: forwards;
 }
@@ -115,6 +119,7 @@
     top: 0;
     left: 0;
     height: 100dvh;
+    border-radius: 0;
     animation: open-drawer-left-to-right 0.6s ease-in-out;
     animation-fill-mode: forwards;
 }
