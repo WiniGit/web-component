@@ -133,9 +133,9 @@ export class DataController {
     }
 }
 export class SettingDataController {
-    private setting: "model" | "reducer" | "chart" | "form" | "card";
+    private setting: "model" | "reducer" | "chart" | "form" | "card" | "view";
     private type: string;
-    constructor(setting: "model" | "reducer" | "chart" | "form" | "card") {
+    constructor(setting: "model" | "reducer" | "chart" | "form" | "card" | "view") {
         this.setting = setting
         if (setting === "model" || setting === "reducer") this.type = "report"
         else this.type = setting
