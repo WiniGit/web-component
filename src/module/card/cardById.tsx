@@ -205,7 +205,7 @@ const RenderComponentByLayer = (props: RenderComponentByLayerProps) => {
         return _props
     }, [props.style, props.className, props.indexItem, props.item])
     const dataValue: any = useMemo(() => {
-        if (!props.indexItem || !props.cols?.length) return undefined
+        if (!props.item.NameField?.length || !props.indexItem || !props.cols?.length) return undefined
         const _col = props.cols?.find(e => e.Name === props.item.NameField || e.Column === props.item.NameField)
         if (!_col) return undefined
         if (_col.Column) {
@@ -281,13 +281,16 @@ const RenderComponentByLayer = (props: RenderComponentByLayerProps) => {
             case ComponentType.icon:
                 return <Winicon {...({ ...customProps, src: dataValue ?? customProps.src })} />
             case ComponentType.img:
-                return (dataValue && Array.isArray(dataValue)) ?
-                    dataValue.map((e: any) => {
-                        const eProps = { ...customProps, src: ConfigData.imgUrlId + e.Id }
-                        return <img key={e.Id} alt="" {...eProps}
+                return dataValue ?
+                    Array.isArray(dataValue) ?
+                        dataValue.map((e: any) => {
+                            const eProps = { ...customProps, src: ConfigData.imgUrlId + e.Id }
+                            return <img key={e.Id} alt="" {...eProps}
+                                onError={(ev) => { ev.currentTarget.src = "https://cdn.jsdelivr.net/gh/WiniGit/icon-library@latest/color/multimedia/image.svg" }}
+                            />
+                        }) : <img alt="" {...customProps} src={dataValue.startsWith("http") ? dataValue : (ConfigData.imgUrlId + dataValue)}
                             onError={(ev) => { ev.currentTarget.src = "https://cdn.jsdelivr.net/gh/WiniGit/icon-library@latest/color/multimedia/image.svg" }}
-                        />
-                    }) :
+                        /> :
                     <img alt="" {...customProps}
                         onError={(ev) => { ev.currentTarget.src = "https://cdn.jsdelivr.net/gh/WiniGit/icon-library@latest/color/multimedia/image.svg" }}
                     />
