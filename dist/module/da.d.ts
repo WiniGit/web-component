@@ -24,6 +24,7 @@ export declare enum ComponentType {
     chart = "Chart",
     form = "Form",
     card = "Card",
+    view = "View",
     report = "Report",
     popup = "Popup",
     colorPicker = "ColorPicker",

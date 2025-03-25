@@ -52,7 +52,7 @@ export declare class DataController {
 export declare class SettingDataController {
     private setting;
     private type;
-    constructor(setting: "model" | "reducer" | "chart" | "form" | "card");
+    constructor(setting: "model" | "reducer" | "chart" | "form" | "card" | "view");
     action(action: "add" | "edit" | "delete", options: {
         data?: Array<{
             [p: string]: any;

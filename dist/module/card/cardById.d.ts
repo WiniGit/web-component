@@ -1,4 +1,5 @@
 import { CSSProperties, MouseEventHandler, ReactNode } from 'react';
+import { UseFormReturn } from 'react-hook-form';
 interface Props {
     /**
     * replace children of parent layer by id. Ex: { "gid": <Text className="heading-7">Example</Text> }
@@ -12,7 +13,9 @@ interface Props {
      * custom props of layer by id. Ex: { "gid": { style: { width: "60rem", backgroundColor: "red" }, className: "my-class" } }
      * */
     propsData?: {
-        [p: string]: {
+        [p: string]: (itemData: {
+            [p: string]: any;
+        }, index: number) => {
             style?: CSSProperties;
             className?: string;
             onCLick?: (ev: MouseEventHandler) => void;
@@ -46,10 +49,15 @@ interface Props {
         }>;
         loadmore?: boolean;
     };
+    methods?: UseFormReturn;
 }
 interface CardProps extends Props {
     id: string;
+    methods?: UseFormReturn;
+    data: {
+        [p: string]: any;
+    };
 }
-export declare const CardById: (props: CardProps) => import("react/jsx-runtime").JSX.Element | null;
+export declare const CardById: (props: CardProps) => import("react/jsx-runtime").JSX.Element | import("react/jsx-runtime").JSX.Element[] | null;
 export {};
 //# sourceMappingURL=cardById.d.ts.map
