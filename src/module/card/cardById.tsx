@@ -45,6 +45,9 @@ export const CardById = (props: CardProps) => {
     const methods = useForm({ shouldFocusError: false })
     const [cardItem, setCardItem] = useState<{ [p: string]: any }>()
     const layers = useMemo(() => cardItem?.Props ?? [], [cardItem])
+    const _colController = new TableController("column")
+    const _relController = new TableController("rel")
+    const keyNames = useMemo<Array<string>>(() => layers.filter((e: any) => e.NameField?.length).map((e: any) => e.NameField), [layers.length])
     const controller = useMemo(() => {
         if (!props.controller) return { page: 1, size: 8, searchRaw: "*" }
         else return props.controller
@@ -65,14 +68,25 @@ export const CardById = (props: CardProps) => {
     }, [props.id])
 
     const mapRelativeData = async () => {
-        const _relController = new TableController("rel")
-        const _rels = await _relController.getListSimple({ page: 1, size: 100, query: `@TableFK:{${cardItem!.TbName}}`, returns: ["Id", "Name"] })
-        if (_rels.code === 200) methods.setValue("_rels", _rels.data)
+        const relKeys = keyNames.filter((e: string) => e.split(".").length > 1)
+        const _rels = await _relController.getListSimple({
+            page: 1, size: 100,
+            query: `@TableFK:{${cardItem!.TbName}} @Column:{${relKeys.map((e: any) => e.split(".")[0]).filter((k: string, i: number, arr: Array<string>) => arr.indexOf(k) === i).join(" | ")}}`,
+            returns: ["Id", "Column", "TablePK"]
+        })
+        if (_rels.code === 200) {
+            const relRes = await Promise.all(_rels.data.map((relItem: any) => {
+                const relKeyFilter = relKeys.filter((e: any) => e.split(".")[0] === relItem.Column).map((e: any) => e.split(".")[1])
+                return _colController.getListSimple({ page: 1, size: 100, query: `@TableName:{${relItem.TablePK}} @Name:{${relKeyFilter.join(" | ")}}` })
+            }))
+            if (relRes.every(e => e.code === 200)) {
+                methods.setValue("_rels", relRes.map(e => e.data).flat(Infinity))
+            }
+        }
     }
 
     const mapColumnData = async () => {
-        const _colController = new TableController("column")
-        const _colRes = await _colController.getListSimple({ page: 1, size: 200, query: `@TableName:{${cardItem!.TbName}}` })
+        const _colRes = await _colController.getListSimple({ page: 1, size: 200, query: `@TableName:{${cardItem!.TbName}} @Name:{${keyNames.filter((e: string) => e.split(".").length === 1).join(" | ")}}` })
         if (_colRes.code === 200) methods.setValue("_cols", _colRes.data)
     }
 
@@ -89,19 +103,29 @@ export const CardById = (props: CardProps) => {
             if (res.code === 200) tmp = { data: controller.loadmore ? [...data.data, ...res.data] : res.data, totalCount: res.totalCount }
         }
         if (!tmp) return undefined
+        const relKeys = keyNames.filter((e: string) => e.split(".").length > 1).map((e: string) => e.split(".")[0]).filter((e, i, arr) => arr.indexOf(e) === i)
+        if (relKeys.length) {
+            for (const k of relKeys) {
+                const currentTmp = methods.getValues(`_${k}`) ?? []
+                const dataController = new DataController(k.replace("Id", ""))
+                dataController.getByListId(tmp.data.map((e: any) => e[k].split(",")).flat(Infinity).filter((e: string | undefined, i: number, arr: Array<string>) => e?.length && currentTmp.every((el: any) => el.Id !== e) && arr.indexOf(e) === i)).then(relRes => {
+                    if (relRes.code === 200) methods.setValue(`_${k}`, relRes.data)
+                })
+            }
+        }
         setData(tmp)
     }
 
     useEffect(() => {
-        if (cardItem) {
+        if (keyNames.length) {
             mapColumnData()
             mapRelativeData()
         }
-    }, [cardItem])
+    }, [keyNames])
 
     useEffect(() => {
-        if (methods.watch("_cols")?.length) getData()
-    }, [methods.watch("_cols")?.length])
+        if (cardItem) getData()
+    }, [cardItem])
 
     return cardItem ? data.totalCount === 0 ? <EmptyPage
         imgStyle={{ maxWidth: "16.4rem" }}

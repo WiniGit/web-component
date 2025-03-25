@@ -50,6 +50,7 @@ const RenderPageView = ({ childrenData, propsData, itemData, layers = [], childr
         childrenData={childrenData}
         itemData={itemData}
         propsData={propsData}
+        type="page"
     />)
 }
 
@@ -145,12 +146,13 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
         if (props.type === "page" || !props.item.NameField?.length || !props.indexItem) return undefined
         const keys = props.item.NameField.split(".")
         if (keys.length > 1) {
-            const _rel = props.methods!.watch("_rels").find((e: any) => e.Column === keys[0] && e.Name === keys[1])
+            const _rel = props.methods!.watch("_rels")?.find((e: any) => e.TableName === keys[0].replace("Id", "") && e.Name === keys[1])
             if (!_rel) return undefined
             let tmpValue = props.methods!.watch(`_${keys[0]}`)?.find((e: any) => props.indexItem![keys[0]]?.includes(e.Id))?.[keys[1]]
             switch (_rel.DataType) {
                 case FEDataType.FILE:
                     tmpValue = tmpValue?.split(",")?.[0]
+                    if (tmpValue && (props.item.Type === ComponentType.container || props.item.Type === ComponentType.navLink)) tmpValue = { backgroundImage: `url(${tmpValue.startsWith("http") ? tmpValue : (ConfigData.imgUrlId + tmpValue)})` }
                     break;
                 case FEDataType.HTML:
                     tmpValue = { __html: tmpValue }
@@ -188,7 +190,8 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
             let tmpValue = props.indexItem[props.item.NameField]
             switch (_col.DataType) {
                 case FEDataType.FILE:
-                    tmpValue = props.methods!.watch("_files")?.filter((f: any) => tmpValue.includes(f.Id))
+                    tmpValue = tmpValue?.split(",")?.[0]
+                    if (props.item.Type === ComponentType.container || props.item.Type === ComponentType.navLink) tmpValue = { backgroundImage: `url(${tmpValue.startsWith("http") ? tmpValue : (ConfigData.imgUrlId + tmpValue)})` }
                     break;
                 case FEDataType.HTML:
                     tmpValue = { __html: tmpValue }
@@ -221,7 +224,7 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
             }
             return tmpValue
         }
-    }, [props.indexItem, props.item, props.methods!.watch("_cols"), props.methods!.watch("_rels"), props.methods!.watch("_files")])
+    }, [props.indexItem, props.item, props.methods!.watch()])
 
     // renderUI
     if (props.itemData && props.itemData[props.item.Id]) {
@@ -236,7 +239,8 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
                 </NavLink>
             case ComponentType.container:
                 if (props.childrenData) var childComponent = props.type === "card" ? (props.childrenData[props.item.Id] as any)(props.indexItem, props.index) : props.childrenData[props.item.Id]
-                return <div {...customProps}>
+                if (dataValue && dataValue.backgroundImage) var tmpProps = { ...customProps, style: { ...customProps.style, ...dataValue } }
+                return <div {...(tmpProps ?? customProps)}>
                     {childComponent ??
                         (customProps.className?.includes("layout-body") ?
                             <>
