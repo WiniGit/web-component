@@ -37,6 +37,7 @@ import { DataController, SettingDataController, AccountController } from './cont
 import { CardById } from './module/card/cardById'
 import { ChartById } from './module/chart/chartById'
 import { FormById } from './module/form/formById'
+import { ViewById } from './module/view/viewById'
 import { PageById, PageByUrl } from './module/page/pageById'
 import { WiniProvider } from './module/WiniProvider'
 
@@ -45,7 +46,8 @@ export {
   ComponentStatus,
   getStatusIcon,
   Checkbox,
-  Select1, Switch,
+  Select1,
+  Switch,
   Popup, showPopup, closePopup,
   Dialog, showDialog, DialogAlignment,
   DateTimePicker,
@@ -103,6 +105,7 @@ export {
   CardById,
   ChartById,
   FormById,
+  ViewById,
   PageById,
   PageByUrl
 }

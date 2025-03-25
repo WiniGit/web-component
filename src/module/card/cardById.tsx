@@ -2,14 +2,8 @@ import { CSSProperties, MouseEventHandler, ReactNode, useEffect, useMemo, useSta
 import { DataController, SettingDataController } from "../../controller/data"
 import { useForm, UseFormReturn } from "react-hook-form"
 import { TableController } from "../../controller/setting"
-import { ActionType, ComponentType, FEDataType, TriggerType } from "../da"
-import { BaseDA, ConfigData } from "../../controller/config"
-import { regexGetVariableByThis, regexUrlWithVariables } from "./config"
-import { Util } from "../../controller/utils"
-import { Text } from "../../component/text/text"
-import { Winicon } from "../../component/wini-icon/winicon"
-import { NavLink, useNavigate } from "react-router-dom"
-import { Button } from "../../component/button/button"
+import { EmptyPage } from "../../component/empty-page"
+import { RenderLayerElement } from "../page/pageById"
 
 interface Props {
     /**
@@ -19,7 +13,7 @@ interface Props {
     /**
      * custom props of layer by id. Ex: { "gid": { style: { width: "60rem", backgroundColor: "red" }, className: "my-class" } }
      * */
-    propsData?: { [p: string]: { style?: CSSProperties, className?: string, onCLick?: (ev: MouseEventHandler) => void, [p: string]: any } },
+    propsData?: { [p: string]: (itemData: { [p: string]: any }, index: number) => { style?: CSSProperties, className?: string, onCLick?: (ev: MouseEventHandler) => void, [p: string]: any } },
     /**
      * replace layer by id. Ex: { "gid": <Text className="heading-7">Example</Text> }
      * */
@@ -31,291 +25,31 @@ interface Props {
     style?: CSSProperties,
     className?: string,
     controller?: "all" | { page: number, size: number, searchRaw?: string, filter?: string, sortby?: Array<{ prop: string, direction?: "ASC" | "DESC" }>, loadmore?: boolean },
+    methods?: UseFormReturn
 }
 
 interface RenderCardProps extends Props {
     layers: Array<{ [p: string]: any }>,
     cardItem: { [p: string]: any },
-}
-
-function RenderCard({ layers = [], cardItem, style, className, cardData, controller = "all", childrenData, propsData, itemData }: RenderCardProps) {
-    const methods = useForm({ shouldFocusError: false })
-    const [data, setData] = useState<{ data: Array<{ [p: string]: any }>, totalCount?: number }>({ data: [], totalCount: undefined })
-    const [_rels, setRels] = useState<Array<{ [p: string]: any }>>([])
-    const [_cols, setCols] = useState<Array<{ [p: string]: any }>>([])
-
-    const mapRelativeData = async () => {
-        const _relController = new TableController("rel")
-        const _rels = await _relController.getListSimple({ page: 1, size: 100, query: `@TableFK:{${cardItem.TbName}}` })
-        if (_rels.code === 200) setRels(_rels.data)
-    }
-
-    const mapColumnData = async () => {
-        const _colController = new TableController("column")
-        const _colRes = await _colController.getListSimple({ page: 1, size: 200, query: `@TableName:{${cardItem.TbName}}` })
-        if (_colRes.code === 200) setCols(_colRes.data)
-    }
-
-    useEffect(() => {
-        if (cardItem?.TbName) {
-            mapRelativeData()
-            mapColumnData()
-        } else {
-            if (_cols.length) setCols([])
-            if (_rels.length) setRels([])
-        }
-    }, [cardItem?.TbName])
-
-    const getData = async () => {
-        const dataController = new DataController(cardItem.TbName)
-        let tmp;
-        if (cardData) {
-            tmp = { data: [cardData], totalCount: 1 }
-        } else if (controller === "all") {
-            const res = await dataController.getAll()
-            if (res.code === 200) tmp = { data: res.data, totalCount: res.data.length }
-        } else {
-            const res = await dataController.aggregateList({ page: controller.page, size: controller.size, searchRaw: controller.searchRaw ?? "*", filter: controller.filter, sortby: controller.sortby })
-            if (res.code === 200) tmp = { data: res.data, totalCount: res.totalCount }
-        }
-        if (!tmp) return undefined
-        const colFiles = _cols.filter(e => e.DataType === FEDataType.FILE).map(e => e.Name)
-        if (colFiles.length) {
-            if (typeof controller !== "string" && controller.loadmore) {
-                const currentFiles = methods.getValues("_files") ?? []
-                const _tmpFileIds = tmp.data.map((e: any) => colFiles.map(c => e[c]?.split(","))).flat(Infinity).filter((id: string) => id?.length && currentFiles.every((f: any) => f.Id !== id) && !id.startsWith("http"))
-                BaseDA.getFilesInfor(_tmpFileIds).then(f => {
-                    if (f.code === 200) methods.setValue("_files", [...currentFiles, ...f.data.filter((e: any) => !!e)])
-                })
-            } else {
-                const _tmpFileIds = tmp.data.map((e: any) => colFiles.map(c => e[c]?.split(","))).flat(Infinity).filter((id: string) => id?.length && !id.startsWith("http"))
-                BaseDA.getFilesInfor(_tmpFileIds).then(f => {
-                    if (f.code === 200) methods.setValue("_files", f.data.filter((e: any) => !!e))
-                })
-            }
-        }
-        setData(tmp)
-    }
-
-    useEffect(() => {
-        if (_cols.length) getData()
-        else if (data.totalCount) setData({ data: [], totalCount: 0 })
-    }, [cardData, cardItem?.TbName, _cols.length, controller])
-
-    return !!data.totalCount && data.data.map((item, i) => {
-        return <RenderCardByLayers
-            key={item.Id}
-            index={i}
-            indexItem={item}
-            layers={layers}
-            cols={_cols}
-            className={className}
-            style={style}
-            methods={methods}
-            childrenData={childrenData}
-            itemData={itemData}
-            propsData={propsData}
-        />
-    })
-}
-
-interface RenderDetailProps {
-    layers: Array<{ [p: string]: any }>,
-    cols?: Array<{ [p: string]: any }>,
-    className?: string,
-    style?: CSSProperties,
-    methods: UseFormReturn<any>,
-    childrenData?: { [p: string]: (itemData: { [p: string]: any }, index: number) => ReactNode },
-    propsData?: { [p: string]: { style?: CSSProperties, className?: string, onCLick?: (ev: MouseEventHandler) => void, [p: string]: any } },
-    itemData?: { [p: string]: (indexItem: { [p: string]: any }, index: number) => ReactNode },
     indexItem: { [p: string]: any },
     index: number,
 }
 
-interface RenderCardByLayersProps extends RenderDetailProps {
-    parentId?: string,
-}
-
-const RenderCardByLayers = (props: RenderCardByLayersProps) => {
-    return props.layers.filter(e => e.ParentId === props.parentId).map(e => {
-        return <RenderComponentByLayer
-            {...props}
-            key={e.Id}
-            item={e}
-        />
-    })
-}
-
-interface RenderComponentByLayerProps extends RenderDetailProps {
-    item: { [p: string]: any },
-}
-
-const RenderComponentByLayer = (props: RenderComponentByLayerProps) => {
-    const navigate = useNavigate()
-    const customProps = useMemo(() => {
-        let _props = { ...props.item.Setting }
-        _props.style ??= {}
-        if (props.style && !props.item.ParentId) _props.style = { ..._props.style, ...props.style }
-        if (props.className?.length && !props.item.ParentId) _props.className = [..._props.className.split(" "), ...props.className.split(" ")].filter(e => !!e.trim()).join(" ")
-        if (_props.action && Array.isArray(_props.action)) {
-            Object.values(TriggerType).forEach(trigger => {
-                const triggerActions = _props.action.filter((e: any) => e.Type === trigger)
-                switch (trigger) {
-                    case TriggerType.click:
-                        const _onClick = async (acts = []) => {
-                            for (const [_, act] of acts.entries()) {
-                                const actItem = act as { [p: string]: any }
-                                switch (actItem.Action) {
-                                    case ActionType.navigate:
-                                        if (actItem.To) {
-                                            if (regexUrlWithVariables.test(actItem.To)) {
-                                                const url = actItem.To.replace(regexGetVariableByThis, (m: string) => {
-                                                    const execRegex = regexGetVariableByThis.exec(m)
-                                                    return props.indexItem && execRegex?.[1] ? props.indexItem[execRegex[1]] : m
-                                                })
-                                                if (url.includes("https")) window.open(url, "_blank")
-                                                else {
-                                                    navigate(url.split("/").filter((e: string) => !!e.trim()).join("/"))
-                                                }
-                                            } else if (actItem.To.includes("https")) {
-                                                window.open(actItem.To, "_blank")
-                                            } else {
-                                                navigate(actItem.To.startsWith("/") ? actItem.To : `/${actItem.To}`)
-                                            }
-                                        }
-                                        break;
-                                    default:
-                                        break;
-                                }
-                            }
-                        }
-                        if (triggerActions.length) {
-                            _props.onClick = () => _onClick(triggerActions)
-                            if (_props.style) _props.style = { ..._props.style, cursor: "pointer" }
-                            else _props.style = { cursor: "pointer" }
-                        }
-                        break;
-                    default:
-                        break;
-                }
-            })
-        }
-        delete _props.action
-        if (props.propsData && props.propsData[props.item.Id]) _props = { ..._props, ...props.propsData[props.item.Id] }
-        return _props
-    }, [props.style, props.className, props.indexItem, props.item])
-    const dataValue: any = useMemo(() => {
-        if (!props.item.NameField?.length || !props.indexItem || !props.cols?.length) return undefined
-        const _col = props.cols?.find(e => e.Name === props.item.NameField || e.Column === props.item.NameField)
-        if (!_col) return undefined
-        if (_col.Column) {
-
-        } else {
-            let tmpValue = props.indexItem[props.item.NameField]
-            switch (_col.DataType) {
-                case FEDataType.FILE:
-                    tmpValue = props.methods.watch("_files")?.filter((f: any) => tmpValue.includes(f.Id))
-                    break;
-                case FEDataType.HTML:
-                    tmpValue = { __html: tmpValue }
-                    break;
-                case FEDataType.MONEY:
-                    tmpValue = tmpValue ? Util.money(tmpValue) : undefined
-                    break;
-                case FEDataType.DATE:
-                    tmpValue = tmpValue ? Util.datetoString(new Date(typeof tmpValue === 'string' ? parseInt(tmpValue) : tmpValue)) : undefined
-                    break;
-                case FEDataType.DATETIME:
-                    tmpValue = tmpValue ? Util.datetoString(new Date(typeof tmpValue === 'string' ? parseInt(tmpValue) : tmpValue), "dd/mm/yyyy hh:mm") : undefined
-                    break;
-                default:
-                    if (_col.Form?.Options?.length) {
-                        if (_col.Form.ComponentType === ComponentType.select1) {
-                            tmpValue = _col.Form.Options.find((e: any) => e.id === tmpValue)?.name ?? tmpValue
-                        } else {
-                            tmpValue = _col.Form.Options.filter((e: any) => {
-                                switch (_col.DataType) {
-                                    case FEDataType.BOOLEAN:
-                                        return tmpValue === e.id || `${tmpValue}` === `${e.id}`
-                                    default:
-                                        return tmpValue?.includes(e.id);
-                                }
-                            }).map((e: any) => e.name).join(",")
-                        }
-                    }
-                    break;
-            }
-            return tmpValue
-        }
-    }, [props.indexItem, props.item, props.cols, props.methods.watch("_files")])
-
-    if (props.itemData && props.itemData[props.item.Id]) {
-        return props.itemData[props.item.Id](props.indexItem, props.index)
-    } else {
-        switch (props.item.Type) {
-            case ComponentType.navLink:
-                return <NavLink {...customProps}>
-                    {(props.childrenData && props.childrenData[props.item.Id]) ?
-                        props.childrenData[props.item.Id](props.indexItem, props.index) :
-                        <RenderCardByLayers
-                            {...props}
-                            layers={props.layers}
-                            parentId={props.item.Id}
-                        />}
-                </NavLink>
-            case ComponentType.container:
-                return <div {...customProps}>
-                    {(props.childrenData && props.childrenData[props.item.Id]) ?
-                        props.childrenData[props.item.Id](props.indexItem, props.index) :
-                        <RenderCardByLayers
-                            {...props}
-                            layers={props.layers}
-                            parentId={props.item.Id}
-                        />}
-                </div>
-            case ComponentType.text:
-                if (dataValue && typeof dataValue !== "string" && dataValue?.["__html"]) return <Text {...customProps} html={dataValue["__html"]} />
-                else {
-                    return <Text {...customProps}>{dataValue ?? props.item.Setting?.value ?? ""}</Text>
-                }
-            case ComponentType.icon:
-                return <Winicon {...({ ...customProps, src: dataValue ?? customProps.src })} />
-            case ComponentType.img:
-                return dataValue ?
-                    Array.isArray(dataValue) ?
-                        dataValue.map((e: any) => {
-                            const eProps = { ...customProps, src: ConfigData.imgUrlId + e.Id }
-                            return <img key={e.Id} alt="" {...eProps}
-                                onError={(ev) => { ev.currentTarget.src = "https://cdn.jsdelivr.net/gh/WiniGit/icon-library@latest/color/multimedia/image.svg" }}
-                            />
-                        }) : <img alt="" {...customProps} src={dataValue.startsWith("http") ? dataValue : (ConfigData.imgUrlId + dataValue)}
-                            onError={(ev) => { ev.currentTarget.src = "https://cdn.jsdelivr.net/gh/WiniGit/icon-library@latest/color/multimedia/image.svg" }}
-                        /> :
-                    <img alt="" {...customProps}
-                        onError={(ev) => { ev.currentTarget.src = "https://cdn.jsdelivr.net/gh/WiniGit/icon-library@latest/color/multimedia/image.svg" }}
-                    />
-            case ComponentType.button:
-                const icons = props.layers.filter(e => e.ParentId === props.item.Id)
-                if (icons.length) {
-                    const iconPrefix = icons.find(e => e.Setting.type === "prefix")
-                    const iconSuffix = icons.find(e => e.Setting.type === "suffix")
-                    if (iconPrefix) customProps.prefix = <RenderComponentByLayer key={iconPrefix.Id} {...props} item={iconPrefix} />
-                    if (iconSuffix) customProps.suffix = <RenderComponentByLayer key={iconSuffix.Id} {...props} item={iconSuffix} />
-                }
-                return <Button {...customProps} />
-            default:
-                return <div {...customProps} />
-        }
-    }
-
-}
-
 interface CardProps extends Props {
-    id: string
+    id: string,
+    methods?: UseFormReturn,
+    data: { [p: string]: any }
 }
 
 export const CardById = (props: CardProps) => {
+    const methods = useForm({ shouldFocusError: false })
     const [cardItem, setCardItem] = useState<{ [p: string]: any }>()
+    const layers = useMemo(() => cardItem?.Props ?? [], [cardItem])
+    const controller = useMemo(() => {
+        if (!props.controller) return { page: 1, size: 8, searchRaw: "*" }
+        else return props.controller
+    }, [props.controller])
+    const [data, setData] = useState<{ data: Array<{ [p: string]: any }>, totalCount?: number }>({ data: [], totalCount: undefined })
 
     useEffect(() => {
         if (props.id) {
@@ -330,10 +64,76 @@ export const CardById = (props: CardProps) => {
         } else if (cardItem) setCardItem(undefined)
     }, [props.id])
 
-    return cardItem ? <RenderCard
-        key={cardItem.Id}
-        {...props}
-        cardItem={cardItem}
-        layers={cardItem.Props}
-    /> : null
+    const mapRelativeData = async () => {
+        const _relController = new TableController("rel")
+        const _rels = await _relController.getListSimple({ page: 1, size: 100, query: `@TableFK:{${cardItem!.TbName}}`, returns: ["Id", "Name"] })
+        if (_rels.code === 200) methods.setValue("_rels", _rels.data)
+    }
+
+    const mapColumnData = async () => {
+        const _colController = new TableController("column")
+        const _colRes = await _colController.getListSimple({ page: 1, size: 200, query: `@TableName:{${cardItem!.TbName}}` })
+        if (_colRes.code === 200) methods.setValue("_cols", _colRes.data)
+    }
+
+    const getData = async () => {
+        const dataController = new DataController(cardItem!.TbName)
+        let tmp = undefined;
+        if (props.data) {
+            tmp = { data: [props.data], totalCount: 1 }
+        } else if (controller === "all") {
+            const res = await dataController.getAll()
+            if (res.code === 200) tmp = { data: res.data, totalCount: res.data.length }
+        } else {
+            const res = await dataController.aggregateList({ ...controller, searchRaw: controller!.searchRaw ?? "*" })
+            if (res.code === 200) tmp = { data: controller.loadmore ? [...data.data, ...res.data] : res.data, totalCount: res.totalCount }
+        }
+        if (!tmp) return undefined
+        setData(tmp)
+    }
+
+    useEffect(() => {
+        if (cardItem) {
+            mapColumnData()
+            mapRelativeData()
+        }
+    }, [cardItem])
+
+    useEffect(() => {
+        if (methods.watch("_cols")?.length) getData()
+    }, [methods.watch("_cols")?.length])
+
+    return cardItem ? data.totalCount === 0 ? <EmptyPage
+        imgStyle={{ maxWidth: "16.4rem" }}
+        title="There are no data found."
+    /> : data.data.map((item, index) => {
+        return <RenderCard
+            key={item.Id}
+            cardItem={cardItem}
+            layers={layers}
+            methods={methods}
+            className={props.className}
+            style={props.style}
+            indexItem={item}
+            index={index}
+        />
+    }) : null
+}
+
+const RenderCard = (props: RenderCardProps) => {
+    return props.cardItem.Props.filter((e: any) => !e.ParentId).map((e: any) => {
+        return <RenderLayerElement
+            key={e.Id}
+            item={e}
+            list={props.layers}
+            style={props.style}
+            className={props.className}
+            type={"card"}
+            methods={props.methods}
+            indexItem={props.indexItem}
+            index={props.index}
+            itemData={props.itemData}
+            childrenData={props.childrenData}
+        />
+    })
 }

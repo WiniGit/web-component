@@ -1,5 +1,5 @@
 import { CSSProperties, MouseEventHandler, ReactNode, useEffect, useMemo, useRef, useState } from "react"
-import { ActionType, ComponentType, TriggerType } from "../da"
+import { ActionType, ComponentType, FEDataType, TriggerType } from "../da"
 import { FormById } from "../form/formById"
 import { CardById } from "../card/cardById"
 import { ChartById } from "../chart/chartById"
@@ -12,27 +12,31 @@ import { closePopup } from "../../component/popup/popup"
 import { NavLink, useNavigate } from "react-router-dom"
 import { Button } from "../../component/button/button"
 import { useForm, UseFormReturn } from "react-hook-form"
+import { Util } from "../../controller/utils"
+import { ViewById } from "../view/viewById"
+import { regexGetVariableByThis, regexUrlWithVariables } from "../card/config"
+import { ConfigData } from "../../controller/config"
 
 interface Props {
     /**
-     * replace children of parent layer by id. Ex: { "gid": <Text className="heading-7">Example</Text> }
-     * */
-    childrenData?: { [p: string]: ReactNode },
-    /**
-     * custom props of layer by id. Ex: { "gid": { style: { width: "60rem", backgroundColor: "red" }, className: "my-class" } }
-     * */
-    propsData?: { [p: string]: { style?: CSSProperties, className?: string, onClick?: (ev: MouseEventHandler) => void, [p: string]: any } },
-    /**
      * replace layer by id. Ex: { "gid": <Text className="heading-7">Example</Text> }
      * */
-    itemData?: { [p: string]: ReactNode },
     methods?: UseFormReturn
 }
 
 interface RenderPageProps extends Props {
     layers: Array<{ [p: string]: any }>,
     bodyId?: string
-    children?: ReactNode
+    children?: ReactNode,
+    /**
+     * custom props of layer by id. Ex: { "gid": { style: { width: "60rem", backgroundColor: "red" }, className: "my-class" } }
+     * */
+    propsData?: { [p: string]: { style?: CSSProperties, className?: string, onClick?: (ev: MouseEventHandler) => void, [p: string]: any } },
+    /**
+     * replace children of parent layer by id. Ex: { "gid": <Text className="heading-7">Example</Text> }
+     * */
+    childrenData?: { [p: string]: ReactNode },
+    itemData?: { [p: string]: ReactNode },
 }
 
 const RenderPageView = ({ childrenData, propsData, itemData, layers = [], children, methods, bodyId }: RenderPageProps) => {
@@ -53,14 +57,23 @@ interface RenderLayerElementProps extends Props {
     item: { [p: string]: any },
     list: Array<{ [p: string]: any }>,
     bodyChildren?: ReactNode,
+    type?: "page" | "view" | "card",
+    propsData?: { [p: string]: { style?: CSSProperties, className?: string, onClick?: (ev: MouseEventHandler) => void, [p: string]: any } } | { [p: string]: (itemData: { [p: string]: any }, index: number) => { style?: CSSProperties, className?: string, onCLick?: (ev: MouseEventHandler) => void, [p: string]: any } },
+    itemData?: { [p: string]: ReactNode } | { [p: string]: (indexItem: { [p: string]: any }, index: number) => ReactNode },
+    childrenData?: { [p: string]: ReactNode } | { [p: string]: (itemData: { [p: string]: any }, index: number) => ReactNode },
+    indexItem?: { [p: string]: any },
+    index?: number,
+    style?: CSSProperties,
+    className?: string
 }
 
-const RenderLayerElement = (props: RenderLayerElementProps) => {
+export const RenderLayerElement = (props: RenderLayerElementProps) => {
     const navigate = useNavigate()
     const children = useMemo(() => props.list.filter(e => e.ParentId === props.item.Id), [props.list, props.item])
     const customProps = useMemo(() => {
         let _props = { ...props.item.Setting }
         _props.style ??= {}
+        _props.className ??= ""
         if (_props.action?.length && Array.isArray(_props.action)) {
             Object.values(TriggerType).forEach(trigger => {
                 const triggerActions = _props.action.filter((e: any) => e.Type === trigger)
@@ -72,8 +85,16 @@ const RenderLayerElement = (props: RenderLayerElementProps) => {
                                 switch (actItem.Action) {
                                     case ActionType.navigate:
                                         if (actItem.To) {
-                                            if (actItem.To.includes("https")) window.open(actItem.To, "_blank")
-                                            else {
+                                            if (props.indexItem && regexUrlWithVariables.test(actItem.To)) {
+                                                const url = actItem.To.replace(regexGetVariableByThis, (m: string) => {
+                                                    const execRegex = regexGetVariableByThis.exec(m)
+                                                    return props.indexItem && execRegex?.[1] ? props.indexItem[execRegex[1]] : m
+                                                })
+                                                if (url.includes("https")) window.open(url, "_blank")
+                                                else navigate(url.split("/").filter((e: string) => !!e.trim()).join("/"))
+                                            } else if (actItem.To.includes("https")) {
+                                                window.open(actItem.To, "_blank")
+                                            } else {
                                                 navigate(actItem.To.startsWith("/") ? actItem.To : `/${actItem.To}`)
                                             }
                                         }
@@ -114,37 +135,131 @@ const RenderLayerElement = (props: RenderLayerElementProps) => {
                 }
             })
         }
+        if (props.style) _props.style = { ..._props.style, ...props.style }
+        if (props.className) _props.className = [..._props.className.split(" "), ...props.className.split(" ")].filter((cls, i, arr) => cls.length && arr.indexOf(cls) === i).join(" ")
         delete _props.action
-        if (props.propsData && props.propsData[props.item.Id]) _props = { ..._props, ...props.propsData[props.item.Id] }
+        if (props.propsData && props.propsData[props.item.Id]) _props = props.type === "card" ? { ..._props, ...(props.propsData[props.item.Id] as any)(props.indexItem, props.index) } : { ..._props, ...props.propsData[props.item.Id] }
         return _props
     }, [props.item, props.propsData, props.methods])
+    const dataValue = useMemo(() => {
+        if (props.type === "page" || !props.item.NameField?.length || !props.indexItem) return undefined
+        const keys = props.item.NameField.split(".")
+        if (keys.length > 1) {
+            const _rel = props.methods!.watch("_rels").find((e: any) => e.Column === keys[0] && e.Name === keys[1])
+            if (!_rel) return undefined
+            let tmpValue = props.methods!.watch(`_${keys[0]}`)?.find((e: any) => props.indexItem![keys[0]]?.includes(e.Id))?.[keys[1]]
+            switch (_rel.DataType) {
+                case FEDataType.FILE:
+                    tmpValue = tmpValue?.split(",")?.[0]
+                    break;
+                case FEDataType.HTML:
+                    tmpValue = { __html: tmpValue }
+                    break;
+                case FEDataType.MONEY:
+                    tmpValue = tmpValue ? Util.money(tmpValue) : undefined
+                    break;
+                case FEDataType.DATE:
+                    tmpValue = tmpValue ? Util.datetoString(new Date(typeof tmpValue === 'string' ? parseInt(tmpValue) : tmpValue)) : undefined
+                    break;
+                case FEDataType.DATETIME:
+                    tmpValue = tmpValue ? Util.datetoString(new Date(typeof tmpValue === 'string' ? parseInt(tmpValue) : tmpValue), "dd/mm/yyyy hh:mm") : undefined
+                    break;
+                default:
+                    if (_rel.Form?.Options?.length) {
+                        if (_rel.Form.ComponentType === ComponentType.select1) {
+                            tmpValue = _rel.Form.Options.find((e: any) => e.id === tmpValue)?.name ?? tmpValue
+                        } else {
+                            tmpValue = _rel.Form.Options.filter((e: any) => {
+                                switch (_rel.DataType) {
+                                    case FEDataType.BOOLEAN:
+                                        return tmpValue === e.id || `${tmpValue}` === `${e.id}`
+                                    default:
+                                        return tmpValue?.includes(e.id);
+                                }
+                            }).map((e: any) => e.name).join(",")
+                        }
+                    }
+                    break;
+            }
+            return tmpValue
+        } else {
+            const _col = props.methods!.watch("_cols")!.find((e: any) => e.Name === props.item.NameField)
+            if (!_col) return undefined
+            let tmpValue = props.indexItem[props.item.NameField]
+            switch (_col.DataType) {
+                case FEDataType.FILE:
+                    tmpValue = props.methods!.watch("_files")?.filter((f: any) => tmpValue.includes(f.Id))
+                    break;
+                case FEDataType.HTML:
+                    tmpValue = { __html: tmpValue }
+                    break;
+                case FEDataType.MONEY:
+                    tmpValue = tmpValue ? Util.money(tmpValue) : undefined
+                    break;
+                case FEDataType.DATE:
+                    tmpValue = tmpValue ? Util.datetoString(new Date(typeof tmpValue === 'string' ? parseInt(tmpValue) : tmpValue)) : undefined
+                    break;
+                case FEDataType.DATETIME:
+                    tmpValue = tmpValue ? Util.datetoString(new Date(typeof tmpValue === 'string' ? parseInt(tmpValue) : tmpValue), "dd/mm/yyyy hh:mm") : undefined
+                    break;
+                default:
+                    if (_col.Form?.Options?.length) {
+                        if (_col.Form.ComponentType === ComponentType.select1) {
+                            tmpValue = _col.Form.Options.find((e: any) => e.id === tmpValue)?.name ?? tmpValue
+                        } else {
+                            tmpValue = _col.Form.Options.filter((e: any) => {
+                                switch (_col.DataType) {
+                                    case FEDataType.BOOLEAN:
+                                        return tmpValue === e.id || `${tmpValue}` === `${e.id}`
+                                    default:
+                                        return tmpValue?.includes(e.id);
+                                }
+                            }).map((e: any) => e.name).join(",")
+                        }
+                    }
+                    break;
+            }
+            return tmpValue
+        }
+    }, [props.indexItem, props.item, props.methods!.watch("_cols"), props.methods!.watch("_rels"), props.methods!.watch("_files")])
 
     // renderUI
-    if (props.itemData?.[props.item.Id]) return props.itemData[props.item.Id]
-    else {
+    if (props.itemData && props.itemData[props.item.Id]) {
+        if (props.type === "card") return (props.itemData[props.item.Id] as any)(props.indexItem, props.index)
+        else return props.itemData[props.item.Id]
+    } else {
         switch (props.item.Type) {
             case ComponentType.navLink:
-                if (props.childrenData) var childComponent = props.childrenData[props.item.Id]
+                if (props.childrenData) var childComponent = props.type === "card" ? (props.childrenData[props.item.Id] as any)(props.indexItem, props.index) : props.childrenData[props.item.Id]
                 return <NavLink {...customProps}>
-                    {childComponent ?? children.map(e => <RenderLayerElement key={e.Id} {...props} item={e} />)}
+                    {childComponent ?? children.map(e => <RenderLayerElement key={e.Id} {...props} item={e} style={undefined} className={undefined} />)}
                 </NavLink>
             case ComponentType.container:
-                if (props.childrenData) var childComponent = props.childrenData[props.item.Id]
+                if (props.childrenData) var childComponent = props.type === "card" ? (props.childrenData[props.item.Id] as any)(props.indexItem, props.index) : props.childrenData[props.item.Id]
                 return <div {...customProps}>
                     {childComponent ??
-                        (
-                            customProps.className?.includes("layout-body") ?
-                                <>
-                                    {children.map(e => <RenderLayerElement key={e.Id} {...props} item={e} />)}
-                                    {props.bodyChildren}
-                                </> :
-                                children.map(e => <RenderLayerElement key={e.Id} {...props} item={e} />)
+                        (customProps.className?.includes("layout-body") ?
+                            <>
+                                {children.map(e => <RenderLayerElement key={e.Id} {...props} item={e} style={undefined} className={undefined} />)}
+                                {props.bodyChildren}
+                            </> :
+                            children.map(e => <RenderLayerElement key={e.Id} {...props} item={e} style={undefined} className={undefined} />)
                         )}
                 </div>
             case ComponentType.text:
-                return <Text {...customProps}>{customProps.value ?? ""}</Text>
+                if (dataValue) {
+                    if (typeof dataValue === "object") return <Text {...customProps} html={dataValue["__html"]} />
+                    else return <Text {...customProps}>{dataValue}</Text>
+                } else return <Text {...customProps}>{customProps.value ?? ""}</Text>
             case ComponentType.img:
-                return <img
+                if (dataValue) {
+                    return <img
+                        alt=""
+                        onError={(ev) => { ev.currentTarget.src = "https://cdn.jsdelivr.net/gh/WiniGit/icon-library@latest/color/multimedia/image.svg" }}
+                        {...customProps}
+                        src={dataValue.startsWith("http") ? dataValue : (ConfigData.imgUrlId + dataValue)}
+                    />
+                } else return <img
                     alt=""
                     onError={(ev) => { ev.currentTarget.src = "https://cdn.jsdelivr.net/gh/WiniGit/icon-library@latest/color/multimedia/image.svg" }}
                     {...customProps}
@@ -154,21 +269,23 @@ const RenderLayerElement = (props: RenderLayerElementProps) => {
             case ComponentType.chart:
                 return <ChartById {...customProps} id={customProps.chartId} />
             case ComponentType.form:
-                return <FormById id={props.item.Id} {...customProps} />
+                return <FormById {...customProps} id={customProps.formId} />
             case ComponentType.card:
                 return <CardById {...customProps} id={customProps.cardId} />
+            case ComponentType.view:
+                return <ViewById {...customProps} id={customProps.viewId} />
             case ComponentType.popup:
                 customProps.id = props.item.Id
                 return <ActionPopup {...customProps} >
-                    {children.map(e => <RenderLayerElement key={e.Id} {...props} item={e} />)}
+                    {children.map(e => <RenderLayerElement key={e.Id} {...props} item={e} style={undefined} className={undefined} />)}
                 </ActionPopup>
             case ComponentType.button:
                 let btnProps = { ...customProps }
                 if (children.length) {
                     const iconPrefix = children.find(e => e.Setting.type === "prefix")
                     const iconSuffix = children.find(e => e.Setting.type === "suffix")
-                    if (iconPrefix) btnProps.prefix = <RenderLayerElement {...props} item={iconPrefix} />
-                    if (iconSuffix) btnProps.suffix = <RenderLayerElement {...props} item={iconSuffix} />
+                    if (iconPrefix) btnProps.prefix = <RenderLayerElement {...props} item={iconPrefix} style={undefined} className={undefined} />
+                    if (iconSuffix) btnProps.suffix = <RenderLayerElement {...props} item={iconSuffix} style={undefined} className={undefined} />
                 }
                 return <Button {...btnProps} />
             default:
@@ -198,6 +315,15 @@ const ActionPopup = ({ id, children }: { id: string, children: ReactNode, classN
 
 interface PageByIdProps extends Props {
     id: string,
+    /**
+     * custom props of layer by id. Ex: { "gid": { style: { width: "60rem", backgroundColor: "red" }, className: "my-class" } }
+     * */
+    propsData?: { [p: string]: { style?: CSSProperties, className?: string, onClick?: (ev: MouseEventHandler) => void, [p: string]: any } },
+    /**
+     * replace children of parent layer by id. Ex: { "gid": <Text className="heading-7">Example</Text> }
+     * */
+    childrenData?: { [p: string]: ReactNode },
+    itemData?: { [p: string]: ReactNode },
 }
 
 export const PageById = (props: PageByIdProps) => {
@@ -244,6 +370,15 @@ export const PageById = (props: PageByIdProps) => {
 
 interface PageByUrlProps extends Props {
     url: string,
+    /**
+     * custom props of layer by id. Ex: { "gid": { style: { width: "60rem", backgroundColor: "red" }, className: "my-class" } }
+     * */
+    propsData?: { [p: string]: { style?: CSSProperties, className?: string, onClick?: (ev: MouseEventHandler) => void, [p: string]: any } },
+    /**
+     * replace children of parent layer by id. Ex: { "gid": <Text className="heading-7">Example</Text> }
+     * */
+    childrenData?: { [p: string]: ReactNode },
+    itemData?: { [p: string]: ReactNode },
 }
 
 export const PageByUrl = (props: PageByUrlProps) => {
