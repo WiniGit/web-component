@@ -105,8 +105,8 @@ a[class~="button-black"] {
 
 button[class~="button-white"] *,
 a[class~="button-white"] * {
-    color: var(--neutral-text-title-reverse-color) !important;
-    --color: var(--neutral-text-title-reverse-color) !important;
+    color: var(--neutral-text-title-color) !important;
+    --color: var(--neutral-text-title-color) !important;
 }
 
 button[class~="button-white"],
