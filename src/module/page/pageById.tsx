@@ -185,7 +185,7 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
             }
             return tmpValue
         } else {
-            const _col = props.methods!.watch("_cols")!.find((e: any) => e.Name === props.item.NameField)
+            const _col = props.methods!.watch("_cols")?.find((e: any) => e.Name === props.item.NameField)
             if (!_col) return undefined
             let tmpValue = props.indexItem[props.item.NameField]
             switch (_col.DataType) {
@@ -258,14 +258,15 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
             case ComponentType.img:
                 if (dataValue) {
                     return <img
+                        key={dataValue}
                         alt=""
-                        onError={(ev) => { ev.currentTarget.src = "https://cdn.jsdelivr.net/gh/WiniGit/icon-library@latest/color/multimedia/image.svg" }}
+                        onError={(ev) => { ev.currentTarget.src = "https://cdn.jsdelivr.net/gh/WiniGit/icon-library@latest/outline/multimedia/image.svg" }}
                         {...customProps}
                         src={dataValue.startsWith("http") ? dataValue : (ConfigData.imgUrlId + dataValue)}
                     />
                 } else return <img
                     alt=""
-                    onError={(ev) => { ev.currentTarget.src = "https://cdn.jsdelivr.net/gh/WiniGit/icon-library@latest/color/multimedia/image.svg" }}
+                    onError={(ev) => { ev.currentTarget.src = "https://cdn.jsdelivr.net/gh/WiniGit/icon-library@latest/outline/multimedia/image.svg" }}
                     {...customProps}
                 />
             case ComponentType.icon:
