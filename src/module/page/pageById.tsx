@@ -260,17 +260,20 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
                     return <img
                         key={dataValue}
                         alt=""
+                        referrerPolicy="no-referrer"
                         onError={(ev) => { ev.currentTarget.src = "https://cdn.jsdelivr.net/gh/WiniGit/icon-library@latest/outline/multimedia/image.svg" }}
                         {...customProps}
                         src={dataValue.startsWith("http") ? dataValue : (ConfigData.imgUrlId + dataValue)}
                     />
                 } else return <img
                     alt=""
+                    referrerPolicy="no-referrer"
                     onError={(ev) => { ev.currentTarget.src = "https://cdn.jsdelivr.net/gh/WiniGit/icon-library@latest/outline/multimedia/image.svg" }}
                     {...customProps}
                 />
             case ComponentType.icon:
-                return <Winicon {...customProps} />
+                if (dataValue) return <Winicon {...customProps} src={dataValue} />
+                else return <Winicon {...customProps} />
             case ComponentType.chart:
                 return <ChartById {...customProps} id={customProps.chartId} />
             case ComponentType.form:
