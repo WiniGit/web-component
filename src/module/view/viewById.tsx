@@ -1,4 +1,4 @@
-import { CSSProperties, useEffect, useMemo, useState } from "react"
+import { CSSProperties, MouseEventHandler, ReactNode, useEffect, useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
 import { RenderLayerElement } from "../page/pageById"
 import { SettingDataController } from "../../controller/data"
@@ -7,7 +7,10 @@ interface ViewByIdProps {
     id: string,
     style?: CSSProperties,
     className?: string,
-    data?: { [p: string]: any }
+    data?: { [p: string]: any },
+    propsData?: { [p: string]: { style?: CSSProperties, className?: string, onClick?: (ev: MouseEventHandler) => void, [p: string]: any } },
+    childrenData?: { [p: string]: ReactNode },
+    itemData?: { [p: string]: ReactNode },
 }
 
 export const ViewById = (props: ViewByIdProps) => {
@@ -38,6 +41,9 @@ export const ViewById = (props: ViewByIdProps) => {
             type={"view"}
             methods={methods}
             indexItem={props.data}
+            propsData={props.propsData}
+            childrenData={props.childrenData}
+            itemData={props.itemData}
         />
     }) : null
 }
