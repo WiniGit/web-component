@@ -14,7 +14,7 @@ import { Button } from "../../component/button/button"
 import { useForm, UseFormReturn } from "react-hook-form"
 import { Util } from "../../controller/utils"
 import { ViewById } from "../view/viewById"
-import { regexGetVariableByThis, regexUrlWithVariables } from "../card/config"
+import { regexGetVariableByThis } from "../card/config"
 import { ConfigData } from "../../controller/config"
 
 interface Props {
@@ -86,13 +86,13 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
                                 switch (actItem.Action) {
                                     case ActionType.navigate:
                                         if (actItem.To) {
-                                            if (props.indexItem && regexUrlWithVariables.test(actItem.To)) {
+                                            if (props.indexItem && regexGetVariableByThis.test(actItem.To)) {
                                                 const url = actItem.To.replace(regexGetVariableByThis, (m: string) => {
                                                     const execRegex = regexGetVariableByThis.exec(m)
                                                     return props.indexItem && execRegex?.[1] ? props.indexItem[execRegex[1]] : m
                                                 })
                                                 if (url.includes("https")) window.open(url, "_blank")
-                                                else navigate(url.split("/").filter((e: string) => !!e.trim()).join("/"))
+                                                else navigate((url.startsWith("/") ? "/" : "") + url.split("/").filter((e: string) => !!e.trim()).join("/"))
                                             } else if (actItem.To.includes("https")) {
                                                 window.open(actItem.To, "_blank")
                                             } else {
