@@ -148,7 +148,7 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
         if (keys.length > 1) {
             const _rel = props.methods!.watch("_rels")?.find((e: any) => e.TableName === keys[0].replace("Id", "") && e.Name === keys[1])
             if (!_rel) return undefined
-            let tmpValue = props.methods!.watch(`_${keys[0]}`)?.find((e: any) => props.indexItem![keys[0]]?.includes(e.Id))?.[keys[1]]
+            let tmpValue = props.methods!.watch(`_${keys[0]}`)?.find((e: any) => e && props.indexItem![keys[0]]?.includes(e.Id))?.[keys[1]]
             switch (_rel.DataType) {
                 case FEDataType.FILE:
                     tmpValue = tmpValue?.split(",")?.[0]

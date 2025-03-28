@@ -4,6 +4,8 @@ import { useForm, UseFormReturn } from "react-hook-form"
 import { TableController } from "../../controller/setting"
 import { EmptyPage } from "../../component/empty-page"
 import { RenderLayerElement } from "../page/pageById"
+import { useLocation, useParams } from "react-router-dom"
+import { regexGetVariables, regexWatchDoubleQuote, regexWatchSingleQuote } from "./config"
 
 interface Props {
     /**
@@ -47,10 +49,75 @@ export const CardById = (props: CardProps) => {
     const layers = useMemo(() => cardItem?.Props ?? [], [cardItem])
     const _colController = new TableController("column")
     const _relController = new TableController("rel")
+    const location = useLocation()
+    const params = useParams()
+    const query = new URLSearchParams(location.search)
     const keyNames = useMemo<Array<string>>(() => layers.filter((e: any) => e.NameField?.length).map((e: any) => e.NameField), [layers.length])
     const controller = useMemo(() => {
         if (!props.controller) return { page: 1, size: 8, searchRaw: "*" }
-        else return props.controller
+        if (props.controller === "all") return props.controller
+        let newController = { ...props.controller } as any
+        if (regexGetVariables.test(newController.searchRaw)) {
+            const newSearchRaw = newController.searchRaw.replace(regexGetVariables, (m: string) => {
+                const execRegex = regexGetVariables.exec(m)
+                if (!execRegex?.[1]) return m
+                const variable = execRegex[1].split(".")
+                switch (variable[0]) {
+                    case "query":
+                        return query.get(variable[1])
+                    case "params":
+                        return params[variable[1]]
+                    default:
+                        if (regexWatchSingleQuote.test(execRegex[1])) {
+                            return (props.methods ?? methods).watch(execRegex[1].match(regexWatchSingleQuote)![1])
+                        } else if (regexWatchDoubleQuote.test(execRegex[1])) {
+                            return (props.methods ?? methods).watch(execRegex[1].match(regexWatchDoubleQuote)![1])
+                        } else return m
+                }
+            })
+            newController.searchRaw = newSearchRaw
+        }
+        if (regexGetVariables.test(`${newController.page}`)) {
+            const newPageIndex = `${newController.page}`.replace(regexGetVariables, (m: string) => {
+                const execRegex = regexGetVariables.exec(m)
+                if (!execRegex?.[1]) return m
+                const variable = execRegex[1].split(".")
+                switch (variable[0]) {
+                    case "query":
+                        return query.get(variable[1])
+                    case "params":
+                        return params[variable[1]]
+                    default:
+                        if (regexWatchSingleQuote.test(execRegex[1])) {
+                            return (props.methods ?? methods).watch(execRegex[1].match(regexWatchSingleQuote)![1])
+                        } else if (regexWatchDoubleQuote.test(execRegex[1])) {
+                            return (props.methods ?? methods).watch(execRegex[1].match(regexWatchDoubleQuote)![1])
+                        } else return m
+                }
+            })
+            newController.page = parseInt(newPageIndex)
+        }
+        if (regexGetVariables.test(`${newController.size}`)) {
+            const newPageSize = `${newController.size}`.replace(regexGetVariables, (m: string) => {
+                const execRegex = regexGetVariables.exec(m)
+                if (!execRegex?.[1]) return m
+                const variable = execRegex[1].split(".")
+                switch (variable[0]) {
+                    case "query":
+                        return query.get(variable[1])
+                    case "params":
+                        return params[variable[1]]
+                    default:
+                        if (regexWatchSingleQuote.test(execRegex[1])) {
+                            return (props.methods ?? methods).watch(execRegex[1].match(regexWatchSingleQuote)![1])
+                        } else if (regexWatchDoubleQuote.test(execRegex[1])) {
+                            return (props.methods ?? methods).watch(execRegex[1].match(regexWatchDoubleQuote)![1])
+                        } else return m
+                }
+            })
+            newController.page = parseInt(newPageSize)
+        }
+        return newController
     }, [props.controller])
     const [data, setData] = useState<{ data: Array<{ [p: string]: any }>, totalCount?: number }>({ data: [], totalCount: undefined })
 
