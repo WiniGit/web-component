@@ -71,6 +71,13 @@ interface RenderLayerElementProps extends Props {
 export const RenderLayerElement = (props: RenderLayerElementProps) => {
     const navigate = useNavigate()
     const children = useMemo(() => props.list.filter(e => e.ParentId === props.item.Id), [props.list, props.item])
+    const replaceThisVariables = (content: string) => {
+        return content.replace(regexGetVariableByThis, (m: string) => {
+            const execRegex = regexGetVariableByThis.exec(m)
+            return props.indexItem && execRegex?.[1] ? props.indexItem[execRegex[1]] : m
+        })
+    }
+    // const watchForCustomProps = useMemo(() => { }, [props.methods!.watch(), props.item])
     const customProps = useMemo(() => {
         let _props = { ...props.item.Setting }
         _props.style ??= {}
@@ -78,57 +85,65 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
         if (_props.action?.length && Array.isArray(_props.action)) {
             Object.values(TriggerType).forEach(trigger => {
                 const triggerActions = _props.action.filter((e: any) => e.Type === trigger)
+                const handleEvent = async (acts = []) => {
+                    for (const [i, act] of acts.entries()) {
+                        const actItem = act as { [p: string]: any }
+                        switch (actItem.Action) {
+                            case ActionType.navigate:
+                                if (actItem.To) {
+                                    if (props.indexItem && regexGetVariableByThis.test(actItem.To)) {
+                                        const url = replaceThisVariables(actItem.To)
+                                        if (url.includes("https")) window.open(url, "_blank")
+                                        else navigate((url.startsWith("/") ? "/" : "") + url.split("/").filter((e: string) => !!e.trim()).join("/"))
+                                    } else if (actItem.To.includes("https")) {
+                                        window.open(actItem.To, "_blank")
+                                    } else {
+                                        navigate(actItem.To.startsWith("/") ? actItem.To : `/${actItem.To}`)
+                                    }
+                                }
+                                break;
+                            case ActionType.submit:
+                                const formElement = document.getElementById(actItem.To)
+                                const submitBtn = formElement?.querySelector(`:scope > button.submit-form`) as any
+                                const successBtn = formElement?.querySelector(`:scope > button.success-form`) as any
+                                if (submitBtn) {
+                                    if (successBtn && triggerActions.slice(i + 1).length) successBtn.onclick = () => handleEvent(triggerActions.slice(i + 1))
+                                    submitBtn.click()
+                                }
+                                return;
+                            case ActionType.showPopup:
+                                const openPopupBtn = document.querySelector(`.open-${actItem.To}`) as any
+                                if (openPopupBtn) openPopupBtn.click()
+                                return;
+                            case ActionType.closePopup:
+                                const closePopupBtn = document.querySelector(`.close-${actItem.To}`) as any
+                                if (closePopupBtn) closePopupBtn.click()
+                                return;
+                            case ActionType.setValue:
+                                props.methods!.setValue(actItem.NameField, eval(actItem.CaculateValue))
+                                return;
+                            case ActionType.loadMore:
+                                props.methods?.setValue(`loadMore-${actItem.loadingId}`, true)
+                                return;
+                            default:
+                                break;
+                        }
+                    }
+                }
                 switch (trigger) {
                     case TriggerType.click:
-                        const _onClick = async (acts = []) => {
-                            for (const [i, act] of acts.entries()) {
-                                const actItem = act as { [p: string]: any }
-                                switch (actItem.Action) {
-                                    case ActionType.navigate:
-                                        if (actItem.To) {
-                                            if (props.indexItem && regexGetVariableByThis.test(actItem.To)) {
-                                                const url = actItem.To.replace(regexGetVariableByThis, (m: string) => {
-                                                    const execRegex = regexGetVariableByThis.exec(m)
-                                                    return props.indexItem && execRegex?.[1] ? props.indexItem[execRegex[1]] : m
-                                                })
-                                                if (url.includes("https")) window.open(url, "_blank")
-                                                else navigate((url.startsWith("/") ? "/" : "") + url.split("/").filter((e: string) => !!e.trim()).join("/"))
-                                            } else if (actItem.To.includes("https")) {
-                                                window.open(actItem.To, "_blank")
-                                            } else {
-                                                navigate(actItem.To.startsWith("/") ? actItem.To : `/${actItem.To}`)
-                                            }
-                                        }
-                                        break;
-                                    case ActionType.submit:
-                                        const formElement = document.getElementById(actItem.To)
-                                        const submitBtn = formElement?.querySelector(`:scope > button.submit-form`) as any
-                                        const successBtn = formElement?.querySelector(`:scope > button.success-form`) as any
-                                        if (submitBtn) {
-                                            if (successBtn && triggerActions.slice(i + 1).length) successBtn.onclick = () => _onClick(triggerActions.slice(i + 1))
-                                            submitBtn.click()
-                                        }
-                                        return;
-                                    case ActionType.showPopup:
-                                        const openPopupBtn = document.querySelector(`.open-${actItem.To}`) as any
-                                        if (openPopupBtn) openPopupBtn.click()
-                                        return;
-                                    case ActionType.closePopup:
-                                        const closePopupBtn = document.querySelector(`.close-${actItem.To}`) as any
-                                        if (closePopupBtn) closePopupBtn.click()
-                                        return;
-                                    case ActionType.setValue:
-                                        props.methods!.setValue(actItem.NameField, eval(actItem.CaculateValue))
-                                        return;
-                                    default:
-                                        break;
-                                }
-                            }
-                        }
                         if (triggerActions.length) {
-                            _props.onClick = () => _onClick(triggerActions)
+                            _props.onClick = () => handleEvent(triggerActions)
                             if (_props.style) _props.style = { ..._props.style, cursor: "pointer" }
                             else _props.style = { cursor: "pointer" }
+                        }
+                        break;
+                    case TriggerType.scrollend:
+                        if (triggerActions.length) {
+                            _props.onScroll = (ev: any) => {
+                                let scrollElement = ev.target as HTMLDivElement
+                                if (Math.round(scrollElement.offsetHeight + scrollElement.scrollTop) >= (scrollElement.scrollHeight - 1)) handleEvent(triggerActions)
+                            }
                         }
                         break;
                     default:
@@ -141,14 +156,21 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
         delete _props.action
         if (props.propsData && props.propsData[props.item.Id]) _props = props.type === "card" ? { ..._props, ...(props.propsData[props.item.Id] as any)(props.indexItem, props.index) } : { ..._props, ...props.propsData[props.item.Id] }
         return _props
-    }, [props.item, props.propsData, props.methods])
+    }, [props.item, props.propsData, props.methods!.watch()])
+    const watchForDataValue = useMemo(() => {
+        const watchData = props.methods!.watch()
+        const tmp: { [p: string]: any } = { rels: watchData["_rels"], cols: watchData["_cols"] }
+        const keys = props.item.NameField?.split(".")
+        if (keys && keys.length > 1) tmp[`${keys[0]}`] = watchData[`_${keys[0]}`]
+        return tmp
+    }, [props.methods!.watch(), props.item.NameField])
     const dataValue = useMemo(() => {
         if (props.type === "page" || !props.item.NameField?.length || !props.indexItem) return undefined
         const keys = props.item.NameField.split(".")
         if (keys.length > 1) {
-            const _rel = props.methods!.watch("_rels")?.find((e: any) => e.TableName === keys[0].replace("Id", "") && e.Name === keys[1])
+            const _rel = watchForDataValue.rels?.find((e: any) => e.TableName === keys[0].replace("Id", "") && e.Name === keys[1])
             if (!_rel) return undefined
-            let tmpValue = props.methods!.watch(`_${keys[0]}`)?.find((e: any) => e && props.indexItem![keys[0]]?.includes(e.Id))?.[keys[1]]
+            let tmpValue = watchForDataValue[`${keys[0]}`]?.find((e: any) => e && props.indexItem![keys[0]]?.includes(e.Id))?.[keys[1]]
             switch (_rel.DataType) {
                 case FEDataType.FILE:
                     tmpValue = tmpValue?.split(",")?.[0]
@@ -185,7 +207,7 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
             }
             return tmpValue
         } else {
-            const _col = props.methods!.watch("_cols")?.find((e: any) => e.Name === props.item.NameField)
+            const _col = watchForDataValue.cols?.find((e: any) => e.Name === props.item.NameField)
             if (!_col) return undefined
             let tmpValue = props.indexItem[props.item.NameField]
             switch (_col.DataType) {
@@ -224,32 +246,87 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
             }
             return tmpValue
         }
-    }, [props.indexItem, props.item, props.methods!.watch()])
+    }, [props.indexItem, props.item, watchForDataValue])
 
     // renderUI
     if (props.itemData && props.itemData[props.item.Id]) {
+        debugger
         if (props.type === "card") return (props.itemData[props.item.Id] as any)(props.indexItem, props.index)
         else return props.itemData[props.item.Id]
     } else {
         switch (props.item.Type) {
             case ComponentType.navLink:
                 if (props.childrenData) var childComponent = props.type === "card" ? (props.childrenData[props.item.Id] as any)(props.indexItem, props.index) : props.childrenData[props.item.Id]
-                return <NavLink {...customProps}>
-                    {childComponent ?? children.map(e => <RenderLayerElement key={e.Id} {...props} item={e} style={undefined} className={undefined} />)}
-                </NavLink>
+                let navLinkProps = { ...customProps }
+                if (dataValue && dataValue.backgroundImage) navLinkProps = { ...customProps, style: { ...customProps.style, ...dataValue } }
+                if (navLinkProps.to) {
+                    if (props.indexItem && regexGetVariableByThis.test(navLinkProps.to)) {
+                        const url = replaceThisVariables(navLinkProps.to)
+                        if (url.includes("https")) navLinkProps.target = "_blank"
+                        navLinkProps.to = (url.startsWith("/") ? "/" : "") + url.split("/").filter((e: string) => !!e.trim()).join("/")
+                    } else if (navLinkProps.to.includes("https")) {
+                        navLinkProps.target = "_blank"
+                    } else {
+                        navLinkProps.to = navLinkProps.to.startsWith("/") ? navLinkProps.to : `/${navLinkProps.to}`
+                    }
+                }
+                if (Array.isArray(dataValue)) {
+                    return dataValue.map((dataValueItem, i) => {
+                        const dataValueProps = { ...navLinkProps }
+                        dataValueProps.indexItem = { ...props.indexItem, [props.item.NameField.split(".").length > 1 ? props.item.NameField.split(".")[1] : props.item.NameField]: dataValueItem }
+                        return <NavLink key={`${dataValueItem}-${i}`} {...dataValueProps} >
+                            {childComponent ??
+                                (customProps.className?.includes("layout-body") ?
+                                    <>
+                                        {children.map(e => <RenderLayerElement key={e.Id} {...props} item={e} style={undefined} className={undefined} />)}
+                                        {props.bodyChildren}
+                                    </> :
+                                    children.map(e => <RenderLayerElement key={e.Id} {...props} item={e} style={undefined} className={undefined} />)
+                                )}
+                        </NavLink>
+                    })
+                } else {
+                    return <NavLink {...navLinkProps}>
+                        {childComponent ??
+                            (customProps.className?.includes("layout-body") ?
+                                <>
+                                    {children.map(e => <RenderLayerElement key={e.Id} {...props} item={e} style={undefined} className={undefined} />)}
+                                    {props.bodyChildren}
+                                </> :
+                                children.map(e => <RenderLayerElement key={e.Id} {...props} item={e} style={undefined} className={undefined} />)
+                            )}
+                    </NavLink>
+                }
             case ComponentType.container:
                 if (props.childrenData) var childComponent = props.type === "card" ? (props.childrenData[props.item.Id] as any)(props.indexItem, props.index) : props.childrenData[props.item.Id]
-                if (dataValue && dataValue.backgroundImage) var tmpProps = { ...customProps, style: { ...customProps.style, ...dataValue } }
-                return <div {...(tmpProps ?? customProps)}>
-                    {childComponent ??
-                        (customProps.className?.includes("layout-body") ?
-                            <>
-                                {children.map(e => <RenderLayerElement key={e.Id} {...props} item={e} style={undefined} className={undefined} />)}
-                                {props.bodyChildren}
-                            </> :
-                            children.map(e => <RenderLayerElement key={e.Id} {...props} item={e} style={undefined} className={undefined} />)
-                        )}
-                </div>
+                if (dataValue && dataValue.backgroundImage) var containerProps = { ...customProps, style: { ...customProps.style, ...dataValue } }
+                if (Array.isArray(dataValue)) {
+                    return dataValue.map((dataValueItem, i) => {
+                        const dataValueProps = { ...(containerProps ?? customProps) }
+                        dataValueProps.indexItem = { ...props.indexItem, [props.item.NameField.split(".").length > 1 ? props.item.NameField.split(".")[1] : props.item.NameField]: dataValueItem }
+                        return <div key={`${dataValueItem}-${i}`} {...dataValueProps} >
+                            {childComponent ??
+                                (customProps.className?.includes("layout-body") ?
+                                    <>
+                                        {children.map(e => <RenderLayerElement key={e.Id} {...props} item={e} style={undefined} className={undefined} />)}
+                                        {props.bodyChildren}
+                                    </> :
+                                    children.map(e => <RenderLayerElement key={e.Id} {...props} item={e} style={undefined} className={undefined} />)
+                                )}
+                        </div>
+                    })
+                } else {
+                    return <div {...(containerProps ?? customProps)}>
+                        {childComponent ??
+                            (customProps.className?.includes("layout-body") ?
+                                <>
+                                    {children.map(e => <RenderLayerElement key={e.Id} {...props} item={e} style={undefined} className={undefined} />)}
+                                    {props.bodyChildren}
+                                </> :
+                                children.map(e => <RenderLayerElement key={e.Id} {...props} item={e} style={undefined} className={undefined} />)
+                            )}
+                    </div>
+                }
             case ComponentType.text:
                 if (dataValue) {
                     if (typeof dataValue === "object") return <Text {...customProps} html={dataValue["__html"]} />
@@ -261,25 +338,52 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
                         key={dataValue}
                         alt=""
                         referrerPolicy="no-referrer"
-                        onError={(ev) => { ev.currentTarget.src = "https://cdn.jsdelivr.net/gh/WiniGit/icon-library@latest/outline/multimedia/image.svg" }}
+                        onError={(ev) => { ev.currentTarget.src = "https://cdn.jsdelivr.net/gh/WiniGit/icon-library@latest/color/multimedia/image.svg" }}
                         {...customProps}
                         src={dataValue.startsWith("http") ? dataValue : (ConfigData.imgUrlId + dataValue)}
                     />
                 } else return <img
                     alt=""
                     referrerPolicy="no-referrer"
-                    onError={(ev) => { ev.currentTarget.src = "https://cdn.jsdelivr.net/gh/WiniGit/icon-library@latest/outline/multimedia/image.svg" }}
+                    onError={(ev) => { ev.currentTarget.src = "https://cdn.jsdelivr.net/gh/WiniGit/icon-library@latest/color/multimedia/image.svg" }}
                     {...customProps}
                 />
             case ComponentType.icon:
                 if (dataValue) return <Winicon {...customProps} src={dataValue} />
+                else if (props.item.NameField) return null
                 else return <Winicon {...customProps} />
             case ComponentType.chart:
                 return <ChartById {...customProps} id={customProps.chartId} />
             case ComponentType.form:
                 return <FormById {...customProps} id={customProps.formId} />
             case ComponentType.card:
-                return <CardById {...customProps} id={customProps.cardId} />
+                let tmpProps = { ...customProps }
+                if (tmpProps.loadMore === undefined) tmpProps.loadMore = props.methods?.watch(`loadMore-${props.item.Id}`)
+                if (tmpProps.loadMore !== undefined) {
+                    if (tmpProps.onLoaded !== undefined)
+                        tmpProps.loadMore = (ev: any) => {
+                            props.methods?.setValue(`loadMore-${props.item.Id}`, false)
+                            tmpProps.onLoaded(ev)
+                        }
+                    else tmpProps.loadMore = () => { props.methods?.setValue(`loadMore-${props.item.Id}`, false) }
+                }
+                if (tmpProps.controller && tmpProps.controller !== "all") {
+                    let newController = { ...tmpProps.controller }
+                    if (regexGetVariableByThis.test(newController.searchRaw)) {
+                        const newSearchRaw = replaceThisVariables(newController.searchRaw)
+                        newController.searchRaw = newSearchRaw
+                    }
+                    if (regexGetVariableByThis.test(`${newController.page}`)) {
+                        const newPageIndex = replaceThisVariables(`${newController.page}`)
+                        newController.page = parseInt(newPageIndex)
+                    }
+                    if (regexGetVariableByThis.test(`${newController.size}`)) {
+                        const newPageSize = replaceThisVariables(`${newController.size}`)
+                        newController.page = parseInt(newPageSize)
+                    }
+                    tmpProps.controller = newController
+                }
+                return <CardById {...tmpProps} id={customProps.cardId} />
             case ComponentType.view:
                 return <ViewById {...customProps} id={customProps.viewId} />
             case ComponentType.popup:

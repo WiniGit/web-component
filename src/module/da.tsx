@@ -77,6 +77,7 @@ export enum TriggerType {
     mouseleave = "mouseleave",
     mousedown = "mousedown",
     mouseup = "mouseup",
+    scrollend = "scrollend"
 }
 
 export enum ActionType {
@@ -91,6 +92,7 @@ export enum ActionType {
     mouseup = "mouseup",
     submit = "submit",
     setValue = "setValue",
+    loadMore = "loadMore",
 }
 
 export interface ProjectItem {

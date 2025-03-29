@@ -5,7 +5,7 @@ import { TableController } from "../../controller/setting"
 import { EmptyPage } from "../../component/empty-page"
 import { RenderLayerElement } from "../page/pageById"
 import { useLocation, useParams } from "react-router-dom"
-import { regexGetVariables, regexWatchDoubleQuote, regexWatchSingleQuote } from "./config"
+import { regexEmptyKeyController, regexGetVariables, regexWatchDoubleQuote, regexWatchSingleQuote, replaceEmptyKeyController } from "./config"
 
 interface Props {
     /**
@@ -26,8 +26,10 @@ interface Props {
     cardData?: { [p: string]: any },
     style?: CSSProperties,
     className?: string,
-    controller?: "all" | { page: number, size: number, searchRaw?: string, filter?: string, sortby?: Array<{ prop: string, direction?: "ASC" | "DESC" }>, loadmore?: boolean },
-    methods?: UseFormReturn
+    controller?: "all" | { page: number, size: number, searchRaw?: string, filter?: string, sortby?: Array<{ prop: string, direction?: "ASC" | "DESC" }> },
+    loadMore?: boolean,
+    methods?: UseFormReturn,
+    emptyLink?: string
 }
 
 interface RenderCardProps extends Props {
@@ -40,7 +42,8 @@ interface RenderCardProps extends Props {
 interface CardProps extends Props {
     id: string,
     methods?: UseFormReturn,
-    data: { [p: string]: any }
+    data: { [p: string]: any },
+    onLoaded?: (ev: { data: Array<{ [p: string]: any }>, totalCount: number }) => void
 }
 
 export const CardById = (props: CardProps) => {
@@ -157,7 +160,7 @@ export const CardById = (props: CardProps) => {
         if (_colRes.code === 200) methods.setValue("_cols", _colRes.data)
     }
 
-    const getData = async () => {
+    const getData = async (page?: number) => {
         const dataController = new DataController(cardItem!.TbName)
         let tmp = undefined;
         if (props.data) {
@@ -166,8 +169,19 @@ export const CardById = (props: CardProps) => {
             const res = await dataController.getAll()
             if (res.code === 200) tmp = { data: res.data, totalCount: res.data.length }
         } else {
-            const res = await dataController.aggregateList({ ...controller, searchRaw: controller!.searchRaw ?? "*" })
-            if (res.code === 200) tmp = { data: controller.loadmore ? [...data.data, ...res.data] : res.data, totalCount: res.totalCount }
+            const tmpController = { ...controller, searchRaw: controller!.searchRaw ?? "*" }
+            if (page) tmpController.page = page
+            if (regexEmptyKeyController.test(tmpController.searchRaw)) {
+                const firstEmptyKey = regexEmptyKeyController.exec(tmpController.searchRaw)!
+                if (firstEmptyKey[0].includes("notempty")) tmpController.notEmpty = true
+                tmpController.key = firstEmptyKey[1]
+                tmpController.searchRaw = tmpController.searchRaw.replace(replaceEmptyKeyController, "").trim()
+                if (!tmpController.searchRaw.length) tmpController.searchRaw = `*`
+                var res = await dataController.filterByEmptyKey(tmpController)
+            } else {
+                res = await dataController.aggregateList(tmpController)
+            }
+            if (res.code === 200) tmp = { data: page ? [...data.data, ...res.data] : res.data, totalCount: res.totalCount }
         }
         if (!tmp) return undefined
         const relKeys = keyNames.filter((e: string) => e.split(".").length > 1).map((e: string) => e.split(".")[0]).filter((e, i, arr) => arr.indexOf(e) === i)
@@ -181,6 +195,7 @@ export const CardById = (props: CardProps) => {
             }
         }
         setData(tmp)
+        if (props.onLoaded) props.onLoaded(tmp)
     }
 
     useEffect(() => {
@@ -191,24 +206,31 @@ export const CardById = (props: CardProps) => {
     }, [keyNames])
 
     useEffect(() => {
-        if (cardItem) getData()
-    }, [cardItem])
+        if (cardItem && controller) getData()
+    }, [cardItem, controller])
 
-    return cardItem ? data.totalCount === 0 ? <EmptyPage
-        imgStyle={{ maxWidth: "16.4rem" }}
-        title="There are no data found."
-    /> : data.data.map((item, index) => {
-        return <RenderCard
-            key={item.Id}
-            cardItem={cardItem}
-            layers={layers}
-            methods={methods}
-            className={props.className}
+    useEffect(() => {
+        if (props.loadMore && controller && controller !== "all" && data.totalCount && data.data.length < data.totalCount) getData(Math.floor(data.data.length / controller.size) + 1)
+    }, [props.loadMore, controller, data])
+
+    return cardItem ? data.totalCount === 0 ?
+        props.emptyLink ? <EmptyPage
+            imgUrl={props.emptyLink}
+            imgStyle={{ maxWidth: "16.4rem" }}
             style={props.style}
-            indexItem={item}
-            index={index}
-        />
-    }) : null
+            title="There are no data found."
+        /> : null :
+        data.data.map((item, index) => {
+            return <RenderCard
+                key={item.Id}
+                {...props}
+                cardItem={cardItem}
+                layers={layers}
+                methods={methods}
+                indexItem={item}
+                index={index}
+            />
+        }) : null
 }
 
 const RenderCard = (props: RenderCardProps) => {
