@@ -9,13 +9,14 @@ import { Winicon } from "../../component/wini-icon/winicon"
 import { Popup } from "../../component/popup/popup"
 import { showPopup } from "../../component/popup/popup"
 import { closePopup } from "../../component/popup/popup"
-import { NavLink, useNavigate } from "react-router-dom"
+import { NavLink, useLocation, useNavigate, useParams } from "react-router-dom"
 import { Button } from "../../component/button/button"
 import { useForm, UseFormReturn } from "react-hook-form"
 import { Util } from "../../controller/utils"
 import { ViewById } from "../view/viewById"
-import { regexGetVariableByThis } from "../card/config"
+import { regexGetVariableByThis, regexGetVariables, regexWatchDoubleQuote, regexWatchSingleQuote, replaceVariableByThis, replaceVariables } from "../card/config"
 import { ConfigData } from "../../controller/config"
+import { supportProperties } from "./config"
 
 interface Props {
     /**
@@ -69,15 +70,74 @@ interface RenderLayerElementProps extends Props {
 }
 
 export const RenderLayerElement = (props: RenderLayerElementProps) => {
+    const location = useLocation()
+    const params = useParams()
+    const query = new URLSearchParams(location.search)
     const navigate = useNavigate()
     const children = useMemo(() => props.list.filter(e => e.ParentId === props.item.Id), [props.list, props.item])
     const replaceThisVariables = (content: string) => {
-        return content.replace(regexGetVariableByThis, (m: string) => {
+        return content.replace(replaceVariableByThis, (m: string) => {
             const execRegex = regexGetVariableByThis.exec(m)
             return props.indexItem && execRegex?.[1] ? props.indexItem[execRegex[1]] : m
         })
     }
-    // const watchForCustomProps = useMemo(() => { }, [props.methods!.watch(), props.item])
+    const watchForCustomProps = useMemo(() => {
+        if (!props.item.State) return undefined
+        const tmp: { [p: string]: any } = {}
+        const triggerState = props.item.State.filter((e: any) => e.Trigger?.length)
+        if (!triggerState.length) return undefined
+        for (const st of triggerState) {
+            if (regexGetVariables.test(st.Trigger)) {
+                var caculate = st.Trigger.replace(replaceVariables, (m: string) => {
+                    const execRegex = regexGetVariables.exec(m)
+                    if (!execRegex?.[1]) return m
+                    const variable = execRegex[1].split(".")
+                    let getValue: any = m
+                    switch (variable[0]) {
+                        case "this":
+                            getValue = props.indexItem?.[variable[1]]
+                            break;
+                        case "location":
+                            getValue = (location as any)[variable[1]]
+                            break;
+                        case "query":
+                            getValue = query.get(variable[1])
+                            break;
+                        case "params":
+                            getValue = params[variable[1]]
+                            break;
+                        default:
+                            if (regexWatchSingleQuote.test(execRegex[1])) {
+                                getValue = props.methods!.watch(execRegex[1].match(regexWatchSingleQuote)![1])
+                            } else if (regexWatchDoubleQuote.test(execRegex[1])) {
+                                getValue = props.methods!.watch(execRegex[1].match(regexWatchDoubleQuote)![1])
+                            }
+                            break;
+                    }
+                    if (typeof getValue === "string") getValue = `"${getValue}"`
+                    return getValue
+                })
+            } else caculate = st.Trigger
+            try {
+                var checked = eval(caculate)
+            } catch (error) {
+                console.log(caculate, error)
+            }
+            if (checked) {
+                for (const sp of supportProperties) {
+                    if (st[sp]) {
+                        Object.keys(st[sp]).forEach(k => {
+                            if (st[sp][k]) {
+                                tmp[k] ??= {}
+                                tmp[k] = { ...tmp[k], ...st[sp][k] }
+                            }
+                        })
+                    }
+                }
+            }
+        }
+        return tmp
+    }, [props.methods!.watch(), props.item.State, location.pathname, location.search, params])
     const customProps = useMemo(() => {
         let _props = { ...props.item.Setting }
         _props.style ??= {}
@@ -152,11 +212,13 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
             })
         }
         if (props.style) _props.style = { ..._props.style, ...props.style }
+        if (watchForCustomProps?.style) _props.style = { ..._props.style, ...watchForCustomProps.style }
         if (props.className) _props.className = [..._props.className.split(" "), ...props.className.split(" ")].filter((cls, i, arr) => cls.length && arr.indexOf(cls) === i).join(" ")
+        if (watchForCustomProps?.className) _props.className = [..._props.className.split(" "), ...watchForCustomProps.className.split(" ")].filter((cls, i, arr) => cls.length && arr.indexOf(cls) === i).join(" ")
         delete _props.action
         if (props.propsData && props.propsData[props.item.Id]) _props = props.type === "card" ? { ..._props, ...(props.propsData[props.item.Id] as any)(props.indexItem, props.index) } : { ..._props, ...props.propsData[props.item.Id] }
         return _props
-    }, [props.item, props.propsData, props.methods!.watch()])
+    }, [props.item, props.propsData, props.methods, watchForCustomProps])
     const watchForDataValue = useMemo(() => {
         const watchData = props.methods!.watch()
         const tmp: { [p: string]: any } = { rels: watchData["_rels"], cols: watchData["_cols"] }
@@ -250,7 +312,6 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
 
     // renderUI
     if (props.itemData && props.itemData[props.item.Id]) {
-        debugger
         if (props.type === "card") return (props.itemData[props.item.Id] as any)(props.indexItem, props.index)
         else return props.itemData[props.item.Id]
     } else {
@@ -457,13 +518,13 @@ export const PageById = (props: PageByIdProps) => {
                         layerController.getListSimple({ page: 1, size: 1000, query: `@PageId:{${thisPage!.Id}}` })
                     ]).then(resLayer => {
                         if (resLayer[0].code === 200 && resLayer[1].code === 200) {
-                            setLayout(resLayer[0].data.map((e: any) => ({ ...e, Setting: JSON.parse(e.Setting) })))
-                            setLayers(resLayer[1].data.map((e: any) => ({ ...e, Setting: JSON.parse(e.Setting) })))
+                            setLayout(resLayer[0].data.map((e: any) => ({ ...e, Setting: JSON.parse(e.Setting), State: e.State ? JSON.parse(e.State) : undefined })))
+                            setLayers(resLayer[1].data.map((e: any) => ({ ...e, Setting: JSON.parse(e.Setting), State: e.State ? JSON.parse(e.State) : undefined })))
                         }
                     })
                 } else {
                     layerController.getListSimple({ page: 1, size: 1000, query: `@PageId:{${thisPage!.Id}}` }).then(resLayer => {
-                        if (resLayer.code === 200) setLayers(resLayer.data.map((e: any) => ({ ...e, Setting: JSON.parse(e.Setting) })))
+                        if (resLayer.code === 200) setLayers(resLayer.data.map((e: any) => ({ ...e, Setting: JSON.parse(e.Setting), State: e.State ? JSON.parse(e.State) : undefined })))
                     })
                 }
             } else setPageItem(undefined)
@@ -501,7 +562,7 @@ export const PageByUrl = (props: PageByUrlProps) => {
 
     useEffect(() => {
         const pageController = new TableController("page")
-        pageController.getListSimple({ page: 1, size: 1, query: `@Url:{${props.url.length ? props.url.replace(/\//g, "\\/") : "\\/"}}` }).then(res => {
+        pageController.getListSimple({ page: 1, size: 1, query: `@Url:{${props.url.length ? props.url.replace(/[\-\/]/g, m => ("\\" + m)) : "\\/"}}` }).then(res => {
             if (res.code === 200 && res.data[0]) {
                 const thisPage = res.data[0]
                 setPageItem(thisPage)
@@ -512,13 +573,13 @@ export const PageByUrl = (props: PageByUrlProps) => {
                         layerController.getListSimple({ page: 1, size: 1000, query: `@PageId:{${thisPage!.Id}}` })
                     ]).then(resLayer => {
                         if (resLayer[0].code === 200 && resLayer[1].code === 200) {
-                            setLayout(resLayer[0].data.map((e: any) => ({ ...e, Setting: JSON.parse(e.Setting) })))
-                            setLayers(resLayer[1].data.map((e: any) => ({ ...e, Setting: JSON.parse(e.Setting) })))
+                            setLayout(resLayer[0].data.map((e: any) => ({ ...e, Setting: JSON.parse(e.Setting), State: e.State ? JSON.parse(e.State) : undefined })))
+                            setLayers(resLayer[1].data.map((e: any) => ({ ...e, Setting: JSON.parse(e.Setting), State: e.State ? JSON.parse(e.State) : undefined })))
                         }
                     })
                 } else {
                     layerController.getListSimple({ page: 1, size: 1000, query: `@PageId:{${thisPage!.Id}}` }).then(resLayer => {
-                        if (resLayer.code === 200) setLayers(resLayer.data.map((e: any) => ({ ...e, Setting: JSON.parse(e.Setting) })))
+                        if (resLayer.code === 200) setLayers(resLayer.data.map((e: any) => ({ ...e, Setting: JSON.parse(e.Setting), State: e.State ? JSON.parse(e.State) : undefined })))
                     })
                 }
             } else setPageItem(undefined)

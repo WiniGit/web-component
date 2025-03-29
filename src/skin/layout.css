@@ -13,15 +13,13 @@
 
 .row>.remain {
     width: auto !important;
-    min-width: auto !important;
     flex: 1 !important;
 }
 
-/* .col>.remain {
+.col>.remain {
     height: auto !important;
-    min-height: auto !important;
     flex: 1 !important;
-} */
+}
 
 .col {
     display: flex;

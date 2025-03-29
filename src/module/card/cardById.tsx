@@ -5,7 +5,7 @@ import { TableController } from "../../controller/setting"
 import { EmptyPage } from "../../component/empty-page"
 import { RenderLayerElement } from "../page/pageById"
 import { useLocation, useParams } from "react-router-dom"
-import { regexEmptyKeyController, regexGetVariables, regexWatchDoubleQuote, regexWatchSingleQuote, replaceEmptyKeyController } from "./config"
+import { regexEmptyKeyController, regexGetVariables, regexWatchDoubleQuote, regexWatchSingleQuote, replaceEmptyKeyController, replaceVariables } from "./config"
 
 interface Props {
     /**
@@ -61,7 +61,7 @@ export const CardById = (props: CardProps) => {
         if (props.controller === "all") return props.controller
         let newController = { ...props.controller } as any
         if (regexGetVariables.test(newController.searchRaw)) {
-            const newSearchRaw = newController.searchRaw.replace(regexGetVariables, (m: string) => {
+            const newSearchRaw = newController.searchRaw.replace(replaceVariables, (m: string) => {
                 const execRegex = regexGetVariables.exec(m)
                 if (!execRegex?.[1]) return m
                 const variable = execRegex[1].split(".")
@@ -81,7 +81,7 @@ export const CardById = (props: CardProps) => {
             newController.searchRaw = newSearchRaw
         }
         if (regexGetVariables.test(`${newController.page}`)) {
-            const newPageIndex = `${newController.page}`.replace(regexGetVariables, (m: string) => {
+            const newPageIndex = `${newController.page}`.replace(replaceVariables, (m: string) => {
                 const execRegex = regexGetVariables.exec(m)
                 if (!execRegex?.[1]) return m
                 const variable = execRegex[1].split(".")
@@ -101,7 +101,7 @@ export const CardById = (props: CardProps) => {
             newController.page = parseInt(newPageIndex)
         }
         if (regexGetVariables.test(`${newController.size}`)) {
-            const newPageSize = `${newController.size}`.replace(regexGetVariables, (m: string) => {
+            const newPageSize = `${newController.size}`.replace(replaceVariables, (m: string) => {
                 const execRegex = regexGetVariables.exec(m)
                 if (!execRegex?.[1]) return m
                 const variable = execRegex[1].split(".")

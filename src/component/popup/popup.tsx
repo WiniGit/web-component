@@ -93,7 +93,7 @@ export function PopupOverlay({ children, onClose, className, style, onOpen }: { 
 
     useEffect(() => {
         if (overlayRef.current && overlayRef.current.firstChild) {
-            setTimeout(() => {
+            const timer = setTimeout(() => {
                 const popupContent = overlayRef.current!.firstChild as HTMLElement
                 const rect = popupContent.getBoundingClientRect()
                 if (rect.x < 0) {
@@ -111,6 +111,9 @@ export function PopupOverlay({ children, onClose, className, style, onOpen }: { 
                     popupContent.style.top = "unset"
                 }
             }, 300)
+            return () => {
+                clearTimeout(timer)
+            }
         }
     }, [overlayRef])
 
