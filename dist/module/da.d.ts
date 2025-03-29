@@ -66,7 +66,8 @@ export declare enum TriggerType {
     mouseenter = "mouseenter",
     mouseleave = "mouseleave",
     mousedown = "mousedown",
-    mouseup = "mouseup"
+    mouseup = "mouseup",
+    scrollend = "scrollend"
 }
 export declare enum ActionType {
     navigate = "navigate",
@@ -79,7 +80,8 @@ export declare enum ActionType {
     mousedown = "mousedown",
     mouseup = "mouseup",
     submit = "submit",
-    setValue = "setValue"
+    setValue = "setValue",
+    loadMore = "loadMore"
 }
 export interface ProjectItem {
     Id: string;

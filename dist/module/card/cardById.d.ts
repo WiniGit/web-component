@@ -47,9 +47,10 @@ interface Props {
             prop: string;
             direction?: "ASC" | "DESC";
         }>;
-        loadmore?: boolean;
     };
+    loadMore?: boolean;
     methods?: UseFormReturn;
+    emptyLink?: string;
 }
 interface CardProps extends Props {
     id: string;
@@ -57,6 +58,12 @@ interface CardProps extends Props {
     data: {
         [p: string]: any;
     };
+    onLoaded?: (ev: {
+        data: Array<{
+            [p: string]: any;
+        }>;
+        totalCount: number;
+    }) => void;
 }
 export declare const CardById: (props: CardProps) => import("react/jsx-runtime").JSX.Element | import("react/jsx-runtime").JSX.Element[] | null;
 export {};
