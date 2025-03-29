@@ -1,6 +1,8 @@
 export declare const regexUrlWithVariables: RegExp;
 export declare const regexGetVariableByThis: RegExp;
+export declare const replaceVariableByThis: RegExp;
 export declare const regexGetVariables: RegExp;
+export declare const replaceVariables: RegExp;
 export declare const regexWatchDoubleQuote: RegExp;
 export declare const regexWatchSingleQuote: RegExp;
 export declare const regexEmptyKeyController: RegExp;
