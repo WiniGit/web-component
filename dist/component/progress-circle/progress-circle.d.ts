@@ -4,6 +4,7 @@ export declare function ProgressCircle(props: {
     /** value:  0 - 100 (%)*/
     percent?: number;
     style?: CSSProperties;
+    className?: string;
     fillColor?: string;
     percentColor?: string;
     strokeWidth?: number;
