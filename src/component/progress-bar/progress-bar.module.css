@@ -15,16 +15,19 @@
 }
 
 .progress-bar-container>.progress-bar-tile>.progress-bar-value {
-    border-radius: 10rem;
     width: 100%;
     flex: 1;
+}
+
+.progress-bar-value {
+    border-radius: 10rem;
     height: 0.6rem;
     position: relative;
     overflow: hidden;
     background-color: var(--full-color, #EFEFF0);
 }
 
-.progress-bar-container>.progress-bar-tile>.progress-bar-value::after {
+.progress-bar-value::after {
     content: '';
     position: absolute;
     top: 0;
