@@ -1,5 +1,7 @@
 .rating-container {
     gap: 0.8rem;
+    height: fit-content;
+    width: fit-content;
 }
 
 .rating-container svg {
