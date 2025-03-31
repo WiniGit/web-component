@@ -9,5 +9,6 @@ export declare function ProgressCircle(props: {
     strokeWidth?: number;
     strokeColor?: string;
     textStyle?: CSSProperties;
+    title?: string;
 }): import("react/jsx-runtime").JSX.Element;
 //# sourceMappingURL=progress-circle.d.ts.map

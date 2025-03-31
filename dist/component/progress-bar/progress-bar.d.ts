@@ -5,12 +5,12 @@ export declare function ProgressBar({ id, status, percent, titleText, title, hid
     percent: number;
     titleText?: string;
     title?: ReactNode;
-    hideTitle: boolean;
-    progressBarOnly: boolean;
-    fullColor: string;
-    percentColor: string;
+    hideTitle?: boolean;
+    progressBarOnly?: boolean;
+    fullColor?: string;
+    percentColor?: string;
     style?: CSSProperties;
-    status: ComponentStatus;
+    status?: ComponentStatus;
     progressBarStyle?: CSSProperties;
 }): import("react/jsx-runtime").JSX.Element;
 //# sourceMappingURL=progress-bar.d.ts.map
