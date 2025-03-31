@@ -2,7 +2,7 @@ import { Checkbox } from './component/checkbox/checkbox'
 import { Select1, OptionsItem } from './component/select1/select1'
 import { Switch } from './component/switch/switch'
 import { showPopup, closePopup, Popup } from './component/popup/popup'
-import { showDialog, Dialog, DialogAlignment } from './component/dialog/dialog'
+import { showDialog, DialogAlignment } from './component/dialog/dialog'
 import { DateTimePicker } from './component/date-time-picker/date-time-picker'
 import { SelectMultiple } from './component/input-multi-select/input-multi-select'
 import { ProgressBar } from './component/progress-bar/progress-bar'
@@ -49,7 +49,7 @@ export {
   Select1,
   Switch,
   Popup, showPopup, closePopup,
-  Dialog, showDialog, DialogAlignment,
+  showDialog, DialogAlignment,
   DateTimePicker,
   SelectMultiple,
   ProgressBar,

@@ -21,7 +21,7 @@
     height: 0.6rem;
     position: relative;
     overflow: hidden;
-    background-color: var(--full-color);
+    background-color: var(--full-color, #EFEFF0);
 }
 
 .progress-bar-container>.progress-bar-tile>.progress-bar-value::after {
@@ -32,7 +32,7 @@
     width: var(--percent);
     height: 0.6rem;
     border-radius: 10rem;
-    background-color: var(--percent-color);
+    background-color: var(--percent-color, #287CF0);
     transition: width ease-in-out 1s;
 }
 

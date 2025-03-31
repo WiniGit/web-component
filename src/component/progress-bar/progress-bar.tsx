@@ -2,17 +2,17 @@ import { CSSProperties, ReactNode, useState } from 'react'
 import styles from './progress-bar.module.css'
 import { ComponentStatus, getStatusIcon, Winicon } from '../../index'
 
-export function ProgressBar({ id, status = ComponentStatus.INFOR, percent = 100, titleText, title, hideTitle = false, progressBarOnly = false, fullColor = 'var(--neutral-main-background-color)', percentColor = 'var(--primary-main-color)', style, progressBarStyle }: {
+export function ProgressBar({ id, status = ComponentStatus.INFOR, percent = 80, titleText, title, hideTitle = false, progressBarOnly = false, fullColor, percentColor, style, progressBarStyle }: {
     id?: string,
     percent: number,
     titleText?: string,
     title?: ReactNode,
-    hideTitle: boolean,
-    progressBarOnly: boolean,
-    fullColor: string,
-    percentColor: string,
+    hideTitle?: boolean,
+    progressBarOnly?: boolean,
+    fullColor?: string,
+    percentColor?: string,
     style?: CSSProperties,
-    status: ComponentStatus,
+    status?: ComponentStatus,
     progressBarStyle?: CSSProperties
 }) {
     const [openDetails, setOpenDetails] = useState(true)
@@ -22,11 +22,10 @@ export function ProgressBar({ id, status = ComponentStatus.INFOR, percent = 100,
             <div className="heading-8">{titleText}</div>
             <Winicon src={openDetails ? "fill/arrows/down-arrow" : "fill/arrows/up-arrow"} onClick={() => { setOpenDetails(!openDetails) }} />
         </div>)}
-        {openDetails ? <div className={`row ${styles["progress-bar-tile"]}`} >
+        {openDetails ? <div className={`row ${styles["progress-bar-tile"]}`}>
             <div className={styles["progress-bar-value"]} style={{ '--percent-color': percentColor, '--full-color': fullColor, '--percent': `${percent}%`, ...(progressBarStyle ?? {}) } as CSSProperties}></div>
             {progressBarOnly || status === ComponentStatus.INFOR ? null : <div className={`${styles["status-icon"]}`}>{getStatusIcon(status)}</div>}
             {progressBarOnly ? null : <div className='label-4'>{percent}/100</div>}
         </div> : null}
-
     </div>
 }
