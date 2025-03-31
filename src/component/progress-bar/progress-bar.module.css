@@ -33,7 +33,7 @@
     top: 0;
     left: 0;
     width: var(--percent);
-    height: 0.6rem;
+    height: inherit;
     border-radius: 10rem;
     background-color: var(--percent-color, #287CF0);
     transition: width ease-in-out 1s;
