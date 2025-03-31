@@ -22,9 +22,10 @@ add this cdn link into your App.css file. \
 @import url(https://cdn.jsdelivr.net/gh/WiniGit/web-component@latest/src/skin/root.css); \
 @import url(https://cdn.jsdelivr.net/gh/WiniGit/web-component@latest/src/skin/typography.css); \
 @import url(https://cdn.jsdelivr.net/gh/WiniGit/web-component@latest/src/skin/layout.css); \
+\
 row: for horizontal layout. \
 col: for vertical layout. \
-Responsive Design \
+### Responsive Design:
 wini-web-components comes with built-in CSS classes to ensure your UI looks great on all devices. The library supports responsive layouts for:\
 Min Devices (Small phones): < 576px. \
 Small Devices (Phones): Up to 576px. \
@@ -44,27 +45,27 @@ Ex: size64, size56, size48, size40, size24, default is size32. button-grey, butt
 WIcon: A custom icon component for your app.\
 support className: \
 Ex: icon-button, light, size64, size56, size48, size40, size32, size24. \
-Calendar: A date selection component for scheduling and events.
-Carousel: A slideshow component for displaying images or content.
-Checkbox: A customizable checkbox for forms.
-CK-Editor: A rich text editor integration for content creation.
-Date-Time-Picker: A component for selecting dates and times.
-Dialog: A modal dialog for alerts, forms, or custom content.
-Input-File: A file upload input with a clean UI.
-Input-Multi-Select: A multi-select dropdown for forms.
-Input-Text: A styled text input field.
-Input-Textarea: A textarea for longer text input.
-Number-Picker: A component for selecting numerical values.
-Pagination: A pagination component for navigating large datasets.
-Popup: A popup component for notifications or overlays.
-Progress-Bar: A progress bar to show task completion.
-Progress-Circle: A circular progress indicator.
-Radio-Button: A radio button for single-choice selections.
-Rating: A star rating component for reviews or feedback.
-Select: A dropdown select component for forms.
-Slider: A slider for selecting a range of values.
-Switch: A toggle switch for on/off states.
-Table: A responsive table for displaying tabular data.
-Tag: A tag component for categorization or labeling.
-Text-Area: A textarea with additional styling options.
-Text-Field: A general-purpose text input field.
+Calendar: A date selection component for scheduling and events. \
+Carousel: A slideshow component for displaying images or content. \
+Checkbox: A customizable checkbox for forms. \
+CK-Editor: A rich text editor integration for content creation. \
+Date-Time-Picker: A component for selecting dates and times. \
+Dialog: A modal dialog for alerts, forms, or custom content. \
+Input-File: A file upload input with a clean UI. \
+Input-Multi-Select: A multi-select dropdown for forms. \
+Input-Text: A styled text input field.\
+Input-Textarea: A textarea for longer text input. \
+Number-Picker: A component for selecting numerical values. \
+Pagination: A pagination component for navigating large datasets. \
+Popup: A popup component for notifications or overlays. \
+Progress-Bar: A progress bar to show task completion. \
+Progress-Circle: A circular progress indicator. \
+Radio-Button: A radio button for single-choice selections. \
+Rating: A star rating component for reviews or feedback. \
+Select: A dropdown select component for forms. \
+Slider: A slider for selecting a range of values. \
+Switch: A toggle switch for on/off states. \
+Table: A responsive table for displaying tabular data. \
+Tag: A tag component for categorization or labeling. \
+Text-Area: A textarea with additional styling options. \
+Text-Field: A general-purpose text input field. \
