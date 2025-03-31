@@ -39,10 +39,10 @@ Ex: remain, col0, col1, col2, col3, col4, col6, col8, col10, col12, col16, col18
 ### Using code features:
 Components
 wini-web-components includes the following UI components, ready to drop into your React project: \
-#Button: A versatile button component with multiple styles.\
+## Button: A versatile button component with multiple styles.\
 support className: \
 Ex: size64, size56, size48, size40, size24, default is size32. button-grey, button-primary, button-neutral, button-black, button-white, button-infor, button-warning, button-error, button-success, button-infor-main, button-warning-main, button-error-main, button-success-main \
-#WiniIcon: A custom icon component for your app.\
+## WiniIcon: A custom icon component for your app.\
 support className: \
 Ex: icon-button, light, size64, size56, size48, size40, size32, size24. \
 Calendar: A date selection component for scheduling and events. \
