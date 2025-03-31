@@ -2,7 +2,7 @@ import { CSSProperties, ReactNode, useState } from 'react'
 import styles from './progress-bar.module.css'
 import { ComponentStatus, getStatusIcon, Winicon } from '../../index'
 
-export function ProgressBar({ id, status = ComponentStatus.INFOR, percent = 80, titleText, title, hideTitle = false, progressBarOnly = false, fullColor, percentColor, style, progressBarStyle }: {
+export function ProgressBar({ id, status = ComponentStatus.INFOR, percent = 80, titleText, title, hideTitle = false, progressBarOnly = false, fullColor, percentColor, style, progressBarStyle, className = "" }: {
     id?: string,
     percent: number,
     titleText?: string,
@@ -12,12 +12,13 @@ export function ProgressBar({ id, status = ComponentStatus.INFOR, percent = 80, 
     fullColor?: string,
     percentColor?: string,
     style?: CSSProperties,
+    className?: string,
     status?: ComponentStatus,
     progressBarStyle?: CSSProperties
 }) {
     const [openDetails, setOpenDetails] = useState(true)
 
-    return <div id={id} className={`col ${styles["progress-bar-container"]}`} style={style ? { padding: progressBarOnly ? '0' : '1.6rem 2.4rem', ...style } : { padding: progressBarOnly ? '0' : '1.6rem 2.4rem' }}>
+    return <div id={id} className={`col ${styles["progress-bar-container"]} ${className}`} style={style ? { padding: progressBarOnly ? '0' : '1.6rem 2.4rem', ...style } : { padding: progressBarOnly ? '0' : '1.6rem 2.4rem' }}>
         {(hideTitle || progressBarOnly) ? null : (title ?? <div className={`row ${styles["progress-bar-title"]}`}>
             <div className="heading-8">{titleText}</div>
             <Winicon src={openDetails ? "fill/arrows/down-arrow" : "fill/arrows/up-arrow"} onClick={() => { setOpenDetails(!openDetails) }} />
