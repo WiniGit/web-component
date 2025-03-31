@@ -3,6 +3,7 @@ export declare function ProgressCircle(props: {
     id?: string;
     /** value:  0 - 100 (%)*/
     percent?: number;
+    size?: string | number;
     style?: CSSProperties;
     className?: string;
     fillColor?: string;
