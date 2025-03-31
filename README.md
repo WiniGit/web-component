@@ -14,7 +14,7 @@ A modern, lightweight, and highly customizable UI component library for ReactJS 
 
 Install the package via npm:
 
-```bash
+
 npm install wini-web-components
 
 ### Using Skin:
