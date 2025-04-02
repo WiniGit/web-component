@@ -30,6 +30,9 @@ interface Props {
     }>;
     helperText?: string;
     helperTextColor?: string;
+    customConfig?: {
+        [p: string]: any;
+    };
 }
 export declare function CustomCkEditor5(props: Props): import("react/jsx-runtime").JSX.Element;
 export {};

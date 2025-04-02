@@ -406,7 +406,7 @@ interface RadioButtonFormProps extends SimpleFormProps {
 }
 
 export function RadioButtonForm(params: RadioButtonFormProps) {
-    return <div className={`row ${params.className ?? ""}`} style={{ gap: "0.8rem", ...(params.style ?? {}) }}>
+    return <label className={`row ${params.className ?? ""}`} style={{ gap: "0.8rem", ...(params.style ?? {}) }}>
         <RadioButton
             value={params.value}
             disabled={params.disabled}
@@ -415,7 +415,7 @@ export function RadioButtonForm(params: RadioButtonFormProps) {
             register={params.methods.register(params.name, { onChange: params.onChange }) as any}
         />
         {params.label ? <Text className="label-4" maxLine={1}>{params.label}</Text> : null}
-    </div>
+    </label>
 }
 
 interface GroupRadioButtonFormProps extends SimpleFormProps {
@@ -601,9 +601,9 @@ export function GroupCheckboxForm(params: GroupCheckboxFormFrops) {
                 <Text className={"label-3"}>{params.label}</Text>
                 {params.required ? <Text className="label-4" style={{ color: '#E14337' }}>*</Text> : null}
             </div> : null)}
-            <div className={params.className ?? 'col'} style={{ gap: 'inherit', flex: params.className?.includes('row') ? 1 : undefined, flexWrap: params.className?.includes('row') ? 'wrap' : undefined }}>
+            <div className="row" style={{ gap: '1.6rem', flex: 1, flexWrap: 'wrap' }}>
                 {params.options.map(e => {
-                    return <div key={e.id} className="row" style={{ gap: '0.8rem' }}>
+                    return <label key={e.id} className="row" style={{ gap: '0.8rem' }}>
                         <Checkbox
                             disabled={params.disabled}
                             size={'1.6rem'}
@@ -618,7 +618,7 @@ export function GroupCheckboxForm(params: GroupCheckboxFormFrops) {
                             }}
                         />
                         <Text className="label-4" maxLine={1}>{e.name}</Text>
-                    </div>
+                    </label>
                 })}
             </div>
         </div>}

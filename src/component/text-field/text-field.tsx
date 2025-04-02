@@ -9,6 +9,7 @@ interface TextFieldProps {
     defaultValue?: string,
     onChange?: React.ChangeEventHandler<HTMLInputElement>,
     onComplete?: React.KeyboardEventHandler<HTMLInputElement>,
+    onKeyDown?: React.KeyboardEventHandler<HTMLInputElement>,
     onBlur?: React.FocusEventHandler<HTMLInputElement>,
     onFocus?: React.FocusEventHandler<HTMLInputElement>,
     placeholder?: string,
@@ -59,7 +60,7 @@ export class TextField extends React.Component<TextFieldProps> {
                     readOnly={this.props.readOnly}
                     disabled={this.props.disabled}
                     onFocus={this.props.onFocus}
-                    onKeyDown={this.props.onComplete ? (ev) => {
+                    onKeyDown={this.props.onKeyDown ?? (this.props.onComplete ? (ev) => {
                         if (this.props.onComplete) {
                             switch (ev.key.toLowerCase()) {
                                 case "enter":
@@ -69,7 +70,7 @@ export class TextField extends React.Component<TextFieldProps> {
                                     break;
                             }
                         }
-                    } : undefined}
+                    } : undefined)}
                 /> : <input
                     autoComplete={this.props.autoComplete}
                     autoFocus={this.props.autoFocus}
@@ -84,7 +85,7 @@ export class TextField extends React.Component<TextFieldProps> {
                     onChange={this.props.onChange}
                     onFocus={this.props.onFocus}
                     onBlur={this.props.onBlur}
-                    onKeyDown={this.props.onComplete ? (ev) => {
+                    onKeyDown={this.props.onKeyDown ?? (this.props.onComplete ? (ev) => {
                         if (this.props.onComplete) {
                             switch (ev.key.toLowerCase()) {
                                 case "enter":
@@ -94,7 +95,7 @@ export class TextField extends React.Component<TextFieldProps> {
                                     break;
                             }
                         }
-                    } : undefined}
+                    } : undefined)}
                 />}
             {this.props.suffix}
         </div>

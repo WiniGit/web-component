@@ -115,6 +115,7 @@ interface Props {
     fontBgColors?: Array<{ color: string, label: string }>,
     helperText?: string,
     helperTextColor?: string,
+    customConfig?: { [p: string]: any }
 }
 
 export function CustomCkEditor5(props: Props) {
@@ -512,7 +513,7 @@ export function CustomCkEditor5(props: Props) {
                         onBlur={props.onBlur}
                         editor={ClassicEditor}
                         onError={props.onError}
-                        config={editorConfig as any}
+                        config={(props.customConfig ?? editorConfig) as any}
                         {...{ data: props.value, disabled: props.disabled }}
                     />
                 )}

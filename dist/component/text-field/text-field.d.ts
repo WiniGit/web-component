@@ -7,6 +7,7 @@ interface TextFieldProps {
     defaultValue?: string;
     onChange?: React.ChangeEventHandler<HTMLInputElement>;
     onComplete?: React.KeyboardEventHandler<HTMLInputElement>;
+    onKeyDown?: React.KeyboardEventHandler<HTMLInputElement>;
     onBlur?: React.FocusEventHandler<HTMLInputElement>;
     onFocus?: React.FocusEventHandler<HTMLInputElement>;
     placeholder?: string;
