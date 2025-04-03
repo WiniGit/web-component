@@ -17,11 +17,11 @@ import { ViewById } from "../view/viewById"
 import { regexGetVariableByThis, regexGetVariables, regexWatchDoubleQuote, regexWatchSingleQuote, replaceVariableByThis, replaceVariables } from "../card/config"
 import { ConfigData } from "../../controller/config"
 import { supportProperties } from "./config"
+import { Rating } from "../../component/rating/rating"
+import { ProgressBar } from "../../component/progress-bar/progress-bar"
+import { ProgressCircle } from "../../component/progress-circle/progress-circle"
 
 interface Props {
-    /**
-     * replace layer by id. Ex: { "gid": <Text className="heading-7">Example</Text> }
-     * */
     methods?: UseFormReturn
 }
 
@@ -37,6 +37,9 @@ interface RenderPageProps extends Props {
      * replace children of parent layer by id. Ex: { "gid": <Text className="heading-7">Example</Text> }
      * */
     childrenData?: { [p: string]: ReactNode },
+    /**
+     * replace layer by id. Ex: { "gid": <Text className="heading-7">Example</Text> }
+     * */
     itemData?: { [p: string]: ReactNode },
 }
 
@@ -409,6 +412,12 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
                     onError={(ev) => { ev.currentTarget.src = "https://cdn.jsdelivr.net/gh/WiniGit/icon-library@latest/color/multimedia/image.svg" }}
                     {...customProps}
                 />
+            case ComponentType.rate:
+                return <Rating {...customProps} />
+            case ComponentType.progressBar:
+                return <ProgressBar {...customProps} progressBarOnly />
+            case ComponentType.progressCircle:
+                return <ProgressCircle {...customProps} />
             case ComponentType.icon:
                 if (dataValue) return <Winicon {...customProps} src={dataValue} />
                 else if (props.item.NameField) return null
@@ -430,17 +439,21 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
                 }
                 if (tmpProps.controller && tmpProps.controller !== "all") {
                     let newController = { ...tmpProps.controller }
-                    if (regexGetVariableByThis.test(newController.searchRaw)) {
+                    if (newController.searchRaw && regexGetVariableByThis.test(newController.searchRaw)) {
                         const newSearchRaw = replaceThisVariables(newController.searchRaw)
                         newController.searchRaw = newSearchRaw
                     }
-                    if (regexGetVariableByThis.test(`${newController.page}`)) {
+                    if (newController.page && regexGetVariableByThis.test(`${newController.page}`)) {
                         const newPageIndex = replaceThisVariables(`${newController.page}`)
                         newController.page = parseInt(newPageIndex)
                     }
-                    if (regexGetVariableByThis.test(`${newController.size}`)) {
+                    if (newController.size && regexGetVariableByThis.test(`${newController.size}`)) {
                         const newPageSize = replaceThisVariables(`${newController.size}`)
                         newController.page = parseInt(newPageSize)
+                    }
+                    if (newController.ids && regexGetVariableByThis.test(newController.ids)) {
+                        const getByIds = replaceThisVariables(newController.ids)
+                        newController.ids = getByIds
                     }
                     tmpProps.controller = newController
                 }

@@ -26,7 +26,7 @@ interface Props {
     cardData?: { [p: string]: any },
     style?: CSSProperties,
     className?: string,
-    controller?: "all" | { page: number, size: number, searchRaw?: string, filter?: string, sortby?: Array<{ prop: string, direction?: "ASC" | "DESC" }> },
+    controller?: "all" | { page: number, size: number, searchRaw?: string, filter?: string, sortby?: Array<{ prop: string, direction?: "ASC" | "DESC" }> } | { ids: string, maxLength?: number | "none" },
     loadMore?: boolean,
     methods?: UseFormReturn,
     emptyLink?: string
@@ -60,65 +60,88 @@ export const CardById = (props: CardProps) => {
         if (!props.controller) return { page: 1, size: 8, searchRaw: "*" }
         if (props.controller === "all") return props.controller
         let newController = { ...props.controller } as any
-        if (regexGetVariables.test(newController.searchRaw)) {
-            const newSearchRaw = newController.searchRaw.replace(replaceVariables, (m: string) => {
-                const execRegex = regexGetVariables.exec(m)
-                if (!execRegex?.[1]) return m
-                const variable = execRegex[1].split(".")
-                switch (variable[0]) {
-                    case "query":
-                        return query.get(variable[1])
-                    case "params":
-                        return params[variable[1]]
-                    default:
-                        if (regexWatchSingleQuote.test(execRegex[1])) {
-                            return (props.methods ?? methods).watch(execRegex[1].match(regexWatchSingleQuote)![1])
-                        } else if (regexWatchDoubleQuote.test(execRegex[1])) {
-                            return (props.methods ?? methods).watch(execRegex[1].match(regexWatchDoubleQuote)![1])
-                        } else return m
-                }
-            })
-            newController.searchRaw = newSearchRaw
-        }
-        if (regexGetVariables.test(`${newController.page}`)) {
-            const newPageIndex = `${newController.page}`.replace(replaceVariables, (m: string) => {
-                const execRegex = regexGetVariables.exec(m)
-                if (!execRegex?.[1]) return m
-                const variable = execRegex[1].split(".")
-                switch (variable[0]) {
-                    case "query":
-                        return query.get(variable[1])
-                    case "params":
-                        return params[variable[1]]
-                    default:
-                        if (regexWatchSingleQuote.test(execRegex[1])) {
-                            return (props.methods ?? methods).watch(execRegex[1].match(regexWatchSingleQuote)![1])
-                        } else if (regexWatchDoubleQuote.test(execRegex[1])) {
-                            return (props.methods ?? methods).watch(execRegex[1].match(regexWatchDoubleQuote)![1])
-                        } else return m
-                }
-            })
-            newController.page = parseInt(newPageIndex)
-        }
-        if (regexGetVariables.test(`${newController.size}`)) {
-            const newPageSize = `${newController.size}`.replace(replaceVariables, (m: string) => {
-                const execRegex = regexGetVariables.exec(m)
-                if (!execRegex?.[1]) return m
-                const variable = execRegex[1].split(".")
-                switch (variable[0]) {
-                    case "query":
-                        return query.get(variable[1])
-                    case "params":
-                        return params[variable[1]]
-                    default:
-                        if (regexWatchSingleQuote.test(execRegex[1])) {
-                            return (props.methods ?? methods).watch(execRegex[1].match(regexWatchSingleQuote)![1])
-                        } else if (regexWatchDoubleQuote.test(execRegex[1])) {
-                            return (props.methods ?? methods).watch(execRegex[1].match(regexWatchDoubleQuote)![1])
-                        } else return m
-                }
-            })
-            newController.page = parseInt(newPageSize)
+        if (newController.searchRaw) {
+            if (regexGetVariables.test(newController.searchRaw)) {
+                const newSearchRaw = newController.searchRaw.replace(replaceVariables, (m: string) => {
+                    const execRegex = regexGetVariables.exec(m)
+                    if (!execRegex?.[1]) return m
+                    const variable = execRegex[1].split(".")
+                    switch (variable[0]) {
+                        case "query":
+                            return query.get(variable[1])
+                        case "params":
+                            return params[variable[1]]
+                        default:
+                            if (regexWatchSingleQuote.test(execRegex[1])) {
+                                return (props.methods ?? methods).watch(execRegex[1].match(regexWatchSingleQuote)![1])
+                            } else if (regexWatchDoubleQuote.test(execRegex[1])) {
+                                return (props.methods ?? methods).watch(execRegex[1].match(regexWatchDoubleQuote)![1])
+                            } else return m
+                    }
+                })
+                newController.searchRaw = newSearchRaw
+            }
+            if (regexGetVariables.test(`${newController.page}`)) {
+                const newPageIndex = `${newController.page}`.replace(replaceVariables, (m: string) => {
+                    const execRegex = regexGetVariables.exec(m)
+                    if (!execRegex?.[1]) return m
+                    const variable = execRegex[1].split(".")
+                    switch (variable[0]) {
+                        case "query":
+                            return query.get(variable[1])
+                        case "params":
+                            return params[variable[1]]
+                        default:
+                            if (regexWatchSingleQuote.test(execRegex[1])) {
+                                return (props.methods ?? methods).watch(execRegex[1].match(regexWatchSingleQuote)![1])
+                            } else if (regexWatchDoubleQuote.test(execRegex[1])) {
+                                return (props.methods ?? methods).watch(execRegex[1].match(regexWatchDoubleQuote)![1])
+                            } else return m
+                    }
+                })
+                newController.page = parseInt(newPageIndex)
+            }
+            if (regexGetVariables.test(`${newController.size}`)) {
+                const newPageSize = `${newController.size}`.replace(replaceVariables, (m: string) => {
+                    const execRegex = regexGetVariables.exec(m)
+                    if (!execRegex?.[1]) return m
+                    const variable = execRegex[1].split(".")
+                    switch (variable[0]) {
+                        case "query":
+                            return query.get(variable[1])
+                        case "params":
+                            return params[variable[1]]
+                        default:
+                            if (regexWatchSingleQuote.test(execRegex[1])) {
+                                return (props.methods ?? methods).watch(execRegex[1].match(regexWatchSingleQuote)![1])
+                            } else if (regexWatchDoubleQuote.test(execRegex[1])) {
+                                return (props.methods ?? methods).watch(execRegex[1].match(regexWatchDoubleQuote)![1])
+                            } else return m
+                    }
+                })
+                newController.page = parseInt(newPageSize)
+            }
+        } else if (newController.ids) {
+            if (regexGetVariables.test(newController.ids)) {
+                const newIds = newController.ids.replace(replaceVariables, (m: string) => {
+                    const execRegex = regexGetVariables.exec(m)
+                    if (!execRegex?.[1]) return m
+                    const variable = execRegex[1].split(".")
+                    switch (variable[0]) {
+                        case "query":
+                            return query.get(variable[1])
+                        case "params":
+                            return params[variable[1]]
+                        default:
+                            if (regexWatchSingleQuote.test(execRegex[1])) {
+                                return (props.methods ?? methods).watch(execRegex[1].match(regexWatchSingleQuote)![1])
+                            } else if (regexWatchDoubleQuote.test(execRegex[1])) {
+                                return (props.methods ?? methods).watch(execRegex[1].match(regexWatchDoubleQuote)![1])
+                            } else return m
+                    }
+                })
+                newController.ids = newIds
+            }
         }
         return newController
     }, [props.controller])
@@ -145,13 +168,14 @@ export const CardById = (props: CardProps) => {
             returns: ["Id", "Column", "TablePK"]
         })
         if (_rels.code === 200) {
-            const relRes = await Promise.all(_rels.data.map((relItem: any) => {
-                const relKeyFilter = relKeys.filter((e: any) => e.split(".")[0] === relItem.Column).map((e: any) => e.split(".")[1])
-                return _colController.getListSimple({ page: 1, size: 100, query: `@TableName:{${relItem.TablePK}} @Name:{${relKeyFilter.join(" | ")}}` })
-            }))
-            if (relRes.every(e => e.code === 200)) {
-                methods.setValue("_rels", relRes.map(e => e.data).flat(Infinity))
-            }
+            const relRes = await _colController.getListSimple({
+                page: 1, size: _rels.data.length * 50,
+                query: `@TableName:{${_rels.data.map((e: any) => e.TablePK).join(" | ")}} @Name:{${_rels.data.map((relItem: any) => {
+                    const relKeyFilter = relKeys.filter((e: any) => e.split(".")[0] === relItem.Column).map((e: any) => e.split(".")[1])
+                    return relKeyFilter
+                }).flat(Infinity).join(" | ")}}`
+            })
+            if (relRes.code === 200) methods.setValue("_rels", relRes.data)
         }
     }
 
@@ -168,7 +192,7 @@ export const CardById = (props: CardProps) => {
         } else if (controller === "all") {
             const res = await dataController.getAll()
             if (res.code === 200) tmp = { data: res.data, totalCount: res.data.length }
-        } else {
+        } else if (controller.searchRaw) {
             const tmpController = { ...controller, searchRaw: controller!.searchRaw ?? "*" }
             if (page) tmpController.page = page
             if (regexEmptyKeyController.test(tmpController.searchRaw)) {
@@ -182,6 +206,12 @@ export const CardById = (props: CardProps) => {
                 res = await dataController.aggregateList(tmpController)
             }
             if (res.code === 200) tmp = { data: page ? [...data.data, ...res.data] : res.data, totalCount: res.totalCount }
+        } else { // get by ids
+            let listIds = controller.ids.split(",")
+            if (controller.maxLength && controller.maxLength !== "none") listIds = listIds.slice(0, controller.maxLength)
+            const res = await dataController.getByListId(listIds)
+            const listData = res.data.filter((e: any) => e !== undefined && e !== null)
+            if (res.code === 200) tmp = { data: listData, totalCount: listData.length }
         }
         if (!tmp) return undefined
         const relKeys = keyNames.filter((e: string) => e.split(".").length > 1).map((e: string) => e.split(".")[0]).filter((e, i, arr) => arr.indexOf(e) === i)
@@ -189,7 +219,8 @@ export const CardById = (props: CardProps) => {
             for (const k of relKeys) {
                 const currentTmp = methods.getValues(`_${k}`) ?? []
                 const dataController = new DataController(k.replace("Id", ""))
-                dataController.getByListId(tmp.data.map((e: any) => e[k]?.split(",")).flat(Infinity).filter((e: string | undefined, i: number, arr: Array<string>) => e?.length && currentTmp.every((el: any) => el.Id !== e) && arr.indexOf(e) === i)).then(relRes => {
+                const relDataIds = tmp.data.map((e: any) => e[k]?.split(",")).flat(Infinity).filter((e: string | undefined, i: number, arr: Array<string>) => e?.length && currentTmp.every((el: any) => el.Id !== e) && arr.indexOf(e) === i)
+                dataController.getByListId(relDataIds).then(relRes => {
                     if (relRes.code === 200) methods.setValue(`_${k}`, relRes.data)
                 })
             }

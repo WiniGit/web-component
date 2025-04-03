@@ -16,6 +16,8 @@ export enum ComponentType {
     dateTimePicker = 'DateTimePicker',
     navLink = 'Navlink',
     rate = 'Rate',
+    progressBar = 'ProgressBar',
+    progressCircle = 'ProgressCircle',
     upload = 'Upload',
     importMultipleFile = 'ImportMultiple',
     ckEditor = 'CkEditor',
