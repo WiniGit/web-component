@@ -47,6 +47,9 @@ interface Props {
             prop: string;
             direction?: "ASC" | "DESC";
         }>;
+    } | {
+        ids: string;
+        maxLength?: number | "none";
     };
     loadMore?: boolean;
     methods?: UseFormReturn;

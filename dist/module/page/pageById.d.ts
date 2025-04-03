@@ -1,9 +1,6 @@
 import { CSSProperties, MouseEventHandler, ReactNode } from 'react';
 import { UseFormReturn } from 'react-hook-form';
 interface Props {
-    /**
-     * replace layer by id. Ex: { "gid": <Text className="heading-7">Example</Text> }
-     * */
     methods?: UseFormReturn;
 }
 interface RenderLayerElementProps extends Props {
