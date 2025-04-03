@@ -611,7 +611,7 @@ export function GroupCheckboxForm(params: GroupCheckboxFormFrops) {
                             onChange={(vl) => {
                                 let listValue = params.dataType === 'string' ? (field.value?.split(',') ?? []) : field.value
                                 if (vl) listValue.push(e.id)
-                                else listValue = listValue.filter((el: any) => el.id !== e.id)
+                                else listValue = listValue.filter((el: any) => el !== e.id)
                                 listValue = params.dataType === 'string' ? listValue.join(',') : listValue
                                 field.onChange(listValue)
                                 if (params.onChange) params.onChange(listValue)
