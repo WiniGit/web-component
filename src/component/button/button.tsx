@@ -18,7 +18,11 @@ interface ButtonProps {
      * status button: button-primary | button-infor | button-warning | button-error | button-success | button-grey | button-neutral | button-infor-main | button-warning-main | button-error-main | button-success-main
      * */
     className?: string,
-    onClick?: React.MouseEventHandler<HTMLButtonElement | HTMLAnchorElement>
+    onClick?: React.MouseEventHandler<HTMLButtonElement | HTMLAnchorElement>,
+    onFocus?: React.FocusEventHandler<HTMLButtonElement | HTMLAnchorElement>,
+    onMouseEnter?: React.MouseEventHandler<HTMLButtonElement | HTMLAnchorElement>,
+    onMouseLeave?: React.MouseEventHandler<HTMLButtonElement | HTMLAnchorElement>,
+    onMouseMove?: React.MouseEventHandler<HTMLButtonElement | HTMLAnchorElement>
 }
 
 export function Button(props: ButtonProps) {
@@ -45,11 +49,19 @@ export function Button(props: ButtonProps) {
         }
     }, [props.type, btnRef.current])
 
-    return props.linkTo ? <a id={props.id} href={props.disabled ? undefined : props.linkTo} target={props.target} className={`${styles['button-container']} row ${props.className ?? "button-text-3"}`} style={props.style} onClick={props.onClick}>
+    return props.linkTo ? <a id={props.id} href={props.disabled ? undefined : props.linkTo} target={props.target} className={`${styles['button-container']} row ${props.className ?? "button-text-3"}`} style={props.style} onClick={props.onClick} onFocus={props.onFocus} onMouseEnter={props.onMouseEnter} onMouseLeave={props.onMouseLeave} onMouseMove={props.onMouseMove}>
         {props.prefix}
         <Text maxLine={1} className={styles['button-label']}>{props.label}</Text>
         {props.suffix}
-    </a> : <button ref={btnRef} id={props.id} type={props.type ?? "button"} disabled={props.disabled} className={`${styles['button-container']} row ${props.className ?? "button-text-3"}`} style={props.style} onClick={props.onClick}>
+    </a> : <button ref={btnRef} id={props.id} type={props.type ?? "button"} disabled={props.disabled} className={`${styles['button-container']} row ${props.className ?? "button-text-3"}`} style={props.style} onClick={props.onClick} onFocus={props.onFocus} onMouseEnter={props.onMouseEnter} onMouseLeave={props.onMouseLeave} onMouseMove={props.onMouseMove}>
+        {props.prefix}
+        <Text maxLine={1} className={styles['button-label']}>{props.label}</Text>
+        {props.suffix}
+    </button>
+}
+
+export function SimpleButton(props: ButtonProps) {
+    return <button id={props.id} type={"button"} disabled={props.disabled} className={`row ${props.className ?? ""}`} style={props.style} onClick={props.onClick} onFocus={props.onFocus} onMouseEnter={props.onMouseEnter} onMouseLeave={props.onMouseLeave} onMouseMove={props.onMouseMove}>
         {props.prefix}
         <Text maxLine={1} className={styles['button-label']}>{props.label}</Text>
         {props.suffix}

@@ -10,11 +10,11 @@ import { Popup } from "../../component/popup/popup"
 import { showPopup } from "../../component/popup/popup"
 import { closePopup } from "../../component/popup/popup"
 import { NavLink, useLocation, useNavigate, useParams } from "react-router-dom"
-import { Button } from "../../component/button/button"
+import { SimpleButton } from "../../component/button/button"
 import { useForm, UseFormReturn } from "react-hook-form"
 import { Util } from "../../controller/utils"
 import { ViewById } from "../view/viewById"
-import { regexGetVariableByThis, regexGetVariables, regexWatchDoubleQuote, regexWatchSingleQuote, replaceVariableByThis, replaceVariables } from "../card/config"
+import { regexGetVariableByThis, regexGetVariables, regexWatchDoubleQuote, regexWatchSingleQuote, replaceVariables } from "../card/config"
 import { ConfigData } from "../../controller/config"
 import { supportProperties } from "./config"
 import { Rating } from "../../component/rating/rating"
@@ -79,9 +79,26 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
     const navigate = useNavigate()
     const children = useMemo(() => props.list.filter(e => e.ParentId === props.item.Id), [props.list, props.item])
     const replaceThisVariables = (content: string) => {
-        return content.replace(replaceVariableByThis, (m: string) => {
-            const execRegex = regexGetVariableByThis.exec(m)
-            return props.indexItem && execRegex?.[1] ? props.indexItem[execRegex[1]] : m
+        return content.replace(replaceVariables, (m: string) => {
+            const execRegex = regexGetVariables.exec(m)
+            if (!execRegex?.[1]) return m
+            const variable = execRegex[1].split(".")
+            switch (variable[0]) {
+                case "this":
+                    return props.indexItem?.[variable[1]]
+                case "location":
+                    return (location as any)[variable[1]]
+                case "query":
+                    return query.get(variable[1])
+                case "params":
+                    return params[variable[1]]
+                default:
+                    if (regexWatchSingleQuote.test(execRegex[1])) {
+                        return props.methods!.watch(execRegex[1].match(regexWatchSingleQuote)![1])
+                    } else if (regexWatchDoubleQuote.test(execRegex[1])) {
+                        return props.methods!.watch(execRegex[1].match(regexWatchDoubleQuote)![1])
+                    } return m
+            }
         })
     }
     const watchForCustomProps = useMemo(() => {
@@ -154,7 +171,7 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
                         switch (actItem.Action) {
                             case ActionType.navigate:
                                 if (actItem.To) {
-                                    if (props.indexItem && regexGetVariableByThis.test(actItem.To)) {
+                                    if (props.indexItem && regexGetVariables.test(actItem.To)) {
                                         const url = replaceThisVariables(actItem.To)
                                         if (url.includes("https")) window.open(url, "_blank")
                                         else navigate((url.startsWith("/") ? "/" : "") + url.split("/").filter((e: string) => !!e.trim()).join("/"))
@@ -324,7 +341,7 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
                 let navLinkProps = { ...customProps }
                 if (dataValue && dataValue.backgroundImage) navLinkProps = { ...customProps, style: { ...customProps.style, ...dataValue } }
                 if (navLinkProps.to) {
-                    if (props.indexItem && regexGetVariableByThis.test(navLinkProps.to)) {
+                    if (props.indexItem && regexGetVariables.test(navLinkProps.to)) {
                         const url = replaceThisVariables(navLinkProps.to)
                         if (url.includes("https")) navLinkProps.target = "_blank"
                         navLinkProps.to = (url.startsWith("/") ? "/" : "") + url.split("/").filter((e: string) => !!e.trim()).join("/")
@@ -439,21 +456,26 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
                 }
                 if (tmpProps.controller && tmpProps.controller !== "all") {
                     let newController = { ...tmpProps.controller }
-                    if (newController.searchRaw && regexGetVariableByThis.test(newController.searchRaw)) {
+                    if (newController.searchRaw && regexGetVariables.test(newController.searchRaw)) {
                         const newSearchRaw = replaceThisVariables(newController.searchRaw)
                         newController.searchRaw = newSearchRaw
                     }
-                    if (newController.page && regexGetVariableByThis.test(`${newController.page}`)) {
+                    if (newController.page && regexGetVariables.test(`${newController.page}`)) {
                         const newPageIndex = replaceThisVariables(`${newController.page}`)
                         newController.page = parseInt(newPageIndex)
                     }
-                    if (newController.size && regexGetVariableByThis.test(`${newController.size}`)) {
+                    if (newController.size && regexGetVariables.test(`${newController.size}`)) {
                         const newPageSize = replaceThisVariables(`${newController.size}`)
                         newController.page = parseInt(newPageSize)
                     }
-                    if (newController.ids && regexGetVariableByThis.test(newController.ids)) {
-                        const getByIds = replaceThisVariables(newController.ids)
-                        newController.ids = getByIds
+                    if (newController.ids && regexGetVariables.test(newController.ids)) {
+                        if (regexGetVariableByThis.test(newController.ids)) {
+                            const relativeModule = regexGetVariableByThis.exec(newController.ids)![1]
+                            tmpProps.cardData = (props.methods?.watch(props.item.Id) ?? []).filter((e: any) => props.indexItem?.[relativeModule]?.includes(e.Id))
+                        } else {
+                            const getByIds = replaceThisVariables(newController.ids)
+                            newController.ids = getByIds
+                        }
                     }
                     tmpProps.controller = newController
                 }
@@ -462,7 +484,7 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
                 return <ViewById {...customProps} id={customProps.viewId} />
             case ComponentType.popup:
                 customProps.id = props.item.Id
-                return <ActionPopup {...customProps} >
+                return <ActionPopup {...customProps}>
                     {children.map(e => <RenderLayerElement key={e.Id} {...props} item={e} style={undefined} className={undefined} />)}
                 </ActionPopup>
             case ComponentType.button:
@@ -473,7 +495,7 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
                     if (iconPrefix) btnProps.prefix = <RenderLayerElement {...props} item={iconPrefix} style={undefined} className={undefined} />
                     if (iconSuffix) btnProps.suffix = <RenderLayerElement {...props} item={iconSuffix} style={undefined} className={undefined} />
                 }
-                return <Button {...btnProps} />
+                return <SimpleButton {...btnProps} />
             default:
                 return <div {...customProps} />
         }

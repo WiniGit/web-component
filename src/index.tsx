@@ -21,7 +21,7 @@ import { Rating } from './component/rating/rating'
 import { ProgressCircle } from './component/progress-circle/progress-circle'
 import { Carousel } from './component/carousel/carousel'
 import { ToastContainer } from 'react-toastify'
-import { Button } from './component/button/button'
+import { Button, SimpleButton } from './component/button/button'
 import { Tag } from './component/tag/tag'
 import { Winicon } from './component/wini-icon/winicon'
 import { NumberPicker } from './component/number-picker/number-picker'
@@ -66,7 +66,7 @@ export {
   ProgressCircle,
   Carousel,
   ToastContainer,
-  Button,
+  Button, SimpleButton,
   Tag,
   Winicon,
   NumberPicker,
