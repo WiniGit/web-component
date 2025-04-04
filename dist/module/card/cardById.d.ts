@@ -31,11 +31,11 @@ interface Props {
         }, index: number) => ReactNode;
     };
     /**
-     * json object data. Ex: {Id: 1, Name: "Example", ...}
+     * list json object data. Ex: {Id: 1, Name: "Example", ...}
      * */
-    cardData?: {
+    cardData?: Array<{
         [p: string]: any;
-    };
+    }>;
     style?: CSSProperties;
     className?: string;
     controller?: "all" | {

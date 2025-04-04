@@ -16,7 +16,12 @@ interface ButtonProps {
      * */
     className?: string;
     onClick?: React.MouseEventHandler<HTMLButtonElement | HTMLAnchorElement>;
+    onFocus?: React.FocusEventHandler<HTMLButtonElement | HTMLAnchorElement>;
+    onMouseEnter?: React.MouseEventHandler<HTMLButtonElement | HTMLAnchorElement>;
+    onMouseLeave?: React.MouseEventHandler<HTMLButtonElement | HTMLAnchorElement>;
+    onMouseMove?: React.MouseEventHandler<HTMLButtonElement | HTMLAnchorElement>;
 }
 export declare function Button(props: ButtonProps): import("react/jsx-runtime").JSX.Element;
+export declare function SimpleButton(props: ButtonProps): import("react/jsx-runtime").JSX.Element;
 export {};
 //# sourceMappingURL=button.d.ts.map
