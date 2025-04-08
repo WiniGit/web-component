@@ -4,7 +4,7 @@ import { ConfigData } from "../controller/config"
 import { TableController, WiniController } from "../controller/setting"
 import { Dialog } from "../component/dialog/dialog"
 import { ToastContainer } from 'react-toastify'
-import { ProjectItem } from "./da"
+import { DesignTokenType, ProjectItem } from "./da"
 
 interface Props {
     /**
@@ -21,6 +21,45 @@ interface Props {
     onProjectLoaded?: (item: ProjectItem) => void
 }
 
+const appendDesignTokens = (list: Array<{ [p: string]: any }>) => {
+    const designTokens = list.map(e => e.Value ? { ...e, Value: typeof e.Value === "string" ? JSON.parse(e.Value) : e.Value } : e)
+    if (designTokens.length) {
+        const tokenValues = designTokens.filter(e => e.Type !== DesignTokenType.group && (e.Value?.lightMode || e.Value?.darkMode))
+        let styleElement = (document.head.querySelector(":scope > .designTokens") ?? document.createElement('style')) as any;
+        styleElement.type = 'text/css';
+        const colorVariables = tokenValues.filter(e => e.Type === DesignTokenType.color)
+        const classVariables = tokenValues.filter(e => e.Type !== DesignTokenType.color)
+        const _innerHTML = `
+        html { \n${colorVariables.map(e => e.Value?.lightMode ? `${e.Name}: ${e.Value.lightMode};` : "").join('\n')}\n }\n\n
+        html.dark { \n${colorVariables.map(e => e.Value?.darkMode ? `${e.Name}: ${e.Value.darkMode};` : "").join('\n')}\n }\n\n
+        ${classVariables.map(e => {
+            let classValue: string | undefined = undefined
+            switch (e.Type) {
+                case DesignTokenType.font:
+                    classValue = `font: ${e.Value.lightMode}`
+                    break;
+                case DesignTokenType.border:
+                    classValue = `border: ${e.Value.lightMode}`
+                    break;
+                case DesignTokenType.boxShadow:
+                    classValue = `box-shadow: ${e.Value.lightMode}`
+                    break;
+                case DesignTokenType.custom:
+                    return e.Value.lightMode
+                default:
+                    break;
+            }
+            return classValue ? `.${e.Name} { \n${classValue};\n }` : ""
+        }).join('\n')}
+        `
+        styleElement.innerHTML = _innerHTML;
+        if (!styleElement.classList.contains("designTokens")) {
+            styleElement.classList.add("designTokens")
+            document.head.appendChild(styleElement)
+        }
+    }
+}
+
 export const WiniProvider = (props: Props) => {
     ConfigData.pid = props.pid
     ConfigData.url = props.url
@@ -31,20 +70,7 @@ export const WiniProvider = (props: Props) => {
         ConfigData.pid = props.pid
         const _desginTokenController = new TableController("designtoken")
         _desginTokenController.getAll().then(res => {
-            if (res.code === 200 && res.data.length) {
-                const designTokens = res.data.map((e: any) => {
-                    return { ...e, Value: typeof e.Value === "string" ? JSON.parse(e.Value) : e.Value }
-                })
-                const tokenValues = designTokens.filter((e: any) => e.Type !== "group")
-                let styleElement = document.head.querySelector(":scope > .designTokens") ?? document.createElement('style') as any;
-                styleElement.type = 'text/css';
-                const _innerHTML = `html { \n${tokenValues.map((e: any) => e.Value?.lightMode ? `${e.Name}: ${e.Value.lightMode};` : "").join('\n')}\n }\n\nhtml.dark { \n${tokenValues.map((e: any) => e.Value?.darkMode ? `${e.Name}: ${e.Value.darkMode};` : "").join('\n')}\n }`
-                styleElement.innerHTML = _innerHTML;
-                if (!styleElement.classList.contains("designTokens")) {
-                    styleElement.classList.add("designTokens")
-                    document.head.appendChild(styleElement)
-                }
-            }
+            if (res.code === 200 && res.data.length) appendDesignTokens(res.data)
         })
         const projectController = new WiniController("Project")
         projectController.getByIds([props.pid]).then(res => {

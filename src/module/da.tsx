@@ -108,3 +108,12 @@ export interface ProjectItem {
     Domain: string,
     Sologan?: string
 }
+
+export enum DesignTokenType {
+    group = "group",
+    color = "color",
+    font = "font",
+    border = "border",
+    boxShadow = "box-shadow",
+    custom = "custom",
+}
