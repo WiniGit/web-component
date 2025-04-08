@@ -96,4 +96,12 @@ export interface ProjectItem {
     Domain: string;
     Sologan?: string;
 }
+export declare enum DesignTokenType {
+    group = "group",
+    color = "color",
+    font = "font",
+    border = "border",
+    boxShadow = "box-shadow",
+    custom = "custom"
+}
 //# sourceMappingURL=da.d.ts.map
