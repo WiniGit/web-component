@@ -409,12 +409,13 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
                     </div>
                 }
             case ComponentType.text:
-                if (dataValue) {
+                if (props.item.NameField) {
                     if (typeof dataValue === "object") return <Text {...customProps} html={dataValue["__html"]} />
                     else return <Text {...customProps}>{dataValue}</Text>
                 } else return <Text {...customProps}>{customProps.value ?? ""}</Text>
             case ComponentType.img:
-                if (dataValue) {
+                if (props.item.NameField) {
+                    if (!dataValue) return null
                     return <img
                         key={dataValue}
                         alt=""
@@ -430,10 +431,13 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
                     {...customProps}
                 />
             case ComponentType.rate:
-                return <Rating {...customProps} />
+                if (props.item.NameField) return <Rating {...customProps} value={dataValue} />
+                else return <Rating {...customProps} />
             case ComponentType.progressBar:
-                return <ProgressBar {...customProps} progressBarOnly />
+                if (props.item.NameField) return <ProgressBar {...customProps} progressBarOnly percent={dataValue} />
+                else return <ProgressBar {...customProps} progressBarOnly />
             case ComponentType.progressCircle:
+                if (props.item.NameField) return <ProgressCircle {...customProps} percent={dataValue} />
                 return <ProgressCircle {...customProps} />
             case ComponentType.icon:
                 if (dataValue) return <Winicon {...customProps} src={dataValue} />
@@ -471,7 +475,7 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
                     if (newController.ids && regexGetVariables.test(newController.ids)) {
                         if (regexGetVariableByThis.test(newController.ids)) {
                             const relativeModule = regexGetVariableByThis.exec(newController.ids)![1]
-                            tmpProps.cardData = (props.methods?.watch(props.item.Id) ?? []).filter((e: any) => props.indexItem?.[relativeModule]?.includes(e.Id))
+                            tmpProps.cardData = (props.methods?.watch(`_${relativeModule}`) ?? []).filter((e: any) => props.indexItem?.[relativeModule]?.includes(e.Id))
                         } else {
                             const getByIds = replaceThisVariables(newController.ids)
                             newController.ids = getByIds

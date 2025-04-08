@@ -126,15 +126,16 @@ export const CardById = (props: CardProps) => {
             if (res.code === 200) tmp = { data: listData, totalCount: listData.length }
         }
         if (!tmp) return undefined
-        const relKeys = layers.filter((e: any) => e.Type === ComponentType.card && e.Setting.controller.ids && regexGetVariableByThis.test(e.Setting.controller.ids))
+        let relKeys = layers.filter((e: any) => e.Type === ComponentType.card && e.Setting.controller.ids && regexGetVariableByThis.test(e.Setting.controller.ids)).map((e: any) => regexGetVariableByThis.exec(e.Setting.controller.ids)![1])
+        relKeys.push(...keyNames.filter((e: string) => e.split(".").length > 1).map((e: string) => e.split(".")[0]))
+        relKeys = relKeys.filter((e: string, i: number, arr: Array<string>) => arr.indexOf(e) === i)
         if (relKeys.length) {
             for (const k of relKeys) {
-                const currentTmp = methods.getValues(k.Id) ?? []
-                const relativeModule = regexGetVariableByThis.exec(k.Setting.controller.ids)![1]
-                const dataController = new DataController(relativeModule.replace("Id", ""))
-                const relDataIds = tmp.data.map((e: any) => e[relativeModule]?.split(",")).flat(Infinity).filter((e: string | undefined, i: number, arr: Array<string>) => e?.length && currentTmp.every((el: any) => el.Id !== e) && arr.indexOf(e) === i)
+                const currentTmp = methods.getValues(`_${k}`) ?? []
+                const dataController = new DataController(k.replace("Id", ""))
+                const relDataIds = tmp.data.map((e: any) => e[k]?.split(",")).flat(Infinity).filter((e: string | undefined, i: number, arr: Array<string>) => e?.length && currentTmp.every((el: any) => el.Id !== e) && arr.indexOf(e) === i)
                 dataController.getByListId(relDataIds).then(relRes => {
-                    if (relRes.code === 200) methods.setValue(k.Id, relRes.data.filter((e: any) => e !== undefined && e !== null))
+                    if (relRes.code === 200) methods.setValue(`_${k}`, relRes.data.filter((e: any) => e !== undefined && e !== null))
                 })
             }
         }
