@@ -1,6 +1,10 @@
+.simple-text-field,
 .text-field-container {
     position: relative;
     box-sizing: border-box;
+}
+
+.text-field-container {
     padding: 0.8rem 1.5rem;
     border: var(--neutral-main-border);
     border-radius: 0.8rem;
@@ -35,13 +39,14 @@ input::-webkit-inner-spin-button {
     border-color: var(--primary-main-color);
 }
 
-.text-field-container>input {
+.text-field-container>input,
+.simple-text-field>input {
     flex: 1;
     width: 100%;
     border: none;
     outline: none;
     padding: 0;
-    background-color: transparent !important;
+    background-color: transparent;
     font: inherit;
     color: inherit;
     font-size: inherit;
@@ -49,15 +54,20 @@ input::-webkit-inner-spin-button {
     font-weight: inherit;
     line-height: inherit;
     text-align: inherit;
+    letter-spacing: inherit;
     text-overflow: inherit;
+    text-decoration: inherit;
+    font-style: inherit;
 }
 
-.text-field-container.helper-text {
+.text-field-container.helper-text,
+.simple-text-field.helper-text {
     overflow: visible !important;
     border-color: var(--helper-text-color) !important;
 }
 
-.text-field-container.helper-text::after {
+.text-field-container.helper-text::after,
+.simple-text-field.helper-text::after {
     content: attr(helper-text);
     color: var(--helper-text-color);
     position: absolute;

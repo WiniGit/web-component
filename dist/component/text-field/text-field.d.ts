@@ -34,5 +34,10 @@ export declare class TextField extends React.Component<TextFieldProps> {
     getInput: () => HTMLInputElement | null | undefined;
     render(): React.ReactNode;
 }
+export declare class SimpleTextField extends React.Component<TextFieldProps> {
+    private containerRef;
+    getInput: () => HTMLInputElement | null | undefined;
+    render(): React.ReactNode;
+}
 export {};
 //# sourceMappingURL=text-field.d.ts.map

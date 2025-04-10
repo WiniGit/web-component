@@ -63,14 +63,15 @@
 }
 
 .button-label {
-    color: inherit;
     font: inherit;
+    color: inherit;
     font-size: inherit;
     font-family: inherit;
     line-height: inherit;
     font-weight: inherit;
     text-align: inherit;
     letter-spacing: inherit;
+    text-overflow: inherit;
     text-decoration: inherit;
     font-style: inherit;
 }
