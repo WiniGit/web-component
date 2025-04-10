@@ -45,7 +45,7 @@ export class TextField extends React.Component<TextFieldProps> {
             ref={this.containerRef}
             className={`${styles['text-field-container']} row ${this.props.className ?? 'body-3'} ${this.props.helperText?.length ? styles['helper-text'] : ""}`}
             helper-text={this.props.helperText}
-            style={this.props.style ? { ...({ '--helper-text-color': this.props.helperTextColor ?? 'var(--erorr-main-color, #e14337)' } as CSSProperties), ...this.props.style } : ({ '--helper-text-color': this.props.helperTextColor ?? 'var(--erorr-main-color, #e14337)' } as CSSProperties)}
+            style={this.props.style ? { ...({ '--helper-text-color': this.props.helperTextColor ?? 'var(--error-main-color, #e14337)' } as CSSProperties), ...this.props.style } : ({ '--helper-text-color': this.props.helperTextColor ?? 'var(--error-main-color, #e14337)' } as CSSProperties)}
         >
             {this.props.prefix}
             {this.props.register ?
@@ -115,7 +115,7 @@ export class SimpleTextField extends React.Component<TextFieldProps> {
             ref={this.containerRef}
             className={`${styles['simple-text-field']} row ${this.props.className ?? ''} ${this.props.helperText?.length ? styles['helper-text'] : ""}`}
             helper-text={this.props.helperText}
-            style={this.props.style ? { ...({ '--helper-text-color': this.props.helperTextColor ?? 'var(--erorr-main-color, #e14337)' } as CSSProperties), ...this.props.style } : ({ '--helper-text-color': this.props.helperTextColor ?? 'var(--erorr-main-color, #e14337)' } as CSSProperties)}
+            style={this.props.style ? { ...({ '--helper-text-color': this.props.helperTextColor ?? 'var(--error-main-color, #e14337)' } as CSSProperties), ...this.props.style } : ({ '--helper-text-color': this.props.helperTextColor ?? 'var(--error-main-color, #e14337)' } as CSSProperties)}
         >
             {this.props.prefix}
             {this.props.register ?

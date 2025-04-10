@@ -14,15 +14,3 @@
 .comp-text.type-button {
     cursor: pointer;
 }
-
-.comp-text.innerhtml * {
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    text-align: inherit;
-    margin: 0;
-    padding: 0;
-    font-family: inherit;
-    font-size: inherit;
-    -webkit-box-pack: inherit;
-}

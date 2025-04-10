@@ -410,7 +410,7 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
                 }
             case ComponentType.text:
                 if (props.item.NameField) {
-                    if (typeof dataValue === "object") return <Text {...customProps} html={dataValue["__html"]} />
+                    if (typeof dataValue === "object") return <div {...customProps} dangerouslySetInnerHTML={{ __html: dataValue["__html"] }} />
                     else return <Text {...customProps}>{dataValue}</Text>
                 } else return <Text {...customProps}>{customProps.value ?? ""}</Text>
             case ComponentType.img:
