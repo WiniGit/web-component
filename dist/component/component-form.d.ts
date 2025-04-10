@@ -11,6 +11,7 @@ interface DateRangeProps {
     };
 }
 interface SimpleFormProps {
+    id?: string;
     label?: string;
     labelElement?: ReactNode;
     placeholder?: string;
