@@ -64,7 +64,7 @@ export function Winicon({ id, src, link, className, style, size, color, alt, onC
             id={id}
             onClick={onClick}
             className={`${styles['wini-icon']} ${svgData ? "" : "skeleton-loading"} ${onClick ? styles['clickable'] : ''} ${className ?? ''} ${src ? `${src.split("/")[0]}-icon` : ''}${link ? ' link-icon' : ""}`}
-            style={(style ? { ...style, '--size': size, '--color': color } : { '--size': size, '--color': color }) as any} dangerouslySetInnerHTML={{ __html: svgData ?? '' }}
+            style={(style ? { ...style, fontSize: size, color: color } : { fontSize: size, color: color })} dangerouslySetInnerHTML={{ __html: svgData ?? '' }}
             {...extendAttribute}
         />
         {tooltip && showTooltip && ReactDOM.createPortal(showTooltipElement({ element: ref.current, tooltip: tooltip }), document.body)}

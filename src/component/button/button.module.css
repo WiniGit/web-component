@@ -82,7 +82,6 @@
 
 .button-container[class~="button-grey"] * {
     color: var(--neutral-text-subtitle-color, #61616B) !important;
-    --color: var(--neutral-text-subtitle-color, #61616B) !important;
 }
 
 .button-container[class~="button-primary"] {
@@ -92,7 +91,6 @@
 
 .button-container[class~="button-primary"] * {
     color: var(--neutral-text-stable-color, #FFFFFF) !important;
-    --color: var(--neutral-text-stable-color, #FFFFFF) !important;
 }
 
 .button-container[class~="button-neutral"] {
@@ -101,7 +99,6 @@
 
 .button-container[class~="button-neutral"] * {
     color: var(--neutral-text-subtitle-color, #61616B) !important;
-    --color: var(--neutral-text-subtitle-color, #61616B) !important;
 }
 
 .button-container[class~="button-neutral"] {
@@ -110,7 +107,6 @@
 
 .button-container[class~="button-black"] * {
     color: var(--neutral-text-title-reverse-color, #F4F4F5) !important;
-    --color: var(--neutral-text-title-reverse-color, #F4F4F5) !important;
 }
 
 .button-container[class~="button-black"] {
@@ -120,7 +116,6 @@
 
 .button-container[class~="button-white"] * {
     color: var(--neutral-text-title-color, #18181B) !important;
-    --color: var(--neutral-text-title-color, #18181B) !important;
 }
 
 .button-container[class~="button-white"] {
@@ -134,7 +129,6 @@
 
 .button-container[class~="button-infor"] * {
     color: var(--infor-main-color, #287CF0) !important;
-    --color: var(--infor-main-color, #287CF0) !important;
 }
 
 .button-container[class~="button-warning"] {
@@ -143,7 +137,6 @@
 
 .button-container[class~="button-warning"] * {
     color: var(--warning-main-color, #FC7A1C) !important;
-    --color: var(--warning-main-color, #FC7A1C) !important;
 }
 
 .button-container[class~="button-error"] {
@@ -152,7 +145,6 @@
 
 .button-container[class~="button-error"] * {
     color: var(--error-main-color, #E14337) !important;
-    --color: var(--error-main-color, #E14337) !important;
 }
 
 .button-container[class~="button-success"] {
@@ -161,7 +153,6 @@
 
 .button-container[class~="button-success"] * {
     color: var(--success-main-color, #3AAC6D) !important;
-    --color: var(--success-main-color, #3AAC6D) !important;
 }
 
 .button-container[class~="button-infor-main"] {
@@ -189,7 +180,6 @@
 .button-container[class~="button-error-main"] *,
 .button-container[class~="button-success-main"] * {
     color: var(--neutral-text-stable-color, #FFFFFF) !important;
-    --color: var(--neutral-text-stable-color, #FFFFFF) !important;
 }
 
 button:has(> .button-label):hover {
@@ -208,5 +198,4 @@ button:has(> .button-label):disabled {
 
 button:has(> .button-label):disabled * {
     color: var(--neutral-text-disabled-color, #A2A2AA) !important;
-    --color: var(--neutral-text-disabled-color, #A2A2AA) !important;
 }

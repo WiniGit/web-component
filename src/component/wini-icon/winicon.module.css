@@ -5,25 +5,30 @@
     width: fit-content;
     height: fit-content;
     padding: 0.2rem;
-    --size: 1.6rem;
-    --color: var(--neutral-text-subtitle-color);
+    font-size: 1.6rem;
+    color: var(--neutral-text-subtitle-color, #61616B);
 }
 
-.wini-icon[class~="link-icon"] {
-    --size: 'undefined';
+.wini-icon * {
+    color: inherit;
 }
 
 .wini-icon>svg {
-    width: var(--size, inherit) !important;
-    height: var(--size, inherit) !important;
+    width: 1em !important;
+    height: 1em !important;
+}
+
+.wini-icon[class~="link-icon"]>svg {
+    width: auto !important;
+    height: auto !important;
 }
 
 .wini-icon[class~="fill-icon"]>svg>*[fill^="#"] {
-    fill: var(--color, "#61616B");
+    fill: currentColor;
 }
 
 .wini-icon[class~="outline-icon"]>svg>*[stroke^="#"] {
-    stroke: var(--color, "#61616B");
+    stroke: currentColor;
 }
 
 .wini-icon.clickable {
@@ -50,37 +55,37 @@
 .wini-icon[class~="size64"] {
     width: 6.4rem;
     height: 6.4rem;
-    --size: 1.6rem;
+    font-size: 1.6rem;
 }
 
 .wini-icon[class~="size56"] {
     width: 5.6rem;
     height: 5.6rem;
-    --size: 1.6rem;
+    font-size: 1.6rem;
 }
 
 .wini-icon[class~="size48"] {
     width: 4.8rem;
     height: 4.8rem;
-    --size: 1.6rem;
+    font-size: 1.6rem;
 }
 
 .wini-icon[class~="size40"] {
     width: 4rem;
     height: 4rem;
-    --size: 1.4rem;
+    font-size: 1.4rem;
 }
 
 .wini-icon[class~="size32"] {
     width: 3.2rem;
     height: 3.2rem;
-    --size: 1.4rem;
+    font-size: 1.4rem;
 }
 
 .wini-icon[class~="size24"] {
     width: 2.4rem;
     height: 2.4rem;
-    --size: 1.2rem;
+    font-size: 1.2rem;
 }
 
 @keyframes on-open-tooltip {

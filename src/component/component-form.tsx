@@ -27,6 +27,7 @@ interface DateRangeProps {
 }
 
 interface SimpleFormProps {
+    id?: string,
     label?: string,
     labelElement?: ReactNode,
     placeholder?: string,
@@ -55,7 +56,7 @@ interface TextFieldFormProps extends SimpleFormProps {
 export function TextFieldForm(params: TextFieldFormProps) {
     const { t } = useTranslation()
 
-    return <div className={params.className ?? 'col'} style={{ gap: '0.8rem', overflow: 'visible', width: '100%', ...(params.style ?? {}) }}>
+    return <div id={params.id} className={params.className ?? 'col'} style={{ gap: '0.8rem', overflow: 'visible', width: '100%', ...(params.style ?? {}) }}>
         {params.labelElement ?? (params.label ? <div className="row" style={{ gap: '0.4rem', minWidth: "16rem" }}>
             <Text className={"label-3"}>{params.label}</Text>
             {params.required ? <Text className="label-4" style={{ color: '#E14337' }}>*</Text> : null}
@@ -114,23 +115,7 @@ export const InputPasswordForm = (params: InputPasswordFormProps) => {
     const [isShowPass, setIsShowPass] = useState<boolean>(false)
 
     return <TextFieldForm
-        methods={params.methods}
-        autoFocus={params.autoFocus}
-        required={params.required}
-        readOnly={params.readOnly}
-        disabled={params.disabled}
-        label={params.label}
-        placeholder={params.placeholder}
-        name={params.name}
-        maxLength={params.maxLength}
-        className={params.className}
-        style={params.style}
-        prefix={params.prefix}
-        onChange={params.onChange}
-        onBlur={params.onBlur}
-        onFocus={params.onFocus}
-        textFieldStyle={params.textFieldStyle}
-        textFieldClassName={params.textFieldClassName}
+        {...params}
         type={isShowPass ? "text" : "password"}
         suffix={<Winicon src={`outline/user interface/${isShowPass ? "view" : "hide"}`} size={"1.4rem"} onClick={() => { setIsShowPass(!isShowPass) }} />}
     />
@@ -153,25 +138,21 @@ interface TextAreaFormProps extends SimpleFormProps {
 export function TextAreaForm(params: TextAreaFormProps) {
     const { t } = useTranslation()
 
-    return <div className={params.className ?? 'col'} style={{ gap: '0.8rem', overflow: 'visible', width: '100%', height: '10rem', ...(params.style ?? {}) }}>
+    return <div id={params.id} className={params.className ?? 'col'} style={{ gap: '0.8rem', overflow: 'visible', width: '100%', height: '10rem', ...(params.style ?? {}) }}>
         {params.labelElement ?? (params.label ? <div className="row" style={{ gap: '0.4rem', minWidth: "16rem" }}>
             <Text className={"label-3"}>{params.label}</Text>
             {params.required ? <Text className="label-4" style={{ color: '#E14337' }}>*</Text> : null}
         </div> : null)}
         <TextArea
+            {...params}
             className={params.textAreaClassName ?? "body-3"}
             register={params.methods.register(params.name, {
                 required: params.required,
                 onBlur: params.onBlur,
                 onChange: params.onChange
             }) as any}
-            onFocus={params.onFocus}
             style={{ width: '100%', height: '100%', flex: 1, ...(params.textAreaStyle ?? {}) }}
             placeholder={params.placeholder ? params.placeholder : params.label ? `${t("input")} ${params.label.toLowerCase()}` : ''}
-            disabled={params.disabled}
-            readOnly={params.readOnly}
-            name={params.name}
-            maxLength={params.maxLength}
             helperText={convertErrors(params.methods.formState.errors, params.name) && (convertErrors(params.methods.formState.errors, params.name)?.message?.length ? convertErrors(params.methods.formState.errors, params.name)?.message : `${t("input")} ${(params.placeholder ? params.placeholder : params.label ? `${params.label}` : t('value')).toLowerCase()}`)}
         />
     </div>
