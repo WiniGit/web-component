@@ -1,4 +1,7 @@
 .switch-container {
+    --off-bg: var(--neutral-main-background-color, #EFEFF0);
+    --on-bg: var(--primary-main-color, #287CF0);
+    --dot-color: var(--neutral-text-stable-color, #ffffff);
     position: relative;
     display: inline-block;
     background-color: var(--off-bg) !important;

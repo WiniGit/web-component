@@ -203,7 +203,9 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
                                 props.methods!.setValue(actItem.NameField, eval(actItem.CaculateValue))
                                 return;
                             case ActionType.loadMore:
-                                props.methods?.setValue(`loadMore-${actItem.loadingId}`, true)
+                                if (!props.methods!.watch(`loadMore-${actItem.loadingId}`)) {
+                                    props.methods!.setValue(`loadMore-${actItem.loadingId}`, true)
+                                }
                                 return;
                             default:
                                 break;
@@ -336,11 +338,13 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
                 if (tmpProps.loadMore === undefined) tmpProps.loadMore = props.methods?.watch(`loadMore-${props.item.Id}`)
                 if (tmpProps.loadMore !== undefined) {
                     if (tmpProps.onLoaded !== undefined)
-                        tmpProps.loadMore = (ev: any) => {
-                            props.methods?.setValue(`loadMore-${props.item.Id}`, false)
+                        tmpProps.onLoaded = (ev: any) => {
+                            props.methods?.setValue(`loadMore-${props.item.Id}`, ev.data.length === ev.totalCount ? "end" : false)
                             tmpProps.onLoaded(ev)
                         }
-                    else tmpProps.loadMore = () => { props.methods?.setValue(`loadMore-${props.item.Id}`, false) }
+                    else tmpProps.onLoaded = (ev: any) => {
+                        props.methods?.setValue(`loadMore-${props.item.Id}`, ev.data.length === ev.totalCount ? "end" : false)
+                    }
                 }
                 if (tmpProps.controller && tmpProps.controller !== "all") {
                     let newController = { ...tmpProps.controller }

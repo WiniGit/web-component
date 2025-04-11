@@ -42,7 +42,6 @@ interface RenderCardProps extends Props {
 interface CardProps extends Props {
     id: string,
     methods?: UseFormReturn,
-    data: { [p: string]: any },
     onLoaded?: (ev: { data: Array<{ [p: string]: any }>, totalCount: number }) => void
 }
 
@@ -53,10 +52,7 @@ export const CardById = (props: CardProps) => {
     const _colController = new TableController("column")
     const _relController = new TableController("rel")
     const keyNames = useMemo<Array<string>>(() => layers.filter((e: any) => e.NameField?.length).map((e: any) => e.NameField), [layers.length])
-    const controller = useMemo<any>(() => {
-        if (!props.controller) return { page: 1, size: 8, searchRaw: "*" }
-        return props.controller
-    }, [props.controller])
+    const [controller, setController] = useState<any>()
     const [data, setData] = useState<{ data: Array<{ [p: string]: any }>, totalCount?: number }>({ data: [], totalCount: undefined })
 
     useEffect(() => {
@@ -71,6 +67,14 @@ export const CardById = (props: CardProps) => {
             })
         } else if (cardItem) setCardItem(undefined)
     }, [props.id])
+
+    useEffect(() => {
+        if (!props.controller && !controller) setController({ page: 1, size: 8, searchRaw: "*" })
+        else if (controller !== props.controller) {
+            if (props.controller === "all" || !controller) setController(props.controller)
+            else if (Object.keys(props.controller as any).every((p: string) => controller[p] !== (props.controller as any)[p])) setController(props.controller)
+        }
+    }, [props.controller])
 
     const mapRelativeData = async () => {
         const relKeys = keyNames.filter((e: string) => e.split(".").length > 1)
@@ -99,9 +103,7 @@ export const CardById = (props: CardProps) => {
     const getData = async (page?: number) => {
         const dataController = new DataController(cardItem!.TbName)
         let tmp = undefined;
-        if (props.data) {
-            tmp = { data: [props.data], totalCount: 1 }
-        } else if (controller === "all") {
+        if (controller === "all") {
             const res = await dataController.getAll()
             if (res.code === 200) tmp = { data: res.data, totalCount: res.data.length }
         } else if (controller.searchRaw) {
@@ -144,7 +146,7 @@ export const CardById = (props: CardProps) => {
     }, [keyNames])
 
     useEffect(() => {
-        if (cardItem) {
+        if (cardItem && !props.loadMore) {
             if (controller && !props.cardData) {
                 getData()
             } else if (props.cardData) {
@@ -176,6 +178,7 @@ export const CardById = (props: CardProps) => {
             />
         }) : null
 }
+
 
 const RenderCard = (props: RenderCardProps) => {
     return props.cardItem.Props.filter((e: any) => !e.ParentId).map((e: any) => {
