@@ -1,4 +1,4 @@
-import { default as React, CSSProperties } from 'react';
+import { CSSProperties } from 'react';
 interface SwitchProps {
     id?: string;
     onChange?: (value: boolean) => void;
@@ -11,14 +11,8 @@ interface SwitchProps {
     onBackground?: string;
     offBackground?: string;
     name?: string;
+    label?: string;
 }
-interface SwitchState {
-    value?: boolean;
-}
-export declare class Switch extends React.Component<SwitchProps, SwitchState> {
-    state: Readonly<SwitchState>;
-    componentDidUpdate(prevProps: Readonly<SwitchProps>): void;
-    render(): import("react/jsx-runtime").JSX.Element;
-}
+export declare const Switch: (props: SwitchProps) => import("react/jsx-runtime").JSX.Element;
 export {};
 //# sourceMappingURL=switch.d.ts.map

@@ -58,9 +58,6 @@ interface Props {
 interface CardProps extends Props {
     id: string;
     methods?: UseFormReturn;
-    data: {
-        [p: string]: any;
-    };
     onLoaded?: (ev: {
         data: Array<{
             [p: string]: any;
