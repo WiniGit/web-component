@@ -394,7 +394,7 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
                 break;
         }
         return tmpProps
-    }, [customProps, props.item.Type, dataValue, children])
+    }, [customProps, props.item.Type, dataValue, children, props.methods!.watch()])
 
     // renderUI
     if (props.itemData && props.itemData[props.item.Id]) {

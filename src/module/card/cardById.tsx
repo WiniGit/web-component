@@ -125,9 +125,11 @@ export const CardById = (props: CardProps) => {
                 const currentTmp = methods.getValues(`_${k}`) ?? []
                 const dataController = new DataController(k.replace("Id", ""))
                 const relDataIds = tmp.data.map((e: any) => e[k]?.split(",")).flat(Infinity).filter((e: string | undefined, i: number, arr: Array<string>) => e?.length && currentTmp.every((el: any) => el.Id !== e) && arr.indexOf(e) === i)
-                dataController.getByListId(relDataIds).then(relRes => {
-                    if (relRes.code === 200) methods.setValue(`_${k}`, [...currentTmp, ...relRes.data.filter((e: any) => e !== undefined && e !== null)])
-                })
+                if (relDataIds.length) {
+                    dataController.getByListId(relDataIds).then(relRes => {
+                        if (relRes.code === 200) methods.setValue(`_${k}`, [...currentTmp, ...relRes.data.filter((e: any) => e !== undefined && e !== null)])
+                    })
+                }
             }
         }
         setData(tmp)
