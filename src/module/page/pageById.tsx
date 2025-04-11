@@ -73,7 +73,7 @@ interface RenderLayerElementProps extends Props {
 }
 
 export const RenderLayerElement = (props: RenderLayerElementProps) => {
-    const location = useLocation()
+    const location = useLocation() as any
     const params = useParams()
     const query = new URLSearchParams(location.search)
     const navigate = useNavigate()
@@ -87,7 +87,7 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
                 case "this":
                     return props.indexItem?.[variable[1]]
                 case "location":
-                    return (location as any)[variable[1]]
+                    return location[variable[1]]
                 case "query":
                     return query.get(variable[1])
                 case "params":
@@ -118,7 +118,7 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
                             getValue = props.indexItem?.[variable[1]]
                             break;
                         case "location":
-                            getValue = (location as any)[variable[1]]
+                            getValue = location[variable[1]]
                             break;
                         case "query":
                             getValue = query.get(variable[1])
@@ -329,6 +329,72 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
             return tmpValue
         }
     }, [props.indexItem, props.item, watchForDataValue])
+    const typeProps = useMemo(() => {
+        let tmpProps = { ...customProps }
+        switch (props.item.Type) {
+            case ComponentType.card:
+                if (tmpProps.loadMore === undefined) tmpProps.loadMore = props.methods?.watch(`loadMore-${props.item.Id}`)
+                if (tmpProps.loadMore !== undefined) {
+                    if (tmpProps.onLoaded !== undefined)
+                        tmpProps.loadMore = (ev: any) => {
+                            props.methods?.setValue(`loadMore-${props.item.Id}`, false)
+                            tmpProps.onLoaded(ev)
+                        }
+                    else tmpProps.loadMore = () => { props.methods?.setValue(`loadMore-${props.item.Id}`, false) }
+                }
+                if (tmpProps.controller && tmpProps.controller !== "all") {
+                    let newController = { ...tmpProps.controller }
+                    if (newController.searchRaw && regexGetVariables.test(newController.searchRaw)) {
+                        const newSearchRaw = replaceThisVariables(newController.searchRaw)
+                        newController.searchRaw = newSearchRaw
+                    }
+                    if (newController.page && regexGetVariables.test(`${newController.page}`)) {
+                        const newPageIndex = replaceThisVariables(`${newController.page}`)
+                        newController.page = parseInt(newPageIndex)
+                    }
+                    if (newController.size && regexGetVariables.test(`${newController.size}`)) {
+                        const newPageSize = replaceThisVariables(`${newController.size}`)
+                        newController.page = parseInt(newPageSize)
+                    }
+                    if (newController.ids && regexGetVariables.test(newController.ids)) {
+                        if (regexGetVariableByThis.test(newController.ids)) {
+                            const relativeModule = regexGetVariableByThis.exec(newController.ids)![1]
+                            tmpProps.cardData = (props.methods?.watch(`_${relativeModule}`) ?? []).filter((e: any) => props.indexItem?.[relativeModule]?.includes(e.Id))
+                        } else {
+                            const getByIds = replaceThisVariables(newController.ids)
+                            newController.ids = getByIds
+                        }
+                    }
+                    tmpProps.controller = newController
+                }
+                break;
+            case ComponentType.navLink:
+                if (dataValue && dataValue.backgroundImage) tmpProps = { ...customProps, style: { ...customProps.style, ...dataValue } }
+                if (tmpProps.to) {
+                    if (props.indexItem && regexGetVariables.test(tmpProps.to)) {
+                        const url = replaceThisVariables(tmpProps.to)
+                        if (url.includes("https")) tmpProps.target = "_blank"
+                        tmpProps.to = (url.startsWith("/") ? "/" : "") + url.split("/").filter((e: string) => !!e.trim()).join("/")
+                    } else if (tmpProps.to.includes("https")) {
+                        tmpProps.target = "_blank"
+                    } else {
+                        tmpProps.to = tmpProps.to.startsWith("/") ? tmpProps.to : `/${tmpProps.to}`
+                    }
+                }
+                break;
+            case ComponentType.button:
+                if (children.length) {
+                    const iconPrefix = children.find(e => e.Setting.type === "prefix")
+                    const iconSuffix = children.find(e => e.Setting.type === "suffix")
+                    if (iconPrefix) tmpProps.prefix = <RenderLayerElement {...props} item={iconPrefix} style={undefined} className={undefined} />
+                    if (iconSuffix) tmpProps.suffix = <RenderLayerElement {...props} item={iconSuffix} style={undefined} className={undefined} />
+                }
+                break;
+            default:
+                break;
+        }
+        return tmpProps
+    }, [customProps, props.item.Type, dataValue, children])
 
     // renderUI
     if (props.itemData && props.itemData[props.item.Id]) {
@@ -338,22 +404,9 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
         switch (props.item.Type) {
             case ComponentType.navLink:
                 if (props.childrenData) var childComponent = props.type === "card" ? (props.childrenData[props.item.Id] as any)(props.indexItem, props.index) : props.childrenData[props.item.Id]
-                let navLinkProps = { ...customProps }
-                if (dataValue && dataValue.backgroundImage) navLinkProps = { ...customProps, style: { ...customProps.style, ...dataValue } }
-                if (navLinkProps.to) {
-                    if (props.indexItem && regexGetVariables.test(navLinkProps.to)) {
-                        const url = replaceThisVariables(navLinkProps.to)
-                        if (url.includes("https")) navLinkProps.target = "_blank"
-                        navLinkProps.to = (url.startsWith("/") ? "/" : "") + url.split("/").filter((e: string) => !!e.trim()).join("/")
-                    } else if (navLinkProps.to.includes("https")) {
-                        navLinkProps.target = "_blank"
-                    } else {
-                        navLinkProps.to = navLinkProps.to.startsWith("/") ? navLinkProps.to : `/${navLinkProps.to}`
-                    }
-                }
                 if (Array.isArray(dataValue)) {
                     return dataValue.map((dataValueItem, i) => {
-                        const dataValueProps = { ...navLinkProps }
+                        const dataValueProps = { ...typeProps }
                         dataValueProps.indexItem = { ...props.indexItem, [props.item.NameField.split(".").length > 1 ? props.item.NameField.split(".")[1] : props.item.NameField]: dataValueItem }
                         return <NavLink key={`${dataValueItem}-${i}`} {...dataValueProps} >
                             {childComponent ??
@@ -367,7 +420,7 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
                         </NavLink>
                     })
                 } else {
-                    return <NavLink {...navLinkProps}>
+                    return <NavLink {...typeProps}>
                         {childComponent ??
                             (customProps.className?.includes("layout-body") ?
                                 <>
@@ -410,7 +463,7 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
                 }
             case ComponentType.text:
                 if (props.item.NameField) {
-                    if (typeof dataValue === "object") return <div {...customProps} dangerouslySetInnerHTML={{ __html: dataValue["__html"] }} />
+                    if (typeof dataValue === "object") return <Text {...customProps} html={dataValue["__html"]} />
                     else return <Text {...customProps}>{dataValue}</Text>
                 } else return <Text {...customProps}>{customProps.value ?? ""}</Text>
             case ComponentType.img:
@@ -448,42 +501,7 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
             case ComponentType.form:
                 return <FormById {...customProps} id={customProps.formId} />
             case ComponentType.card:
-                let tmpProps = { ...customProps }
-                if (tmpProps.loadMore === undefined) tmpProps.loadMore = props.methods?.watch(`loadMore-${props.item.Id}`)
-                if (tmpProps.loadMore !== undefined) {
-                    if (tmpProps.onLoaded !== undefined)
-                        tmpProps.loadMore = (ev: any) => {
-                            props.methods?.setValue(`loadMore-${props.item.Id}`, false)
-                            tmpProps.onLoaded(ev)
-                        }
-                    else tmpProps.loadMore = () => { props.methods?.setValue(`loadMore-${props.item.Id}`, false) }
-                }
-                if (tmpProps.controller && tmpProps.controller !== "all") {
-                    let newController = { ...tmpProps.controller }
-                    if (newController.searchRaw && regexGetVariables.test(newController.searchRaw)) {
-                        const newSearchRaw = replaceThisVariables(newController.searchRaw)
-                        newController.searchRaw = newSearchRaw
-                    }
-                    if (newController.page && regexGetVariables.test(`${newController.page}`)) {
-                        const newPageIndex = replaceThisVariables(`${newController.page}`)
-                        newController.page = parseInt(newPageIndex)
-                    }
-                    if (newController.size && regexGetVariables.test(`${newController.size}`)) {
-                        const newPageSize = replaceThisVariables(`${newController.size}`)
-                        newController.page = parseInt(newPageSize)
-                    }
-                    if (newController.ids && regexGetVariables.test(newController.ids)) {
-                        if (regexGetVariableByThis.test(newController.ids)) {
-                            const relativeModule = regexGetVariableByThis.exec(newController.ids)![1]
-                            tmpProps.cardData = (props.methods?.watch(`_${relativeModule}`) ?? []).filter((e: any) => props.indexItem?.[relativeModule]?.includes(e.Id))
-                        } else {
-                            const getByIds = replaceThisVariables(newController.ids)
-                            newController.ids = getByIds
-                        }
-                    }
-                    tmpProps.controller = newController
-                }
-                return <CardById {...tmpProps} id={customProps.cardId} />
+                return <CardById {...typeProps} id={customProps.cardId} />
             case ComponentType.view:
                 return <ViewById {...customProps} id={customProps.viewId} />
             case ComponentType.popup:
@@ -492,14 +510,7 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
                     {children.map(e => <RenderLayerElement key={e.Id} {...props} item={e} style={undefined} className={undefined} />)}
                 </ActionPopup>
             case ComponentType.button:
-                let btnProps = { ...customProps }
-                if (children.length) {
-                    const iconPrefix = children.find(e => e.Setting.type === "prefix")
-                    const iconSuffix = children.find(e => e.Setting.type === "suffix")
-                    if (iconPrefix) btnProps.prefix = <RenderLayerElement {...props} item={iconPrefix} style={undefined} className={undefined} />
-                    if (iconSuffix) btnProps.suffix = <RenderLayerElement {...props} item={iconSuffix} style={undefined} className={undefined} />
-                }
-                return <SimpleButton {...btnProps} />
+                return <SimpleButton {...typeProps} />
             default:
                 return <div {...customProps} />
         }

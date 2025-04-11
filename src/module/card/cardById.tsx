@@ -107,16 +107,7 @@ export const CardById = (props: CardProps) => {
         } else if (controller.searchRaw) {
             const tmpController = { ...controller, searchRaw: controller!.searchRaw ?? "*" }
             if (page) tmpController.page = page
-            if (regexEmptyKeyController.test(tmpController.searchRaw)) {
-                const firstEmptyKey = regexEmptyKeyController.exec(tmpController.searchRaw)!
-                if (firstEmptyKey[0].includes("notempty")) tmpController.notEmpty = true
-                tmpController.key = firstEmptyKey[1]
-                tmpController.searchRaw = tmpController.searchRaw.replace(replaceEmptyKeyController, "").trim()
-                if (!tmpController.searchRaw.length) tmpController.searchRaw = `*`
-                var res = await dataController.filterByEmptyKey(tmpController)
-            } else {
-                res = await dataController.aggregateList(tmpController)
-            }
+            const res = await dataController.aggregateList(tmpController)
             if (res.code === 200) tmp = { data: page ? [...data.data, ...res.data] : res.data, totalCount: res.totalCount }
         } else { // get by ids
             let listIds = controller.ids.split(",")
@@ -135,7 +126,7 @@ export const CardById = (props: CardProps) => {
                 const dataController = new DataController(k.replace("Id", ""))
                 const relDataIds = tmp.data.map((e: any) => e[k]?.split(",")).flat(Infinity).filter((e: string | undefined, i: number, arr: Array<string>) => e?.length && currentTmp.every((el: any) => el.Id !== e) && arr.indexOf(e) === i)
                 dataController.getByListId(relDataIds).then(relRes => {
-                    if (relRes.code === 200) methods.setValue(`_${k}`, relRes.data.filter((e: any) => e !== undefined && e !== null))
+                    if (relRes.code === 200) methods.setValue(`_${k}`, [...currentTmp, ...relRes.data.filter((e: any) => e !== undefined && e !== null)])
                 })
             }
         }
@@ -152,8 +143,9 @@ export const CardById = (props: CardProps) => {
 
     useEffect(() => {
         if (cardItem) {
-            if (controller && !props.cardData) getData()
-            else if (props.cardData) {
+            if (controller && !props.cardData) {
+                getData()
+            } else if (props.cardData) {
                 setData({ data: props.cardData, totalCount: props.cardData.length })
             }
         }

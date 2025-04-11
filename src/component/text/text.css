@@ -14,3 +14,7 @@
 .comp-text.type-button {
     cursor: pointer;
 }
+
+.comp-text-innerhtml {
+    overflow: hidden;
+}

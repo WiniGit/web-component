@@ -5,6 +5,7 @@ import { TableController, WiniController } from "../controller/setting"
 import { Dialog } from "../component/dialog/dialog"
 import { ToastContainer } from 'react-toastify'
 import { DesignTokenType, ProjectItem } from "./da"
+import { Util } from "../controller/utils"
 
 interface Props {
     /**
@@ -25,13 +26,20 @@ const appendDesignTokens = (list: Array<{ [p: string]: any }>) => {
     const designTokens = list.map(e => e.Value ? { ...e, Value: typeof e.Value === "string" ? JSON.parse(e.Value) : e.Value } : e)
     if (designTokens.length) {
         const tokenValues = designTokens.filter(e => e.Type !== DesignTokenType.group && (e.Value?.lightMode || e.Value?.darkMode))
+        const groupTokens = designTokens.filter(e => e.Type === DesignTokenType.group)
         let styleElement = (document.head.querySelector(":scope > .designTokens") ?? document.createElement('style')) as any;
         styleElement.type = 'text/css';
         const colorVariables = tokenValues.filter(e => e.Type === DesignTokenType.color)
         const classVariables = tokenValues.filter(e => e.Type !== DesignTokenType.color)
         const _innerHTML = `
-        html { \n${colorVariables.map(e => e.Value?.lightMode ? `${e.Name}: ${e.Value.lightMode};` : "").join('\n')}\n }\n\n
-        html.dark { \n${colorVariables.map(e => e.Value?.darkMode ? `${e.Name}: ${e.Value.darkMode};` : "").join('\n')}\n }\n\n
+        html { \n${colorVariables.map(e => {
+            const tkParent = groupTokens.find(g => g.Id === e.ParentId);
+            return e.Value?.lightMode ? `--${tkParent ? `${Util.toSlug(tkParent.Name)}-` : ""}${Util.toSlug(e.Name)}: ${e.Value.lightMode};` : ""
+        }).join('\n')}\n }\n\n
+        html.dark { \n${colorVariables.map(e => {
+            const tkParent = groupTokens.find(g => g.Id === e.ParentId);
+            return e.Value?.darkMode ? `--${tkParent ? `${Util.toSlug(tkParent.Name)}-` : ""}${Util.toSlug(e.Name)}: ${e.Value.darkMode};` : ""
+        }).join('\n')}\n }\n\n
         ${classVariables.map(e => {
             let classValue: string | undefined = undefined
             switch (e.Type) {
