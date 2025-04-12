@@ -3,6 +3,7 @@ import styles from './checkbox.module.css';
 
 interface CheckboxProps {
     id?: string,
+    name?: string,
     onChange?: (value: boolean, target: HTMLInputElement) => void,
     value?: boolean,
     checkColor?: string,
@@ -34,16 +35,18 @@ export const Checkbox = (props: CheckboxProps) => {
             }
         }
         return tmp
-    }, [])
+    }, [props.size, props.style])
 
     useEffect(() => {
         if (inputRef.current && props.value !== inputRef.current?.checked) inputRef.current.checked = !!props.value
     }, [props.value, inputRef.current])
 
-    return <label id={props.id} className={`${styles['checkbox-container']} row ${props.className ?? ''}`} style={convertStyle} is-null-value={`${props.value === undefined || props.value === null}`} onClick={props.onClick}>
+    return <label id={props.id} className={`${styles['checkbox-container']} row ${props.className ?? ''}`} style={convertStyle} is-null-value={`${props.value === undefined}`}>
         <input
+            name={props.name}
             ref={inputRef}
             type="checkbox"
+            hidden
             disabled={props.disabled}
             onChange={(ev) => {
                 ev.stopPropagation()

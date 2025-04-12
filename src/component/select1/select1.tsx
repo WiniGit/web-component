@@ -31,7 +31,8 @@ interface Select1Props {
     popupClassName?: string,
     prefix?: ReactNode,
     suffix?: ReactNode,
-    onOpenOptions?: (popupRef: HTMLDivElement) => void
+    onOpenOptions?: (popupRef: HTMLDivElement) => void,
+    simpleStyle?: boolean
 }
 
 export const Select1 = ({ style = {}, ...props }: Select1Props) => {
@@ -60,17 +61,17 @@ export const Select1 = ({ style = {}, ...props }: Select1Props) => {
     return <div
         id={props.id}
         ref={containerRef}
-        className={`${styles['select1-container']} row ${props.disabled ? styles['disabled'] : ''} ${props.helperText?.length && styles['helper-text']} ${props.className ?? 'body-3'}`}
+        className={`${props.simpleStyle ? styles['select1-simple-style'] : styles['select1-container']} row ${props.disabled ? styles['disabled'] : ''} ${props.helperText?.length && styles['helper-text']} ${props.className ?? 'body-3'}`}
         helper-text={props.helperText}
         style={{ ...({ '--helper-text-color': props.helperTextColor ?? '#e14337' } as CSSProperties), ...style }}
-        onClick={() => {
+        onClick={props.disabled ? undefined : () => {
             if (inputRef.current) inputRef.current.focus()
             else setIsOpen(true)
         }}
     >
         {props.prefix}
         {(!valueItem || typeof valueItem.name === "string" || typeof valueItem.name === "number") ?
-            <input ref={inputRef} readOnly={props.readOnly} placeholder={props.placeholder}
+            <input ref={inputRef} readOnly={props.readOnly} placeholder={props.placeholder} disabled={props.disabled}
                 onFocus={() => { setIsOpen(true) }}
                 onChange={async (ev) => {
                     if (ev.target.value.trim().length) {
@@ -85,15 +86,31 @@ export const Select1 = ({ style = {}, ...props }: Select1Props) => {
             /> : valueItem.name}
         {props.suffix ?? <div ref={iconRef => {
             if (iconRef?.parentElement && iconRef.parentElement.getBoundingClientRect().width < 88) iconRef.style.display = "none"
-        }} className='row' >
+        }} className='row'>
             <Winicon src={isOpen ? "fill/arrows/up-arrow" : "fill/arrows/down-arrow"} size={"1.2rem"} />
         </div>}
         {isOpen && <PopupOverlay
-            onOpen={props.onOpenOptions}
+            onOpen={popupRef => {
+                setTimeout(() => {
+                    const thisPopupRect = popupRef.getBoundingClientRect()
+                    const thisContainerRect = containerRef.current!.getBoundingClientRect()
+                    if (thisPopupRect.right > document.body.offsetWidth) {
+                        popupRef.style.left = ""
+                        popupRef.style.right = `${document.body.offsetWidth - thisContainerRect.right}px`
+                    }
+                    let _bottom = thisPopupRect.bottom - 8
+                    if (_bottom > document.body.offsetHeight) {
+                        popupRef.style.top = ""
+                        popupRef.style.bottom = `${document.body.offsetHeight - thisContainerRect.bottom}px`
+                    }
+                }, 300)
+                if (props.onOpenOptions) props.onOpenOptions(popupRef)
+            }}
             className={`hidden-overlay`}
             onClose={() => { setIsOpen(false) }}
         >
-            <div className={`${styles['select1-popup']} select1-popup col ${props.popupClassName ?? ""}`}
+            <div
+                className={`${styles['select1-popup']} select1-popup dropdown-popup col ${props.popupClassName ?? ""}`}
                 style={{
                     top: containerRef.current!.getBoundingClientRect().bottom + 2,
                     left: containerRef.current!.getBoundingClientRect().x + 2,
@@ -149,4 +166,3 @@ function OptionsItemTile({ item, children, selected, onClick, treeData }: Option
         {children?.length ? <div className='col' style={{ display: isOpen ? "flex" : "none", width: '100%' }}>{children.map(e => <OptionsItemTile key={e.id} item={e} onClick={onClick} />)}</div> : undefined}
     </div>
 }
-
