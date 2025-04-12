@@ -73,12 +73,12 @@
 }
 
 .select1-popup>.select-body {
-    padding: 0.4rem;
+    gap: 2px;
     max-height: 100%;
     flex: 1;
     align-items: start;
     max-height: 28rem;
-    min-height: 8rem;
+    min-height: calc(7.6rem + 2px);
     width: 100%;
     overflow: hidden auto;
 }

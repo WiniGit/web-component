@@ -1,8 +1,8 @@
 .radio-btn-container {
     --off-color: var(--neutral-text-disabled-color, #A2A2AA);
     --active-color: var(--primary-main-color, #287CF0);
-    height: max(var(--size), 14px);
-    width: max(var(--size), 14px);
+    height: max(var(--size), 1.2rem);
+    width: max(var(--size), 1.2rem);
     aspect-ratio: 1 / 1 !important;
     border-radius: 50%;
     box-sizing: border-box;
