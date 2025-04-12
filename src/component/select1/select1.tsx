@@ -64,7 +64,6 @@ export const Select1 = ({ style = {}, ...props }: Select1Props) => {
         className={`${props.simpleStyle ? styles['select1-simple-style'] : styles['select1-container']} row ${props.disabled ? styles['disabled'] : ''} ${props.helperText?.length && styles['helper-text']} ${props.className ?? 'body-3'}`}
         helper-text={props.helperText}
         style={{ ...({ '--helper-text-color': props.helperTextColor ?? '#e14337' } as CSSProperties), ...style }}
-       
     >
         {props.prefix}
         {(!valueItem || typeof valueItem.name === "string" || typeof valueItem.name === "number") ?
