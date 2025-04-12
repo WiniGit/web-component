@@ -64,10 +64,6 @@ export const Select1 = ({ style = {}, ...props }: Select1Props) => {
         className={`${props.simpleStyle ? styles['select1-simple-style'] : styles['select1-container']} row ${props.disabled ? styles['disabled'] : ''} ${props.helperText?.length && styles['helper-text']} ${props.className ?? 'body-3'}`}
         helper-text={props.helperText}
         style={{ ...({ '--helper-text-color': props.helperTextColor ?? '#e14337' } as CSSProperties), ...style }}
-        onClick={props.disabled ? undefined : () => {
-            if (inputRef.current) inputRef.current.focus()
-            else setIsOpen(true)
-        }}
     >
         {props.prefix}
         {(!valueItem || typeof valueItem.name === "string" || typeof valueItem.name === "number") ?
@@ -101,7 +97,7 @@ export const Select1 = ({ style = {}, ...props }: Select1Props) => {
                     let _bottom = thisPopupRect.bottom - 8
                     if (_bottom > document.body.offsetHeight) {
                         popupRef.style.top = ""
-                        popupRef.style.bottom = `${document.body.offsetHeight - thisContainerRect.bottom}px`
+                        popupRef.style.bottom = `${document.body.offsetHeight - thisContainerRect.y + 2}px`
                     }
                 }, 300)
                 if (props.onOpenOptions) props.onOpenOptions(popupRef)
@@ -113,7 +109,7 @@ export const Select1 = ({ style = {}, ...props }: Select1Props) => {
                 className={`${styles['select1-popup']} select1-popup dropdown-popup col ${props.popupClassName ?? ""}`}
                 style={{
                     top: containerRef.current!.getBoundingClientRect().bottom + 2,
-                    left: containerRef.current!.getBoundingClientRect().x + 2,
+                    left: containerRef.current!.getBoundingClientRect().x,
                     width: containerRef.current!.offsetWidth,
                 }}>
                 <div className={`col ${styles['select-body']}`} onScroll={props.handleLoadmore ? (ev) => {
