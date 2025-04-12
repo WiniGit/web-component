@@ -61,7 +61,7 @@ export const Select1 = ({ style = {}, ...props }: Select1Props) => {
     return <label
         id={props.id}
         ref={containerRef}
-        className={`${props.simpleStyle ? styles['select1-simple-style'] : styles['select1-container']} row ${props.disabled ? styles['disabled'] : ''} ${props.helperText?.length && styles['helper-text']} ${props.className ?? 'body-3'}`}
+        className={`${props.simpleStyle ? styles['select1-simple-style'] : styles['select1-container']} row ${props.disabled ? styles['disabled'] : ''} ${props.helperText?.length ? styles['helper-text'] : ""} ${props.className ?? (props.simpleStyle ? "" : 'body-3')}`}
         helper-text={props.helperText}
         style={{ ...({ '--helper-text-color': props.helperTextColor ?? '#e14337' } as CSSProperties), ...style }}
     >
@@ -80,11 +80,11 @@ export const Select1 = ({ style = {}, ...props }: Select1Props) => {
                     } else setSearch(undefined)
                 }}
             /> : valueItem.name}
-        {props.suffix ?? <div ref={iconRef => {
+        {!props.simpleStyle && (props.suffix ?? <div ref={iconRef => {
             if (iconRef?.parentElement && iconRef.parentElement.getBoundingClientRect().width < 88) iconRef.style.display = "none"
         }} className='row'>
             <Winicon src={isOpen ? "fill/arrows/up-arrow" : "fill/arrows/down-arrow"} size={"1.2rem"} />
-        </div>}
+        </div>)}
         {isOpen && <PopupOverlay
             onOpen={popupRef => {
                 setTimeout(() => {
@@ -150,11 +150,14 @@ function OptionsItemTile({ item, children, selected, onClick, treeData }: Option
     const [isOpen, setIsOpen] = useState<boolean>(false)
 
     return item.title && typeof item.title !== "string" ? <>{item.title(onClick)}</> : <div className='col' style={{ width: '100%' }}>
-        <div className={`${styles['select-tile']} row ${item.disabled ? styles["disabled"] : ""}`} style={{ paddingLeft: item.parentId ? '4.4rem' : undefined, backgroundColor: selected ? "var(--neutral-selected-background-color)" : undefined }} onClick={() => {
-            if (children?.length) {
-                setIsOpen(!isOpen)
-            } else onClick(item)
-        }}>
+        <div className={`${styles['select-tile']} row ${item.disabled ? styles["disabled"] : ""}`} style={{ paddingLeft: item.parentId ? '4.4rem' : undefined, backgroundColor: selected ? "var(--neutral-selected-background-color)" : undefined }}
+            onClick={(ev) => {
+                ev.stopPropagation()
+                ev.preventDefault()
+                if (children?.length) {
+                    setIsOpen(!isOpen)
+                } else onClick(item)
+            }}>
             {treeData ? <div className='row' style={{ width: '1.4rem', height: '1.4rem' }}>
                 {children?.length ? <Winicon src={isOpen ? "fill/arrows/triangle-down" : "fill/arrows/triangle-right"} size={"1.2rem"} /> : null}
             </div> : undefined}

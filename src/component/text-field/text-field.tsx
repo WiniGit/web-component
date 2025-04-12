@@ -41,12 +41,13 @@ export class TextField extends React.Component<TextFieldProps> {
     }
 
     render(): React.ReactNode {
+        const _style = this.props.style ?? {}
         return <label
             id={this.props.id}
             ref={this.containerRef}
-            className={`${this.props.simpleStyle ? styles['simple-text-field'] : styles['text-field-container']} row ${this.props.className ?? 'body-3'} ${this.props.helperText?.length ? styles['helper-text'] : ""}`}
+            className={`${this.props.simpleStyle ? styles['simple-text-field'] : styles['text-field-container']} row ${this.props.className ?? (this.props.simpleStyle ? "" : 'body-3')} ${this.props.helperText?.length ? styles['helper-text'] : ""}`}
             helper-text={this.props.helperText}
-            style={this.props.style ? { ...({ '--helper-text-color': this.props.helperTextColor ?? 'var(--error-main-color, #e14337)' } as CSSProperties), ...this.props.style } : ({ '--helper-text-color': this.props.helperTextColor ?? 'var(--error-main-color, #e14337)' } as CSSProperties)}
+            style={{ '--helper-text-color': this.props.helperTextColor ?? '#e14337', ..._style } as CSSProperties}
         >
             {this.props.prefix}
             {this.props.register ?

@@ -1,24 +1,31 @@
+.simple-text-area,
 .text-area-container {
-    height: 4rem;
+    position: relative;
+    box-sizing: border-box;
+}
+
+.text-area-container {
+    height: 4.8rem;
     position: relative;
     gap: 0.8rem;
     border-radius: 0.8rem;
-    border: var(--neutral-bolder-border);
+    border: var(--neutral-bolder-border, 1px solid #D7D7DB);
     padding: 0.8rem 1.6rem;
     align-items: start;
 }
 
 .text-area-container:has(> textarea:disabled) {
-    background-color: var(--neutral-disable-background-color) !important;
-    color: var(--neutral-text-disabled-color) !important;
+    background-color: var(--neutral-disable-background-color, #F4F4F5) !important;
+    color: var(--neutral-text-disabled-color, #B2B2B8) !important;
     pointer-events: none !important;
 }
 
 .text-area-container:focus-within {
-    border-color: var(--primary-main-color);
+    border-color: var(--primary-main-color, #287CF0);
 }
 
-.text-area-container>textarea {
+.text-area-container>textarea,
+.simple-text-area>textarea {
     flex: 1;
     padding: 0;
     width: 100%;
@@ -26,7 +33,7 @@
     max-height: 100%;
     border: none;
     outline: none;
-    background-color: transparent !important;
+    background-color: transparent;
     font: inherit;
     color: inherit;
     font-size: inherit;
@@ -38,12 +45,14 @@
     resize: inherit;
 }
 
-.text-area-container.helper-text {
+.text-area-container.helper-text,
+.simple-text-area.helper-text {
     overflow: visible !important;
     border-color: var(--helper-text-color) !important;
 }
 
-.text-area-container.helper-text::after {
+.text-area-container.helper-text::after,
+.simple-text-area.helper-text::after {
     content: attr(helper-text);
     color: var(--helper-text-color);
     position: absolute;

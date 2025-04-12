@@ -1,4 +1,4 @@
-import React, { createRef, CSSProperties } from "react";
+import React, { createRef, CSSProperties, ReactNode } from "react";
 import styles from './text-area.module.css'
 import { UseFormRegister } from "react-hook-form";
 
@@ -20,23 +20,28 @@ interface TextAreaProps {
     helperTextColor?: string,
     style?: CSSProperties,
     register?: UseFormRegister<{}>,
+    simpleStyle?: boolean,
+    suffix?: ReactNode,
+    prefix?: ReactNode,
 }
 
 export class TextArea extends React.Component<TextAreaProps> {
-    private containerRef = createRef<HTMLDivElement>()
+    private containerRef = createRef<HTMLLabelElement>()
 
     getTextarea = () => {
         return this.containerRef.current?.querySelector("textarea")
     }
 
     render(): React.ReactNode {
-        return <div
+        const _style = this.props.style ?? {}
+        return <label
             id={this.props.id}
             ref={this.containerRef}
-            className={`${styles['text-area-container']} row ${this.props.className ?? 'body-3'} ${this.props.helperText?.length ? styles['helper-text'] : ""}`}
+            className={`${this.props.simpleStyle ? styles['simple-text-area'] : styles['text-area-container']} row ${this.props.className ?? (this.props.simpleStyle ? "" : 'body-3')} ${this.props.helperText?.length ? styles['helper-text'] : ""}`}
             helper-text={this.props.helperText}
-            style={this.props.style ? { ...({ '--helper-text-color': this.props.helperTextColor ?? '#e14337' } as CSSProperties), ...this.props.style } : ({ '--helper-text-color': this.props.helperTextColor ?? '#e14337' } as CSSProperties)}
+            style={{ '--helper-text-color': this.props.helperTextColor ?? '#e14337', ..._style } as CSSProperties}
         >
+            {this.props.prefix}
             {this.props.register ?
                 <textarea
                     name={this.props.name}
@@ -60,6 +65,7 @@ export class TextArea extends React.Component<TextAreaProps> {
                     onFocus={this.props.onFocus}
                     onBlur={this.props.onBlur}
                 />}
-        </div>
+            {this.props.suffix}
+        </label>
     }
 }
