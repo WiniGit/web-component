@@ -92,7 +92,7 @@ export function PopupOverlay({ children, onClose, className, style, onOpen }: { 
     }, [overlayRef.current, onOpen])
 
     useEffect(() => {
-        if (overlayRef.current && overlayRef.current.firstChild) {
+        if (overlayRef.current && overlayRef.current.firstChild && !onOpen) {
             const timer = setTimeout(() => {
                 const popupContent = overlayRef.current!.firstChild as HTMLElement
                 const rect = popupContent.getBoundingClientRect()

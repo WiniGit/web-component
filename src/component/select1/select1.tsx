@@ -64,6 +64,10 @@ export const Select1 = ({ style = {}, ...props }: Select1Props) => {
         className={`${props.simpleStyle ? styles['select1-simple-style'] : styles['select1-container']} row ${props.disabled ? styles['disabled'] : ''} ${props.helperText?.length && styles['helper-text']} ${props.className ?? 'body-3'}`}
         helper-text={props.helperText}
         style={{ ...({ '--helper-text-color': props.helperTextColor ?? '#e14337' } as CSSProperties), ...style }}
+        onClick={props.disabled ? undefined : () => {
+            if (inputRef.current) inputRef.current.focus()
+            else setIsOpen(true)
+        }}
     >
         {props.prefix}
         {(!valueItem || typeof valueItem.name === "string" || typeof valueItem.name === "number") ?
@@ -88,16 +92,17 @@ export const Select1 = ({ style = {}, ...props }: Select1Props) => {
         {isOpen && <PopupOverlay
             onOpen={popupRef => {
                 setTimeout(() => {
-                    const thisPopupRect = popupRef.getBoundingClientRect()
+                    const select1Popup = popupRef.firstChild! as HTMLDivElement
+                    const thisPopupRect = select1Popup.getBoundingClientRect()
                     const thisContainerRect = containerRef.current!.getBoundingClientRect()
                     if (thisPopupRect.right > document.body.offsetWidth) {
-                        popupRef.style.left = ""
-                        popupRef.style.right = `${document.body.offsetWidth - thisContainerRect.right}px`
+                        select1Popup.style.left = ""
+                        select1Popup.style.right = `${document.body.offsetWidth - thisContainerRect.right}px`
                     }
                     let _bottom = thisPopupRect.bottom - 8
                     if (_bottom > document.body.offsetHeight) {
-                        popupRef.style.top = ""
-                        popupRef.style.bottom = `${document.body.offsetHeight - thisContainerRect.y + 2}px`
+                        select1Popup.style.top = ""
+                        select1Popup.style.bottom = `${document.body.offsetHeight - thisContainerRect.y + 2}px`
                     }
                 }, 300)
                 if (props.onOpenOptions) props.onOpenOptions(popupRef)
