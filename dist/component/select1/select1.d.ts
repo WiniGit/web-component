@@ -25,6 +25,7 @@ interface Select1Props {
     prefix?: ReactNode;
     suffix?: ReactNode;
     onOpenOptions?: (popupRef: HTMLDivElement) => void;
+    simpleStyle?: boolean;
 }
 export declare const Select1: ({ style, ...props }: Select1Props) => import("react/jsx-runtime").JSX.Element;
 export {};

@@ -1,6 +1,7 @@
 import { default as React, CSSProperties } from 'react';
 interface CheckboxProps {
     id?: string;
+    name?: string;
     onChange?: (value: boolean, target: HTMLInputElement) => void;
     value?: boolean;
     checkColor?: string;
