@@ -1,5 +1,4 @@
 import { default as React, CSSProperties } from 'react';
-import { UseFormRegister } from 'react-hook-form';
 interface RadioButtonProps {
     id?: string;
     onChange?: React.ChangeEventHandler<HTMLInputElement>;
@@ -7,15 +6,12 @@ interface RadioButtonProps {
     disabled?: boolean;
     style?: CSSProperties;
     size?: number | string;
-    defaultChecked?: boolean;
+    checked?: boolean;
     name?: string;
     activeColor?: string;
     offColor?: string;
     className?: string;
-    register?: UseFormRegister<{}>;
 }
-export declare class RadioButton extends React.Component<RadioButtonProps> {
-    render(): React.ReactNode;
-}
+export declare const RadioButton: (props: RadioButtonProps) => import("react/jsx-runtime").JSX.Element;
 export {};
 //# sourceMappingURL=radio-button.d.ts.map

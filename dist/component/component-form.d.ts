@@ -125,7 +125,7 @@ interface CheckboxFormProps extends SimpleFormProps {
 }
 export declare function CheckboxForm(params: CheckboxFormProps): import("react/jsx-runtime").JSX.Element;
 interface RadioButtonFormProps extends SimpleFormProps {
-    onChange?: (v: React.ChangeEventHandler<HTMLInputElement>) => void;
+    onChange?: React.ChangeEventHandler<HTMLInputElement>;
     size?: string | number;
     value?: string;
 }
@@ -136,7 +136,7 @@ interface GroupRadioButtonFormProps extends SimpleFormProps {
         name: string;
         [p: string]: any;
     }>;
-    onChange?: (v: React.ChangeEventHandler<HTMLInputElement>) => void;
+    onChange?: React.ChangeEventHandler<HTMLInputElement>;
 }
 export declare function GroupRadioButtonForm(params: GroupRadioButtonFormProps): import("react/jsx-runtime").JSX.Element;
 interface ImportFileFormProps extends SimpleFormProps {

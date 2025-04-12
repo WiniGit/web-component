@@ -1,5 +1,4 @@
 import { default as React, CSSProperties, ReactNode } from 'react';
-import { WithTranslation } from 'react-i18next';
 export interface OptionsItem {
     id: string | number;
     parentId?: string;
@@ -7,7 +6,7 @@ export interface OptionsItem {
     title?: string | ((onSelect: (e: OptionsItem) => void) => ReactNode);
     disabled?: boolean;
 }
-interface Select1Props extends WithTranslation {
+interface Select1Props {
     id?: string;
     value?: string | number;
     options: Required<Array<OptionsItem>>;
@@ -27,6 +26,6 @@ interface Select1Props extends WithTranslation {
     suffix?: ReactNode;
     onOpenOptions?: (popupRef: HTMLDivElement) => void;
 }
-export declare const Select1: React.ComponentType<Omit<import('../../../node_modules/react-i18next/helpers').$Subtract<Select1Props, import('react-i18next').WithTranslationProps>, keyof WithTranslation<Ns, undefined>> & import('react-i18next').WithTranslationProps>;
+export declare const Select1: ({ style, ...props }: Select1Props) => import("react/jsx-runtime").JSX.Element;
 export {};
 //# sourceMappingURL=select1.d.ts.map

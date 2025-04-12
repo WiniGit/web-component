@@ -11,15 +11,6 @@ interface CheckboxProps {
     size?: number | string;
     onClick?: React.MouseEventHandler<HTMLLabelElement>;
 }
-interface CheckboxState {
-    value?: boolean;
-}
-export declare class Checkbox extends React.Component<CheckboxProps, CheckboxState> {
-    private ref;
-    constructor(props: CheckboxProps);
-    componentDidUpdate(prevProps: Readonly<CheckboxProps>): void;
-    onChange: () => void;
-    render(): import("react/jsx-runtime").JSX.Element;
-}
+export declare const Checkbox: (props: CheckboxProps) => import("react/jsx-runtime").JSX.Element;
 export {};
 //# sourceMappingURL=checkbox.d.ts.map
