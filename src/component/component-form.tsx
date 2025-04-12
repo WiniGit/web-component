@@ -381,19 +381,27 @@ export function CheckboxForm(params: CheckboxFormProps) {
 }
 
 interface RadioButtonFormProps extends SimpleFormProps {
-    onChange?: (v: React.ChangeEventHandler<HTMLInputElement>) => void,
+    onChange?: React.ChangeEventHandler<HTMLInputElement>,
     size?: string | number,
     value?: string
 }
 
 export function RadioButtonForm(params: RadioButtonFormProps) {
     return <label className={`row ${params.className ?? ""}`} style={{ gap: "0.8rem", ...(params.style ?? {}) }}>
-        <RadioButton
-            value={params.value}
-            disabled={params.disabled}
-            size={params.size ?? '1.6rem'}
+        <Controller
             name={params.name}
-            register={params.methods.register(params.name, { onChange: params.onChange }) as any}
+            control={params.methods.control}
+            render={({ field }) => <RadioButton
+                value={params.value}
+                disabled={params.disabled}
+                size={params.size ?? '1.6rem'}
+                name={params.name}
+                checked={field.value === params.value}
+                onChange={(ev) => {
+                    field.onChange(ev.target.value)
+                    if (params.onChange) params.onChange(ev)
+                }}
+            />}
         />
         {params.label ? <Text className="label-4" maxLine={1}>{params.label}</Text> : null}
     </label>
@@ -401,7 +409,7 @@ export function RadioButtonForm(params: RadioButtonFormProps) {
 
 interface GroupRadioButtonFormProps extends SimpleFormProps {
     options: Array<{ id: string | number, name: string, [p: string]: any }>,
-    onChange?: (v: React.ChangeEventHandler<HTMLInputElement>) => void,
+    onChange?: React.ChangeEventHandler<HTMLInputElement>,
 }
 
 export function GroupRadioButtonForm(params: GroupRadioButtonFormProps) {

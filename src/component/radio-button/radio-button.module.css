@@ -1,4 +1,6 @@
 .radio-btn-container {
+    --off-color: var(--neutral-text-disabled-color, #A2A2AA);
+    --active-color: var(--primary-main-color, #287CF0);
     height: max(var(--size), 14px);
     width: max(var(--size), 14px);
     aspect-ratio: 1 / 1 !important;
@@ -36,16 +38,16 @@
 }
 
 .radio-btn-container:has(> input:checked) {
-    border-color: var(--active-color) !important;
+    border-color: var(--active-color);
 }
 
 .radio-btn-container:has(input:disabled) {
-    pointer-events: none !important;
-    border-color: var(--off-color) !important;
-    background-color: var(--neutral-disable-background-color) !important;
+    pointer-events: none;
+    border-color: var(--off-color);
+    background-color: var(--neutral-disable-background-color, #494950);
 }
 
 .radio-btn-container>input:disabled~.checkmark {
-    display: block !important;
-    background-color: var(--neutral-text-disabled-color);
+    display: block;
+    background-color: var(--neutral-text-disabled-color, #878792);
 }

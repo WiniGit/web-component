@@ -1,7 +1,7 @@
 .checkbox-container {
     position: relative;
     border-radius: 0.4rem;
-    border: var(--neutral-bolder-border);
+    border: var(--neutral-bolder-border, 1px solid #D7D7DB);
     background-color: transparent;
     transition: border, background-color 0.4s;
     cursor: pointer;
@@ -37,6 +37,14 @@
 .checkbox-container[is-null-value="true"] {
     background-color: var(--primary-main-color);
     border: none !important;
+}
+
+.checkbox-container[is-null-value="true"]>svg>path:first-child {
+    display: block !important;
+}
+
+.checkbox-container[is-null-value="true"]>svg>path:last-child {
+    display: none;
 }
 
 .checkbox-container:has(> input:disabled) {

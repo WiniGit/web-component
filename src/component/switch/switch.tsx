@@ -1,4 +1,4 @@
-import { CSSProperties, useEffect, useMemo, useState } from 'react';
+import { CSSProperties, useEffect, useMemo, useRef, useState } from 'react';
 import styles from './switch.module.css';
 
 interface SwitchProps {
@@ -17,7 +17,7 @@ interface SwitchProps {
 }
 
 export const Switch = (props: SwitchProps) => {
-    const [value, setValue] = useState(props.value)
+    const inputRef = useRef<HTMLInputElement>(null)
     const convertStyle = useMemo<CSSProperties>(() => {
         let propStyle: any = { '--size': props.size ? (typeof props.size === 'number') ? `${props.size}px` : props.size : '2rem' }
         if (props.offBackground) propStyle['--off-bg'] = props.offBackground
@@ -44,15 +44,13 @@ export const Switch = (props: SwitchProps) => {
     }, [props.size, props.style, props.offBackground, props.onBackground, props.dotColor])
 
     useEffect(() => {
-        if (props.value !== value) setValue(props.value)
-    }, [props.value])
+        if (inputRef.current && props.value !== inputRef.current?.checked) inputRef.current.checked = !!props.value
+    }, [props.value, inputRef.current])
 
     return <label id={props.id} className={`${styles['switch-container']} row ${props.className ?? ''}`} style={convertStyle}>
-        <input type="checkbox" hidden checked={value} name={props.name} disabled={props.disabled}
-            onChange={() => {
-                const newValue = !value
-                setValue(newValue)
-                if (props.onChange) props.onChange(newValue)
+        <input ref={inputRef} type="checkbox" hidden name={props.name} disabled={props.disabled}
+            onChange={(ev) => {
+                if (props.onChange) props.onChange(ev.target.checked)
             }}
         />
         <span className={styles['slider']} />
