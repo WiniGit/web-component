@@ -36,7 +36,7 @@ interface Select1Props {
 }
 
 export const Select1 = ({ style = {}, ...props }: Select1Props) => {
-    const containerRef = useRef<HTMLDivElement>(null)
+    const containerRef = useRef<HTMLLabelElement>(null)
     const inputRef = useRef<HTMLInputElement>(null)
     const { t } = useTranslation()
     const [options, setOptions] = useState<Array<OptionsItem>>([])
@@ -52,22 +52,19 @@ export const Select1 = ({ style = {}, ...props }: Select1Props) => {
     }
 
     useEffect(() => { setValue(props.value) }, [props.value])
-    useEffect(() => { setOptions(props.options) }, [props.options])
+    useEffect(() => { setOptions(props.options ?? []) }, [props.options])
 
     useEffect(() => {
         if (inputRef.current) inputRef.current.value = valueItem?.name && typeof valueItem.name === "string" ? valueItem.name : ""
     }, [valueItem, inputRef.current])
 
-    return <div
+    return <label
         id={props.id}
         ref={containerRef}
         className={`${props.simpleStyle ? styles['select1-simple-style'] : styles['select1-container']} row ${props.disabled ? styles['disabled'] : ''} ${props.helperText?.length && styles['helper-text']} ${props.className ?? 'body-3'}`}
         helper-text={props.helperText}
         style={{ ...({ '--helper-text-color': props.helperTextColor ?? '#e14337' } as CSSProperties), ...style }}
-        onClick={props.disabled ? undefined : () => {
-            if (inputRef.current) inputRef.current.focus()
-            else setIsOpen(true)
-        }}
+       
     >
         {props.prefix}
         {(!valueItem || typeof valueItem.name === "string" || typeof valueItem.name === "number") ?
@@ -139,7 +136,7 @@ export const Select1 = ({ style = {}, ...props }: Select1Props) => {
                 </div>
             </div>
         </PopupOverlay>}
-    </div>
+    </label>
 }
 
 interface OptionTileProps {
