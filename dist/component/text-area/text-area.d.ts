@@ -1,4 +1,4 @@
-import { default as React, CSSProperties } from 'react';
+import { default as React, CSSProperties, ReactNode } from 'react';
 import { UseFormRegister } from 'react-hook-form';
 interface TextAreaProps {
     id?: string;
@@ -18,6 +18,9 @@ interface TextAreaProps {
     helperTextColor?: string;
     style?: CSSProperties;
     register?: UseFormRegister<{}>;
+    simpleStyle?: boolean;
+    suffix?: ReactNode;
+    prefix?: ReactNode;
 }
 export declare class TextArea extends React.Component<TextAreaProps> {
     private containerRef;
