@@ -29,8 +29,10 @@ interface DateTimePickerProps {
         value: Array<"everyday" | "last" | number>;
     };
     prefix?: ReactNode;
+    suffix?: ReactNode;
     onChange?: (ev?: Date | ValueProps) => void;
+    simpleStyle?: boolean;
 }
-export declare function DateTimePicker(props: DateTimePickerProps): import("react/jsx-runtime").JSX.Element;
+export declare function DateTimePicker({ style, ...props }: DateTimePickerProps): import("react/jsx-runtime").JSX.Element;
 export {};
 //# sourceMappingURL=date-time-picker.d.ts.map
