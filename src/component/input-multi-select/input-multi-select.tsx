@@ -1,4 +1,4 @@
-import React, { CSSProperties, useEffect, useMemo, useRef, useState } from 'react'
+import React, { CSSProperties, ReactNode, useEffect, useMemo, useRef, useState } from 'react'
 import styles from './input-multi-select.module.css'
 import { OptionsItem } from '../select1/select1'
 import { Checkbox } from '../checkbox/checkbox'
@@ -21,7 +21,9 @@ interface SelectMultipleProps {
     handleSearch?: (e: string) => Promise<Array<OptionsItem>>,
     handleLoadmore?: (onLoadMore: boolean, ev: React.UIEvent<HTMLDivElement, UIEvent>) => void,
     showClearValueButton?: boolean,
-    popupClassName?: string
+    popupClassName?: string,
+    prefix?: ReactNode,
+    suffix?: ReactNode,
     simpleStyle?: boolean
 }
 
@@ -63,6 +65,7 @@ export const SelectMultiple = ({ style = {}, ...props }: SelectMultipleProps) =>
         helper-text={props.helperText}
         style={{ '--helper-text-color': props.helperTextColor ?? '#e14337', ...style } as CSSProperties}
     >
+        {props.prefix}
         <label className='row' style={{ flexWrap: 'wrap', flex: 1, width: '100%', gap: '0.6rem 0.4rem' }}>
             {value.map(item => {
                 const optionItem = options.find(e => e.id === item)
@@ -89,7 +92,7 @@ export const SelectMultiple = ({ style = {}, ...props }: SelectMultipleProps) =>
                 }}
             />
         </label>
-        {props.showClearValueButton && value.length ? <button type='button' className='row' style={{ padding: '0.4rem' }} onClick={(ev) => {
+        {props.suffix || (props.showClearValueButton && value.length ? <button type='button' className='row' style={{ padding: '0.4rem' }} onClick={(ev) => {
             ev.stopPropagation()
             if (value.length) {
                 setValue([])
@@ -101,7 +104,7 @@ export const SelectMultiple = ({ style = {}, ...props }: SelectMultipleProps) =>
             if (iconRef?.parentElement && iconRef.parentElement.getBoundingClientRect().width < 100) iconRef.style.display = "none"
         }} className='row' >
             <Winicon src={isOpen ? "fill/arrows/up-arrow" : "fill/arrows/down-arrow"} size={'1.2rem'} />
-        </div>}
+        </div>)}
         {isOpen && <PopupOverlay
             onOpen={popupRef => {
                 setTimeout(() => {

@@ -1,8 +1,7 @@
-import React, { createRef, CSSProperties } from 'react'
+import { CSSProperties, forwardRef, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react'
 import styles from './import-file.module.css'
-import { ComponentStatus } from '../component-status'
 import { Button, Text, ToastMessage, Winicon } from '../../index'
-import { WithTranslation, withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 const cloudSvg = (
     <svg width='100%' height='100%' style={{ width: '3rem', height: '3rem' }} viewBox='0 0 36 36' fill='none' xmlns='http://www.w3.org/2000/svg' >
@@ -24,16 +23,10 @@ const closeSvg = (
     </svg>
 )
 
-interface ImportFileState {
-    status?: ComponentStatus,
-    preview?: Array<File> | Array<{ [k: string]: any }>
-}
-
 type ChangeFileFunction = (a?: Array<File> | Array<{ [k: string]: any }>) => void;
 
-interface ImportFileProps extends WithTranslation {
+interface ImportFileProps {
     id?: string,
-    status?: ComponentStatus,
     value?: File | Array<File> | { [k: string]: any } | Array<{ [k: string]: any }>,
     buttonOnly?: boolean,
     onChange?: ChangeFileFunction,
@@ -51,124 +44,128 @@ interface ImportFileProps extends WithTranslation {
     * maxSize unit: kb (kilobytes)
     */
     maxSize?: number,
+    simpleStyle?: boolean
 }
 
-const formatFileSize = (bytes: number, decimalPoint?: number) => {
-    if (bytes == 0) return '0 Bytes';
-    var k = 1000,
-        dm = decimalPoint || 2,
-        sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
-        i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+function formatFileSize(bytes: number, decimals = 2) {
+    if (bytes === 0) return '0 Bytes';
+
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+
+    // Calculate the appropriate size unit
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+    // For very large numbers, limit the maximum unit to avoid scientific notation issues
+    const safeIndex = Math.min(i, sizes.length - 1);
+
+    // Calculate the value in the appropriate unit
+    const value = bytes / Math.pow(k, safeIndex);
+
+    // Special case for bytes - no decimal places
+    if (safeIndex === 0) {
+        return Math.round(value) + ' ' + sizes[safeIndex];
+    }
+
+    // Format with specified decimals, then convert to number to remove trailing zeros
+    const formatted = Number(value.toFixed(decimals)).toString();
+
+    return formatted + ' ' + sizes[safeIndex];
 }
 
-class TImportFile extends React.Component<ImportFileProps, ImportFileState> {
-    private fileRef = createRef<HTMLInputElement>();
-    constructor(props: ImportFileProps | Readonly<ImportFileProps>) {
-        super(props);
-        this.state = {
-            preview: this.props.value ? Array.isArray(this.props.value) ? this.props.value : [this.props.value] : undefined
-        }
-    }
+export const ImportFile = forwardRef(({ style = {}, ...props }: ImportFileProps, ref) => {
+    const fileRef = useRef<HTMLInputElement>(null);
+    const [preview, setPreview] = useState<Array<File> | Array<{ [k: string]: any }>>();
+    const { t } = useTranslation()
+    const sizeTitle: string | undefined = useMemo(() => props.maxSize ? formatFileSize(props.maxSize) : undefined, [props.maxSize])
+    const subtitle: string | undefined = useMemo(() => {
+        return preview?.[0]?.size
+            ? `${preview?.[0].size}KB`
+            : (props.subTitle ?? (sizeTitle ? t("limitFileWarning", { sizeTitle: sizeTitle }) : ''))
+    }, [props.subTitle, sizeTitle, preview])
 
-    showFilePicker() {
-        this.fileRef.current?.click()
-    }
+    useImperativeHandle(ref, () => ({
+        showFilePicker() {
+            fileRef.current?.showPicker()
+        },
+        inputElement: fileRef.current
+    }));
 
-    componentDidUpdate(prevProps: Readonly<ImportFileProps>): void {
-        if (prevProps.value !== this.props.value || prevProps.status !== this.props.status) {
-            this.setState({ ...this.state, status: this.props.status, preview: this.props.value ? Array.isArray(this.props.value) ? this.props.value : [this.props.value] : undefined })
-        }
-    }
+    useEffect(() => {
+        setPreview(props.value ? Array.isArray(props.value) ? props.value : [props.value] : undefined)
+    }, [props.value])
 
-    render() {
-        const { t } = this.props;
-        let sizeTitle: string | undefined
-        if (this.props.maxSize) sizeTitle = formatFileSize(this.props.maxSize)
-        let _style = this.state.preview ? (this.props.style ?? {}) : { cursor: 'pointer', ...(this.props.style ?? {}) }
-        return <div
-            id={this.props.id}
-            className={`${styles['import-file-container']} ${this.props.className ?? 'row'} ${this.props.buttonOnly ? styles['button-only'] : ''} ${this.props.helperText?.length ? styles['helper-text'] : ""}`}
-            style={{ '--helper-text-color': this.props.helperTextColor ?? '#e14337', ..._style } as CSSProperties}
-            helper-text={this.props.helperText}
-            onClick={() => {
-                if (!this.state.preview && !this.props.buttonOnly) this.showFilePicker()
-            }}
-        >
-            <input disabled={this.props.disabled} type='file' multiple={this.props.multiple} accept={(this.props.allowType ?? []).join(',')} ref={this.fileRef} onChange={(ev) => {
+    return <label
+        id={props.id}
+        className={`${props.simpleStyle ? styles['import-file-simple-style'] : styles['import-file-container']} ${props.className ?? 'row'} ${props.buttonOnly ? styles['button-only'] : ''} ${props.helperText?.length ? styles['helper-text'] : ""}`}
+        style={{ '--helper-text-color': props.helperTextColor ?? '#e14337', cursor: preview?.length ? undefined : 'pointer', ...style } as CSSProperties}
+        helper-text={props.helperText}
+        htmlFor={!preview?.length ? undefined : ''}
+    >
+        <input ref={fileRef} disabled={props.disabled} type='file' hidden multiple={props.multiple} accept={props.allowType?.join(',')}
+            onChange={(ev) => {
                 let files: Array<File> | undefined
                 if (ev.target.files?.length) {
                     files = [...(ev.target.files as any)]
-                    if (this.props.maxSize) {
-                        if (files.some(f => (f.size > (this.props.maxSize! * 1024)))) {
-                            ToastMessage.errors(t("limitFileError", { name: files.find(f => (f.size > (this.props.maxSize! * 1024)))?.name, sizeTitle: sizeTitle }))
-                            files = files.filter(f => (f.size <= (this.props.maxSize! * 1024)))
-                        }
+                    if (props.maxSize && files.some(f => (f.size > (props.maxSize! * 1024)))) {
+                        ToastMessage.errors(t("limitFileError", { name: files.find(f => (f.size > (props.maxSize! * 1024)))?.name, sizeTitle: sizeTitle }))
+                        files = files.filter(f => (f.size <= (props.maxSize! * 1024)))
                     }
                 }
                 if (files) {
-                    if (this.props.multiple) {
-                        const newValue = this.state.preview?.filter(e => files.every(f => e.name !== f.name && e.size !== f.size && e.lastModified !== f.lastModified)) ?? []
-                        this.setState({ ...this.state, preview: [...newValue, ...files] })
-                        if (this.props.onChange) this.props.onChange([...newValue, ...files])
+                    if (props.multiple) {
+                        const newValue = preview?.filter(e => files.every(f => e.name !== f.name && e.size !== f.size && e.lastModified !== f.lastModified)) ?? []
+                        setPreview([...newValue, ...files])
+                        props.onChange?.([...newValue, ...files])
                     } else {
-                        this.setState({ ...this.state, preview: files })
-                        if (this.props.onChange) this.props.onChange(files)
+                        setPreview(files)
+                        props.onChange?.(files)
                     }
                 }
             }} />
-            {this.props.buttonOnly
-                ? null
-                : this.props.multiple && this.state.preview?.length ? <div className='row' style={{ flex: 1, flexWrap: "wrap", gap: "0.8rem" }}>
-                    {this.state.preview.map(f => {
-                        return <div key={`${f.name}-${f.size}-${f.lastModified}`} className='row' style={{ gap: "0.8rem", padding: "0.6rem 0.8rem", borderRadius: "0.4rem", border: "var(--neutral-main-border)", flex: "0 calc((100% * 6 / 24) - 0.8rem * 3 / 4)", width: "auto", minWidth: "11.4rem", ...(this.props.fileTagStyle ?? {}) }}>
-                            <Winicon src={`outline/${f.type?.includes('image') ? "multimedia/image" : "files/file-export"}`} size={"1.4rem"} />
-                            <Text className='subtitle-4' style={{ flex: 1, width: "100%" }} maxLine={1}>{f.name}</Text>
-                            <Winicon src='fill/user interface/e-remove' size={"1.4rem"} onClick={() => {
-                                const newValue = this.state.preview?.filter(e => e.name !== f.name && e.size !== f.size && e.lastModified !== f.lastModified)
-                                this.setState({ ...this.state, preview: newValue })
-                                if (this.props.onChange) this.props.onChange(newValue)
-                            }} color='#E14337' />
-                        </div>
-                    })}
-                </div> : <>
-                    <div className={`${styles['import-file-prefix']} row`}>
-                        {this.state.preview?.length ? this.state.preview[0].type?.includes('image') ? <img src={this.state.preview[0] instanceof File ? URL.createObjectURL(this.state.preview[0]) : this.state.preview?.[0]?.url} /> : fileSvg : cloudSvg}
-                    </div>
-                    <div className={`${styles['file-preview-content']} col`} >
-                        <Text className={`${styles['title-file']} heading-8`} style={{ maxWidth: '100%' }}>
-                            {this.state.preview?.[0]?.name ?? (this.props.label ?? t("uploadFileAction"))}
-                        </Text>
-                        <Text className={`${styles['subtitle-file']} subtitle-3`} style={{ maxWidth: '100%' }}>
-                            {this.state.preview?.[0]?.size
-                                ? `${this.state.preview?.[0].size}KB`
-                                : (this.props.subTitle ?? (sizeTitle ? t("limitFileWarning", { sizeTitle: sizeTitle }) : ''))}
-                        </Text>
-                    </div>
-                </>
-            }
-            {this.state.preview?.length && this.props.buttonOnly && !this.props.multiple ? <div className='row' style={{ gap: "0.4rem" }}>
-                <Text className='button-text-6'>{this.state.preview?.[0].name ?? ''}</Text>
-                <button type='button' className={`${styles['remove-preview-file']}`} onClick={() => {
-                    this.setState({ ...this.state, preview: undefined })
-                    if (this.props.onChange) this.props.onChange(undefined)
-                }}>
-                    {closeSvg}
-                </button>
+        {!props.buttonOnly && (props.multiple && preview?.length ? <div className='row' style={{ flex: 1, flexWrap: "wrap", gap: "0.8rem" }}>
+            {preview.map((f: any) => {
+                return <div key={`${f.name}-${f.size}-${f.lastModified}`} className='row' style={{ gap: "0.8rem", padding: "0.6rem 0.8rem", borderRadius: "0.4rem", border: "var(--neutral-main-border)", flex: "0 calc((100% * 6 / 24) - 0.8rem * 3 / 4)", width: "auto", minWidth: "11.4rem", ...(props.fileTagStyle ?? {}) }}>
+                    <Winicon src={`outline/${f.type?.includes('image') ? "multimedia/image" : "files/file-export"}`} size={"1.4rem"} />
+                    <Text className='subtitle-4' style={{ flex: 1, width: "100%" }} maxLine={1}>{f.name}</Text>
+                    <Winicon src='fill/user interface/e-remove' size={"1.4rem"} onClick={() => {
+                        const newValue = preview?.filter(e => e.name !== f.name && e.size !== f.size && e.lastModified !== f.lastModified)
+                        setPreview(newValue)
+                        props.onChange?.(newValue)
+                    }} color='#E14337' />
+                </div>
+            })}
+        </div> : <>
+            <div className={`${styles['import-file-prefix']} row`} style={{ justifyContent: "center" }}>
+                {preview?.length ? preview[0].type?.includes('image') ? <img src={preview[0] instanceof File ? URL.createObjectURL(preview[0]) : preview?.[0]?.url} /> : fileSvg : cloudSvg}
             </div>
-                : <Button
-                    label={this.state.preview?.length ? this.props.multiple ? `${t("add")} ${t("file").toLowerCase()}` : `${t("remove")} ${t("file").toLowerCase()}` : `${t("choose")} ${t("file").toLowerCase()}`}
-                    style={{ padding: "1.2rem", backgroundColor: "var(--neutral-main-background-color)" }}
-                    className='button-text-4'
-                    onClick={() => {
-                        if (this.state.preview && !this.props.multiple) {
-                            this.setState({ ...this.state, preview: undefined })
-                            if (this.props.onChange) this.props.onChange(undefined)
-                        } else if (this.props.buttonOnly || this.state.preview) this.showFilePicker()
-                    }}
-                />}
-        </div>
-    }
-}
-
-export const ImportFile = withTranslation()(TImportFile)
+            <div className={`${styles['file-preview-content']}`} >
+                <Text className="heading-8" style={{ width: '100%' }}>
+                    {preview?.[0]?.name ?? (props.label ?? t("uploadFileAction"))}
+                </Text>
+                {!!subtitle?.length && <Text className="subtitle-3" style={{ width: "fit-content" }}>
+                    {subtitle}
+                </Text>}
+            </div>
+        </>)}
+        {preview?.length && props.buttonOnly && !props.multiple ? <div className='row' style={{ gap: "0.4rem" }}>
+            <Text className='button-text-6'>{preview?.[0].name ?? ''}</Text>
+            <button type='button' className={`${styles['remove-preview-file']}`} onClick={() => {
+                setPreview(undefined)
+                props.onChange?.(undefined)
+            }}>
+                {closeSvg}
+            </button>
+        </div> : <Button
+            label={preview?.length ? props.multiple ? `${t("add")} ${t("file").toLowerCase()}` : `${t("remove")} ${t("file").toLowerCase()}` : `${t("choose")} ${t("file").toLowerCase()}`}
+            style={{ padding: "1.2rem", backgroundColor: "var(--neutral-main-background-color)" }}
+            className='button-text-4'
+            onClick={() => {
+                if (preview && !props.multiple) {
+                    setPreview(undefined)
+                    props.onChange?.(undefined)
+                } else fileRef.current?.showPicker()
+            }}
+        />}
+    </label>
+})

@@ -438,7 +438,6 @@ interface ImportFileFormProps extends SimpleFormProps {
     multiple?: boolean,
     maxSize?: number,
     allowType?: Array<string>,
-    status?: ComponentStatus,
     onChange?: (a?: Array<File> | Array<{ [p: string]: any }>) => void,
     title?: string,
     subTitle?: string,
@@ -459,7 +458,7 @@ export function ImportFileForm(params: ImportFileFormProps) {
                     <Text className={"label-3"}>{params.label}</Text>
                     {params.required ? <Text className="label-4" style={{ color: '#E14337' }}>*</Text> : null}
                 </div> : null)}
-                <ImportFile maxSize={params.maxSize} multiple={params.multiple} label={params.title} subTitle={params.subTitle} allowType={params.allowType} status={params.status} value={field.value} disabled={params.disabled}
+                <ImportFile maxSize={params.maxSize} multiple={params.multiple} label={params.title} subTitle={params.subTitle} allowType={params.allowType} value={field.value} disabled={params.disabled}
                     style={{ width: '100%', borderStyle: 'dashed', maxWidth: '100%', flex: params.className?.includes("row") ? 1 : undefined }} className={`${params.className ?? ''} ${params.direction ?? 'row'}`}
                     onChange={(ev: any) => {
                         field.onChange(ev);

@@ -238,7 +238,7 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
         if (props.className) _props.className = [..._props.className.split(" "), ...props.className.split(" ")].filter((cls, i, arr) => cls.length && arr.indexOf(cls) === i).join(" ")
         if (watchForCustomProps?.className) _props.className = [..._props.className.split(" "), ...watchForCustomProps.className.split(" ")].filter((cls, i, arr) => cls.length && arr.indexOf(cls) === i).join(" ")
         delete _props.action
-        if (props.propsData && props.propsData[props.item.Id]) _props = props.type === "card" ? { ..._props, ...(props.propsData[props.item.Id] as any)(props.indexItem, props.index) } : { ..._props, ...props.propsData[props.item.Id] }
+        if (props.propsData && props.propsData[props.item.Id]) _props = props.type === "card" ? { ..._props, ...((props.propsData[props.item.Id] as any)(props.indexItem, props.index)) } : { ..._props, ...props.propsData[props.item.Id] }
         return _props
     }, [props.item, props.propsData, props.methods, watchForCustomProps])
     const watchForDataValue = useMemo(() => {
