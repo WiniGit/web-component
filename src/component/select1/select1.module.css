@@ -23,7 +23,7 @@
 
 .select1-container.helper-text,
 .select1-simple-style.helper-text {
-    overflow: visible;
+    overflow: visible !important;
     border-color: var(--helper-text-color);
 }
 

@@ -12,7 +12,8 @@
     border: 1px dashed var(--neutral-text-subtitle-color)
 }
 
-.date-time-picker>.value {
+.date-time-picker>.value,
+.simple-date-time-picker>.value {
     flex: 1;
     width: 100%;
     font: inherit;
@@ -22,17 +23,17 @@
     font-weight: inherit;
     line-height: inherit;
     text-align: inherit;
+    letter-spacing: inherit;
     text-overflow: inherit;
+    text-decoration: inherit;
+    font-style: inherit;
 }
 
-.date-time-picker>input {
+.date-time-picker>input,
+.simple-date-time-picker>input {
     outline: none;
     border: none;
     background-color: transparent !important;
-}
-
-.date-time-picker>.prefix-icon+.value {
-    width: calc(100% - 0.8rem);
 }
 
 .date-time-picker:has(>input) {
@@ -51,20 +52,22 @@
 }
 
 button.date-time-picker:hover {
-    background-color: var(--neutral-hover-background-color);
+    background-color: var(--neutral-hover-background-color, #18181B0A);
 }
 
 button.date-time-picker:focus {
     box-shadow: 0px 4px 20px 0px #0000001A inset;
 }
 
-.date-time-picker.helper-text {
+.date-time-picker.helper-text,
+.simple-date-time-picker.helper-text {
     position: relative;
     overflow: visible !important;
     border-color: var(--helper-text-color) !important;
 }
 
-.date-time-picker.helper-text::after {
+.date-time-picker.helper-text::after,
+.simple-date-time-picker.helper-text::after {
     content: attr(helper-text);
     color: var(--helper-text-color);
     position: absolute;
@@ -80,7 +83,7 @@ button.date-time-picker:focus {
 .popup-actions {
     max-height: 28rem;
     min-width: 10rem;
-    background-color: var(--neutral-absolute-background-color);
+    background-color: var(--neutral-absolute-background-color, #ffffff);
 }
 
 .popup-actions>button {
@@ -89,5 +92,5 @@ button.date-time-picker:focus {
 }
 
 .popup-actions>button:hover {
-    background-color: var(--neutral-hover-background-color);
+    background-color: var(--neutral-hover-background-color, #18181B0A);
 }

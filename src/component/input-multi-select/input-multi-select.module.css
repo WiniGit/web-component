@@ -24,7 +24,7 @@
 
 .select-multi-container.helper-text,
 .select-multi-simple-style.helper-text {
-    overflow: visible;
+    overflow: visible !important;
     border-color: var(--helper-text-color);
 }
 

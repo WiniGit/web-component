@@ -126,10 +126,12 @@ interface DateTimePickerProps {
     /** type: 1: daily, 2: weekly, 3: monthly */
     repeatValue?: { type: 1 | 2 | 3, value: Array<"everyday" | "last" | number> },
     prefix?: ReactNode,
+    suffix?: ReactNode,
     onChange?: (ev?: Date | ValueProps) => void,
+    simpleStyle?: boolean
 }
 
-export function DateTimePicker(props: DateTimePickerProps) {
+export function DateTimePicker({ style = {}, ...props }: DateTimePickerProps) {
     const popupRef = useRef<any>(null)
     const inputRef = useRef<HTMLInputElement>(null)
     const [value, setValue] = useState<Date | ValueProps>()
@@ -188,16 +190,16 @@ export function DateTimePicker(props: DateTimePickerProps) {
     const returnUI = () => {
         switch (props.pickerType) {
             case "date":
-                return <div
+                return <label
                     id={props.id}
-                    className={`row ${styles["date-time-picker"]} ${props.className ?? "body-3"} ${props.helperText?.length ? styles['helper-text'] : ""}`}
+                    className={`row ${props.simpleStyle ? styles['simple-date-time-picker'] : styles["date-time-picker"]} ${props.className ?? (props.simpleStyle ? "" : 'body-3')} ${props.helperText?.length ? styles['helper-text'] : ""}`}
                     helper-text={props.helperText}
-                    style={props.style ? { ...({ '--helper-text-color': props.helperTextColor ?? '#e14337' } as CSSProperties), ...props.style } : ({ '--helper-text-color': props.helperTextColor ?? '#e14337' } as CSSProperties)}
+                    style={{ '--helper-text-color': props.helperTextColor ?? '#e14337', ...style } as CSSProperties}
                     onClick={(ev: any) => {
                         const rect = ev.target.closest("div").getBoundingClientRect()
                         showCalendar(rect)
                     }}>
-                    {props.prefix ?? <Winicon className={styles["prefix-icon"]} src="outline/user interface/calendar-date" size={"1.2rem"} />}
+                    {!props.simpleStyle && (props.prefix ?? <Winicon className={styles["prefix-icon"]} src="outline/user interface/calendar-date" size={"1.2rem"} />)}
                     <input
                         className={styles["value"]}
                         ref={inputRef}
@@ -232,14 +234,22 @@ export function DateTimePicker(props: DateTimePickerProps) {
                             if (props.onChange) props.onChange(dateValue)
                         }}
                     />
-                </div>
+                    {props.suffix}
+                </label>
             default:
-                return <button id={props.id} type="button" disabled={props.disabled} className={`row ${styles["date-time-picker"]} ${props.className ?? "body-3"}`} style={props.style} onClick={(ev: any) => {
-                    const rect = ev.target.closest("button").getBoundingClientRect()
-                    showCalendar(rect)
-                }}>
-                    {props.prefix ?? <Winicon className={styles["prefix-icon"]} src="outline/user interface/calendar-date" size={"1.2rem"} />}
+                return <button id={props.id}
+                    type="button"
+                    disabled={props.disabled}
+                    className={`row ${props.simpleStyle ? styles['simple-date-time-picker'] : styles["date-time-picker"]} ${props.className ?? (props.simpleStyle ? "" : 'body-3')} ${props.helperText?.length ? styles['helper-text'] : ""}`}
+                    helper-text={props.helperText}
+                    style={{ '--helper-text-color': props.helperTextColor ?? '#e14337', ...style } as CSSProperties}
+                    onFocus={(ev: any) => {
+                        const rect = ev.target.closest("button").getBoundingClientRect()
+                        showCalendar(rect)
+                    }}>
+                    {!props.simpleStyle && (props.prefix ?? <Winicon className={styles["prefix-icon"]} src="outline/user interface/calendar-date" size={"1.2rem"} />)}
                     {txtValue}
+                    {props.suffix}
                 </button>
         }
     }
