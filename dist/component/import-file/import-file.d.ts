@@ -1,12 +1,9 @@
-import { default as React, CSSProperties } from 'react';
-import { ComponentStatus } from '../component-status';
-import { WithTranslation } from 'react-i18next';
+import { CSSProperties } from 'react';
 type ChangeFileFunction = (a?: Array<File> | Array<{
     [k: string]: any;
 }>) => void;
-interface ImportFileProps extends WithTranslation {
+interface ImportFileProps {
     id?: string;
-    status?: ComponentStatus;
     value?: File | Array<File> | {
         [k: string]: any;
     } | Array<{
@@ -28,7 +25,8 @@ interface ImportFileProps extends WithTranslation {
     * maxSize unit: kb (kilobytes)
     */
     maxSize?: number;
+    simpleStyle?: boolean;
 }
-export declare const ImportFile: React.ComponentType<Omit<import('../../../node_modules/react-i18next/helpers').$Subtract<ImportFileProps | Readonly<ImportFileProps>, import('react-i18next').WithTranslationProps>, keyof WithTranslation<Ns, undefined>> & import('react-i18next').WithTranslationProps>;
+export declare const ImportFile: import('react').ForwardRefExoticComponent<ImportFileProps & import('react').RefAttributes<unknown>>;
 export {};
 //# sourceMappingURL=import-file.d.ts.map

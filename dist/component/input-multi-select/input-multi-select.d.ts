@@ -1,4 +1,4 @@
-import { default as React, CSSProperties } from 'react';
+import { default as React, CSSProperties, ReactNode } from 'react';
 import { OptionsItem } from '../select1/select1';
 interface SelectMultipleProps {
     id?: string;
@@ -15,6 +15,8 @@ interface SelectMultipleProps {
     handleLoadmore?: (onLoadMore: boolean, ev: React.UIEvent<HTMLDivElement, UIEvent>) => void;
     showClearValueButton?: boolean;
     popupClassName?: string;
+    prefix?: ReactNode;
+    suffix?: ReactNode;
     simpleStyle?: boolean;
 }
 export declare const SelectMultiple: ({ style, ...props }: SelectMultipleProps) => import("react/jsx-runtime").JSX.Element;

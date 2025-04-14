@@ -1,6 +1,5 @@
 import { FieldValues, UseFormReturn } from 'react-hook-form';
 import { CSSProperties, ReactNode, default as React } from 'react';
-import { ComponentStatus } from './component-status';
 interface DateRangeProps {
     start?: Date;
     end?: Date;
@@ -143,7 +142,6 @@ interface ImportFileFormProps extends SimpleFormProps {
     multiple?: boolean;
     maxSize?: number;
     allowType?: Array<string>;
-    status?: ComponentStatus;
     onChange?: (a?: Array<File> | Array<{
         [p: string]: any;
     }>) => void;
