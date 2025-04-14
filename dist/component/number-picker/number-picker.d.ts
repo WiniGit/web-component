@@ -15,10 +15,12 @@ interface Props {
     /** default: 1 */
     volume?: number;
     style?: CSSProperties;
+    iconColor?: string;
     min?: number;
     max?: number;
     type?: "outline" | "icon-button";
+    simpleStyle?: boolean;
 }
-export declare const NumberPicker: ({ id, value, onChange, disabled, readOnly, className, helperText, helperTextColor, max, min, style, type, volume }: Props) => import("react/jsx-runtime").JSX.Element;
+export declare const NumberPicker: ({ type, volume, style, ...props }: Props) => import("react/jsx-runtime").JSX.Element;
 export {};
 //# sourceMappingURL=number-picker.d.ts.map

@@ -1,5 +1,5 @@
 import { CSSProperties, useEffect, useRef } from "react";
-import styles from './text-field.module.css'
+import styles from './color-picker.module.css'
 import { Util } from "../../controller/utils";
 
 interface ColorPickerProps {
