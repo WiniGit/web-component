@@ -96,6 +96,7 @@ const LICENSE_KEY = 'GPL'; // or <YOUR_LICENSE_KEY>.
 
 // wordCount = editor.plugins.get('WordCount');
 interface Props {
+    id?: string,
     style?: CSSProperties,
     className?: string,
     value?: string,
@@ -118,7 +119,7 @@ interface Props {
     customConfig?: { [p: string]: any }
 }
 
-export function CustomCkEditor5(props: Props) {
+export function CustomCkEditor5({style = {}, ...props}: Props) {
     const editorContainerRef = useRef(null);
     const editorRef = useRef(null);
     // const editorWordCountRef = useRef(null);
@@ -497,10 +498,11 @@ export function CustomCkEditor5(props: Props) {
     }, [isLayoutReady, i18n.language]);
 
     return <div
+        id={props.id}
         ref={editorContainerRef}
         className={`col editor-container editor-container_classic-editor editor-container_include-style ${props.className ?? ""} ${props.helperText?.length ? 'helper-text' : ""}`}
         helper-text={props.helperText}
-        style={props.style ? { ...({ '--helper-text-color': props.helperTextColor ?? '#e14337' } as CSSProperties), ...props.style } : ({ '--helper-text-color': props.helperTextColor ?? '#e14337' } as CSSProperties)}
+        style={{ '--helper-text-color': props.helperTextColor ?? '#e14337', ...style } as CSSProperties}
     >
         <div className="editor-container__editor">
             <div ref={editorRef}>

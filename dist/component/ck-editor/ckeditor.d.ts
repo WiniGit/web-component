@@ -5,6 +5,7 @@ import { ClassicEditor, EventInfo } from 'ckeditor5';
  * Instructions on how to obtain them: https://ckeditor.com/docs/trial/latest/guides/real-time/quick-start.html
  */
 interface Props {
+    id?: string;
     style?: CSSProperties;
     className?: string;
     value?: string;
@@ -34,6 +35,6 @@ interface Props {
         [p: string]: any;
     };
 }
-export declare function CustomCkEditor5(props: Props): import("react/jsx-runtime").JSX.Element;
+export declare function CustomCkEditor5({ style, ...props }: Props): import("react/jsx-runtime").JSX.Element;
 export {};
 //# sourceMappingURL=ckeditor.d.ts.map

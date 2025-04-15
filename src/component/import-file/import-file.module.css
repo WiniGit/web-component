@@ -23,6 +23,7 @@
     width: 4.8rem;
     height: 4.8rem;
     border-radius: 50%;
+    background-color: var(--primary-background, #ECF3FE);
 }
 
 .import-file-prefix>img {
