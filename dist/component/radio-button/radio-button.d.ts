@@ -6,12 +6,13 @@ interface RadioButtonProps {
     disabled?: boolean;
     style?: CSSProperties;
     size?: number | string;
-    checked?: boolean;
+    defaultChecked?: boolean;
     name?: string;
     activeColor?: string;
     offColor?: string;
     className?: string;
+    [key: string]: any;
 }
-export declare const RadioButton: (props: RadioButtonProps) => import("react/jsx-runtime").JSX.Element;
+export declare const RadioButton: ({ id, style, size, activeColor, className, offColor, ...props }: RadioButtonProps) => import("react/jsx-runtime").JSX.Element;
 export {};
 //# sourceMappingURL=radio-button.d.ts.map
