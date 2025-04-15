@@ -14,7 +14,6 @@ import { Switch } from "./switch/switch";
 import { Rating } from "./rating/rating";
 import { Checkbox } from "./checkbox/checkbox";
 import { RadioButton } from "./radio-button/radio-button";
-import { ComponentStatus } from "./component-status";
 import { ImportFile } from "./import-file/import-file";
 import { CkEditorUploadAdapter } from "../controller/config";
 import { Util } from "../controller/utils";
@@ -388,20 +387,11 @@ interface RadioButtonFormProps extends SimpleFormProps {
 
 export function RadioButtonForm(params: RadioButtonFormProps) {
     return <label className={`row ${params.className ?? ""}`} style={{ gap: "0.8rem", ...(params.style ?? {}) }}>
-        <Controller
-            name={params.name}
-            control={params.methods.control}
-            render={({ field }) => <RadioButton
-                value={params.value}
-                disabled={params.disabled}
-                size={params.size ?? '1.6rem'}
-                name={params.name}
-                checked={field.value === params.value}
-                onChange={(ev) => {
-                    field.onChange(ev.target.value)
-                    if (params.onChange) params.onChange(ev)
-                }}
-            />}
+        <RadioButton
+            value={params.value}
+            disabled={params.disabled}
+            size={params.size ?? '1.6rem'}
+            {...params.methods.register(params.name, { onChange: params.onChange })}
         />
         {params.label ? <Text className="label-4" maxLine={1}>{params.label}</Text> : null}
     </label>

@@ -116,10 +116,10 @@ interface Props {
     fontBgColors?: Array<{ color: string, label: string }>,
     helperText?: string,
     helperTextColor?: string,
-    customConfig?: { [p: string]: any }
+    customConfig?: { [p: string]: any },
 }
 
-export function CustomCkEditor5({style = {}, ...props}: Props) {
+export function CustomCkEditor5({ style = {}, ...props }: Props) {
     const editorContainerRef = useRef(null);
     const editorRef = useRef(null);
     // const editorWordCountRef = useRef(null);
@@ -516,7 +516,8 @@ export function CustomCkEditor5({style = {}, ...props}: Props) {
                         editor={ClassicEditor}
                         onError={props.onError}
                         config={(props.customConfig ?? editorConfig) as any}
-                        {...{ data: props.value, disabled: props.disabled }}
+                        disabled={props.disabled}
+                        data={props.value}
                     />
                 )}
             </div>
