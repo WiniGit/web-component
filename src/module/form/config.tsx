@@ -2,13 +2,13 @@ import { CheckboxForm, DateTimePickerForm, ImportFileForm, GroupCheckboxForm, Ra
 import { differenceInCalendarDays, differenceInMinutes } from "date-fns";
 import { validate } from "validate.js";
 import { ComponentType, FEDataType, ValidateType } from "../da";
-import { UseFormReturn } from "react-hook-form";
+import { FieldValues, UseFormReturn } from "react-hook-form";
 import { CSSProperties } from "react";
 import { Util } from "../../controller/utils";
 import { BaseDA } from "../../controller/config";
 import { Text } from "../../component/text/text";
 
-export function RenderComponentByType({ fieldItem, methods, className, style = {}, labelStyle = {}, label }: { fieldItem: any, methods: UseFormReturn, className?: string, style?: CSSProperties, labelStyle?: CSSProperties, label?: string }) {
+export function RenderComponentByType({ fieldItem, methods, className, style = {}, labelStyle = {}, label }: { fieldItem: any, methods: UseFormReturn<FieldValues, any, undefined>, className?: string, style?: CSSProperties, labelStyle?: CSSProperties, label?: string }) {
     switch (fieldItem.Form.ComponentType) {
         case ComponentType.textField:
             return fieldItem.DataType === FEDataType.PASSWORD ? <InputPasswordForm

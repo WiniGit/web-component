@@ -1,8 +1,8 @@
-import { UseFormReturn } from 'react-hook-form';
+import { FieldValues, UseFormReturn } from 'react-hook-form';
 import { CSSProperties } from 'react';
 export declare function RenderComponentByType({ fieldItem, methods, className, style, labelStyle, label }: {
     fieldItem: any;
-    methods: UseFormReturn;
+    methods: UseFormReturn<FieldValues, any, undefined>;
     className?: string;
     style?: CSSProperties;
     labelStyle?: CSSProperties;

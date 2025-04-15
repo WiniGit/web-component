@@ -37,15 +37,12 @@ export const Checkbox = (props: CheckboxProps) => {
         return tmp
     }, [props.size, props.style])
 
-    useEffect(() => {
-        if (inputRef.current && props.value !== inputRef.current?.checked) inputRef.current.checked = !!props.value
-    }, [props.value, inputRef.current])
-
     return <label id={props.id} className={`${styles['checkbox-container']} row ${props.className ?? ''}`} style={convertStyle} is-null-value={`${props.value === null}`}>
         <input
             name={props.name}
             ref={inputRef}
             type="checkbox"
+            checked={!!props.value}
             hidden
             disabled={props.disabled}
             onChange={(ev) => {

@@ -366,17 +366,13 @@ interface CheckboxFormProps extends SimpleFormProps {
 }
 
 export function CheckboxForm(params: CheckboxFormProps) {
-    return <Controller
-        name={params.name}
-        control={params.methods.control}
-        render={({ field }) => <label className="row" style={{ gap: '0.8rem', ...(params.style ?? {}) }}>
-            <Checkbox value={field.value} disabled={params.disabled} size={params.size} onChange={(newValue) => {
-                field.onChange(newValue)
-                if (params.onChange) params.onChange(newValue)
-            }} style={{ borderRadius: params.radius ?? '0.4rem' }} />
-            {params.labelElement ?? <Text className={"label-4"} maxLine={1}>{params.label}</Text>}
-        </label>}
-    />
+    return <label className="row" style={{ gap: '0.8rem', ...(params.style ?? {}) }}>
+        <Checkbox value={params.methods.watch(params.name)} disabled={params.disabled} size={params.size} onChange={(newValue) => {
+            params.methods.setValue(params.name, newValue)
+            if (params.onChange) params.onChange(newValue)
+        }} style={{ borderRadius: params.radius ?? '0.4rem' }} />
+        {params.labelElement ?? <Text className={"label-4"} maxLine={1}>{params.label}</Text>}
+    </label>
 }
 
 interface RadioButtonFormProps extends SimpleFormProps {
@@ -387,11 +383,20 @@ interface RadioButtonFormProps extends SimpleFormProps {
 
 export function RadioButtonForm(params: RadioButtonFormProps) {
     return <label className={`row ${params.className ?? ""}`} style={{ gap: "0.8rem", ...(params.style ?? {}) }}>
-        <RadioButton
-            value={params.value}
-            disabled={params.disabled}
-            size={params.size ?? '1.6rem'}
-            {...params.methods.register(params.name, { onChange: params.onChange })}
+        <Controller
+            name={params.name}
+            control={params.methods.control}
+            render={({ field }) => <RadioButton
+                value={params.value}
+                disabled={params.disabled}
+                size={params.size ?? '1.6rem'}
+                name={params.name}
+                checked={field.value === params.value}
+                onChange={(ev) => {
+                    field.onChange(ev.target.value)
+                    if (params.onChange) params.onChange(ev)
+                }}
+            />}
         />
         {params.label ? <Text className="label-4" maxLine={1}>{params.label}</Text> : null}
     </label>

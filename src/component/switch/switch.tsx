@@ -43,12 +43,8 @@ export const Switch = (props: SwitchProps) => {
         return tmp
     }, [props.size, props.style, props.offBackground, props.onBackground, props.dotColor])
 
-    useEffect(() => {
-        if (inputRef.current && props.value !== inputRef.current?.checked) inputRef.current.checked = !!props.value
-    }, [props.value, inputRef.current])
-
     return <label id={props.id} className={`${styles['switch-container']} row ${props.className ?? ''}`} style={convertStyle}>
-        <input ref={inputRef} type="checkbox" hidden name={props.name} disabled={props.disabled}
+        <input ref={inputRef} type="checkbox" checked={!!props.value} hidden name={props.name} disabled={props.disabled}
             onChange={(ev) => {
                 if (props.onChange) props.onChange(ev.target.checked)
             }}
