@@ -29,7 +29,8 @@ interface Props {
     controller?: "all" | { page: number, size: number, searchRaw?: string, filter?: string, sortby?: Array<{ prop: string, direction?: "ASC" | "DESC" }> } | { ids: string, maxLength?: number | "none" },
     loadMore?: boolean,
     methods?: UseFormReturn,
-    emptyLink?: string
+    emptyLink?: string,
+    onUnMount?: () => void
 }
 
 interface RenderCardProps extends Props {
@@ -159,6 +160,10 @@ export const CardById = (props: CardProps) => {
         if (props.loadMore && controller && controller !== "all" && data.totalCount && data.data.length < data.totalCount) getData(Math.floor(data.data.length / controller.size) + 1)
     }, [props.loadMore, controller, data])
 
+    useEffect(() => {
+        return props.onUnMount?.()
+    }, [])
+
     return cardItem ? data.totalCount === 0 ?
         props.emptyLink ? <EmptyPage
             imgUrl={props.emptyLink}
@@ -178,7 +183,6 @@ export const CardById = (props: CardProps) => {
             />
         }) : null
 }
-
 
 const RenderCard = (props: RenderCardProps) => {
     return props.cardItem.Props.filter((e: any) => !e.ParentId).map((e: any) => {

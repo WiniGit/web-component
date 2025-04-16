@@ -213,7 +213,7 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
                         if (triggerActions.length) {
                             _props.onScroll = (ev: any) => {
                                 let scrollElement = ev.target as HTMLDivElement
-                                if (Math.round(scrollElement.offsetHeight + scrollElement.scrollTop) >= (scrollElement.scrollHeight - 1)) handleEvent(triggerActions)
+                                if (scrollElement.scrollTop && Math.round(scrollElement.offsetHeight + scrollElement.scrollTop) >= (scrollElement.scrollHeight - 1)) handleEvent(triggerActions)
                             }
                         }
                         break;
@@ -326,14 +326,11 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
             case ComponentType.card:
                 if (tmpProps.loadMore === undefined) tmpProps.loadMore = props.methods?.watch(`loadMore-${props.item.Id}`)
                 if (tmpProps.loadMore !== undefined) {
-                    if (tmpProps.onLoaded !== undefined)
-                        tmpProps.onLoaded = (ev: any) => {
-                            props.methods?.setValue(`loadMore-${props.item.Id}`, ev.data.length === ev.totalCount ? "end" : false)
-                            tmpProps.onLoaded(ev)
-                        }
-                    else tmpProps.onLoaded = (ev: any) => {
+                    tmpProps.onLoaded = (ev: any) => {
                         props.methods?.setValue(`loadMore-${props.item.Id}`, ev.data.length === ev.totalCount ? "end" : false)
+                        customProps.onLoaded?.(ev)
                     }
+                    tmpProps.onUnMount = () => { props.methods?.setValue(`loadMore-${props.item.Id}`, null) }
                 }
                 if (tmpProps.controller && tmpProps.controller !== "all") {
                     let newController = { ...tmpProps.controller }
@@ -387,7 +384,7 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
                 break;
         }
         return tmpProps
-    }, [customProps, props.item.Type, dataValue, children, props.methods!.watch(), location, params, query])
+    }, [customProps, props.item.Type, dataValue, children, props.methods!.watch(), location])
 
     if (props.itemData && props.itemData[props.item.Id]) {
         if (props.type === "card") return (props.itemData[props.item.Id] as any)(props.indexItem, props.index)
