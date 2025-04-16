@@ -11,7 +11,7 @@ interface RenderLayerElementProps extends Props {
         [p: string]: any;
     }>;
     bodyChildren?: ReactNode;
-    type?: "page" | "view" | "card";
+    type?: "page" | "view" | "card" | "form";
     propsData?: {
         [p: string]: {
             style?: CSSProperties;
