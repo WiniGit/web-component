@@ -62,7 +62,7 @@ interface RenderLayerElementProps extends Props {
     item: { [p: string]: any },
     list: Array<{ [p: string]: any }>,
     bodyChildren?: ReactNode,
-    type?: "page" | "view" | "card",
+    type?: "page" | "view" | "card" | "form",
     propsData?: { [p: string]: { style?: CSSProperties, className?: string, onClick?: (ev: MouseEventHandler) => void, [p: string]: any } } | { [p: string]: (itemData: { [p: string]: any }, index: number) => { style?: CSSProperties, className?: string, onCLick?: (ev: MouseEventHandler) => void, [p: string]: any } },
     itemData?: { [p: string]: ReactNode } | { [p: string]: (indexItem: { [p: string]: any }, index: number) => ReactNode },
     childrenData?: { [p: string]: ReactNode } | { [p: string]: (itemData: { [p: string]: any }, index: number) => ReactNode },
@@ -78,27 +78,44 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
     const query = new URLSearchParams(location.search)
     const navigate = useNavigate()
     const children = useMemo(() => props.list.filter(e => e.ParentId === props.item.Id), [props.list, props.item])
-    const replaceThisVariables = (content: string) => {
+    const replaceThisVariables = (content: string, isEval?: boolean) => {
         return content.replace(replaceVariables, (m: string) => {
             const execRegex = regexGetVariables.exec(m)
             if (!execRegex?.[1]) return m
             const variable = execRegex[1].split(".")
+            let getValue: any = m
             switch (variable[0]) {
                 case "this":
-                    return props.indexItem?.[variable[1]]
+                    getValue = props.indexItem?.[variable[1]]
+                    break;
                 case "location":
-                    return location[variable[1]]
+                    getValue = location[variable[1]]
+                    break;
                 case "query":
-                    return query.get(variable[1])
+                    getValue = query.get(variable[1])
+                    break;
                 case "params":
-                    return params[variable[1]]
+                    getValue = params[variable[1]]
+                    break;
+                case "cookie":
+                    getValue = Util.getCookie(variable[1])
+                    break;
+                case "storage":
+                    getValue = Util.getStorage(variable[1])
+                    break;
+                case "session":
+                    getValue = Util.getSession(variable[1])
+                    break;
                 default:
                     if (regexWatchSingleQuote.test(execRegex[1])) {
-                        return props.methods!.watch(execRegex[1].match(regexWatchSingleQuote)![1])
+                        getValue = props.methods!.watch(execRegex[1].match(regexWatchSingleQuote)![1])
                     } else if (regexWatchDoubleQuote.test(execRegex[1])) {
-                        return props.methods!.watch(execRegex[1].match(regexWatchDoubleQuote)![1])
-                    } return m
+                        getValue = props.methods!.watch(execRegex[1].match(regexWatchDoubleQuote)![1])
+                    }
+                    break;
             }
+            if (isEval && typeof getValue === "string") getValue = `"${getValue}"`
+            return getValue
         })
     }
     const watchForCustomProps = useMemo(() => {
@@ -108,35 +125,7 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
         if (!triggerState.length) return undefined
         for (const st of triggerState) {
             if (regexGetVariables.test(st.Trigger)) {
-                var caculate = st.Trigger.replace(replaceVariables, (m: string) => {
-                    const execRegex = regexGetVariables.exec(m)
-                    if (!execRegex?.[1]) return m
-                    const variable = execRegex[1].split(".")
-                    let getValue: any = m
-                    switch (variable[0]) {
-                        case "this":
-                            getValue = props.indexItem?.[variable[1]]
-                            break;
-                        case "location":
-                            getValue = location[variable[1]]
-                            break;
-                        case "query":
-                            getValue = query.get(variable[1])
-                            break;
-                        case "params":
-                            getValue = params[variable[1]]
-                            break;
-                        default:
-                            if (regexWatchSingleQuote.test(execRegex[1])) {
-                                getValue = props.methods!.watch(execRegex[1].match(regexWatchSingleQuote)![1])
-                            } else if (regexWatchDoubleQuote.test(execRegex[1])) {
-                                getValue = props.methods!.watch(execRegex[1].match(regexWatchDoubleQuote)![1])
-                            }
-                            break;
-                    }
-                    if (typeof getValue === "string") getValue = `"${getValue}"`
-                    return getValue
-                })
+                var caculate = replaceThisVariables(st.Trigger, true)
             } else caculate = st.Trigger
             try {
                 var checked = eval(caculate)
@@ -398,9 +387,8 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
                 break;
         }
         return tmpProps
-    }, [customProps, props.item.Type, dataValue, children, props.methods!.watch()])
+    }, [customProps, props.item.Type, dataValue, children, props.methods!.watch(), location, params, query])
 
-    // renderUI
     if (props.itemData && props.itemData[props.item.Id]) {
         if (props.type === "card") return (props.itemData[props.item.Id] as any)(props.indexItem, props.index)
         else return props.itemData[props.item.Id]

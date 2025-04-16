@@ -4,7 +4,7 @@ import { useForm, UseFormReturn } from "react-hook-form"
 import { TableController } from "../../controller/setting"
 import { EmptyPage } from "../../component/empty-page"
 import { RenderLayerElement } from "../page/pageById"
-import { regexEmptyKeyController, regexGetVariableByThis, replaceEmptyKeyController } from "./config"
+import { regexGetVariableByThis } from "./config"
 import { ComponentType } from "../da"
 
 interface Props {
