@@ -54,6 +54,7 @@ interface Props {
     loadMore?: boolean;
     methods?: UseFormReturn;
     emptyLink?: string;
+    onUnMount?: () => void;
 }
 interface CardProps extends Props {
     id: string;
