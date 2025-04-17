@@ -66,6 +66,6 @@ interface CardProps extends Props {
         totalCount: number;
     }) => void;
 }
-export declare const CardById: (props: CardProps) => import("react/jsx-runtime").JSX.Element | import("react/jsx-runtime").JSX.Element[] | null;
+export declare const CardById: import('react').ForwardRefExoticComponent<CardProps & import('react').RefAttributes<unknown>>;
 export {};
 //# sourceMappingURL=cardById.d.ts.map

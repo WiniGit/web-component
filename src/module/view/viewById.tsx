@@ -20,7 +20,7 @@ export const ViewById = (props: ViewByIdProps) => {
 
     useEffect(() => {
         if (props.id) {
-            const controller = new SettingDataController("view" as any)
+            const controller = new SettingDataController("view")
             controller.getByIds([props.id]).then(async (res) => {
                 if (res.code === 200 && res.data[0]) {
                     let _viewItem = res.data[0]
