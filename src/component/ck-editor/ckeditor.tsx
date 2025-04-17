@@ -493,9 +493,10 @@ export function CustomCkEditor5({ style = {}, ...props }: Props) {
                 table: {
                     contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells', 'tableProperties', 'tableCellProperties']
                 },
+                ...(props.customConfig ?? {})
             }
         };
-    }, [isLayoutReady, i18n.language]);
+    }, [isLayoutReady, i18n.language, props.customConfig]);
 
     return <div
         id={props.id}
@@ -515,7 +516,7 @@ export function CustomCkEditor5({ style = {}, ...props }: Props) {
                         onBlur={props.onBlur}
                         editor={ClassicEditor}
                         onError={props.onError}
-                        config={(props.customConfig ?? editorConfig) as any}
+                        config={editorConfig as any}
                         disabled={props.disabled}
                         data={props.value}
                     />
