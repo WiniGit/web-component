@@ -1,4 +1,4 @@
-import { CSSProperties, MouseEventHandler, ReactNode, useEffect, useMemo, useState } from "react"
+import { CSSProperties, forwardRef, MouseEventHandler, ReactNode, useEffect, useImperativeHandle, useMemo, useState } from "react"
 import { DataController, SettingDataController } from "../../controller/data"
 import { useForm, UseFormReturn } from "react-hook-form"
 import { TableController } from "../../controller/setting"
@@ -46,7 +46,7 @@ interface CardProps extends Props {
     onLoaded?: (ev: { data: Array<{ [p: string]: any }>, totalCount: number }) => void
 }
 
-export const CardById = (props: CardProps) => {
+export const CardById = forwardRef((props: CardProps, ref) => {
     const methods = useForm({ shouldFocusError: false })
     const [cardItem, setCardItem] = useState<{ [p: string]: any }>()
     const layers = useMemo(() => cardItem?.Props ?? [], [cardItem])
@@ -164,6 +164,12 @@ export const CardById = (props: CardProps) => {
         return props.onUnMount?.()
     }, [])
 
+    useImperativeHandle(ref, () => ({
+        getData: getData,
+        data: data,
+        setData: setData
+    }), [data, cardItem, controller]);
+
     return cardItem ? data.totalCount === 0 ?
         props.emptyLink ? <EmptyPage
             imgUrl={props.emptyLink}
@@ -182,7 +188,7 @@ export const CardById = (props: CardProps) => {
                 index={index}
             />
         }) : null
-}
+})
 
 const RenderCard = (props: RenderCardProps) => {
     return props.cardItem.Props.filter((e: any) => !e.ParentId).map((e: any) => {
@@ -198,6 +204,7 @@ const RenderCard = (props: RenderCardProps) => {
             index={props.index}
             itemData={props.itemData}
             childrenData={props.childrenData}
+            propsData={props.propsData}
         />
     })
 }

@@ -392,7 +392,7 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
     } else {
         switch (props.item.Type) {
             case ComponentType.navLink:
-                if (props.childrenData) var childComponent = props.type === "card" ? (props.childrenData[props.item.Id] as any)(props.indexItem, props.index) : props.childrenData[props.item.Id]
+                if (props.childrenData && props.childrenData[props.item.Id]) var childComponent = props.type === "card" ? (props.childrenData[props.item.Id] as any)(props.indexItem, props.index) : props.childrenData[props.item.Id]
                 if (Array.isArray(dataValue)) {
                     return dataValue.map((dataValueItem, i) => {
                         const dataValueProps = { ...typeProps }
@@ -421,7 +421,7 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
                     </NavLink>
                 }
             case ComponentType.container:
-                if (props.childrenData) var childComponent = props.type === "card" ? (props.childrenData[props.item.Id] as any)(props.indexItem, props.index) : props.childrenData[props.item.Id]
+                if (props.childrenData && props.childrenData[props.item.Id]) var childComponent = props.type === "card" ? (props.childrenData[props.item.Id] as any)(props.indexItem, props.index) : props.childrenData[props.item.Id]
                 if (dataValue && dataValue.backgroundImage) var containerProps = { ...customProps, style: { ...customProps.style, ...dataValue } }
                 if (Array.isArray(dataValue)) {
                     return dataValue.map((dataValueItem, i) => {
