@@ -82,10 +82,8 @@ input::-webkit-inner-spin-button {
     font-style: inherit;
 }
 
-.color-picker-container input:not([type="color"]),
-.simple-color-picker input:not([type="color"]) {
-    flex: 1;
-    width: 100%;
+.color-picker-container *:not([type="color"]),
+.simple-color-picker *:not([type="color"]) {
     border: none;
     outline: none;
     padding: 0;
