@@ -1,4 +1,4 @@
-import React, { CSSProperties, useEffect, useMemo, useRef } from 'react';
+import React, { CSSProperties, useEffect, useMemo, useRef, useState } from 'react';
 import styles from './checkbox.module.css';
 
 interface CheckboxProps {
@@ -16,6 +16,7 @@ interface CheckboxProps {
 }
 
 export const Checkbox = (props: CheckboxProps) => {
+    const [checked, setChecked] = useState(props.value)
     const inputRef = useRef<HTMLInputElement>(null)
     const convertStyle: CSSProperties = useMemo(() => {
         let tmp: any = {
@@ -37,16 +38,20 @@ export const Checkbox = (props: CheckboxProps) => {
         return tmp
     }, [props.size, props.style])
 
+    useEffect(() => {
+        if (props.value !== checked) setChecked(props.value)
+    }, [props.value])
+
     return <label id={props.id} className={`${styles['checkbox-container']} row ${props.className ?? ''}`} style={convertStyle} is-null-value={`${props.value === null}`}>
         <input
             name={props.name}
             ref={inputRef}
             type="checkbox"
-            checked={!!props.value}
+            checked={!!checked}
             hidden
             disabled={props.disabled}
             onChange={(ev) => {
-                ev.stopPropagation()
+                setChecked(ev.target.checked)
                 if (props.onChange) props.onChange(ev.target.checked, ev.target)
             }}
         />

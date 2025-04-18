@@ -9,7 +9,6 @@ import { ProgressBar } from './component/progress-bar/progress-bar'
 import { ComponentStatus, getStatusIcon } from './component/component-status'
 import { Text } from './component/text/text'
 import { Pagination } from './component/pagination/pagination'
-import { Table, TbCell, TbHeader, TbRow, TbBody, CellAlignItems } from './component/table/table'
 import { TextField } from './component/text-field/text-field'
 import { RadioButton } from './component/radio-button/radio-button'
 import { TextArea } from './component/text-area/text-area'
@@ -56,7 +55,6 @@ export {
   ProgressBar,
   Text,
   Pagination,
-  Table, TbCell, TbHeader, TbBody, TbRow, CellAlignItems,
   TextField,
   RadioButton,
   TextArea,

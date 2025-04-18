@@ -204,7 +204,8 @@ export function DateTimePickerForm(params: DateTimePickerFormProps) {
 }
 
 interface CKEditorFormProps extends SimpleFormProps {
-    ckEditorUploadPlugin?: Array<any>
+    ckEditorUploadPlugin?: Array<any>,
+    customConfig?: { [p: string]: any }
 }
 
 export function CKEditorForm(params: CKEditorFormProps) {
@@ -224,6 +225,7 @@ export function CKEditorForm(params: CKEditorFormProps) {
                     style={params.className?.includes("row") ? { flex: 1, overflow: "hidden visible" } : undefined}
                     value={field.value}
                     disabled={params.disabled}
+                    customConfig={params.customConfig as any}
                     extraPlugins={params.ckEditorUploadPlugin ?? [function (editor: { plugins: { get: (arg0: string) => { (): any; new(): any; createUploadAdapter: (loader: any) => CkEditorUploadAdapter; }; }; }) {
                         editor.plugins.get('FileRepository').createUploadAdapter = (loader: any) => {
                             return new CkEditorUploadAdapter(loader);

@@ -110,13 +110,18 @@ interface Props {
     onReady?: (editor: ClassicEditor) => void,
     onAfterDestroy?: (editor: ClassicEditor) => void,
     extraPlugins?: Array<any>,
-    fontFamily?: Array<string>,
-    fontSize?: Array<number | "default">,
-    fontColors?: Array<{ color: string, label: string }>,
-    fontBgColors?: Array<{ color: string, label: string }>,
     helperText?: string,
     helperTextColor?: string,
-    customConfig?: { [p: string]: any },
+    customConfig?: {
+        toolbar: { item?: Array<string>, shouldNotGroupWhenFull?: boolean, [p: string]: any },
+        balloonToolbar?: Array<string>,
+        mediaEmbed?: { previewsInData?: boolean, providers?: Array<{ [p: string]: any }>, [p: string]: any },
+        fontFamily?: { options?: Array<string>, supportAllValues?: boolean },
+        fontSize?: { options?: Array<string>, supportAllValues?: boolean },
+        fontColor?: { columns?: number, colors?: Array<{ color: string, label: string }> },
+        fontBackgroundColor?: { columns?: number, colors?: Array<{ color: string, label: string }> },
+        [p: string]: any
+    },
 }
 
 export function CustomCkEditor5({ style = {}, ...props }: Props) {
@@ -285,16 +290,16 @@ export function CustomCkEditor5({ style = {}, ...props }: Props) {
                     ],
                 },
                 fontFamily: {
-                    options: props.fontFamily || ["Default", "Arial", "Courier New", "Inter", "Roboto", "Times New Roman", "Source Serif 4"],
+                    options: ["Default", "Arial", "Courier New", "Inter", "Roboto", "Times New Roman", "Source Serif 4"],
                     supportAllValues: true
                 },
                 fontSize: {
-                    options: props.fontSize || [10, 12, 14, 'default', 18, 20, 22, 24],
+                    options: [10, 12, 14, 'default', 18, 20, 22, 24],
                     supportAllValues: true,
                 },
                 fontColor: {
                     columns: 6,
-                    colors: props.fontColors || [
+                    colors: [
                         {
                             color: 'var(--neutral-text-title-color)',
                             label: 'title'
@@ -355,7 +360,7 @@ export function CustomCkEditor5({ style = {}, ...props }: Props) {
                 },
                 fontBackgroundColor: {
                     columns: 6,
-                    colors: props.fontBgColors || [
+                    colors: [
                         {
                             color: 'var(--neutral-main-background-color)',
                             label: 'main'
@@ -489,11 +494,11 @@ export function CustomCkEditor5({ style = {}, ...props }: Props) {
                     }
                 },
                 menuBar: { isVisible: props.menuBar },
-                placeholder: props.placeholder,
                 table: {
                     contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells', 'tableProperties', 'tableCellProperties']
                 },
-                ...(props.customConfig ?? {})
+                ...(props.customConfig ?? {}),
+                placeholder: props.placeholder,
             }
         };
     }, [isLayoutReady, i18n.language, props.customConfig]);

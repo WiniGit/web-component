@@ -80,11 +80,11 @@ export const Select1 = ({ style = {}, ...props }: Select1Props) => {
                     } else setSearch(undefined)
                 }}
             /> : valueItem.name}
-        {!props.simpleStyle && (props.suffix ?? <div ref={iconRef => {
+        {props.suffix ?? <div ref={iconRef => {
             if (iconRef?.parentElement && iconRef.parentElement.getBoundingClientRect().width < 88) iconRef.style.display = "none"
         }} className='row'>
             <Winicon src={isOpen ? "fill/arrows/up-arrow" : "fill/arrows/down-arrow"} size={"1.2rem"} />
-        </div>)}
+        </div>}
         {isOpen && <PopupOverlay
             onOpen={popupRef => {
                 setTimeout(() => {
