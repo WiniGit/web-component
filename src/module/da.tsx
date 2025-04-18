@@ -19,6 +19,7 @@ export enum ComponentType {
     progressBar = 'ProgressBar',
     progressCircle = 'ProgressCircle',
     upload = 'Upload',
+    numberPicker = 'NumberPicker',
     importMultipleFile = 'ImportMultiple',
     ckEditor = 'CkEditor',
     range = 'Range',
@@ -48,7 +49,7 @@ export enum FEDataType {
 }
 
 export enum ValidateType {
-    // required = 1,
+    required = 1,
     email = 2,
     minLength = 3,
     maxLength = 4,

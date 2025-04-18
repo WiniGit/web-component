@@ -1,5 +1,5 @@
 import { CSSProperties, MouseEventHandler, ReactNode, useEffect, useMemo, useRef, useState } from "react"
-import { ActionType, ComponentType, FEDataType, TriggerType } from "../da"
+import { ActionType, ComponentType, FEDataType, TriggerType, ValidateType } from "../da"
 import { FormById } from "../form/formById"
 import { CardById } from "../card/cardById"
 import { ChartById } from "../chart/chartById"
@@ -20,6 +20,8 @@ import { supportProperties } from "./config"
 import { Rating } from "../../component/rating/rating"
 import { ProgressBar } from "../../component/progress-bar/progress-bar"
 import { ProgressCircle } from "../../component/progress-circle/progress-circle"
+import { CustomCkEditor5 } from "../../component/ck-editor/ckeditor"
+import { FCheckbox, FColorPicker, FDateTimePicker, FGroupCheckbox, FGroupRadioButton, FNumberPicker, FRadioButton, FSelect1, FSelectMultiple, FSwitch, FTextArea, FTextField, FUploadFile } from "./component-form"
 
 interface Props {
     methods?: UseFormReturn
@@ -61,6 +63,8 @@ const RenderPageView = ({ childrenData, propsData, itemData, layers = [], childr
 interface RenderLayerElementProps extends Props {
     item: { [p: string]: any },
     list: Array<{ [p: string]: any }>,
+    cols?: Array<{ [p: string]: any }>,
+    rels?: Array<{ [p: string]: any }>,
     bodyChildren?: ReactNode,
     type?: "page" | "view" | "card" | "form",
     propsData?: { [p: string]: { style?: CSSProperties, className?: string, onClick?: (ev: MouseEventHandler) => void, [p: string]: any } } | { [p: string]: (itemData: { [p: string]: any }, index: number) => { style?: CSSProperties, className?: string, onCLick?: (ev: MouseEventHandler) => void, [p: string]: any } },
@@ -69,10 +73,16 @@ interface RenderLayerElementProps extends Props {
     indexItem?: { [p: string]: any },
     index?: number,
     style?: CSSProperties,
-    className?: string
+    className?: string,
+    options?: { [p: string]: Array<{ [p: string]: any }> }
 }
 
+export const pageAllRefs: { [p: string]: any } = {}
 export const RenderLayerElement = (props: RenderLayerElementProps) => {
+    if (props.item.Type === ComponentType.form) pageAllRefs[props.item.Id] = useRef(null)
+    useEffect(() => {
+        return () => { delete pageAllRefs[props.item.Id] }
+    }, [])
     const location = useLocation() as any
     const params = useParams()
     const query = new URLSearchParams(location.search)
@@ -155,7 +165,7 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
             Object.values(TriggerType).forEach(trigger => {
                 const triggerActions = _props.action.filter((e: any) => e.Type === trigger)
                 const handleEvent = async (acts = []) => {
-                    for (const [i, act] of acts.entries()) {
+                    for (const [_, act] of acts.entries()) {
                         const actItem = act as { [p: string]: any }
                         switch (actItem.Action) {
                             case ActionType.navigate:
@@ -172,13 +182,7 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
                                 }
                                 break;
                             case ActionType.submit:
-                                const formElement = document.getElementById(actItem.To)
-                                const submitBtn = formElement?.querySelector(`:scope > button.submit-form`) as any
-                                const successBtn = formElement?.querySelector(`:scope > button.success-form`) as any
-                                if (submitBtn) {
-                                    if (successBtn && triggerActions.slice(i + 1).length) successBtn.onclick = () => handleEvent(triggerActions.slice(i + 1))
-                                    submitBtn.click()
-                                }
+                                pageAllRefs[actItem.To]?.current?.onSubmit()
                                 return;
                             case ActionType.showPopup:
                                 const openPopupBtn = document.querySelector(`.open-${actItem.To}`) as any
@@ -322,6 +326,7 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
     }, [props.indexItem, props.item, watchForDataValue])
     const typeProps = useMemo(() => {
         let tmpProps = { ...customProps }
+        if (props.item.NameField && tmpProps.validate?.some((v: any) => v.type === ValidateType.required)) tmpProps.required = true
         switch (props.item.Type) {
             case ComponentType.card:
                 if (tmpProps.loadMore === undefined) tmpProps.loadMore = props.methods?.watch(`loadMore-${props.item.Id}`)
@@ -373,6 +378,10 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
                 }
                 break;
             case ComponentType.button:
+            case ComponentType.textField:
+            case ComponentType.textArea:
+            case ComponentType.select1:
+            case ComponentType.selectMultiple:
                 if (children.length) {
                     const iconPrefix = children.find(e => e.Setting.type === "prefix")
                     const iconSuffix = children.find(e => e.Setting.type === "suffix")
@@ -385,6 +394,18 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
         }
         return tmpProps
     }, [customProps, props.item.Type, dataValue, children, props.methods!.watch(), location])
+    const _options = useMemo(() => {
+        if (props.item.NameField) {
+            const tmpCol = props.cols?.find(e => e.Name === props.item.NameField)
+            if (tmpCol) return tmpCol?.Form?.Options
+            if (props.options?.[`${props.item.NameField}_Options`]) {
+                const tmpRel = props.rels?.find(e => e.Column === props.item.NameField)
+                if (tmpRel) (props.options[`${props.item.NameField}_Options`] ?? []).map(e => ({ id: e.Id, name: e.Name }))
+            }
+        }
+        return undefined
+    }, [props.cols, props.rels, props.item.NameField, props.options?.[`${props.item.NameField}_Options`]])
+
 
     if (props.itemData && props.itemData[props.item.Id]) {
         if (props.type === "card") return (props.itemData[props.item.Id] as any)(props.indexItem, props.index)
@@ -422,14 +443,14 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
                 }
             case ComponentType.container:
                 if (props.childrenData && props.childrenData[props.item.Id]) var childComponent = props.type === "card" ? (props.childrenData[props.item.Id] as any)(props.indexItem, props.index) : props.childrenData[props.item.Id]
-                if (dataValue && dataValue.backgroundImage) var containerProps = { ...customProps, style: { ...customProps.style, ...dataValue } }
+                if (dataValue && dataValue.backgroundImage) var containerProps = { ...typeProps, style: { ...typeProps.style, ...dataValue } }
                 if (Array.isArray(dataValue)) {
                     return dataValue.map((dataValueItem, i) => {
-                        const dataValueProps = { ...(containerProps ?? customProps) }
+                        const dataValueProps = { ...(containerProps ?? typeProps) }
                         dataValueProps.indexItem = { ...props.indexItem, [props.item.NameField.split(".").length > 1 ? props.item.NameField.split(".")[1] : props.item.NameField]: dataValueItem }
-                        return <div key={`${dataValueItem}-${i}`} {...dataValueProps} >
+                        return <div key={`${dataValueItem}-${i}`} {...dataValueProps}>
                             {childComponent ??
-                                (customProps.className?.includes("layout-body") ?
+                                (typeProps.className?.includes("layout-body") ?
                                     <>
                                         {children.map(e => <RenderLayerElement key={e.Id} {...props} item={e} style={undefined} className={undefined} />)}
                                         {props.bodyChildren}
@@ -439,9 +460,9 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
                         </div>
                     })
                 } else {
-                    return <div {...(containerProps ?? customProps)}>
+                    return <div {...(containerProps ?? typeProps)}>
                         {childComponent ??
-                            (customProps.className?.includes("layout-body") ?
+                            (typeProps.className?.includes("layout-body") ?
                                 <>
                                     {children.map(e => <RenderLayerElement key={e.Id} {...props} item={e} style={undefined} className={undefined} />)}
                                     {props.bodyChildren}
@@ -452,9 +473,9 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
                 }
             case ComponentType.text:
                 if (props.item.NameField) {
-                    if (typeof dataValue === "object") return <Text {...customProps} html={dataValue["__html"]} />
-                    else return <Text {...customProps}>{dataValue}</Text>
-                } else return <Text {...customProps}>{customProps.value ?? ""}</Text>
+                    if (typeof dataValue === "object") return <Text {...typeProps} html={dataValue["__html"]} />
+                    else return <Text {...typeProps}>{dataValue}</Text>
+                } else return <Text {...typeProps}>{typeProps.value ?? ""}</Text>
             case ComponentType.img:
                 if (props.item.NameField) {
                     if (!dataValue) return null
@@ -462,46 +483,90 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
                         key={dataValue}
                         alt=""
                         referrerPolicy="no-referrer"
-                        onError={(ev) => { ev.currentTarget.src = "https://cdn.jsdelivr.net/gh/WiniGit/icon-library@latest/color/multimedia/image.svg" }}
-                        {...customProps}
+                        onError={(ev) => { ev.currentTarget.src = "https://cdn.jsdelivr.net/gh/WiniGit/icon-library@latest/outline/development/image-2.svg" }}
+                        {...typeProps}
                         src={dataValue.startsWith("http") ? dataValue : (ConfigData.imgUrlId + dataValue)}
                     />
                 } else return <img
                     alt=""
                     referrerPolicy="no-referrer"
-                    onError={(ev) => { ev.currentTarget.src = "https://cdn.jsdelivr.net/gh/WiniGit/icon-library@latest/color/multimedia/image.svg" }}
-                    {...customProps}
+                    onError={(ev) => { ev.currentTarget.src = "https://cdn.jsdelivr.net/gh/WiniGit/icon-library@latest/outline/development/image-2.svg" }}
+                    {...typeProps}
                 />
             case ComponentType.rate:
-                if (props.item.NameField) return <Rating {...customProps} value={dataValue} />
-                else return <Rating {...customProps} />
+                if (props.item.NameField) return <Rating {...typeProps} value={dataValue} />
+                else return <Rating {...typeProps} />
             case ComponentType.progressBar:
-                if (props.item.NameField) return <ProgressBar {...customProps} progressBarOnly percent={dataValue} />
-                else return <ProgressBar {...customProps} progressBarOnly />
+                if (props.item.NameField) return <ProgressBar {...typeProps} progressBarOnly percent={dataValue} />
+                else return <ProgressBar {...typeProps} progressBarOnly />
             case ComponentType.progressCircle:
-                if (props.item.NameField) return <ProgressCircle {...customProps} percent={dataValue} />
-                return <ProgressCircle {...customProps} />
+                if (props.item.NameField) return <ProgressCircle {...typeProps} percent={dataValue} />
+                return <ProgressCircle {...typeProps} />
             case ComponentType.icon:
-                if (dataValue) return <Winicon {...customProps} src={dataValue} />
+                if (dataValue) return <Winicon {...typeProps} src={dataValue} />
                 else if (props.item.NameField) return null
-                else return <Winicon {...customProps} />
+                else return <Winicon {...typeProps} />
             case ComponentType.chart:
-                return <ChartById {...customProps} id={customProps.chartId} />
+                return <ChartById {...typeProps} id={typeProps.chartId} />
             case ComponentType.form:
-                return <FormById {...customProps} id={customProps.formId} />
+                return <FormById {...typeProps} id={typeProps.formId} ref={pageAllRefs[props.item.Id]} onSubmit={(ev) => {
+                    console.log("????????? ", ev)
+                    debugger
+                }} />
             case ComponentType.card:
-                return <CardById {...typeProps} id={customProps.cardId} />
+                return <CardById {...typeProps} id={typeProps.cardId} />
             case ComponentType.view:
-                return <ViewById {...customProps} id={customProps.viewId} />
+                return <ViewById {...typeProps} id={typeProps.viewId} />
             case ComponentType.popup:
-                customProps.id = props.item.Id
-                return <ActionPopup {...customProps}>
+                typeProps.id = props.item.Id
+                return <ActionPopup {...typeProps}>
                     {children.map(e => <RenderLayerElement key={e.Id} {...props} item={e} style={undefined} className={undefined} />)}
                 </ActionPopup>
             case ComponentType.button:
                 return <SimpleButton {...typeProps} />
+            case ComponentType.textField:
+                return <FTextField
+                    {...typeProps}
+                    name={props.item.NameField}
+                    methods={props.methods}
+                />
+            case ComponentType.textArea:
+                return <FTextArea
+                    {...typeProps}
+                    name={props.item.NameField}
+                    methods={props.methods}
+                />
+            case ComponentType.radio:
+                if (_options?.length) return <FGroupRadioButton {...typeProps} methods={props.methods} name={props.item.NameField} options={_options} />
+                else return <FRadioButton {...typeProps} methods={props.methods} name={props.item.NameField} />
+            case ComponentType.checkbox:
+                if (_options?.length) return <FGroupCheckbox {...typeProps} methods={props.methods} name={props.item.NameField} options={_options} />
+                else return <FCheckbox {...typeProps} methods={props.methods} name={props.item.NameField} />
+            case ComponentType.switch:
+                return <FSwitch {...typeProps} methods={props.methods} name={props.item.NameField} />
+            case ComponentType.select1:
+                return <FSelect1 {...typeProps} methods={props.methods} name={props.item.NameField} options={_options} />
+            case ComponentType.selectMultiple:
+                return <FSelectMultiple {...typeProps} methods={props.methods} name={props.item.NameField} options={_options} />
+            case ComponentType.colorPicker:
+                return <FColorPicker {...typeProps} methods={props.methods} name={props.item.NameField} />
+            case ComponentType.numberPicker:
+                return <FNumberPicker {...typeProps} methods={props.methods} name={props.item.NameField} />
+            case ComponentType.datePicker:
+                return <FDateTimePicker {...typeProps} methods={props.methods} name={props.item.NameField} />
+            case ComponentType.upload:
+                return <FUploadFile
+                    {...typeProps}
+                    methods={props.methods}
+                    name={props.item.NameField}
+                    simpleStyle
+                />
+            case ComponentType.ckEditor:
+                return <CustomCkEditor5 {...typeProps}
+                    methods={props.methods} name={props.item.NameField}
+                />
             default:
-                return <div {...customProps} />
+                return <div {...typeProps} />
         }
     }
 }
