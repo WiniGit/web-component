@@ -66,7 +66,7 @@ export const SelectMultiple = ({ style = {}, ...props }: SelectMultipleProps) =>
         style={{ '--helper-text-color': props.helperTextColor ?? '#e14337', ...style } as CSSProperties}
     >
         {props.prefix}
-        <label className='row' style={{ flexWrap: 'wrap', flex: 1, width: '100%', gap: '0.6rem 0.4rem' }}>
+        <div className='row' style={{ flexWrap: 'wrap', flex: 1, width: '100%', gap: '0.6rem 0.4rem' }}>
             {value.map(item => {
                 const optionItem = options.find(e => e.id === item)
                 return <div key={item} className={`row ${styles['selected-item-value']}`} onClick={optionItem?.disabled ? undefined : (ev) => onClickItem(ev, item)}>
@@ -91,7 +91,7 @@ export const SelectMultiple = ({ style = {}, ...props }: SelectMultipleProps) =>
                     } else setSearch(undefined)
                 }}
             />
-        </label>
+        </div>
         {props.suffix || (props.showClearValueButton && value.length ? <button type='button' className='row' style={{ padding: '0.4rem' }} onClick={(ev) => {
             ev.stopPropagation()
             if (value.length) {
