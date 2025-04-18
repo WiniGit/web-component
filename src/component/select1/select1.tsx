@@ -55,7 +55,7 @@ export const Select1 = ({ style = {}, ...props }: Select1Props) => {
     useEffect(() => { setOptions(props.options ?? []) }, [props.options])
 
     useEffect(() => {
-        if (inputRef.current) inputRef.current.value = valueItem?.name && typeof valueItem.name === "string" ? valueItem.name : ""
+        if (inputRef.current) inputRef.current.value = valueItem?.name && (typeof valueItem.name === "string" || typeof valueItem.name === "number") ? `${valueItem.name}` : ""
     }, [valueItem, inputRef.current])
 
     return <label
