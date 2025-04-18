@@ -65,7 +65,6 @@ export const ColorPicker = ({ style = {}, type = "input", ...props }: ColorPicke
                     placeholder={props.placeholder}
                     readOnly={props.readOnly}
                     disabled={props.disabled}
-                    style={{ flex: 1, width: "100%" }}
                     onBlur={(ev) => {
                         const newVl = ev.target.value.replace(/#/g, "").substring(0, 6);
                         const _opacityValue = containerRef.current.querySelector('input[type="number"]');

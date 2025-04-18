@@ -43,9 +43,9 @@ input::-webkit-inner-spin-button {
 .simple-color-picker>label:has(>input[type="color"]) {
     border-radius: 0.6rem;
     aspect-ratio: 1 / 1;
-    height: calc(100% - 0.8rem);
     min-height: 1.4rem;
     min-width: 1.4rem;
+    width: 1em;
     border: var(--neutral-bolder-border, 1px solid #D7D7DB);
 }
 
@@ -82,8 +82,10 @@ input::-webkit-inner-spin-button {
     font-style: inherit;
 }
 
-.color-picker-container *:not([type="color"]),
-.simple-color-picker *:not([type="color"]) {
+.color-picker-container input:not([type="color"]),
+.simple-color-picker input:not([type="color"]) {
+    flex: 1;
+    width: 100%;
     border: none;
     outline: none;
     padding: 0;
