@@ -52,7 +52,6 @@ export const ColorPicker = ({ style = {}, type = "input", ...props }: ColorPicke
                 <label style={{ backgroundColor: props.value ?? "#000000" }}>
                     <input
                         type='color'
-                        hidden
                         disabled={props.disabled}
                         onChange={(ev) => {
                             const _opacityValue = containerRef.current!.querySelector('input[type="number"]');

@@ -199,7 +199,7 @@ export function DateTimePicker({ style = {}, ...props }: DateTimePickerProps) {
                         const rect = ev.target.closest("div").getBoundingClientRect()
                         showCalendar(rect)
                     }}>
-                    {!props.simpleStyle && (props.prefix ?? <Winicon className={styles["prefix-icon"]} src="outline/user interface/calendar-date" size={"1.2rem"} />)}
+                    {props.prefix ?? <Winicon className={styles["prefix-icon"]} src="outline/user interface/calendar-date" size={"1.2rem"} />}
                     <input
                         className={styles["value"]}
                         ref={inputRef}
@@ -247,7 +247,7 @@ export function DateTimePicker({ style = {}, ...props }: DateTimePickerProps) {
                         const rect = ev.target.closest("button").getBoundingClientRect()
                         showCalendar(rect)
                     }}>
-                    {!props.simpleStyle && (props.prefix ?? <Winicon className={styles["prefix-icon"]} src="outline/user interface/calendar-date" size={"1.2rem"} />)}
+                    {props.prefix ?? <Winicon className={styles["prefix-icon"]} src="outline/user interface/calendar-date" size={"1.2rem"} />}
                     {txtValue}
                     {props.suffix}
                 </button>
