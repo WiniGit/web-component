@@ -1,7 +1,7 @@
 import { CSSProperties } from 'react';
 interface SwitchProps {
     id?: string;
-    onChange?: (value: boolean) => void;
+    onChange?: (value: boolean, target: HTMLInputElement) => void;
     value?: boolean;
     disabled?: boolean;
     className?: string;

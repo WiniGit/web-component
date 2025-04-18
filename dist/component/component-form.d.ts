@@ -76,6 +76,9 @@ interface DateTimePickerFormProps extends SimpleFormProps {
 export declare function DateTimePickerForm(params: DateTimePickerFormProps): import("react/jsx-runtime").JSX.Element;
 interface CKEditorFormProps extends SimpleFormProps {
     ckEditorUploadPlugin?: Array<any>;
+    customConfig?: {
+        [p: string]: any;
+    };
 }
 export declare function CKEditorForm(params: CKEditorFormProps): import("react/jsx-runtime").JSX.Element;
 interface Select1FormProps extends SimpleFormProps {

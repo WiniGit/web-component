@@ -19,19 +19,44 @@ interface Props {
     onReady?: (editor: ClassicEditor) => void;
     onAfterDestroy?: (editor: ClassicEditor) => void;
     extraPlugins?: Array<any>;
-    fontFamily?: Array<string>;
-    fontSize?: Array<number | "default">;
-    fontColors?: Array<{
-        color: string;
-        label: string;
-    }>;
-    fontBgColors?: Array<{
-        color: string;
-        label: string;
-    }>;
     helperText?: string;
     helperTextColor?: string;
     customConfig?: {
+        toolbar: {
+            item?: Array<string>;
+            shouldNotGroupWhenFull?: boolean;
+            [p: string]: any;
+        };
+        balloonToolbar?: Array<string>;
+        mediaEmbed?: {
+            previewsInData?: boolean;
+            providers?: Array<{
+                [p: string]: any;
+            }>;
+            [p: string]: any;
+        };
+        fontFamily?: {
+            options?: Array<string>;
+            supportAllValues?: boolean;
+        };
+        fontSize?: {
+            options?: Array<string>;
+            supportAllValues?: boolean;
+        };
+        fontColor?: {
+            columns?: number;
+            colors?: Array<{
+                color: string;
+                label: string;
+            }>;
+        };
+        fontBackgroundColor?: {
+            columns?: number;
+            colors?: Array<{
+                color: string;
+                label: string;
+            }>;
+        };
         [p: string]: any;
     };
 }
