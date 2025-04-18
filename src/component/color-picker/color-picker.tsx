@@ -110,7 +110,6 @@ export const ColorPicker = ({ style = {}, type = "input", ...props }: ColorPicke
                 <input
                     type='color'
                     disabled={props.disabled}
-                    hidden
                     onChange={(ev) => {
                         props.onChange?.(ev.target.value + "ff")
                     }} />
