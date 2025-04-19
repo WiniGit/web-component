@@ -13,6 +13,7 @@ interface FTextFieldProps {
     methods: UseFormReturn<any, any, undefined>;
 }
 export declare function FTextField(props: FTextFieldProps): import("react/jsx-runtime").JSX.Element;
+export declare function FInputPassword(props: FTextFieldProps): import("react/jsx-runtime").JSX.Element;
 interface FTextAreaProps {
     id?: string;
     placeholder?: string;
