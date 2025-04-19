@@ -10,6 +10,12 @@ interface RenderLayerElementProps extends Props {
     list: Array<{
         [p: string]: any;
     }>;
+    cols?: Array<{
+        [p: string]: any;
+    }>;
+    rels?: Array<{
+        [p: string]: any;
+    }>;
     bodyChildren?: ReactNode;
     type?: "page" | "view" | "card" | "form";
     propsData?: {
@@ -49,7 +55,15 @@ interface RenderLayerElementProps extends Props {
     index?: number;
     style?: CSSProperties;
     className?: string;
+    options?: {
+        [p: string]: Array<{
+            [p: string]: any;
+        }>;
+    };
 }
+export declare const pageAllRefs: {
+    [p: string]: any;
+};
 export declare const RenderLayerElement: (props: RenderLayerElementProps) => any;
 interface PageByIdProps extends Props {
     id: string;

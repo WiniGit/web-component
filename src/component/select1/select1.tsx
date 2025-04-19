@@ -61,25 +61,28 @@ export const Select1 = ({ style = {}, ...props }: Select1Props) => {
     return <label
         id={props.id}
         ref={containerRef}
-        className={`${props.simpleStyle ? styles['select1-simple-style'] : styles['select1-container']} row ${props.disabled ? styles['disabled'] : ''} ${props.helperText?.length ? styles['helper-text'] : ""} ${props.className ?? (props.simpleStyle ? "" : 'body-3')}`}
+        className={`${props.simpleStyle ? styles['select1-simple-style'] : styles['select1-container']} row ${props.helperText?.length ? styles['helper-text'] : ""} ${props.className ?? (props.simpleStyle ? "" : 'body-3')}`}
         helper-text={props.helperText}
         style={{ '--helper-text-color': props.helperTextColor ?? '#e14337', ...style } as CSSProperties}
     >
         {props.prefix}
-        {(!valueItem || typeof valueItem.name === "string" || typeof valueItem.name === "number") ?
-            <input ref={inputRef} readOnly={props.readOnly} placeholder={props.placeholder} disabled={props.disabled}
-                onFocus={() => { setIsOpen(true) }}
-                onChange={async (ev) => {
-                    if (ev.target.value.trim().length) {
-                        if (props?.handleSearch) {
-                            const res = await props.handleSearch(ev.target.value.trim())
-                            setSearch(res)
-                        } else {
-                            setSearch(props.options.filter(e => typeof e.name === "string" && e.name.toLowerCase().includes(ev.target.value.trim().toLowerCase())))
-                        }
-                    } else setSearch(undefined)
-                }}
-            /> : valueItem.name}
+        <input ref={inputRef} hidden={valueItem && typeof valueItem.name !== "string" && typeof valueItem.name !== "number"}
+            readOnly={props.readOnly}
+            placeholder={props.placeholder}
+            disabled={props.disabled}
+            onFocus={() => { setIsOpen(true) }}
+            onChange={async (ev) => {
+                if (ev.target.value.trim().length) {
+                    if (props?.handleSearch) {
+                        const res = await props.handleSearch(ev.target.value.trim())
+                        setSearch(res)
+                    } else {
+                        setSearch(props.options.filter(e => typeof e.name === "string" && e.name.toLowerCase().includes(ev.target.value.trim().toLowerCase())))
+                    }
+                } else setSearch(undefined)
+            }}
+        />
+        {valueItem && typeof valueItem.name === "object" && valueItem.name}
         {props.suffix ?? <div ref={iconRef => {
             if (iconRef?.parentElement && iconRef.parentElement.getBoundingClientRect().width < 88) iconRef.style.display = "none"
         }} className='row'>

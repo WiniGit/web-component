@@ -1,16 +1,24 @@
-import { ReactNode, CSSProperties } from 'react';
-import { UseFormReturn } from 'react-hook-form';
-interface Props {
-    id?: string;
-    className?: string;
+import { CSSProperties, MouseEventHandler, ReactNode } from 'react';
+interface FormByIdProps {
+    id: string;
     style?: CSSProperties;
+    className?: string;
     data?: {
         [p: string]: any;
     };
-    disabled?: boolean;
-    readonly?: boolean;
-    customFieldUI?: {
-        [p: string]: (methods: UseFormReturn) => ReactNode;
+    propsData?: {
+        [p: string]: {
+            style?: CSSProperties;
+            className?: string;
+            onClick?: (ev: MouseEventHandler) => void;
+            [p: string]: any;
+        };
+    };
+    childrenData?: {
+        [p: string]: ReactNode;
+    };
+    itemData?: {
+        [p: string]: ReactNode;
     };
     customOptions?: {
         [p: string]: Array<{
@@ -21,9 +29,6 @@ interface Props {
         [p: string]: any;
     }) => void;
 }
-interface FormByIdProps extends Props {
-    formId: string;
-}
-export declare const FormById: (props: FormByIdProps) => import("react/jsx-runtime").JSX.Element | null;
+export declare const FormById: import('react').ForwardRefExoticComponent<FormByIdProps & import('react').RefAttributes<unknown>>;
 export {};
 //# sourceMappingURL=formById.d.ts.map

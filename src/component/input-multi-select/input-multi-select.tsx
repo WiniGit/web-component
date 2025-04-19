@@ -61,7 +61,7 @@ export const SelectMultiple = ({ style = {}, ...props }: SelectMultipleProps) =>
     return <label
         id={props.id}
         ref={containerRef}
-        className={`${props.simpleStyle ? styles['select-multi-simple-style'] : styles['select-multi-container']} row ${props.disabled ? styles['disabled'] : ''} ${props.helperText?.length ? styles['helper-text'] : ""} ${props.className ?? (props.simpleStyle ? "" : 'body-3')}`}
+        className={`${props.simpleStyle ? styles['select-multi-simple-style'] : styles['select-multi-container']} row ${props.helperText?.length ? styles['helper-text'] : ""} ${props.className ?? (props.simpleStyle ? "" : 'body-3')}`}
         helper-text={props.helperText}
         style={{ '--helper-text-color': props.helperTextColor ?? '#e14337', ...style } as CSSProperties}
     >
@@ -77,6 +77,7 @@ export const SelectMultiple = ({ style = {}, ...props }: SelectMultipleProps) =>
             <input
                 ref={inputRef}
                 onFocus={() => { setIsOpen(true) }}
+                disabled={props.disabled}
                 placeholder={value.length ? undefined : props.placeholder}
                 onChange={async (ev) => {
                     if (ev.target.value.trim().length) {

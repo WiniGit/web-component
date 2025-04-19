@@ -14,13 +14,13 @@
 }
 
 .popup-overlay>div {
-    background-color: var(--neutral-absolute-background-color);
+    background-color: var(--neutral-absolute-background-color, #fff);
     border-radius: 0.8rem;
 }
 
 .popup-container {
     position: relative;
-    border: var(--neutral-main-border);
+    border: var(--neutral-main-border, 1px solid #EAEAEC);
     overflow: visible;
     max-width: 86%;
     max-height: 80%;
@@ -30,14 +30,14 @@
     align-items: center;
     justify-content: start;
     padding: 1.6rem 2.4rem;
-    border-bottom: var(--neutral-main-border);
+    border-bottom: var(--neutral-main-border, 1px solid #EAEAEC);
 }
 
 .popup-footer {
     column-gap: 0.8rem;
     justify-content: end;
     padding: 1.2rem 2.4rem;
-    border-top: var(--neutral-main-border);
+    border-top: var(--neutral-main-border, 1px solid #EAEAEC);
 }
 
 .popup-container>.popup-close-btn {
@@ -51,7 +51,7 @@
     border-radius: 50%;
     align-items: center;
     justify-content: center;
-    background-color: var(--neutral-absolute-background-color);
+    background-color: var(--neutral-absolute-background-color, #fff);
     box-shadow: 0px 15px 50px 0px rgba(27, 32, 50, .1);
 }
 
@@ -65,7 +65,7 @@
     position: fixed !important;
     z-index: 99;
     border-radius: 0.8rem;
-    background-color: var(--neutral-absolute-background-color);
+    background-color: var(--neutral-absolute-background-color, #fff);
 }
 
 .popup-overlay>* {
@@ -141,7 +141,7 @@
 .dropdown-popup {
     animation: show-dropdown-popup 0.4s ease-in-out;
     position: fixed;
-    border: var(--neutral-main-border);
+    border: var(--neutral-main-border, 1px solid #EAEAEC);
     border-radius: 0.8rem;
     padding: 4px;
 }

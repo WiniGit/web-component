@@ -1,8 +1,8 @@
 import styles from "./component-form.module.css";
-import { CSSProperties, ReactNode, useMemo } from "react";
+import { CSSProperties, ReactNode, useMemo, useState } from "react";
 import { Controller, FieldValues, UseFormReturn } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { Checkbox, ColorPicker, DateTimePicker, ImportFile, NumberPicker, OptionsItem, RadioButton, Select1, SelectMultiple, Switch, TextArea, TextField } from "../../index"
+import { Checkbox, ColorPicker, DateTimePicker, ImportFile, NumberPicker, OptionsItem, RadioButton, Select1, SelectMultiple, Switch, TextArea, TextField, Winicon } from "../../index"
 
 interface FTextFieldProps {
     id?: string;
@@ -28,6 +28,24 @@ export function FTextField(props: FTextFieldProps) {
     />
 }
 
+export function FInputPassword(props: FTextFieldProps) {
+    const _covertErrors = useMemo(() => props.name ? convertErrors(props.methods.formState.errors, props.name) : undefined, [props.name, props.methods.formState.errors?.[props.name!]])
+    const { t } = useTranslation()
+    const [isShowPass, setIsShowPass] = useState(false)
+
+    return <TextField
+        {...props}
+        autoComplete="off"
+        type={isShowPass ? "text" : "password"}
+        suffix={<>
+            <Winicon src={`outline/user interface/${isShowPass ? "view" : "hide"}`} size={"inherit"} onClick={() => setIsShowPass(!isShowPass)} />
+            {props.suffix}
+        </>}
+        register={props.name?.length ? (props.methods!.register(props.name, { required: props.required }) as any) : undefined}
+        helperText={_covertErrors && (_covertErrors?.message?.length ? _covertErrors?.message : `${t("input")} ${props.name} value`.toLowerCase())}
+        simpleStyle
+    />
+}
 interface FTextAreaProps {
     id?: string;
     placeholder?: string;

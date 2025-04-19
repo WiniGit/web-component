@@ -19,6 +19,7 @@ export declare enum ComponentType {
     progressBar = "ProgressBar",
     progressCircle = "ProgressCircle",
     upload = "Upload",
+    numberPicker = "NumberPicker",
     importMultipleFile = "ImportMultiple",
     ckEditor = "CkEditor",
     range = "Range",
@@ -46,6 +47,7 @@ export declare enum FEDataType {
     FILE = "FILE"
 }
 export declare enum ValidateType {
+    required = 1,
     email = 2,
     minLength = 3,
     maxLength = 4,

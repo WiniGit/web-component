@@ -21,7 +21,7 @@ import { Rating } from "../../component/rating/rating"
 import { ProgressBar } from "../../component/progress-bar/progress-bar"
 import { ProgressCircle } from "../../component/progress-circle/progress-circle"
 import { CustomCkEditor5 } from "../../component/ck-editor/ckeditor"
-import { FCheckbox, FColorPicker, FDateTimePicker, FGroupCheckbox, FGroupRadioButton, FNumberPicker, FRadioButton, FSelect1, FSelectMultiple, FSwitch, FTextArea, FTextField, FUploadFile } from "./component-form"
+import { FCheckbox, FColorPicker, FDateTimePicker, FGroupCheckbox, FGroupRadioButton, FInputPassword, FNumberPicker, FRadioButton, FSelect1, FSelectMultiple, FSwitch, FTextArea, FTextField, FUploadFile } from "./component-form"
 
 interface Props {
     methods?: UseFormReturn
@@ -79,6 +79,13 @@ interface RenderLayerElementProps extends Props {
 
 export const pageAllRefs: { [p: string]: any } = {}
 export const RenderLayerElement = (props: RenderLayerElementProps) => {
+    if (props.itemData && props.itemData[props.item.Id]) {
+        if (props.type === "card") return (props.itemData[props.item.Id] as any)(props.indexItem, props.index)
+        else return props.itemData[props.item.Id]
+    } else return <CaculateLayer {...props} />
+}
+
+const CaculateLayer = (props: RenderLayerElementProps) => {
     if (props.item.Type === ComponentType.form) pageAllRefs[props.item.Id] = useRef(null)
     useEffect(() => {
         return () => { delete pageAllRefs[props.item.Id] }
@@ -388,6 +395,7 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
                     if (iconPrefix) tmpProps.prefix = <RenderLayerElement {...props} item={iconPrefix} style={undefined} className={undefined} />
                     if (iconSuffix) tmpProps.suffix = <RenderLayerElement {...props} item={iconSuffix} style={undefined} className={undefined} />
                 }
+                if (props.item.Type === ComponentType.textField && props.cols?.find(e => e.Name === props.item.NameField)?.DataType === FEDataType.PASSWORD) tmpProps.IsPassword = true
                 break;
             default:
                 break;
@@ -406,31 +414,14 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
         return undefined
     }, [props.cols, props.rels, props.item.NameField, props.options?.[`${props.item.NameField}_Options`]])
 
-
-    if (props.itemData && props.itemData[props.item.Id]) {
-        if (props.type === "card") return (props.itemData[props.item.Id] as any)(props.indexItem, props.index)
-        else return props.itemData[props.item.Id]
-    } else {
-        switch (props.item.Type) {
-            case ComponentType.navLink:
-                if (props.childrenData && props.childrenData[props.item.Id]) var childComponent = props.type === "card" ? (props.childrenData[props.item.Id] as any)(props.indexItem, props.index) : props.childrenData[props.item.Id]
-                if (Array.isArray(dataValue)) {
-                    return dataValue.map((dataValueItem, i) => {
-                        const dataValueProps = { ...typeProps }
-                        dataValueProps.indexItem = { ...props.indexItem, [props.item.NameField.split(".").length > 1 ? props.item.NameField.split(".")[1] : props.item.NameField]: dataValueItem }
-                        return <NavLink key={`${dataValueItem}-${i}`} {...dataValueProps} >
-                            {childComponent ??
-                                (customProps.className?.includes("layout-body") ?
-                                    <>
-                                        {children.map(e => <RenderLayerElement key={e.Id} {...props} item={e} style={undefined} className={undefined} />)}
-                                        {props.bodyChildren}
-                                    </> :
-                                    children.map(e => <RenderLayerElement key={e.Id} {...props} item={e} style={undefined} className={undefined} />)
-                                )}
-                        </NavLink>
-                    })
-                } else {
-                    return <NavLink {...typeProps}>
+    switch (props.item.Type) {
+        case ComponentType.navLink:
+            if (props.childrenData && props.childrenData[props.item.Id]) var childComponent = props.type === "card" ? (props.childrenData[props.item.Id] as any)(props.indexItem, props.index) : props.childrenData[props.item.Id]
+            if (Array.isArray(dataValue)) {
+                return dataValue.map((dataValueItem, i) => {
+                    const dataValueProps = { ...typeProps }
+                    dataValueProps.indexItem = { ...props.indexItem, [props.item.NameField.split(".").length > 1 ? props.item.NameField.split(".")[1] : props.item.NameField]: dataValueItem }
+                    return <NavLink key={`${dataValueItem}-${i}`} {...dataValueProps} >
                         {childComponent ??
                             (customProps.className?.includes("layout-body") ?
                                 <>
@@ -440,27 +431,27 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
                                 children.map(e => <RenderLayerElement key={e.Id} {...props} item={e} style={undefined} className={undefined} />)
                             )}
                     </NavLink>
-                }
-            case ComponentType.container:
-                if (props.childrenData && props.childrenData[props.item.Id]) var childComponent = props.type === "card" ? (props.childrenData[props.item.Id] as any)(props.indexItem, props.index) : props.childrenData[props.item.Id]
-                if (dataValue && dataValue.backgroundImage) var containerProps = { ...typeProps, style: { ...typeProps.style, ...dataValue } }
-                if (Array.isArray(dataValue)) {
-                    return dataValue.map((dataValueItem, i) => {
-                        const dataValueProps = { ...(containerProps ?? typeProps) }
-                        dataValueProps.indexItem = { ...props.indexItem, [props.item.NameField.split(".").length > 1 ? props.item.NameField.split(".")[1] : props.item.NameField]: dataValueItem }
-                        return <div key={`${dataValueItem}-${i}`} {...dataValueProps}>
-                            {childComponent ??
-                                (typeProps.className?.includes("layout-body") ?
-                                    <>
-                                        {children.map(e => <RenderLayerElement key={e.Id} {...props} item={e} style={undefined} className={undefined} />)}
-                                        {props.bodyChildren}
-                                    </> :
-                                    children.map(e => <RenderLayerElement key={e.Id} {...props} item={e} style={undefined} className={undefined} />)
-                                )}
-                        </div>
-                    })
-                } else {
-                    return <div {...(containerProps ?? typeProps)}>
+                })
+            } else {
+                return <NavLink {...typeProps}>
+                    {childComponent ??
+                        (customProps.className?.includes("layout-body") ?
+                            <>
+                                {children.map(e => <RenderLayerElement key={e.Id} {...props} item={e} style={undefined} className={undefined} />)}
+                                {props.bodyChildren}
+                            </> :
+                            children.map(e => <RenderLayerElement key={e.Id} {...props} item={e} style={undefined} className={undefined} />)
+                        )}
+                </NavLink>
+            }
+        case ComponentType.container:
+            if (props.childrenData && props.childrenData[props.item.Id]) var childComponent = props.type === "card" ? (props.childrenData[props.item.Id] as any)(props.indexItem, props.index) : props.childrenData[props.item.Id]
+            if (dataValue && dataValue.backgroundImage) var containerProps = { ...typeProps, style: { ...typeProps.style, ...dataValue } }
+            if (Array.isArray(dataValue)) {
+                return dataValue.map((dataValueItem, i) => {
+                    const dataValueProps = { ...(containerProps ?? typeProps) }
+                    dataValueProps.indexItem = { ...props.indexItem, [props.item.NameField.split(".").length > 1 ? props.item.NameField.split(".")[1] : props.item.NameField]: dataValueItem }
+                    return <div key={`${dataValueItem}-${i}`} {...dataValueProps}>
                         {childComponent ??
                             (typeProps.className?.includes("layout-body") ?
                                 <>
@@ -470,104 +461,122 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
                                 children.map(e => <RenderLayerElement key={e.Id} {...props} item={e} style={undefined} className={undefined} />)
                             )}
                     </div>
-                }
-            case ComponentType.text:
-                if (props.item.NameField) {
-                    if (typeof dataValue === "object") return <Text {...typeProps} html={dataValue["__html"]} />
-                    else return <Text {...typeProps}>{dataValue}</Text>
-                } else return <Text {...typeProps}>{typeProps.value ?? ""}</Text>
-            case ComponentType.img:
-                if (props.item.NameField) {
-                    if (!dataValue) return null
-                    return <img
-                        key={dataValue}
-                        alt=""
-                        referrerPolicy="no-referrer"
-                        onError={(ev) => { ev.currentTarget.src = "https://cdn.jsdelivr.net/gh/WiniGit/icon-library@latest/outline/development/image-2.svg" }}
-                        {...typeProps}
-                        src={dataValue.startsWith("http") ? dataValue : (ConfigData.imgUrlId + dataValue)}
-                    />
-                } else return <img
+                })
+            } else {
+                return <div {...(containerProps ?? typeProps)}>
+                    {childComponent ??
+                        (typeProps.className?.includes("layout-body") ?
+                            <>
+                                {children.map(e => <RenderLayerElement key={e.Id} {...props} item={e} style={undefined} className={undefined} />)}
+                                {props.bodyChildren}
+                            </> :
+                            children.map(e => <RenderLayerElement key={e.Id} {...props} item={e} style={undefined} className={undefined} />)
+                        )}
+                </div>
+            }
+        case ComponentType.text:
+            if (props.item.NameField) {
+                if (typeof dataValue === "object") return <Text {...typeProps} html={dataValue["__html"]} />
+                else return <Text {...typeProps}>{dataValue}</Text>
+            } else return <Text {...typeProps}>{typeProps.value ?? ""}</Text>
+        case ComponentType.img:
+            if (props.item.NameField) {
+                if (!dataValue) return null
+                return <img
+                    key={dataValue}
                     alt=""
                     referrerPolicy="no-referrer"
                     onError={(ev) => { ev.currentTarget.src = "https://cdn.jsdelivr.net/gh/WiniGit/icon-library@latest/outline/development/image-2.svg" }}
                     {...typeProps}
+                    src={dataValue.startsWith("http") ? dataValue : (ConfigData.imgUrlId + dataValue)}
                 />
-            case ComponentType.rate:
-                if (props.item.NameField) return <Rating {...typeProps} value={dataValue} />
-                else return <Rating {...typeProps} />
-            case ComponentType.progressBar:
-                if (props.item.NameField) return <ProgressBar {...typeProps} progressBarOnly percent={dataValue} />
-                else return <ProgressBar {...typeProps} progressBarOnly />
-            case ComponentType.progressCircle:
-                if (props.item.NameField) return <ProgressCircle {...typeProps} percent={dataValue} />
-                return <ProgressCircle {...typeProps} />
-            case ComponentType.icon:
-                if (dataValue) return <Winicon {...typeProps} src={dataValue} />
-                else if (props.item.NameField) return null
-                else return <Winicon {...typeProps} />
-            case ComponentType.chart:
-                return <ChartById {...typeProps} id={typeProps.chartId} />
-            case ComponentType.form:
-                return <FormById {...typeProps} id={typeProps.formId} ref={pageAllRefs[props.item.Id]} onSubmit={(ev) => {
-                    console.log("????????? ", ev)
-                    debugger
-                }} />
-            case ComponentType.card:
-                return <CardById {...typeProps} id={typeProps.cardId} />
-            case ComponentType.view:
-                return <ViewById {...typeProps} id={typeProps.viewId} />
-            case ComponentType.popup:
-                typeProps.id = props.item.Id
-                return <ActionPopup {...typeProps}>
-                    {children.map(e => <RenderLayerElement key={e.Id} {...props} item={e} style={undefined} className={undefined} />)}
-                </ActionPopup>
-            case ComponentType.button:
-                return <SimpleButton {...typeProps} />
-            case ComponentType.textField:
+            } else return <img
+                alt=""
+                referrerPolicy="no-referrer"
+                onError={(ev) => { ev.currentTarget.src = "https://cdn.jsdelivr.net/gh/WiniGit/icon-library@latest/outline/development/image-2.svg" }}
+                {...typeProps}
+            />
+        case ComponentType.rate:
+            if (props.item.NameField) return <Rating {...typeProps} value={dataValue} />
+            else return <Rating {...typeProps} />
+        case ComponentType.progressBar:
+            if (props.item.NameField) return <ProgressBar {...typeProps} progressBarOnly percent={dataValue} />
+            else return <ProgressBar {...typeProps} progressBarOnly />
+        case ComponentType.progressCircle:
+            if (props.item.NameField) return <ProgressCircle {...typeProps} percent={dataValue} />
+            return <ProgressCircle {...typeProps} />
+        case ComponentType.icon:
+            if (dataValue) return <Winicon {...typeProps} src={dataValue} />
+            else if (props.item.NameField) return null
+            else return <Winicon {...typeProps} />
+        case ComponentType.chart:
+            return <ChartById {...typeProps} id={typeProps.chartId} />
+        case ComponentType.form:
+            return <FormById {...typeProps} id={typeProps.formId} ref={pageAllRefs[props.item.Id]} onSubmit={(ev) => {
+                console.log("????????? ", ev)
+                debugger
+            }} />
+        case ComponentType.card:
+            return <CardById {...typeProps} id={typeProps.cardId} />
+        case ComponentType.view:
+            return <ViewById {...typeProps} id={typeProps.viewId} />
+        case ComponentType.popup:
+            typeProps.id = props.item.Id
+            return <ActionPopup {...typeProps}>
+                {children.map(e => <RenderLayerElement key={e.Id} {...props} item={e} style={undefined} className={undefined} />)}
+            </ActionPopup>
+        case ComponentType.button:
+            return <SimpleButton {...typeProps} />
+        case ComponentType.textField:
+            if (typeProps.IsPassword)
+                return <FInputPassword
+                    {...typeProps}
+                    name={props.item.NameField}
+                    methods={props.methods}
+                />
+            else
                 return <FTextField
                     {...typeProps}
                     name={props.item.NameField}
                     methods={props.methods}
                 />
-            case ComponentType.textArea:
-                return <FTextArea
-                    {...typeProps}
-                    name={props.item.NameField}
-                    methods={props.methods}
-                />
-            case ComponentType.radio:
-                if (_options?.length) return <FGroupRadioButton {...typeProps} methods={props.methods} name={props.item.NameField} options={_options} />
-                else return <FRadioButton {...typeProps} methods={props.methods} name={props.item.NameField} />
-            case ComponentType.checkbox:
-                if (_options?.length) return <FGroupCheckbox {...typeProps} methods={props.methods} name={props.item.NameField} options={_options} />
-                else return <FCheckbox {...typeProps} methods={props.methods} name={props.item.NameField} />
-            case ComponentType.switch:
-                return <FSwitch {...typeProps} methods={props.methods} name={props.item.NameField} />
-            case ComponentType.select1:
-                return <FSelect1 {...typeProps} methods={props.methods} name={props.item.NameField} options={_options} />
-            case ComponentType.selectMultiple:
-                return <FSelectMultiple {...typeProps} methods={props.methods} name={props.item.NameField} options={_options} />
-            case ComponentType.colorPicker:
-                return <FColorPicker {...typeProps} methods={props.methods} name={props.item.NameField} />
-            case ComponentType.numberPicker:
-                return <FNumberPicker {...typeProps} methods={props.methods} name={props.item.NameField} />
-            case ComponentType.datePicker:
-                return <FDateTimePicker {...typeProps} methods={props.methods} name={props.item.NameField} />
-            case ComponentType.upload:
-                return <FUploadFile
-                    {...typeProps}
-                    methods={props.methods}
-                    name={props.item.NameField}
-                    simpleStyle
-                />
-            case ComponentType.ckEditor:
-                return <CustomCkEditor5 {...typeProps}
-                    methods={props.methods} name={props.item.NameField}
-                />
-            default:
-                return <div {...typeProps} />
-        }
+        case ComponentType.textArea:
+            return <FTextArea
+                {...typeProps}
+                name={props.item.NameField}
+                methods={props.methods}
+            />
+        case ComponentType.radio:
+            if (_options?.length) return <FGroupRadioButton {...typeProps} methods={props.methods} name={props.item.NameField} options={_options} />
+            else return <FRadioButton {...typeProps} methods={props.methods} name={props.item.NameField} />
+        case ComponentType.checkbox:
+            if (_options?.length) return <FGroupCheckbox {...typeProps} methods={props.methods} name={props.item.NameField} options={_options} />
+            else return <FCheckbox {...typeProps} methods={props.methods} name={props.item.NameField} />
+        case ComponentType.switch:
+            return <FSwitch {...typeProps} methods={props.methods} name={props.item.NameField} />
+        case ComponentType.select1:
+            return <FSelect1 {...typeProps} methods={props.methods} name={props.item.NameField} options={_options} />
+        case ComponentType.selectMultiple:
+            return <FSelectMultiple {...typeProps} methods={props.methods} name={props.item.NameField} options={_options} />
+        case ComponentType.colorPicker:
+            return <FColorPicker {...typeProps} methods={props.methods} name={props.item.NameField} />
+        case ComponentType.numberPicker:
+            return <FNumberPicker {...typeProps} methods={props.methods} name={props.item.NameField} />
+        case ComponentType.datePicker:
+            return <FDateTimePicker {...typeProps} methods={props.methods} name={props.item.NameField} />
+        case ComponentType.upload:
+            return <FUploadFile
+                {...typeProps}
+                methods={props.methods}
+                name={props.item.NameField}
+                simpleStyle
+            />
+        case ComponentType.ckEditor:
+            return <CustomCkEditor5 {...typeProps}
+                methods={props.methods} name={props.item.NameField}
+            />
+        default:
+            return <div {...typeProps} />
     }
 }
 
