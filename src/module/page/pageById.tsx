@@ -86,7 +86,7 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
 }
 
 const CaculateLayer = (props: RenderLayerElementProps) => {
-    if (props.item.Type === ComponentType.form) pageAllRefs[props.item.Id] = useRef(null)
+    if (props.item.Type === ComponentType.form) pageAllRefs[props.item.Id] = (props.propsData?.[props.item.Id] as any)?.ref ?? useRef(null)
     useEffect(() => {
         return () => { delete pageAllRefs[props.item.Id] }
     }, [])
@@ -512,14 +512,15 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
         case ComponentType.chart:
             return <ChartById {...typeProps} id={typeProps.chartId} />
         case ComponentType.form:
-            return <FormById {...typeProps} id={typeProps.formId} ref={pageAllRefs[props.item.Id]} onSubmit={(ev) => {
-                console.log("????????? ", ev)
-                debugger
-            }} />
+            return <FormById {...typeProps} id={typeProps.formId} ref={pageAllRefs[props.item.Id]} itemData={props.itemData} childrenData={props.childrenData} propsData={props.propsData}
+                onSubmit={(ev) => {
+                    console.log("????????? ", ev)
+                    debugger
+                }} />
         case ComponentType.card:
-            return <CardById {...typeProps} id={typeProps.cardId} />
+            return <CardById {...typeProps} id={typeProps.cardId} itemData={props.itemData} childrenData={props.childrenData} propsData={props.propsData} />
         case ComponentType.view:
-            return <ViewById {...typeProps} id={typeProps.viewId} />
+            return <ViewById {...typeProps} id={typeProps.viewId} itemData={props.itemData} childrenData={props.childrenData} propsData={props.propsData} />
         case ComponentType.popup:
             typeProps.id = props.item.Id
             return <ActionPopup {...typeProps}>
