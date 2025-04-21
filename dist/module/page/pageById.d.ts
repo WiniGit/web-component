@@ -96,6 +96,7 @@ interface PageByUrlProps extends Props {
      * */
     propsData?: {
         [p: string]: {
+            ref: any;
             style?: CSSProperties;
             className?: string;
             onClick?: (ev: MouseEventHandler) => void;
