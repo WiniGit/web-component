@@ -27,7 +27,6 @@ interface Props {
     style?: CSSProperties,
     className?: string,
     controller?: "all" | { page: number, size: number, searchRaw?: string, filter?: string, sortby?: Array<{ prop: string, direction?: "ASC" | "DESC" }> } | { ids: string, maxLength?: number | "none" },
-    loadMore?: boolean,
     methods?: UseFormReturn,
     emptyLink?: string,
     onUnMount?: () => void
@@ -147,7 +146,7 @@ export const CardById = forwardRef((props: CardProps, ref) => {
     }, [keyNames])
 
     useEffect(() => {
-        if (cardItem && !props.loadMore) {
+        if (cardItem) {
             if (controller && !props.cardData) {
                 getData()
             } else if (props.cardData) {
@@ -157,16 +156,13 @@ export const CardById = forwardRef((props: CardProps, ref) => {
     }, [cardItem, controller, props.cardData?.length])
 
     useEffect(() => {
-        if (props.loadMore && controller && controller !== "all" && data.totalCount && data.data.length < data.totalCount) getData(Math.floor(data.data.length / controller.size) + 1)
-    }, [props.loadMore, controller, data])
-
-    useEffect(() => {
         return props.onUnMount?.()
     }, [])
 
     useImperativeHandle(ref, () => ({
         getData: getData,
         data: data,
+        controller: controller,
         setData: setData
     }), [data, cardItem, controller]);
 

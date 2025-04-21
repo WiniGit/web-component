@@ -86,10 +86,13 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
 }
 
 const CaculateLayer = (props: RenderLayerElementProps) => {
-    if (props.item.Type === ComponentType.form) pageAllRefs[props.item.Id] = (props.propsData?.[props.item.Id] as any)?.ref ?? useRef(null)
+    // init refs
+    if (props.item.Type === ComponentType.form || props.item.Type === ComponentType.card)
+        pageAllRefs[props.item.Id] = (props.propsData?.[props.item.Id] as any)?.ref ?? useRef(null)
     useEffect(() => {
         return () => { delete pageAllRefs[props.item.Id] }
     }, [])
+    // 
     const location = useLocation() as any
     const params = useParams()
     const query = new URLSearchParams(location.search)
@@ -203,8 +206,9 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                                 props.methods!.setValue(actItem.NameField, eval(actItem.CaculateValue))
                                 return;
                             case ActionType.loadMore:
-                                if (!props.methods!.watch(`loadMore-${actItem.loadingId}`)) {
-                                    props.methods!.setValue(`loadMore-${actItem.loadingId}`, true)
+                                const cardData = pageAllRefs[actItem.loadingId].current?.data
+                                if (cardData.totalCount && cardData.data.length < cardData.totalCount) {
+                                    pageAllRefs[actItem.loadingId].current.getData(Math.floor(cardData.data.length / pageAllRefs[actItem.loadingId].current.controller.size) + 1)
                                 }
                                 return;
                             default:
@@ -336,14 +340,6 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
         if (props.item.NameField && tmpProps.validate?.some((v: any) => v.type === ValidateType.required)) tmpProps.required = true
         switch (props.item.Type) {
             case ComponentType.card:
-                if (tmpProps.loadMore === undefined) tmpProps.loadMore = props.methods?.watch(`loadMore-${props.item.Id}`)
-                if (tmpProps.loadMore !== undefined) {
-                    tmpProps.onLoaded = (ev: any) => {
-                        props.methods?.setValue(`loadMore-${props.item.Id}`, ev.data.length === ev.totalCount ? "end" : false)
-                        customProps.onLoaded?.(ev)
-                    }
-                    tmpProps.onUnMount = () => { props.methods?.setValue(`loadMore-${props.item.Id}`, null) }
-                }
                 if (tmpProps.controller && tmpProps.controller !== "all") {
                     let newController = { ...tmpProps.controller }
                     if (newController.searchRaw && regexGetVariables.test(newController.searchRaw)) {
@@ -476,9 +472,9 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
             }
         case ComponentType.text:
             if (props.item.NameField) {
-                if (typeof dataValue === "object") return <Text {...typeProps} html={dataValue["__html"]} />
-                else return <Text {...typeProps}>{dataValue}</Text>
-            } else return <Text {...typeProps}>{typeProps.value ?? ""}</Text>
+                if (typeof dataValue === "object") return <CustomText {...typeProps} html={dataValue["__html"]} />
+                else return <CustomText {...typeProps} value={dataValue} />
+            } else return <CustomText {...typeProps} />
         case ComponentType.img:
             if (props.item.NameField) {
                 if (!dataValue) return null
@@ -512,15 +508,23 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
         case ComponentType.chart:
             return <ChartById {...typeProps} id={typeProps.chartId} />
         case ComponentType.form:
-            return <FormById {...typeProps} id={typeProps.formId} ref={pageAllRefs[props.item.Id]} itemData={props.itemData} childrenData={props.childrenData} propsData={props.propsData}
+            if (props.itemData) typeProps.itemData = typeProps.itemData ? { ...props.itemData, ...typeProps.itemData } : props.itemData
+            if (props.childrenData) typeProps.childrenData = typeProps.childrenData ? { ...props.childrenData, ...typeProps.childrenData } : props.childrenData
+            if (props.propsData) typeProps.propsData = typeProps.propsData ? { ...props.propsData, ...typeProps.propsData } : props.propsData
+            return <FormById {...typeProps} id={typeProps.formId} ref={pageAllRefs[props.item.Id]}
                 onSubmit={(ev) => {
                     console.log("????????? ", ev)
-                    debugger
                 }} />
         case ComponentType.card:
-            return <CardById {...typeProps} id={typeProps.cardId} itemData={props.itemData} childrenData={props.childrenData} propsData={props.propsData} />
+            if (props.itemData) typeProps.itemData = typeProps.itemData ? { ...props.itemData, ...typeProps.itemData } : props.itemData
+            if (props.childrenData) typeProps.childrenData = typeProps.childrenData ? { ...props.childrenData, ...typeProps.childrenData } : props.childrenData
+            if (props.propsData) typeProps.propsData = typeProps.propsData ? { ...props.propsData, ...typeProps.propsData } : props.propsData
+            return <CardById {...typeProps} id={typeProps.cardId} ref={pageAllRefs[props.item.Id]} />
         case ComponentType.view:
-            return <ViewById {...typeProps} id={typeProps.viewId} itemData={props.itemData} childrenData={props.childrenData} propsData={props.propsData} />
+            if (props.itemData) typeProps.itemData = typeProps.itemData ? { ...props.itemData, ...typeProps.itemData } : props.itemData
+            if (props.childrenData) typeProps.childrenData = typeProps.childrenData ? { ...props.childrenData, ...typeProps.childrenData } : props.childrenData
+            if (props.propsData) typeProps.propsData = typeProps.propsData ? { ...props.propsData, ...typeProps.propsData } : props.propsData
+            return <ViewById {...typeProps} id={typeProps.viewId} />
         case ComponentType.popup:
             typeProps.id = props.item.Id
             return <ActionPopup {...typeProps}>
@@ -600,6 +604,48 @@ const ActionPopup = ({ id, children }: { id: string, children: ReactNode, classN
     </>
 }
 
+const CustomText = (props: { type?: "div" | "p" | "span" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6", html?: string, maxLine?: number, className?: string, style?: CSSProperties, value?: string }) => {
+    const customProps = useMemo(() => {
+        let _props: any = { ...props, style: { ...(props.style ?? {}) } }
+        delete _props.value
+        _props.style ??= {}
+        if (props.maxLine) _props.style['--max-line'] = props.maxLine
+        if (props.html) _props.dangerouslySetInnerHTML = { __html: props.html }
+        if (props.type && props.type !== "div") _props.className = `comp-text${props.html ? "-innerhtml" : ""} ${props.className ?? ""}`
+        else _props.className = props.className
+        return _props
+    }, [props.html, props.className, props])
+
+    switch (props.type) {
+        case "p":
+            if (props.html) return <p {...customProps} />
+            else return <p {...customProps}>{props.value}</p>
+        case "span":
+            if (props.html) return <span {...customProps} />
+            else return <span {...customProps}>{props.value}</span>
+        case "h1":
+            if (props.html) return <h1 {...customProps} />
+            else return <h1 {...customProps}>{props.value}</h1>
+        case "h2":
+            if (props.html) return <h2 {...customProps} />
+            else return <h2 {...customProps}>{props.value}</h2>
+        case "h3":
+            if (props.html) return <h3 {...customProps} />
+            else return <h3 {...customProps}>{props.value}</h3>
+        case "h4":
+            if (props.html) return <h4 {...customProps} />
+            else return <h4 {...customProps}>{props.value}</h4>
+        case "h5":
+            if (props.html) return <h5 {...customProps} />
+            else return <h5 {...customProps}>{props.value}</h5>
+        case "h6":
+            if (props.html) return <h6 {...customProps} />
+            else return <h6 {...customProps}>{props.value}</h6>
+        default:
+            return <Text {...customProps}>{props.value}</Text>
+    }
+}
+
 interface PageByIdProps extends Props {
     id: string,
     /**
@@ -618,29 +664,30 @@ export const PageById = (props: PageByIdProps) => {
     const [pageItem, setPageItem] = useState<{ [p: string]: any }>()
     const [layout, setLayout] = useState<Array<{ [p: string]: any }>>([])
     const [layers, setLayers] = useState<Array<{ [p: string]: any }>>([])
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
+        if (!loading) setLoading(true)
         const pageController = new TableController("page")
-        pageController.getByListId([props.id]).then(res => {
+        pageController.getByListId([props.id]).then(async (res) => {
             if (res.code === 200 && res.data[0]) {
                 const thisPage = res.data[0]
                 setPageItem(thisPage)
                 const layerController = new TableController("layer")
                 if (thisPage.LayoutId !== pageItem?.LayoutId) {
-                    Promise.all([
+                    const resLayer = await Promise.all([
                         layerController.getListSimple({ page: 1, size: 2000, query: `(@Id:{${thisPage.LayoutId}}) | (@LayoutId:{${thisPage.LayoutId}})` }),
                         layerController.getListSimple({ page: 1, size: 1000, query: `@PageId:{${thisPage!.Id}}` })
-                    ]).then(resLayer => {
-                        if (resLayer[0].code === 200 && resLayer[1].code === 200) {
-                            setLayout(resLayer[0].data.map((e: any) => ({ ...e, Setting: JSON.parse(e.Setting), State: e.State ? JSON.parse(e.State) : undefined })))
-                            setLayers(resLayer[1].data.map((e: any) => ({ ...e, Setting: JSON.parse(e.Setting), State: e.State ? JSON.parse(e.State) : undefined })))
-                        }
-                    })
+                    ])
+                    if (resLayer[0].code === 200 && resLayer[1].code === 200) {
+                        setLayout(resLayer[0].data.map((e: any) => ({ ...e, Setting: JSON.parse(e.Setting), State: e.State ? JSON.parse(e.State) : undefined })))
+                        setLayers(resLayer[1].data.map((e: any) => ({ ...e, Setting: JSON.parse(e.Setting), State: e.State ? JSON.parse(e.State) : undefined })))
+                    }
                 } else {
-                    layerController.getListSimple({ page: 1, size: 1000, query: `@PageId:{${thisPage!.Id}}` }).then(resLayer => {
-                        if (resLayer.code === 200) setLayers(resLayer.data.map((e: any) => ({ ...e, Setting: JSON.parse(e.Setting), State: e.State ? JSON.parse(e.State) : undefined })))
-                    })
+                    const resLayer = await layerController.getListSimple({ page: 1, size: 1000, query: `@PageId:{${thisPage!.Id}}` })
+                    if (resLayer.code === 200) setLayers(resLayer.data.map((e: any) => ({ ...e, Setting: JSON.parse(e.Setting), State: e.State ? JSON.parse(e.State) : undefined })))
                 }
+                setLoading(false)
             } else setPageItem(undefined)
         })
     }, [props.id])
@@ -651,7 +698,8 @@ export const PageById = (props: PageByIdProps) => {
         {...props}
         methods={props.methods ?? methods}
     >
-        <RenderPageView layers={layers} {...props} methods={props.methods ?? methods} bodyId={layout.find(e => e.Setting?.className?.includes("layout-body"))?.Id} />
+        {loading ? <LoadingView /> :
+            <RenderPageView key={pageItem.Id} layers={layers} {...props} methods={props.methods ?? methods} bodyId={layout.find(e => e.Setting?.className?.includes("layout-body"))?.Id} />}
     </RenderPageView> : null
 }
 
@@ -660,7 +708,7 @@ interface PageByUrlProps extends Props {
     /**
      * custom props of layer by id. Ex: { "gid": { style: { width: "60rem", backgroundColor: "red" }, className: "my-class" } }
      * */
-    propsData?: { [p: string]: { style?: CSSProperties, className?: string, onClick?: (ev: MouseEventHandler) => void, [p: string]: any } },
+    propsData?: { [p: string]: { ref: any, style?: CSSProperties, className?: string, onClick?: (ev: MouseEventHandler) => void, [p: string]: any } },
     /**
      * replace children of parent layer by id. Ex: { "gid": <Text className="heading-7">Example</Text> }
      * */
@@ -673,29 +721,30 @@ export const PageByUrl = (props: PageByUrlProps) => {
     const [pageItem, setPageItem] = useState<{ [p: string]: any }>()
     const [layout, setLayout] = useState<Array<{ [p: string]: any }>>([])
     const [layers, setLayers] = useState<Array<{ [p: string]: any }>>([])
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
+        if (!loading) setLoading(true)
         const pageController = new TableController("page")
-        pageController.getListSimple({ page: 1, size: 1, query: `@Url:{${props.url.length ? props.url.replace(/[\-\/]/g, m => ("\\" + m)) : "\\/"}}` }).then(res => {
+        pageController.getListSimple({ page: 1, size: 1, query: `@Url:{${props.url.length ? props.url.replace(/[\-\/]/g, m => ("\\" + m)) : "\\/"}}` }).then(async (res) => {
             if (res.code === 200 && res.data[0]) {
                 const thisPage = res.data[0]
                 setPageItem(thisPage)
                 const layerController = new TableController("layer")
                 if (thisPage.LayoutId !== pageItem?.LayoutId) {
-                    Promise.all([
+                    const resLayer = await Promise.all([
                         layerController.getListSimple({ page: 1, size: 2000, query: `(@Id:{${thisPage.LayoutId}}) | (@LayoutId:{${thisPage.LayoutId}})` }),
                         layerController.getListSimple({ page: 1, size: 1000, query: `@PageId:{${thisPage!.Id}}` })
-                    ]).then(resLayer => {
-                        if (resLayer[0].code === 200 && resLayer[1].code === 200) {
-                            setLayout(resLayer[0].data.map((e: any) => ({ ...e, Setting: JSON.parse(e.Setting), State: e.State ? JSON.parse(e.State) : undefined })))
-                            setLayers(resLayer[1].data.map((e: any) => ({ ...e, Setting: JSON.parse(e.Setting), State: e.State ? JSON.parse(e.State) : undefined })))
-                        }
-                    })
+                    ])
+                    if (resLayer[0].code === 200 && resLayer[1].code === 200) {
+                        setLayout(resLayer[0].data.map((e: any) => ({ ...e, Setting: JSON.parse(e.Setting), State: e.State ? JSON.parse(e.State) : undefined })))
+                        setLayers(resLayer[1].data.map((e: any) => ({ ...e, Setting: JSON.parse(e.Setting), State: e.State ? JSON.parse(e.State) : undefined })))
+                    }
                 } else {
-                    layerController.getListSimple({ page: 1, size: 1000, query: `@PageId:{${thisPage!.Id}}` }).then(resLayer => {
-                        if (resLayer.code === 200) setLayers(resLayer.data.map((e: any) => ({ ...e, Setting: JSON.parse(e.Setting), State: e.State ? JSON.parse(e.State) : undefined })))
-                    })
+                    const resLayer = await layerController.getListSimple({ page: 1, size: 1000, query: `@PageId:{${thisPage!.Id}}` })
+                    if (resLayer.code === 200) setLayers(resLayer.data.map((e: any) => ({ ...e, Setting: JSON.parse(e.Setting), State: e.State ? JSON.parse(e.State) : undefined })))
                 }
+                setLoading(false)
             } else setPageItem(undefined)
         })
     }, [props.url])
@@ -706,6 +755,13 @@ export const PageByUrl = (props: PageByUrlProps) => {
         {...props}
         methods={props.methods ?? methods}
     >
-        <RenderPageView key={pageItem.Id} layers={layers} {...props} methods={props.methods ?? methods} bodyId={layout.find(e => e.Setting?.className?.includes("layout-body"))?.Id} />
+        {loading ? <LoadingView /> :
+            <RenderPageView key={pageItem.Id} layers={layers} {...props} methods={props.methods ?? methods} bodyId={layout.find(e => e.Setting?.className?.includes("layout-body"))?.Id} />}
     </RenderPageView> : null
+}
+
+const LoadingView = () => {
+    return <div className="col" style={{ width: "100%", gap: "2rem", padding: "2.4rem" }}>
+        {Array.from({ length: 5 }).map((_, i) => <div key={i} className="skeleton-loading" style={{ height: "16rem" }}></div>)}
+    </div>
 }
