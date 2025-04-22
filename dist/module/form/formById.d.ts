@@ -1,4 +1,5 @@
 import { CSSProperties, MouseEventHandler, ReactNode } from 'react';
+import { FieldValues, UseFormReturn } from 'react-hook-form';
 interface FormByIdProps {
     id: string;
     style?: CSSProperties;
@@ -25,10 +26,17 @@ interface FormByIdProps {
             [k: string]: any;
         }>;
     };
-    onSubmit?: (ev: {
+    onSubmit?: (e?: {
+        [p: string]: any;
+    }) => void;
+    onError?: (e?: {
         [p: string]: any;
     }) => void;
 }
-export declare const FormById: import('react').ForwardRefExoticComponent<FormByIdProps & import('react').RefAttributes<unknown>>;
+interface FormByIdRef {
+    onSubmit: (e?: React.BaseSyntheticEvent) => Promise<void>;
+    methods: UseFormReturn<FieldValues, any, FieldValues>;
+}
+export declare const FormById: import('react').ForwardRefExoticComponent<FormByIdProps & import('react').RefAttributes<FormByIdRef>>;
 export {};
 //# sourceMappingURL=formById.d.ts.map
