@@ -1,7 +1,10 @@
 import { CSSProperties, ReactNode } from 'react';
+import { DatasetItem } from './chartByType';
 interface Props {
     id: string;
     searchRaw?: string;
+    /** replace all searchRaw and filter date time */
+    query?: string;
     className?: string;
     /**
      * style of chart block
@@ -11,7 +14,7 @@ interface Props {
      * style of chart
      * */
     chartStyle?: CSSProperties;
-    filterAll?: boolean;
+    allowGetAll?: boolean;
     handleChartClick?: (e: any) => void;
     /**
      * hide heading & filter
@@ -25,7 +28,8 @@ interface Props {
      * format value of chart
      * */
     formatter?: (ev: any) => void;
+    expandData?: Array<DatasetItem>;
 }
-export declare const ChartById: ({ id, searchRaw, className, style, chartStyle, filterAll, handleChartClick, formatter }: Props) => import("react/jsx-runtime").JSX.Element;
+export declare const ChartById: ({ searchRaw, style, chartStyle, ...props }: Props) => import("react/jsx-runtime").JSX.Element;
 export {};
 //# sourceMappingURL=chartById.d.ts.map
