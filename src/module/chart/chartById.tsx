@@ -100,9 +100,9 @@ export const ChartById = ({ searchRaw = "", style = {}, chartStyle = {}, ...prop
                 value: evalValue
             }
         })
-        if (props.expandData) tmp.push(...props.expandData)
+        if (tmp && props.expandData) tmp.push(...props.expandData)
         return tmp
-    }, [chartItem?.Setting?.datasets, selectedTime, props.expandData])
+    }, [chartItem?.Setting?.datasets, selectedTime, props.expandData, result])
 
     const getData = async () => {
         let querySearch = props.query
@@ -170,7 +170,7 @@ export const ChartById = ({ searchRaw = "", style = {}, chartStyle = {}, ...prop
         const controller = new DataController(chartItem!.TbName)
         const res = await controller.group({
             searchRaw: querySearch.length ? querySearch : "*",
-            reducers: reducers
+            reducers: reducers ?? chartItem!.Group
         })
         if (res.code === 200) setResult(res.data)
     }
@@ -230,8 +230,8 @@ export const ChartById = ({ searchRaw = "", style = {}, chartStyle = {}, ...prop
     }, [listTime])
 
     useEffect(() => {
-        if (selectedTime) getData()
-    }, [selectedTime])
+        if (chartItem && (selectedTime || props.query?.length)) getData()
+    }, [selectedTime, props.query, chartItem])
 
     useEffect(() => {
         if (props.id) {
@@ -252,12 +252,12 @@ export const ChartById = ({ searchRaw = "", style = {}, chartStyle = {}, ...prop
                 <Text className='heading-7'>{chartItem?.Name}</Text>
                 {!!chartItem?.Description?.length && <Text className='subtitle-3' style={{ flex: 1 }}>{chartItem?.Description}</Text>}
             </div>
-            <Select1
+            {selectedTime && <Select1
                 readOnly
                 value={selectedTime}
                 options={listTime} style={{ height: "3.2rem", width: "12.8rem", padding: "0 0.8rem" }}
                 onChange={(v: any) => { setSelectedTime(v.id) }}
-            />
+            />}
         </div>}
         {chartItem && <RenderChartByType
             handleChartClick={props.handleChartClick}
