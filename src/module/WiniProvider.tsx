@@ -32,6 +32,14 @@ const appendDesignTokens = (list: Array<{ [p: string]: any }>) => {
         const colorVariables = tokenValues.filter(e => e.Type === DesignTokenType.color)
         const classVariables = tokenValues.filter(e => e.Type !== DesignTokenType.color)
         const _innerHTML = `
+        html {
+            color-scheme: light;
+        }
+
+        html.dark {
+            color-scheme: dark;
+        }
+            
         :root { \n${colorVariables.map(e => {
             const tkParent = groupTokens.find(g => g.Id === e.ParentId);
             return e.Value?.lightMode ? `--${tkParent ? `${Util.toSlug(tkParent.Name)}-` : ""}${Util.toSlug(e.Name)}: light-dark(${e.Value.lightMode}, ${e.Value.darkMode});` : ""
