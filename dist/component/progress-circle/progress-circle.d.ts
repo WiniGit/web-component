@@ -1,5 +1,5 @@
 import { CSSProperties } from 'react';
-export declare function ProgressCircle(props: {
+interface ProgressCircleProps {
     id?: string;
     /** value:  0 - 100 (%)*/
     percent?: number;
@@ -12,5 +12,7 @@ export declare function ProgressCircle(props: {
     strokeColor?: string;
     textStyle?: CSSProperties;
     title?: string;
-}): import("react/jsx-runtime").JSX.Element;
+}
+export declare function ProgressCircle({ strokeWidth, percent, style, textStyle, ...props }: ProgressCircleProps): import("react/jsx-runtime").JSX.Element;
+export {};
 //# sourceMappingURL=progress-circle.d.ts.map

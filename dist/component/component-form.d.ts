@@ -34,7 +34,7 @@ interface TextFieldFormProps extends SimpleFormProps {
     textFieldStyle?: CSSProperties;
     textFieldClassName?: string;
 }
-export declare function TextFieldForm(params: TextFieldFormProps): import("react/jsx-runtime").JSX.Element;
+export declare function TextFieldForm({ style, textFieldStyle, ...params }: TextFieldFormProps): import("react/jsx-runtime").JSX.Element;
 interface InputPasswordFormProps extends SimpleFormProps {
     maxLength?: number;
     readOnly?: boolean;
