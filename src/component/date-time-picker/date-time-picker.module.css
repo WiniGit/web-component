@@ -9,7 +9,7 @@
     padding: 0.5rem;
     margin-right: 0.8rem;
     border-radius: 50%;
-    border: 1px dashed var(--neutral-text-subtitle-color)
+    border: 1px dashed var(--neutral-text-subtitle-color, light-dark(#61616B, #A2A2AA))
 }
 
 .date-time-picker>.value,
@@ -38,21 +38,21 @@
 
 .date-time-picker:has(>input) {
     padding: 0.7rem 1.6rem;
-    border: var(--neutral-main-border);
+    border: var(--neutral-main-border, 1px solid light-dark(#EAEAEC, #313135));
 }
 
 .date-time-picker:has(>input):focus-within {
-    border-color: var(--primary-main-color);
+    border-color: var(--primary-main-color, #287CF0);
 }
 
 .date-time-picker:has(> input:disabled),
 .date-time-picker:disabled {
-    background-color: var(--neutral-disable-background-color) !important;
+    background-color: var(--neutral-disable-background-color, light-dark(#F4F4F5, #494950)) !important;
     pointer-events: none !important;
 }
 
 button.date-time-picker:hover {
-    background-color: var(--neutral-hover-background-color, #18181B0A);
+    background-color: var(--neutral-hover-background-color, light-dark(#18181B0A, #FFFFFF0A));
 }
 
 button.date-time-picker:focus {
@@ -63,13 +63,13 @@ button.date-time-picker:focus {
 .simple-date-time-picker.helper-text {
     position: relative;
     overflow: visible !important;
-    border-color: var(--helper-text-color) !important;
+    border-color: var(--helper-text-color, #E14337) !important;
 }
 
 .date-time-picker.helper-text::after,
 .simple-date-time-picker.helper-text::after {
     content: attr(helper-text);
-    color: var(--helper-text-color);
+    color: var(--helper-text-color, #E14337);
     position: absolute;
     left: 0;
     bottom: -0.4rem;
@@ -83,7 +83,7 @@ button.date-time-picker:focus {
 .popup-actions {
     max-height: 28rem;
     min-width: 10rem;
-    background-color: var(--neutral-absolute-background-color, #ffffff);
+    background-color: var(--neutral-absolute-background-color, light-dark(#FFFFFF, #14181b));
 }
 
 .popup-actions>button {
@@ -92,5 +92,5 @@ button.date-time-picker:focus {
 }
 
 .popup-actions>button:hover {
-    background-color: var(--neutral-hover-background-color, #18181B0A);
+    background-color: var(--neutral-hover-background-color, light-dark(#18181B0A, #FFFFFF0A));
 }

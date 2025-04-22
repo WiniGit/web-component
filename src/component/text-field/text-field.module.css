@@ -6,7 +6,7 @@
 
 .text-field-container {
     padding: 0.8rem 1.5rem;
-    border: var(--neutral-main-border, 1px solid #D7D7DB);
+    border: var(--neutral-main-border, 1px solid light-dark(#D7D7DB, #494950));
     border-radius: 0.8rem;
     gap: 0.8rem;
 }
@@ -30,8 +30,8 @@ input::-webkit-inner-spin-button {
 }
 
 .text-field-container:has(> input:disabled) {
-    background-color: var(--neutral-disable-background-color, #F4F4F5) !important;
-    color: var(--neutral-text-disabled-color, #B4B4B7) !important;
+    background-color: var(--neutral-disable-background-color, light-dark(#F4F4F5, #494950)) !important;
+    color: var(--neutral-text-disabled-color, light-dark(#A2A2AA, #61616B)) !important;
     pointer-events: none !important;
 }
 
@@ -63,13 +63,13 @@ input::-webkit-inner-spin-button {
 .text-field-container.helper-text,
 .simple-text-field.helper-text {
     overflow: visible !important;
-    border-color: var(--helper-text-color) !important;
+    border-color: var(--helper-text-color, #E14337) !important;
 }
 
 .text-field-container.helper-text::after,
 .simple-text-field.helper-text::after {
     content: attr(helper-text);
-    color: var(--helper-text-color);
+    color: var(--helper-text-color, #E14337);
     position: absolute;
     left: 0;
     bottom: -0.4rem;

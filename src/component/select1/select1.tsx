@@ -153,7 +153,7 @@ function OptionsItemTile({ item, children, selected, onClick, treeData }: Option
     const [isOpen, setIsOpen] = useState<boolean>(false)
 
     return item.title && typeof item.title !== "string" ? <>{item.title(onClick)}</> : <div className='col' style={{ width: '100%' }}>
-        <div className={`${styles['select-tile']} row ${item.disabled ? styles["disabled"] : ""}`} style={{ paddingLeft: item.parentId ? '4.4rem' : undefined, backgroundColor: selected ? "var(--neutral-selected-background-color)" : undefined }}
+        <div className={`${styles['select-tile']} row ${item.disabled ? styles["disabled"] : ""}`} style={{ paddingLeft: item.parentId ? '4.4rem' : undefined, backgroundColor: selected ? "var(--neutral-selected-background-color,light-dark(#18181B14, #FFFFFF14))" : undefined }}
             onClick={(ev) => {
                 ev.stopPropagation()
                 ev.preventDefault()

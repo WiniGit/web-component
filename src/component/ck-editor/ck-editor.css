@@ -1,31 +1,31 @@
 .editor-container {
     position: relative;
-    --ck-color-text: var(--neutral-text-title-color);
+    --ck-color-text: var(--neutral-text-title-color, light-dark(#18181B, #F4F4F5));
     width: 100%;
     height: 400px;
     max-height: 600px;
     border-radius: 0.8rem;
-    border: var(--neutral-bolder-border);
+    border: 1px solid var(--neutral-bolder-border-color, light-dark(#D7D7DB, #494950));
     overflow: hidden visible;
 }
 
 .editor-container:has(.ck-read-only) {
-    background-color: var(--neutral-disable-background-color) !important;
+    background-color: var(--neutral-disable-background-color, light-dark(#F4F4F5, #494950)) !important;
     pointer-events: none !important;
 }
 
 .editor-container:focus-within {
-    border-color: var(--primary-main-color);
+    border-color: var(--primary-main-color, #287CF0);
 }
 
 .editor-container.helper-text {
     overflow: visible !important;
-    border-color: var(--helper-text-color) !important;
+    border-color: var(--helper-text-color, #E14337) !important;
 }
 
 .editor-container.helper-text::after {
     content: attr(helper-text);
-    color: var(--helper-text-color);
+    color: var(--helper-text-color, #E14337);
     position: absolute;
     left: 0;
     bottom: -0.4rem;
@@ -177,7 +177,7 @@
 }
 
 .ck.ck-toolbar {
-    background-color: var(--neutral-absolute-background-color);
+    background-color: var(--neutral-absolute-background-color, light-dark(#FFFFFF, #14181b));
     border-radius: 0.8rem 0.8rem 0 0 !important;
 }
 
@@ -185,7 +185,7 @@
     height: 40px;
     border: none !important;
     border-radius: 0.8rem 0.8rem 0 0 !important;
-    border-bottom: var(--neutral-bolder-border) !important;
+    border-bottom: 1px solid var(--neutral-bolder-border-color, light-dark(#D7D7DB, #494950)) !important;
 }
 
 .ck.ck-editor__main {
@@ -201,6 +201,6 @@
 }
 
 .ck.ck-color-grid>button {
-    border: var(--neutral-bolder-border);
+    border: 1px solid var(--neutral-bolder-border-color, light-dark(#D7D7DB, #494950));
     border-radius: 0.4rem !important;
 }

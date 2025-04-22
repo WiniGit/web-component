@@ -97,7 +97,7 @@ export const showTooltipElement = ({ element, tooltip }: { element: any, tooltip
                 }
             }} className={`col ${styles['tooltip-container']}`} style={{ alignItems: "center", bottom: document.body.offsetHeight - rect.top - 4, left: rect.left + (rect.width / 2), transform: "translateX(-50%)" }}>
                 <Text className={`body-3 ${styles['tooltip-message']}`} maxLine={2}>{tooltip.message}</Text>
-                <div className="row" style={{ padding: "0 1.2rem", transform: "translateY(-0.2rem)" }}><div style={{ borderLeft: "0.6rem solid transparent", borderRight: "0.6rem solid transparent", borderTop: "0.8rem solid var(--neutral-main-reverse-background-color)", borderRadius: 2 }} /></div>
+                <div className="row" style={{ padding: "0 1.2rem", transform: "translateY(-0.2rem)" }}><div style={{ borderLeft: "0.6rem solid transparent", borderRight: "0.6rem solid transparent", borderTop: "0.8rem solid var(--neutral-main-reverse-background-color,light-dark(#242428, #EFEFF0))", borderRadius: 2 }} /></div>
             </div>
         case "bottom":
             return <div ref={r => {
@@ -115,7 +115,7 @@ export const showTooltipElement = ({ element, tooltip }: { element: any, tooltip
                     }
                 }
             }} className={`col ${styles['tooltip-container']}`} style={{ alignItems: "center", top: rect.bottom + 4, left: rect.left + (rect.width / 2), transform: "translateX(-50%)" }}>
-                <div className="row" style={{ padding: "0 1.2rem", transform: "translateY(0.2rem)" }}><div style={{ borderLeft: "0.6rem solid transparent", borderRight: "0.6rem solid transparent", borderBottom: "0.8rem solid var(--neutral-main-reverse-background-color)", borderRadius: 2 }} /></div>
+                <div className="row" style={{ padding: "0 1.2rem", transform: "translateY(0.2rem)" }}><div style={{ borderLeft: "0.6rem solid transparent", borderRight: "0.6rem solid transparent", borderBottom: "0.8rem solid var(--neutral-main-reverse-background-color,light-dark(#242428, #EFEFF0))", borderRadius: 2 }} /></div>
                 <Text className={`body-3 ${styles['tooltip-message']}`} maxLine={2}>{tooltip.message}</Text>
             </div >
         case "left":
@@ -135,7 +135,7 @@ export const showTooltipElement = ({ element, tooltip }: { element: any, tooltip
                 }
             }} className={`row ${styles['tooltip-container']}`} style={{ top: rect.top + (rect.height / 2), right: document.body.offsetWidth - rect.left - 4, transform: "translateY(-50%)" }}>
                 <Text className={`body-3 ${styles['tooltip-message']}`} maxLine={2}>{tooltip.message}</Text>
-                <div className="row" style={{ padding: "1.2rem 0", transform: "translateX(-0.2rem)" }}><div style={{ borderTop: "0.6rem solid transparent", borderBottom: "0.6rem solid transparent", borderLeft: "0.8rem solid var(--neutral-main-reverse-background-color)", borderRadius: 2 }} /></div>
+                <div className="row" style={{ padding: "1.2rem 0", transform: "translateX(-0.2rem)" }}><div style={{ borderTop: "0.6rem solid transparent", borderBottom: "0.6rem solid transparent", borderLeft: "0.8rem solid var(--neutral-main-reverse-background-color,light-dark(#242428, #EFEFF0))", borderRadius: 2 }} /></div>
             </div>
         case "right":
             return <div ref={r => {
@@ -153,7 +153,7 @@ export const showTooltipElement = ({ element, tooltip }: { element: any, tooltip
                     }
                 }
             }} className={`row ${styles['tooltip-container']}`} style={{ top: rect.top + (rect.height / 2), left: rect.right + 4, transform: "translateY(-50%)" }}>
-                <div className="row" style={{ padding: "1.2rem 0", transform: "translateX(0.2rem)" }}><div style={{ borderTop: "0.6rem solid transparent", borderBottom: "0.6rem solid transparent", borderRight: "0.8rem solid var(--neutral-main-reverse-background-color)", borderRadius: 2 }} /></div>
+                <div className="row" style={{ padding: "1.2rem 0", transform: "translateX(0.2rem)" }}><div style={{ borderTop: "0.6rem solid transparent", borderBottom: "0.6rem solid transparent", borderRight: "0.8rem solid var(--neutral-main-reverse-background-color,light-dark(#242428, #EFEFF0))", borderRadius: 2 }} /></div>
                 <Text className={`body-3 ${styles['tooltip-message']}`} maxLine={2}>{tooltip.message}</Text>
             </div>
         default:

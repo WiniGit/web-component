@@ -6,7 +6,7 @@
     height: fit-content;
     padding: 0.2rem;
     font-size: 1.6rem;
-    color: var(--neutral-text-subtitle-color, #61616B);
+    color: var(--neutral-text-subtitle-color, light-dark(#61616B, #A2A2AA));
 }
 
 .wini-icon * {
@@ -37,7 +37,7 @@
 
 .wini-icon[class~="icon-button"] {
     border-radius: 50%;
-    background-color: var(--neutral-main-background-color);
+    background-color: var(--neutral-main-background-color, light-dark(#EFEFF0, #313135));
 }
 
 .wini-icon[class~="icon-button"][class~="light"] {
@@ -45,7 +45,7 @@
 }
 
 .wini-icon[class~="border"] {
-    border: var(--neutral-bolder-border);
+    border: var(--neutral-bolder-border, 1px solid light-dark(#D7D7DB, #494950));
 }
 
 .wini-icon[class~="dashed"] {
@@ -106,8 +106,8 @@
 }
 
 .tooltip-container>.tooltip-message {
-    color: var(--neutral-text-body-reverse-color);
-    background-color: var(--neutral-main-reverse-background-color);
+    color: var(--neutral-text-body-reverse-color, #EAEAEC);
+    background-color: var(--neutral-main-reverse-background-color, light-dark(#242428, #EFEFF0));
     padding: 0.4rem 1.2rem;
     border-radius: 0.8rem;
     max-width: 21.2rem;
@@ -115,7 +115,7 @@
 }
 
 .wini-icon[class~="icon-button"]:hover {
-    background-color: var(--neutral-hover-background-color);
+    background-color: var(--neutral-hover-background-color, light-dark(#18181B0A, #FFFFFF0A));
 }
 
 .wini-icon[class~="icon-button"][class~="light"]:hover {

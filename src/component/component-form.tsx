@@ -52,10 +52,10 @@ interface TextFieldFormProps extends SimpleFormProps {
     textFieldClassName?: string,
 }
 
-export function TextFieldForm(params: TextFieldFormProps) {
+export function TextFieldForm({ style = {}, textFieldStyle = {}, ...params }: TextFieldFormProps) {
     const { t } = useTranslation()
 
-    return <div id={params.id} className={params.className ?? 'col'} style={{ gap: '0.8rem', overflow: 'visible', width: '100%', ...(params.style ?? {}) }}>
+    return <div id={params.id} className={params.className ?? 'col'} style={{ gap: '0.8rem', overflow: 'visible', width: '100%', ...style }}>
         {params.labelElement ?? (params.label ? <div className="row" style={{ gap: '0.4rem', minWidth: "16rem" }}>
             <Text className={"label-3"}>{params.label}</Text>
             {params.required ? <Text className="label-4" style={{ color: '#E14337' }}>*</Text> : null}
@@ -63,11 +63,11 @@ export function TextFieldForm(params: TextFieldFormProps) {
         <TextField
             className={params.textFieldClassName ?? "body-3"}
             autoFocus={params.autoFocus}
-            style={{ width: '100%', flex: params.className?.includes('row') ? 1 : undefined, ...(params.type === 'money' ? { ...(params.textFieldStyle ?? {}), height: '4rem', padding: '0 0 0 1.6rem' } : (params.textFieldStyle ?? {})) }}
+            style={{ width: '100%', flex: params.className?.includes('row') ? 1 : undefined, ...(params.type === 'money' ? { ...textFieldStyle, height: '4rem', padding: '0 0 0 1.6rem' } : textFieldStyle) }}
             placeholder={params.placeholder ? params.placeholder : params.label ? `${t("input")} ${params.label.toLowerCase()}` : ''}
             suffix={!params.suffix && params.type === 'money' ?
-                <div className="row" style={{ padding: '0 1.6rem', height: '100%', background: 'var(--neutral-main-background-color)', borderLeft: 'var(--neutral-bolder-border)', borderRadius: '0 0.8rem 0.8rem 0' }} >
-                    <Text className="button-text-3" style={{ color: 'var(--neutral-text-subtitle-color)' }}>VND</Text>
+                <div className="row" style={{ padding: '0 1.6rem', height: '100%', background: 'var(--neutral-main-background-color,light-dark(#EFEFF0, #313135))', borderLeft: '1px solid var(--neutral-bolder-border-color,light-dark(#D7D7DB, #494950))', borderRadius: '0 0.8rem 0.8rem 0' }} >
+                    <Text className="button-text-3" style={{ color: 'var(--neutral-text-subtitle-color,light-dark(#61616B, #A2A2AA))' }}>VND</Text>
                 </div> : params.suffix}
             prefix={params.prefix}
             disabled={params.disabled}
@@ -493,8 +493,8 @@ export function RangeForm(params: RangeFormProps) {
                         type={params.type === 'number' ? 'number' : 'text'}
                         name={params.name}
                         suffix={params.type === 'money' ?
-                            <div className="row" style={{ padding: '0 1.6rem', height: '100%', background: 'var(--neutral-main-background-color)', borderLeft: 'var(--neutral-bolder-border)', borderRadius: '0 0.8rem 0.8rem 0' }} >
-                                <Text className="button-text-3" style={{ color: 'var(--neutral-text-subtitle-color)' }}>VND</Text>
+                            <div className="row" style={{ padding: '0 1.6rem', height: '100%', background: 'var(--neutral-main-background-color,light-dark(#EFEFF0, #313135))', borderLeft: '1px solid var(--neutral-bolder-border-color,light-dark(#D7D7DB, #494950))', borderRadius: '0 0.8rem 0.8rem 0' }} >
+                                <Text className="button-text-3" style={{ color: 'var(--neutral-text-subtitle-color,light-dark(#61616B, #A2A2AA))' }}>VND</Text>
                             </div> : undefined}
                         onFocus={params.type === 'money' ? (ev) => {
                             ev.target.value = ev.target.value.replaceAll(',', '')
@@ -527,8 +527,8 @@ export function RangeForm(params: RangeFormProps) {
                         type={params.type === 'number' ? 'number' : 'text'}
                         name={params.endName}
                         suffix={params.type === 'money' ?
-                            <div className="row" style={{ padding: '0 1.6rem', height: '100%', background: 'var(--neutral-main-background-color)', borderLeft: 'var(--neutral-bolder-border)', borderRadius: '0 0.8rem 0.8rem 0' }} >
-                                <Text className="button-text-3" style={{ color: 'var(--neutral-text-subtitle-color)' }}>VND</Text>
+                            <div className="row" style={{ padding: '0 1.6rem', height: '100%', background: 'var(--neutral-main-background-color,light-dark(#EFEFF0, #313135))', borderLeft: '1px solid var(--neutral-bolder-border-color,light-dark(#D7D7DB, #494950))', borderRadius: '0 0.8rem 0.8rem 0' }} >
+                                <Text className="button-text-3" style={{ color: 'var(--neutral-text-subtitle-color,light-dark(#61616B, #A2A2AA))' }}>VND</Text>
                             </div> : undefined}
                         onFocus={params.type === 'money' ? (ev) => {
                             ev.target.value = ev.target.value.replace(/,/g, '')
@@ -657,7 +657,7 @@ export const ColorPickerForm = (props: ColorPickerForm) => {
                     }}
                     style={{ flex: 1, width: "100%", ...(props.textFieldStyle ?? {}) }}
                     maxLength={7}
-                    prefix={<label style={{ backgroundColor: props.methods.watch(props.name), borderRadius: "0.6rem", width: "2.2rem", height: "2.2rem", border: "var(--neutral-lighter-border)" }}>
+                    prefix={<label style={{ backgroundColor: props.methods.watch(props.name), borderRadius: "0.6rem", width: "2.2rem", height: "2.2rem", border: "1px solid var(--neutral-lighter-border-color,light-dark(#F4F4F5, #242428))" }}>
                         <input
                             type='color'
                             disabled={props.disabled}
@@ -673,7 +673,7 @@ export const ColorPickerForm = (props: ColorPickerForm) => {
                         <input
                             type='number'
                             placeholder="opacity"
-                            style={{ borderLeft: "var(--neutral-bolder-border)", width: "10%", flex: "none", paddingLeft: "0.8rem", minWidth: "3.6rem" }}
+                            style={{ borderLeft: "1px solid var(--neutral-bolder-border-color,light-dark(#D7D7DB, #494950))", width: "10%", flex: "none", paddingLeft: "0.8rem", minWidth: "3.6rem" }}
                             onKeyDown={(ev: any) => ev.key.toLowerCase() === 'enter' && ev.target.blur()}
                             onFocus={(ev) => ev.target.select()}
                             disabled={props.disabled}

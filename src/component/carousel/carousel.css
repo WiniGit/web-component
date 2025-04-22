@@ -20,7 +20,7 @@
     --organic-arrow-thickness: 4px;
     --organic-arrow-height: 40px;
     --slider-height-percentage: 60%;
-    --loader-bar-color: var(--primary-main-color, #851515);
+    --loader-bar-color: var(--primary-main-color, #287CF0);
     --loader-bar-height: 6px;
     --control-button-width: 10%;
     --control-button-height: 25%;
@@ -29,11 +29,11 @@
     --control-button-background: transparent;
     --transition-bezier: cubic-bezier(0.5, 0.075, 0.25, 0.95);
     --slider-transition-duration: 575ms;
-    --organic-arrow-color: #6a6a6a;
+    --organic-arrow-color: var(--neutral-text-subtitle-color, light-dark(#61616B, #A2A2AA));
     --organic-arrow-border-radius: 0;
-    --control-bullet-color: #6a6a6a;
-    --control-bullet-active-color: #6a6a6a;
-    --content-background-color: #2f2f2f;
+    --control-bullet-color: var(--neutral-text-subtitle-color, light-dark(#61616B, #A2A2AA));
+    --control-bullet-active-color: var(--neutral-text-subtitle-color, light-dark(#61616B, #A2A2AA));
+    --content-background-color: var(--neutral-main-reverse-background-color, light-dark(#242428, #EFEFF0));
 }
 
 .awssld {
@@ -65,7 +65,7 @@
 }
 
 .awssld__startUp {
-    background-color: red;
+    background-color: var(--secondary6-main-color, #E14337);
     height: 100%;
     width: 100%;
 }

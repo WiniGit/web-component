@@ -70,7 +70,7 @@ export const SelectMultiple = ({ style = {}, ...props }: SelectMultipleProps) =>
             {value.map(item => {
                 const optionItem = options.find(e => e.id === item)
                 return <div key={item} className={`row ${styles['selected-item-value']}`} onClick={optionItem?.disabled ? undefined : (ev) => onClickItem(ev, item)}>
-                    <Text style={{ color: "var(--neutral-text-title-color)", fontSize: '1.2rem', lineHeight: '1.4rem' }} >{optionItem?.name}</Text>
+                    <Text style={{ color: "var(--neutral-text-title-color,light-dark(#18181B, #F4F4F5))", fontSize: '1.2rem', lineHeight: '1.4rem' }} >{optionItem?.name}</Text>
                     <Winicon src={"outline/user interface/e-remove"} size={'1.2rem'} style={{ padding: "0.1rem" }} />
                 </div>
             })}
@@ -132,7 +132,7 @@ export const SelectMultiple = ({ style = {}, ...props }: SelectMultipleProps) =>
                     left: containerRef.current!.getBoundingClientRect().x,
                     width: containerRef.current!.offsetWidth,
                 }}>
-                <div style={{ padding: '0 0.8rem 0.4rem', width: '100%', borderBottom: "var(--neutral-main-border)" }}>
+                <div style={{ padding: '0 0.8rem 0.4rem', width: '100%', borderBottom: "var(--neutral-main-border,1px solid light-dark(#EAEAEC, #313135))" }}>
                     {(() => {
                         const _list = (search ?? options ?? [])
                         const isSelectedAll = _list.every(item => value.some(vl => vl === item.id))
@@ -147,7 +147,7 @@ export const SelectMultiple = ({ style = {}, ...props }: SelectMultipleProps) =>
                             }
                             setValue(newValue)
                             props.onChange?.(newValue)
-                        }} className='button-text-3' style={{ color: _list.length ? undefined : 'var(--neutral-text-subtitle-color, #61616B)', width: "fit-content", padding: "0.4rem 0.8rem" }}>{_list.length && isSelectedAll ? `${t("remove")} ${t("all").toLowerCase()}` : `${t("select")} ${t("all").toLowerCase()}`}</Text>
+                        }} className='button-text-3' style={{ color: _list.length ? undefined : 'var(--neutral-text-subtitle-color, light-dark(#61616B, #A2A2AA))', width: "fit-content", padding: "0.4rem 0.8rem" }}>{_list.length && isSelectedAll ? `${t("remove")} ${t("all").toLowerCase()}` : `${t("select")} ${t("all").toLowerCase()}`}</Text>
                     })()}
                 </div>
                 <div className={`col ${styles['select-body']}`} onScroll={props.handleLoadmore ? (ev) => {

@@ -1,7 +1,7 @@
 .checkbox-container {
     position: relative;
     border-radius: 0.4rem;
-    border: var(--neutral-bolder-border, 1px solid #D7D7DB);
+    border: var(--neutral-bolder-border, 1px solid light-dark(#D7D7DB, #494950));
     background-color: transparent;
     transition: border, background-color 0.4s;
     cursor: pointer;
@@ -35,12 +35,12 @@
 
 .checkbox-container:has(> input:checked),
 .checkbox-container[is-null-value="true"] {
-    background-color: var(--primary-main-color);
-    border: none !important;
+    background-color: var(--primary-main-color, #287CF0);
+    border: none;
 }
 
 .checkbox-container[is-null-value="true"]>svg>path:first-child {
-    display: block !important;
+    display: block;
 }
 
 .checkbox-container[is-null-value="true"]>svg>path:last-child {
@@ -48,9 +48,9 @@
 }
 
 .checkbox-container:has(> input:disabled) {
-    background-color: var(--neutral-disable-background-color) !important;
+    background-color: var(--neutral-disable-background-color, light-dark(#F4F4F5, #494950));
 }
 
 .checkbox-container:has(> input:disabled)>svg>path {
-    fill: var(--neutral-text-disabled-color) !important;
+    fill: var(--neutral-text-disabled-color, light-dark(#A2A2AA, #61616B));
 }

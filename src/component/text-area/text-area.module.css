@@ -9,14 +9,14 @@
     position: relative;
     gap: 0.8rem;
     border-radius: 0.8rem;
-    border: var(--neutral-bolder-border, 1px solid #D7D7DB);
+    border: var(--neutral-bolder-border, 1px solid light-dark(#D7D7DB, #494950));
     padding: 0.8rem 1.6rem;
     align-items: start;
 }
 
 .text-area-container:has(> textarea:disabled) {
-    background-color: var(--neutral-disable-background-color, #F4F4F5) !important;
-    color: var(--neutral-text-disabled-color, #B2B2B8) !important;
+    background-color: var(--neutral-disable-background-color, light-dark(#F4F4F5, #494950)) !important;
+    color: var(--neutral-text-disabled-color, light-dark(#A2A2AA, #61616B)) !important;
     pointer-events: none !important;
 }
 
@@ -48,13 +48,13 @@
 .text-area-container.helper-text,
 .simple-text-area.helper-text {
     overflow: visible !important;
-    border-color: var(--helper-text-color) !important;
+    border-color: var(--helper-text-color, #E14337) !important;
 }
 
 .text-area-container.helper-text::after,
 .simple-text-area.helper-text::after {
     content: attr(helper-text);
-    color: var(--helper-text-color);
+    color: var(--helper-text-color, #E14337);
     position: absolute;
     left: 0;
     bottom: -0.4rem;

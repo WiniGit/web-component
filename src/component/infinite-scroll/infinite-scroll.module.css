@@ -3,9 +3,9 @@
     position: sticky;
     width: 1.2rem;
     height: 1.2rem;
-    border: 0.4rem solid var(--neutral-absolute-background-color);
+    border: 0.4rem solid var(--neutral-absolute-background-color, light-dark(#FFFFFF, #14181b));
     border-radius: 50%;
-    border-top: 0.4rem solid var(--infor-main-color);
+    border-top: 0.4rem solid var(--infor-main-color, #287CF0);
     -webkit-animation: spin 2s linear infinite;
     /* Safari */
     animation: spin 2s linear infinite;

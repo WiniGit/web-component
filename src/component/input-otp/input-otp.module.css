@@ -4,7 +4,7 @@
 }
 
 .input-opt-container>input {
-    border: var(--neutral-bolder-border);
+    border: var(--neutral-bolder-border, 1px solid light-dark(#D7D7DB, #494950));
     height: 100%;
     aspect-ratio: 1 / 1;
     border-radius: 0.8rem;
@@ -19,17 +19,17 @@
 }
 
 .input-opt-container:focus-within>input {
-    border-color: var(--primary-main-color);
+    border-color: var(--primary-main-color, #287CF0);
 }
 
 .input-opt-container.helper-text {
     overflow: visible !important;
-    border-color: var(--helper-text-color) !important;
+    border-color: var(--helper-text-color, #E14337) !important;
 }
 
 .input-opt-container.helper-text::after {
     content: attr(helper-text);
-    color: var(--helper-text-color);
+    color: var(--helper-text-color, #E14337);
     position: absolute;
     left: 0;
     bottom: -0.4rem;

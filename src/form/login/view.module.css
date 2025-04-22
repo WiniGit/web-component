@@ -26,18 +26,18 @@ button.login-btn {
     height: 4.8rem;
     width: 100%;
     justify-content: center;
-    background-color: var(--primary-main-color);
-    color: var(--neutral-text-stable-color);
+    background-color: var(--primary-main-color, #287CF0);
+    color: var(--neutral-text-stable-color, #FFFFFF);
 }
 
 button:disabled.login-btn {
-    background-color: var(--neutral-disable-background-color);
-    color: var(--neutral-text-disabled-color);
+    background-color: var(--neutral-disable-background-color, light-dark(#F4F4F5, #494950));
+    color: var(--neutral-text-disabled-color, light-dark(#A2A2AA, #61616B));
     cursor: context-menu;
 }
 
 .forgot-password-btn {
-    color: var(--neutral-text-subtitle-color);
+    color: var(--neutral-text-subtitle-color, light-dark(#61616B, #A2A2AA));
 }
 
 .forgot-password-btn:hover {
@@ -60,7 +60,7 @@ button:disabled.login-btn {
     width: calc((100% - 1.6rem) / 2);
     gap: 1.6rem;
     justify-content: center;
-    border: var(--neutral-bolder-border);
+    border: var(--neutral-bolder-border, 1px solid light-dark(#D7D7DB, #494950));
     background-color: transparent;
 }
 
@@ -72,9 +72,9 @@ button:disabled.login-btn {
     height: 1px;
     width: 100%;
     flex: 1;
-    background-color: var(--neutral-text-body-reverse-color);
+    background-color: var(--neutral-text-body-reverse-color, #EAEAEC);
 }
 
 .or-spacing>div:nth-child(even) {
-    color: var(--neutral-text-subtitle-color);
+    color: var(--neutral-text-subtitle-color, light-dark(#61616B, #A2A2AA));
 }

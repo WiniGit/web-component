@@ -31,6 +31,7 @@ export class Rating extends React.Component<RatingProps, RatingState> {
             this.setState({ value: this.props.value ?? 0 })
         }
     }
+    
     render(): React.ReactNode {
         return <div id={this.props.id} className={`row ${styles['rating-container']} ${this.props.className ?? ''}`} style={this.props.style}>
             {Array.from({ length: 5 }).map((_, i) => {

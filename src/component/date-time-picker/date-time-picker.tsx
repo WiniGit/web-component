@@ -136,7 +136,7 @@ export function DateTimePicker({ style = {}, ...props }: DateTimePickerProps) {
     const inputRef = useRef<HTMLInputElement>(null)
     const [value, setValue] = useState<Date | ValueProps>()
     const txtValue = useMemo(() => {
-        if (!value) return <Text className={styles["value"]} style={{ color: "var(--neutral-text-subtitle-color)" }}>{props.placeholder ?? ""}</Text>
+        if (!value) return <Text className={styles["value"]} style={{ color: "var(--neutral-text-subtitle-color,light-dark(#61616B, #A2A2AA))" }}>{props.placeholder ?? ""}</Text>
         if (value instanceof Date) return <Text className={styles["value"]}>{dateToString(value, `dd/mm/yyyy${props.pickerType?.includes("time") ? " hh:mm" : ""}`)}</Text>
         else return <>
             <Text className={styles["value"]} style={{ flex: "none", width: "fit-content" }}>{dateToString(value.start ?? new Date(), `dd/mm/yyyy${(props.pickerType?.includes("time") || props.pickerType === "auto") ? " hh:mm" : ""}`)} - {dateToString(value.end ?? new Date(), `dd/mm/yyyy${(props.pickerType?.includes("time") || props.pickerType === "auto") ? " hh:mm" : ""}`)}</Text>
@@ -341,7 +341,7 @@ const PopupDateTimePicker = forwardRef(function PopupDateTimePicker({ value, sty
             max={max}
             range={pickerType.includes("range") || pickerType === "auto"}
             value={pickerType === "date" || pickerType === "datetime" ? methods.watch('date-start') : (methods.watch('date-start') && methods.watch('date-end') ? { sTime: methods.watch('date-start'), eTime: methods.watch('date-end') } : undefined)}
-            header={pickerType !== "date" && <div className='row' style={{ flexWrap: "wrap", gap: "0.8rem 1.2rem", padding: "1.6rem", borderBottom: "var(--neutral-main-border)" }}>
+            header={pickerType !== "date" && <div className='row' style={{ flexWrap: "wrap", gap: "0.8rem 1.2rem", padding: "1.6rem", borderBottom: "var(--neutral-main-border,1px solid light-dark(#EAEAEC, #313135))" }}>
                 <TextField
                     ref={inputStartRef}
                     autoComplete="off"
@@ -402,7 +402,7 @@ const PopupDateTimePicker = forwardRef(function PopupDateTimePicker({ value, sty
                             showPopup({
                                 ref: popupRef,
                                 hideOverlay: true,
-                                content: <div className={`col ${styles['popup-actions']} dropdown-popup`} style={{ maxHeight: "24rem", top: rect.bottom + 2, right: document.body.offsetWidth - rect.right, width: rect.width, overflow: "hidden auto", border: "var(--neutral-main-border)" }}>
+                                content: <div className={`col ${styles['popup-actions']} dropdown-popup`} style={{ maxHeight: "24rem", top: rect.bottom + 2, right: document.body.offsetWidth - rect.right, width: rect.width, overflow: "hidden auto", border: "var(--neutral-main-border,1px solid light-dark(#EAEAEC, #313135))" }}>
                                     {Array.from({ length: 48 }).map((_, i) => {
                                         if (i % 2 === 0) var timeValue = `${(i / 2) < 9 ? `0${i / 2}` : (i / 2)}:00`
                                         else timeValue = `${((i - 1) / 2) < 9 ? `0${(i - 1) / 2}` : ((i - 1) / 2)}:30`
@@ -438,7 +438,7 @@ const PopupDateTimePicker = forwardRef(function PopupDateTimePicker({ value, sty
                                 showPopup({
                                     ref: popupRef,
                                     hideOverlay: true,
-                                    content: <div className={`col ${styles['popup-actions']}`} style={{ maxHeight: "24rem", top: rect.bottom + 2, right: document.body.offsetWidth - rect.right, width: rect.width, overflow: "hidden auto", border: "var(--neutral-main-border)" }}>
+                                    content: <div className={`col ${styles['popup-actions']}`} style={{ maxHeight: "24rem", top: rect.bottom + 2, right: document.body.offsetWidth - rect.right, width: rect.width, overflow: "hidden auto", border: "var(--neutral-main-border,1px solid light-dark(#EAEAEC, #313135))" }}>
                                         {Array.from({ length: 48 }).map((_, i) => {
                                             if (i % 2 === 0) var timeValue = `${(i / 2) < 9 ? `0${i / 2}` : (i / 2)}:00`
                                             else timeValue = `${((i - 1) / 2) < 9 ? `0${(i - 1) / 2}` : ((i - 1) / 2)}:30`
@@ -456,7 +456,7 @@ const PopupDateTimePicker = forwardRef(function PopupDateTimePicker({ value, sty
                 </>}
             </div>}
             footer={pickerType !== "date" && <>
-                {isRepeat && <div className='col' style={{ borderTop: "var(--neutral-main-border)" }}>
+                {isRepeat && <div className='col' style={{ borderTop: "var(--neutral-main-border,1px solid light-dark(#EAEAEC, #313135))" }}>
                     <div className='row' style={{ gap: 4, padding: "1.2rem 1.6rem" }}>
                         <Text className='heading-8' style={{ flex: 1 }}>Lặp lại</Text>
                         <Button
@@ -605,18 +605,18 @@ const PopupDateTimePicker = forwardRef(function PopupDateTimePicker({ value, sty
                         }
                     })()}
                 </div>}
-                {onApply && <div className='row' style={{ gap: "0.8rem", padding: "1.2rem 1.6rem", borderTop: "var(--neutral-main-border)" }}>
+                {onApply && <div className='row' style={{ gap: "0.8rem", padding: "1.2rem 1.6rem", borderTop: "var(--neutral-main-border,1px solid light-dark(#EAEAEC, #313135))" }}>
                     {pickerType === "auto" && <div className='row' style={{ gap: 4 }}>
                         <Winicon
                             src='outline/user interface/time-alarm'
                             size={"1.6rem"}
-                            style={{ padding: "0.7rem", borderRadius: "50%", backgroundColor: selectTime ? "var(--neutral-disable-background-color)" : undefined }}
+                            style={{ padding: "0.7rem", borderRadius: "50%", backgroundColor: selectTime ? "var(--neutral-disable-background-color,light-dark(#F4F4F5, #494950))" : undefined }}
                             onClick={() => { setSelectTime(!selectTime) }}
                         />
                         {(enableRepeat || pickerType === "auto") && <Winicon
                             src='outline/arrows/loop-2'
                             size={"1.6rem"}
-                            style={{ padding: "0.7rem", borderRadius: "50%", backgroundColor: isRepeat ? "var(--neutral-disable-background-color)" : undefined }}
+                            style={{ padding: "0.7rem", borderRadius: "50%", backgroundColor: isRepeat ? "var(--neutral-disable-background-color,light-dark(#F4F4F5, #494950))" : undefined }}
                             onClick={() => { setIsRepeat(!isRepeat) }}
                         />}
                     </div>}

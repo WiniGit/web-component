@@ -1,6 +1,8 @@
 .progress-bar-container {
     row-gap: 1.2rem;
     width: 38.2rem;
+    --full-color: var(--neutral-main-background-color, light-dark(#EFEFF0, #313135));
+    --percent-color: var(--primary-main-color, #287CF0);
 }
 
 .progress-bar-container>.progress-bar-title {
@@ -24,7 +26,7 @@
     height: 0.6rem;
     position: relative;
     overflow: hidden;
-    background-color: var(--full-color, #EFEFF0);
+    background-color: var(--full-color);
 }
 
 .progress-bar-value::after {
@@ -35,7 +37,7 @@
     width: var(--percent);
     height: inherit;
     border-radius: 10rem;
-    background-color: var(--percent-color, #287CF0);
+    background-color: var(--percent-color);
     transition: width ease-in-out 1s;
 }
 

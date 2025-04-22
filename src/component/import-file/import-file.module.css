@@ -3,7 +3,7 @@
 }
 
 .import-file-container:has(input:disabled) {
-    background-color: var(--neutral-disable-background-color) !important;
+    background-color: var(--neutral-disable-background-color, light-dark(#F4F4F5, #494950)) !important;
     pointer-events: none !important;
 }
 
@@ -12,7 +12,7 @@
     padding: 2.4rem;
     gap: 1.6rem;
     border-radius: 0.8rem;
-    border: var(--neutral-bolder-border);
+    border: var(--neutral-bolder-border, 1px solid light-dark(#D7D7DB, #494950));
 }
 
 .import-file-container:not(.button-only):has(svg.preview-icon) {
@@ -23,7 +23,7 @@
     width: 4.8rem;
     height: 4.8rem;
     border-radius: 50%;
-    background-color: var(--primary-background, #ECF3FE);
+    background-color: var(--primary-background, light-dark(#ECF3FE, #031630));
 }
 
 .import-file-prefix>img {
@@ -55,13 +55,13 @@ div[class*="Toastify__toast-body"]>div:last-child {
 .import-file-container.helper-text,
 .import-file-simple-style.helper-text {
     overflow: visible !important;
-    border-color: var(--helper-text-color);
+    border-color: var(--helper-text-color, #E14337);
 }
 
 .import-file-container.helper-text::after,
 .import-file-simple-style.helper-text::after {
     content: attr(helper-text);
-    color: var(--helper-text-color);
+    color: var(--helper-text-color, #E14337);
     position: absolute;
     left: 0;
     bottom: -0.4rem;

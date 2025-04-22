@@ -40,9 +40,9 @@
 }
 
 .pagination>li.active {
-    background-color: var(--infor-background);
+    background-color: var(--infor-background, light-dark(#ECF3FE, #031630));
 }
 
 .pagination>li.active {
-    color: var(--infor-main-color);
+    color: var(--infor-main-color, #287CF0);
 }

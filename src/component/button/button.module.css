@@ -3,14 +3,14 @@
     border-radius: 0.8rem;
     gap: 0.8rem;
     justify-content: center;
-    color: var(--neutral-text-subtitle-color, #61616B);
+    color: var(--neutral-text-subtitle-color, light-dark(#61616B, #A2A2AA));
     width: fit-content;
     outline: none;
 }
 
 .button-container[class~="border"] {
     padding: 0.4rem 1.2rem;
-    border: 1px solid var(--neutral-bolder-border-color, #D7D7DB);
+    border: 1px solid var(--neutral-bolder-border-color, light-dark(#D7D7DB, #494950));
 }
 
 .button-container[class~="size64"] {
@@ -19,7 +19,7 @@
 
 .button-container[class~="size64"][class~="border"] {
     padding: 2rem 2.4rem;
-    border: 1px solid var(--neutral-bolder-border-color, #D7D7DB);
+    border: 1px solid var(--neutral-bolder-border-color, light-dark(#D7D7DB, #494950));
 }
 
 .button-container[class~="size56"] {
@@ -28,7 +28,7 @@
 
 .button-container[class~="size56"][class~="border"] {
     padding: 1.6rem 2rem;
-    border: 1px solid var(--neutral-bolder-border-color, #D7D7DB);
+    border: 1px solid var(--neutral-bolder-border-color, light-dark(#D7D7DB, #494950));
 }
 
 .button-container[class~="size48"] {
@@ -37,7 +37,7 @@
 
 .button-container[class~="size48"][class~="border"] {
     padding: 1.1rem 2rem;
-    border: 1px solid var(--neutral-bolder-border-color, #D7D7DB);
+    border: 1px solid var(--neutral-bolder-border-color, light-dark(#D7D7DB, #494950));
 }
 
 .button-container[class~="size40"] {
@@ -46,7 +46,7 @@
 
 .button-container[class~="size40"][class~="border"] {
     padding: 0.8rem 1.6rem;
-    border: 1px solid var(--neutral-bolder-border-color, #D7D7DB);
+    border: 1px solid var(--neutral-bolder-border-color, light-dark(#D7D7DB, #494950));
 }
 
 .button-container[class~="size24"] {
@@ -55,11 +55,11 @@
 
 .button-container[class~="size24"][class~="border"] {
     padding: 0.3rem 0.8rem;
-    border: 1px solid var(--neutral-bolder-border-color, #D7D7DB);
+    border: 1px solid var(--neutral-bolder-border-color, light-dark(#D7D7DB, #494950));
 }
 
 .button-container[class~="dashed"] {
-    border: 1px dashed var(--neutral-bolder-border-color, #D7D7DB);
+    border: 1px dashed var(--neutral-bolder-border-color, light-dark(#D7D7DB, #494950));
 }
 
 .button-label {
@@ -77,12 +77,12 @@
 }
 
 .button-container[class~="button-grey"] {
-    background-color: var(--neutral-main-background-color, #EFEFF0) !important;
-    border-color: var(--neutral-main-background-color, #EFEFF0) !important;
+    background-color: var(--neutral-main-background-color, light-dark(#EFEFF0, #313135)) !important;
+    border-color: var(--neutral-main-background-color, light-dark(#EFEFF0, #313135)) !important;
 }
 
 .button-container[class~="button-grey"] * {
-    color: var(--neutral-text-subtitle-color, #61616B) !important;
+    color: var(--neutral-text-subtitle-color, light-dark(#61616B, #A2A2AA)) !important;
 }
 
 .button-container[class~="button-primary"] {
@@ -95,15 +95,15 @@
 }
 
 .button-container[class~="button-neutral"] {
-    border-color: var(--neutral-bolder-border-color) !important;
+    border-color: var(--neutral-bolder-border-color, light-dark(#D7D7DB, #494950)) !important;
 }
 
 .button-container[class~="button-neutral"] * {
-    color: var(--neutral-text-subtitle-color, #61616B) !important;
+    color: var(--neutral-text-subtitle-color, light-dark(#61616B, #A2A2AA)) !important;
 }
 
 .button-container[class~="button-neutral"] {
-    border-color: var(--neutral-bolder-border-color, #D7D7DB) !important;
+    border-color: var(--neutral-bolder-border-color, light-dark(#D7D7DB, #494950)) !important;
 }
 
 .button-container[class~="button-black"] * {
@@ -111,17 +111,17 @@
 }
 
 .button-container[class~="button-black"] {
-    background-color: var(--neutral-absolute-reverse-background-color, #000000) !important;
-    border-color: var(--neutral-bolder-reverse-border-color, #000000) !important;
+    background-color: var(--neutral-absolute-reverse-background-color, light-dark(#000000, #FFFFFF)) !important;
+    border-color: var(--neutral-bolder-reverse-border-color, #242428) !important;
 }
 
 .button-container[class~="button-white"] * {
-    color: var(--neutral-text-title-color, #18181B) !important;
+    color: var(--neutral-text-title-color, light-dark(#18181B, #F4F4F5)) !important;
 }
 
 .button-container[class~="button-white"] {
-    background-color: var(--neutral-absolute-background-color, #FFFFFF) !important;
-    border-color: var(--neutral-bolder-border-color, #D7D7DB) !important;
+    background-color: var(--neutral-absolute-background-color, light-dark(#FFFFFF, #14181b)) !important;
+    border-color: var(--neutral-bolder-border-color, light-dark(#D7D7DB, #494950)) !important;
 }
 
 .button-container[class~="button-infor"] {
@@ -183,20 +183,20 @@
     color: var(--neutral-text-stable-color, #FFFFFF) !important;
 }
 
-button:has(> .button-label):hover {
+.button-container:hover {
     opacity: 0.86;
 }
 
-button:has(> .button-label):focus {
+.button-container:focus {
     box-shadow: 0px 4px 20px 0px #0000001A inset;
 }
 
-button:has(> .button-label):disabled {
+.button-container:disabled {
     pointer-events: none;
-    background-color: var(--neutral-disable-background-color, #dddde1) !important;
-    border-color: var(--neutral-bolder-border-color, #D7D7DB) !important;
+    background-color: var(--neutral-disable-background-color, light-dark(#F4F4F5, #494950)) !important;
+    border-color: var(--neutral-bolder-border-color, light-dark(#D7D7DB, #494950)) !important;
 }
 
-button:has(> .button-label):disabled * {
-    color: var(--neutral-text-disabled-color, #A2A2AA) !important;
+.button-container:disabled * {
+    color: var(--neutral-text-disabled-color, light-dark(#A2A2AA, #61616B)) !important;
 }

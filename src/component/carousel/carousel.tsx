@@ -83,8 +83,8 @@ export class Carousel extends React.Component<CarouselProps, SliderState> {
             bullets={false}
             buttons={this.props.buttons ? (this.props.children && this.props.children?.length > 1) : false}
             organicArrows={false}
-            buttonContentLeft={this.props.prevButton ?? <Winicon src={"fill/arrows/circle-ctrl-left"} size={"2.4rem"} color={this.props.iconColor ?? "var(--neutral-absolute-background-color)"} />}
-            buttonContentRight={this.props.nextButton ?? <Winicon src={"fill/arrows/circle-ctrl-right"} size={"2.4rem"} color={this.props.iconColor ?? "var(--neutral-absolute-background-color)"} />}
+            buttonContentLeft={this.props.prevButton ?? <Winicon src={"fill/arrows/circle-ctrl-left"} size={"2.4rem"} color={this.props.iconColor ?? "var(--neutral-absolute-background-color,light-dark(#FFFFFF, #14181b))"} />}
+            buttonContentRight={this.props.nextButton ?? <Winicon src={"fill/arrows/circle-ctrl-right"} size={"2.4rem"} color={this.props.iconColor ?? "var(--neutral-absolute-background-color,light-dark(#FFFFFF, #14181b))"} />}
         >
             {this.props.children}
         </AwesomeSlider>

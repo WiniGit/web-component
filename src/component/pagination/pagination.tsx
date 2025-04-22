@@ -73,7 +73,7 @@ export function Pagination({ id, currentPage, itemPerPage = 10, totalItem, onCha
                 renderOnZeroPageCount={null}
             />
             {!hideGoToPage && <>
-                <div style={{ height: '1.6rem', backgroundColor: "var(--neutral-bolder-border-color)", width: 1 }} />
+                <div style={{ height: '1.6rem', backgroundColor: "var(--neutral-bolder-border-color, light-dark(#D7D7DB, #494950))", width: 1 }} />
                 <Text className="label-3">{t("go")} {t("page").toLowerCase()}</Text>
                 <TextField
                     ref={goToPageRef as any}

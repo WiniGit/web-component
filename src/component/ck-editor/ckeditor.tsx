@@ -301,116 +301,55 @@ export function CustomCkEditor5({ style = {}, ...props }: Props) {
                     columns: 6,
                     colors: [
                         {
-                            color: 'var(--neutral-text-title-color)',
+                            color: '#18181B',
                             label: 'title'
                         },
                         {
-                            color: 'var(--neutral-text-subtitle-color)',
+                            color: '#61616B',
                             label: 'subtitle'
                         },
                         {
-                            color: 'var(--neutral-text-body-color)',
+                            color: '#313135',
                             label: 'body'
                         },
                         {
-                            color: 'var(--neutral-text-placeholder-color)',
+                            color: '#878792',
                             label: 'placeholder'
                         },
                         {
-                            color: 'var(--neutral-text-disabled-color)',
+                            color: '#A2A2AA',
                             label: 'disabled'
                         },
                         {
-                            color: 'var(--neutral-text-stable-color)',
+                            color: '#FFFFFF',
                             label: 'stable'
                         },
                         {
-                            color: 'var(--primary-main-color)',
+                            color: '#287CF0',
                             label: 'primay'
                         },
                         {
-                            color: 'var(--warning-main-color)',
+                            color: '#FC7A1C',
                             label: 'warning'
                         },
                         {
-                            color: 'var(--success-main-color)',
+                            color: '#3AAC6D',
                             label: 'success'
                         },
                         {
-                            color: 'var(--secondary3-main-color)',
+                            color: '#FAAD1E',
                             label: 'secondary3'
                         },
                         {
-                            color: 'var(--secondary4-main-color)',
-                            label: 'secondary4'
-                        },
-                        {
-                            color: 'var(--secondary5-main-color)',
+                            color: '#943CDD',
                             label: 'secondary5'
                         },
-                        {
-                            color: 'var(--infor-main-color)',
-                            label: 'infor'
-                        },
-                        {
-                            color: 'var(--error-main-color)',
-                            label: 'error'
-                        },
                     ],
                 },
-                fontBackgroundColor: {
-                    columns: 6,
-                    colors: [
-                        {
-                            color: 'var(--neutral-main-background-color)',
-                            label: 'main'
-                        },
-                        {
-                            color: 'var(--neutral-main-reverse-background-color)',
-                            label: 'main-reverse'
-                        },
-                        {
-                            color: 'var(--neutral-absolute-background-color)',
-                            label: 'absolute'
-                        },
-                        {
-                            color: 'var(--neutral-absolute-reverse-background-color)',
-                            label: 'absolute-reverse'
-                        },
-                        {
-                            color: 'var(--primary-background)',
-                            label: 'primay-bg'
-                        },
-                        {
-                            color: 'var(--warning-background)',
-                            label: 'warning-bg'
-                        },
-                        {
-                            color: 'var(--success-background)',
-                            label: 'success-bg'
-                        },
-                        {
-                            color: 'var(--secondary3-background)',
-                            label: 'secondary3-bg'
-                        },
-                        {
-                            color: 'var(--secondary4-background)',
-                            label: 'secondary4-bg'
-                        },
-                        {
-                            color: 'var(--secondary5-background)',
-                            label: 'secondary5-bg'
-                        },
-                        {
-                            color: 'var(--infor-background)',
-                            label: 'infor-bg'
-                        },
-                        {
-                            color: 'var(--error-background)',
-                            label: 'error-bg'
-                        },
-                    ],
-                },
+                // fontBackgroundColor: {
+                //     columns: 6,
+                //     colors: [],
+                // },
                 heading: {
                     options: [
                         {
