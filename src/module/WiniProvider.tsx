@@ -32,13 +32,9 @@ const appendDesignTokens = (list: Array<{ [p: string]: any }>) => {
         const colorVariables = tokenValues.filter(e => e.Type === DesignTokenType.color)
         const classVariables = tokenValues.filter(e => e.Type !== DesignTokenType.color)
         const _innerHTML = `
-        html { \n${colorVariables.map(e => {
+        :root { \n${colorVariables.map(e => {
             const tkParent = groupTokens.find(g => g.Id === e.ParentId);
-            return e.Value?.lightMode ? `--${tkParent ? `${Util.toSlug(tkParent.Name)}-` : ""}${Util.toSlug(e.Name)}: ${e.Value.lightMode};` : ""
-        }).join('\n')}\n }\n\n
-        html.dark { \n${colorVariables.map(e => {
-            const tkParent = groupTokens.find(g => g.Id === e.ParentId);
-            return e.Value?.darkMode ? `--${tkParent ? `${Util.toSlug(tkParent.Name)}-` : ""}${Util.toSlug(e.Name)}: ${e.Value.darkMode};` : ""
+            return e.Value?.lightMode ? `--${tkParent ? `${Util.toSlug(tkParent.Name)}-` : ""}${Util.toSlug(e.Name)}: light-dark(${e.Value.lightMode}, ${e.Value.darkMode});` : ""
         }).join('\n')}\n }\n\n
         ${classVariables.map(e => {
             let classValue: string | undefined = undefined
