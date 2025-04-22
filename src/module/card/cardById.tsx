@@ -1,4 +1,4 @@
-import { CSSProperties, forwardRef, MouseEventHandler, ReactNode, useEffect, useImperativeHandle, useMemo, useState } from "react"
+import { CSSProperties, Dispatch, forwardRef, MouseEventHandler, ReactNode, SetStateAction, useEffect, useImperativeHandle, useMemo, useState } from "react"
 import { DataController, SettingDataController } from "../../controller/data"
 import { useForm, UseFormReturn } from "react-hook-form"
 import { TableController } from "../../controller/setting"
@@ -45,7 +45,14 @@ interface CardProps extends Props {
     onLoaded?: (ev: { data: Array<{ [p: string]: any }>, totalCount: number }) => void
 }
 
-export const CardById = forwardRef((props: CardProps, ref) => {
+interface CardRef {
+    getData: (page?: number) => Promise<void>,
+    data: { data: Array<{ [p: string]: any }>, totalCount?: number },
+    controller: "all" | { page: number, size: number, searchRaw?: string, filter?: string, sortby?: Array<{ prop: string, direction?: "ASC" | "DESC" }> } | { ids: string, maxLength?: number | "none" },
+    setData: Dispatch<SetStateAction<{ data: Array<{ [p: string]: any }>, totalCount?: number }>>
+}
+
+export const CardById = forwardRef<CardRef, CardProps>((props, ref) => {
     const methods = useForm({ shouldFocusError: false })
     const [cardItem, setCardItem] = useState<{ [p: string]: any }>()
     const layers = useMemo(() => cardItem?.Props ?? [], [cardItem])

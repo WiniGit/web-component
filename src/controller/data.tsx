@@ -66,7 +66,7 @@ export class DataController {
                 pid: ConfigData.pid,
                 module: this.module,
             },
-            body: { searchRaw: options?.query?.length ? options?.query : "*", page: options?.page ?? 1, size: options?.size ?? 10, returns: options?.returns, sortby: options?.sortby }
+            body: { ...options, searchRaw: options?.query?.length ? options?.query : "*" }
         })
         return res
     }
@@ -152,7 +152,7 @@ export class SettingDataController {
     async getListSimple(options: { page?: number, size?: number, query?: string, returns?: Array<string>, sortby?: { BY: string, DIRECTION?: "ASC" | "DESC" } } | undefined) {
         const res = await BaseDA.post(ConfigData.url + `data/${this.type === "report" ? `${this.type}/${this.setting}` : this.type}/getListSimple`, {
             headers: { pid: ConfigData.pid },
-            body: { searchRaw: options?.query?.length ? options?.query : "*", page: options?.page ?? 1, size: options?.size ?? 10, returns: options?.returns, sortby: options?.sortby }
+            body: { searchRaw: options?.query?.length ? options?.query : "*", page: options?.page, size: options?.size, returns: options?.returns, sortby: options?.sortby }
         })
         return res
     }

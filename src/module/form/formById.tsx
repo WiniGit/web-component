@@ -1,5 +1,5 @@
 import { CSSProperties, forwardRef, MouseEventHandler, ReactNode, useEffect, useImperativeHandle, useMemo, useState } from "react"
-import { useForm } from "react-hook-form"
+import { FieldValues, useForm, UseFormReturn } from "react-hook-form"
 import { RenderLayerElement } from "../page/pageById"
 import { AccountController, BaseDA, DataController, SettingDataController, useLocation, Util } from "../../index"
 import { regexGetVariableByThis } from "../card/config"
@@ -9,18 +9,24 @@ import { TableController } from "../../controller/setting"
 import { ConfigData } from "../../controller/config"
 
 interface FormByIdProps {
-    id: string,
-    style?: CSSProperties,
-    className?: string,
-    data?: { [p: string]: any },
-    propsData?: { [p: string]: { style?: CSSProperties, className?: string, onClick?: (ev: MouseEventHandler) => void, [p: string]: any } },
-    childrenData?: { [p: string]: ReactNode },
-    itemData?: { [p: string]: ReactNode },
-    customOptions?: { [p: string]: Array<{ [k: string]: any }> },
-    onSubmit?: (ev: { [p: string]: any }) => void
+    id: string;
+    style?: CSSProperties;
+    className?: string;
+    data?: { [p: string]: any };
+    propsData?: { [p: string]: { style?: CSSProperties, className?: string, onClick?: (ev: MouseEventHandler) => void, [p: string]: any } };
+    childrenData?: { [p: string]: ReactNode };
+    itemData?: { [p: string]: ReactNode };
+    customOptions?: { [p: string]: Array<{ [k: string]: any }> };
+    onSubmit?: (e?: { [p: string]: any }) => void;
+    onError?: (e?: { [p: string]: any }) => void;
 }
 
-export const FormById = forwardRef((props: FormByIdProps, ref) => {
+interface FormByIdRef {
+    onSubmit: (e?: React.BaseSyntheticEvent) => Promise<void>,
+    methods: UseFormReturn<FieldValues, any, FieldValues>
+}
+
+export const FormById = forwardRef<FormByIdRef, FormByIdProps>((props, ref) => {
     const methods = useForm({ shouldFocusError: false })
     const methodsOptions = useForm({ shouldFocusError: false })
     const [formItem, setFormItem] = useState<{ [p: string]: any }>()
@@ -194,9 +200,7 @@ export const FormById = forwardRef((props: FormByIdProps, ref) => {
     }
 
     useImperativeHandle(ref, () => ({
-        onSubmit: methods.handleSubmit(onSubmit, (ev) => {
-            console.log(ev)
-        }),
+        onSubmit: methods.handleSubmit(onSubmit, props.onError),
         methods: methods
     }), [methods.watch(), cols.length, rels.length]);
 
