@@ -67,9 +67,9 @@ interface RenderLayerElementProps extends Props {
     rels?: Array<{ [p: string]: any }>,
     bodyChildren?: ReactNode,
     type?: "page" | "view" | "card" | "form",
-    propsData?: { [p: string]: { style?: CSSProperties, className?: string, onClick?: (ev: MouseEventHandler) => void, [p: string]: any } } | { [p: string]: (itemData: { [p: string]: any }, index: number) => { style?: CSSProperties, className?: string, onCLick?: (ev: MouseEventHandler) => void, [p: string]: any } },
-    itemData?: { [p: string]: ReactNode } | { [p: string]: (indexItem: { [p: string]: any }, index: number) => ReactNode },
-    childrenData?: { [p: string]: ReactNode } | { [p: string]: (itemData: { [p: string]: any }, index: number) => ReactNode },
+    propsData?: { [p: string]: { style?: CSSProperties, className?: string, onClick?: (ev: MouseEventHandler) => void, [p: string]: any } } | { [p: string]: (itemData: { [p: string]: any }, index: number, methods: UseFormReturn) => { style?: CSSProperties, className?: string, onCLick?: (ev: MouseEventHandler) => void, [p: string]: any } },
+    itemData?: { [p: string]: ReactNode } | { [p: string]: (indexItem: { [p: string]: any }, index: number, methods: UseFormReturn) => ReactNode },
+    childrenData?: { [p: string]: ReactNode } | { [p: string]: (itemData: { [p: string]: any }, index: number, methods: UseFormReturn) => ReactNode },
     indexItem?: { [p: string]: any },
     index?: number,
     style?: CSSProperties,
@@ -80,7 +80,7 @@ interface RenderLayerElementProps extends Props {
 export const pageAllRefs: { [p: string]: any } = {}
 export const RenderLayerElement = (props: RenderLayerElementProps) => {
     if (props.itemData && props.itemData[props.item.Id]) {
-        if (props.type === "card") return (props.itemData[props.item.Id] as any)(props.indexItem, props.index)
+        if (props.type === "card") return (props.itemData[props.item.Id] as any)(props.indexItem, props.index, props.methods)
         else return props.itemData[props.item.Id]
     } else return <CaculateLayer {...props} />
 }
@@ -206,9 +206,11 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                                 props.methods!.setValue(actItem.NameField, eval(actItem.CaculateValue))
                                 return;
                             case ActionType.loadMore:
-                                const cardData = pageAllRefs[actItem.loadingId].current?.data
-                                if (cardData.totalCount && cardData.data.length < cardData.totalCount) {
-                                    pageAllRefs[actItem.loadingId].current.getData(Math.floor(cardData.data.length / pageAllRefs[actItem.loadingId].current.controller.size) + 1)
+                                if (pageAllRefs[actItem.loadingId]) {
+                                    const cardData = pageAllRefs[actItem.loadingId].current?.data
+                                    if (cardData.totalCount && cardData.data.length < cardData.totalCount) {
+                                        pageAllRefs[actItem.loadingId].current.getData(Math.floor(cardData.data.length / pageAllRefs[actItem.loadingId].current.controller.size) + 1)
+                                    }
                                 }
                                 return;
                             default:
@@ -242,7 +244,12 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
         if (props.className) _props.className = [..._props.className.split(" "), ...props.className.split(" ")].filter((cls, i, arr) => cls.length && arr.indexOf(cls) === i).join(" ")
         if (watchForCustomProps?.className) _props.className = [..._props.className.split(" "), ...watchForCustomProps.className.split(" ")].filter((cls, i, arr) => cls.length && arr.indexOf(cls) === i).join(" ")
         delete _props.action
-        if (props.propsData && props.propsData[props.item.Id]) _props = props.type === "card" ? { ..._props, ...((props.propsData[props.item.Id] as any)(props.indexItem, props.index)) } : { ..._props, ...props.propsData[props.item.Id] }
+        if (props.propsData && props.propsData[props.item.Id]) var extendProps = props.type === "card" ? (props.propsData[props.item.Id] as any)(props.indexItem, props.index, props.methods) : props.propsData[props.item.Id]
+        if (extendProps) {
+            if (extendProps.style) _props.style = { ..._props.style, ...extendProps.style }
+            delete extendProps.style
+            _props = { ..._props, ...extendProps }
+        }
         return _props
     }, [props.item, props.propsData, props.methods, watchForCustomProps])
     const watchForDataValue = useMemo(() => {
@@ -412,7 +419,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
 
     switch (props.item.Type) {
         case ComponentType.navLink:
-            if (props.childrenData && props.childrenData[props.item.Id]) var childComponent = props.type === "card" ? (props.childrenData[props.item.Id] as any)(props.indexItem, props.index) : props.childrenData[props.item.Id]
+            if (props.childrenData && props.childrenData[props.item.Id]) var childComponent = props.type === "card" ? (props.childrenData[props.item.Id] as any)(props.indexItem, props.index, props.methods) : props.childrenData[props.item.Id]
             if (Array.isArray(dataValue)) {
                 return dataValue.map((dataValueItem, i) => {
                     const dataValueProps = { ...typeProps }
@@ -441,7 +448,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                 </NavLink>
             }
         case ComponentType.container:
-            if (props.childrenData && props.childrenData[props.item.Id]) var childComponent = props.type === "card" ? (props.childrenData[props.item.Id] as any)(props.indexItem, props.index) : props.childrenData[props.item.Id]
+            if (props.childrenData && props.childrenData[props.item.Id]) var childComponent = props.type === "card" ? (props.childrenData[props.item.Id] as any)(props.indexItem, props.index, props.methods) : props.childrenData[props.item.Id]
             if (dataValue && dataValue.backgroundImage) var containerProps = { ...typeProps, style: { ...typeProps.style, ...dataValue } }
             if (Array.isArray(dataValue)) {
                 return dataValue.map((dataValueItem, i) => {

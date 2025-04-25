@@ -11,15 +11,15 @@ interface Props {
     /**
     * replace children of parent layer by id. Ex: { "gid": <Text className="heading-7">Example</Text> }
     * */
-    childrenData?: { [p: string]: (itemData: { [p: string]: any }, index: number) => ReactNode },
+    childrenData?: { [p: string]: (itemData: { [p: string]: any }, index: number, methods?: UseFormReturn) => ReactNode },
     /**
      * custom props of layer by id. Ex: { "gid": { style: { width: "60rem", backgroundColor: "red" }, className: "my-class" } }
      * */
-    propsData?: { [p: string]: (itemData: { [p: string]: any }, index: number) => { style?: CSSProperties, className?: string, onCLick?: (ev: MouseEventHandler) => void, [p: string]: any } },
+    propsData?: { [p: string]: (itemData: { [p: string]: any }, index: number, methods?: UseFormReturn) => { style?: CSSProperties, className?: string, onCLick?: (ev: MouseEventHandler) => void, [p: string]: any } },
     /**
      * replace layer by id. Ex: { "gid": <Text className="heading-7">Example</Text> }
      * */
-    itemData?: { [p: string]: (indexItem: { [p: string]: any }, index: number) => ReactNode },
+    itemData?: { [p: string]: (indexItem: { [p: string]: any }, index: number, methods?: UseFormReturn) => ReactNode },
     /**
      * list json object data. Ex: {Id: 1, Name: "Example", ...}
      * */
@@ -30,13 +30,6 @@ interface Props {
     methods?: UseFormReturn,
     emptyLink?: string,
     onUnMount?: () => void
-}
-
-interface RenderCardProps extends Props {
-    layers: Array<{ [p: string]: any }>,
-    cardItem: { [p: string]: any },
-    indexItem: { [p: string]: any },
-    index: number,
 }
 
 interface CardProps extends Props {
@@ -173,6 +166,8 @@ export const CardById = forwardRef<CardRef, CardProps>((props, ref) => {
         setData: setData
     }), [data, cardItem, controller]);
 
+    const extendData = useMemo(() => methods.watch(), [methods.watch()])
+
     return cardItem ? data.totalCount === 0 ?
         props.emptyLink ? <EmptyPage
             imgUrl={props.emptyLink}
@@ -186,14 +181,30 @@ export const CardById = forwardRef<CardRef, CardProps>((props, ref) => {
                 {...props}
                 cardItem={cardItem}
                 layers={layers}
-                methods={methods}
                 indexItem={item}
                 index={index}
+                extendData={extendData}
             />
         }) : null
 })
 
+interface RenderCardProps extends Props {
+    layers: Array<{ [p: string]: any }>,
+    cardItem: { [p: string]: any },
+    indexItem: { [p: string]: any },
+    index: number,
+    extendData: { [p: string]: any }
+}
+
 const RenderCard = (props: RenderCardProps) => {
+    const methods = useForm({ shouldFocusError: false })
+
+    useEffect(() => {
+        Object.keys(props.extendData).forEach(p => {
+            methods.setValue(p, props.extendData[p])
+        })
+    }, [props.extendData])
+
     return props.cardItem.Props.filter((e: any) => !e.ParentId).map((e: any) => {
         return <RenderLayerElement
             key={e.Id}
@@ -202,7 +213,7 @@ const RenderCard = (props: RenderCardProps) => {
             style={props.style}
             className={props.className}
             type={"card"}
-            methods={props.methods}
+            methods={methods}
             indexItem={props.indexItem}
             index={props.index}
             itemData={props.itemData}
