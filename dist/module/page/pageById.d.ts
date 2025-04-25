@@ -28,7 +28,7 @@ interface RenderLayerElementProps extends Props {
     } | {
         [p: string]: (itemData: {
             [p: string]: any;
-        }, index: number) => {
+        }, index: number, methods: UseFormReturn) => {
             style?: CSSProperties;
             className?: string;
             onCLick?: (ev: MouseEventHandler) => void;
@@ -40,14 +40,14 @@ interface RenderLayerElementProps extends Props {
     } | {
         [p: string]: (indexItem: {
             [p: string]: any;
-        }, index: number) => ReactNode;
+        }, index: number, methods: UseFormReturn) => ReactNode;
     };
     childrenData?: {
         [p: string]: ReactNode;
     } | {
         [p: string]: (itemData: {
             [p: string]: any;
-        }, index: number) => ReactNode;
+        }, index: number, methods: UseFormReturn) => ReactNode;
     };
     indexItem?: {
         [p: string]: any;

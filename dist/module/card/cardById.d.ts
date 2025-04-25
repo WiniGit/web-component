@@ -7,7 +7,7 @@ interface Props {
     childrenData?: {
         [p: string]: (itemData: {
             [p: string]: any;
-        }, index: number) => ReactNode;
+        }, index: number, methods?: UseFormReturn) => ReactNode;
     };
     /**
      * custom props of layer by id. Ex: { "gid": { style: { width: "60rem", backgroundColor: "red" }, className: "my-class" } }
@@ -15,7 +15,7 @@ interface Props {
     propsData?: {
         [p: string]: (itemData: {
             [p: string]: any;
-        }, index: number) => {
+        }, index: number, methods?: UseFormReturn) => {
             style?: CSSProperties;
             className?: string;
             onCLick?: (ev: MouseEventHandler) => void;
@@ -28,7 +28,7 @@ interface Props {
     itemData?: {
         [p: string]: (indexItem: {
             [p: string]: any;
-        }, index: number) => ReactNode;
+        }, index: number, methods?: UseFormReturn) => ReactNode;
     };
     /**
      * list json object data. Ex: {Id: 1, Name: "Example", ...}
