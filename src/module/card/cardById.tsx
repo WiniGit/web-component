@@ -72,7 +72,7 @@ export const CardById = forwardRef<CardRef, CardProps>((props, ref) => {
         if (!props.controller && !controller) setController({ page: 1, size: 8, searchRaw: "*" })
         else if (controller !== props.controller) {
             if (props.controller === "all" || !controller) setController(props.controller)
-            else if (Object.keys(props.controller as any).some((p: string) => controller[p] !== (props.controller as any)[p])) setController(props.controller)
+            else if (Object.keys(props.controller as any).some((p: string) => `${controller[p]}` !== `${(props.controller as any)[p]}`)) setController(props.controller)
         }
     }, [props.controller])
 
