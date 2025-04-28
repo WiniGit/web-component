@@ -96,6 +96,7 @@ interface Select1FormProps extends SimpleFormProps {
         [p: string]: any;
     }) => void;
     select1Style?: CSSProperties;
+    prefix?: ReactNode;
 }
 export declare function Select1Form(params: Select1FormProps): import("react/jsx-runtime").JSX.Element;
 interface SelectMultipleFormProps extends SimpleFormProps {
@@ -108,6 +109,7 @@ interface SelectMultipleFormProps extends SimpleFormProps {
     readonly?: boolean;
     onChange?: (v?: Array<string | number>) => void;
     select1Style?: CSSProperties;
+    prefix?: ReactNode;
 }
 export declare function SelectMultipleForm(params: SelectMultipleFormProps): import("react/jsx-runtime").JSX.Element;
 interface SwitchFormProps extends SimpleFormProps {
