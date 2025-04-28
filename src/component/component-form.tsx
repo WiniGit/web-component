@@ -245,7 +245,8 @@ interface Select1FormProps extends SimpleFormProps {
     handleLoadmore?: ((onLoadMore: boolean, ev: React.UIEvent<HTMLDivElement, UIEvent>) => void),
     readonly?: boolean,
     onChange?: (v?: { id: string | number, name: string, [p: string]: any }) => void,
-    select1Style?: CSSProperties
+    select1Style?: CSSProperties;
+    prefix?: ReactNode
 }
 
 export function Select1Form(params: Select1FormProps) {
@@ -274,6 +275,7 @@ export function Select1Form(params: Select1FormProps) {
                         field.onChange(ev?.id);
                         if (params.onChange) params.onChange(ev as any);
                     }}
+                    prefix={params.prefix}
                     suffix={params.required || [undefined, null, ''].includes(field.value) || params.disabled ? undefined : <Winicon src="outline/user interface/c-remove" size={"1.4rem"} onClick={() => field.onChange(undefined)} />}
                     handleLoadmore={params.handleLoadmore}
                     handleSearch={params.handleSearch}
@@ -288,7 +290,8 @@ interface SelectMultipleFormProps extends SimpleFormProps {
     handleLoadmore?: ((onLoadMore: boolean, ev: React.UIEvent<HTMLDivElement, UIEvent>) => void),
     readonly?: boolean,
     onChange?: (v?: Array<string | number>) => void,
-    select1Style?: CSSProperties
+    select1Style?: CSSProperties;
+    prefix?: ReactNode
 }
 
 export function SelectMultipleForm(params: SelectMultipleFormProps) {
@@ -307,6 +310,7 @@ export function SelectMultipleForm(params: SelectMultipleFormProps) {
                 </div> : null)}
                 <SelectMultiple
                     className="body-3"
+                    prefix={params.prefix}
                     style={{ width: '100%', borderRadius: '0.8rem', flex: params.className?.includes('row') ? 1 : undefined }}
                     placeholder={params.placeholder ? params.placeholder : params.label ? `${t("choose")} ${params.label.toLowerCase()}` : ''}
                     value={typeof field.value === "string" ? undefined : field.value}

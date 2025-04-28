@@ -22,7 +22,7 @@
 .pagination>li {
     width: 2.4rem;
     height: 2.4rem;
-    color: #161C2499;
+    color: var(--neutral-text-subtitle-color,light-dark(#61616B, #A2A2AA));
     justify-content: center;
     border-radius: 0.4rem;
     font-weight: 600;

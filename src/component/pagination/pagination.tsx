@@ -6,8 +6,7 @@ import { Text } from "../text/text";
 import { TextField } from "../text-field/text-field";
 import { Winicon } from "../wini-icon/winicon";
 import { useTranslation } from "react-i18next";
-import { Button } from "../button/button";
-import { Popup, showPopup } from "../popup/popup";
+import { Popup } from "../popup/popup";
 
 interface Props {
     id?: string,

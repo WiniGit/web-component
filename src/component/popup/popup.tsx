@@ -93,26 +93,26 @@ export function PopupOverlay({ children, onClose, className, style, onOpen }: { 
 
     useEffect(() => {
         if (overlayRef.current && overlayRef.current.firstChild && !onOpen) {
-            const timer = setTimeout(() => {
-                const popupContent = overlayRef.current!.firstChild as HTMLElement
-                const rect = popupContent.getBoundingClientRect()
-                if (rect.x < 0) {
-                    popupContent.style.left = "0px"
-                    popupContent.style.right = "unset"
-                } else if (rect.right > document.body.offsetWidth) {
-                    popupContent.style.right = "0px"
-                    popupContent.style.left = "unset"
-                }
-                if (rect.y < 0) {
-                    popupContent.style.top = "0px"
-                    popupContent.style.bottom = "unset"
-                } else if (rect.bottom > document.body.offsetHeight) {
-                    popupContent.style.bottom = "0px"
-                    popupContent.style.top = "unset"
-                }
-            }, 300)
-            return () => {
-                clearTimeout(timer)
+            const popupContent = overlayRef.current!.firstChild as HTMLElement
+            if (!popupContent.classList.contains("right-drawer") && !popupContent.classList.contains("left-drawer")) {
+                const timer = setTimeout(() => {
+                    const rect = popupContent.getBoundingClientRect()
+                    if (rect.x < 0) {
+                        popupContent.style.left = "0px"
+                        popupContent.style.right = "unset"
+                    } else if (rect.right > document.body.offsetWidth) {
+                        popupContent.style.right = "0px"
+                        popupContent.style.left = "unset"
+                    }
+                    if (rect.y < 0) {
+                        popupContent.style.top = "0px"
+                        popupContent.style.bottom = "unset"
+                    } else if (rect.bottom > document.body.offsetHeight) {
+                        popupContent.style.bottom = "0px"
+                        popupContent.style.top = "unset"
+                    }
+                }, 300)
+                return () => { clearTimeout(timer) }
             }
         }
     }, [overlayRef])

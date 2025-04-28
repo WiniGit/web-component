@@ -100,8 +100,9 @@
     right: 0;
     height: 100dvh;
     border-radius: 0;
-    animation: open-drawer-right-to-left 0.6s ease-in-out;
+    animation: open-drawer-right-to-left 0.5s ease-in-out;
     animation-fill-mode: forwards;
+    box-shadow: var(--shadow-left, 1px 0px 6px 0px #2D32390F);
 }
 
 @keyframes open-drawer-left-to-right {
@@ -120,8 +121,9 @@
     left: 0;
     height: 100dvh;
     border-radius: 0;
-    animation: open-drawer-left-to-right 0.6s ease-in-out;
+    animation: open-drawer-left-to-right 0.5s ease-in-out;
     animation-fill-mode: forwards;
+    box-shadow: var(--shadow-right, 1px 0px 6px 0px #2D32390F);
 }
 
 @keyframes show-dropdown-popup {
