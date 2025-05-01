@@ -483,8 +483,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                 else return <CustomText {...typeProps} value={dataValue} />
             } else return <CustomText {...typeProps} />
         case ComponentType.img:
-            if (props.item.NameField) {
-                if (!dataValue) return null
+            if (props.item.NameField && dataValue) {
                 return <img
                     key={dataValue}
                     alt=""

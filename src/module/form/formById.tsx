@@ -201,7 +201,7 @@ export const FormById = forwardRef<FormByIdRef, FormByIdProps>((props, ref) => {
 
     useImperativeHandle(ref, () => ({
         onSubmit: methods.handleSubmit(onSubmit, props.onError),
-        methods: methods
+        methods: methods as any
     }), [methods.watch(), cols.length, rels.length]);
 
     useEffect(() => {
