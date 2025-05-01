@@ -22,7 +22,7 @@ import { Carousel } from './component/carousel/carousel'
 import { ToastContainer } from 'react-toastify'
 import { Button, SimpleButton } from './component/button/button'
 import { Tag } from './component/tag/tag'
-import { Winicon } from './component/wini-icon/winicon'
+import { Winicon, showTooltipElement } from './component/wini-icon/winicon'
 import { NumberPicker } from './component/number-picker/number-picker'
 import { InputOtp } from './component/input-otp/input-otp'
 import { WLoginView } from './form/login/view'
@@ -68,7 +68,7 @@ export {
   ToastContainer,
   Button, SimpleButton,
   Tag,
-  Winicon,
+  Winicon, showTooltipElement,
   NumberPicker,
   InputOtp,
   WLoginView,
