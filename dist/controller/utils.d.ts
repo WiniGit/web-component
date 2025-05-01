@@ -58,6 +58,10 @@ export declare class Util {
     static generateDarkColorRgb(number: number): string;
     static toSlug(input: string): string;
     static convertToKebabCase: (str: string) => string;
+    static processHTMLContent: (html: string) => string;
+    static timeSince: (dateCreate: number) => string;
+    static extractHashtags: (content: string) => [] | RegExpMatchArray;
+    static getRandomGradient(seed: string): string;
 }
 export declare function formatNumberConvert(num: number): string;
 export declare function inputMoneyPattern(ev: any): void;

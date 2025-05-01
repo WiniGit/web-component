@@ -1,4 +1,4 @@
-import { parse } from 'date-fns';
+import { differenceInSeconds, parse } from 'date-fns';
 
 export class Util {
     static dateTime_stringToDecimal(stringDate: string) {
@@ -419,6 +419,129 @@ export class Util {
             .toLowerCase()                       // Convert entire string to lowercase
             .replace(/[ _]/g, '-');              // Replace spaces or underscores with hyphens
     };
+
+    static processHTMLContent = (html: string) => {
+        // Tạo một DOMParser để parse chuỗi HTML
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+
+        // Loại bỏ tất cả thẻ <img>
+        const images = doc.getElementsByTagName('img') as any;
+        while (images.length > 0) {
+            images[0].parentNode.removeChild(images[0]);
+        }
+
+        // Lấy toàn bộ nội dung văn bản từ các thẻ HTML
+        let textContent = '';
+        const elements = doc.body.getElementsByTagName('*') as any;
+        for (let element of elements) {
+            // Bỏ qua các thẻ không cần thiết như script, style
+            if (['SCRIPT', 'STYLE'].includes(element.tagName)) continue;
+
+            // Lấy văn bản từ từng phần tử
+            const text = element.innerText.trim();
+            if (text) {
+                textContent += text + ' ';
+            }
+        }
+
+        // Loại bỏ khoảng trắng thừa và gộp thành 1 đoạn văn
+        textContent = textContent.trim();
+        if (!textContent) return '';
+
+        // Tạo thẻ <p> mới chứa toàn bộ nội dung
+        return `<p>${textContent}</p>`;
+    };
+
+    static timeSince = (dateCreate: number) => {
+        const now = new Date(); // Thời điểm hiện tại
+        const createdDate = new Date(dateCreate); // Chuyển dateCreate thành Date object
+        const seconds = differenceInSeconds(now, createdDate); // Chênh lệch thời gian (giây)
+
+        // Định nghĩa các khoảng thời gian
+        const intervals = [
+            { label: "năm", seconds: 31536000 }, // 365 ngày
+            { label: "tháng", seconds: 2592000 }, // 30 ngày
+            { label: "ngày", seconds: 86400 },
+            { label: "giờ", seconds: 3600 },
+            { label: "phút", seconds: 60 },
+            { label: "giây", seconds: 1 },
+        ];
+
+        // Tìm khoảng thời gian phù hợp
+        for (const interval of intervals) {
+            const count = Math.floor(seconds / interval.seconds);
+            if (count >= 1) {
+                return `${count} ${interval.label}${count > 1 ? "" : ""} trước`;
+            }
+        }
+
+        return "vừa xong"; // Nếu nhỏ hơn 1 giây
+    }
+
+    static extractHashtags = (content: string) => {
+        // Biểu thức chính quy để tìm hashtag
+        const hashtagRegex = /#[^\s#<]+/g;
+
+        // Tìm tất cả hashtag trong nội dung
+        const hashtags = content.match(hashtagRegex);
+
+        // Trả về danh sách hashtag (hoặc mảng rỗng nếu không có)
+        return hashtags || [];
+    }
+
+    static getRandomGradient(seed: string) {
+        // Sử dụng seed để tạo giá trị ngẫu nhiên cố định
+        const seedRandom = (s: any) => {
+            let h = 0;
+            for (let i = 0; i < s.length; i++) h = Math.imul(31, h) + s.charCodeAt(i) | 0;
+            return (h % 0xFFFFFFFF) / 0xFFFFFFFF;
+        };
+
+        // Hàm chuyển HSL sang RGB
+        const hslToRgb = (h: number, s: number, l: number) => {
+            h = h % 360;
+            s = s / 100;
+            l = l / 100;
+            let r, g, b;
+
+            if (s === 0) {
+                r = g = b = l; // Grayscale
+            } else {
+                const hue2rgb = (p: number, q: number, t: number) => {
+                    if (t < 0) t += 1;
+                    if (t > 1) t -= 1;
+                    if (t < 1 / 6) return p + (q - p) * 6 * t;
+                    if (t < 1 / 2) return q;
+                    if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+                    return p;
+                };
+                const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+                const p = 2 * l - q;
+                r = hue2rgb(p, q, h / 360 + 1 / 3);
+                g = hue2rgb(p, q, h / 360);
+                b = hue2rgb(p, q, h / 360 - 1 / 3);
+            }
+
+            return `rgb(${Math.round(r * 255)}, ${Math.round(g * 255)}, ${Math.round(b * 255)})`;
+        };
+
+        // Tạo giá trị ngẫu nhiên từ seed
+        const random1 = seedRandom(seed.toString());
+        const random2 = seedRandom(seed.toString() + 'offset');
+
+        // Tạo hai màu sáng trong không gian HSL
+        // Hue: 0-360, Saturation: 70-100% (màu rực rỡ), Lightness: 80-90% (rất sáng)
+        const hue1 = random1 * 360; // Hue ngẫu nhiên
+        const hue2 = random2 * 360; // Hue khác cho color2
+        const saturation = 70 + random1 * 30; // Saturation từ 70% đến 100%
+        const lightness = 80 + random1 * 10; // Lightness từ 80% đến 90%
+
+        const color1 = hslToRgb(hue1, saturation, lightness);
+        const color2 = hslToRgb(hue2, saturation, lightness);
+
+        return `linear-gradient(90deg, ${color1}, ${color2})`;
+    }
 }
 
 export function formatNumberConvert(num: number) {
