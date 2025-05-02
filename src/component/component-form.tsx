@@ -1,5 +1,5 @@
 import { Controller, FieldValues, UseFormReturn } from "react-hook-form";
-import { CSSProperties, ReactNode, useEffect, useRef, useState } from "react";
+import { CSSProperties, ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Text } from "./text/text";
@@ -171,6 +171,7 @@ interface DateTimePickerFormProps extends SimpleFormProps {
 }
 
 export function DateTimePickerForm(params: DateTimePickerFormProps) {
+    const _covertErrors = useMemo(() => params.name ? convertErrors(params.methods.formState.errors, params.name) : undefined, [params.name, params.methods.formState.errors?.[params.name!]])
     const { t } = useTranslation()
 
     return <Controller
@@ -178,7 +179,6 @@ export function DateTimePickerForm(params: DateTimePickerFormProps) {
         control={params.methods.control}
         rules={{ required: params.required }}
         render={({ field }) => {
-            const _covertErrors = convertErrors(params.methods.formState.errors, params.name)
             return <div className={params.className ?? 'col'} style={{ gap: '0.8rem', overflow: 'visible', width: '100%', ...(params.style ?? {}) }}>
                 {params.labelElement ?? (params.label ? <div className="row" style={{ gap: '0.4rem', minWidth: "16rem" }}>
                     <Text className={"label-3"}>{params.label}</Text>
@@ -209,13 +209,13 @@ interface CKEditorFormProps extends SimpleFormProps {
 }
 
 export function CKEditorForm(params: CKEditorFormProps) {
+    const _covertErrors = useMemo(() => params.name ? convertErrors(params.methods.formState.errors, params.name) : undefined, [params.name, params.methods.formState.errors?.[params.name!]])
     const { t } = useTranslation()
     return <Controller
         name={params.name}
         control={params.methods.control}
         rules={{ required: params.required }}
         render={({ field }) => {
-            const _covertErrors = convertErrors(params.methods.formState.errors, params.name)
             return <div className={params.className ?? 'col'} style={{ gap: '0.8rem', overflow: 'visible', width: '100%', ...(params.style ?? {}) }}>
                 {params.labelElement ?? (params.label ? <div className="row" style={{ gap: '0.4rem', minWidth: "16rem" }}>
                     <Text className={"label-3"}>{params.label}</Text>
@@ -250,6 +250,7 @@ interface Select1FormProps extends SimpleFormProps {
 }
 
 export function Select1Form(params: Select1FormProps) {
+    const _covertErrors = useMemo(() => params.name ? convertErrors(params.methods.formState.errors, params.name) : undefined, [params.name, params.methods.formState.errors?.[params.name!]])
     const { t } = useTranslation()
 
     return <Controller
@@ -257,7 +258,6 @@ export function Select1Form(params: Select1FormProps) {
         control={params.methods.control}
         rules={{ required: params.required }}
         render={({ field }) => {
-            const _covertErrors = convertErrors(params.methods.formState.errors, params.name)
             return <div className={params.className ?? 'col'} style={{ gap: '0.8rem', overflow: 'visible', width: '100%', ...(params.style ?? {}) }}>
                 {params.labelElement ?? (params.label ? <div className="row" style={{ gap: '0.4rem', minWidth: "16rem" }}>
                     <Text className={"label-3"}>{params.label}</Text>
@@ -295,6 +295,7 @@ interface SelectMultipleFormProps extends SimpleFormProps {
 }
 
 export function SelectMultipleForm(params: SelectMultipleFormProps) {
+    const _covertErrors = useMemo(() => params.name ? convertErrors(params.methods.formState.errors, params.name) : undefined, [params.name, params.methods.formState.errors?.[params.name!]])
     const { t } = useTranslation()
 
     return <Controller
@@ -302,7 +303,6 @@ export function SelectMultipleForm(params: SelectMultipleFormProps) {
         control={params.methods.control}
         rules={{ required: params.required }}
         render={({ field }) => {
-            const _covertErrors = convertErrors(params.methods.formState.errors, params.name)
             return <div className={params.className ?? 'col'} style={{ gap: '0.8rem', overflow: 'visible', width: '100%', ...(params.style ?? {}) }}>
                 {params.labelElement ?? (params.label ? <div className="row" style={{ gap: '0.4rem', minWidth: "16rem" }}>
                     <Text className={"label-3"}>{params.label}</Text>
@@ -446,6 +446,7 @@ interface ImportFileFormProps extends SimpleFormProps {
 }
 
 export function ImportFileForm(params: ImportFileFormProps) {
+    const _covertErrors = useMemo(() => params.name ? convertErrors(params.methods.formState.errors, params.name) : undefined, [params.name, params.methods.formState.errors?.[params.name!]])
     const { t } = useTranslation()
 
     return <Controller
@@ -453,7 +454,6 @@ export function ImportFileForm(params: ImportFileFormProps) {
         control={params.methods.control}
         rules={{ required: params.required }}
         render={({ field }) => {
-            const _covertErrors = convertErrors(params.methods.formState.errors, params.name)
             return <div className={params.className ?? 'col'} style={{ gap: '0.8rem', overflow: 'visible', width: '100%', ...(params.style ?? {}) }}>
                 {params.labelElement ?? (params.label ? <div className="row" style={{ gap: '0.4rem', minWidth: "16rem" }}>
                     <Text className={"label-3"}>{params.label}</Text>
@@ -620,6 +620,7 @@ interface ColorPickerForm extends SimpleFormProps {
 }
 
 export const ColorPickerForm = (props: ColorPickerForm) => {
+    const _covertErrors = useMemo(() => props.name ? convertErrors(props.methods.formState.errors, props.name) : undefined, [props.name, props.methods.formState.errors?.[props.name!]])
     const colorPickerRef = useRef<any>(null)
     const { t } = useTranslation()
 
@@ -640,7 +641,6 @@ export const ColorPickerForm = (props: ColorPickerForm) => {
         name={props.name}
         control={props.methods.control}
         render={({ field }) => {
-            const _covertErrors = convertErrors(props.methods.formState.errors, props.name)
             return <div ref={colorPickerRef} className={props.className ?? 'col'} style={{ gap: '0.8rem', overflow: 'visible', width: '100%', ...(props.style ?? {}) }}>
                 {props.labelElement ?? (props.label ? <div className="row" style={{ gap: '0.4rem', minWidth: "16rem" }}>
                     <Text className={"label-3"}>{props.label}</Text>
