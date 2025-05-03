@@ -62,6 +62,7 @@ export declare class Util {
     static timeSince: (dateCreate: number) => string;
     static extractHashtags: (content: string) => [] | RegExpMatchArray;
     static getRandomGradient(seed: string): string;
+    static to_vietnamese(number: number | string): string;
 }
 export declare function formatNumberConvert(num: number): string;
 export declare function inputMoneyPattern(ev: any): void;

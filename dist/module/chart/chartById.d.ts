@@ -1,4 +1,4 @@
-import { CSSProperties, ReactNode } from 'react';
+import { CSSProperties, Dispatch, ReactNode, SetStateAction } from 'react';
 import { DatasetItem } from './chartByType';
 interface Props {
     id: string;
@@ -30,6 +30,20 @@ interface Props {
     formatter?: (ev: any) => void;
     expandData?: Array<DatasetItem>;
 }
-export declare const ChartById: ({ searchRaw, style, chartStyle, ...props }: Props) => import("react/jsx-runtime").JSX.Element;
+interface ChartRef {
+    chartInfor?: {
+        [p: string]: any;
+    };
+    result: Array<{
+        [p: string]: any;
+    }>;
+    setResult: Dispatch<SetStateAction<{
+        [p: string]: any;
+    }[]>>;
+    getData: () => Promise<void>;
+    datasets?: Array<DatasetItem>;
+    selectedTime?: string | number;
+}
+export declare const ChartById: import('react').ForwardRefExoticComponent<Props & import('react').RefAttributes<ChartRef>>;
 export {};
 //# sourceMappingURL=chartById.d.ts.map
