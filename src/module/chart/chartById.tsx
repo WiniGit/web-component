@@ -1,4 +1,4 @@
-import { CSSProperties, ReactNode, useEffect, useMemo, useState } from "react"
+import { CSSProperties, Dispatch, forwardRef, ReactNode, SetStateAction, useEffect, useImperativeHandle, useMemo, useState } from "react"
 import { DataController, SettingDataController } from "../../controller/data"
 import styles from './chart.module.css'
 import RenderChartByType, { DatasetItem } from "./chartByType"
@@ -37,9 +37,18 @@ interface Props {
     expandData?: Array<DatasetItem>
 }
 
-export const ChartById = ({ searchRaw = "", style = {}, chartStyle = {}, ...props }: Props) => {
+interface ChartRef {
+    chartInfor?: { [p: string]: any };
+    result: Array<{ [p: string]: any }>;
+    setResult: Dispatch<SetStateAction<{ [p: string]: any; }[]>>
+    getData: () => Promise<void>;
+    datasets?: Array<DatasetItem>;
+    selectedTime?: string | number;
+}
+
+export const ChartById = forwardRef<ChartRef, Props>(({ searchRaw = "", style = {}, chartStyle = {}, ...props }, ref) => {
     const now = new Date()
-    const [result, setResult] = useState([])
+    const [result, setResult] = useState<Array<{ [p: string]: any }>>([])
     const [chartItem, setChartItem] = useState<{ [p: string]: any }>()
     const { t } = useTranslation()
     const listTime = useMemo(() => {
@@ -246,6 +255,15 @@ export const ChartById = ({ searchRaw = "", style = {}, chartStyle = {}, ...prop
         }
     }, [props.id])
 
+    useImperativeHandle(ref, () => ({
+        getData: getData,
+        chartInfor: chartItem,
+        result: result,
+        setResult: setResult,
+        datasets: datasets,
+        selectedTime: selectedTime
+    }), [selectedTime, datasets, result, chartItem]);
+
     return <div className={`col ${styles["chart-block"]} ${props.className ?? ""}`} style={style}>
         {!props.chartOnly && <div className='row' style={{ gap: "1.6rem" }}>
             <div className="col" style={{ flex: 1, gap: "0.4rem" }}>
@@ -270,4 +288,4 @@ export const ChartById = ({ searchRaw = "", style = {}, chartStyle = {}, ...prop
             legend={chartItem.Setting.legend}
         />}
     </div>
-}
+})
