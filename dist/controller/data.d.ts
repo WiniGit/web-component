@@ -24,6 +24,23 @@ export declare class DataController {
             direction?: "ASC" | "DESC";
         }>;
     } | undefined): Promise<any>;
+    patternList(options: {
+        page?: number;
+        size?: number;
+        searchRaw?: string;
+        filter?: string;
+        sortby?: Array<{
+            prop: string;
+            direction?: "ASC" | "DESC";
+        }>;
+        pattern?: {
+            returns: Array<string>;
+            [p: string]: Array<string> | {
+                searchRaw?: string;
+                reducers: string;
+            };
+        };
+    } | undefined): Promise<any>;
     group(options: {
         searchRaw?: string;
         reducers: string;
@@ -46,6 +63,7 @@ export declare class DataController {
     edit(data: Array<{
         [p: string]: any;
     }>): Promise<any>;
+    duplicate(ids: Array<string>): Promise<any>;
     delete(ids: Array<string>): Promise<any>;
     checkotp(idToken: string): Promise<any>;
 }
