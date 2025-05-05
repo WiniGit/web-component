@@ -205,7 +205,8 @@ export function DateTimePickerForm(params: DateTimePickerFormProps) {
 
 interface CKEditorFormProps extends SimpleFormProps {
     ckEditorUploadPlugin?: Array<any>,
-    customConfig?: { [p: string]: any }
+    customConfig?: { [p: string]: any },
+    ckEditorStyle?: CSSProperties,
 }
 
 export function CKEditorForm(params: CKEditorFormProps) {
@@ -222,7 +223,7 @@ export function CKEditorForm(params: CKEditorFormProps) {
                     {params.required ? <Text className="label-4" style={{ color: '#E14337' }}>*</Text> : null}
                 </div> : null)}
                 <CustomCkEditor5
-                    style={params.className?.includes("row") ? { flex: 1, overflow: "hidden visible" } : undefined}
+                    style={params.className?.includes("row") ? { flex: 1, overflow: "hidden visible", ...(params.ckEditorStyle ?? {}) } : params.ckEditorStyle}
                     value={field.value}
                     disabled={params.disabled}
                     customConfig={params.customConfig as any}

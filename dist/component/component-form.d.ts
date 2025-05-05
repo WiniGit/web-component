@@ -79,6 +79,7 @@ interface CKEditorFormProps extends SimpleFormProps {
     customConfig?: {
         [p: string]: any;
     };
+    ckEditorStyle?: CSSProperties;
 }
 export declare function CKEditorForm(params: CKEditorFormProps): import("react/jsx-runtime").JSX.Element;
 interface Select1FormProps extends SimpleFormProps {

@@ -178,6 +178,9 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                     for (const [_, act] of acts.entries()) {
                         const actItem = act as { [p: string]: any }
                         switch (actItem.Action) {
+                            case ActionType.back:
+                                navigate(-1)
+                                break;
                             case ActionType.navigate:
                                 if (actItem.To) {
                                     if (props.indexItem && regexGetVariables.test(actItem.To)) {
