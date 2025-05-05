@@ -49,6 +49,17 @@ export class DataController {
         return res
     }
 
+    async patternList(options: { page?: number, size?: number, searchRaw?: string, filter?: string, sortby?: Array<{ prop: string, direction?: "ASC" | "DESC" }>, pattern?: { returns: Array<string>, [p: string]: Array<string> | { searchRaw?: string, reducers: string } } } | undefined) {
+        const res = await BaseDA.post(ConfigData.url + 'data/patternList', {
+            headers: {
+                pid: ConfigData.pid,
+                module: this.module,
+            },
+            body: options
+        })
+        return res
+    }
+
     async group(options: { searchRaw?: string, reducers: string }) {
         const res = await BaseDA.post(ConfigData.url + 'data/group', {
             headers: {
@@ -110,6 +121,17 @@ export class DataController {
                 module: this.module
             },
             body: { data: data }
+        })
+        return res
+    }
+
+    async duplicate(ids: Array<string>) {
+        const res = await BaseDA.post(ConfigData.url + 'data/action?action=duplicate', {
+            headers: {
+                pid: ConfigData.pid,
+                module: this.module
+            },
+            body: { ids: ids }
         })
         return res
     }
