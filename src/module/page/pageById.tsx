@@ -106,7 +106,8 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
             let getValue: any = m
             switch (variable[0]) {
                 case "this":
-                    getValue = props.indexItem?.[variable[1]]
+                    if (props.type === "card" && variable[1] === "index") getValue = props.index
+                    else getValue = props.indexItem?.[variable[1]]
                     break;
                 case "location":
                     getValue = location[variable[1]]
@@ -389,6 +390,9 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                         tmpProps.to = tmpProps.to.startsWith("/") ? tmpProps.to : `/${tmpProps.to}`
                     }
                 }
+                break;
+            case ComponentType.text:
+                if (regexGetVariables.test(tmpProps.value)) tmpProps.value = replaceThisVariables(tmpProps.value)
                 break;
             case ComponentType.button:
             case ComponentType.textField:

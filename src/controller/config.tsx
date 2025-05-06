@@ -143,11 +143,19 @@ export class BaseDA {
     }
 
     static getFilesInfor = async (ids: Array<string>) => {
-        // const headersObj: any = await getHeaders()
         const headersObj: any = {}
         const response = await BaseDA.post(ConfigData.url + 'file/getFilesInfor', {
             headers: headersObj,
             body: { ids: ids },
+        })
+        return response
+    }
+
+    static updateFilesInfor = async (data: Array<{ [p: string]: any }>) => {
+        const headersObj: any = {}
+        const response = await BaseDA.post(ConfigData.url + 'file/editFileInfor', {
+            headers: headersObj,
+            body: { data: data },
         })
         return response
     }
