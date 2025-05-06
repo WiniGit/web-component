@@ -26,6 +26,9 @@ export declare class BaseDA {
     }) => Promise<any>;
     static uploadFiles: (listFile: Array<File>) => Promise<any>;
     static getFilesInfor: (ids: Array<string>) => Promise<any>;
+    static updateFilesInfor: (data: Array<{
+        [p: string]: any;
+    }>) => Promise<any>;
 }
 export declare class CkEditorUploadAdapter {
     loader: any;
