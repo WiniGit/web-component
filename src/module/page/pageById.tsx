@@ -79,7 +79,7 @@ interface RenderLayerElementProps extends Props {
 
 export const pageAllRefs: { [p: string]: any } = {}
 export const RenderLayerElement = (props: RenderLayerElementProps) => {
-    if (props.itemData && props.itemData[props.item.Id]) {
+    if (props.itemData && ((props.type !== "card" && props.itemData[props.item.Id]) || (props.itemData[props.item.Id] as any)(props.indexItem, props.index, props.methods))) {
         if (props.type === "card") return (props.itemData[props.item.Id] as any)(props.indexItem, props.index, props.methods)
         else return props.itemData[props.item.Id]
     } else return <CaculateLayer {...props} />
