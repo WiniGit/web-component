@@ -92,6 +92,11 @@ interface CardRef {
         }>;
         totalCount?: number;
     }>>;
+    relativeData?: {
+        [p: string]: Array<{
+            [p: string]: any;
+        }>;
+    };
 }
 export declare const CardById: import('react').ForwardRefExoticComponent<CardProps & import('react').RefAttributes<CardRef>>;
 export {};
