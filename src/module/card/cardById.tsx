@@ -177,7 +177,7 @@ export const CardById = forwardRef<CardRef, CardProps>((props, ref) => {
         setData: setData,
         methods: methods,
         relativeData: getRelativeData
-    }), [data, cardItem, controller, getRelativeData]);
+    }), [data, cardItem, controller, getRelativeData, methods]);
 
     return cardItem ? data.totalCount === 0 ?
         props.emptyLink ? <EmptyPage
