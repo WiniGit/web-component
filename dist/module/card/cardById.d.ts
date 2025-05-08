@@ -51,7 +51,6 @@ interface Props {
         ids: string;
         maxLength?: number | "none";
     };
-    methods?: UseFormReturn;
     emptyLink?: string;
     onUnMount?: () => void;
 }

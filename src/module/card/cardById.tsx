@@ -27,7 +27,6 @@ interface Props {
     style?: CSSProperties,
     className?: string,
     controller?: "all" | { page: number, size: number, searchRaw?: string, filter?: string, sortby?: Array<{ prop: string, direction?: "ASC" | "DESC" }> } | { ids: string, maxLength?: number | "none" },
-    methods?: UseFormReturn,
     emptyLink?: string,
     onUnMount?: () => void
 }
@@ -161,7 +160,7 @@ export const CardById = forwardRef<CardRef, CardProps>((props, ref) => {
     }, [])
 
     const extendData = useMemo(() => methods.watch(), [methods.watch()])
-    const getRelativeData = () => {
+    const getRelativeData = useMemo(() => {
         if (extendData) {
             const tmp = { ...extendData }
             delete tmp._rels
@@ -169,15 +168,16 @@ export const CardById = forwardRef<CardRef, CardProps>((props, ref) => {
             return tmp
         }
         return undefined
-    }
+    }, [extendData])
 
     useImperativeHandle(ref, () => ({
         getData: getData,
         data: data,
         controller: controller,
         setData: setData,
-        relativeData: getRelativeData()
-    }), [data, cardItem, controller, extendData]);
+        methods: methods,
+        relativeData: getRelativeData
+    }), [data, cardItem, controller, getRelativeData]);
 
     return cardItem ? data.totalCount === 0 ?
         props.emptyLink ? <EmptyPage
