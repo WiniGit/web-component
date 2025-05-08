@@ -39,10 +39,11 @@ interface CardProps extends Props {
 }
 
 interface CardRef {
-    getData: (page?: number) => Promise<void>,
-    data: { data: Array<{ [p: string]: any }>, totalCount?: number },
-    controller: "all" | { page: number, size: number, searchRaw?: string, filter?: string, sortby?: Array<{ prop: string, direction?: "ASC" | "DESC" }> } | { ids: string, maxLength?: number | "none" },
-    setData: Dispatch<SetStateAction<{ data: Array<{ [p: string]: any }>, totalCount?: number }>>
+    getData: (page?: number) => Promise<void>;
+    data: { data: Array<{ [p: string]: any }>, totalCount?: number };
+    controller: "all" | { page: number, size: number, searchRaw?: string, filter?: string, sortby?: Array<{ prop: string, direction?: "ASC" | "DESC" }> } | { ids: string, maxLength?: number | "none" };
+    setData: Dispatch<SetStateAction<{ data: Array<{ [p: string]: any }>, totalCount?: number }>>;
+    relativeData?: { [p: string]: Array<{ [p: string]: any }> }
 }
 
 export const CardById = forwardRef<CardRef, CardProps>((props, ref) => {
@@ -59,7 +60,7 @@ export const CardById = forwardRef<CardRef, CardProps>((props, ref) => {
         if (props.id) {
             const _settingDataController = new SettingDataController("card")
             _settingDataController.getByIds([props.id]).then(async (res) => {
-                if (res.code === 200) {
+                if (res.code === 200 && res.data[0]) {
                     let _cardItem = res.data[0]
                     if (_cardItem.Props && typeof _cardItem.Props === "string") _cardItem.Props = JSON.parse(_cardItem.Props)
                     setCardItem(_cardItem)
@@ -159,14 +160,24 @@ export const CardById = forwardRef<CardRef, CardProps>((props, ref) => {
         return props.onUnMount?.()
     }, [])
 
+    const extendData = useMemo(() => methods.watch(), [methods.watch()])
+    const getRelativeData = () => {
+        if (extendData) {
+            const tmp = { ...extendData }
+            delete tmp._rels
+            delete tmp._cols
+            return tmp
+        }
+        return undefined
+    }
+
     useImperativeHandle(ref, () => ({
         getData: getData,
         data: data,
         controller: controller,
-        setData: setData
-    }), [data, cardItem, controller]);
-
-    const extendData = useMemo(() => methods.watch(), [methods.watch()])
+        setData: setData,
+        relativeData: getRelativeData()
+    }), [data, cardItem, controller, extendData]);
 
     return cardItem ? data.totalCount === 0 ?
         props.emptyLink ? <EmptyPage
