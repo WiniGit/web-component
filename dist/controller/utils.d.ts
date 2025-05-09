@@ -55,7 +55,7 @@ export declare class Util {
     }): string;
     static generateRandomColor(): string;
     static generateLightColorRgb(): string;
-    static generateDarkColorRgb(number: number): string;
+    static generateDarkColorRgb(id?: number | string): string;
     static toSlug(input: string): string;
     static convertToKebabCase: (str: string) => string;
     static processHTMLContent: (html: string) => string;
