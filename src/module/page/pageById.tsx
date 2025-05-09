@@ -79,18 +79,20 @@ interface RenderLayerElementProps extends Props {
 
 export const pageAllRefs: { [p: string]: any } = {}
 export const RenderLayerElement = (props: RenderLayerElementProps) => {
-    if (props.itemData && props.itemData[props.item.Id] && (props.type !== "card" || (props.itemData[props.item.Id] as any)(props.indexItem, props.index, props.methods))) {
-        if (props.type === "card") return (props.itemData[props.item.Id] as any)(props.indexItem, props.index, props.methods)
-        else return props.itemData[props.item.Id]
+    const findId = props.item.Setting?.id ?? props.item.Id
+    if (props.itemData && props.itemData[findId] && (props.type !== "card" || (props.itemData[findId] as any)(props.indexItem, props.index, props.methods))) {
+        if (props.type === "card") return (props.itemData[findId] as any)(props.indexItem, props.index, props.methods)
+        else return props.itemData[findId]
     } else return <CaculateLayer {...props} />
 }
 
 const CaculateLayer = (props: RenderLayerElementProps) => {
+    const findId = props.item.Setting?.id ?? props.item.Id
     // init refs
     if (props.item.Type === ComponentType.form || props.item.Type === ComponentType.card)
-        pageAllRefs[props.item.Id] = (props.propsData?.[props.item.Id] as any)?.ref ?? useRef(null)
+        pageAllRefs[findId] = (props.propsData?.[findId] as any)?.ref ?? useRef(null)
     useEffect(() => {
-        return () => { delete pageAllRefs[props.item.Id] }
+        return () => { delete pageAllRefs[findId] }
     }, [])
     // 
     const location = useLocation() as any
@@ -248,7 +250,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
         if (props.className) _props.className = [..._props.className.split(" "), ...props.className.split(" ")].filter((cls, i, arr) => cls.length && arr.indexOf(cls) === i).join(" ")
         if (watchForCustomProps?.className) _props.className = [..._props.className.split(" "), ...watchForCustomProps.className.split(" ")].filter((cls, i, arr) => cls.length && arr.indexOf(cls) === i).join(" ")
         delete _props.action
-        if (props.propsData && props.propsData[props.item.Id]) var extendProps = props.type === "card" ? (props.propsData[props.item.Id] as any)(props.indexItem, props.index, props.methods) : props.propsData[props.item.Id]
+        if (props.propsData && props.propsData[findId]) var extendProps = props.type === "card" ? (props.propsData[findId] as any)(props.indexItem, props.index, props.methods) : props.propsData[findId]
         if (extendProps) {
             if (extendProps.style) _props.style = { ..._props.style, ...extendProps.style }
             delete extendProps.style
@@ -426,7 +428,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
 
     switch (props.item.Type) {
         case ComponentType.navLink:
-            if (props.childrenData && props.childrenData[props.item.Id]) var childComponent = props.type === "card" ? (props.childrenData[props.item.Id] as any)(props.indexItem, props.index, props.methods) : props.childrenData[props.item.Id]
+            if (props.childrenData && props.childrenData[findId]) var childComponent = props.type === "card" ? (props.childrenData[findId] as any)(props.indexItem, props.index, props.methods) : props.childrenData[findId]
             if (Array.isArray(dataValue)) {
                 return dataValue.map((dataValueItem, i) => {
                     const dataValueProps = { ...typeProps }
@@ -455,7 +457,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                 </NavLink>
             }
         case ComponentType.container:
-            if (props.childrenData && props.childrenData[props.item.Id]) var childComponent = props.type === "card" ? (props.childrenData[props.item.Id] as any)(props.indexItem, props.index, props.methods) : props.childrenData[props.item.Id]
+            if (props.childrenData && props.childrenData[findId]) var childComponent = props.type === "card" ? (props.childrenData[findId] as any)(props.indexItem, props.index, props.methods) : props.childrenData[findId]
             if (dataValue && dataValue.backgroundImage) var containerProps = { ...typeProps, style: { ...typeProps.style, ...dataValue } }
             if (Array.isArray(dataValue)) {
                 return dataValue.map((dataValueItem, i) => {
@@ -524,7 +526,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
             if (props.itemData) typeProps.itemData = typeProps.itemData ? { ...props.itemData, ...typeProps.itemData } : props.itemData
             if (props.childrenData) typeProps.childrenData = typeProps.childrenData ? { ...props.childrenData, ...typeProps.childrenData } : props.childrenData
             if (props.propsData) typeProps.propsData = typeProps.propsData ? { ...props.propsData, ...typeProps.propsData } : props.propsData
-            return <FormById {...typeProps} id={typeProps.formId} ref={pageAllRefs[props.item.Id]}
+            return <FormById {...typeProps} id={typeProps.formId} ref={pageAllRefs[findId]}
                 onSubmit={(ev) => {
                     console.log("????????? ", ev)
                 }} />
@@ -532,7 +534,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
             if (props.itemData) typeProps.itemData = typeProps.itemData ? { ...props.itemData, ...typeProps.itemData } : props.itemData
             if (props.childrenData) typeProps.childrenData = typeProps.childrenData ? { ...props.childrenData, ...typeProps.childrenData } : props.childrenData
             if (props.propsData) typeProps.propsData = typeProps.propsData ? { ...props.propsData, ...typeProps.propsData } : props.propsData
-            return <CardById {...typeProps} id={typeProps.cardId} ref={pageAllRefs[props.item.Id]} />
+            return <CardById {...typeProps} id={typeProps.cardId} ref={pageAllRefs[findId]} />
         case ComponentType.view:
             if (props.itemData) typeProps.itemData = typeProps.itemData ? { ...props.itemData, ...typeProps.itemData } : props.itemData
             if (props.childrenData) typeProps.childrenData = typeProps.childrenData ? { ...props.childrenData, ...typeProps.childrenData } : props.childrenData

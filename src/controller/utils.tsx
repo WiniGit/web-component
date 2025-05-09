@@ -392,11 +392,31 @@ export class Util {
             (Math.floor((256 - 229) * Math.random()) + 230) + ')';
     }
 
-    static generateDarkColorRgb(number: number) {
-        const red = Math.floor((number ?? Math.random()) * 256 / 2);
-        const green = Math.floor((number ?? Math.random()) * 256 / 2);
-        const blue = Math.floor((number ?? Math.random()) * 256 / 2);
-        return "rgb(" + red + ", " + green + ", " + blue + ")";
+    static generateDarkColorRgb(id?: number | string) {
+        if (!id || typeof id === "number") {
+            const safeNum = Math.abs(Number(id ?? Math.random())) || 0;
+
+            const hue = safeNum % 360;
+            const saturation = 80;
+            const lightness = 25;
+
+            return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+        } else {
+            // Normalize: remove dashes if present
+
+            let hash = 0;
+
+            for (let i = 0; i < id.length; i++) {
+                hash = id.charCodeAt(i) + ((hash << 5) - hash);
+                hash = hash & hash; // Convert to 32bit integer
+            }
+
+            const hue = Math.abs(hash) % 360;
+            const saturation = 80;
+            const lightness = 25;
+
+            return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+        }
     }
 
     static toSlug(input: string) {
