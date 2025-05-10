@@ -52,6 +52,7 @@ interface Props {
         maxLength?: number | "none";
     };
     emptyLink?: string;
+    emptyMessage?: string;
     onUnMount?: () => void;
 }
 interface CardProps extends Props {

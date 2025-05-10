@@ -6,6 +6,7 @@ import { EmptyPage } from "../../component/empty-page"
 import { RenderLayerElement } from "../page/pageById"
 import { regexGetVariableByThis } from "./config"
 import { ComponentType } from "../da"
+import { useTranslation } from "react-i18next"
 
 interface Props {
     /**
@@ -28,6 +29,7 @@ interface Props {
     className?: string,
     controller?: "all" | { page: number, size: number, searchRaw?: string, filter?: string, sortby?: Array<{ prop: string, direction?: "ASC" | "DESC" }> } | { ids: string, maxLength?: number | "none" },
     emptyLink?: string,
+    emptyMessage?: string,
     onUnMount?: () => void
 }
 
@@ -54,6 +56,7 @@ export const CardById = forwardRef<CardRef, CardProps>((props, ref) => {
     const keyNames = useMemo<Array<string>>(() => layers.filter((e: any) => e.NameField?.length).map((e: any) => e.NameField), [layers.length])
     const [controller, setController] = useState<any>()
     const [data, setData] = useState<{ data: Array<{ [p: string]: any }>, totalCount?: number }>({ data: [], totalCount: undefined })
+    const { t } = useTranslation()
 
     useEffect(() => {
         if (props.id) {
@@ -184,7 +187,7 @@ export const CardById = forwardRef<CardRef, CardProps>((props, ref) => {
             imgUrl={props.emptyLink}
             imgStyle={{ maxWidth: "16.4rem" }}
             style={props.style}
-            title="There are no data found."
+            title={t("noDataFound")}
         /> : null :
         data.data.map((item, index) => {
             return <RenderCard
