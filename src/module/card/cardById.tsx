@@ -30,6 +30,7 @@ interface Props {
     controller?: "all" | { page: number, size: number, searchRaw?: string, filter?: string, sortby?: Array<{ prop: string, direction?: "ASC" | "DESC" }> } | { ids: string, maxLength?: number | "none" },
     emptyLink?: string,
     emptyMessage?: string,
+    emptyElement?: ReactNode,
     onUnMount?: () => void
 }
 
@@ -183,12 +184,12 @@ export const CardById = forwardRef<CardRef, CardProps>((props, ref) => {
     }), [data, cardItem, controller, getRelativeData, methods]);
 
     return cardItem ? data.totalCount === 0 ?
-        props.emptyLink ? <EmptyPage
+        props.emptyLink ? (props.emptyElement ?? <EmptyPage
             imgUrl={props.emptyLink}
             imgStyle={{ maxWidth: "16.4rem" }}
             style={props.style}
-            title={t("noDataFound")}
-        /> : null :
+            title={props.emptyMessage ?? t("noDataFound")}
+        />) : null :
         data.data.map((item, index) => {
             return <RenderCard
                 key={item.Id}
