@@ -184,12 +184,12 @@ export const CardById = forwardRef<CardRef, CardProps>((props, ref) => {
     }), [data, cardItem, controller, getRelativeData, methods]);
 
     return cardItem ? data.totalCount === 0 ?
-        props.emptyLink ? (props.emptyElement ?? <EmptyPage
+        (props.emptyElement ?? (props.emptyLink && <EmptyPage
             imgUrl={props.emptyLink}
             imgStyle={{ maxWidth: "16.4rem" }}
             style={props.style}
             title={props.emptyMessage ?? t("noDataFound")}
-        />) : null :
+        />)) :
         data.data.map((item, index) => {
             return <RenderCard
                 key={item.Id}
