@@ -53,6 +53,7 @@ interface Props {
     };
     emptyLink?: string;
     emptyMessage?: string;
+    emptyElement?: ReactNode;
     onUnMount?: () => void;
 }
 interface CardProps extends Props {
