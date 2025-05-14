@@ -191,9 +191,14 @@ export class SettingDataController {
 }
 
 export class AccountController {
+    private module: string;
+    constructor(module?: "Customer" | "User") {
+        this.module = module ?? "Customer"
+    }
+
     async login(body: { type: "phone" | "apple" | "google" | "microsoft" | "account", token?: string, deviceToken?: string, ggClientId?: string, phone?: string, password?: string, email?: string }, resolve?: () => void) {
         const res = await BaseDA.post(ConfigData.url + 'data/login', {
-            headers: { module: 'Customer', pid: ConfigData.pid },
+            headers: { module: this.module, pid: ConfigData.pid },
             body: body
         })
         if (res.code === 200 && !resolve) {
@@ -207,7 +212,7 @@ export class AccountController {
 
     async getInfor() {
         const res = await BaseDA.get(ConfigData.url + 'data/getInfo', {
-            headers: { module: 'Customer', pid: ConfigData.pid },
+            headers: { module: this.module, pid: ConfigData.pid },
         })
         return res
     }

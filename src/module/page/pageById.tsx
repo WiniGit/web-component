@@ -459,7 +459,36 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
         case ComponentType.container:
             if (props.childrenData && props.childrenData[findId]) var childComponent = props.type === "card" ? (props.childrenData[findId] as any)(props.indexItem, props.index, props.methods) : props.childrenData[findId]
             if (dataValue && dataValue.backgroundImage) var containerProps = { ...typeProps, style: { ...typeProps.style, ...dataValue } }
-            if (Array.isArray(dataValue)) {
+
+            if (!props.item.ParentId && props.type === "form") {
+                if (Array.isArray(dataValue)) {
+                    return dataValue.map((dataValueItem, i) => {
+                        const dataValueProps = { ...(containerProps ?? typeProps) }
+                        dataValueProps.indexItem = { ...props.indexItem, [props.item.NameField.split(".").length > 1 ? props.item.NameField.split(".")[1] : props.item.NameField]: dataValueItem }
+                        return <form key={`${dataValueItem}-${i}`} {...dataValueProps}>
+                            {childComponent ??
+                                (typeProps.className?.includes("layout-body") ?
+                                    <>
+                                        {children.map(e => <RenderLayerElement key={e.Id} {...props} item={e} style={undefined} className={undefined} />)}
+                                        {props.bodyChildren}
+                                    </> :
+                                    children.map(e => <RenderLayerElement key={e.Id} {...props} item={e} style={undefined} className={undefined} />)
+                                )}
+                        </form>
+                    })
+                } else {
+                    return <form {...(containerProps ?? typeProps)}>
+                        {childComponent ??
+                            (typeProps.className?.includes("layout-body") ?
+                                <>
+                                    {children.map(e => <RenderLayerElement key={e.Id} {...props} item={e} style={undefined} className={undefined} />)}
+                                    {props.bodyChildren}
+                                </> :
+                                children.map(e => <RenderLayerElement key={e.Id} {...props} item={e} style={undefined} className={undefined} />)
+                            )}
+                    </form>
+                }
+            } else if (Array.isArray(dataValue)) {
                 return dataValue.map((dataValueItem, i) => {
                     const dataValueProps = { ...(containerProps ?? typeProps) }
                     dataValueProps.indexItem = { ...props.indexItem, [props.item.NameField.split(".").length > 1 ? props.item.NameField.split(".")[1] : props.item.NameField]: dataValueItem }
