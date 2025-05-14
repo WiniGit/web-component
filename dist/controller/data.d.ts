@@ -90,6 +90,8 @@ export declare class SettingDataController {
     getByIds(ids: Array<string>): Promise<any>;
 }
 export declare class AccountController {
+    private module;
+    constructor(module?: "Customer" | "User");
     login(body: {
         type: "phone" | "apple" | "google" | "microsoft" | "account";
         token?: string;
