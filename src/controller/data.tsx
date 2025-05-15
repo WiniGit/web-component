@@ -157,16 +157,13 @@ export class DataController {
     }
 }
 export class SettingDataController {
-    private setting: "model" | "reducer" | "chart" | "form" | "card" | "view";
-    private type: string;
-    constructor(setting: "model" | "reducer" | "chart" | "form" | "card" | "view") {
+    private setting: "report" | "chart" | "form" | "card" | "view";
+    constructor(setting: "report" | "chart" | "form" | "card" | "view") {
         this.setting = setting
-        if (setting === "model" || setting === "reducer") this.type = "report"
-        else this.type = setting
     }
 
     async action(action: "add" | "edit" | "delete", options: { data?: Array<{ [p: string]: any }>, ids?: Array<string> }) {
-        const res = await BaseDA.post(ConfigData.url + `data/${this.type === "report" ? `${this.type}/${this.setting}` : this.type}/action?action=${action}`, {
+        const res = await BaseDA.post(ConfigData.url + `data/${this.setting}/action?action=${action}`, {
             headers: { pid: ConfigData.pid },
             body: { data: options.data, ids: options.ids }
         })
@@ -174,7 +171,7 @@ export class SettingDataController {
     }
 
     async getListSimple(options: { page?: number, size?: number, query?: string, returns?: Array<string>, sortby?: { BY: string, DIRECTION?: "ASC" | "DESC" } } | undefined) {
-        const res = await BaseDA.post(ConfigData.url + `data/${this.type === "report" ? `${this.type}/${this.setting}` : this.type}/getListSimple`, {
+        const res = await BaseDA.post(ConfigData.url + `data/${this.setting}/getListSimple`, {
             headers: { pid: ConfigData.pid },
             body: { searchRaw: options?.query?.length ? options?.query : "*", page: options?.page, size: options?.size, returns: options?.returns, sortby: options?.sortby }
         })
@@ -182,9 +179,16 @@ export class SettingDataController {
     }
 
     async getByIds(ids: Array<string>) {
-        const res = await BaseDA.post(ConfigData.url + `data/${this.type === "report" ? `${this.type}/${this.setting}` : this.type}/getByIds`, {
+        const res = await BaseDA.post(ConfigData.url + `data/${this.setting}/getByIds`, {
             headers: { pid: ConfigData.pid },
             body: { ids: ids }
+        })
+        return res
+    }
+
+    static async searchSetting(options: { page?: number, size?: number, query?: string, returns?: Array<string>, sortby?: { BY: string, DIRECTION?: "ASC" | "DESC" } } | undefined) {
+        const res = await BaseDA.post(ConfigData.url + `data/getListSimple`, {
+            body: { searchRaw: options?.query?.length ? options?.query : "*", page: options?.page ?? 1, size: options?.size ?? 10, returns: options?.returns, sortby: options?.sortby }
         })
         return res
     }

@@ -69,8 +69,7 @@ export declare class DataController {
 }
 export declare class SettingDataController {
     private setting;
-    private type;
-    constructor(setting: "model" | "reducer" | "chart" | "form" | "card" | "view");
+    constructor(setting: "report" | "chart" | "form" | "card" | "view");
     action(action: "add" | "edit" | "delete", options: {
         data?: Array<{
             [p: string]: any;
@@ -88,6 +87,16 @@ export declare class SettingDataController {
         };
     } | undefined): Promise<any>;
     getByIds(ids: Array<string>): Promise<any>;
+    static searchSetting(options: {
+        page?: number;
+        size?: number;
+        query?: string;
+        returns?: Array<string>;
+        sortby?: {
+            BY: string;
+            DIRECTION?: "ASC" | "DESC";
+        };
+    } | undefined): Promise<any>;
 }
 export declare class AccountController {
     private module;
