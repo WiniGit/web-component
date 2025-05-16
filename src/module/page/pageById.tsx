@@ -264,7 +264,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
         const keys = props.item.NameField?.split(".")
         if (keys && keys.length > 1) tmp[`${keys[0]}`] = watchData[`_${keys[0]}`]
         return tmp
-    }, [props.methods!.watch(), props.item.NameField])
+    }, [JSON.stringify(props.methods!.watch()), props.item.NameField])
     const dataValue = useMemo(() => {
         if (props.type === "page" || !props.item.NameField?.length || !props.indexItem) return undefined
         const keys = props.item.NameField.split(".")
@@ -413,7 +413,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                 break;
         }
         return tmpProps
-    }, [customProps, props.item.Type, dataValue, children, props.methods!.watch(), location])
+    }, [customProps, props.item.Type, dataValue, children, JSON.stringify(props.methods!.watch()), location])
     const _options = useMemo(() => {
         if (props.item.NameField) {
             const tmpCol = props.cols?.find(e => e.Name === props.item.NameField)
