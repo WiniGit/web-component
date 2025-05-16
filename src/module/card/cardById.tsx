@@ -151,8 +151,8 @@ export const CardById = forwardRef<CardRef, CardProps>((props, ref) => {
     }, [keyNames])
 
     useEffect(() => {
-        const fileCols = methods.getValues("_cols").filter((e: any) => e.DataType === FEDataType.FILE && keyNames.includes(e.Name))
-        if (fileCols.length) {
+        const fileCols = methods.getValues("_cols")?.filter((e: any) => e.DataType === FEDataType.FILE && keyNames.includes(e.Name)) ?? []
+        if (fileCols.length && data.data.length && keyNames.length) {
             const currentFiles = methods.watch("_files") ?? []
             const fileIds = data.data.map((e: any) => fileCols.map((col: any) => e[col.Name]?.split(","))).flat(Infinity).filter((e: string | undefined, i: number, arr: Array<string>) => e?.length && currentFiles.every((el: any) => el.Id !== e) && arr.indexOf(e) === i)
             if (fileIds.length) {
