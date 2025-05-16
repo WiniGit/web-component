@@ -5,8 +5,9 @@ import { TableController } from "../../controller/setting"
 import { EmptyPage } from "../../component/empty-page"
 import { RenderLayerElement } from "../page/pageById"
 import { regexGetVariableByThis } from "./config"
-import { ComponentType } from "../da"
+import { ComponentType, FEDataType } from "../da"
 import { useTranslation } from "react-i18next"
+import { BaseDA } from "../../controller/config"
 
 interface Props {
     /**
@@ -150,6 +151,19 @@ export const CardById = forwardRef<CardRef, CardProps>((props, ref) => {
     }, [keyNames])
 
     useEffect(() => {
+        const fileCols = methods.getValues("_cols").filter((e: any) => e.DataType === FEDataType.FILE && keyNames.includes(e.Name))
+        if (fileCols.length) {
+            const currentFiles = methods.watch("_files") ?? []
+            const fileIds = data.data.map((e: any) => fileCols.map((col: any) => e[col.Name]?.split(","))).flat(Infinity).filter((e: string | undefined, i: number, arr: Array<string>) => e?.length && currentFiles.every((el: any) => el.Id !== e) && arr.indexOf(e) === i)
+            if (fileIds.length) {
+                BaseDA.getFilesInfor(fileIds).then(fileRes => {
+                    if (fileRes.code === 200) methods.setValue("_files", [...currentFiles, ...fileRes.data])
+                })
+            }
+        }
+    }, [data.data, methods.watch("_cols"), keyNames])
+
+    useEffect(() => {
         if (cardItem) {
             if (controller && !props.cardData) {
                 getData()
@@ -163,7 +177,7 @@ export const CardById = forwardRef<CardRef, CardProps>((props, ref) => {
         return props.onUnMount?.()
     }, [])
 
-    const extendData = useMemo(() => methods.watch(), [methods.watch()])
+    const extendData = useMemo(() => methods.watch(), [JSON.stringify(methods.watch())])
     const getRelativeData = useMemo(() => {
         if (extendData) {
             const tmp = { ...extendData }
