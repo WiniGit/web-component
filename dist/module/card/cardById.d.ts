@@ -39,14 +39,21 @@ interface Props {
     style?: CSSProperties;
     className?: string;
     controller?: "all" | {
-        page: number;
-        size: number;
+        page?: number;
+        size?: number;
         searchRaw?: string;
         filter?: string;
         sortby?: Array<{
             prop: string;
             direction?: "ASC" | "DESC";
         }>;
+        pattern?: {
+            returns: Array<string>;
+            [p: string]: Array<string> | {
+                searchRaw?: string;
+                reducers: string;
+            };
+        };
     } | {
         ids: string;
         maxLength?: number | "none";
@@ -75,14 +82,21 @@ interface CardRef {
         totalCount?: number;
     };
     controller: "all" | {
-        page: number;
-        size: number;
+        page?: number;
+        size?: number;
         searchRaw?: string;
         filter?: string;
         sortby?: Array<{
             prop: string;
             direction?: "ASC" | "DESC";
         }>;
+        pattern?: {
+            returns: Array<string>;
+            [p: string]: Array<string> | {
+                searchRaw?: string;
+                reducers: string;
+            };
+        };
     } | {
         ids: string;
         maxLength?: number | "none";
