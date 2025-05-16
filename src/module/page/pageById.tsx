@@ -313,8 +313,10 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
             let tmpValue = props.indexItem[props.item.NameField]
             switch (_col.DataType) {
                 case FEDataType.FILE:
-                    tmpValue = tmpValue?.split(",")?.[0]
-                    if (props.item.Type === ComponentType.container || props.item.Type === ComponentType.navLink) tmpValue = { backgroundImage: `url(${tmpValue.startsWith("http") ? tmpValue : (ConfigData.imgUrlId + tmpValue)})` }
+                    if (tmpValue) {
+                        tmpValue = tmpValue?.split(",")?.[0]
+                        if (props.item.Type === ComponentType.container || props.item.Type === ComponentType.navLink) tmpValue = { backgroundImage: `url(${tmpValue.startsWith("http") ? tmpValue : (ConfigData.imgUrlId + tmpValue)})` }
+                    }
                     break;
                 case FEDataType.HTML:
                     tmpValue = { __html: tmpValue }

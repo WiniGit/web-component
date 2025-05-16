@@ -157,7 +157,7 @@ export const CardById = forwardRef<CardRef, CardProps>((props, ref) => {
             const fileIds = data.data.map((e: any) => fileCols.map((col: any) => e[col.Name]?.split(","))).flat(Infinity).filter((e: string | undefined, i: number, arr: Array<string>) => e?.length && currentFiles.every((el: any) => el.Id !== e) && arr.indexOf(e) === i)
             if (fileIds.length) {
                 BaseDA.getFilesInfor(fileIds).then(fileRes => {
-                    if (fileRes.code === 200) methods.setValue("_files", [...currentFiles, ...fileRes.data])
+                    if (fileRes.code === 200) methods.setValue("_files", [...currentFiles, ...fileRes.data.filter((e: any) => e !== undefined && e !== null)])
                 })
             }
         }
