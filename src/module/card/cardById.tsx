@@ -28,7 +28,7 @@ interface Props {
     cardData?: Array<{ [p: string]: any }>,
     style?: CSSProperties,
     className?: string,
-    controller?: "all" | { page: number, size: number, searchRaw?: string, filter?: string, sortby?: Array<{ prop: string, direction?: "ASC" | "DESC" }> } | { ids: string, maxLength?: number | "none" },
+    controller?: "all" | { page?: number, size?: number, searchRaw?: string, filter?: string, sortby?: Array<{ prop: string, direction?: "ASC" | "DESC" }>, pattern?: { returns: Array<string>, [p: string]: Array<string> | { searchRaw?: string, reducers: string } } } | { ids: string, maxLength?: number | "none" },
     emptyLink?: string,
     emptyMessage?: string,
     emptyElement?: ReactNode,
@@ -44,7 +44,7 @@ interface CardProps extends Props {
 interface CardRef {
     getData: (page?: number) => Promise<void>;
     data: { data: Array<{ [p: string]: any }>, totalCount?: number };
-    controller: "all" | { page: number, size: number, searchRaw?: string, filter?: string, sortby?: Array<{ prop: string, direction?: "ASC" | "DESC" }> } | { ids: string, maxLength?: number | "none" };
+    controller: "all" | { page?: number, size?: number, searchRaw?: string, filter?: string, sortby?: Array<{ prop: string, direction?: "ASC" | "DESC" }>, pattern?: { returns: Array<string>, [p: string]: Array<string> | { searchRaw?: string, reducers: string } } } | { ids: string, maxLength?: number | "none" };
     setData: Dispatch<SetStateAction<{ data: Array<{ [p: string]: any }>, totalCount?: number }>>;
     relativeData?: { [p: string]: Array<{ [p: string]: any }> }
 }
@@ -114,7 +114,7 @@ export const CardById = forwardRef<CardRef, CardProps>((props, ref) => {
         } else if (controller.searchRaw) {
             const tmpController = { ...controller, searchRaw: controller!.searchRaw ?? "*" }
             if (page) tmpController.page = page
-            const res = await dataController.aggregateList(tmpController)
+            const res = await dataController.patternList(tmpController)
             if (res.code === 200) tmp = { data: page ? [...data.data, ...res.data] : res.data, totalCount: res.totalCount }
         } else { // get by ids
             let listIds = controller.ids.split(",")

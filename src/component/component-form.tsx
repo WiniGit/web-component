@@ -212,6 +212,7 @@ interface CKEditorFormProps extends SimpleFormProps {
 export function CKEditorForm(params: CKEditorFormProps) {
     const _covertErrors = useMemo(() => params.name ? convertErrors(params.methods.formState.errors, params.name) : undefined, [params.name, params.methods.formState.errors?.[params.name!]])
     const { t } = useTranslation()
+    
     return <Controller
         name={params.name}
         control={params.methods.control}
