@@ -461,10 +461,11 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
         case ComponentType.container:
             if (props.childrenData && props.childrenData[findId]) var childComponent = props.type === "card" ? (props.childrenData[findId] as any)(props.indexItem, props.index, props.methods) : props.childrenData[findId]
             if (dataValue && dataValue.backgroundImage) var containerProps = { ...typeProps, style: { ...typeProps.style, ...dataValue } }
+            const dataValueProps = { ...(containerProps ?? typeProps) }
+            delete dataValueProps.emptyElement
             if (!props.item.ParentId && props.type === "form") {
                 if (Array.isArray(dataValue)) {
                     return dataValue.map((dataValueItem, i) => {
-                        const dataValueProps = { ...(containerProps ?? typeProps) }
                         dataValueProps.indexItem = { ...props.indexItem, [props.item.NameField.split(".").length > 1 ? props.item.NameField.split(".")[1] : props.item.NameField]: dataValueItem }
                         return <form key={`${dataValueItem}-${i}`} {...dataValueProps}>
                             {childComponent ??
@@ -478,7 +479,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                         </form>
                     })
                 } else {
-                    return <form {...(containerProps ?? typeProps)}>
+                    return <form {...dataValueProps}>
                         {childComponent ??
                             (typeProps.className?.includes("layout-body") ?
                                 <>
@@ -491,8 +492,6 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                 }
             } else if (Array.isArray(dataValue)) {
                 return dataValue.map((dataValueItem, i) => {
-                    const dataValueProps = { ...(containerProps ?? typeProps) }
-                    delete dataValueProps.emptyElement
                     dataValueProps.indexItem = { ...props.indexItem, [props.item.NameField.split(".").length > 1 ? props.item.NameField.split(".")[1] : props.item.NameField]: dataValueItem }
                     return <div key={`${dataValueItem}-${i}`} {...dataValueProps}>
                         {childComponent ??
@@ -506,7 +505,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                     </div>
                 })
             } else {
-                return <div {...(containerProps ?? typeProps)}>
+                return <div {...dataValueProps}>
                     {childComponent ??
                         (typeProps.className?.includes("layout-body") ?
                             <>
