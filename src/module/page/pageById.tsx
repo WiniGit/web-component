@@ -422,7 +422,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
             if (tmpCol) return tmpCol?.Form?.Options
             if (props.options?.[`${props.item.NameField}_Options`]) {
                 const tmpRel = props.rels?.find(e => e.Column === props.item.NameField)
-                if (tmpRel) (props.options[`${props.item.NameField}_Options`] ?? []).map(e => ({ id: e.Id, name: e.Name }))
+                if (tmpRel) return (props.options[`${props.item.NameField}_Options`] ?? []).map(e => ({ id: e.Id, name: e.Name }))
             }
         }
         return undefined
