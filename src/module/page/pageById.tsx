@@ -463,6 +463,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
             if (dataValue && dataValue.backgroundImage) var containerProps = { ...typeProps, style: { ...typeProps.style, ...dataValue } }
             const dataValueProps = { ...(containerProps ?? typeProps) }
             delete dataValueProps.emptyElement
+            delete dataValueProps.onLoaded
             if (!props.item.ParentId && props.type === "form") {
                 if (Array.isArray(dataValue)) {
                     return dataValue.map((dataValueItem, i) => {
