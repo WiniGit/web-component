@@ -124,7 +124,7 @@ export const CardById = forwardRef<CardRef, CardProps>((props, ref) => {
             if (res.code === 200) tmp = { data: listData, totalCount: listData.length }
         }
         if (!tmp) return undefined
-        let relKeys = layers.filter((e: any) => e.Type === ComponentType.card && e.Setting.controller.ids && regexGetVariableByThis.test(e.Setting.controller.ids)).map((e: any) => regexGetVariableByThis.exec(e.Setting.controller.ids)![1])
+        let relKeys = layers.filter((e: any) => e.Type === ComponentType.card && e.Setting.controller?.ids && regexGetVariableByThis.test(e.Setting.controller.ids)).map((e: any) => regexGetVariableByThis.exec(e.Setting.controller.ids)![1])
         relKeys.push(...keyNames.filter((e: string) => e.split(".").length > 1).map((e: string) => e.split(".")[0]))
         relKeys = relKeys.filter((e: string, i: number, arr: Array<string>) => arr.indexOf(e) === i)
         if (relKeys.length) {
