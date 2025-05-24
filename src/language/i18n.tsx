@@ -72,6 +72,7 @@ const resources = {
             weekly: "Weekly",
             monthly: "Monthly",
             last: "Last",
+            value: "Value",
             noDataFound: "There are no data to found.",
         },
     },
@@ -144,6 +145,7 @@ const resources = {
             weekly: "Hàng tuần",
             monthly: "Hàng tháng",
             last: "Cuối tháng",
+            value: "Giá trị",
             noDataFound: "Không có dữ liệu."
         },
     },

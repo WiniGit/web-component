@@ -23,7 +23,7 @@ export function FTextField(props: FTextFieldProps) {
     return <TextField
         {...props}
         register={props.name?.length ? (props.methods!.register(props.name, { required: props.required }) as any) : undefined}
-        helperText={_covertErrors && (_covertErrors?.message?.length ? _covertErrors?.message : `${t("input")} ${props.name} value`.toLowerCase())}
+        helperText={_covertErrors && (_covertErrors?.message?.length ? _covertErrors?.message : `${t("input")} ${props.name} ${t("value")}`.toLowerCase())}
         simpleStyle
     />
 }
@@ -42,7 +42,7 @@ export function FInputPassword(props: FTextFieldProps) {
             {props.suffix}
         </>}
         register={props.name?.length ? (props.methods!.register(props.name, { required: props.required }) as any) : undefined}
-        helperText={_covertErrors && (_covertErrors?.message?.length ? _covertErrors?.message : `${t("input")} ${props.name} value`.toLowerCase())}
+        helperText={_covertErrors && (_covertErrors?.message?.length ? _covertErrors?.message : `${t("input")} ${props.name} ${t("value")}`.toLowerCase())}
         simpleStyle
     />
 }
@@ -65,7 +65,7 @@ export function FTextArea(props: FTextAreaProps) {
     return <TextArea
         {...props}
         register={props.name?.length ? (props.methods!.register(props.name, { required: props.required }) as any) : undefined}
-        helperText={_covertErrors && (_covertErrors?.message?.length ? _covertErrors?.message : `${t("input")} ${props.name} value`).toLowerCase()}
+        helperText={_covertErrors && (_covertErrors?.message?.length ? _covertErrors?.message : `${t("input")} ${props.name} ${t("value")}`).toLowerCase()}
         simpleStyle
     />
 }
@@ -253,7 +253,7 @@ export const FSelect1 = ({ options = [], methods, ...props }: FSelect1Props) => 
                     field.onChange(ev?.id);
                     props.onChange?.(ev);
                 }}
-                helperText={_covertErrors && (_covertErrors?.message?.length ? _covertErrors?.message : `${t("choose")} ${props.name} value`.toLowerCase())}
+                helperText={_covertErrors && (_covertErrors?.message?.length ? _covertErrors?.message : `${t("choose")} ${props.name} ${t("value")}`.toLowerCase())}
                 simpleStyle />;
         }}
     /> : <Select1 {...props} options={options} simpleStyle />
@@ -296,7 +296,7 @@ export const FSelectMultiple = ({ options = [], methods, ...props }: FSelectMult
                     field.onChange(ev);
                     props.onChange?.(ev);
                 }}
-                helperText={_covertErrors && (_covertErrors?.message?.length ? _covertErrors?.message : `${(props.placeholder ? props.placeholder : `${t("choose")} ${props.name} value`).toLowerCase()}`)}
+                helperText={_covertErrors && (_covertErrors?.message?.length ? _covertErrors?.message : `${(props.placeholder ? props.placeholder : `${t("choose")} ${props.name} ${t("value")}`).toLowerCase()}`)}
                 simpleStyle />;
         }}
     /> : <SelectMultiple {...props} options={options} simpleStyle />
@@ -384,7 +384,7 @@ export const FColorPicker = ({ type = "input", methods, ...props }: FColorPicker
                     field.onChange(ev)
                     props.onChange?.(ev)
                 }}
-                helperText={_covertErrors && (_covertErrors?.message?.length ? _covertErrors?.message : `${t("input")} ${props.name} value`.toLowerCase())}
+                helperText={_covertErrors && (_covertErrors?.message?.length ? _covertErrors?.message : `${t("input")} ${props.name} ${t("value")}`.toLowerCase())}
                 simpleStyle
             />
         }}
@@ -428,7 +428,7 @@ export const FNumberPicker = ({ type = "outline", methods, ...props }: FNumberPi
                 }}
                 type={type}
                 simpleStyle
-                helperText={_covertErrors && (_covertErrors?.message?.length ? _covertErrors?.message : `${(`${t("input")} ${props.name} value`).toLowerCase()}`)}
+                helperText={_covertErrors && (_covertErrors?.message?.length ? _covertErrors?.message : `${(`${t("input")} ${props.name} ${t("value")}`).toLowerCase()}`)}
             />
         }}
     /> : <NumberPicker {...props} type={type} simpleStyle />
@@ -467,7 +467,7 @@ export const FDateTimePicker = ({ methods, ...props }: FDateTimePickerProps) => 
                     field.onChange(ev)
                     props.onChange?.(ev)
                 }}
-                helperText={_covertErrors && (_covertErrors?.message?.length ? _covertErrors?.message : `${(props.placeholder ? props.placeholder : `${t("choose")} ${props.name} value`).toLowerCase()}`)}
+                helperText={_covertErrors && (_covertErrors?.message?.length ? _covertErrors?.message : `${(props.placeholder ? props.placeholder : `${t("choose")} ${props.name} ${t("value")}`).toLowerCase()}`)}
                 simpleStyle
             />
         }}
@@ -508,6 +508,7 @@ export const FUploadFile = ({ methods, ...props }: FUploadFileProps) => {
             const _covertErrors = convertErrors(methods.formState.errors, props.name!)
             return <ImportFile
                 {...props}
+                value={field.value}
                 onChange={(ev) => {
                     field.onChange(ev)
                     props.onChange?.(ev)
