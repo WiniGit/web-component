@@ -187,11 +187,11 @@ export const CardById = forwardRef<CardRef, CardProps>((props, ref) => {
             return tmp
         }
         return undefined
-    }, [extendData])
+    }, [JSON.stringify(extendData)])
 
     useEffect(() => {
         props.onRelativeLoaded?.(getRelativeData)
-    }, [getRelativeData])
+    }, [JSON.stringify(getRelativeData)])
 
     useImperativeHandle(ref, () => ({
         getData: getData,
@@ -237,7 +237,7 @@ const RenderCard = (props: RenderCardProps) => {
         Object.keys(props.extendData).forEach(p => {
             methods.setValue(p, props.extendData[p])
         })
-    }, [props.extendData])
+    }, [JSON.stringify(props.extendData)])
 
     return props.cardItem.Props.filter((e: any) => !e.ParentId).map((e: any) => {
         return <RenderLayerElement
