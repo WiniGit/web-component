@@ -72,7 +72,6 @@ interface CardProps extends Props {
         }>;
         totalCount: number;
     }) => void;
-    onRelativeLoaded?: (ev: any) => void;
 }
 interface CardRef {
     getData: (page?: number) => Promise<void>;
