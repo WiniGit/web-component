@@ -38,8 +38,7 @@ interface Props {
 interface CardProps extends Props {
     id: string,
     methods?: UseFormReturn,
-    onLoaded?: (ev: { data: Array<{ [p: string]: any }>, totalCount: number }) => void,
-    onRelativeLoaded?: (ev: any) => void
+    onLoaded?: (ev: { data: Array<{ [p: string]: any }>, totalCount: number }) => void
 }
 
 interface CardRef {
@@ -117,6 +116,11 @@ export const CardById = forwardRef<CardRef, CardProps>((props, ref) => {
             if (page) tmpController.page = page
             const res = await dataController.patternList(tmpController)
             if (res.code === 200) tmp = { data: page ? [...data.data, ...res.data] : res.data, totalCount: res.totalCount }
+            delete res.code
+            delete res.message
+            delete res.data
+            delete res.totalCount
+            Object.keys(res).forEach((k) => methods.setValue(k, res[k]))
         } else { // get by ids
             let listIds = controller.ids.split(",")
             if (controller.maxLength && controller.maxLength !== "none") listIds = listIds.slice(0, controller.maxLength)
@@ -128,16 +132,14 @@ export const CardById = forwardRef<CardRef, CardProps>((props, ref) => {
         let relKeys = layers.filter((e: any) => e.Type === ComponentType.card && e.Setting.controller?.ids && regexGetVariableByThis.test(e.Setting.controller.ids)).map((e: any) => regexGetVariableByThis.exec(e.Setting.controller.ids)![1])
         relKeys.push(...keyNames.filter((e: string) => e.split(".").length > 1).map((e: string) => e.split(".")[0]))
         relKeys = relKeys.filter((e: string, i: number, arr: Array<string>) => arr.indexOf(e) === i)
-        if (relKeys.length) {
-            for (const k of relKeys) {
-                const currentTmp = methods.getValues(`_${k}`) ?? []
-                const dataController = new DataController(k.replace("Id", ""))
-                const relDataIds = tmp.data.map((e: any) => e[k]?.split(",")).flat(Infinity).filter((e: string | undefined, i: number, arr: Array<string>) => e?.length && currentTmp.every((el: any) => el.Id !== e) && arr.indexOf(e) === i)
-                if (relDataIds.length) {
-                    dataController.getByListId(relDataIds).then(relRes => {
-                        if (relRes.code === 200) methods.setValue(`_${k}`, [...currentTmp, ...relRes.data.filter((e: any) => e !== undefined && e !== null)])
-                    })
-                }
+        for (const k of relKeys) {
+            const currentTmp = methods.getValues(`_${k}`) ?? []
+            const dataController = new DataController(k.replace("Id", ""))
+            const relDataIds = tmp.data.map((e: any) => e[k]?.split(",")).flat(Infinity).filter((e: string | undefined, i: number, arr: Array<string>) => e?.length && currentTmp.every((el: any) => el.Id !== e) && arr.indexOf(e) === i)
+            if (relDataIds.length) {
+                dataController.getByListId(relDataIds).then(relRes => {
+                    if (relRes.code === 200) methods.setValue(`_${k}`, [...currentTmp, ...relRes.data.filter((e: any) => e !== undefined && e !== null)])
+                })
             }
         }
         setData(tmp)
@@ -187,11 +189,7 @@ export const CardById = forwardRef<CardRef, CardProps>((props, ref) => {
             return tmp
         }
         return undefined
-    }, [JSON.stringify(extendData)])
-
-    useEffect(() => {
-        props.onRelativeLoaded?.(getRelativeData)
-    }, [JSON.stringify(getRelativeData)])
+    }, [extendData])
 
     useImperativeHandle(ref, () => ({
         getData: getData,
@@ -237,7 +235,7 @@ const RenderCard = (props: RenderCardProps) => {
         Object.keys(props.extendData).forEach(p => {
             methods.setValue(p, props.extendData[p])
         })
-    }, [JSON.stringify(props.extendData)])
+    }, [props.extendData])
 
     return props.cardItem.Props.filter((e: any) => !e.ParentId).map((e: any) => {
         return <RenderLayerElement
