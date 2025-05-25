@@ -38,7 +38,8 @@ interface Props {
 interface CardProps extends Props {
     id: string,
     methods?: UseFormReturn,
-    onLoaded?: (ev: { data: Array<{ [p: string]: any }>, totalCount: number }) => void
+    onLoaded?: (ev: { data: Array<{ [p: string]: any }>, totalCount: number }) => void,
+    onRelativeLoaded?: (ev: any) => void,
 }
 
 interface CardRef {
@@ -190,6 +191,10 @@ export const CardById = forwardRef<CardRef, CardProps>((props, ref) => {
         }
         return undefined
     }, [extendData])
+
+    useEffect(() => {
+        props.onRelativeLoaded?.(getRelativeData)
+    }, [getRelativeData])
 
     useImperativeHandle(ref, () => ({
         getData: getData,
