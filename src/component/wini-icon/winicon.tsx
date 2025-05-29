@@ -3675,6 +3675,7 @@ export type WiniIconName = "color/accessibility/accessibility-lift" |
     "fill/social media/telegram" |
     "fill/social media/tiktok" |
     "fill/social media/twitch" |
+    "color/flags/aaland-islands" |
     "color/flags/afghanistan" |
     "color/flags/albania" |
     "color/flags/algeria" |
@@ -3686,55 +3687,55 @@ export type WiniIconName = "color/accessibility/accessibility-lift" |
     "color/flags/australia" |
     "color/flags/austria" |
     "color/flags/azerbaijan" |
-    "color/flags/bahamas-na" |
+    "color/flags/bahamas" |
     "color/flags/bahrain" |
     "color/flags/bangladesh" |
-    "color/flags/barbados-na" |
+    "color/flags/barbados" |
     "color/flags/belarus" |
-    "color/flags/belarus-2" |
     "color/flags/belgium" |
-    "color/flags/belize-ca" |
+    "color/flags/belize" |
     "color/flags/benin" |
+    "color/flags/bhutan" |
     "color/flags/bolivia" |
-    "color/flags/bosnia" |
+    "color/flags/bosnia-herzegovina" |
     "color/flags/botswana" |
     "color/flags/brazil" |
     "color/flags/british-virgin-islands" |
     "color/flags/brunei" |
     "color/flags/bulgaria" |
     "color/flags/burkina-faso" |
-    "color/flags/burma" |
     "color/flags/burundi" |
     "color/flags/cambodia" |
     "color/flags/cameroon" |
     "color/flags/canada" |
     "color/flags/cape-verde" |
+    "color/flags/cayman-islands" |
     "color/flags/central-african-republic" |
     "color/flags/chad" |
     "color/flags/chile" |
-    "color/flags/china-2" |
+    "color/flags/china" |
     "color/flags/colombia" |
     "color/flags/comoros" |
-    "color/flags/costarica" |
+    "color/flags/costa-rica" |
     "color/flags/croatia" |
     "color/flags/cuba" |
     "color/flags/cyprus" |
-    "color/flags/czech" |
-    "color/flags/democratic-republic-of-congo" |
+    "color/flags/czechia" |
+    "color/flags/democratic-republic-congo" |
     "color/flags/denmark" |
     "color/flags/djibouti" |
     "color/flags/dominica" |
-    "color/flags/dominican-republic-na" |
+    "color/flags/dominican-republic" |
     "color/flags/east-timor" |
     "color/flags/ecuador" |
     "color/flags/egypt" |
-    "color/flags/el-salvador-ca" |
+    "color/flags/el-salvador" |
     "color/flags/england" |
     "color/flags/equatorial-guinea" |
     "color/flags/eritrea" |
     "color/flags/estonia" |
     "color/flags/ethiopia" |
-    "color/flags/eu" |
+    "color/flags/europe" |
     "color/flags/falkland-islands" |
     "color/flags/faroe-islands" |
     "color/flags/fiji" |
@@ -3748,15 +3749,15 @@ export type WiniIconName = "color/accessibility/accessibility-lift" |
     "color/flags/ghana" |
     "color/flags/gibraltar" |
     "color/flags/greece" |
-    "color/flags/grenada-na" |
+    "color/flags/grenada" |
     "color/flags/guadeloupe" |
     "color/flags/guatemala" |
     "color/flags/guernsey" |
-    "color/flags/guinea-bissau" |
     "color/flags/guinea" |
     "color/flags/guyana" |
-    "color/flags/haiti-na" |
-    "color/flags/honduras-ca" |
+    "color/flags/haiti" |
+    "color/flags/honduras" |
+    "color/flags/hong-kong" |
     "color/flags/hungary" |
     "color/flags/iceland" |
     "color/flags/india" |
@@ -3775,10 +3776,9 @@ export type WiniIconName = "color/accessibility/accessibility-lift" |
     "color/flags/kazakhstan" |
     "color/flags/kenya" |
     "color/flags/kiribati" |
-    "color/flags/korea" |
     "color/flags/kosovo" |
-    "color/flags/kyrgyzstan" |
     "color/flags/kuwait" |
+    "color/flags/kyrgyzstan" |
     "color/flags/laos" |
     "color/flags/latvia" |
     "color/flags/lebanon" |
@@ -3788,16 +3788,14 @@ export type WiniIconName = "color/accessibility/accessibility-lift" |
     "color/flags/liechtenstein" |
     "color/flags/lithuania" |
     "color/flags/luxembourg" |
-    "color/flags/macedonia" |
     "color/flags/madagascar" |
     "color/flags/malawi" |
     "color/flags/malaysia" |
     "color/flags/maldives" |
     "color/flags/mali" |
     "color/flags/malta" |
-    "color/flags/marocco" |
     "color/flags/marshall-islands" |
-    "color/flags/mauritania" |
+    "color/flags/mauritiana" |
     "color/flags/mauritius" |
     "color/flags/mexico" |
     "color/flags/micronesia" |
@@ -3805,22 +3803,25 @@ export type WiniIconName = "color/accessibility/accessibility-lift" |
     "color/flags/monaco" |
     "color/flags/mongolia" |
     "color/flags/montenegro" |
+    "color/flags/morocco" |
     "color/flags/mozanbique" |
+    "color/flags/myanmar" |
     "color/flags/namibia" |
     "color/flags/nauru" |
     "color/flags/nepal" |
     "color/flags/netherlands" |
     "color/flags/new-zealand" |
-    "color/flags/nicaragua-ca" |
+    "color/flags/nicaragua" |
     "color/flags/niger" |
     "color/flags/nigeria" |
     "color/flags/north-korea" |
+    "color/flags/north-macedonia" |
     "color/flags/norway" |
     "color/flags/oman" |
     "color/flags/pakistan" |
     "color/flags/palau" |
     "color/flags/palestine" |
-    "color/flags/panama-ca" |
+    "color/flags/panama" |
     "color/flags/papua-new-guinea" |
     "color/flags/paraguay" |
     "color/flags/peru" |
@@ -3829,16 +3830,16 @@ export type WiniIconName = "color/accessibility/accessibility-lift" |
     "color/flags/portugal" |
     "color/flags/puerto-rico" |
     "color/flags/quatar" |
-    "color/flags/republic-of-the-congo" |
+    "color/flags/republic-congo" |
     "color/flags/romania" |
     "color/flags/russia" |
     "color/flags/rwanda" |
     "color/flags/saint-kitts-nevis" |
-    "color/flags/saint-lucia-na" |
+    "color/flags/saint-lucia" |
     "color/flags/saint-vincent-grenadines" |
     "color/flags/samoa" |
     "color/flags/san-marino" |
-    "color/flags/sao-tome-and-principe" |
+    "color/flags/sao-tome-principe" |
     "color/flags/saudi-arabia" |
     "color/flags/senegal" |
     "color/flags/serbia" |
@@ -3850,15 +3851,15 @@ export type WiniIconName = "color/accessibility/accessibility-lift" |
     "color/flags/solomon-islands" |
     "color/flags/somalia" |
     "color/flags/south-africa" |
-    "color/flags/south-sandwich-islands" |
+    "color/flags/south-georgia-sandwich-islands" |
+    "color/flags/south-korea" |
     "color/flags/south-sudan" |
     "color/flags/spain" |
     "color/flags/sri-lanka" |
     "color/flags/sudan" |
     "color/flags/suriname" |
-    "color/flags/swaziland" |
-    "color/flags/sweeden" |
-    "color/flags/swiss" |
+    "color/flags/sweden" |
+    "color/flags/switzerland" |
     "color/flags/syria" |
     "color/flags/taiwan" |
     "color/flags/tajikistan" |
@@ -3870,21 +3871,10 @@ export type WiniIconName = "color/accessibility/accessibility-lift" |
     "color/flags/tunisia" |
     "color/flags/turkey" |
     "color/flags/turkmenistan" |
-    "color/flags/tuvalu" |
     "color/flags/uganda" |
-    "color/flags/uk" |
     "color/flags/ukraine" |
     "color/flags/united-arab-emirates" |
-    "color/flags/uruguay" |
-    "color/flags/us-virgin-islands" |
-    "color/flags/usa" |
-    "color/flags/uzbekistan" |
-    "color/flags/vanuatu" |
-    "color/flags/venezuela" |
-    "color/flags/yemen" |
-    "color/flags/vietnam" |
-    "color/flags/zambia" |
-    "color/flags/zimbabwe" |
+    "color/flags/united-kingdom.svg" |
     "fill/environment/battery-charging" |
     "fill/environment/battery" |
     "fill/environment/battery-level" |
@@ -9169,6 +9159,199 @@ export type WiniIconName = "color/accessibility/accessibility-lift" |
     "color/location/world-marker" |
     "color/location/world-pin" |
     "color/location/world" |
+    "color/files/archive-check" |
+    "color/files/archive" |
+    "color/files/archive-content" |
+    "color/files/archive-doc-check" |
+    "color/files/archive-doc" |
+    "color/files/archive-drawer" |
+    "color/files/archive-file-check" |
+    "color/files/archive-file" |
+    "color/files/backup" |
+    "color/files/box" |
+    "color/files/browse" |
+    "color/files/catalog" |
+    "color/files/clear-data" |
+    "color/files/cloud-data-sync" |
+    "color/files/compressed-file" |
+    "color/files/computer-upload" |
+    "color/files/copy-2" |
+    "color/files/doc-folder" |
+    "color/files/document-2" |
+    "color/files/document" |
+    "color/files/document-copy" |
+    "color/files/drawer" |
+    "color/files/file-2" |
+    "color/files/file-aac" |
+    "color/files/file-add" |
+    "color/files/file-ai" |
+    "color/files/file-alert" |
+    "color/files/file-archive" |
+    "color/files/file-article" |
+    "color/files/file-ase" |
+    "color/files/file-asp" |
+    "color/files/file" |
+    "color/files/file-aspx" |
+    "color/files/file-audio" |
+    "color/files/file-audio-2" |
+    "color/files/file-avi" |
+    "color/files/file-bmp" |
+    "color/files/file-bookmark" |
+    "color/files/file-c-plus-plus" |
+    "color/files/file-cad" |
+    "color/files/file-cfm" |
+    "color/files/file-cgi" |
+    "color/files/file-chart-bar" |
+    "color/files/file-chart-pie" |
+    "color/files/file-check" |
+    "color/files/file-cloud" |
+    "color/files/file-copy" |
+    "color/files/file-copies" |
+    "color/files/file-csh" |
+    "color/files/file-css" |
+    "color/files/file-csv" |
+    "color/files/file-delete" |
+    "color/files/file-dev" |
+    "color/files/file-dmg" |
+    "color/files/file-doc" |
+    "color/files/file-docx" |
+    "color/files/file-download" |
+    "color/files/file-download-3" |
+    "color/files/file-edit" |
+    "color/files/file-eps" |
+    "color/files/file-epub" |
+    "color/files/file-exe" |
+    "color/files/file-export" |
+    "color/files/file-favorite" |
+    "color/files/file-flash" |
+    "color/files/file-flv" |
+    "color/files/file-folder" |
+    "color/files/file-font" |
+    "color/files/file-gallery" |
+    "color/files/file-gif" |
+    "color/files/file-gpx" |
+    "color/files/file-gzip" |
+    "color/files/file-history" |
+    "color/files/file-html" |
+    "color/files/file-ics" |
+    "color/files/file-image" |
+    "color/files/file-import" |
+    "color/files/file-info" |
+    "color/files/file-iso" |
+    "color/files/file-jar" |
+    "color/files/file-java" |
+    "color/files/file-jpg" |
+    "color/files/file-js" |
+    "color/files/file-json" |
+    "color/files/file-jsp" |
+    "color/files/file-link" |
+    "color/files/file-locked" |
+    "color/files/file-log" |
+    "color/files/file-max" |
+    "color/files/file-md" |
+    "color/files/file-mkv" |
+    "color/files/file-money" |
+    "color/files/file-mov" |
+    "color/files/file-mp3" |
+    "color/files/file-mp4" |
+    "color/files/file-mpg" |
+    "color/files/file-new" |
+    "color/files/file-no-access" |
+    "color/files/file-obj" |
+    "color/files/file-otf" |
+    "color/files/file-pdf" |
+    "color/files/file-php" |
+    "color/files/file-play" |
+    "color/files/file-png" |
+    "color/files/file-pptx" |
+    "color/files/file-preferences" |
+    "color/files/file-psd" |
+    "color/files/file-py" |
+    "color/files/file-question" |
+    "color/files/file-rar" |
+    "color/files/file-raw" |
+    "color/files/file-remove" |
+    "color/files/file-replace" |
+    "color/files/file-rss" |
+    "color/files/file-rtf" |
+    "color/files/file-ruby" |
+    "color/files/file-search" |
+    "color/files/file-settings" |
+    "color/files/file-shared" |
+    "color/files/file-sketch" |
+    "color/files/file-sql" |
+    "color/files/file-srt" |
+    "color/files/file-starred" |
+    "color/files/file-svg" |
+    "color/files/file-sync" |
+    "color/files/file-text" |
+    "color/files/file-tif" |
+    "color/files/file-tiff" |
+    "color/files/file-ttf" |
+    "color/files/file-txt" |
+    "color/files/file-upload-2" |
+    "color/files/file-upload-3" |
+    "color/files/file-upload" |
+    "color/files/file-user" |
+    "color/files/file-vector" |
+    "color/files/file-vvt" |
+    "color/files/file-wav" |
+    "color/files/file-xlsx" |
+    "color/files/file-xml" |
+    "color/files/file-zip" |
+    "color/files/folder-2" |
+    "color/files/folder-3" |
+    "color/files/folder-add" |
+    "color/files/folder-alert" |
+    "color/files/folder-audio" |
+    "color/files/folder" |
+    "color/files/folder-bookmark" |
+    "color/files/folder-chart-bar" |
+    "color/files/folder-chart-pie" |
+    "color/files/folder-check" |
+    "color/files/folder-cloud" |
+    "color/files/folder-dev" |
+    "color/files/folder-download" |
+    "color/files/folder-edit" |
+    "color/files/folder-favorite" |
+    "color/files/folder-gallery" |
+    "color/files/folder-history" |
+    "color/files/folder-image" |
+    "color/files/folder-info" |
+    "color/files/folder-link" |
+    "color/files/folder-locked" |
+    "color/files/folder-money" |
+    "color/files/folder-music" |
+    "color/files/folder-no-access" |
+    "color/files/folder-play" |
+    "color/files/folder-preferences" |
+    "color/files/folder-question" |
+    "color/files/folder-remove" |
+    "color/files/folder-search" |
+    "color/files/folder-replace" |
+    "color/files/folder-settings" |
+    "color/files/folder-shared" |
+    "color/files/folder-starred" |
+    "color/files/folder-sync" |
+    "color/files/folder-upload" |
+    "color/files/folder-user" |
+    "color/files/folder-vector" |
+    "color/files/layers" |
+    "color/files/microsoft-excel" |
+    "color/files/microsoft-onenote" |
+    "color/files/news" |
+    "color/files/note" |
+    "color/files/notebook" |
+    "color/files/open-book" |
+    "color/files/open-folder" |
+    "color/files/paper" |
+    "color/files/raw-image" |
+    "color/files/read" |
+    "color/files/research" |
+    "color/files/save-for-later" |
+    "color/files/saved-items" |
+    "color/files/upload-file" |
+    "color/files/zipped-file" |
     "fill/editing/add-above" |
     "fill/editing/add-below" |
     "fill/editing/ball-crystal" |
@@ -9438,6 +9621,238 @@ export type WiniIconName = "color/accessibility/accessibility-lift" |
     "outline/editing/undo" |
     "outline/editing/unordered-list" |
     "outline/editing/unordered-list-2" |
-    "outline/editing/video-2"
+    "outline/editing/video-2" |
+    "fill/chart/chart-2" |
+    "fill/chart/chart" |
+    "fill/chart/chart-activity-2" |
+    "fill/chart/chart-bar-arrow-up" |
+    "fill/chart/chart-bar-axis-x" |
+    "fill/chart/chart-bar-trend-up" |
+    "fill/chart/chart-candlestick" |
+    "fill/chart/chart-donut" |
+    "fill/chart/chart-line-2" |
+    "fill/chart/chart-pie-2" |
+    "fill/chart/chart-pie-3" |
+    "fill/chart/chart-pie" |
+    "fill/chart/chart-pie-4" |
+    "fill/chart/chart-pie-percentage" |
+    "fill/chart/chart-stock-price" |
+    "fill/chart/circle-chart-line" |
+    "fill/chart/coins-chart" |
+    "fill/chart/diagram-gantt" |
+    "fill/chart/file-chart-bar" |
+    "fill/chart/file-chart-pie" |
+    "fill/chart/folder-chart-bar" |
+    "fill/chart/folder-chart-pie" |
+    "fill/chart/laptop-chart-cols" |
+    "fill/chart/laptop-chart-pie" |
+    "fill/chart/lines-y" |
+    "fill/chart/person-chart-arrow-up" |
+    "fill/chart/presentation-screen-chart-cols" |
+    "fill/chart/presentation-screen-chart-line" |
+    "fill/chart/presentation-screen-chart-pie" |
+    "fill/chart/search-chart" |
+    "fill/chart/square-activity-chart" |
+    "fill/chart/statistics" |
+    "outline/chart/chart-2" |
+    "outline/chart/chart-activity-2" |
+    "outline/chart/chart-bar-arrow-up" |
+    "outline/chart/chart" |
+    "outline/chart/chart-bar-axis-x" |
+    "outline/chart/chart-bar-trend-up" |
+    "outline/chart/chart-candlestick" |
+    "outline/chart/chart-donut" |
+    "outline/chart/chart-line-2" |
+    "outline/chart/chart-pie" |
+    "outline/chart/chart-pie-2" |
+    "outline/chart/chart-pie-3" |
+    "outline/chart/chart-pie-4" |
+    "outline/chart/chart-pie-percentage" |
+    "outline/chart/chart-stock-price" |
+    "outline/chart/circle-chart-line" |
+    "outline/chart/coins-chart" |
+    "outline/chart/diagram-gantt" |
+    "outline/chart/file-chart-bar" |
+    "outline/chart/file-chart-pie" |
+    "outline/chart/folder-chart-bar" |
+    "outline/chart/folder-chart-pie" |
+    "outline/chart/laptop-chart-cols" |
+    "outline/chart/laptop-chart-pie" |
+    "outline/chart/lines-y" |
+    "outline/chart/person-chart-arrow-up" |
+    "outline/chart/presentation-screen-chart-cols" |
+    "outline/chart/presentation-screen-chart-line" |
+    "outline/chart/presentation-screen-chart-pie" |
+    "outline/chart/search-chart" |
+    "outline/chart/square-activity-chart" |
+    "outline/chart/statistics" |
+    "outline/sound/audio-jack" |
+    "outline/sound/arrows-cross" |
+    "outline/sound/audio-mixer" |
+    "outline/sound/bullhorn" |
+    "outline/sound/chart-activity-2" |
+    "outline/sound/circle-media-pause" |
+    "outline/sound/circle-media-play" |
+    "outline/sound/circle-media-stop" |
+    "outline/sound/clarinet" |
+    "outline/sound/compact-disk" |
+    "outline/sound/dial" |
+    "outline/sound/digital-piano" |
+    "outline/sound/drums" |
+    "outline/sound/earphones" |
+    "outline/sound/file-aac" |
+    "outline/sound/file-avi" |
+    "outline/sound/file-mp3" |
+    "outline/sound/file-mp4" |
+    "outline/sound/file-music" |
+    "outline/sound/file-volume" |
+    "outline/sound/folder-music" |
+    "outline/sound/folder-volume" |
+    "outline/sound/guitar" |
+    "outline/sound/hdmi" |
+    "outline/sound/headphones-plus" |
+    "outline/sound/headphones" |
+    "outline/sound/headphones-wireless" |
+    "outline/sound/headphones-xmark" |
+    "outline/sound/headset" |
+    "outline/sound/media-eject" |
+    "outline/sound/media-fast-backwards" |
+    "outline/sound/media-fast-forward" |
+    "outline/sound/media-next" |
+    "outline/sound/media-pause" |
+    "outline/sound/media-play" |
+    "outline/sound/media-playlist" |
+    "outline/sound/media-previous" |
+    "outline/sound/media-record" |
+    "outline/sound/media-skip-to-end" |
+    "outline/sound/media-skip-to-start" |
+    "outline/sound/media-stop" |
+    "outline/sound/megaphone" |
+    "outline/sound/microphone-2" |
+    "outline/sound/microphone" |
+    "outline/sound/microphone-3" |
+    "outline/sound/microphone-4" |
+    "outline/sound/microphone-5" |
+    "outline/sound/microphone-slash" |
+    "outline/sound/mobile-music" |
+    "outline/sound/music" |
+    "outline/sound/music-album" |
+    "outline/sound/music-cloud" |
+    "outline/sound/music-note" |
+    "outline/sound/music-play" |
+    "outline/sound/music-playlist" |
+    "outline/sound/piano-2" |
+    "outline/sound/piano" |
+    "outline/sound/podcast" |
+    "outline/sound/power-off" |
+    "outline/sound/queue" |
+    "outline/sound/radio" |
+    "outline/sound/record-player" |
+    "outline/sound/repeat-2" |
+    "outline/sound/repeat-3" |
+    "outline/sound/repeat-4" |
+    "outline/sound/saxophone" |
+    "outline/sound/screen-reader" |
+    "outline/sound/shuffle-2" |
+    "outline/sound/shuffle" |
+    "outline/sound/speaker" |
+    "outline/sound/tape" |
+    "outline/sound/ticket" |
+    "outline/sound/ticket-2" |
+    "outline/sound/trumpet" |
+    "outline/sound/violin" |
+    "outline/sound/voice-chat" |
+    "outline/sound/volume-2" |
+    "outline/sound/volume" |
+    "outline/sound/volume-minus" |
+    "outline/sound/volume-off" |
+    "outline/sound/volume-plus" |
+    "outline/sound/volume-up" |
+    "outline/sound/volume-xmark" |
+    "outline/sound/waveform-lines" |
+    "fill/sound/arrows-cross" |
+    "fill/sound/audio-jack" |
+    "fill/sound/audio-mixer" |
+    "fill/sound/bullhorn" |
+    "fill/sound/chart-activity-2" |
+    "fill/sound/circle-media-pause" |
+    "fill/sound/circle-media-play" |
+    "fill/sound/circle-media-stop" |
+    "fill/sound/clarinet" |
+    "fill/sound/compact-disk" |
+    "fill/sound/dial" |
+    "fill/sound/digital-piano" |
+    "fill/sound/drums" |
+    "fill/sound/earphones" |
+    "fill/sound/file-aac" |
+    "fill/sound/file-avi" |
+    "fill/sound/file-mp3" |
+    "fill/sound/file-mp4" |
+    "fill/sound/file-music" |
+    "fill/sound/file-volume" |
+    "fill/sound/folder-music" |
+    "fill/sound/folder-volume" |
+    "fill/sound/guitar" |
+    "fill/sound/hdmi" |
+    "fill/sound/headphones-plus" |
+    "fill/sound/headphones" |
+    "fill/sound/headphones-wireless" |
+    "fill/sound/headphones-xmark" |
+    "fill/sound/headset" |
+    "fill/sound/media-eject" |
+    "fill/sound/media-fast-backwards" |
+    "fill/sound/media-fast-forward" |
+    "fill/sound/media-next" |
+    "fill/sound/media-pause" |
+    "fill/sound/media-play" |
+    "fill/sound/media-playlist" |
+    "fill/sound/media-previous" |
+    "fill/sound/media-record" |
+    "fill/sound/media-skip-to-end" |
+    "fill/sound/media-skip-to-start" |
+    "fill/sound/megaphone" |
+    "fill/sound/media-stop" |
+    "fill/sound/microphone-2" |
+    "fill/sound/microphone" |
+    "fill/sound/microphone-3" |
+    "fill/sound/microphone-4" |
+    "fill/sound/microphone-5" |
+    "fill/sound/microphone-slash" |
+    "fill/sound/mobile-music" |
+    "fill/sound/music-album" |
+    "fill/sound/music-cloud" |
+    "fill/sound/music" |
+    "fill/sound/music-note" |
+    "fill/sound/music-play" |
+    "fill/sound/music-playlist" |
+    "fill/sound/piano" |
+    "fill/sound/piano-2" |
+    "fill/sound/podcast" |
+    "fill/sound/power-off" |
+    "fill/sound/queue" |
+    "fill/sound/radio" |
+    "fill/sound/record-player" |
+    "fill/sound/repeat-2" |
+    "fill/sound/repeat-3" |
+    "fill/sound/repeat-4" |
+    "fill/sound/saxophone" |
+    "fill/sound/screen-reader" |
+    "fill/sound/shuffle-2" |
+    "fill/sound/shuffle" |
+    "fill/sound/speaker" |
+    "fill/sound/tape" |
+    "fill/sound/ticket" |
+    "fill/sound/ticket-2" |
+    "fill/sound/trumpet" |
+    "fill/sound/violin" |
+    "fill/sound/voice-chat" |
+    "fill/sound/volume-2" |
+    "fill/sound/volume-minus" |
+    "fill/sound/volume-off" |
+    "fill/sound/volume" |
+    "fill/sound/volume-plus" |
+    "fill/sound/volume-up" |
+    "fill/sound/volume-xmark" |
+    "fill/sound/waveform-lines"
 
 
