@@ -15,7 +15,7 @@ import { useForm, UseFormReturn } from "react-hook-form"
 import { Util } from "../../controller/utils"
 import { ViewById } from "../view/viewById"
 import { regexGetVariableByThis, regexGetVariables, regexWatchDoubleQuote, regexWatchSingleQuote, replaceVariables } from "../card/config"
-import { ConfigData } from "../../controller/config"
+import { CkEditorUploadAdapter, ConfigData } from "../../controller/config"
 import { supportProperties } from "./config"
 import { Rating } from "../../component/rating/rating"
 import { ProgressBar } from "../../component/progress-bar/progress-bar"
@@ -624,7 +624,14 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
             />
         case ComponentType.ckEditor:
             return <CustomCkEditor5 {...typeProps}
-                methods={props.methods} name={props.item.NameField}
+                methods={props.methods}
+                extraPlugins={params.ckEditorUploadPlugin ?? [function (editor: { plugins: { get: (arg0: string) => { (): any; new(): any; createUploadAdapter: (loader: any) => CkEditorUploadAdapter; }; }; }) {
+                    editor.plugins.get('FileRepository').createUploadAdapter = (loader: any) => {
+                        return new CkEditorUploadAdapter(loader);
+                    };
+                }]}
+                value={props.methods?.watch(props.item.NameField)}
+                onBlur={(_: any, editor: any) => { props.methods?.setValue(props.item.NameField, editor.getData()) }}
             />
         default:
             return <div {...typeProps} />
