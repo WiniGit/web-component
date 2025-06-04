@@ -63,6 +63,8 @@ export declare class Util {
     static extractHashtags: (content: string) => [] | RegExpMatchArray;
     static getRandomGradient(seed: string): string;
     static to_vietnamese(number: number | string): string;
+    /** start from 1: Ex: 1=A, 2=B, 3=C, ... */
+    static numberToAlphabet(n?: number): string;
 }
 export declare function formatNumberConvert(num: number): string;
 export declare function inputMoneyPattern(ev: any): void;
