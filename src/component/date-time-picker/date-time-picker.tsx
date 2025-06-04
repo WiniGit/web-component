@@ -136,7 +136,7 @@ export function DateTimePicker({ style = {}, ...props }: DateTimePickerProps) {
     const inputRef = useRef<HTMLInputElement>(null)
     const [value, setValue] = useState<Date | ValueProps>()
     const txtValue = useMemo(() => {
-        if (!value) return <Text className={styles["value"]} style={{ color: "var(--neutral-text-subtitle-color,light-dark(#61616B, #A2A2AA))" }}>{props.placeholder ?? ""}</Text>
+        if (!value) return <Text className={styles["value"]}>{props.placeholder ?? ""}</Text>
         if (value instanceof Date) return <Text className={styles["value"]}>{dateToString(value, `dd/mm/yyyy${props.pickerType?.includes("time") ? " hh:mm" : ""}`)}</Text>
         else return <>
             <Text className={styles["value"]} style={{ flex: "none", width: "fit-content" }}>{dateToString(value.start ?? new Date(), `dd/mm/yyyy${(props.pickerType?.includes("time") || props.pickerType === "auto") ? " hh:mm" : ""}`)} - {dateToString(value.end ?? new Date(), `dd/mm/yyyy${(props.pickerType?.includes("time") || props.pickerType === "auto") ? " hh:mm" : ""}`)}</Text>
