@@ -343,11 +343,12 @@ const PopupDateTimePicker = forwardRef(({ value, style, endValue, repeatValue, o
         initEndValue()
     }, [endValue, inputEndRef, pickerType])
 
-    return <div className="col dropdown-popup" style={{ width: "31.2rem", ...style }}>
+    return <div className="col dropdown-popup" style={{ padding: 0, border: "none", backgroundColor: "transparent", ...style }}>
         <Popup ref={popupRef} />
         <Calendar
             min={min}
             max={max}
+            style={{ width: "31.2rem" }}
             range={pickerType.includes("range") || pickerType === "auto"}
             value={pickerType === "date" || pickerType === "datetime" ? methods.watch('date-start') : (methods.watch('date-start') && methods.watch('date-end') ? { sTime: methods.watch('date-start'), eTime: methods.watch('date-end') } : undefined)}
             header={pickerType !== "date" && <div className='row' style={{ flexWrap: "wrap", gap: "0.8rem 1.2rem", padding: "1.6rem", borderBottom: "var(--neutral-main-border,1px solid light-dark(#EAEAEC, #313135))" }}>
