@@ -134,23 +134,34 @@ interface TextAreaFormProps extends SimpleFormProps {
     textAreaClassName?: string,
 }
 
-export function TextAreaForm(params: TextAreaFormProps) {
+export function TextAreaForm({ style = {}, textAreaStyle = {}, ...params }: TextAreaFormProps) {
     const { t } = useTranslation()
 
-    return <div id={params.id} className={params.className ?? 'col'} style={{ gap: '0.8rem', overflow: 'visible', width: '100%', height: '10rem', ...(params.style ?? {}) }}>
+    return <div id={params.id} className={params.className ?? 'col'} style={{ gap: '0.8rem', overflow: 'visible', width: '100%', height: '10rem', ...style }}>
         {params.labelElement ?? (params.label ? <div className="row" style={{ gap: '0.4rem', minWidth: "16rem" }}>
             <Text className={"label-3"}>{params.label}</Text>
             {params.required ? <Text className="label-4" style={{ color: '#E14337' }}>*</Text> : null}
         </div> : null)}
         <TextArea
+            ref={(txtAreaRef) => {
+                if (txtAreaRef) {
+                    const txtAreaElement = txtAreaRef.getTextarea() as any
+                    txtAreaElement.style.height = `0px`
+                    txtAreaElement.style.height = `${txtAreaElement.scrollHeight}px`
+                }
+            }}
             {...params}
             className={params.textAreaClassName ?? "body-3"}
             register={params.methods.register(params.name, {
                 required: params.required,
                 onBlur: params.onBlur,
-                onChange: params.onChange
+                onChange: (ev) => {
+                    ev.target.style.height = `0px`
+                    ev.target.style.height = `${ev.target.scrollHeight}px`
+                    params.onChange?.(ev)
+                },
             }) as any}
-            style={{ width: '100%', height: '100%', flex: 1, ...(params.textAreaStyle ?? {}) }}
+            style={{ height: "fit-content", maxHeight: "24rem", width: '100%', ...textAreaStyle }}
             placeholder={params.placeholder ? params.placeholder : params.label ? `${t("input")} ${params.label.toLowerCase()}` : ''}
             helperText={convertErrors(params.methods.formState.errors, params.name) && (convertErrors(params.methods.formState.errors, params.name)?.message?.length ? convertErrors(params.methods.formState.errors, params.name)?.message : `${t("input")} ${(params.placeholder ? params.placeholder : params.label ? `${params.label}` : t('value')).toLowerCase()}`)}
         />
@@ -212,7 +223,7 @@ interface CKEditorFormProps extends SimpleFormProps {
 export function CKEditorForm(params: CKEditorFormProps) {
     const _covertErrors = useMemo(() => params.name ? convertErrors(params.methods.formState.errors, params.name) : undefined, [params.name, params.methods.formState.errors?.[params.name!]])
     const { t } = useTranslation()
-    
+
     return <Controller
         name={params.name}
         control={params.methods.control}
