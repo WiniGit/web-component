@@ -46,16 +46,16 @@
 }
 
 .date-time-picker:has(> input:disabled),
-.date-time-picker:disabled {
+.date-time-picker.disabled {
     background-color: var(--neutral-disable-background-color, light-dark(#F4F4F5, #494950)) !important;
     pointer-events: none !important;
 }
 
-button.date-time-picker:hover {
+.date-time-picker:hover {
     background-color: var(--neutral-hover-background-color, light-dark(#18181B0A, #FFFFFF0A));
 }
 
-button.date-time-picker:focus {
+.date-time-picker:focus {
     box-shadow: 0px 4px 20px 0px #0000001A inset;
 }
 
@@ -87,7 +87,7 @@ button.date-time-picker:focus {
 }
 
 .popup-actions>button {
-    padding: .8rem 1.2rem;
+    padding: 0.8rem 1.2rem;
     border-radius: 0.8rem;
 }
 

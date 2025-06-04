@@ -645,6 +645,19 @@ export class Util {
         const value = rsString.replace(/[0-9]/g, '').replace(/ /g, ' ').replace(/ $/, '');
         return value[0].toUpperCase() + value.slice(1);
     }
+
+    /** start from 1: Ex: 1=A, 2=B, 3=C, ... */
+    static numberToAlphabet(n?: number) {
+        if (!n || n <= 0) return '';
+        let result = '';
+        while (n > 0) {
+            n--; // Convert to 0-based index
+            const char = String.fromCharCode(65 + (n % 26));
+            result = char + result;
+            n = Math.floor(n / 26);
+        }
+        return result;
+    }
 }
 
 export function formatNumberConvert(num: number) {

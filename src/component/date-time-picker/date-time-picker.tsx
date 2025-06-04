@@ -163,7 +163,7 @@ export function DateTimePicker({ style = {}, ...props }: DateTimePickerProps) {
         }
     }, [props.value, props.endValue, props.repeatValue, props.pickerType])
 
-    const showCalendar = (rect: any) => {
+    const showCalendar = (rect: any, onClose?: () => void) => {
         showPopup({
             ref: popupRef,
             hideOverlay: true,
@@ -171,6 +171,7 @@ export function DateTimePicker({ style = {}, ...props }: DateTimePickerProps) {
                 ref={popupRef}
                 max={props.max}
                 min={props.min}
+                onClose={onClose}
                 value={value instanceof Date ? value : value?.start}
                 endValue={value instanceof Date ? undefined : value?.end}
                 pickerType={props.pickerType}
@@ -196,7 +197,7 @@ export function DateTimePicker({ style = {}, ...props }: DateTimePickerProps) {
                     helper-text={props.helperText}
                     style={{ '--helper-text-color': props.helperTextColor ?? '#e14337', ...style } as CSSProperties}
                     onClick={(ev: any) => {
-                        const rect = ev.target.closest("div").getBoundingClientRect()
+                        const rect = ev.target.closest("label").getBoundingClientRect()
                         showCalendar(rect)
                     }}>
                     {props.prefix ?? <Winicon className={styles["prefix-icon"]} src="outline/user interface/calendar-date-2" size={"1.2rem"} />}
@@ -237,20 +238,23 @@ export function DateTimePicker({ style = {}, ...props }: DateTimePickerProps) {
                     {props.suffix}
                 </label>
             default:
-                return <button id={props.id}
-                    type="button"
-                    disabled={props.disabled}
-                    className={`row ${props.simpleStyle ? styles['simple-date-time-picker'] : styles["date-time-picker"]} ${props.className ?? (props.simpleStyle ? "" : 'body-3')} ${props.helperText?.length ? styles['helper-text'] : ""}`}
+                return <div id={props.id}
+                    className={`row ${props.simpleStyle ? styles['simple-date-time-picker'] : styles["date-time-picker"]} ${props.disabled ? styles['disabled'] : ""} ${props.className ?? (props.simpleStyle ? "" : 'body-3')} ${props.helperText?.length ? styles['helper-text'] : ""}`}
                     helper-text={props.helperText}
-                    style={{ '--helper-text-color': props.helperTextColor ?? '#e14337', ...style } as CSSProperties}
-                    onFocus={(ev: any) => {
-                        const rect = ev.target.closest("button").getBoundingClientRect()
-                        showCalendar(rect)
+                    style={{ '--helper-text-color': props.helperTextColor ?? '#e14337', cursor: props.disabled ? undefined : 'pointer', ...style } as CSSProperties}
+                    onClick={(ev: any) => {
+                        const divElement = ev.target.closest(`div[class*="${props.simpleStyle ? 'simple-date-time-picker' : 'date-time-picker'}"]`)
+                        if (divElement.isOpen) return closePopup(popupRef)
+                        const rect = divElement.getBoundingClientRect()
+                        divElement.isOpen = true
+                        showCalendar(rect, () => {
+                            divElement.isOpen = false
+                        })
                     }}>
                     {props.prefix ?? <Winicon className={styles["prefix-icon"]} src="outline/user interface/calendar-date-2" size={"1.2rem"} />}
                     {txtValue}
                     {props.suffix}
-                </button>
+                </div>
         }
     }
 
@@ -271,9 +275,10 @@ interface PopupPickerProps {
     repeatValue?: { type: 1 | 2 | 3, value: Array<"everyday" | "last" | number> },
     onApply?: (ev: Date | ValueProps) => void,
     enableRepeat?: boolean,
+    onClose?: () => void
 }
 
-const PopupDateTimePicker = forwardRef(function PopupDateTimePicker({ value, style, endValue, repeatValue, onApply, pickerType = "auto", enableRepeat = false, min, max }: PopupPickerProps, ref: any) {
+const PopupDateTimePicker = forwardRef(({ value, style, endValue, repeatValue, onApply, pickerType = "auto", enableRepeat = false, min, max, onClose }: PopupPickerProps, ref: any) => {
     const methods = useForm({ shouldFocusError: false })
     const [selectTime, setSelectTime] = useState(false)
     const [isRepeat, setIsRepeat] = useState(false)
@@ -285,6 +290,10 @@ const PopupDateTimePicker = forwardRef(function PopupDateTimePicker({ value, sty
     const { t } = useTranslation()
     const regexDate = /[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{4}/g
     const regexTime = /^(?:[01]\d|2[0-3]):[0-5]\d(?:[:][0-5]\d)?$/g
+
+    useEffect(() => {
+        return () => onClose?.()
+    }, [])
 
     useEffect(() => {
         if (repeatValue && enableRepeat) {
@@ -334,7 +343,7 @@ const PopupDateTimePicker = forwardRef(function PopupDateTimePicker({ value, sty
         initEndValue()
     }, [endValue, inputEndRef, pickerType])
 
-    return <div className="col" style={{ width: "31.2rem", ...style }}>
+    return <div className="col dropdown-popup" style={{ width: "31.2rem", ...style }}>
         <Popup ref={popupRef} />
         <Calendar
             min={min}
