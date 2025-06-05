@@ -60,7 +60,7 @@ interface TextAreaFormProps extends SimpleFormProps {
     textAreaStyle?: CSSProperties;
     textAreaClassName?: string;
 }
-export declare function TextAreaForm(params: TextAreaFormProps): import("react/jsx-runtime").JSX.Element;
+export declare function TextAreaForm({ style, textAreaStyle, ...params }: TextAreaFormProps): import("react/jsx-runtime").JSX.Element;
 interface DateTimePickerFormProps extends SimpleFormProps {
     type?: "date" | "datetime";
     pickOnly?: boolean;
