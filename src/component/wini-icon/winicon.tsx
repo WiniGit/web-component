@@ -3875,7 +3875,14 @@ export type WiniIconName = "color/accessibility/accessibility-lift" |
     "color/flags/ukraine" |
     "color/flags/united-arab-emirates" |
     "color/flags/united-kingdom" |
+    "color/flags/uruguay" |
+    "color/flags/usa" |
+    "color/flags/uzbekistan" |
+    "color/flags/venezuela" |
     "color/flags/vietnam" |
+    "color/flags/yemen" |
+    "color/flags/zambia" |
+    "color/flags/zimbabwe" |
     "fill/environment/battery-charging" |
     "fill/environment/battery" |
     "fill/environment/battery-level" |
