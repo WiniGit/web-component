@@ -1,7 +1,7 @@
 .regular0,
 .subtitle-5 {
     line-height: 1.4rem;
-    font-size: 1rem;
+    font-size: 10px;
     color: var(--neutral-text-title-color, light-dark(#18181B, #F4F4F5));
 }
 
@@ -10,7 +10,7 @@
 .button-text-6,
 .label-5 {
     line-height: 1.33;
-    font-size: 1.2rem;
+    font-size: 12px;
     color: var(--neutral-text-title-color, light-dark(#18181B, #F4F4F5));
 }
 
@@ -21,7 +21,7 @@
 .label-4,
 .placeholder-2 {
     line-height: 2.2rem;
-    font-size: 1.4rem;
+    font-size: max(1.4rem, 12px);
     color: var(--neutral-text-title-color, light-dark(#18181B, #F4F4F5));
 }
 
@@ -31,7 +31,7 @@
 .label-2,
 .placeholder-1 {
     line-height: 2.4rem;
-    font-size: 1.6rem;
+    font-size: max(1.6rem, 14px);
     color: var(--neutral-text-title-color, light-dark(#18181B, #F4F4F5));
 }
 
