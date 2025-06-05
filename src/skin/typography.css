@@ -8,7 +8,10 @@
 .regular1,
 .subtitle-4,
 .button-text-6,
-.label-5 {
+.label-5,
+.medium1,
+.heading-9,
+.button-text-5 {
     line-height: 1.33;
     font-size: 12px;
     color: var(--neutral-text-title-color, light-dark(#18181B, #F4F4F5));
@@ -19,7 +22,11 @@
 .body-3,
 .button-text-4,
 .label-4,
-.placeholder-2 {
+.placeholder-2,
+.medium2,
+.heading-8,
+.button-text-3,
+.label-3 {
     line-height: 2.2rem;
     font-size: max(1.4rem, 12px);
     color: var(--neutral-text-title-color, light-dark(#18181B, #F4F4F5));
@@ -29,7 +36,11 @@
 .subtitle-2,
 .body-2,
 .label-2,
-.placeholder-1 {
+.placeholder-1,
+.medium3,
+.heading-7,
+.button-text-2,
+.label-1 {
     line-height: 2.4rem;
     font-size: max(1.6rem, 14px);
     color: var(--neutral-text-title-color, light-dark(#18181B, #F4F4F5));
@@ -37,15 +48,21 @@
 
 .regular4,
 .subtitle-1,
-.body-1 {
+.body-1,
+.medium4,
+.heading-6,
+.highlight-6 {
     line-height: 2.8rem;
-    font-size: 2rem;
+    font-size: max(2rem, 16px);
     color: var(--neutral-text-title-color, light-dark(#18181B, #F4F4F5));
 }
 
-.regular5 {
+.regular5,
+.medium5,
+.heading-5,
+.highlight-5 {
     line-height: 3.2rem;
-    font-size: 2.4rem;
+    font-size: max(2.4rem, 18px);
     color: var(--neutral-text-title-color, light-dark(#18181B, #F4F4F5));
 }
 
@@ -76,8 +93,6 @@
 .medium1,
 .heading-9,
 .button-text-5 {
-    line-height: 1.33;
-    font-size: 1.2rem;
     font-weight: 500;
     color: var(--neutral-text-title-color, light-dark(#18181B, #F4F4F5));
 }
@@ -86,8 +101,6 @@
 .heading-8,
 .button-text-3,
 .label-3 {
-    line-height: 2.2rem;
-    font-size: 1.4rem;
     font-weight: 500;
     color: var(--neutral-text-title-color, light-dark(#18181B, #F4F4F5));
 }
@@ -96,8 +109,6 @@
 .heading-7,
 .button-text-2,
 .label-1 {
-    line-height: 2.4rem;
-    font-size: 1.6rem;
     font-weight: 500;
     color: var(--neutral-text-title-color, light-dark(#18181B, #F4F4F5));
 }
@@ -105,8 +116,6 @@
 .medium4,
 .heading-6,
 .highlight-6 {
-    line-height: 2.8rem;
-    font-size: 2rem;
     font-weight: 500;
     color: var(--neutral-text-title-color, light-dark(#18181B, #F4F4F5));
 }
@@ -114,8 +123,6 @@
 .medium5,
 .heading-5,
 .highlight-5 {
-    line-height: 3.2rem;
-    font-size: 2.4rem;
     font-weight: 500;
     color: var(--neutral-text-title-color, light-dark(#18181B, #F4F4F5));
 }

@@ -54,7 +54,7 @@ export function Winicon({ id, src, link, className, style, size, color, alt, onC
         if (src) {
             cacheImage(cdnSrc + src + ".svg").then(async (res) => { setSvgData(await res.text()) }).catch(() => { setSvgData(alt ?? "error") })
         } else if (link) {
-            fetch(link).then(async (res) => { setSvgData(await res.text()) }).catch(() => { setSvgData(alt ?? "error") })
+            fetch(link).then(async (res) => { if (res.ok) setSvgData(await res.text()) }).catch(() => { setSvgData(alt ?? "error") })
         }
     }, [src, link])
 
@@ -3874,7 +3874,8 @@ export type WiniIconName = "color/accessibility/accessibility-lift" |
     "color/flags/uganda" |
     "color/flags/ukraine" |
     "color/flags/united-arab-emirates" |
-    "color/flags/united-kingdom.svg" |
+    "color/flags/united-kingdom" |
+    "color/flags/vietnam" |
     "fill/environment/battery-charging" |
     "fill/environment/battery" |
     "fill/environment/battery-level" |
