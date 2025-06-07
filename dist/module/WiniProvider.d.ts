@@ -8,6 +8,7 @@ interface Props {
      * api link
      * */
     url: string;
+    fileUrl: string;
     imgUrlId: string;
     onInvalidToken?: () => void;
     children?: React.ReactNode;

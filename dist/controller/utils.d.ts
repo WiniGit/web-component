@@ -11,7 +11,7 @@ export declare class Util {
      * number to money format.\
      * ex: 199999 => 1,999,999
      * */
-    static money(number: number | string): string | 0;
+    static money(number: number | string): string;
     static moneytmp(number: number, a: number): string;
     static stringToDate(_date: string, _format?: string, _delimiter?: string): Date;
     static datetoStringDefault(): string;

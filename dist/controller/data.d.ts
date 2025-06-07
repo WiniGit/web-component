@@ -12,6 +12,7 @@ export declare class DataController {
             prop: string;
             direction?: "ASC" | "DESC";
         }>;
+        returns?: Array<string>;
     } | undefined): Promise<any>;
     filterByEmptyKey(options: {
         page?: number;

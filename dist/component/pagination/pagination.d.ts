@@ -7,7 +7,7 @@ interface Props {
     onChangePage: Function;
     hideGoToPage?: boolean;
     hidePageSize?: boolean;
-    style: CSSProperties;
+    style?: CSSProperties;
 }
 export declare function Pagination({ id, currentPage, itemPerPage, totalItem, onChangePage, hidePageSize, hideGoToPage, style }: Props): import("react/jsx-runtime").JSX.Element;
 export {};

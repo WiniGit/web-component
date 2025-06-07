@@ -3,7 +3,7 @@ interface CheckboxProps {
     id?: string;
     name?: string;
     onChange?: (value: boolean, target: HTMLInputElement) => void;
-    value?: boolean;
+    value?: boolean | null;
     checkColor?: string;
     disabled?: boolean;
     className?: string;

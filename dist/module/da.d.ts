@@ -106,4 +106,29 @@ export declare enum DesignTokenType {
     boxShadow = "box-shadow",
     custom = "custom"
 }
+export declare enum ColDataType {
+    text = "text",
+    label = "label",
+    datetime = "datetime",
+    money = "money",
+    website = "website",
+    formula = "formula",
+    people = "people",
+    files = "files",
+    progress = "progress",
+    rate = "rate"
+}
+export declare const ColDataTypeIcon: {
+    text: import("react/jsx-runtime").JSX.Element;
+    people: import("react/jsx-runtime").JSX.Element;
+    label: import("react/jsx-runtime").JSX.Element;
+    datetime: import("react/jsx-runtime").JSX.Element;
+    money: import("react/jsx-runtime").JSX.Element;
+    website: import("react/jsx-runtime").JSX.Element;
+    formula: import("react/jsx-runtime").JSX.Element;
+    files: import("react/jsx-runtime").JSX.Element;
+    progress: import("react/jsx-runtime").JSX.Element;
+    rate: import("react/jsx-runtime").JSX.Element;
+    "": import("react/jsx-runtime").JSX.Element;
+};
 //# sourceMappingURL=da.d.ts.map

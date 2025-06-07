@@ -1,6 +1,7 @@
 export declare class ConfigData {
     static pid: string;
     static url: string;
+    static fileUrl: string;
     static imgUrlId: string;
     static extraPlugins: undefined;
     static onInvalidToken: () => void;

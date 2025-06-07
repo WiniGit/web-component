@@ -1,6 +1,6 @@
 import { CSSProperties } from 'react';
 interface SliderProps {
-    formatter: (value: number) => string;
+    formatter?: (value: number) => string;
     style?: CSSProperties;
     className?: string;
     min?: number;
@@ -20,7 +20,7 @@ interface SliderProps {
     /**
      * default value: 6px
      * */
-    rangeBarWidth: number | string;
+    rangeBarWidth?: number | string;
     marks?: Array<{
         value: number;
         label?: string;
