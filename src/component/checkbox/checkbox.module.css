@@ -39,6 +39,14 @@
     border: none;
 }
 
+.checkbox-container>svg>path:first-child {
+    display: none;
+}
+
+.checkbox-container>svg>path:last-child {
+    display: block;
+}
+
 .checkbox-container[is-null-value="true"]>svg>path:first-child {
     display: block;
 }
