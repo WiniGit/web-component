@@ -5,6 +5,7 @@ import { ToastMessage } from '../component/toast-noti/toast-noti';
 export class ConfigData {
     static pid = ""
     static url = ""
+    static fileUrl = "";
     static imgUrlId = "";
     static extraPlugins = undefined;
     static onInvalidToken = () => Util.clearCookie();

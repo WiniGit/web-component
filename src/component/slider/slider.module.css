@@ -1,11 +1,7 @@
 .slider-container {
     position: relative;
     height: 1.6rem;
-}
-
-.slider-container {
-    height: unset;
-    width: 1.6rem;
+    width: 28rem;
 }
 
 .range-bar {

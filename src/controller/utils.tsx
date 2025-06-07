@@ -75,7 +75,7 @@ export class Util {
                 return number.toString().replace(".00", "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
             }
         }
-        return 0;
+        return "0";
     }
 
     static moneytmp(number: number, a: number) {

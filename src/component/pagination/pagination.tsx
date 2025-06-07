@@ -16,7 +16,7 @@ interface Props {
     onChangePage: Function,
     hideGoToPage?: boolean,
     hidePageSize?: boolean,
-    style: CSSProperties,
+    style?: CSSProperties,
 }
 
 export function Pagination({ id, currentPage, itemPerPage = 10, totalItem, onChangePage, hidePageSize = false, hideGoToPage = false, style }: Props) {

@@ -1,3 +1,5 @@
+import { Winicon } from "../component/wini-icon/winicon"
+
 export enum ComponentType {
     text = 'Text',
     img = 'Image',
@@ -117,4 +119,31 @@ export enum DesignTokenType {
     border = "border",
     boxShadow = "box-shadow",
     custom = "custom",
+}
+
+export enum ColDataType {
+    text = "text",
+    label = "label",
+    datetime = "datetime",
+    money = "money",
+    website = "website",
+    formula = "formula",
+    people = "people",
+    files = "files",
+    progress = "progress",
+    rate = "rate"
+}
+
+export const ColDataTypeIcon = {
+    [ColDataType.text]: <Winicon src='outline/text/text' size={"1.2rem"} />,
+    [ColDataType.people]: <Winicon src='outline/location/explore-user' size={"1.2rem"} />,
+    [ColDataType.label]: <Winicon src='outline/shopping/tag' size={"1.2rem"} />,
+    [ColDataType.datetime]: <Winicon src='outline/user interface/calendar-date-2' size={"1.2rem"} />,
+    [ColDataType.money]: <Winicon src='outline/business/round-dollar' size={"1.2rem"} />,
+    [ColDataType.website]: <Winicon src='outline/user interface/web-link' size={"1.2rem"} />,
+    [ColDataType.formula]: <Winicon src='outline/business/math' size={"1.2rem"} />,
+    [ColDataType.files]: <Winicon src='outline/files/document' size={"1.2rem"} />,
+    [ColDataType.progress]: <Winicon src='outline/user interface/progress-indicator' size={"1.2rem"} />,
+    [ColDataType.rate]: <Winicon src='outline/user interface/star' size={"1.2rem"} />,
+    [""]: <Winicon src='outline/text/text' size={"1.2rem"} />
 }

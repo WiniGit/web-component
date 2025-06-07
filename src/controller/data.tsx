@@ -27,7 +27,7 @@ export class DataController {
         return res
     }
 
-    async aggregateList(options: { page?: number, size?: number, searchRaw?: string, filter?: string, sortby?: Array<{ prop: string, direction?: "ASC" | "DESC" }> } | undefined) {
+    async aggregateList(options: { page?: number, size?: number, searchRaw?: string, filter?: string, sortby?: Array<{ prop: string, direction?: "ASC" | "DESC" }>, returns?: Array<string> } | undefined) {
         const res = await BaseDA.post(ConfigData.url + 'data/aggregateList', {
             headers: {
                 pid: ConfigData.pid,

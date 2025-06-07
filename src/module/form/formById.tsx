@@ -62,7 +62,8 @@ export const FormById = forwardRef<FormByIdRef, FormByIdProps>((props, ref) => {
                             if (_col) {
                                 switch (_col?.DataType) {
                                     case FEDataType.NUMBER:
-                                        const convertValue = typeof dataItem[key] === 'string' ? dataItem[key].length ? parseFloat(dataItem[key].replace(/,/g, '')) : undefined : dataItem[key]
+                                        let convertValue = typeof dataItem[key] === 'string' ? dataItem[key].length ? parseFloat(dataItem[key].replace(/,/g, '')) : undefined : dataItem[key]
+                                        if (isNaN(convertValue)) convertValue = undefined
                                         if (convertValue) {
                                             params.set(key, convertValue.toString())
                                             dataItem[key] = convertValue

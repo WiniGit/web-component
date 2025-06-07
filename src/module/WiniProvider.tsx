@@ -16,6 +16,7 @@ interface Props {
      * api link
      * */
     url: string,
+    fileUrl: string,
     imgUrlId: string,
     onInvalidToken?: () => void,
     children?: React.ReactNode,
@@ -76,6 +77,7 @@ export const WiniProvider = (props: Props) => {
     ConfigData.pid = props.pid
     ConfigData.url = props.url
     ConfigData.imgUrlId = props.imgUrlId
+    ConfigData.fileUrl = props.fileUrl
     if (props.onInvalidToken) ConfigData.onInvalidToken = props.onInvalidToken
 
     useEffect(() => {
@@ -94,17 +96,10 @@ export const WiniProvider = (props: Props) => {
         })
     }, [props.pid])
 
-    useEffect(() => {
-        ConfigData.url = props.url
-    }, [props.url])
-
-    useEffect(() => {
-        ConfigData.imgUrlId = props.imgUrlId
-    }, [props.imgUrlId])
-
-    useEffect(() => {
-        if (props.onInvalidToken) ConfigData.onInvalidToken = props.onInvalidToken
-    }, [props.onInvalidToken])
+    useEffect(() => { ConfigData.url = props.url }, [props.url])
+    useEffect(() => { ConfigData.imgUrlId = props.imgUrlId }, [props.imgUrlId])
+    useEffect(() => { ConfigData.fileUrl = props.fileUrl }, [props.fileUrl])
+    useEffect(() => { if (props.onInvalidToken) ConfigData.onInvalidToken = props.onInvalidToken }, [props.onInvalidToken])
 
     return <BrowserRouter>
         <ToastContainer />

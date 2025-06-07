@@ -2,9 +2,9 @@ import ReactDOM from "react-dom";
 import { CSSProperties, useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
 import styles from './slider.module.css';
 import { Text } from "../text/text";
- 
+
 interface SliderProps {
-    formatter: (value: number) => string,
+    formatter?: (value: number) => string,
     style?: CSSProperties,
     className?: string,
     min?: number,
@@ -26,7 +26,7 @@ interface SliderProps {
     /**
      * default value: 6px
      * */
-    rangeBarWidth: number | string,
+    rangeBarWidth?: number | string,
     marks?: Array<{ value: number, label?: string }>,
     tooltip?: boolean,
     step?: number,
@@ -34,7 +34,7 @@ interface SliderProps {
     onChangeComplete?: (value: number | [number, number]) => void,
 }
 
-export function Slider({ min = 0, max = 100, formatter, className, rangeBarWidth, defaultValue, disabled, marks, onChange, onChangeComplete, range, step = 1, style, tooltip }: SliderProps) {
+export function Slider({ min = 0, max = 100, formatter, className, rangeBarWidth = 6, defaultValue, disabled, marks, onChange, onChangeComplete, range, step = 1, style = {}, tooltip }: SliderProps) {
     const [value, setValue] = useState<number | [number, number]>(range ? [min, max] : (min + max) / 2);
     const sliderRef = useRef<HTMLDivElement>(null);
     const [isDragging, setIsDragging] = useState<"min" | "max" | "single" | null>(null);
@@ -110,13 +110,13 @@ export function Slider({ min = 0, max = 100, formatter, className, rangeBarWidth
                     else setValue([min, defaultValue])
                 } setValue(defaultValue)
             } else {
-                if (defaultValue[0] > max || defaultValue[0] < min || defaultValue[1] > max || defaultValue[1] < min) setValue([min, max])
+                if (isNaN(defaultValue[0]) || isNaN(defaultValue[1]) || defaultValue[0] > max || defaultValue[0] < min || defaultValue[1] > max || defaultValue[1] < min) setValue([min, max])
                 else setValue(defaultValue)
             }
         }
     }, [defaultValue])
 
-    return <div ref={sliderRef} className={`${styles["slider-container"]} ${className ?? 'subtitle-3'} ${range ? styles["range"] : ''}`} style={(style ? { "--range-width": rangeBarWidth, ...style } : { "--range-width": rangeBarWidth }) as any}>
+    return <div ref={sliderRef} className={`${styles["slider-container"]} ${className ?? 'subtitle-3'} ${range ? styles["range"] : ''}`} style={{ "--range-width": typeof rangeBarWidth === "number" ? `${rangeBarWidth}px` : rangeBarWidth, ...style } as any}>
         <div className={styles["range-bar"]}>
             <div
                 className={styles["value-bar"]}
