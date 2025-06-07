@@ -59,7 +59,7 @@ export const SearchFilterData = ({ columns = [], fields = [], searchRaw = "*", o
                 const prevParsed = parsed.find(p => p.name === name);
                 if (prevParsed) prevParsed.value += ` ${value}`
                 else if (name.endsWith("Id")) {
-                    parsed.push({ name, value: value.replace(/\*/g, "").split("|").map(id => id.trim()).join(",") });
+                    parsed.push({ name, value: value.replace(/\*/g, "").split("|").map((id: string) => id.trim()).join(",") });
                 } else parsed.push({ name, value });
             }
             setFilterData(prev => prev.map(f => ({ name: f.name, value: parsed.find(p => p.name === f.name)?.value.split(" ").join(",") })))
@@ -96,6 +96,8 @@ export const SearchFilterData = ({ columns = [], fields = [], searchRaw = "*", o
                         currentSearch = currentSearch.replace(`(${f.value.split(",").map((vl: any) => `(@${f.name}:[${vl}])`).join(" | ")})`, "")
                     }
                     else currentSearch = currentSearch.replace(`@${f.name}:[${f.value.split(",").join(" ")}]`, "")
+                } else if (tmp?.DataType === FEDataType.BOOLEAN) {
+                    currentSearch = currentSearch.replace(`@${f.name}:{${f.value}}`, "")
                 } else {
                     currentSearch = currentSearch.replace(`@${f.name}:{${f.value.split(",").map((id: string) => `*${id}*`).join(" | ")}}`, "")
                 }
@@ -109,6 +111,8 @@ export const SearchFilterData = ({ columns = [], fields = [], searchRaw = "*", o
                     return `(${f.value.split(",").map((vl: any) => `(@${f.name}:[${vl}])`).join(" | ")})`
                 }
                 return `@${f.name}:[${f.value.split(",").join(" ")}]`
+            } else if (tmp?.DataType === FEDataType.BOOLEAN) {
+                return `@${f.name}:{${f.value}}`
             } else {
                 return `@${f.name}:{${f.value.split(",").map((id: any) => `*${id}*`).join(" | ")}}`
             }
@@ -266,7 +270,7 @@ const FilterDropdown = ({ filterData, style = {}, onClose, columns = [], relativ
             hideOverlay: true,
             content: <FilterOptionsDropdown
                 onClose={() => { setTimeout(() => { btn.onOpen = false }, 150) }}
-                style={{ top: rect.bottom + 2, left: rect.x }}
+                style={{ top: rect.bottom + 2, left: rect.x, width: rect.width }}
                 columns={columns}
                 fields={fields}
                 data={[...columns, ...relativeCols].map((c) => ({ name: c.Name.split(".").length > 1 ? c.Name.split(".")[0] : c.Name, value: undefined })).filter((e => fList.every(f => f.name !== e.name)))}
@@ -371,6 +375,7 @@ const InputValueTile = ({ fieldItem, filterItem, colData, onChange }: InputValue
     const popupRef = useRef(null)
     const [relativeValue, setRelativeValue] = useState([])
     const [data, setData] = useState(filterItem)
+    const { t } = useTranslation()
 
     useEffect(() => {
         if (fieldItem.TablePK) {
@@ -381,6 +386,10 @@ const InputValueTile = ({ fieldItem, filterItem, colData, onChange }: InputValue
             }
         }
     }, [data.value])
+
+    useEffect(() => {
+        setData(filterItem)
+    }, [filterItem])
 
     const onChangeData = (vl?: string) => {
         if (!!vl?.length) {
@@ -393,8 +402,8 @@ const InputValueTile = ({ fieldItem, filterItem, colData, onChange }: InputValue
     }
 
     switch (fieldItem.DataType) {
-        // @ts-ignore
         case FEDataType.NUMBER:
+        case FEDataType.MONEY:
             if (fieldItem.Form.Options) {
                 let label = fieldItem.Form.Options.filter((e: any) => data.value?.split(",").map((vl: string) => Number(vl)).includes(e.id))
                 if (label.length) label = label.map((e: any) => e.name).join(", ")
@@ -423,38 +432,38 @@ const InputValueTile = ({ fieldItem, filterItem, colData, onChange }: InputValue
                         <Text className={label ? "body-3" : "placeholder-2"}>{label ?? `${i18component.t("select")} ${(colData?.Title ?? fieldItem.Form.Label ?? data.name).toLowerCase()}`}</Text>
                     </button>
                 </>
+            } else {
+                return <>
+                    <Popup ref={popupRef} />
+                    <button type="button" className={`row ${styles["button-filter"]}`} onClick={(ev: any) => {
+                        const btn = ev.target.closest("button")
+                        if (btn.isOpen) return closePopup(popupRef as any)
+                        btn.isOpen = true
+                        const rect = btn.getBoundingClientRect()
+                        showPopup({
+                            ref: popupRef as any,
+                            hideOverlay: true,
+                            content: <FilterRangeDropdown
+                                fieldItem={fieldItem}
+                                filterItem={data}
+                                onClose={() => { setTimeout(() => { btn.isOpen = false }, 150) }}
+                                style={{ top: rect.bottom + 2, left: rect.x, width: rect.width }}
+                                onApply={(vl) => {
+                                    closePopup(popupRef as any)
+                                    onChangeData(vl)
+                                }}
+                            />
+                        })
+                    }}>
+                        <Text className={data.value ? "body-3" : "placeholder-2"}>{data.value ?
+                            fieldItem.DataType === FEDataType.MONEY ?
+                                data.value.split(",").map((e: any) => Util.money(e)).join(" - ") :
+                                data.value.split(",").join(" - ") :
+                            `${i18component.t("select")} ${(colData?.Title ?? fieldItem.Form.Label ?? data.name).toLowerCase()}`
+                        }</Text>
+                    </button>
+                </>
             }
-        case FEDataType.MONEY:
-            return <>
-                <Popup ref={popupRef} />
-                <button type="button" className={`row ${styles["button-filter"]}`} onClick={(ev: any) => {
-                    const btn = ev.target.closest("button")
-                    if (btn.isOpen) return closePopup(popupRef as any)
-                    btn.isOpen = true
-                    const rect = btn.getBoundingClientRect()
-                    showPopup({
-                        ref: popupRef as any,
-                        hideOverlay: true,
-                        content: <FilterRangeDropdown
-                            fieldItem={fieldItem}
-                            filterItem={data}
-                            onClose={() => { setTimeout(() => { btn.isOpen = false }, 150) }}
-                            style={{ top: rect.bottom + 2, left: rect.x, width: rect.width }}
-                            onApply={(vl) => {
-                                closePopup(popupRef as any)
-                                onChangeData(vl)
-                            }}
-                        />
-                    })
-                }}>
-                    <Text className={data.value ? "body-3" : "placeholder-2"}>{data.value ?
-                        fieldItem.DataType === FEDataType.MONEY ?
-                            data.value.split(",").map((e: any) => Util.money(e)).join(" - ") :
-                            data.value.split(",").join(" - ") :
-                        `${i18component.t("select")} ${(colData?.Title ?? fieldItem.Form.Label ?? data.name).toLowerCase()}`
-                    }</Text>
-                </button>
-            </>
         case FEDataType.DATE:
         case FEDataType.DATETIME:
             return <DateTimePicker
@@ -469,7 +478,30 @@ const InputValueTile = ({ fieldItem, filterItem, colData, onChange }: InputValue
                 }}
             />
         case FEDataType.BOOLEAN:
-            return <Checkbox name="value" size={"1.8rem"} />
+            return <div className="row" style={{ gap: '1.2rem 1.6rem', flex: 1, flexWrap: 'wrap' }}>
+                <label className="row" style={{ gap: "0.8rem", cursor: "pointer" }}>
+                    <RadioButton
+                        value={"undefined"}
+                        size={'1.6rem'}
+                        name={filterItem.name}
+                        checked={filterItem.value === undefined}
+                        onChange={() => onChangeData(undefined)}
+                    />
+                    <Text className="label-4" maxLine={1}>{t("all")}</Text>
+                </label>
+                {(fieldItem.Form.Options?.length ? fieldItem.Form.Options : [{ id: "true", name: t("true") }, { id: "false", name: t("false") }]).map((e: { id: string, name: string }) => {
+                    return <label key={e.id} className="row" style={{ gap: "0.8rem", cursor: "pointer" }}>
+                        <RadioButton
+                            value={e.id}
+                            size={'1.6rem'}
+                            name={filterItem.name}
+                            checked={filterItem.value === e.id}
+                            onChange={() => onChangeData(e.id)}
+                        />
+                        <Text className="label-4" maxLine={1}>{e.name}</Text>
+                    </label>
+                })}
+            </div>
         default:
             if (fieldItem.Column) {
                 const labels = data.value?.split(",").map((id: string) => relativeValue.find((f: any) => f.Id === id)).filter((e: any) => !!e) ?? []
