@@ -28,6 +28,12 @@ export declare class TableController {
 export declare class WiniController {
     private module;
     constructor(module: "Project" | "ProjectCustomer" | "Customer");
+    login: (props: {
+        Username: string;
+        Password: string;
+    }) => Promise<any>;
+    loginGoogle: (code: string, ggClientId: string, ggClientSecret: string) => Promise<any>;
+    getInfor: () => Promise<any>;
     getAll(): Promise<any>;
     getListSimple(options?: {
         page?: number;
@@ -38,6 +44,10 @@ export declare class WiniController {
             BY: string;
             DIRECTION?: "ASC" | "DESC";
         };
+    }): Promise<any>;
+    group(options: {
+        searchRaw?: string;
+        reducers: string;
     }): Promise<any>;
     add(data: Array<{
         [p: string]: any;
