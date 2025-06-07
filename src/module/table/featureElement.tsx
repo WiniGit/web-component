@@ -8,7 +8,6 @@ import { ColDataType, ColDataTypeIcon, FEDataType } from "../da";
 import { CustomerAvatar } from "./config";
 
 // #region search & filter
-
 interface SearchFilterDataProps {
     columns: Array<{ [p: string]: any }>
     fields: Array<{ [p: string]: any }>
@@ -78,7 +77,7 @@ export const SearchFilterData = ({ columns = [], fields = [], searchRaw = "*", o
                 const replaceSearch = `(@${n}:("%${data.searchValue}%")) | (@${n}:("${data.searchValue}"))`
                 currentSearch = currentSearch.replace(`${replaceSearch} | `, "").replace(replaceSearch, "");
             })
-            currentSearch = currentSearch.replaceAll("(", "").replaceAll(")", "").trim()
+            currentSearch = currentSearch.replace(/\(/g, "").replace(/\)/g, "").trim()
         }
         const querySearch = (searchValue.length && nameFields.length) ? `(${nameFields.map(n => `(@${n}:("%${searchValue}%")) | (@${n}:("${searchValue}"))`).join(" | ")})` : ""
         const finalSearchRaw = `${querySearch} ${currentSearch === "*" ? "" : currentSearch}`.trim()
@@ -603,15 +602,17 @@ const FilterRangeDropdown = ({ onClose, style = {}, onApply, fieldItem, filterIt
                 </div>
             </div>
             <Slider
-                formatter={fieldItem.DataType === FEDataType.MONEY ? Util.money : undefined}
+                formatter={(fieldItem.DataType === FEDataType.MONEY ? Util.money : undefined) as any}
                 style={{ width: "calc(100% - 2.4rem)", height: "1.6rem" }}
                 range
                 tooltip
                 step={fieldItem.DataType === FEDataType.MONEY ? 50000 : 1}
                 min={minMax.min} max={minMax.max}
                 defaultValue={value?.length ? value.split(",").map((v: any) => parseInt(v)) : [minMax.min, minMax.max]}
-                onChangeComplete={(vl: any) => { setValue(`${vl[0]},${vl[1]}`) }}
-            />
+                onChangeComplete={(vl: any) => {
+                    console.log(vl)
+                    setValue(`${vl[0]},${vl[1]}`);
+                }} />
             <div className="col" style={{ gap: 2, width: "100%" }}>
                 {Array.from({ length: 5 }).map((_, i) => {
                     const part = fieldItem.DataType === FEDataType.MONEY ? Math.round((minMax.max - minMax.min) / 5000) * 1000 : Math.round((minMax.max - minMax.min) / 5)
@@ -732,7 +733,7 @@ const FilterOptionsDropdown = ({ onClose, onSelect, data = [], style, fields = [
 }
 
 // #region button import
-export const ButtonImportData = () => {
+export const ButtonImportData = ({ onImport }: { onImport?: (result: { [key: string]: any }[]) => void }) => {
     const popupRef = useRef(null)
     const { t } = useTranslation()
 
@@ -742,6 +743,42 @@ export const ButtonImportData = () => {
 
             } else if (typeof by === "string") {
                 const res = await handleGoogleSheetFetch(by)
+                if (res?.length) {
+                    const findRelativeName = Object.keys(res[0]).map((k => k)).filter(k => k.split(".").length > 1)
+                    const relativeTmp: any = {}
+                    let result: { [key: string]: any }[] = []
+                    for (const dataItem of res) {
+                        const tmp = { Id: randomGID(), DateCreated: Date.now(), ...dataItem }
+                        findRelativeName.forEach((r) => {
+                            relativeTmp[r] ??= []
+                            if (!relativeTmp[r].includes(tmp[r])) relativeTmp[r].push(tmp[r])
+                        })
+                        result.push(tmp)
+                    }
+                    const getRelative = await Promise.all(Object.keys(relativeTmp).map((r) => {
+                        const splitFields = r.split(".")
+                        const kController = new DataController(splitFields[0])
+                        const size = relativeTmp[r].map((e: any) => e.split(",")).flat(Infinity).length
+                        return kController.getListSimple({
+                            page: 1, size: size,
+                            query: `@${splitFields[1]}:(${relativeTmp[r].map((e: any) => e.split(",")).flat(Infinity).map((e: any) => `"${e.trim()}"`).join(" | ")})`,
+                            returns: ["Id", splitFields[1]]
+                        })
+                    }))
+                    if (getRelative.every(e => e.code === 200)) {
+                        Object.keys(relativeTmp).map((r, i) => {
+                            const relativeResult = getRelative[i].data
+                            result = result.map(e => {
+                                const splitFields = r.split(".")
+                                const tmp = { ...e }
+                                tmp[`${splitFields[0]}Id`] = e[r].split(",").map((el: any) => relativeResult.find((rel: any) => rel[splitFields[1]] === el.trim())).filter((el: any) => !!el).map((el: any) => el.Id).join(",")
+                                delete tmp[r]
+                                return tmp
+                            })
+                        })
+                    }
+                    return result
+                }
             }
         }
     }
@@ -766,7 +803,7 @@ export const ButtonImportData = () => {
                                     <div className="col" style={{ padding: "0.8rem 1.6rem", alignItems: "end", gap: "1.6rem" }}>
                                         <TextField
                                             style={{ width: "40rem" }}
-                                            placeholder="Nhập link google"
+                                            placeholder="Nhập link google sheets"
                                             className="body-3 size32"
                                         />
                                         <Button
@@ -774,7 +811,8 @@ export const ButtonImportData = () => {
                                             onClick={async (ev: any) => {
                                                 const input = ev.target.closest(".col").querySelector("input")
                                                 const sheetUrl = input.value
-                                                handleImport(sheetUrl)
+                                                const result = await handleImport(sheetUrl)
+                                                onImport?.(result ?? [])
                                                 closePopup(popupRef as any)
                                             }}
                                             label={t("save")}

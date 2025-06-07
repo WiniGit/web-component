@@ -7,7 +7,7 @@ import { TableHeader, TableRow } from "./tableElement";
 import ExportXlsx from "./exportXlsx";
 import { ButtonImportData, SearchFilterData } from "./featureElement";
 import { ColDataType, FEDataType } from "../da";
-import { getTableConfig } from "./config";
+import { cellValue } from "./config";
 import AddEditElementForm from "./addEditElement";
 
 export function TableById({ id }: { id: string }) {
@@ -242,28 +242,51 @@ export const DataTable = ({ tbName, staticSearch = "", title = "", columns = [],
                 <div className='row divider' style={{ height: '1.2rem', margin: 0 }} />
                 <ExportXlsx
                     label={t("export")}
+                    disabled={!data.totalCount}
                     getData={async () => {
                         const res = await getData(1, 2000, true)
-                        if (res.code === 200) {
+                        if (res.code === 200 && res.data.length) {
+                            const dataFileIds: Array<string> = []
+                            const activeColumns = configMethods.getValues("columns")
+                            activeColumns.forEach((_col: any) => {
+                                const tmp = _col.Name.split(".")
+                                if (tmp.length > 1) {
+                                    if (relativeFields?.[tmp[0]]?.find((e: any) => e.Name === tmp[1] && e.DataType === FEDataType.FILE))
+                                        dataFileIds.push(...res[tmp[0].substring(0, tmp[0].lastIndexOf("Id"))].map((e: any) => e[tmp[1]]?.split(",").slice(0, 4)).flat(Infinity).filter((id: string, i: number, arr: Array<string>) => !!id && arr.indexOf(id) === i))
+                                } else if (fields.find(e => e.Name === _col.Name && e.DataType === FEDataType.FILE)) {
+                                    dataFileIds.push(...res.data.map((e: any) => e[_col.Name]?.split(",").slice(0, 2)).flat(Infinity).filter((id: string, i: number, arr: string[]) => !!id && arr.indexOf(id) === i))
+                                }
+                            })
+                            let getFiles: any = []
+                            if (dataFileIds.length) {
+                                getFiles = await BaseDA.getFilesInfor(dataFileIds.filter((id, i, arr) => arr.indexOf(id) === i))
+                                getFiles = getFiles.data.filter((f: any) => f !== undefined && f !== null)
+                            }
                             return res.data.map((item: any) => {
-                                let tmp: any = {}
-                                columns.forEach(p => {
-                                    const splitPk = p.Name.split(".")
-                                    if (splitPk.length > 1) {
-                                        const tbPK = splitPk[0].replace("Id", "")
-                                        tmp[splitPk[0]] = res[tbPK].filter((e: any) => item[splitPk[0]].includes(e.Id)).map((e: any) => e.Name).join(",")
-                                    } else tmp[p.Name] = getTableConfig(p, item)._value ?? item[p.Name]
+                                let result: any = {}
+                                activeColumns.sort((a: any, b: any) => a.Sort - b.Sort).forEach((_col: any) => {
+                                    const tmp = _col.Name.split(".")
+                                    const params = (tmp.length > 1 ? { data: res[tmp[0].substring(0, tmp[0].lastIndexOf("Id"))], fields: relativeFields?.[tmp[0]] } : { data: item, fields: fields }) as any
+                                    result[_col.Title] = cellValue(_col, params.data, params.fields, getFiles)
                                 })
-                                return tmp
+                                return result
                             })
                         } else return []
                     }}
                     prefix={<Winicon src='outline/arrows/data-download' />}
-                    config={{ title: columns.map(e => e.Title) }}
+                    config={{ title: configMethods.watch("columns").map((e: any) => e.Title) }}
                 />
                 {enableEdit && <>
                     <div className='row divider' style={{ height: '1.2rem', margin: 0 }} />
-                    <ButtonImportData />
+                    <ButtonImportData
+                        onImport={async (result) => {
+                            if (result.length) {
+                                const response = await dataController.add(result.map(e => ({ ...e, ...props })))
+                                if (response.code !== 200) return ToastMessage.errors(response.message)
+                                getData()
+                            }
+                        }}
+                    />
                 </>}
             </div>
             {columns.length && fields.length ? <div className={`col ${styles["table"]}`}>

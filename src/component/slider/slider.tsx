@@ -67,21 +67,26 @@ export function Slider({ min = 0, max = 100, formatter, className, rangeBarWidth
             // Snap to step
             newValue = Math.round(newValue / step) * step;
 
-            if (range && Array.isArray(value)) {
-                let newValues = [...value] as [number, number];
+            if (range) {
+                if (Array.isArray(value)) {
+                    let newValues = [...value] as [number, number];
 
-                if (isDragging === "min") {
-                    newValues[0] = Math.max(min, Math.min(newValue, newValues[1] - step));
-                } else if (isDragging === "max") {
-                    newValues[1] = Math.min(max, Math.max(newValue, newValues[0] + step));
+                    if (isDragging === "min") {
+                        newValues[0] = Math.max(min, Math.min(newValue, newValues[1] - step));
+                    } else if (isDragging === "max") {
+                        newValues[1] = Math.min(max, Math.max(newValue, newValues[0] + step));
+                    }
+
+                    setValue(newValues);
+                    onChange?.(newValues);
+                } else {
+                    setValue([min, max]);
+                    onChange?.([min, max]);
                 }
-
-                setValue(newValues);
-                if (onChange) onChange(newValues);
             } else if (!range && typeof value === "number") {
                 newValue = Math.max(min, Math.min(max, newValue));
                 setValue(newValue);
-                if (onChange) onChange(newValue);
+                onChange?.(newValue);
             }
         };
 

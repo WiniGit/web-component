@@ -47,7 +47,9 @@ interface Props {
 
 export default function ExportXlsx(props: Props) {
 
-    const onExport = async () => {
+    const onExport = async (ev: any) => {
+        const btn = ev.target.closest("button")
+        btn.disabled = true
         /* fetch JSON data and parse */
         const raw_data = await props.getData();
         if (raw_data.length > 0) {
@@ -74,6 +76,7 @@ export default function ExportXlsx(props: Props) {
             XLSX.utils.book_append_sheet(workbook, worksheet, props.sheetName ?? "Sheet 1");
             XLSX.writeFile(workbook, `${props.fileName ?? "Exported"}.xlsx`, { compression: true });
         }
+        btn.disabled = false
     }
 
     return <Button label={props.label} onClick={onExport} style={props.style} className={props.className} disabled={props.disabled} prefix={props.prefix} suffix={props.suffix} />
