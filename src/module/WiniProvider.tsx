@@ -82,18 +82,20 @@ export const WiniProvider = (props: Props) => {
 
     useEffect(() => {
         ConfigData.pid = props.pid
-        const _desginTokenController = new TableController("designtoken")
-        _desginTokenController.getAll().then(res => {
-            if (res.code === 200 && res.data.length) appendDesignTokens(res.data)
-        })
-        const projectController = new WiniController("Project")
-        projectController.getByIds([props.pid]).then(res => {
-            if (res.code === 200 && res.data[0]) {
-                (document.head.querySelector(`:scope > link[rel="icon"]`) as HTMLLinkElement)!.href = ConfigData.imgUrlId + res.data[0].LogoId;
-                (document.head.querySelector(`:scope > title`) as HTMLTitleElement)!.innerHTML = res.data[0].Name;
-                if (props.onProjectLoaded) props.onProjectLoaded(res.data[0])
-            }
-        })
+        if (props.pid.length === 32) {
+            const _desginTokenController = new TableController("designtoken")
+            _desginTokenController.getAll().then(res => {
+                if (res.code === 200 && res.data.length) appendDesignTokens(res.data)
+            })
+            const projectController = new WiniController("Project")
+            projectController.getByIds([props.pid]).then(res => {
+                if (res.code === 200 && res.data[0]) {
+                    (document.head.querySelector(`:scope > link[rel="icon"]`) as HTMLLinkElement)!.href = ConfigData.imgUrlId + res.data[0].LogoId;
+                    (document.head.querySelector(`:scope > title`) as HTMLTitleElement)!.innerHTML = res.data[0].Name;
+                    if (props.onProjectLoaded) props.onProjectLoaded(res.data[0])
+                }
+            })
+        } else console.log("Project not found")
     }, [props.pid])
 
     useEffect(() => { ConfigData.url = props.url }, [props.url])

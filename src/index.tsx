@@ -34,7 +34,7 @@ import { EmptyPage } from './component/empty-page'
 import { BaseDA, CkEditorUploadAdapter, imgFileTypes } from './controller/config'
 import { Util, formatNumberConvert, randomGID, inputMoneyPattern } from './controller/utils'
 import { DataController, SettingDataController, AccountController } from './controller/data'
-import { TableController } from './controller/setting'
+import { TableController, WiniController } from './controller/setting'
 import { CardById } from './module/card/cardById'
 import { ChartById } from './module/chart/chartById'
 import { FormById } from './module/form/formById'
@@ -104,7 +104,7 @@ export {
   AccountController,
   DataController,
   SettingDataController,
-  TableController,
+  TableController, WiniController,
   CardById,
   ChartById,
   FormById,

@@ -89,6 +89,29 @@ export class WiniController {
         this.module = module
     }
 
+    login = async (props: { Username: string, Password: string }) => {
+        const res = await BaseDA.post(ConfigData.url + 'wini/login', {
+            headers: { module: 'Customer' },
+            body: props
+        })
+        return res
+    }
+
+    loginGoogle = async (code: string, ggClientId: string, ggClientSecret: string) => {
+        const res = await BaseDA.post(ConfigData.url + 'wini/login', {
+            headers: { module: 'Customer' },
+            body: { type: "google", token: code, ggClientId, ggClientSecret }
+        })
+        return res
+    }
+
+    getInfor = async () => {
+        const res = await BaseDA.get(ConfigData.url + 'wini/getCustomerInfor', {
+            headers: { module: 'Customer' },
+        })
+        return res
+    }
+
     async getAll() {
         const res = await BaseDA.get(ConfigData.url + 'wini/getAll', {
             headers: { module: this.module }
@@ -100,6 +123,14 @@ export class WiniController {
         const res = await BaseDA.post(ConfigData.url + 'wini/getListSimple', {
             headers: { module: this.module },
             body: { searchRaw: options?.query ?? "*", page: options?.page ?? 1, size: options?.size ?? 10, returns: options?.returns, sortby: options?.sortby }
+        })
+        return res
+    }
+
+    async group(options: { searchRaw?: string, reducers: string }) {
+        const res = await BaseDA.post(ConfigData.url + 'wini/group', {
+            headers: { module: this.module },
+            body: options
         })
         return res
     }
