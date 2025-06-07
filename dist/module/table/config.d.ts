@@ -1,12 +1,4 @@
 import { CSSProperties } from 'react';
-export declare function getTableConfig(item: {
-    [p: string]: any;
-}, data: {
-    [p: string]: any;
-}): {
-    _minW: any;
-    _value: any;
-};
 interface AutoCellContentProps {
     colItem: {
         [p: string]: any;
@@ -30,5 +22,12 @@ interface CustomerAvatarProps {
     emableTooltip?: boolean;
 }
 export declare const CustomerAvatar: ({ data, style, onClick, emableTooltip }: CustomerAvatarProps) => import("react/jsx-runtime").JSX.Element | null;
+export declare const cellValue: (colItem: {
+    [p: string]: any;
+}, data: any, fields?: {
+    [p: string]: any;
+}[], files?: {
+    [p: string]: any;
+}[]) => any;
 export {};
 //# sourceMappingURL=config.d.ts.map

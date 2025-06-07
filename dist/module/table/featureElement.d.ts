@@ -12,7 +12,11 @@ interface SearchFilterDataProps {
     onChangeFilterData?: (filterList: Array<string>) => void;
 }
 export declare const SearchFilterData: ({ columns, fields, searchRaw, onChange, initFilterList, onChangeFilterData }: SearchFilterDataProps) => import("react/jsx-runtime").JSX.Element;
-export declare const ButtonImportData: () => import("react/jsx-runtime").JSX.Element;
+export declare const ButtonImportData: ({ onImport }: {
+    onImport?: (result: {
+        [key: string]: any;
+    }[]) => void;
+}) => import("react/jsx-runtime").JSX.Element;
 interface ActionOptionsDropdownProps {
     onClose?: () => void;
     actions?: {

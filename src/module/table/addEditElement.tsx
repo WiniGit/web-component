@@ -78,14 +78,14 @@ const AddEditElementForm = forwardRef(({ tbName = "", title, activeColumns = [],
                 showDialog({
                     alignment: DialogAlignment.center,
                     status: ComponentStatus.WARNING,
-                    submitTitle: "Submit",
-                    title: 'Confirm cancel ' + (id ? 'update' : 'add'),
+                    submitTitle: t("submit"),
+                    title: `${t("confirm")} ${t("cancel").toLowerCase()} ` + (id ? t("edit") : t("add")),
                     onSubmit: () => { closePopup(ref) }
                 })
             }}
             onSuccess={() => {
                 closePopup(ref)
-                ToastMessage.success(`${id ? 'Update' : 'Add'} ${title ?? tbName} successfully!`)
+                ToastMessage.success(`${id ? t("edit") : t("add")} ${title ?? tbName} ${t("successfully").toLowerCase()}!`)
                 onSuccess?.()
             }}
         />}

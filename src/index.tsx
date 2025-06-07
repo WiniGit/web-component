@@ -41,6 +41,7 @@ import { FormById } from './module/form/formById'
 import { ViewById } from './module/view/viewById'
 import { PageById, PageByUrl } from './module/page/pageById'
 import { WiniProvider } from './module/WiniProvider'
+import { TableById, DataTable } from './module/table/tableById'
 
 export {
   Calendar,
@@ -109,7 +110,8 @@ export {
   FormById,
   ViewById,
   PageById,
-  PageByUrl
+  PageByUrl,
+  TableById, DataTable
 }
 export type { OptionsItem }
 export { i18n } from './language/i18n';
