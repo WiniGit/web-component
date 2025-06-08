@@ -125,7 +125,7 @@ export function Slider({ min = 0, max = 100, formatter, className, rangeBarWidth
         <div className={styles["range-bar"]}>
             <div
                 className={styles["value-bar"]}
-                style={{ marginLeft: range ? `${(value as any)[0] / (max - min) * 100}%` : "none", width: `calc(${(range ? ((value as any)[1] - (value as any)[0]) : ((value as any) - min)) / (max - min) * 100}%)` }}
+                style={{ marginLeft: range ? `${((value as any)[0] - min) / (max - min) * 100}%` : "none", width: `calc(${(range ? ((value as any)[1] - (value as any)[0]) : ((value as any) - min)) / (max - min) * 100}%)` }}
             />
         </div>
         {(tooltip && tooltipValue && showTooltip) ?

@@ -7,7 +7,6 @@ import { DataTable } from "./tableById"
 import { ColDataType, ColDataTypeIcon, FEDataType } from "../da";
 import { CustomerAvatar } from "./config";
 
-// #region search & filter
 interface SearchFilterDataProps {
     columns: Array<{ [p: string]: any }>
     fields: Array<{ [p: string]: any }>
@@ -638,7 +637,7 @@ const FilterRangeDropdown = ({ onClose, style = {}, onApply, fieldItem, filterIt
                 style={{ width: "calc(100% - 2.4rem)", height: "1.6rem" }}
                 range
                 tooltip
-                step={fieldItem.DataType === FEDataType.MONEY ? 50000 : 1}
+                step={fieldItem.DataType === FEDataType.MONEY ? 50000 : ((minMax.max - minMax.min) / 100)}
                 min={minMax.min} max={minMax.max}
                 defaultValue={value?.length ? value.split(",").map((v: any) => parseInt(v)) : [minMax.min, minMax.max]}
                 onChangeComplete={(vl: any) => {
@@ -689,7 +688,7 @@ interface FilterValueOptionsDropdownProps {
 
 const FilterValueOptionsDropdown = ({ onClose, onSelect, style = {}, selected, initData = [], controlName, searchRaw = "*", isMulti = false }: FilterValueOptionsDropdownProps) => {
     const [options, setOptions] = useState<{ data: { [p: string]: any }[], totalCount?: number }>({ data: [], totalCount: undefined })
-    const [value, setValue] = useState(selected)
+    const [value, setValue] = useState<string>(selected)
 
     useEffect(() => {
         return () => { if (onClose) onClose() }
@@ -706,7 +705,7 @@ const FilterValueOptionsDropdown = ({ onClose, onSelect, style = {}, selected, i
     useEffect(() => {
         if (initData.length) setOptions({ data: initData, totalCount: initData.length })
         else if (controlName) getData()
-    }, [initData])
+    }, [])
 
 
     return <InfiniteScroll
@@ -715,14 +714,14 @@ const FilterValueOptionsDropdown = ({ onClose, onSelect, style = {}, selected, i
         }}
         className="col dropdown-popup popup-actions" style={{ maxHeight: "32rem", overflow: "hidden auto", ...style }}>
         {isMulti ? options.data.map((op) => {
-            const checked = `${value}` === `${op.Id ?? op.id}` || (typeof value === "string" && value.includes(op.Id ?? op.id))
+            const checked = `${value}` === `${op.Id ?? op.id}` || (typeof value === "string" && value?.includes(op.Id ?? op.id))
             return <label key={op.Id ?? op.id} className="row default-hover" style={{ gap: "0.8rem", padding: "0.8rem", borderRadius: "0.8rem", cursor: "pointer" }} >
                 <Checkbox onChange={(ev) => {
                     let tmp = value?.split(",") ?? []
                     if (ev) tmp.push(`${op.Id ?? op.id}`)
                     else tmp = tmp.filter((e: any) => e !== `${op.Id ?? op.id}`)
-                    setValue(tmp.join(","))
                     onSelect(tmp.join(","))
+                    setValue(tmp.join(","))
                 }} value={checked} size={"1.8rem"} />
                 <Text style={{ flex: 1 }} className="label-3" maxLine={1}>{op.Name ?? op.name}</Text>
             </label>
@@ -730,7 +729,10 @@ const FilterValueOptionsDropdown = ({ onClose, onSelect, style = {}, selected, i
             const checked = `${value}` === `${op.Id ?? op.id}` || (typeof value === "string" && value.includes(op.Id ?? op.id))
             return <button key={op.Id ?? op.id} type="button" className="row"
                 style={{ backgroundColor: checked ? "var(--neutral-selected-background-color)" : undefined }}
-                onClick={() => onSelect(op.Id)}>
+                onClick={() => {
+                    onSelect(op.Id);
+                    setValue(op.Id);
+                }}>
                 {(controlName === "User" || controlName === "Customer") && <CustomerAvatar data={op} style={{ width: "2.8rem", height: "2.8rem" }} />}
                 <Text style={{ flex: 1 }} className="button-text-3" maxLine={1}>{op.Name ?? op.name}</Text>
             </button>
