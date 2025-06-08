@@ -688,7 +688,7 @@ interface FilterValueOptionsDropdownProps {
 
 const FilterValueOptionsDropdown = ({ onClose, onSelect, style = {}, selected, initData = [], controlName, searchRaw = "*", isMulti = false }: FilterValueOptionsDropdownProps) => {
     const [options, setOptions] = useState<{ data: { [p: string]: any }[], totalCount?: number }>({ data: [], totalCount: undefined })
-    const [value, setValue] = useState<string>(selected)
+    const [value, setValue] = useState<string | undefined>(selected)
 
     useEffect(() => {
         return () => { if (onClose) onClose() }
@@ -720,8 +720,8 @@ const FilterValueOptionsDropdown = ({ onClose, onSelect, style = {}, selected, i
                     let tmp = value?.split(",") ?? []
                     if (ev) tmp.push(`${op.Id ?? op.id}`)
                     else tmp = tmp.filter((e: any) => e !== `${op.Id ?? op.id}`)
-                    onSelect(tmp.join(","))
-                    setValue(tmp.join(","))
+                    onSelect(tmp.length ? tmp.join(",") : undefined)
+                    setValue(tmp.length ? tmp.join(",") : undefined)
                 }} value={checked} size={"1.8rem"} />
                 <Text style={{ flex: 1 }} className="label-3" maxLine={1}>{op.Name ?? op.name}</Text>
             </label>
