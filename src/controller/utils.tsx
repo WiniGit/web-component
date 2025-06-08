@@ -147,11 +147,10 @@ export class Util {
         let splitDateTime = y.toLowerCase().split(" ");
         let dateConvert = splitDateTime[0]
         let timeConvert = splitDateTime[1]
-        let startByTime = false
-        if (dateConvert.includes('hh')) {
+        let startByTime = dateConvert.includes('hh')
+        if (startByTime) {
             timeConvert = splitDateTime[0]
             dateConvert = splitDateTime[1]
-            startByTime = false
         }
         if (dateConvert) {
             dateConvert = dateConvert.split(y.includes("/") ? "/" : "-").map(type => {
