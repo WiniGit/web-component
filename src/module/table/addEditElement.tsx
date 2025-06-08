@@ -309,8 +309,8 @@ const FormView = ({ cols = [], rels = [], item, tbName, onCancel, onSuccess }: F
         relatives.forEach((_rel) => {
             const _dataPKController = new DataController(_rel.TablePK)
             if (_rel.TablePK === tbName) {
-                _dataPKController.filterByEmptyKey({
-                    page: 1, size: 500, searchRaw: _rel.Query?.length ? isWatch ? _rel.Query.replace(regexGetVariableByThis, (m: string) => methods.getValues((regexGetVariableByThis.exec(m) ?? [])[1])) : _rel.Query : "*", key: `ParentId`
+                _dataPKController.aggregateList({
+                    page: 1, size: 500, searchRaw: `@ParentId:{empty} ${isWatch ? _rel.Query?.replace(regexGetVariableByThis, (m: string) => methods.getValues((regexGetVariableByThis.exec(m) ?? [])[1])) : _rel.Query}`, returns: ["Id", "Name"]
                 }).then(async (res) => {
                     if (res.code === 200) methodsOptions.setValue(`${_rel.Column}_Options`, res.data ?? [])
                 })

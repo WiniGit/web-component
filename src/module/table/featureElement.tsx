@@ -7,6 +7,7 @@ import { DataTable } from "./tableById"
 import { ColDataType, ColDataTypeIcon, FEDataType } from "../da";
 import { CustomerAvatar } from "./config";
 
+// #region search & filter
 interface SearchFilterDataProps {
     columns: Array<{ [p: string]: any }>
     fields: Array<{ [p: string]: any }>
@@ -579,9 +580,9 @@ const FilterRangeDropdown = ({ onClose, style = {}, onApply, fieldItem, filterIt
     }, [])
 
     useEffect(() => {
-        if (value && minInputRef.current && maxInputRef.current) {
-            minInputRef.current.getInput()!.value = fieldItem.DataType === FEDataType.MONEY ? Util.money(value.split(",")[0]) : value.split(",")[0]
-            maxInputRef.current.getInput()!.value = fieldItem.DataType === FEDataType.MONEY ? Util.money(value.split(",")[1]) : value.split(",")[1]
+        if (minInputRef.current && maxInputRef.current) {
+            minInputRef.current.getInput()!.value = value ? fieldItem.DataType === FEDataType.MONEY ? Util.money(value.split(",")[0]) : value.split(",")[0] : ""
+            maxInputRef.current.getInput()!.value = value ? fieldItem.DataType === FEDataType.MONEY ? Util.money(value.split(",")[1]) : value.split(",")[1] : ""
         }
     }, [value, minInputRef.current, maxInputRef.current])
 
@@ -637,11 +638,10 @@ const FilterRangeDropdown = ({ onClose, style = {}, onApply, fieldItem, filterIt
                 style={{ width: "calc(100% - 2.4rem)", height: "1.6rem" }}
                 range
                 tooltip
-                step={fieldItem.DataType === FEDataType.MONEY ? 50000 : ((minMax.max - minMax.min) / 100)}
+                step={Number(((minMax.max - minMax.min) / 100).toFixed(2))}
                 min={minMax.min} max={minMax.max}
                 defaultValue={value?.length ? value.split(",").map((v: any) => parseInt(v)) : [minMax.min, minMax.max]}
                 onChangeComplete={(vl: any) => {
-                    console.log(vl)
                     setValue(`${vl[0]},${vl[1]}`);
                 }} />
             <div className="col" style={{ gap: 2, width: "100%" }}>
