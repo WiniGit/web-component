@@ -70,15 +70,19 @@ export const AutoCellContent = ({ colItem, data, fields = [], files = [], style 
                 <Text className="label-4" style={{ flex: 1 }}>{item.Name}</Text>
             </div>)
         case ColDataType.files:
-            return files.filter((f: any) => mapValue.includes(f.Id)).map((f: any, fIndex: number, arr: any[]) => {
-                const tmp: any = {}
-                if (arr.length - 1 === fIndex && mapValue.split(",").length > 2) tmp["img-length"] = `+${mapValue.split(",").length - 2}`
-                return <NavLink key={f.Id + "-" + fIndex} to={ConfigData.fileUrl + f.Url} target='_blank' className={styles["table-img"]} style={style} {...tmp}>
-                    {f.Type?.includes("image") ?
-                        <img alt={f.Name} src={ConfigData.imgUrlId + f.Id} /> :
-                        <Text className='body-3' maxLine={1} style={{ color: "var(--primary-main-color)" }}>{f.Name}</Text>}
-                </NavLink>
-            })
+            const sliceList = files.filter(f => mapValue.includes(f.Id)).slice(0, 2)
+            return <>
+                {sliceList.map((f, fIndex, arr) => {
+                    const tmp: any = {}
+                    if (arr.length - 1 === fIndex && mapValue.split(",").length > 2 && f.Type?.includes("image")) tmp["img-length"] = `+${mapValue.split(",").length - 2}`
+                    return <NavLink key={f.Id + "-" + fIndex} to={ConfigData.fileUrl + f.Url} target='_blank' className={styles["table-img"]} style={style} {...tmp}>
+                        {f.Type?.includes("image") ?
+                            <img alt={f.Name} src={ConfigData.imgUrlId + f.Id} /> :
+                            <Text className='body-3' maxLine={2} style={{ color: "var(--primary-main-color)", flex: 1 }}>{f.Name},</Text>}
+                    </NavLink>
+                })}
+                {sliceList[1] && !sliceList[1].Type?.includes("image") && mapValue.split(",").length > 2 && <Text className='body-3' maxLine={1}>{`+${mapValue.split(",").length - 2}...`}</Text>}
+            </>
         default:
             return <p className="comp-text body-3" style={{ "--max-line": 2, margin: 0, flex: 1, ...style } as any}>{mapValue}</p>
     }
