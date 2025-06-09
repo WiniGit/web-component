@@ -47,7 +47,7 @@ export const AutoCellContent = ({ colItem, data, fields = [], files = [], style 
                                     const day = date.getDate();
                                     const month = t(months[date.getMonth()]);
                                     const year = date.getFullYear();
-                                    if (colItem.Format.toLowerCase().includes("day")) tmp = `${dayName} ${day} ${month} ${year}`;
+                                    if (colItem.Format.toLowerCase().includes("day")) tmp = `${dayName}, ${day} ${month} ${year}`;
                                     else tmp = `${day} ${month} ${year}`;
                                     break;
                                 default:
