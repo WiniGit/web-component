@@ -7,8 +7,14 @@ interface TableHeaderProps {
     selected?: boolean | null;
     onChangeSelected?: (v: boolean) => void;
     onChangeConfigData?: () => void;
+    fields?: Array<{
+        [p: string]: any;
+    }>;
+    onEditColumn?: (params: {
+        [p: string]: any;
+    }) => void;
 }
-export declare const TableHeader: ({ methods, onChangeConfigData, showIndex, hideCheckbox, selected, onChangeSelected }: TableHeaderProps) => import("react/jsx-runtime").JSX.Element;
+export declare const TableHeader: ({ methods, onEditColumn, onChangeConfigData, showIndex, hideCheckbox, selected, onChangeSelected }: TableHeaderProps) => import("react/jsx-runtime").JSX.Element;
 interface TableRowProps {
     item: {
         [p: string]: any;

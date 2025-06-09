@@ -34,8 +34,11 @@ interface DataTableProps {
         [p: string]: any;
     }>;
     onChangeActions?: () => void;
+    onEditColumn?: (params: {
+        [p: string]: any;
+    }) => void;
     [p: string]: any;
 }
-export declare const DataTable: ({ tbName, staticSearch, title, columns, onChangeConfigData, filterData, filterList, onChangeFilterList, onChangeFilterData, showIndex, hideCheckbox, enableEdit, actions, onChangeActions, ...props }: DataTableProps) => import("react/jsx-runtime").JSX.Element;
+export declare const DataTable: ({ tbName, staticSearch, title, columns, onChangeConfigData, filterData, filterList, onChangeFilterList, onChangeFilterData, showIndex, hideCheckbox, enableEdit, actions, onChangeActions, onEditColumn, ...props }: DataTableProps) => import("react/jsx-runtime").JSX.Element;
 export {};
 //# sourceMappingURL=tableById.d.ts.map
