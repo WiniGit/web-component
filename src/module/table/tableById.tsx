@@ -45,10 +45,11 @@ interface DataTableProps {
     enableEdit?: boolean;
     actions?: Array<{ [p: string]: any }>;
     onChangeActions?: () => void;
+    onEditColumn?: (params: { [p: string]: any }) => void;
     [p: string]: any
 }
 
-export const DataTable = ({ tbName, staticSearch = "", title = "", columns = [], onChangeConfigData, filterData = { searchRaw: "*", sortby: [] }, filterList = [], onChangeFilterList, onChangeFilterData, showIndex = false, hideCheckbox = false, enableEdit = false, actions = [], onChangeActions, ...props }: DataTableProps) => {
+export const DataTable = ({ tbName, staticSearch = "", title = "", columns = [], onChangeConfigData, filterData = { searchRaw: "*", sortby: [] }, filterList = [], onChangeFilterList, onChangeFilterData, showIndex = false, hideCheckbox = false, enableEdit = false, actions = [], onChangeActions, onEditColumn, ...props }: DataTableProps) => {
     // static variables
     const configMethods = useForm<any>({ shouldFocusError: false, defaultValues: { columns: [], searchRaw: "*", sortby: [], TbName: tbName } })
     const dataController = new DataController(tbName)
@@ -291,17 +292,19 @@ export const DataTable = ({ tbName, staticSearch = "", title = "", columns = [],
             </div>
             {columns.length && fields.length ? <div className={`col ${styles["table"]}`}>
                 <TableHeader
+                    key={tbName}
+                    onEditColumn={onEditColumn}
                     selected={selected.length ? (data.data.every(e => selected.includes(e.Id)) ? true : null) : false}
                     onChangeSelected={(v: boolean) => {
                         const _filter = selected.filter(id => data.data.every(e => id !== e.Id))
                         if (v) setSelected([..._filter, ...data.data.map(e => e.Id)])
                         else setSelected(_filter)
                     }}
-                    key={tbName}
                     methods={configMethods}
                     onChangeConfigData={enableEdit ? (() => { onChangeConfigData?.(configMethods.getValues("columns")) }) : undefined}
                     showIndex={showIndex}
                     hideCheckbox={hideCheckbox}
+                    fields={fields}
                 />
                 {
                     data.data.map((item, index) => {
@@ -355,7 +358,7 @@ export const DataTable = ({ tbName, staticSearch = "", title = "", columns = [],
         </div>}
         {!!selected.length && <div className={`row ${styles["selected-item-options"]}`}>
             <div className={`row ${styles["selected-item-total"]}`}>
-                <Text className="button-text-5">{t("itemsSelected", { count: selected.length })}</Text>
+                <Text className="button-text-5">{selected.length} items selected</Text>
                 <Winicon src="outline/user interface/e-remove" size={12} onClick={() => setSelected([])} />
             </div>
             <div className={`row ${styles["selected-item-actions"]}`}>

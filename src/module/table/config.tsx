@@ -7,6 +7,7 @@ import { Text } from "../../component/text/text";
 import { ConfigData } from "../../controller/config";
 import { showTooltipElement } from "../../component/wini-icon/winicon";
 import { NavLink } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 interface AutoCellContentProps {
     colItem: { [p: string]: any };
@@ -17,6 +18,7 @@ interface AutoCellContentProps {
 }
 
 export const AutoCellContent = ({ colItem, data, fields = [], files = [], style = {} }: AutoCellContentProps) => {
+    const { t } = useTranslation()
     const mapValue = useMemo<any>(() => {
         if (!data || colItem.Column || (Array.isArray(data) && !data.length)) return undefined // data undefined or this is relative key
         const fieldItem = fields.find(e => e.Name === colItem.Name.split(".").pop())
@@ -35,7 +37,23 @@ export const AutoCellContent = ({ colItem, data, fields = [], files = [], style 
                             if (tmp) tmp = new Date(tmp).toLocaleString()
                             break;
                         default:
-                            if (tmp) tmp = Util.datetoString(new Date(tmp), "dd/mm/yyyy hh:mm")
+                            switch (colItem.Format?.toLowerCase()) {
+                                case "date month year":
+                                case "day date month year":
+                                    const days = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
+                                    const months = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
+                                    const date = new Date(tmp);
+                                    const dayName = t(days[date.getDay()]);
+                                    const day = date.getDate();
+                                    const month = t(months[date.getMonth()]);
+                                    const year = date.getFullYear();
+                                    if (colItem.Format.toLowerCase().includes("day")) tmp = `${dayName} ${day} ${month} ${year}`;
+                                    else tmp = `${day} ${month} ${year}`;
+                                    break;
+                                default:
+                                    if (tmp) tmp = Util.datetoString(new Date(tmp), colItem.Format?.toLowerCase() ?? "dd/mm/yyyy hh:mm")
+                                    break;
+                            }
                             break;
                     }
                     break;

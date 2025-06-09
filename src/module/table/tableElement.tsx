@@ -15,9 +15,11 @@ interface TableHeaderProps {
     selected?: boolean | null;
     onChangeSelected?: (v: boolean) => void;
     onChangeConfigData?: () => void;
+    fields?: Array<{ [p: string]: any }>;
+    onEditColumn?: (params: { [p: string]: any }) => void
 }
 
-export const TableHeader = ({ methods, onChangeConfigData, showIndex = false, hideCheckbox = false, selected, onChangeSelected }: TableHeaderProps) => {
+export const TableHeader = ({ methods, onEditColumn, onChangeConfigData, showIndex = false, hideCheckbox = false, selected, onChangeSelected }: TableHeaderProps) => {
     const columns = useMemo<Array<{ [p: string]: any }>>(() => methods.watch("columns") ?? [], [methods.watch("columns")])
     const mountedColumns = useRef<Array<{ [p: string]: any }>>([])
     const popupRef = useRef(null)
@@ -38,7 +40,7 @@ export const TableHeader = ({ methods, onChangeConfigData, showIndex = false, hi
         <div className={`row ${styles["header"]}`}>
             {!hideCheckbox && <div className={`row ${styles["header-cell"]}`}>
                 <div className={`row ${styles["title"]}`}>
-                    <Checkbox size={'1.6rem'} value={selected} onChange={onChangeSelected} />
+                    <Checkbox size={'1.6rem'} value={selected as any} onChange={onChangeSelected} />
                     {showIndex && <div style={{ flex: 1 }} />}
                 </div>
             </div>}
@@ -47,6 +49,7 @@ export const TableHeader = ({ methods, onChangeConfigData, showIndex = false, hi
                 colItem={_col}
                 methods={methods}
                 onChangeConfigData={onChangeConfigData}
+                handleAddEditField={onChangeConfigData && onEditColumn ? (() => onEditColumn(_col)) : undefined}
                 onMounted={onChangeConfigData ? ((colItem: any) => {
                     if (!colItem.Width) mountedColumns.current.push(colItem)
                     if ((i + 1) === columns.length) onMounted()
@@ -66,12 +69,13 @@ interface HeaderCellProps {
     children?: ReactNode;
     onMounted?: (colItem: { [p: string]: any } | string) => void;
     onChangeConfigData?: () => void
+    handleAddEditField?: () => void;
 }
 
-const HeaderCell = ({ colItem, methods, style = {}, children, onMounted, onChangeConfigData }: HeaderCellProps) => {
+const HeaderCell = ({ colItem, methods, style = {}, children, onMounted, onChangeConfigData, handleAddEditField }: HeaderCellProps) => {
     const divRef = useRef<HTMLDivElement>(null)
     const popupRef = useRef<Popup>(null)
-    const resizeRef = useRef<HTMLDivElement | undefined>(null)
+    const resizeRef = useRef<HTMLDivElement | undefined | null>(null)
     const [onResize, setOnResize] = useState<{ [p: string]: any } | undefined | null>(null)
     const sortItem = useMemo<{ [p: string]: any } | undefined | null>(() => typeof colItem === "string" ? null : methods.watch("sortby").find((e: any) => e.prop === colItem.Name), [methods.watch("sortby")])
     const columns = useMemo<Array<{ [p: string]: any }>>(() => methods.watch("columns") ?? [], [methods.watch("columns")])
@@ -92,6 +96,13 @@ const HeaderCell = ({ colItem, methods, style = {}, children, onMounted, onChang
             ref: popupRef as any,
             hideOverlay: true,
             content: <div className='col popup-actions dropdown-popup' style={{ right: `calc(100vw - ${_tbCellRect.right}px)`, top: _tbCellRect.bottom + 10, minWidth: '16.8rem' }}>
+                {handleAddEditField && <button type='button' className='row' onClick={() => {
+                    closePopup(popupRef as any)
+                    handleAddEditField()
+                }}>
+                    <Winicon src='outline/user interface/gear' size={"1.4rem"} />
+                    <Text className="button-text-3">Edit field</Text>
+                </button>}
                 <button type='button' className='row' onClick={handleSort}>
                     <Winicon src='outline/user interface/enlarge' size={"1.4rem"} />
                     <Text className="button-text-3">{sortItem ? "Remove sort" : "Sort"}</Text>
@@ -225,6 +236,7 @@ const HeaderCell = ({ colItem, methods, style = {}, children, onMounted, onChang
             </div>
     }
 }
+
 
 interface TableRowProps {
     item: { [p: string]: any };
