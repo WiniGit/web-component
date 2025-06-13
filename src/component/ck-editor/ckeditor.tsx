@@ -290,7 +290,7 @@ export function CustomCkEditor5({ style = {}, ...props }: Props) {
                     ],
                 },
                 fontFamily: {
-                    options: ["Default", "Arial", "Courier New", "Inter", "Roboto", "Times New Roman", "Source Serif 4"],
+                    options: ["Default", "Arial", "Courier New", "Inter", "Roboto", "Times New Roman", "Source Serif 4", "Noto Sans JP"],
                     supportAllValues: true
                 },
                 fontSize: {
