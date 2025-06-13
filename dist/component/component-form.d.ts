@@ -1,5 +1,6 @@
 import { FieldValues, UseFormReturn } from 'react-hook-form';
 import { CSSProperties, ReactNode, default as React } from 'react';
+import { OptionsItem } from './select1/select1';
 interface DateRangeProps {
     start?: Date;
     end?: Date;
@@ -88,9 +89,14 @@ interface Select1FormProps extends SimpleFormProps {
         name: string;
         [p: string]: any;
     }>;
-    handleSearch?: (e: string) => Promise<Array<any>>;
-    handleLoadmore?: ((onLoadMore: boolean, ev: React.UIEvent<HTMLDivElement, UIEvent>) => void);
-    readonly?: boolean;
+    getOptions?: (params: {
+        length: number;
+        search?: string;
+        parentId?: string | number;
+    }) => Promise<{
+        data: Array<OptionsItem>;
+        totalCount: number;
+    }>;
     onChange?: (v?: {
         id: string | number;
         name: string;
@@ -106,8 +112,14 @@ interface SelectMultipleFormProps extends SimpleFormProps {
         name: string;
         [p: string]: any;
     }>;
-    handleLoadmore?: ((onLoadMore: boolean, ev: React.UIEvent<HTMLDivElement, UIEvent>) => void);
-    readonly?: boolean;
+    getOptions?: (params: {
+        length: number;
+        search?: string;
+        parentId?: string | number;
+    }) => Promise<{
+        data: Array<OptionsItem>;
+        totalCount: number;
+    }>;
     onChange?: (v?: Array<string | number>) => void;
     select1Style?: CSSProperties;
     prefix?: ReactNode;

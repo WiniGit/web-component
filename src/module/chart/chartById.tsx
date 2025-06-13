@@ -271,7 +271,6 @@ export const ChartById = forwardRef<ChartRef, Props>(({ searchRaw = "", style = 
                 {!!chartItem?.Description?.length && <Text className='subtitle-3' style={{ flex: 1 }}>{chartItem?.Description}</Text>}
             </div>
             {selectedTime && <Select1
-                readOnly
                 value={selectedTime}
                 options={listTime} style={{ height: "3.2rem", width: "12.8rem", padding: "0 0.8rem" }}
                 onChange={(v: any) => { setSelectedTime(v.id) }}

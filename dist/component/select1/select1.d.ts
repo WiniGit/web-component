@@ -1,15 +1,24 @@
-import { default as React, CSSProperties, ReactNode } from 'react';
+import { CSSProperties, Dispatch, ReactNode, SetStateAction } from 'react';
 export interface OptionsItem {
+    prefix?: ReactNode;
     id: string | number;
-    parentId?: string;
+    parentId?: string | number;
     name: string | ReactNode;
-    title?: string | ((onSelect: (e: OptionsItem) => void) => ReactNode);
     disabled?: boolean;
+    totalChild?: number;
 }
 interface Select1Props {
     id?: string;
     value?: string | number;
     options: Required<Array<OptionsItem>>;
+    getOptions?: (params: {
+        length: number;
+        search?: string;
+        parentId?: string | number;
+    }) => Promise<{
+        data: Array<OptionsItem>;
+        totalCount: number;
+    }>;
     onChange?: (v?: OptionsItem) => void;
     placeholder?: string;
     disabled?: boolean;
@@ -17,16 +26,19 @@ interface Select1Props {
     helperText?: string;
     helperTextColor?: string;
     style?: CSSProperties;
-    handleSearch?: (e: string) => Promise<Array<OptionsItem>>;
-    handleLoadmore?: (onLoadMore: boolean, ev: React.UIEvent<HTMLDivElement, UIEvent>) => void;
-    handleLoadChildren?: () => {};
-    readOnly?: boolean;
-    popupClassName?: string;
     prefix?: ReactNode;
     suffix?: ReactNode;
-    onOpenOptions?: (popupRef: HTMLDivElement) => void;
     simpleStyle?: boolean;
+    customOptionsList?: ReactNode;
 }
-export declare const Select1: ({ style, ...props }: Select1Props) => import("react/jsx-runtime").JSX.Element;
+interface Select1Ref {
+    element: HTMLDivElement;
+    isOpen: boolean;
+    setIsOpen: Dispatch<SetStateAction<boolean>>;
+    options: OptionsItem[];
+    setOptions: Dispatch<SetStateAction<OptionsItem[]>>;
+    onOpenOptions: () => void;
+}
+export declare const Select1: import('react').ForwardRefExoticComponent<Select1Props & import('react').RefAttributes<Select1Ref>>;
 export {};
 //# sourceMappingURL=select1.d.ts.map

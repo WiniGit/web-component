@@ -39,7 +39,6 @@ export function Pagination({ id, currentPage, itemPerPage = 10, totalItem, onCha
             {hidePageSize ? null : <div className="row" style={{ gap: '0.8rem' }}>
                 <Popup ref={popupRef} />
                 <Select1
-                    readOnly
                     value={itemPerPage}
                     options={[10, 20, 50, 100, 200].map((item, _) => { return { id: item, name: `${item}` } })}
                     style={{ width: '6.8rem', padding: '0 0.8rem', height: '2.4rem' }}

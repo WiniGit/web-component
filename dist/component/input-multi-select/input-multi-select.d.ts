@@ -1,9 +1,17 @@
-import { default as React, CSSProperties, ReactNode } from 'react';
+import { default as React, CSSProperties, Dispatch, ReactNode, SetStateAction } from 'react';
 import { OptionsItem } from '../select1/select1';
 interface SelectMultipleProps {
     id?: string;
     value?: Array<string | number>;
     options: Required<Array<OptionsItem>>;
+    getOptions?: (params: {
+        length: number;
+        search?: string;
+        parentId?: string | number;
+    }) => Promise<{
+        data: Array<OptionsItem>;
+        totalCount: number;
+    }>;
     onChange?: (value?: Array<string | number>) => void;
     placeholder?: string;
     disabled?: boolean;
@@ -11,14 +19,22 @@ interface SelectMultipleProps {
     helperText?: string;
     helperTextColor?: string;
     style?: CSSProperties;
-    handleSearch?: (e: string) => Promise<Array<OptionsItem>>;
-    handleLoadmore?: (onLoadMore: boolean, ev: React.UIEvent<HTMLDivElement, UIEvent>) => void;
     showClearValueButton?: boolean;
     popupClassName?: string;
     prefix?: ReactNode;
     suffix?: ReactNode;
     simpleStyle?: boolean;
+    customOptionsList?: ReactNode;
+    previewMaxLength?: number;
 }
-export declare const SelectMultiple: ({ style, ...props }: SelectMultipleProps) => import("react/jsx-runtime").JSX.Element;
+interface SelectMultipleRef {
+    element: HTMLDivElement;
+    isOpen: boolean;
+    setIsOpen: Dispatch<SetStateAction<boolean>>;
+    options: OptionsItem[];
+    setOptions: Dispatch<SetStateAction<OptionsItem[]>>;
+    onOpenOptions: () => void;
+}
+export declare const SelectMultiple: React.ForwardRefExoticComponent<SelectMultipleProps & React.RefAttributes<SelectMultipleRef>>;
 export {};
 //# sourceMappingURL=input-multi-select.d.ts.map

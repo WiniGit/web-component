@@ -8,7 +8,7 @@ import { Winicon } from "./wini-icon/winicon";
 import { TextArea } from "./text-area/text-area";
 import { DateTimePicker } from "./date-time-picker/date-time-picker";
 import { CustomCkEditor5 } from "./ck-editor/ckeditor";
-import { Select1 } from "./select1/select1";
+import { OptionsItem, Select1 } from "./select1/select1";
 import { SelectMultiple } from "./input-multi-select/input-multi-select";
 import { Switch } from "./switch/switch";
 import { Rating } from "./rating/rating";
@@ -254,9 +254,7 @@ export function CKEditorForm(params: CKEditorFormProps) {
 
 interface Select1FormProps extends SimpleFormProps {
     options: Array<{ id: string | number, name: string, [p: string]: any }>
-    handleSearch?: (e: string) => Promise<Array<any>>,
-    handleLoadmore?: ((onLoadMore: boolean, ev: React.UIEvent<HTMLDivElement, UIEvent>) => void),
-    readonly?: boolean,
+    getOptions?: (params: { length: number, search?: string, parentId?: string | number }) => Promise<{ data: Array<OptionsItem>, totalCount: number }>,
     onChange?: (v?: { id: string | number, name: string, [p: string]: any }) => void,
     select1Style?: CSSProperties;
     prefix?: ReactNode
@@ -277,7 +275,6 @@ export function Select1Form(params: Select1FormProps) {
                     {params.required ? <Text className="label-4" style={{ color: '#E14337' }}>*</Text> : null}
                 </div> : null)}
                 <Select1
-                    readOnly={params.readonly}
                     className="body-3"
                     style={{ width: '100%', padding: "0 1.6rem", height: '4rem', flex: params.className?.includes('row') ? 1 : undefined, ...(params.select1Style ?? {}) }}
                     placeholder={params.placeholder ? params.placeholder : params.label ? `${t("choose")} ${params.label.toLowerCase()}` : ''}
@@ -290,8 +287,6 @@ export function Select1Form(params: Select1FormProps) {
                     }}
                     prefix={params.prefix}
                     suffix={params.required || [undefined, null, ''].includes(field.value) || params.disabled ? undefined : <Winicon src="outline/user interface/c-remove" size={"1.4rem"} onClick={() => field.onChange(undefined)} />}
-                    handleLoadmore={params.handleLoadmore}
-                    handleSearch={params.handleSearch}
                     helperText={_covertErrors && (_covertErrors?.message?.length ? _covertErrors?.message : `${(params.placeholder ? params.placeholder : params.label ? `${t("choose")} ${params.label}` : 'value').toLowerCase()}`)} />
             </div>;
         }}
@@ -300,8 +295,7 @@ export function Select1Form(params: Select1FormProps) {
 
 interface SelectMultipleFormProps extends SimpleFormProps {
     options: Array<{ id: string | number, name: string, [p: string]: any }>,
-    handleLoadmore?: ((onLoadMore: boolean, ev: React.UIEvent<HTMLDivElement, UIEvent>) => void),
-    readonly?: boolean,
+    getOptions?: (params: { length: number, search?: string, parentId?: string | number }) => Promise<{ data: Array<OptionsItem>, totalCount: number }>,
     onChange?: (v?: Array<string | number>) => void,
     select1Style?: CSSProperties;
     prefix?: ReactNode
@@ -333,7 +327,6 @@ export function SelectMultipleForm(params: SelectMultipleFormProps) {
                         field.onChange(listValue);
                         if (params.onChange) params.onChange(listValue);
                     }}
-                    handleLoadmore={params.handleLoadmore}
                     helperText={_covertErrors && (_covertErrors?.message?.length ? _covertErrors?.message : `${(params.placeholder ? params.placeholder : params.label ? `${t("choose")} ${params.label}` : t('value')).toLowerCase()}`)} />
             </div>;
         }}
