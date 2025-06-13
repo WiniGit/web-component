@@ -1,5 +1,4 @@
 import styles from './select1.module.css'
-import ReactDOM from 'react-dom';
 import { CSSProperties, Dispatch, forwardRef, ReactNode, SetStateAction, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 import { Winicon } from '../wini-icon/winicon';
@@ -62,8 +61,8 @@ export const Select1 = forwardRef<Select1Ref, Select1Props>(({ style = {}, ...pr
         let offset: any = { width: rect.width }
         if (rect.bottom + 240 >= document.body.offsetHeight) offset.bottom = `calc(100dvh - ${rect.y}px + 2px)`
         else offset.top = rect.bottom + 2
-        if (rect.right + 16 >= document.body.offsetWidth) offset.right = `calc(100dvw - ${rect.right}px)`
-        else offset.left = rect.x
+        // if (rect.right + 16 >= document.body.offsetWidth) offset.right = `calc(100dvw - ${rect.right}px)`
+        // else offset.left = rect.x
         offsetRef.current = offset
         setIsOpen(true)
     }
@@ -94,7 +93,7 @@ export const Select1 = forwardRef<Select1Ref, Select1Props>(({ style = {}, ...pr
                 <Winicon src={`fill/arrows/${isOpen ? "up" : "down"}-arrow`} size={12} />
             </div>}
         </div>
-        {isOpen && ReactDOM.createPortal(props.customOptionsList ?? <OptionDropList
+        {isOpen && (props.customOptionsList ?? <OptionDropList
             onClose={() => { setTimeout(() => { setIsOpen(false) }, 150) }}
             getOptions={props.getOptions ?? (async ({ search }) => {
                 if (search?.length) {
@@ -111,7 +110,7 @@ export const Select1 = forwardRef<Select1Ref, Select1Props>(({ style = {}, ...pr
                 if (props.onChange) props.onChange(e)
                 setIsOpen(false)
             }}
-        />, document.body)}
+        />)}
     </>
 })
 

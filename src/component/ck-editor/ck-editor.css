@@ -177,7 +177,7 @@
 }
 
 .ck.ck-toolbar {
-    background-color: var(--neutral-absolute-background-color, light-dark(#FFFFFF, #14181b));
+    background-color: var(--neutral-absolute-background-color, light-dark(#FFFFFF, #14181b)) !important;
     border-radius: 0.8rem 0.8rem 0 0 !important;
 }
 
@@ -203,4 +203,18 @@
 .ck.ck-color-grid>button {
     border: 1px solid var(--neutral-bolder-border-color, light-dark(#D7D7DB, #494950));
     border-radius: 0.4rem !important;
+}
+
+.ck.ck-button:not(.ck-disabled):hover,
+a.ck.ck-button:not(.ck-disabled):hover,
+.ck.ck-splitbutton.ck-splitbutton_open>.ck-button:not(.ck-on):not(.ck-disabled):not(:hover),
+.ck.ck-splitbutton:hover>.ck-button:not(.ck-on):not(.ck-disabled):not(:hover) {
+    background-color: var(--neutral-hover-background-color, light-dark(#18181B0A, #FFFFFF0A)) !important;
+}
+
+.ck.ck-button.ck-list-item-button,
+.ck.ck-button.ck-list-item-button.ck-on,
+.ck.ck-list,
+.ck.ck-dropdown__panel {
+    background-color: var(--neutral-absolute-background-color, light-dark(#FFFFFF, #14181b)) !important;
 }

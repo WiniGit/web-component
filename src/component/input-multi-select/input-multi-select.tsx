@@ -1,5 +1,4 @@
 import React, { CSSProperties, Dispatch, forwardRef, ReactNode, SetStateAction, useEffect, useImperativeHandle, useRef, useState } from 'react'
-import ReactDOM from 'react-dom';
 import styles from './input-multi-select.module.css'
 import { OptionsItem } from '../select1/select1'
 import { useTranslation } from 'react-i18next';
@@ -66,8 +65,8 @@ export const SelectMultiple = forwardRef<SelectMultipleRef, SelectMultipleProps>
         let offset: any = { width: rect.width }
         if (rect.bottom + 240 >= document.body.offsetHeight) offset.bottom = `calc(100dvh - ${rect.y}px + 2px)`
         else offset.top = rect.bottom + 2
-        if (rect.right + 16 >= document.body.offsetWidth) offset.right = `calc(100dvw - ${rect.right}px)`
-        else offset.left = rect.x
+        // if (rect.right + 16 >= document.body.offsetWidth) offset.right = `calc(100dvw - ${rect.right}px)`
+        // else offset.left = rect.x
         offsetRef.current = offset
         setIsOpen(true)
     }
@@ -114,7 +113,7 @@ export const SelectMultiple = forwardRef<SelectMultipleRef, SelectMultipleProps>
                     </div>
             )
         }
-        {isOpen && ReactDOM.createPortal(props.customOptionsList ?? <OptionDropList
+        {isOpen && (props.customOptionsList ?? <OptionDropList
             onClose={(ev) => {
                 const removeBtn = ev.target.closest(`div[class*="selected-item-value"] > div:last-child`)
                 if (removeBtn) {
@@ -143,7 +142,7 @@ export const SelectMultiple = forwardRef<SelectMultipleRef, SelectMultipleProps>
                 setValue(tmp)
                 props.onChange?.(tmp)
             }}
-        />, document.body)}
+        />)}
     </div>
 })
 
