@@ -280,13 +280,14 @@ export function Select1Form(params: Select1FormProps) {
                     placeholder={params.placeholder ? params.placeholder : params.label ? `${t("choose")} ${params.label.toLowerCase()}` : ''}
                     value={field.value}
                     options={params.options}
+                    getOptions={params.getOptions}
                     disabled={params.disabled}
                     onChange={(ev: any) => {
                         field.onChange(ev?.id);
                         if (params.onChange) params.onChange(ev as any);
                     }}
                     prefix={params.prefix}
-                    suffix={params.required || [undefined, null, ''].includes(field.value) || params.disabled ? undefined : <Winicon src="outline/user interface/c-remove" size={"1.4rem"} onClick={() => field.onChange(undefined)} />}
+                    suffix={params.required || [undefined, null, ''].includes(field.value) || params.disabled ? undefined : <Winicon src="outline/user interface/c-remove" size={14} onClick={() => field.onChange(undefined)} />}
                     helperText={_covertErrors && (_covertErrors?.message?.length ? _covertErrors?.message : `${(params.placeholder ? params.placeholder : params.label ? `${t("choose")} ${params.label}` : 'value').toLowerCase()}`)} />
             </div>;
         }}
@@ -322,6 +323,7 @@ export function SelectMultipleForm(params: SelectMultipleFormProps) {
                     placeholder={params.placeholder ? params.placeholder : params.label ? `${t("choose")} ${params.label.toLowerCase()}` : ''}
                     value={typeof field.value === "string" ? undefined : field.value}
                     options={params.options as any}
+                    getOptions={params.getOptions}
                     disabled={params.disabled}
                     onChange={(listValue: any) => {
                         field.onChange(listValue);
