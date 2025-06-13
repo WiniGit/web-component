@@ -100,6 +100,7 @@ const resources = {
             itemsSelected: "{{count}} items selected",
             successfully: "Successfully",
             confirm: "Confirm",
+            seemore: "See more",
         },
     },
     vi: {
@@ -199,6 +200,7 @@ const resources = {
             itemsSelected: "Đã chọn {{count}} phần từ",
             successfully: "Thành công",
             confirm: "Xác nhận",
+            seemore: "Xem thêm",
         },
     },
 }
