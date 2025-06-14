@@ -29,6 +29,7 @@ import { WLoginView } from './form/login/view'
 import { CustomCkEditor5 } from './component/ck-editor/ckeditor'
 import { Slider } from './component/slider/slider'
 import { ColorPicker } from './component/color-picker/color-picker'
+import { IconPicker } from './component/icon-picker/icon-picker'
 import { TextFieldForm, InputPasswordForm, TextAreaForm, DateTimePickerForm, CKEditorForm, Select1Form, SelectMultipleForm, SwitchForm, RateForm, CheckboxForm, RadioButtonForm, GroupRadioButtonForm, ImportFileForm, RangeForm, GroupCheckboxForm, ColorPickerForm } from './component/component-form'
 import { EmptyPage } from './component/empty-page'
 import { BaseDA, CkEditorUploadAdapter, imgFileTypes } from './controller/config'
@@ -67,6 +68,7 @@ export {
   ProgressCircle,
   Carousel,
   ColorPicker,
+  IconPicker,
   ToastContainer,
   Button, SimpleButton,
   Tag,
