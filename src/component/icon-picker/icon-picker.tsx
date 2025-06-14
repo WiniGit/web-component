@@ -1,4 +1,4 @@
-import { CSSProperties, useEffect, useRef, useState } from "react"
+import { CSSProperties, forwardRef, MouseEventHandler, useEffect, useImperativeHandle, useRef, useState } from "react"
 import { IconLibrary } from "./iconLibrary";
 import { Winicon } from "../wini-icon/winicon";
 
@@ -15,7 +15,14 @@ interface IconPickerProps {
     };
 }
 
-export const IconPicker = (props: IconPickerProps) => {
+interface IconPickerRef {
+    value?: string;
+    isOpen: boolean;
+    setIsOpen: (isOpen: boolean) => void;
+    openIconLibrary: (ev: MouseEventHandler) => void
+}
+
+export const IconPicker = forwardRef<IconPickerRef, IconPickerProps>((props, ref) => {
     const offsetRef = useRef<{ [p: string]: any }>(null)
     const [value, setValue] = useState<string | undefined>()
     const [isOpen, setIsOpen] = useState(false)
@@ -34,6 +41,13 @@ export const IconPicker = (props: IconPickerProps) => {
         setIsOpen(true)
     }
 
+    useImperativeHandle(ref, () => ({
+        value: value,
+        isOpen: isOpen,
+        setIsOpen: setIsOpen,
+        openIconLibrary: onOpenIconLib
+    }), [isOpen, value])
+
     return <>
         <Winicon src={(value ?? "outline/user interface/setup-tools") as any} style={props.style} size={props.size} className={props.className} color={props.color} tooltip={props.tooltip} onClick={onOpenIconLib} />
         {isOpen && <IconLibrary
@@ -45,4 +59,4 @@ export const IconPicker = (props: IconPickerProps) => {
             onClose={() => { setIsOpen(false) }}
         />}
     </>
-}
+})

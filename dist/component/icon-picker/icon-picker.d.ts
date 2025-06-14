@@ -1,4 +1,4 @@
-import { CSSProperties } from 'react';
+import { CSSProperties, MouseEventHandler } from 'react';
 interface IconPickerProps {
     src?: string;
     style?: CSSProperties;
@@ -11,6 +11,12 @@ interface IconPickerProps {
         position?: "top" | "bottom" | "left" | "right";
     };
 }
-export declare const IconPicker: (props: IconPickerProps) => import("react/jsx-runtime").JSX.Element;
+interface IconPickerRef {
+    value?: string;
+    isOpen: boolean;
+    setIsOpen: (isOpen: boolean) => void;
+    openIconLibrary: (ev: MouseEventHandler) => void;
+}
+export declare const IconPicker: import('react').ForwardRefExoticComponent<IconPickerProps & import('react').RefAttributes<IconPickerRef>>;
 export {};
 //# sourceMappingURL=icon-picker.d.ts.map
