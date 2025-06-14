@@ -3,7 +3,13 @@ interface IconPickerProps {
     src?: string;
     style?: CSSProperties;
     onChange?: (src?: string) => void;
-    iconOnly?: boolean;
+    size?: string | number;
+    className?: string;
+    color?: string;
+    tooltip?: {
+        message: string;
+        position?: "top" | "bottom" | "left" | "right";
+    };
 }
 export declare const IconPicker: (props: IconPickerProps) => import("react/jsx-runtime").JSX.Element;
 export {};

@@ -6,6 +6,13 @@ interface IconPickerProps {
     src?: string;
     style?: CSSProperties;
     onChange?: (src?: string) => void;
+    size?: string | number;
+    className?: string;
+    color?: string;
+    tooltip?: {
+        message: string;
+        position?: "top" | "bottom" | "left" | "right";
+    };
 }
 
 export const IconPicker = (props: IconPickerProps) => {
@@ -28,7 +35,7 @@ export const IconPicker = (props: IconPickerProps) => {
     }
 
     return <>
-        <Winicon src={(value ?? "outline/user interface/setup-tools") as any} onClick={onOpenIconLib} />
+        <Winicon src={(value ?? "outline/user interface/setup-tools") as any} style={props.style} size={props.size} className={props.className} color={props.color} tooltip={props.tooltip} onClick={onOpenIconLib} />
         {isOpen && <IconLibrary
             onSelect={(src) => {
                 setValue(`${src.type}/${src.category}/${src.name}`)
