@@ -6,7 +6,6 @@ interface IconPickerProps {
     src?: string;
     style?: CSSProperties;
     onChange?: (src?: string) => void;
-    iconOnly?: boolean
 }
 
 export const IconPicker = (props: IconPickerProps) => {
