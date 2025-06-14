@@ -53,6 +53,7 @@ export const IconPicker = forwardRef<IconPickerRef, IconPickerProps>((props, ref
         {isOpen && <IconLibrary
             onSelect={(src) => {
                 setValue(`${src.type}/${src.category}/${src.name}`)
+                props.onChange?.(`${src.type}/${src.category}/${src.name}`)
                 setIsOpen(false)
             }}
             style={{ position: "fixed", zIndex: 2, ...offsetRef.current }}

@@ -22,6 +22,7 @@ export function IconLibrary({ onSelect, style = {}, onClose, className }: IconLi
     const [showFilter, setOpenFilter] = useState(false);
     const [categories, setCategories] = useState<string[]>([]);
     const [data, setData] = useState<{ data: any[], totalCount?: number }>({ data: [], totalCount: undefined });
+    const [staticPreview, setStaticPreview] = useState<{ [p: string]: any } | null>(null);
     const [preview, setPreview] = useState<{ [p: string]: any } | null>(null);
     const inputRef = useRef<any>(null)
     const { t } = useTranslation()
@@ -85,7 +86,7 @@ export function IconLibrary({ onSelect, style = {}, onClose, className }: IconLi
                 prefix={<Winicon src='outline/user interface/setup-tools' color={filter ? "var(--primary-main-color)" : undefined} size={14} />}
                 className='button-text-3 size24'
                 label={`${filter ?? t("filter")}`}
-                style={{ width: "10.6rem", backgroundColor: filter ? "var(--primary-background)" : undefined, color: filter ? "var(--primary-main-color)" : undefined }}
+                style={{ width: "10rem", padding: "0.4rem", backgroundColor: filter ? "var(--primary-background)" : undefined, color: filter ? "var(--primary-main-color)" : undefined }}
                 suffix={filter ? <Winicon src={"outline/user interface/e-remove"} size={12} className="icon-button light" onClick={(ev: any) => {
                     ev.preventDefault()
                     ev.stopPropagation()
@@ -106,16 +107,20 @@ export function IconLibrary({ onSelect, style = {}, onClose, className }: IconLi
             return <div key={cate} className='col' style={{ gap: "0.8rem", padding: "0.8rem" }}>
                 <Text className='label-1'>{cate.slice(0, 1).toUpperCase() + cate.slice(1)}</Text>
                 <div className='row' style={{ flexWrap: "wrap", gap: "0.8rem", padding: "0.8 1.6rem", alignItems: "stretch" }}>
-                    {data.data.filter(e => e.category === cate).map((src: any, i: number) => <div key={src.name + src.id + i} className={`col col6 ${styles['icon-item']}`} onDoubleClick={() => { onSelect(src) }} onMouseOver={() => { setPreview(src) }}>
+                    {data.data.filter(e => e.category === cate).map((src: any, i: number) => <div key={src.name + src.id + i} className={`col col6 ${styles['icon-item']} ${staticPreview?.id === src.id ? styles['selected'] : ""}`}
+                        onDoubleClick={() => { onSelect(src) }}
+                        onClick={() => { setStaticPreview(src) }}
+                        onMouseOver={() => { setPreview(src) }}
+                    >
                         <Winicon src={`${src.type}/${src.category}/${src.name}` as any} size={"2rem"} />
                         <div className='label-5' style={{ width: "100%", wordBreak: "break-all" }}>{src.name}</div>
                     </div>)}
                 </div>
             </div>
         })}
-        {preview && <div className={`row ${styles["preview-container"]}`}>
-            <Winicon src={`${preview.type}/${preview.category}/${preview.name}` as any} size={"3.2rem"} />
-            <div className='label-3' style={{ width: "100%", wordBreak: "break-all" }}>{preview.name}</div>
+        {(preview || staticPreview) && <div className={`row ${styles["preview-container"]}`}>
+            <Winicon src={`${(staticPreview ?? preview!).type}/${(staticPreview ?? preview!).category}/${(staticPreview ?? preview!).name}` as any} size={"3.2rem"} />
+            <div className='label-3' style={{ width: "100%", wordBreak: "break-all" }}>{`${(staticPreview ?? preview!).type}/${(staticPreview ?? preview!).category}/${(staticPreview ?? preview!).name}`}</div>
         </div>}
     </div>
 }
@@ -138,8 +143,8 @@ const FilterDropdown = (props: { onClose: () => void, selected?: string, onSelec
         }
     }, [])
     return <div ref={divRef} className={`col ${styles["filter-options"]}`}>
-        <button type="button" className={`${styles['option']} ${props.selected === "color" ? styles['selected'] : ""} heading-9`} onClick={() => { props.onSelect("color") }}>color</button>
-        <button type="button" className={`${styles['option']} ${props.selected === "fill" ? styles['selected'] : ""} heading-9`} onClick={() => { props.onSelect("fill") }}>fill</button>
-        <button type="button" className={`${styles['option']} ${props.selected === "outline" ? styles['selected'] : ""} heading-9`} onClick={() => { props.onSelect("outline") }}>outline</button>
+        <button type="button" className={`${styles['option']} ${props.selected === "color" ? styles['selected'] : ""} label-3`} onClick={() => { props.onSelect("color") }}>color</button>
+        <button type="button" className={`${styles['option']} ${props.selected === "fill" ? styles['selected'] : ""} label-3`} onClick={() => { props.onSelect("fill") }}>fill</button>
+        <button type="button" className={`${styles['option']} ${props.selected === "outline" ? styles['selected'] : ""} label-3`} onClick={() => { props.onSelect("outline") }}>outline</button>
     </div>
 }
