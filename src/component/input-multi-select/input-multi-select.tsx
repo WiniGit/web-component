@@ -80,39 +80,41 @@ export const SelectMultiple = forwardRef<SelectMultipleRef, SelectMultipleProps>
         onOpenOptions: onOpenOptions
     }), [isOpen, options, containerRef]);
 
-    return <div
-        id={props.id}
-        ref={containerRef}
-        className={`${props.simpleStyle ? styles['select-multi-simple-style'] : styles['select-multi-container']} ${isOpen ? styles["focus"] : ""} row ${props.helperText?.length ? styles['helper-text'] : ""} ${props.disabled ? styles['disabled'] : ""} ${props.className ?? (props.simpleStyle ? "" : 'body-3')}`}
-        helper-text={props.helperText}
-        style={{ '--helper-text-color': props.helperTextColor ?? '#e14337', ...style } as CSSProperties}
-        onClick={props.disabled ? undefined : onOpenOptions}
-    >
-        {props.prefix}
-        <div className={`row ${styles["preview-container"]}`}>
-            {!value.length && <span style={{ opacity: 0.6, font: "inherit" }}>{props.placeholder}</span>}
-            {value.slice(0, previewMaxLength).map(item => {
-                const optionItem = options.find(e => e.id === item)
-                return <div key={item} className={`row ${styles['selected-item-value']}`}>
-                    <span>{optionItem?.name}</span>
-                    <Winicon src={"outline/user interface/e-remove"} className={`${styles['remove-icon']}`} size={12} onClick={optionItem?.disabled ? undefined : (ev) => onClickItem(ev, item)} />
-                </div>
-            })}
-            {value.length > previewMaxLength && <div className={`row ${styles['selected-item-value']}`}>
-                <span>+{value.length - previewMaxLength}</span>
-            </div>}
-        </div>
-        {props.suffix ||
-            (
-                (props.showClearValueButton && value.length) ?
-                    <Winicon src={"outline/user interface/c-remove"} size={14} onClick={clearValue} /> :
-                    <div ref={iconRef => {
-                        if (iconRef?.parentElement && iconRef.parentElement.getBoundingClientRect().width < 88) iconRef.style.display = "none"
-                    }} className='row'>
-                        <Winicon src={`fill/arrows/${isOpen ? "up" : "down"}-arrow`} size={12} />
+    return <>
+        <div
+            id={props.id}
+            ref={containerRef}
+            className={`${props.simpleStyle ? styles['select-multi-simple-style'] : styles['select-multi-container']} ${isOpen ? styles["focus"] : ""} row ${props.helperText?.length ? styles['helper-text'] : ""} ${props.disabled ? styles['disabled'] : ""} ${props.className ?? (props.simpleStyle ? "" : 'body-3')}`}
+            helper-text={props.helperText}
+            style={{ '--helper-text-color': props.helperTextColor ?? '#e14337', ...style } as CSSProperties}
+            onClick={props.disabled ? undefined : onOpenOptions}
+        >
+            {props.prefix}
+            <div className={`row ${styles["preview-container"]}`}>
+                {!value.length && <span style={{ opacity: 0.6, font: "inherit" }}>{props.placeholder}</span>}
+                {value.slice(0, previewMaxLength).map(item => {
+                    const optionItem = options.find(e => e.id === item)
+                    return <div key={item} className={`row ${styles['selected-item-value']}`}>
+                        <span>{optionItem?.name}</span>
+                        <Winicon src={"outline/user interface/e-remove"} className={`${styles['remove-icon']}`} size={12} onClick={optionItem?.disabled ? undefined : (ev) => onClickItem(ev, item)} />
                     </div>
-            )
-        }
+                })}
+                {value.length > previewMaxLength && <div className={`row ${styles['selected-item-value']}`}>
+                    <span>+{value.length - previewMaxLength}</span>
+                </div>}
+            </div>
+            {props.suffix ||
+                (
+                    (props.showClearValueButton && value.length) ?
+                        <Winicon src={"outline/user interface/c-remove"} size={14} onClick={clearValue} /> :
+                        <div ref={iconRef => {
+                            if (iconRef?.parentElement && iconRef.parentElement.getBoundingClientRect().width < 88) iconRef.style.display = "none"
+                        }} className='row'>
+                            <Winicon src={`fill/arrows/${isOpen ? "up" : "down"}-arrow`} size={12} />
+                        </div>
+                )
+            }
+        </div>
         {isOpen && (props.customOptionsList ?? <OptionDropList
             onClose={(ev) => {
                 const removeBtn = ev.target.closest(`div[class*="selected-item-value"] > div:last-child`)
@@ -143,7 +145,7 @@ export const SelectMultiple = forwardRef<SelectMultipleRef, SelectMultipleProps>
                 props.onChange?.(tmp)
             }}
         />)}
-    </div>
+    </>
 })
 
 interface OptionDropListProps {
