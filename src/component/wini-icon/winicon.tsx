@@ -14,17 +14,18 @@ interface WiniconProps {
     color?: string,
     alt?: string,
     tooltip?: { message: string, position?: "top" | "bottom" | "left" | "right" },
-    onClick?: React.MouseEventHandler<HTMLDivElement>
+    onClick?: React.MouseEventHandler<HTMLDivElement>,
+    onMouseDown?: React.MouseEventHandler<HTMLDivElement>,
+    onDoubleClick?: React.MouseEventHandler<HTMLDivElement>
 }
 
-export function Winicon({ id, src, link, className, style, size, color, alt, onClick, tooltip }: WiniconProps) {
+export function Winicon({ id, src, link, className, style, size, color, alt, onClick, tooltip, onMouseDown,onDoubleClick }: WiniconProps) {
     const ref = useRef<HTMLDivElement>(null)
     const [svgData, setSvgData] = useState<string>()
     const [showTooltip, setShowTooltip] = useState<boolean>(false)
     const cdnSrc = "https://cdn.jsdelivr.net/gh/WiniGit/icon-library@latest/"
     const extendAttribute = useMemo(() => {
         if (tooltip) return {
-            "tooltip-value": tooltip,
             onMouseOver: () => { setShowTooltip(true) },
             onMouseOut: () => { setShowTooltip(false) }
         }
@@ -63,6 +64,8 @@ export function Winicon({ id, src, link, className, style, size, color, alt, onC
             ref={ref}
             id={id}
             onClick={onClick}
+            onDoubleClick={onDoubleClick}
+            onMouseDown={onMouseDown}
             className={`${styles['wini-icon']} ${svgData ? "" : "skeleton-loading"} ${onClick ? styles['clickable'] : ''} ${className ?? ''} ${src ? `${src.split("/")[0]}-icon` : ''}${link ? ' link-icon' : ""}`}
             style={(style ? { ...style, fontSize: size, color: color } : { fontSize: size, color: color })} dangerouslySetInnerHTML={{ __html: svgData ?? '' }}
             {...extendAttribute}

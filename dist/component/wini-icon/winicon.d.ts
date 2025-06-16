@@ -13,8 +13,10 @@ interface WiniconProps {
         position?: "top" | "bottom" | "left" | "right";
     };
     onClick?: React.MouseEventHandler<HTMLDivElement>;
+    onMouseDown?: React.MouseEventHandler<HTMLDivElement>;
+    onDoubleClick?: React.MouseEventHandler<HTMLDivElement>;
 }
-export declare function Winicon({ id, src, link, className, style, size, color, alt, onClick, tooltip }: WiniconProps): import("react/jsx-runtime").JSX.Element;
+export declare function Winicon({ id, src, link, className, style, size, color, alt, onClick, tooltip, onMouseDown, onDoubleClick }: WiniconProps): import("react/jsx-runtime").JSX.Element;
 export declare const showTooltipElement: ({ element, tooltip }: {
     element: any;
     tooltip: {
