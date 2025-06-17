@@ -1,5 +1,4 @@
 import styles from "./index.module.css";
-import ReactDOM from "react-dom"
 import { CSSProperties, forwardRef, ReactNode, useCallback, useEffect, useImperativeHandle, useRef, useState } from "react";
 import { closePopup, showPopup, Button, NavLink, Popup, Text, TextField, Util, Winicon } from "../../index";
 import EmojiPicker, { EmojiClickData, EmojiStyle, SuggestionMode } from "emoji-picker-react"
@@ -297,7 +296,7 @@ export const WiniEditor = forwardRef<RefProps, Props>(({ id, onChange, disabled,
             onApply={applyLinkToATag}
             style={inserLinkOffsetRef.current as any}
         />}
-        {showLinkPrompt && ReactDOM.createPortal(<PopupLinkPrompt
+        {showLinkPrompt && <PopupLinkPrompt
             onClose={() => {
                 setTimeout(() => {
                     setShowLinkPrompt(false)
@@ -306,7 +305,7 @@ export const WiniEditor = forwardRef<RefProps, Props>(({ id, onChange, disabled,
             }}
             onApply={applyLink}
             style={inserLinkOffsetRef.current as any}
-        />, document.body)}
+        />}
         {!hideToolbar && <div className='row' style={{ gap: 4 }}>
             <Winicon src='outline/emoticons/smile' size={16}
                 onMouseDown={(ev) => { ev.preventDefault() }}
@@ -315,7 +314,7 @@ export const WiniEditor = forwardRef<RefProps, Props>(({ id, onChange, disabled,
                     const rect = btn.getBoundingClientRect();
                     showEmoji({ top: rect.bottom + 2, left: ev.currentTarget.offsetLeft })
                 }} />
-            {isOpenEmoji && ReactDOM.createPortal(<PopupEmojiPicker
+            {isOpenEmoji && <PopupEmojiPicker
                 onClose={() => { setTimeout(() => { setIsOpenEmoji(false) }, 150) }}
                 style={emojiOffsetRef.current as any}
                 onSelect={(em) => {
@@ -326,7 +325,7 @@ export const WiniEditor = forwardRef<RefProps, Props>(({ id, onChange, disabled,
                     img.className = styles["emoji"]
                     onRestoreRange(img)
                 }}
-            />, document.body)}
+            />}
             <Winicon src='outline/text/bold' className="icon-button size24 light" size={14} color={activeStyles.bold ? "var(--primary-main-color)" : undefined} onMouseDown={(ev) => { ev.preventDefault() }} onClick={() => { handleFormat("bold") }} />
             <Winicon src='outline/editing/text-italic' className="icon-button size24 light" size={14} color={activeStyles.italic ? "var(--primary-main-color)" : undefined} onMouseDown={(ev) => { ev.preventDefault() }} onClick={() => { handleFormat("italic") }} />
             <Winicon src='outline/text/underline' className="icon-button size24 light" size={14} color={activeStyles.underline ? "var(--primary-main-color)" : undefined} onMouseDown={(ev) => { ev.preventDefault() }} onClick={() => { handleFormat("underline") }} />

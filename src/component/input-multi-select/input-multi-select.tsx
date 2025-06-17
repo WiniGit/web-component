@@ -1,4 +1,3 @@
-import ReactDOM from "react-dom"
 import React, { CSSProperties, Dispatch, forwardRef, ReactNode, SetStateAction, useEffect, useImperativeHandle, useRef, useState } from 'react'
 import styles from './input-multi-select.module.css'
 import { OptionsItem } from '../select1/select1'
@@ -63,11 +62,25 @@ export const SelectMultiple = forwardRef<SelectMultipleRef, SelectMultipleProps>
     const onOpenOptions = () => {
         if (isOpen) return null;
         const rect = containerRef.current.getBoundingClientRect()
+        const tmp = document.createElement("div")
+        tmp.style.position = "fixed"
+        containerRef.current.after(tmp)
+        let tmpRect = tmp.getBoundingClientRect()
         let offset: any = { width: rect.width }
         if (rect.bottom + 240 >= document.body.offsetHeight) offset.bottom = `calc(100dvh - ${rect.y}px + 2px)`
         else offset.top = rect.bottom + 2
-        if (rect.right + 16 >= document.body.offsetWidth) offset.right = `calc(100dvw - ${rect.right}px)`
-        else offset.left = rect.x
+        if (Math.abs(tmpRect.x - rect.x) > 2) {
+            tmp.style.left = `${containerRef.current.offsetLeft}px`
+            tmpRect = tmp.getBoundingClientRect()
+            if (Math.abs(tmpRect.x - rect.x) > 2) {
+                offset.left = rect.x
+            } else offset.left = containerRef.current.offsetLeft
+        }
+        tmp.remove()
+        if (rect.right + 16 >= document.body.offsetWidth) {
+            offset.right = `calc(100dvw - ${rect.right}px)`
+            delete offset.left
+        }
         offsetRef.current = offset
         setIsOpen(true)
     }
@@ -116,7 +129,7 @@ export const SelectMultiple = forwardRef<SelectMultipleRef, SelectMultipleProps>
                 )
             }
         </div>
-        {isOpen && ReactDOM.createPortal(props.customOptionsList ?? <OptionDropList
+        {isOpen && (props.customOptionsList ?? <OptionDropList
             onClose={(ev) => {
                 const removeBtn = ev.target.closest(`div[class*="selected-item-value"] > div:last-child`)
                 if (removeBtn) {
@@ -145,7 +158,7 @@ export const SelectMultiple = forwardRef<SelectMultipleRef, SelectMultipleProps>
                 setValue(tmp)
                 props.onChange?.(tmp)
             }}
-        />, document.body)}
+        />)}
     </>
 })
 
