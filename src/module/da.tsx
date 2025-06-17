@@ -33,6 +33,8 @@ export enum ComponentType {
     report = "Report",
     popup = "Popup",
     colorPicker = "ColorPicker",
+    emoji = "Emoji",
+    winiEditor = "WiniEditor",
     none = "none"
 }
 

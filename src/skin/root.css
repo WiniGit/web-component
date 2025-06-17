@@ -56,7 +56,7 @@
     --success-border-color: light-dark(#C6ECD7, #1A4C30);
     --success-background: light-dark(#E8F7EF, #0D2618);
     /* info */
-    --infor-bolder-color: light-dark(#0F62D7);
+    --infor-bolder-color: light-dark(#0F62D7, #5899F3);
     --infor-main-color: #287CF0;
     --infor-lighter-color: light-dark(#5899F3, #0F62D7);
     --infor-tag-color: light-dark(#B7D3FA, #5899F3);

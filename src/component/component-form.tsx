@@ -17,6 +17,9 @@ import { RadioButton } from "./radio-button/radio-button";
 import { ImportFile } from "./import-file/import-file";
 import { CkEditorUploadAdapter } from "../controller/config";
 import { Util } from "../controller/utils";
+import { SuggestionProps, WiniEditor } from "./wini-editor/wini-editor";
+import { IconPicker } from "./icon-picker/icon-picker";
+import { Button } from "./button/button";
 
 interface DateRangeProps {
     start?: Date,
@@ -702,6 +705,94 @@ export const ColorPickerForm = (props: ColorPickerForm) => {
                     </>}
                     helperText={_covertErrors && (_covertErrors?.message?.length ? _covertErrors?.message : `${t("input")} ${(props.placeholder ? props.placeholder : props.label ? `${props.label}` : t("value")).toLowerCase()}`)} />
             </div>;
+        }}
+    />
+}
+
+interface WiniEditorFormProps extends SimpleFormProps {
+    onChange?: (v: string) => void;
+    hideToolbar?: boolean;
+    autoFocus?: boolean;
+    editorClassName?: string;
+    editorStyle?: CSSProperties;
+    onSuggest?: Array<SuggestionProps>
+}
+
+export const WiniEditorForm = (params: WiniEditorFormProps) => {
+    const { t } = useTranslation()
+    return <Controller
+        name={params.name}
+        control={params.methods.control}
+        rules={{ required: params.required }}
+        render={({ field }) => {
+            return <div className={params.className ?? 'col'} style={{ gap: '0.8rem', overflow: 'visible', width: '100%', ...(params.style ?? {}) }}>
+                {params.labelElement ?? (params.label ? <div className="row" style={{ gap: '0.4rem', minWidth: "16rem" }}>
+                    <Text className={"label-3"}>{params.label}</Text>
+                    {params.required ? <Text className="label-4" style={{ color: '#E14337' }}>*</Text> : null}
+                </div> : null)}
+                <WiniEditor
+                    initValue={field.value}
+                    onChange={(value) => {
+                        field.onChange(value);
+                        if (params.onChange) params.onChange(value)
+                    }}
+                    hideToolbar={params.hideToolbar}
+                    autoFocus={params.autoFocus}
+                    className={params.editorClassName}
+                    style={params.editorStyle}
+                    disabled={params.disabled}
+                    placeholder={params.placeholder ? params.placeholder : params.label ? `${t("input")} ${params.label.toLowerCase()}` : ''}
+                    onSuggest={params.onSuggest}
+                    helperText={convertErrors(params.methods.formState.errors, params.name) && (convertErrors(params.methods.formState.errors, params.name)?.message?.length ? convertErrors(params.methods.formState.errors, params.name)?.message : `${t("input")} ${(params.placeholder ? params.placeholder : params.label ? `${params.label}` : t('value')).toLowerCase()}`)}
+                />
+            </div>;
+        }}
+    />
+}
+
+interface IconPickerFormProps extends SimpleFormProps {
+    onChange?: (v?: string) => void;
+}
+
+export const IconPickerForm = (params: IconPickerFormProps) => {
+    const iconPickerRef = useRef<any>(null)
+    const { t } = useTranslation()
+
+    return <Controller
+        name={params.name}
+        control={params.methods.control}
+        rules={{ required: params.required }}
+        render={({ field }) => {
+            return <div className={params.className ?? 'col'} style={{ gap: '0.8rem', overflow: 'visible', width: '100%', ...(params.style ?? {}) }}>
+                {params.labelElement ?? (params.label ? <div className="row" style={{ gap: '0.4rem', minWidth: "16rem" }}>
+                    <Text className={"label-3"}>{params.label}</Text>
+                    {params.required ? <Text className="label-4" style={{ color: '#E14337' }}>*</Text> : null}
+                </div> : null)}
+                <IconPicker
+                    ref={iconPickerRef}
+                    size={14}
+                    style={{ display: "none" }}
+                    onChange={(src) => {
+                        field.onChange(src)
+                        params.onChange?.(src)
+                    }}
+                />
+                {field.value ? <Button
+                    disabled={params.disabled}
+                    prefix={<Winicon src={field.value} size={"1.6rem"} />}
+                    label={t("remove") + " icon"}
+                    className="button-text-3 button-grey"
+                    onClick={() => {
+                        field.onChange(null)
+                        params.onChange?.()
+                    }}
+                /> : <Button
+                    disabled={params.disabled}
+                    label={t("add") + " icon"}
+                    className="button-text-3 button-grey"
+                    onClick={iconPickerRef.current?.openIconLibrary}
+                />}
+            </div>
         }}
     />
 }

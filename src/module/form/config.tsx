@@ -1,4 +1,4 @@
-import { CheckboxForm, DateTimePickerForm, ImportFileForm, GroupCheckboxForm, RangeForm, Select1Form, SelectMultipleForm, SwitchForm, TextAreaForm, TextFieldForm, CKEditorForm, RateForm, ColorPickerForm, GroupRadioButtonForm, InputPasswordForm } from "../../component/component-form";
+import { CheckboxForm, DateTimePickerForm, ImportFileForm, GroupCheckboxForm, RangeForm, Select1Form, SelectMultipleForm, SwitchForm, TextAreaForm, TextFieldForm, CKEditorForm, RateForm, ColorPickerForm, GroupRadioButtonForm, InputPasswordForm, WiniEditorForm, IconPickerForm } from "../../component/component-form";
 import { differenceInCalendarDays, differenceInMinutes } from "date-fns";
 import { validate } from "validate.js";
 import { ComponentType, FEDataType, ValidateType } from "../da";
@@ -184,6 +184,28 @@ export function RenderComponentByType({ fieldItem, methods, className, style = {
                 disabled={fieldItem.Form.Disabled}
                 label={label ?? fieldItem.Form.Label}
                 name={fieldItem.Name}
+            />
+        case ComponentType.winiEditor:
+            return <WiniEditorForm
+                methods={methods}
+                name={fieldItem.Name}
+                className={className}
+                style={{ alignItems: 'start', ...style }}
+                required={fieldItem.Form.Required}
+                disabled={fieldItem.Form.Disabled}
+                label={label ?? fieldItem.Form.Label}
+                placeholder={fieldItem.Form.Placeholder}
+            />
+        case ComponentType.icon:
+            return <IconPickerForm
+                methods={methods}
+                name={fieldItem.Name}
+                className={className}
+                style={{ alignItems: 'start', ...style }}
+                required={fieldItem.Form.Required}
+                disabled={fieldItem.Form.Disabled}
+                label={label ?? fieldItem.Form.Label}
+                placeholder={fieldItem.Form.Placeholder}
             />
         default:
             return <div></div>
