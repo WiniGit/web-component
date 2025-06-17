@@ -209,6 +209,6 @@ export declare const WiniEditorForm: (params: WiniEditorFormProps) => import("re
 interface IconPickerFormProps extends SimpleFormProps {
     onChange?: (v?: string) => void;
 }
-export declare const IconPickerForm: (params: IconPickerFormProps) => import("react/jsx-runtime").JSX.Element;
+export declare const IconPickerForm: ({ style, ...params }: IconPickerFormProps) => import("react/jsx-runtime").JSX.Element;
 export {};
 //# sourceMappingURL=component-form.d.ts.map

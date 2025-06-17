@@ -164,7 +164,7 @@ export function TextAreaForm({ style = {}, textAreaStyle = {}, ...params }: Text
                     params.onChange?.(ev)
                 },
             }) as any}
-            style={{ height: "fit-content", maxHeight: "24rem", width: '100%', ...textAreaStyle }}
+            style={{ height: "fit-content", maxHeight: "24rem", width: '100%', flex: params.className?.includes('row') ? 1 : undefined, ...textAreaStyle }}
             placeholder={params.placeholder ? params.placeholder : params.label ? `${t("input")} ${params.label.toLowerCase()}` : ''}
             helperText={convertErrors(params.methods.formState.errors, params.name) && (convertErrors(params.methods.formState.errors, params.name)?.message?.length ? convertErrors(params.methods.formState.errors, params.name)?.message : `${t("input")} ${(params.placeholder ? params.placeholder : params.label ? `${params.label}` : t('value')).toLowerCase()}`)}
         />
@@ -279,7 +279,7 @@ export function Select1Form(params: Select1FormProps) {
                 </div> : null)}
                 <Select1
                     className="body-3"
-                    style={{ width: '100%', padding: "0 1.6rem", height: '4rem', flex: params.className?.includes('row') ? 1 : undefined, ...(params.select1Style ?? {}) }}
+                    style={{ padding: "0 1.6rem", height: '4rem', width: '100%', flex: params.className?.includes('row') ? 1 : undefined, ...(params.select1Style ?? {}) }}
                     placeholder={params.placeholder ? params.placeholder : params.label ? `${t("choose")} ${params.label.toLowerCase()}` : ''}
                     value={field.value}
                     options={params.options}
@@ -739,7 +739,7 @@ export const WiniEditorForm = (params: WiniEditorFormProps) => {
                     hideToolbar={params.hideToolbar}
                     autoFocus={params.autoFocus}
                     className={params.editorClassName}
-                    style={params.editorStyle}
+                    style={{ width: '100%', flex: params.className?.includes('row') ? 1 : undefined, ...(params.editorStyle ?? {}) }}
                     disabled={params.disabled}
                     placeholder={params.placeholder ? params.placeholder : params.label ? `${t("input")} ${params.label.toLowerCase()}` : ''}
                     onSuggest={params.onSuggest}
@@ -754,7 +754,7 @@ interface IconPickerFormProps extends SimpleFormProps {
     onChange?: (v?: string) => void;
 }
 
-export const IconPickerForm = (params: IconPickerFormProps) => {
+export const IconPickerForm = ({ style, ...params }: IconPickerFormProps) => {
     const iconPickerRef = useRef<any>(null)
     const { t } = useTranslation()
 
@@ -763,7 +763,7 @@ export const IconPickerForm = (params: IconPickerFormProps) => {
         control={params.methods.control}
         rules={{ required: params.required }}
         render={({ field }) => {
-            return <div className={params.className ?? 'col'} style={{ gap: '0.8rem', overflow: 'visible', width: '100%', ...(params.style ?? {}) }}>
+            return <div className={params.className ?? 'col'} style={{ gap: '0.8rem', overflow: 'visible', ...style }}>
                 {params.labelElement ?? (params.label ? <div className="row" style={{ gap: '0.4rem', minWidth: "16rem" }}>
                     <Text className={"label-3"}>{params.label}</Text>
                     {params.required ? <Text className="label-4" style={{ color: '#E14337' }}>*</Text> : null}
