@@ -1,6 +1,7 @@
 import { FieldValues, UseFormReturn } from 'react-hook-form';
 import { CSSProperties, ReactNode, default as React } from 'react';
 import { OptionsItem } from './select1/select1';
+import { SuggestionProps } from './wini-editor/wini-editor';
 interface DateRangeProps {
     start?: Date;
     end?: Date;
@@ -196,5 +197,18 @@ interface ColorPickerForm extends SimpleFormProps {
     textFieldStyle?: CSSProperties;
 }
 export declare const ColorPickerForm: (props: ColorPickerForm) => import("react/jsx-runtime").JSX.Element;
+interface WiniEditorFormProps extends SimpleFormProps {
+    onChange?: (v: string) => void;
+    hideToolbar?: boolean;
+    autoFocus?: boolean;
+    editorClassName?: string;
+    editorStyle?: CSSProperties;
+    onSuggest?: Array<SuggestionProps>;
+}
+export declare const WiniEditorForm: (params: WiniEditorFormProps) => import("react/jsx-runtime").JSX.Element;
+interface IconPickerFormProps extends SimpleFormProps {
+    onChange?: (v?: string) => void;
+}
+export declare const IconPickerForm: (params: IconPickerFormProps) => import("react/jsx-runtime").JSX.Element;
 export {};
 //# sourceMappingURL=component-form.d.ts.map
