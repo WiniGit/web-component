@@ -312,7 +312,7 @@ export const WiniEditor = forwardRef<RefProps, Props>(({ id, onChange, disabled,
                 onClick={(ev) => {
                     const btn = ev.currentTarget.closest("div") as any
                     const rect = btn.getBoundingClientRect();
-                    showEmoji({ top: rect.bottom + 2 })
+                    showEmoji({ top: rect.bottom + 2, left: ev.currentTarget.offsetLeft })
                 }} />
             {isOpenEmoji && <PopupEmojiPicker
                 onClose={() => { setTimeout(() => { setIsOpenEmoji(false) }, 150) }}

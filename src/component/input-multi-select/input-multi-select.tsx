@@ -65,8 +65,8 @@ export const SelectMultiple = forwardRef<SelectMultipleRef, SelectMultipleProps>
         let offset: any = { width: rect.width }
         if (rect.bottom + 240 >= document.body.offsetHeight) offset.bottom = `calc(100dvh - ${rect.y}px + 2px)`
         else offset.top = rect.bottom + 2
-        // if (rect.right + 16 >= document.body.offsetWidth) offset.right = `calc(100dvw - ${rect.right}px)`
-        // else offset.left = rect.x
+        if (rect.right + 16 >= document.body.offsetWidth) offset.right = `calc(100% - ${containerRef.current.offsetLeft + containerRef.current.offsetWidth}px)`
+        else offset.left = containerRef.current.offsetLeft
         offsetRef.current = offset
         setIsOpen(true)
     }
