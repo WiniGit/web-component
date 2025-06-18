@@ -218,3 +218,7 @@ a.ck.ck-button:not(.ck-disabled):hover,
 .ck.ck-dropdown__panel {
     background-color: var(--neutral-absolute-background-color, light-dark(#FFFFFF, #14181b)) !important;
 }
+
+.ck.ck-reset_all, .ck-reset_all *:not(.ck-reset_all-excluded *) {
+    color: var(--neutral-text-subtitle-color, light-dark(#61616B, #A2A2AA)) !important;
+}
