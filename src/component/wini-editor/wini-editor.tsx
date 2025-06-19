@@ -1,7 +1,7 @@
 import styles from "./index.module.css";
 import { CSSProperties, forwardRef, ReactNode, useCallback, useEffect, useImperativeHandle, useRef, useState } from "react";
 import { closePopup, showPopup, Button, NavLink, Popup, Text, TextField, Util, Winicon } from "../../index";
-import EmojiPicker, { EmojiClickData, EmojiStyle, SuggestionMode } from "emoji-picker-react"
+import EmojiPicker, { EmojiClickData, EmojiStyle } from "emoji-picker-react"
 import { useTranslation } from "react-i18next";
 
 export interface SuggestionProps {
@@ -25,6 +25,7 @@ interface Props {
 }
 
 interface RefProps {
+    isOpenEmoji: boolean;
     showEmoji: (s: CSSProperties) => void;
     element: HTMLDivElement;
     focus: () => void;
@@ -168,10 +169,11 @@ export const WiniEditor = forwardRef<RefProps, Props>(({ id, onChange, disabled,
     }
 
     useImperativeHandle(ref, () => ({
+        isOpenEmoji: isOpenEmoji,
         showEmoji: showEmoji,
         element: inputContentRef.current!.parentElement as HTMLDivElement,
         focus: handleFocus,
-    }), []);
+    }), [isOpenEmoji]);
 
     useEffect(() => {
         if (autoFocus && inputContentRef.current) handleFocus()
@@ -310,27 +312,46 @@ export const WiniEditor = forwardRef<RefProps, Props>(({ id, onChange, disabled,
             <Winicon src='outline/emoticons/smile' size={16}
                 onMouseDown={(ev) => { ev.preventDefault() }}
                 onClick={(ev) => {
-                    const btn = ev.currentTarget.closest("div") as any
-                    const rect = btn.getBoundingClientRect();
-                    showEmoji({ top: rect.bottom + 2, left: ev.currentTarget.offsetLeft })
+                    if (isOpenEmoji) return null;
+                    const rect = ev.currentTarget.getBoundingClientRect()
+                    const tmp = document.createElement("div")
+                    tmp.style.position = "fixed"
+                    ev.currentTarget.after(tmp)
+                    let tmpRect = tmp.getBoundingClientRect()
+                    let offset: any = { width: rect.width }
+                    if (rect.bottom + 240 >= document.body.offsetHeight) offset.bottom = `calc(100dvh - ${rect.y}px + 2px)`
+                    else offset.top = rect.bottom + 2
+                    if (Math.abs(tmpRect.x - rect.x) > 2) {
+                        tmp.style.left = `${ev.currentTarget.offsetLeft}px`
+                        tmpRect = tmp.getBoundingClientRect()
+                        if (Math.abs(tmpRect.x - rect.x) > 2) {
+                            offset.left = rect.x
+                        } else offset.left = ev.currentTarget.offsetLeft
+                    }
+                    tmp.remove()
+                    if (rect.right + 16 >= document.body.offsetWidth) {
+                        offset.right = `calc(100dvw - ${rect.right}px)`
+                        delete offset.left
+                    }
+                    showEmoji(offset)
                 }} />
-            {isOpenEmoji && <PopupEmojiPicker
-                onClose={() => { setTimeout(() => { setIsOpenEmoji(false) }, 150) }}
-                style={emojiOffsetRef.current as any}
-                onSelect={(em) => {
-                    setIsOpenEmoji(false)
-                    const img = document.createElement("img")
-                    img.src = em.imageUrl
-                    img.alt = em.emoji
-                    img.className = styles["emoji"]
-                    onRestoreRange(img)
-                }}
-            />}
             <Winicon src='outline/text/bold' className="icon-button size24 light" size={14} color={activeStyles.bold ? "var(--primary-main-color)" : undefined} onMouseDown={(ev) => { ev.preventDefault() }} onClick={() => { handleFormat("bold") }} />
             <Winicon src='outline/editing/text-italic' className="icon-button size24 light" size={14} color={activeStyles.italic ? "var(--primary-main-color)" : undefined} onMouseDown={(ev) => { ev.preventDefault() }} onClick={() => { handleFormat("italic") }} />
             <Winicon src='outline/text/underline' className="icon-button size24 light" size={14} color={activeStyles.underline ? "var(--primary-main-color)" : undefined} onMouseDown={(ev) => { ev.preventDefault() }} onClick={() => { handleFormat("underline") }} />
             <Winicon src='outline/user interface/hyperlink' className='icon-button size32' size={16} onMouseDown={(ev) => { ev.preventDefault() }} onClick={handleLink} />
         </div>}
+        {isOpenEmoji && <PopupEmojiPicker
+            onClose={() => { setTimeout(() => { setIsOpenEmoji(false) }, 150) }}
+            style={emojiOffsetRef.current as any}
+            onSelect={(em) => {
+                setIsOpenEmoji(false)
+                const img = document.createElement("img")
+                img.src = em.imageUrl
+                img.alt = em.emoji
+                img.className = styles["emoji"]
+                onRestoreRange(img)
+            }}
+        />}
     </div>
 })
 
@@ -353,13 +374,12 @@ const PopupEmojiPicker = (props: { style: CSSProperties, onClose: () => void, on
 
     return <div ref={divRef} className={`col ${styles["dropdown"]}`} style={props.style}>
         <EmojiPicker
-            lazyLoadEmojis
+            lazyLoadEmojis={true}
             theme={Util.getStorage("theme") as any}
             skinTonesDisabled
             emojiStyle={EmojiStyle.APPLE}
             height={400}
             searchPlaceHolder={t("search")}
-            suggestedEmojisMode={SuggestionMode.RECENT}
             onEmojiClick={props.onSelect}
             autoFocusSearch={false}
         />

@@ -21,6 +21,7 @@ interface Props {
     helperTextColor?: string;
 }
 interface RefProps {
+    isOpenEmoji: boolean;
     showEmoji: (s: CSSProperties) => void;
     element: HTMLDivElement;
     focus: () => void;
