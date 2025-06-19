@@ -1,4 +1,4 @@
-import { CSSProperties, MouseEventHandler } from 'react';
+import { CSSProperties } from 'react';
 interface IconPickerProps {
     src?: string;
     style?: CSSProperties;
@@ -15,7 +15,7 @@ interface IconPickerRef {
     value?: string;
     isOpen: boolean;
     setIsOpen: (isOpen: boolean) => void;
-    openIconLibrary: (ev: MouseEventHandler) => void;
+    openIconLibrary: (ev?: CSSProperties) => void;
 }
 export declare const IconPicker: import('react').ForwardRefExoticComponent<IconPickerProps & import('react').RefAttributes<IconPickerRef>>;
 export {};

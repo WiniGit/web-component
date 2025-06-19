@@ -16,7 +16,10 @@ interface WiniconProps {
     onMouseDown?: React.MouseEventHandler<HTMLDivElement>;
     onDoubleClick?: React.MouseEventHandler<HTMLDivElement>;
 }
-export declare function Winicon({ id, src, link, className, style, size, color, alt, onClick, tooltip, onMouseDown, onDoubleClick }: WiniconProps): import("react/jsx-runtime").JSX.Element;
+interface WiniconRef {
+    element?: HTMLDivElement;
+}
+export declare const Winicon: React.ForwardRefExoticComponent<WiniconProps & React.RefAttributes<WiniconRef>>;
 export declare const showTooltipElement: ({ element, tooltip }: {
     element: any;
     tooltip: {
