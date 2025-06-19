@@ -106,7 +106,7 @@
 /* Extra small devices (phones, 576px and down) min*/
 @media only screen and (max-width: 576px) {
     :root {
-        font-size: 7.6px !important;
+        font-size: 8.2px !important;
     }
 
     .row>.remain-min {
@@ -197,7 +197,7 @@
 /* Small devices (portrait tablets and large phones, 576px and up) Small (sm)*/
 @media only screen and (min-width: 576px) and (max-width: 768px) {
     :root {
-        font-size: 7.6px !important;
+        font-size: 8.6px !important;
     }
 
     .row>.remain-sm {
@@ -287,7 +287,7 @@
 /* Medium devices (landscape tablets, 768px and up) Medium (md)*/
 @media only screen and (min-width: 768px) and (max-width: 992px) {
     :root {
-        font-size: 8.4px !important;
+        font-size: 8.8px !important;
     }
 
     .row>.remain-md {
@@ -378,7 +378,7 @@
 /* Large devices (laptops/desktops, 992px and up) Large (lg)*/
 @media only screen and (min-width: 992px) and (max-width: 1200px) {
     :root {
-        font-size: 8.8px !important;
+        font-size: 9.4px !important;
     }
 
     .row>.remain-lg {
@@ -469,7 +469,7 @@
 /* Extra large devices (large laptops and desktops, 1200px and up) X-large (xl)*/
 @media only screen and (min-width: 1200px) {
     :root {
-        font-size: 9.2px !important;
+        font-size: 9.8px !important;
     }
 
     .row>.remain-xl {
