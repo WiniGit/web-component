@@ -19,11 +19,12 @@ interface IconPickerRef {
     value?: string;
     isOpen: boolean;
     setIsOpen: (isOpen: boolean) => void;
-    openIconLibrary: (ev: MouseEventHandler) => void
+    openIconLibrary: (ev?: CSSProperties) => void
 }
 
 export const IconPicker = forwardRef<IconPickerRef, IconPickerProps>((props, ref) => {
-    const offsetRef = useRef<{ [p: string]: any }>(null)
+    const divRef = useRef<HTMLDivElement>(null)
+    const offsetRef = useRef<CSSProperties>(null)
     const [value, setValue] = useState<string | undefined>()
     const [isOpen, setIsOpen] = useState(false)
 
@@ -31,13 +32,31 @@ export const IconPicker = forwardRef<IconPickerRef, IconPickerProps>((props, ref
         setValue(props.src)
     }, [props.src])
 
-    const onOpenIconLib = (ev: any) => {
+    const onOpenIconLib = (offset?: CSSProperties) => {
         if (isOpen) return null;
-        const rect = ev.target.closest("div").getBoundingClientRect()
-        let offset: any = {}
-        if (rect.bottom + 240 >= document.body.offsetHeight) offset.bottom = `calc(100dvh - ${rect.y}px + 2px)`
-        else offset.top = rect.bottom + 2
-        offsetRef.current = offset
+        if (offset) {
+            const rect = divRef.current!.getBoundingClientRect()
+            const tmp = document.createElement("div")
+            tmp.style.position = "fixed"
+            divRef.current!.after(tmp)
+            let tmpRect = tmp.getBoundingClientRect()
+            let tmpOffset: any = {}
+            if (rect.bottom + 240 >= document.body.offsetHeight) tmpOffset.bottom = `calc(100dvh - ${rect.y}px + 2px)`
+            else tmpOffset.top = rect.bottom + 2
+            if (Math.abs(tmpRect.x - rect.x) > 2) {
+                tmp.style.left = `${divRef.current!.offsetLeft}px`
+                tmpRect = tmp.getBoundingClientRect()
+                if (Math.abs(tmpRect.x - rect.x) > 2) {
+                    tmpOffset.left = rect.x
+                } else tmpOffset.left = divRef.current!.offsetLeft
+            }
+            tmp.remove()
+            if (rect.right + 16 >= document.body.offsetWidth) {
+                tmpOffset.right = `calc(100dvw - ${rect.right}px)`
+                delete tmpOffset.left
+            }
+            offsetRef.current = tmpOffset
+        } else offsetRef.current = offset as any
         setIsOpen(true)
     }
 
@@ -49,7 +68,9 @@ export const IconPicker = forwardRef<IconPickerRef, IconPickerProps>((props, ref
     }), [isOpen, value])
 
     return <>
-        <Winicon src={(value ?? "outline/user interface/setup-tools") as any} style={props.style} size={props.size} className={props.className} color={props.color} tooltip={props.tooltip} onClick={onOpenIconLib} />
+        <Winicon ref={r => {
+            if (r) divRef.current = r.element as any
+        }} src={(value ?? "outline/user interface/setup-tools") as any} style={props.style} size={props.size} className={props.className} color={props.color} tooltip={props.tooltip} onClick={() => onOpenIconLib()} />
         {isOpen && <IconLibrary
             onSelect={(src) => {
                 setValue(`${src.type}/${src.category}/${src.name}`)

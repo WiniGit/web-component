@@ -1,5 +1,5 @@
 import ReactDOM from "react-dom";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { forwardRef, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react";
 import styles from './winicon.module.css'
 import { CSSProperties } from "react";
 import { Text } from "../text/text";
@@ -19,8 +19,12 @@ interface WiniconProps {
     onDoubleClick?: React.MouseEventHandler<HTMLDivElement>
 }
 
-export function Winicon({ id, src, link, className, style, size, color, alt, onClick, tooltip, onMouseDown,onDoubleClick }: WiniconProps) {
-    const ref = useRef<HTMLDivElement>(null)
+interface WiniconRef {
+    element?: HTMLDivElement
+}
+
+export const Winicon = forwardRef<WiniconRef, WiniconProps>(({ id, src, link, className, style, size, color, alt, onClick, tooltip, onMouseDown, onDoubleClick }, ref) => {
+    const divRef = useRef<HTMLDivElement>(null)
     const [svgData, setSvgData] = useState<string>()
     const [showTooltip, setShowTooltip] = useState<boolean>(false)
     const cdnSrc = "https://cdn.jsdelivr.net/gh/WiniGit/icon-library@latest/"
@@ -59,9 +63,13 @@ export function Winicon({ id, src, link, className, style, size, color, alt, onC
         }
     }, [src, link])
 
+    useImperativeHandle(ref, () => ({
+        element: divRef.current as any,
+    }), [divRef.current]);
+
     return <>
         <div
-            ref={ref}
+            ref={divRef}
             id={id}
             onClick={onClick}
             onDoubleClick={onDoubleClick}
@@ -70,9 +78,9 @@ export function Winicon({ id, src, link, className, style, size, color, alt, onC
             style={(style ? { ...style, fontSize: size, color: color } : { fontSize: size, color: color })} dangerouslySetInnerHTML={{ __html: svgData ?? '' }}
             {...extendAttribute}
         />
-        {tooltip && showTooltip && ReactDOM.createPortal(showTooltipElement({ element: ref.current, tooltip: tooltip }), document.body)}
+        {tooltip && showTooltip && ReactDOM.createPortal(showTooltipElement({ element: divRef.current, tooltip: tooltip }), document.body)}
     </>
-}
+})
 
 export const showTooltipElement = ({ element, tooltip }: { element: any, tooltip: { message: string, position?: "top" | "bottom" | "left" | "right" } }) => {
     if (!element) return null
