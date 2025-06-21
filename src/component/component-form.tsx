@@ -790,8 +790,9 @@ export const IconPickerForm = ({ style, ...params }: IconPickerFormProps) => {
                     disabled={params.disabled}
                     label={t("add") + " icon"}
                     className="button-text-3 button-grey"
-                    onClick={() => {
-                        if (iconPickerRef.current) iconPickerRef.current.openIconLibrary()
+                    onClick={(ev) => {
+                        const rect = ev.currentTarget.getBoundingClientRect()
+                        if (iconPickerRef.current) iconPickerRef.current.openIconLibrary({ top: rect.bottom + 1 })
                     }}
                 />}
             </div>

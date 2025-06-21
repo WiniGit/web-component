@@ -344,7 +344,6 @@ export const WiniEditor = forwardRef<RefProps, Props>(({ id, onChange, disabled,
             onClose={() => { setTimeout(() => { setIsOpenEmoji(false) }, 150) }}
             style={emojiOffsetRef.current as any}
             onSelect={(em) => {
-                setIsOpenEmoji(false)
                 const img = document.createElement("img")
                 img.src = em.imageUrl
                 img.alt = em.emoji
