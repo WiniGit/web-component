@@ -113,6 +113,12 @@ export declare class AccountController {
         username?: string;
     }, resolve?: () => void): Promise<any>;
     getInfor(): Promise<any>;
+    checkPassword(body: {
+        phone?: string;
+        password?: string;
+        email?: string;
+        username?: string;
+    }): Promise<any>;
     hashPassword(password: string): Promise<any>;
 }
 //# sourceMappingURL=data.d.ts.map

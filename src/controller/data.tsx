@@ -205,7 +205,7 @@ export class AccountController {
             headers: { module: this.module, pid: ConfigData.pid },
             body: body
         })
-        if (res.code === 200 && !resolve) { 
+        if (res.code === 200 && !resolve) {
             Object.keys(res.data).forEach(key => {
                 Util.setCookie(key, res.data[key])
             })
@@ -217,6 +217,14 @@ export class AccountController {
     async getInfor() {
         const res = await BaseDA.get(ConfigData.url + 'data/getInfo', {
             headers: { module: this.module, pid: ConfigData.pid },
+        })
+        return res
+    }
+
+    async checkPassword(body: { phone?: string, password?: string, email?: string, username?: string }) {
+        const res = await BaseDA.post(ConfigData.url + 'data/checkPassword', {
+            headers: { module: this.module, pid: ConfigData.pid },
+            body: body
         })
         return res
     }
