@@ -73,6 +73,7 @@ interface HeaderCellProps {
 }
 
 const HeaderCell = ({ colItem, methods, style = {}, children, onMounted, onChangeConfigData, handleAddEditField }: HeaderCellProps) => {
+    const { t } = useTranslation()
     const divRef = useRef<HTMLDivElement>(null)
     const popupRef = useRef<Popup>(null)
     const resizeRef = useRef<HTMLDivElement | undefined | null>(null)
@@ -101,11 +102,11 @@ const HeaderCell = ({ colItem, methods, style = {}, children, onMounted, onChang
                     handleAddEditField()
                 }}>
                     <Winicon src='outline/user interface/gear' size={"1.4rem"} />
-                    <Text className="button-text-3">Edit field</Text>
+                    <Text className="button-text-3">{t("edit")} {t("column").toLowerCase()}</Text>
                 </button>}
                 <button type='button' className='row' onClick={handleSort}>
                     <Winicon src='outline/user interface/enlarge' size={"1.4rem"} />
-                    <Text className="button-text-3">{sortItem ? "Remove sort" : "Sort"}</Text>
+                    <Text className="button-text-3">{sortItem ? `${t("remove")} ${t("sort").toLowerCase()}` : t("sort")}</Text>
                 </button>
                 {onChangeConfigData && <>
                     <button type='button' className='row'
@@ -114,7 +115,7 @@ const HeaderCell = ({ colItem, methods, style = {}, children, onMounted, onChang
                             onEdit()
                         }}>
                         <Winicon src='outline/arrows/move-layer-left' size={"1.4rem"} />
-                        <Text className="button-text-3">Move to start</Text>
+                        <Text className="button-text-3">{t("movetostart")}</Text>
                     </button>
                     <button type='button' className='row'
                         onClick={() => {
@@ -122,14 +123,14 @@ const HeaderCell = ({ colItem, methods, style = {}, children, onMounted, onChang
                             onEdit()
                         }}>
                         <Winicon src='outline/arrows/move-layer-right' size={"1.4rem"} />
-                        <Text className="button-text-3">Move to end</Text>
+                        <Text className="button-text-3">{t("movetoend")}</Text>
                     </button>
                     <button type='button' className='row' onClick={() => {
                         methods.setValue("columns", columns.filter(e => e.Id !== colItem.Id))
                         onEdit()
                     }}>
                         <Winicon src='outline/layout/eye-slash' size={"1.4rem"} />
-                        <Text className="button-text-3">Hide column</Text>
+                        <Text className="button-text-3">{t("delete")} {t("column").toLowerCase()}</Text>
                     </button>
                 </>}
             </div>
