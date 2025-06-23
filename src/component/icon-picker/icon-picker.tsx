@@ -35,6 +35,8 @@ export const IconPicker = forwardRef<IconPickerRef, IconPickerProps>((props, ref
     const onOpenIconLib = (offset?: CSSProperties) => {
         if (isOpen) return null;
         if (offset) {
+            offsetRef.current = offset as any
+        } else {
             const rect = divRef.current!.getBoundingClientRect()
             const tmp = document.createElement("div")
             tmp.style.position = "fixed"
@@ -56,7 +58,7 @@ export const IconPicker = forwardRef<IconPickerRef, IconPickerProps>((props, ref
                 delete tmpOffset.left
             }
             offsetRef.current = tmpOffset
-        } else offsetRef.current = offset as any
+        }
         setIsOpen(true)
     }
 
@@ -69,7 +71,7 @@ export const IconPicker = forwardRef<IconPickerRef, IconPickerProps>((props, ref
 
     return <>
         <Winicon ref={r => {
-            if (r) divRef.current = r.element as any
+            if (r?.element) divRef.current = r.element as any
         }} src={(value ?? "outline/user interface/setup-tools") as any} style={props.style} size={props.size} className={props.className} color={props.color} tooltip={props.tooltip} onClick={() => onOpenIconLib()} />
         {isOpen && <IconLibrary
             onSelect={(src) => {
