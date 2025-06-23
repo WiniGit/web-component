@@ -25,7 +25,7 @@ export class InfiniteScroll extends React.Component<InfiniteScrollProps, Infinit
             if (this.props.handleScroll) {
                 this.setState({ ...this.state, loading: true })
                 let scrollElement = ev.target as HTMLDivElement
-                await this.props.handleScroll(Math.round(scrollElement.offsetHeight + scrollElement.scrollTop) >= (scrollElement.scrollHeight - 1), ev)
+                await this.props.handleScroll(Math.round(scrollElement.offsetHeight + Math.abs(scrollElement.scrollTop)) >= (scrollElement.scrollHeight - 1), ev)
                 this.setState({ loading: false })
             }
         }} className={`${styles['infinite-scroll']} ${this.state.loading ? styles['loading'] : ''} ${this.props.className ?? 'col'}`} style={this.props.style ?? { 'overflow': 'hidden auto' }}>

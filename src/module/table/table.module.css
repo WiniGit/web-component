@@ -4,7 +4,7 @@
     height: 2.4rem;
     justify-content: center;
     object-fit: cover;
-    border: 2px inset var(--primary-lighter-color, light-dark(#5899f3FF, #0F62D7FF));
+    border: 1px inset var(--primary-lighter-color, light-dark(#5899f3FF, #0F62D7FF));
 }
 
 .report-name-cell>div:has(>svg) {
