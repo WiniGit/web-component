@@ -110,6 +110,7 @@ export declare class AccountController {
         phone?: string;
         password?: string;
         email?: string;
+        username?: string;
     }, resolve?: () => void): Promise<any>;
     getInfor(): Promise<any>;
     hashPassword(password: string): Promise<any>;
