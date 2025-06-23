@@ -200,12 +200,12 @@ export class AccountController {
         this.module = module ?? "Customer"
     }
 
-    async login(body: { type: "phone" | "apple" | "google" | "microsoft" | "account", token?: string, deviceToken?: string, ggClientId?: string, phone?: string, password?: string, email?: string }, resolve?: () => void) {
+    async login(body: { type: "phone" | "apple" | "google" | "microsoft" | "account", token?: string, deviceToken?: string, ggClientId?: string, phone?: string, password?: string, email?: string, username?: string }, resolve?: () => void) {
         const res = await BaseDA.post(ConfigData.url + 'data/login', {
             headers: { module: this.module, pid: ConfigData.pid },
             body: body
         })
-        if (res.code === 200 && !resolve) {
+        if (res.code === 200 && !resolve) { 
             Object.keys(res.data).forEach(key => {
                 Util.setCookie(key, res.data[key])
             })
