@@ -523,6 +523,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                 else return <CustomText {...typeProps} value={dataValue} />
             } else return <CustomText {...typeProps} />
         case ComponentType.img:
+            if (!typeProps.src?.length) typeProps.src = "https://cdn.jsdelivr.net/gh/WiniGit/icon-library@latest/outline/development/image-2.svg"
             if (props.item.NameField && dataValue) {
                 return <img
                     key={dataValue}
