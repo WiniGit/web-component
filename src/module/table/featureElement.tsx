@@ -34,8 +34,8 @@ export const SearchFilterData = ({ columns = [], fields = [], searchRaw = "*", o
     const relativeCols = useMemo(() => columns.filter(e => e.Name.split(".").length > 1), [columns.length])
     const [data, setData] = useState<{ searchValue: string, nameFields: Array<string> }>({ searchValue: "", nameFields: [] })
     const [filterData, setFilterData] = useState<{ name: string, value: any }[]>(initFilterList.map(f => ({ name: f, value: undefined })))
-    const searchinPattern = /@\w+:\("([^"%][^"]*[^"%]?)"\)/g;
-    const getSearchinValueRegex = /@\w+:\("([^"%][^"]*[^"%]?)"\)/;
+    const searchinPattern = /@[\w]+:\((?:"[^"]*"|\*[^*]*\*|"%[^%]*%")\)/g;
+    const getSearchinValueRegex = /@[\w]+:\(\s*(?:"%?([^"%*()]+)%?"|\*([^*()]+)\*)\s*\)/;
     const filterPattern = /@(\w+):\{([^{}]+)\}|@(\w+):\[([^\[\]]+)\]/g;
 
     useEffect(() => {
@@ -74,12 +74,12 @@ export const SearchFilterData = ({ columns = [], fields = [], searchRaw = "*", o
         let currentSearch = searchRaw
         if (currentSearch !== "*" && data.searchValue.length && data.nameFields.length) {
             data.nameFields.forEach(n => {
-                const replaceSearch = `(@${n}:("%${data.searchValue}%")) | (@${n}:("${data.searchValue}"))`
+                const replaceSearch = `(@${n}:("%${data.searchValue}%")) | (@${n}:("${data.searchValue}")) | (@${n}:(*${data.searchValue}*))`
                 currentSearch = currentSearch.replace(`${replaceSearch} | `, "").replace(replaceSearch, "");
             })
             currentSearch = currentSearch.replace(/\(/g, "").replace(/\)/g, "").trim()
         }
-        const querySearch = (searchValue.length && nameFields.length) ? `(${nameFields.map(n => `(@${n}:("%${searchValue}%")) | (@${n}:("${searchValue}"))`).join(" | ")})` : ""
+        const querySearch = (searchValue.length && nameFields.length) ? `(${nameFields.map(n => `(@${n}:("%${searchValue}%")) | (@${n}:("${searchValue}")) | (@${n}:(*${searchValue}*))`).join(" | ")})` : ""
         const finalSearchRaw = `${querySearch} ${currentSearch === "*" ? "" : currentSearch}`.trim()
         onChange?.(finalSearchRaw.length ? finalSearchRaw : "*")
     }
@@ -128,10 +128,10 @@ export const SearchFilterData = ({ columns = [], fields = [], searchRaw = "*", o
         <TextField
             ref={inputRef}
             placeholder={t("search")}
-            prefix={<Winicon src={"fill/development/zoom"} size={"1.4rem"} />}
+            prefix={<Winicon src={"fill/development/zoom"} size={14} />}
             style={{ flex: 1, maxWidth: '26.8rem' }}
             className="body-3 size32"
-            suffix={<Winicon src={"fill/arrows/down-arrow"} size={"1.2rem"} onClick={(ev: any) => {
+            suffix={<Winicon src={"fill/arrows/down-arrow"} size={12} onClick={(ev: any) => {
                 const inputContainer = ev.target.closest("label")
                 if (inputContainer.onOpen) return closePopup(popupRef as any)
                 const rect = inputContainer.getBoundingClientRect()
@@ -872,6 +872,7 @@ interface ActionOptionsDropdownProps {
     onClose?: () => void;
     actions?: { [p: string]: any }[];
     onChangeActions?: (params: { [p: string]: any }[]) => void;
+    onEditActionColumn?: (params: { [p: string]: any }, actionItem: { [p: string]: any }) => void;
     style?: CSSProperties;
     onEdit?: () => void;
     onDuplicate?: () => void;
@@ -881,7 +882,7 @@ interface ActionOptionsDropdownProps {
     title?: string;
 }
 
-export const ActionOptionsDropdown = forwardRef(({ onClose, actions = [], onChangeActions, style, onEdit, onDuplicate, onDelete, item, tbName, title }: ActionOptionsDropdownProps, ref: any) => {
+export const ActionOptionsDropdown = forwardRef(({ onClose, actions = [], onChangeActions, onEditActionColumn, style, onEdit, onDuplicate, onDelete, item, tbName, title }: ActionOptionsDropdownProps, ref: any) => {
     const controller = new DataController(tbName)
     const [data, setData] = useState()
     const { t } = useTranslation()
@@ -924,7 +925,6 @@ export const ActionOptionsDropdown = forwardRef(({ onClose, actions = [], onChan
                 console.log(e)
                 showPopup({
                     ref: ref,
-                    clickOverlayClosePopup: true,
                     content: <FKTable
                         onClose={() => closePopup(ref)}
                         item={item}
@@ -932,6 +932,7 @@ export const ActionOptionsDropdown = forwardRef(({ onClose, actions = [], onChan
                         tbName={tbName}
                         actions={actions}
                         onChangeActions={onChangeActions}
+                        onEditActionColumn={onEditActionColumn}
                         enableEdit={!!onEdit}
                     />
                 })
@@ -962,16 +963,17 @@ interface FKTableProps {
     tbName: string;
     actions?: { [p: string]: any }[];
     onChangeActions?: (params: { [p: string]: any }[]) => void;
+    onEditActionColumn?: (params: { [p: string]: any }, actionItem: { [p: string]: any }) => void;
     enableEdit?: boolean;
     onClose?: () => void;
 }
 
-const FKTable = ({ fkItem, item, tbName, actions, onChangeActions, enableEdit, onClose }: FKTableProps) => {
+const FKTable = ({ fkItem, item, tbName, actions, onChangeActions, onEditActionColumn, enableEdit, onClose }: FKTableProps) => {
     const [filterData, setFilterData] = useState({ searchRaw: "*", sortby: [] })
     const props: any = {}
     props[`${tbName}Id`] = item.Id
 
-    return <div className="col" style={{ width: "100dvw", maxWidth: 1320, height: "80dvh" }}>
+    return <div className="col" style={{ width: "calc(100dvw - 4.8rem)", maxWidth: 1320, height: "calc(100dvh - 4.8rem)", maxHeight: 800 }}>
         <div className='row popup-header'>
             <Text className='heading-7' style={{ flex: 1 }} maxLine={2}>{fkItem.Name}</Text>
             <Winicon src={"fill/user interface/e-remove"} className="icon-button size24" onClick={onClose} />
@@ -986,6 +988,7 @@ const FKTable = ({ fkItem, item, tbName, actions, onChangeActions, enableEdit, o
                 columns={fkItem.Columns}
                 onChangeFilterData={setFilterData}
                 filterData={filterData}
+                onEditColumn={onChangeActions ? ((_col) => { onEditActionColumn?.(_col, fkItem) }) : undefined}
                 onChangeConfigData={onChangeActions ? (async (ev) => {
                     const tmp = { ...fkItem, Columns: ev }
                     onChangeActions(actions!.map(a => a.Id === fkItem.Id ? tmp : a))

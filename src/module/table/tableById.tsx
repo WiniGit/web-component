@@ -301,7 +301,7 @@ export const DataTable = ({ tbName, staticSearch = "", title = "", columns = [],
                         else setSelected(_filter)
                     }}
                     methods={configMethods}
-                    onChangeConfigData={enableEdit ? (() => { onChangeConfigData?.(configMethods.getValues("columns")) }) : undefined}
+                    onChangeConfigData={onChangeConfigData ? (() => { onChangeConfigData?.(configMethods.getValues("columns")) }) : undefined}
                     showIndex={showIndex}
                     hideCheckbox={hideCheckbox}
                     fields={fields}
@@ -313,6 +313,7 @@ export const DataTable = ({ tbName, staticSearch = "", title = "", columns = [],
                             item={item}
                             setItem={(ev: { [key: string]: any }) => { setData(prev => ({ data: prev.data.map(e => e.Id === item.Id ? ev : e), totalCount: prev.totalCount })) }}
                             index={index + pageDetails.size * (pageDetails.page - 1) + 1}
+                            onEditActionColumn={onEditColumn}
                             methods={configMethods}
                             fields={fields}
                             files={files}
@@ -413,7 +414,8 @@ export const DataTable = ({ tbName, staticSearch = "", title = "", columns = [],
                     className="button-text-5 size24"
                     label={t("close")}
                     style={{ color: "var(--error-lighter-color)" }}
-                    prefix={<Winicon src="outline/user interface/e-remove" color="var(--error-lighter-color)" size={12} onClick={() => setSelected([])} />}
+                    prefix={<Winicon src="outline/user interface/e-remove" color="var(--error-lighter-color)" size={12} />}
+                    onClick={() => setSelected([])}
                 />
             </div>
         </div>}

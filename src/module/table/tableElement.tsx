@@ -49,7 +49,7 @@ export const TableHeader = ({ methods, onEditColumn, onChangeConfigData, showInd
                 colItem={_col}
                 methods={methods}
                 onChangeConfigData={onChangeConfigData}
-                handleAddEditField={onChangeConfigData && onEditColumn ? (() => onEditColumn(_col)) : undefined}
+                handleAddEditField={(onChangeConfigData && onEditColumn) ? (() => onEditColumn(_col)) : undefined}
                 onMounted={onChangeConfigData ? ((colItem: any) => {
                     if (!colItem.Width) mountedColumns.current.push(colItem)
                     if ((i + 1) === columns.length) onMounted()
@@ -73,7 +73,6 @@ interface HeaderCellProps {
 }
 
 const HeaderCell = ({ colItem, methods, style = {}, children, onMounted, onChangeConfigData, handleAddEditField }: HeaderCellProps) => {
-    const { t } = useTranslation()
     const divRef = useRef<HTMLDivElement>(null)
     const popupRef = useRef<Popup>(null)
     const resizeRef = useRef<HTMLDivElement | undefined | null>(null)
@@ -102,11 +101,11 @@ const HeaderCell = ({ colItem, methods, style = {}, children, onMounted, onChang
                     handleAddEditField()
                 }}>
                     <Winicon src='outline/user interface/gear' size={"1.4rem"} />
-                    <Text className="button-text-3">{t("edit")} {t("column").toLowerCase()}</Text>
+                    <Text className="button-text-3">Edit field</Text>
                 </button>}
                 <button type='button' className='row' onClick={handleSort}>
                     <Winicon src='outline/user interface/enlarge' size={"1.4rem"} />
-                    <Text className="button-text-3">{sortItem ? `${t("remove")} ${t("sort").toLowerCase()}` : t("sort")}</Text>
+                    <Text className="button-text-3">{sortItem ? "Remove sort" : "Sort"}</Text>
                 </button>
                 {onChangeConfigData && <>
                     <button type='button' className='row'
@@ -115,7 +114,7 @@ const HeaderCell = ({ colItem, methods, style = {}, children, onMounted, onChang
                             onEdit()
                         }}>
                         <Winicon src='outline/arrows/move-layer-left' size={"1.4rem"} />
-                        <Text className="button-text-3">{t("movetostart")}</Text>
+                        <Text className="button-text-3">Move to start</Text>
                     </button>
                     <button type='button' className='row'
                         onClick={() => {
@@ -123,14 +122,14 @@ const HeaderCell = ({ colItem, methods, style = {}, children, onMounted, onChang
                             onEdit()
                         }}>
                         <Winicon src='outline/arrows/move-layer-right' size={"1.4rem"} />
-                        <Text className="button-text-3">{t("movetoend")}</Text>
+                        <Text className="button-text-3">Move to end</Text>
                     </button>
                     <button type='button' className='row' onClick={() => {
                         methods.setValue("columns", columns.filter(e => e.Id !== colItem.Id))
                         onEdit()
                     }}>
                         <Winicon src='outline/layout/eye-slash' size={"1.4rem"} />
-                        <Text className="button-text-3">{t("delete")} {t("column").toLowerCase()}</Text>
+                        <Text className="button-text-3">Hide column</Text>
                     </button>
                 </>}
             </div>
@@ -238,7 +237,6 @@ const HeaderCell = ({ colItem, methods, style = {}, children, onMounted, onChang
     }
 }
 
-
 interface TableRowProps {
     item: { [p: string]: any };
     setItem: (params: { [p: string]: any }) => void;
@@ -258,16 +256,17 @@ interface TableRowProps {
     selected?: string[];
     setSelected?: Dispatch<SetStateAction<string[]>>;
     onDuplicate?: () => void;
+    onEditActionColumn?: (params: { [p: string]: any }, actionItem: { [p: string]: any }) => void;
     [p: string]: any
 }
 
-export const TableRow = ({ item, setItem, title, index, methods, fields = [], files = [], relativeData, relativeFields = [], showIndex = false, hideCheckbox = false, showAddEditPopup, onDelete, actions = [], onChangeActions, selected, setSelected, onDuplicate, ...props }: TableRowProps) => {
+export const TableRow = ({ item, setItem, onEditActionColumn, title, index, methods, fields = [], files = [], relativeData, relativeFields = [], showIndex = false, hideCheckbox = false, showAddEditPopup, onDelete, actions = [], onChangeActions, selected, setSelected, onDuplicate, ...props }: TableRowProps) => {
     const popupRef = useRef<Popup>(null)
     const tbName = methods.getValues("TbName")
     const dataController = new DataController(tbName)
     const { t } = useTranslation()
     const enableEdit = !!showAddEditPopup
-    const extendStaticProps: { [p: string]: any } = { methods, fields, relativeFields, actions, onChangeActions, setSelected, ...props }
+    const extendStaticProps: { [p: string]: any } = { methods, fields, relativeFields, actions, onChangeActions, setSelected, onEditActionColumn, ...props }
     const treeData = useMemo(() => fields.some(e => e.Column === 'ParentId'), [fields])
     const totalChild = useMemo<number | undefined>(() => item._totalChild ? parseInt(item._totalChild) : undefined, [item])
     // dynamic variables
@@ -394,6 +393,7 @@ export const TableRow = ({ item, setItem, title, index, methods, fields = [], fi
                 title={title}
                 actions={actions}
                 onChangeActions={onChangeActions}
+                onEditActionColumn={onEditActionColumn}
                 style={{ top: rect.bottom + 2, right: `calc(100dvw - ${rect.right}px)`, minWidth: "14rem" }}
                 onClose={() => { setTimeout(() => { btn.isOpen = false }, 150) }}
                 onEdit={enableEdit ? (() => showAddEditPopup(item.Id)) : undefined}
@@ -411,7 +411,7 @@ export const TableRow = ({ item, setItem, title, index, methods, fields = [], fi
             {!hideCheckbox && <div className={`row ${styles["cell"]}`}>
                 <div className={`row ${styles["content"]}`}>
                     <Checkbox size={'1.6rem'} value={checkValue}
-                        onChange={(!selected && !setSelected) ? (v) => {
+                        onChange={setSelected ? (v) => {
                             const newList = selected!.filter(id => id !== item.Id && id !== item.ParentId)
                             if (v) newList.push(item.Id)
                             setSelected!(newList)
@@ -435,8 +435,8 @@ export const TableRow = ({ item, setItem, title, index, methods, fields = [], fi
                 }
             })}
             <Cell colItem={"last"} style={{ flex: 1, padding: "0 1.6rem", minWidth: "12rem", justifyContent: columns.length >= 10 ? "center" : "start" }}>
-                {enableEdit && <Winicon src='outline/user interface/i-edit' className='icon-button size24 light' size={"1.4rem"} onClick={() => showAddEditPopup(item.Id)} />}
-                <Winicon src='outline/text/menu-dots' style={{ rotate: "90deg" }} size={"1.4rem"} className='icon-button size24 light' onClick={showActions} />
+                {enableEdit && <Winicon src='outline/user interface/i-edit' className='icon-button size24 light' size={14} onClick={() => showAddEditPopup(item.Id)} />}
+                <Winicon src='outline/text/menu-dots' style={{ rotate: "90deg" }} size={14} className='icon-button size24 light' onClick={showActions} />
             </Cell>
         </div>
         {isOpen && <>
