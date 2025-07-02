@@ -35,6 +35,7 @@ interface TextFieldFormProps extends SimpleFormProps {
     onFocus?: React.FocusEventHandler<HTMLInputElement>;
     textFieldStyle?: CSSProperties;
     textFieldClassName?: string;
+    onComplete?: React.KeyboardEventHandler<HTMLInputElement>;
 }
 export declare function TextFieldForm({ style, textFieldStyle, ...params }: TextFieldFormProps): import("react/jsx-runtime").JSX.Element;
 interface InputPasswordFormProps extends SimpleFormProps {
@@ -47,6 +48,7 @@ interface InputPasswordFormProps extends SimpleFormProps {
     onFocus?: React.FocusEventHandler<HTMLInputElement>;
     textFieldStyle?: CSSProperties;
     textFieldClassName?: string;
+    onComplete?: React.KeyboardEventHandler<HTMLInputElement>;
 }
 export declare const InputPasswordForm: (params: InputPasswordFormProps) => import("react/jsx-runtime").JSX.Element;
 interface TextAreaFormProps extends SimpleFormProps {

@@ -53,6 +53,7 @@ interface TextFieldFormProps extends SimpleFormProps {
     onFocus?: React.FocusEventHandler<HTMLInputElement>,
     textFieldStyle?: CSSProperties,
     textFieldClassName?: string,
+    onComplete?: React.KeyboardEventHandler<HTMLInputElement>,
 }
 
 export function TextFieldForm({ style = {}, textFieldStyle = {}, ...params }: TextFieldFormProps) {
@@ -95,7 +96,7 @@ export function TextFieldForm({ style = {}, textFieldStyle = {}, ...params }: Te
                 ev.target.type = "number"
             } : params.onFocus}
             maxLength={params.maxLength}
-            onComplete={(ev: any) => { ev.target.blur() }}
+            onComplete={params.onComplete ?? ((ev: any) => { ev.target.blur() })}
             helperText={convertErrors(params.methods.formState.errors, params.name) && (convertErrors(params.methods.formState.errors, params.name)?.message?.length ? convertErrors(params.methods.formState.errors, params.name)?.message : `${t("input")} ${(params.placeholder ? params.placeholder : params.label ? `${params.label}` : t('value')).toLowerCase()}`)}
         />
     </div>
@@ -111,6 +112,7 @@ interface InputPasswordFormProps extends SimpleFormProps {
     onFocus?: React.FocusEventHandler<HTMLInputElement>,
     textFieldStyle?: CSSProperties,
     textFieldClassName?: string,
+    onComplete?: React.KeyboardEventHandler<HTMLInputElement>,
 }
 
 export const InputPasswordForm = (params: InputPasswordFormProps) => {
