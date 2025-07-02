@@ -25,6 +25,11 @@ interface ActionOptionsDropdownProps {
     onChangeActions?: (params: {
         [p: string]: any;
     }[]) => void;
+    onEditActionColumn?: (params: {
+        [p: string]: any;
+    }, actionItem: {
+        [p: string]: any;
+    }) => void;
     style?: CSSProperties;
     onEdit?: () => void;
     onDuplicate?: () => void;

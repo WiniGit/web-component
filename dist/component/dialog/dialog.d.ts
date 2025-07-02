@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import { ComponentStatus } from '../../index';
 export declare enum DialogAlignment {
     start = "start",
@@ -8,7 +9,7 @@ export declare const Dialog: () => import("react/jsx-runtime").JSX.Element;
 export declare const showDialog: (props: {
     title?: string;
     status?: ComponentStatus;
-    content?: string;
+    content?: string | ReactNode;
     onSubmit?: Function;
     onCancel?: Function;
     submitTitle?: string;

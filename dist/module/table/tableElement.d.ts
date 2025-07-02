@@ -50,8 +50,13 @@ interface TableRowProps {
     selected?: string[];
     setSelected?: Dispatch<SetStateAction<string[]>>;
     onDuplicate?: () => void;
+    onEditActionColumn?: (params: {
+        [p: string]: any;
+    }, actionItem: {
+        [p: string]: any;
+    }) => void;
     [p: string]: any;
 }
-export declare const TableRow: ({ item, setItem, title, index, methods, fields, files, relativeData, relativeFields, showIndex, hideCheckbox, showAddEditPopup, onDelete, actions, onChangeActions, selected, setSelected, onDuplicate, ...props }: TableRowProps) => import("react/jsx-runtime").JSX.Element;
+export declare const TableRow: ({ item, setItem, onEditActionColumn, title, index, methods, fields, files, relativeData, relativeFields, showIndex, hideCheckbox, showAddEditPopup, onDelete, actions, onChangeActions, selected, setSelected, onDuplicate, ...props }: TableRowProps) => import("react/jsx-runtime").JSX.Element;
 export {};
 //# sourceMappingURL=tableElement.d.ts.map
