@@ -16,12 +16,13 @@ import { Util } from "../../controller/utils"
 import { ViewById } from "../view/viewById"
 import { regexGetVariableByThis, regexGetVariables, regexWatchDoubleQuote, regexWatchSingleQuote, replaceVariables } from "../card/config"
 import { CkEditorUploadAdapter, ConfigData } from "../../controller/config"
-import { supportProperties } from "./config"
+import { regexI18n, supportProperties } from "./config"
 import { Rating } from "../../component/rating/rating"
 import { ProgressBar } from "../../component/progress-bar/progress-bar"
 import { ProgressCircle } from "../../component/progress-circle/progress-circle"
 import { CustomCkEditor5 } from "../../component/ck-editor/ckeditor"
 import { FCheckbox, FColorPicker, FDateTimePicker, FGroupCheckbox, FGroupRadioButton, FInputPassword, FNumberPicker, FRadioButton, FSelect1, FSelectMultiple, FSwitch, FTextArea, FTextField, FUploadFile } from "./component-form"
+import { useTranslation } from "react-i18next"
 
 interface Props {
     methods?: UseFormReturn
@@ -100,6 +101,8 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
     const query = new URLSearchParams(location.search)
     const navigate = useNavigate()
     const children = useMemo(() => props.list.filter(e => e.ParentId === props.item.Id), [props.list, props.item])
+    // @ts-ignore
+    const { t, i18n } = useTranslation(); // t using in eval function
     const replaceThisVariables = (content: string, isEval?: boolean) => {
         return content.replace(replaceVariables, (m: string) => {
             const execRegex = regexGetVariables.exec(m)
@@ -137,7 +140,15 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                     }
                     break;
             }
-            if (isEval && typeof getValue === "string") getValue = `"${getValue}"`
+            if (isEval && (typeof getValue === "string")) {
+                getValue = `"${getValue}"`
+            } else if (regexI18n.test(getValue)) {
+                try {
+                    getValue = eval(`\`${getValue}\``)
+                } catch (error) {
+                    console.log(getValue, error)
+                }
+            }
             return getValue
         })
     }
@@ -398,7 +409,9 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
             case ComponentType.text:
                 if (regexGetVariables.test(tmpProps.value)) tmpProps.value = replaceThisVariables(tmpProps.value)
                 break;
+            // @ts-ignore
             case ComponentType.button:
+                if (regexGetVariables.test(tmpProps.label)) tmpProps.label = replaceThisVariables(tmpProps.label)
             case ComponentType.textField:
             case ComponentType.textArea:
             case ComponentType.select1:
@@ -415,7 +428,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                 break;
         }
         return tmpProps
-    }, [customProps, props.item.Type, dataValue, children, JSON.stringify(props.methods!.watch()), location])
+    }, [customProps, props.item.Type, dataValue, children, JSON.stringify(props.methods!.watch()), location, i18n.language])
     const _options = useMemo(() => {
         if (props.item.NameField) {
             const tmpCol = props.cols?.find(e => e.Name === props.item.NameField)
