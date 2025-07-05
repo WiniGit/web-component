@@ -1,11 +1,13 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { BrowserRouter, Routes } from "react-router-dom"
-import { ConfigData } from "../controller/config"
+import { BaseDA, ConfigData } from "../controller/config"
 import { TableController, WiniController } from "../controller/setting"
 import { Dialog } from "../component/dialog/dialog"
 import { ToastContainer } from 'react-toastify'
 import { DesignTokenType, ProjectItem } from "./da"
 import { Util } from "../controller/utils"
+import { useTranslation } from "react-i18next"
+import { DataController } from "../controller/data"
 
 interface Props {
     /**
@@ -79,6 +81,8 @@ export const WiniProvider = (props: Props) => {
     ConfigData.imgUrlId = props.imgUrlId
     ConfigData.fileUrl = props.fileUrl
     if (props.onInvalidToken) ConfigData.onInvalidToken = props.onInvalidToken
+    const { i18n } = useTranslation()
+    const [loadedResources, setLoadedResources] = useState(false)
 
     useEffect(() => {
         ConfigData.pid = props.pid
@@ -95,7 +99,22 @@ export const WiniProvider = (props: Props) => {
                     if (props.onProjectLoaded) props.onProjectLoaded(res.data[0])
                 }
             })
-        } else console.log("Project not found")
+            const languageController = new DataController("Language")
+            languageController.getAll().then(async (res) => {
+                if (res.code === 200 && res.data.length) {
+                    const languages = await Promise.all(res.data.map((e: any) => BaseDA.get(ConfigData.imgUrlId + e.Json)))
+                    languages.forEach((lngData, i) => {
+                        if (lngData) {
+                            i18n.addResourceBundle(res.data[i].Lng, "translation", lngData, true, true)
+                        }
+                    })
+                    setLoadedResources(true)
+                } else setLoadedResources(true)
+            })
+        } else {
+            console.log("Project not found")
+            setLoadedResources(true)
+        }
     }, [props.pid])
 
     useEffect(() => { ConfigData.url = props.url }, [props.url])
@@ -106,6 +125,6 @@ export const WiniProvider = (props: Props) => {
     return <BrowserRouter>
         <ToastContainer />
         <Dialog />
-        <Routes>{props.children}</Routes>
+        {loadedResources && <Routes>{props.children}</Routes>}
     </BrowserRouter>
 }
