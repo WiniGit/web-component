@@ -159,14 +159,15 @@ export const WiniEditor = forwardRef<RefProps, Props>(({ id, onChange, onBlur, d
 
     const handleFocus = () => {
         setTimeout(() => {
-            inputContentRef.current!.focus()
+            if (!inputContentRef.current) return
+            inputContentRef.current.focus()
             const range = document.createRange();
             range.selectNodeContents(inputContentRef.current!);
             range.collapse(false); // Move caret to end
             const sel = window.getSelection();
             sel!.removeAllRanges();
             sel!.addRange(range);
-        }, 100)
+        }, 150)
     }
 
     useImperativeHandle(ref, () => ({
@@ -319,7 +320,7 @@ export const WiniEditor = forwardRef<RefProps, Props>(({ id, onChange, onBlur, d
                     tmp.style.position = "fixed"
                     ev.currentTarget.after(tmp)
                     let tmpRect = tmp.getBoundingClientRect()
-                    let offset: any = {  }
+                    let offset: any = {}
                     if (rect.bottom + 240 >= document.body.offsetHeight) offset.bottom = `calc(100dvh - ${rect.y}px + 2px)`
                     else offset.top = rect.bottom + 2
                     if (Math.abs(tmpRect.x - rect.x) > 2) {
