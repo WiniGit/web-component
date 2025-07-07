@@ -319,7 +319,7 @@ export const WiniEditor = forwardRef<RefProps, Props>(({ id, onChange, onBlur, d
                     tmp.style.position = "fixed"
                     ev.currentTarget.after(tmp)
                     let tmpRect = tmp.getBoundingClientRect()
-                    let offset: any = { width: rect.width }
+                    let offset: any = {  }
                     if (rect.bottom + 240 >= document.body.offsetHeight) offset.bottom = `calc(100dvh - ${rect.y}px + 2px)`
                     else offset.top = rect.bottom + 2
                     if (Math.abs(tmpRect.x - rect.x) > 2) {
