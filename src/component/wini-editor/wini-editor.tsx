@@ -14,6 +14,7 @@ interface Props {
     autoFocus?: boolean;
     initValue?: string;
     onChange?: (value: string, htmlElement: HTMLDivElement) => void;
+    onBlur?: (value: string, htmlElement: HTMLDivElement) => void;
     style?: CSSProperties;
     className?: string;
     onSuggest?: Array<SuggestionProps>;
@@ -31,7 +32,7 @@ interface RefProps {
     focus: () => void;
 }
 
-export const WiniEditor = forwardRef<RefProps, Props>(({ id, onChange, disabled, placeholder, style = {}, className, onSuggest, autoFocus, initValue, hideToolbar, helperText, helperTextColor }, ref) => {
+export const WiniEditor = forwardRef<RefProps, Props>(({ id, onChange, onBlur, disabled, placeholder, style = {}, className, onSuggest, autoFocus, initValue, hideToolbar, helperText, helperTextColor }, ref) => {
     const inputContentRef = useRef<HTMLDivElement>(null)
     const savedRange = useRef<any>(null)
     const popupRef = useRef<any>(null)
@@ -284,7 +285,7 @@ export const WiniEditor = forwardRef<RefProps, Props>(({ id, onChange, disabled,
                 onRestoreRange(text)
                 onChange?.(inputContentRef.current!.innerHTML, inputContentRef.current!)
             }}
-            onBlur={() => { onChange?.(inputContentRef.current!.innerHTML, inputContentRef.current!) }}
+            onBlur={() => { onBlur?.(inputContentRef.current!.innerHTML, inputContentRef.current!) }}
             {...(placeholder ? { placeholder: placeholder } : {})}
         />
         {showLinkDetails && <PopupLinkDetails

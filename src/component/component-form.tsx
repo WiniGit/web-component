@@ -58,6 +58,7 @@ interface TextFieldFormProps extends SimpleFormProps {
 
 export function TextFieldForm({ style = {}, textFieldStyle = {}, ...params }: TextFieldFormProps) {
     const { t } = useTranslation()
+    const _covertErrors = useMemo(() => params.name ? convertErrors(params.methods.formState.errors, params.name) : undefined, [params.name, params.methods.formState.errors?.[params.name!]])
 
     return <div id={params.id} className={params.className ?? 'col'} style={{ gap: '0.8rem', overflow: 'visible', width: '100%', ...style }}>
         {params.labelElement ?? (params.label ? <div className="row" style={{ gap: '0.4rem', minWidth: "16rem" }}>
@@ -97,7 +98,7 @@ export function TextFieldForm({ style = {}, textFieldStyle = {}, ...params }: Te
             } : params.onFocus}
             maxLength={params.maxLength}
             onComplete={params.onComplete ?? ((ev: any) => { ev.target.blur() })}
-            helperText={convertErrors(params.methods.formState.errors, params.name) && (convertErrors(params.methods.formState.errors, params.name)?.message?.length ? convertErrors(params.methods.formState.errors, params.name)?.message : `${t("input")} ${(params.placeholder ? params.placeholder : params.label ? `${params.label}` : t('value')).toLowerCase()}`)}
+            helperText={_covertErrors && (_covertErrors.message?.length ? _covertErrors.message : `${t("input")} ${(params.placeholder ? params.placeholder : params.label ? `${params.label}` : t('value')).toLowerCase()}`)}
         />
     </div>
 }
@@ -141,6 +142,7 @@ interface TextAreaFormProps extends SimpleFormProps {
 
 export function TextAreaForm({ style = {}, textAreaStyle = {}, ...params }: TextAreaFormProps) {
     const { t } = useTranslation()
+    const _covertErrors = useMemo(() => params.name ? convertErrors(params.methods.formState.errors, params.name) : undefined, [params.name, params.methods.formState.errors?.[params.name!]])
 
     return <div id={params.id} className={params.className ?? 'col'} style={{ gap: '0.8rem', overflow: 'visible', width: '100%', height: '10rem', ...style }}>
         {params.labelElement ?? (params.label ? <div className="row" style={{ gap: '0.4rem', minWidth: "16rem" }}>
@@ -168,7 +170,7 @@ export function TextAreaForm({ style = {}, textAreaStyle = {}, ...params }: Text
             }) as any}
             style={{ height: "fit-content", maxHeight: "24rem", width: '100%', flex: params.className?.includes('row') ? 1 : undefined, ...textAreaStyle }}
             placeholder={params.placeholder ? params.placeholder : params.label ? `${t("input")} ${params.label.toLowerCase()}` : ''}
-            helperText={convertErrors(params.methods.formState.errors, params.name) && (convertErrors(params.methods.formState.errors, params.name)?.message?.length ? convertErrors(params.methods.formState.errors, params.name)?.message : `${t("input")} ${(params.placeholder ? params.placeholder : params.label ? `${params.label}` : t('value')).toLowerCase()}`)}
+            helperText={_covertErrors && (_covertErrors.message?.length ? _covertErrors.message : `${t("input")} ${(params.placeholder ? params.placeholder : params.label ? `${params.label}` : t('value')).toLowerCase()}`)}
         />
     </div>
 }
@@ -722,6 +724,8 @@ interface WiniEditorFormProps extends SimpleFormProps {
 
 export const WiniEditorForm = (params: WiniEditorFormProps) => {
     const { t } = useTranslation()
+    const _covertErrors = useMemo(() => params.name ? convertErrors(params.methods.formState.errors, params.name) : undefined, [params.name, params.methods.formState.errors?.[params.name!]])
+
     return <Controller
         name={params.name}
         control={params.methods.control}
@@ -734,7 +738,7 @@ export const WiniEditorForm = (params: WiniEditorFormProps) => {
                 </div> : null)}
                 <WiniEditor
                     initValue={field.value}
-                    onChange={(value) => {
+                    onBlur={(value) => {
                         field.onChange(value);
                         if (params.onChange) params.onChange(value)
                     }}
@@ -745,7 +749,7 @@ export const WiniEditorForm = (params: WiniEditorFormProps) => {
                     disabled={params.disabled}
                     placeholder={params.placeholder ? params.placeholder : params.label ? `${t("input")} ${params.label.toLowerCase()}` : ''}
                     onSuggest={params.onSuggest}
-                    helperText={convertErrors(params.methods.formState.errors, params.name) && (convertErrors(params.methods.formState.errors, params.name)?.message?.length ? convertErrors(params.methods.formState.errors, params.name)?.message : `${t("input")} ${(params.placeholder ? params.placeholder : params.label ? `${params.label}` : t('value')).toLowerCase()}`)}
+                    helperText={_covertErrors && (_covertErrors.message?.length ? _covertErrors.message : `${t("input")} ${(params.placeholder ? params.placeholder : params.label ? `${params.label}` : t('value')).toLowerCase()}`)}
                 />
             </div>;
         }}

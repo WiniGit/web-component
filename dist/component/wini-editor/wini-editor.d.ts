@@ -11,6 +11,7 @@ interface Props {
     autoFocus?: boolean;
     initValue?: string;
     onChange?: (value: string, htmlElement: HTMLDivElement) => void;
+    onBlur?: (value: string, htmlElement: HTMLDivElement) => void;
     style?: CSSProperties;
     className?: string;
     onSuggest?: Array<SuggestionProps>;
