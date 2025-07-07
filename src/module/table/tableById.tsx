@@ -102,6 +102,7 @@ export const DataTable = ({ tbName, staticSearch = "", title = "", columns = [],
         const pattern: any = {
             returns: ["Id", ...columns.map(e => e.Name.split(".").shift())],
         }
+        if ((tbName === "User" || tbName === "Customer") && columns.some(e => e.Type === ColDataType.people) && !pattern.returns.includes("AvatarUrl")) pattern.returns.push("AvatarUrl")
         const { searchRaw, sortby } = configMethods.getValues()
         let querySearch = searchRaw
         if (staticSearch.length) querySearch = `${staticSearch} ${querySearch !== "*" ? querySearch : ""}`
