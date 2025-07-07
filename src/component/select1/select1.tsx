@@ -100,7 +100,7 @@ export const Select1 = forwardRef<Select1Ref, Select1Props>(({ style = {}, ...pr
             onClick={props.disabled ? undefined : onOpenOptions}
         >
             {valueItem?.prefix ?? props.prefix}
-            {typeof valueItem?.name === "object" ? valueItem.name : <span style={{ flex: 1, textOverflow: "ellipsis", overflow: "hidden", opacity: valueItem ? undefined : 0.6 }}>{valueItem?.name ?? props.placeholder}</span>}
+            {typeof valueItem?.name === "object" ? valueItem.name : <span style={{ flex: 1, textOverflow: "ellipsis", whiteSpace: "nowrap", overflow: "hidden", opacity: valueItem ? undefined : 0.6 }}>{valueItem?.name ?? props.placeholder}</span>}
             {props.suffix ?? <div ref={iconRef => {
                 if (iconRef?.parentElement && iconRef.parentElement.getBoundingClientRect().width < 88) iconRef.style.display = "none"
             }} className='row'>
