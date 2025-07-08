@@ -440,7 +440,9 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
             // @ts-ignore
             case ComponentType.button:
                 if (regexGetVariables.test(tmpProps.label)) tmpProps.label = replaceThisVariables(tmpProps.label)
+            // @ts-ignore
             case ComponentType.textField:
+                if (regexGetVariables.test(tmpProps.placeholder)) tmpProps.placeholder = replaceThisVariables(tmpProps.placeholder)
             case ComponentType.textArea:
             case ComponentType.select1:
             case ComponentType.selectMultiple:
