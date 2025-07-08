@@ -1,25 +1,21 @@
-import { CSSProperties, MouseEventHandler, ReactNode } from 'react';
+import { CSSProperties, ReactNode } from 'react';
 import { FieldValues, UseFormReturn } from 'react-hook-form';
+import { CustomHTMLProps } from '../page/pageById';
 interface FormByIdProps {
     id: string;
     style?: CSSProperties;
     className?: string;
-    data?: {
-        [p: string]: any;
-    };
     propsData?: {
-        [p: string]: {
-            style?: CSSProperties;
-            className?: string;
-            onClick?: (ev: MouseEventHandler) => void;
-            [p: string]: any;
-        };
+        [p: string]: CustomHTMLProps;
     };
     childrenData?: {
         [p: string]: ReactNode;
     };
     itemData?: {
         [p: string]: ReactNode;
+    };
+    data?: {
+        [p: string]: any;
     };
     customOptions?: {
         [p: string]: Array<{

@@ -1,6 +1,9 @@
-import { CSSProperties, Dispatch, MouseEventHandler, ReactNode, SetStateAction } from 'react';
+import { CSSProperties, Dispatch, ReactNode, SetStateAction } from 'react';
 import { UseFormReturn } from 'react-hook-form';
+import { CustomHTMLProps } from '../page/pageById';
 interface Props {
+    style?: CSSProperties;
+    className?: string;
     /**
     * replace children of parent layer by id. Ex: { "gid": <Text className="heading-7">Example</Text> }
     * */
@@ -15,12 +18,7 @@ interface Props {
     propsData?: {
         [p: string]: (itemData: {
             [p: string]: any;
-        }, index: number, methods?: UseFormReturn) => {
-            style?: CSSProperties;
-            className?: string;
-            onCLick?: (ev: MouseEventHandler) => void;
-            [p: string]: any;
-        };
+        }, index: number, methods?: UseFormReturn) => CustomHTMLProps;
     };
     /**
      * replace layer by id. Ex: { "gid": <Text className="heading-7">Example</Text> }
@@ -36,8 +34,6 @@ interface Props {
     cardData?: Array<{
         [p: string]: any;
     }>;
-    style?: CSSProperties;
-    className?: string;
     controller?: "all" | {
         page?: number;
         size?: number;

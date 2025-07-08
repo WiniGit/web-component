@@ -1,4 +1,5 @@
-import { CSSProperties, MouseEventHandler, ReactNode } from 'react';
+import { CSSProperties, ReactNode } from 'react';
+import { CustomHTMLProps } from '../page/pageById';
 interface ViewByIdProps {
     id: string;
     style?: CSSProperties;
@@ -7,12 +8,7 @@ interface ViewByIdProps {
         [p: string]: any;
     };
     propsData?: {
-        [p: string]: {
-            style?: CSSProperties;
-            className?: string;
-            onClick?: (ev: MouseEventHandler) => void;
-            [p: string]: any;
-        };
+        [p: string]: CustomHTMLProps;
     };
     childrenData?: {
         [p: string]: ReactNode;
