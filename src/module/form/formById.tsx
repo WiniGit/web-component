@@ -1,6 +1,6 @@
-import { CSSProperties, forwardRef, MouseEventHandler, ReactNode, useEffect, useImperativeHandle, useMemo, useState } from "react"
+import { CSSProperties, forwardRef, ReactNode, useEffect, useImperativeHandle, useMemo, useState } from "react"
 import { FieldValues, useForm, UseFormReturn } from "react-hook-form"
-import { RenderLayerElement } from "../page/pageById"
+import { CustomHTMLProps, RenderLayerElement } from "../page/pageById"
 import { AccountController, BaseDA, DataController, SettingDataController, useLocation, Util } from "../../index"
 import { regexGetVariableByThis } from "../card/config"
 import { ComponentType, FEDataType } from "../da"
@@ -12,10 +12,10 @@ interface FormByIdProps {
     id: string;
     style?: CSSProperties;
     className?: string;
-    data?: { [p: string]: any };
-    propsData?: { [p: string]: { style?: CSSProperties, className?: string, onClick?: (ev: MouseEventHandler) => void, [p: string]: any } };
+    propsData?: { [p: string]: CustomHTMLProps };
     childrenData?: { [p: string]: ReactNode };
     itemData?: { [p: string]: ReactNode };
+    data?: { [p: string]: any };
     customOptions?: { [p: string]: Array<{ [k: string]: any }> };
     onSubmit?: (e?: { [p: string]: any }) => void;
     onError?: (e?: { [p: string]: any }) => void;

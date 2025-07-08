@@ -49,7 +49,8 @@ export const imgFileTypes = [".png", ".svg", ".jpg", "jpeg", ".webp", ".gif"]
 export class BaseDA {
     static post = async (url: string, options?: { headers?: { [k: string]: any }, body?: any }) => {
         try {
-            let _headers: { [k: string]: any } = (await getHeaders()) ?? {}
+            let _headers: { [k: string]: any } = url.startsWith(ConfigData.url) ? (await getHeaders()) : { 'Content-Type': 'application/json' }
+            if (!_headers) _headers = { 'Content-Type': 'application/json' }
             if (options?.headers) _headers = { ..._headers, ...options.headers }
             const response = await axios.post(url, options?.body, { headers: _headers })
             if (response.status === 200 || response.status === 201) {
@@ -100,7 +101,8 @@ export class BaseDA {
 
     static get = async (url: string, options?: { headers?: { [k: string]: any } }) => {
         try {
-            let _headers: { [k: string]: any } = (await getHeaders()) ?? {}
+            let _headers: { [k: string]: any } = url.startsWith(ConfigData.url) ? (await getHeaders()) : { 'Content-Type': 'application/json' }
+            if (!_headers) _headers = { 'Content-Type': 'application/json' }
             if (options?.headers) _headers = { ..._headers, ...options.headers }
             const response = await axios.get(url, { headers: _headers })
             if (response.status === 200 || response.status === 201) {

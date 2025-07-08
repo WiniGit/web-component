@@ -1,6 +1,6 @@
-import { CSSProperties, MouseEventHandler, ReactNode, useEffect, useMemo, useState } from "react"
+import { CSSProperties, ReactNode, useEffect, useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
-import { RenderLayerElement } from "../page/pageById"
+import { CustomHTMLProps, RenderLayerElement } from "../page/pageById"
 import { SettingDataController } from "../../controller/data"
 
 interface ViewByIdProps {
@@ -8,7 +8,7 @@ interface ViewByIdProps {
     style?: CSSProperties,
     className?: string,
     data?: { [p: string]: any },
-    propsData?: { [p: string]: { style?: CSSProperties, className?: string, onClick?: (ev: MouseEventHandler) => void, [p: string]: any } },
+    propsData?: { [p: string]: CustomHTMLProps },
     childrenData?: { [p: string]: ReactNode },
     itemData?: { [p: string]: ReactNode },
 }

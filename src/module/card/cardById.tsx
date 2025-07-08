@@ -1,15 +1,17 @@
-import { CSSProperties, Dispatch, forwardRef, MouseEventHandler, ReactNode, SetStateAction, useEffect, useImperativeHandle, useMemo, useState } from "react"
+import { CSSProperties, Dispatch, forwardRef, ReactNode, SetStateAction, useEffect, useImperativeHandle, useMemo, useState } from "react"
 import { DataController, SettingDataController } from "../../controller/data"
 import { useForm, UseFormReturn } from "react-hook-form"
 import { TableController } from "../../controller/setting"
 import { EmptyPage } from "../../component/empty-page"
-import { RenderLayerElement } from "../page/pageById"
+import { CustomHTMLProps, RenderLayerElement } from "../page/pageById"
 import { regexGetVariableByThis } from "./config"
 import { ComponentType, FEDataType } from "../da"
 import { useTranslation } from "react-i18next"
 import { BaseDA } from "../../controller/config"
 
 interface Props {
+    style?: CSSProperties,
+    className?: string,
     /**
     * replace children of parent layer by id. Ex: { "gid": <Text className="heading-7">Example</Text> }
     * */
@@ -17,7 +19,7 @@ interface Props {
     /**
      * custom props of layer by id. Ex: { "gid": { style: { width: "60rem", backgroundColor: "red" }, className: "my-class" } }
      * */
-    propsData?: { [p: string]: (itemData: { [p: string]: any }, index: number, methods?: UseFormReturn) => { style?: CSSProperties, className?: string, onCLick?: (ev: MouseEventHandler) => void, [p: string]: any } },
+    propsData?: { [p: string]: (itemData: { [p: string]: any }, index: number, methods?: UseFormReturn) => CustomHTMLProps },
     /**
      * replace layer by id. Ex: { "gid": <Text className="heading-7">Example</Text> }
      * */
@@ -26,8 +28,6 @@ interface Props {
      * list json object data. Ex: {Id: 1, Name: "Example", ...}
      * */
     cardData?: Array<{ [p: string]: any }>,
-    style?: CSSProperties,
-    className?: string,
     controller?: "all" | { page?: number, size?: number, searchRaw?: string, filter?: string, sortby?: Array<{ prop: string, direction?: "ASC" | "DESC" }>, pattern?: { returns: Array<string>, [p: string]: Array<string> | { searchRaw?: string, reducers: string } } } | { ids: string, maxLength?: number | "none" },
     emptyLink?: string,
     emptyMessage?: string,

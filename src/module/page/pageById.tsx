@@ -1,4 +1,4 @@
-import { CSSProperties, MouseEventHandler, ReactNode, useEffect, useMemo, useRef, useState } from "react"
+import { CSSProperties, HTMLAttributes, ReactNode, useEffect, useMemo, useRef, useState } from "react"
 import { ActionType, ComponentType, FEDataType, TriggerType, ValidateType } from "../da"
 import { FormById } from "../form/formById"
 import { CardById } from "../card/cardById"
@@ -28,6 +28,34 @@ interface Props {
     methods?: UseFormReturn
 }
 
+export interface CustomHTMLProps extends HTMLAttributes<any> {
+    style?: CSSProperties;
+    className?: string;
+    propsData?: { [p: string]: CustomHTMLProps } | { [p: string]: (itemData: { [p: string]: any }, index: number, methods: UseFormReturn) => CustomHTMLProps },
+    itemData?: { [p: string]: ReactNode } | { [p: string]: (indexItem: { [p: string]: any }, index: number, methods: UseFormReturn) => ReactNode },
+    childrenData?: { [p: string]: ReactNode } | { [p: string]: (itemData: { [p: string]: any }, index: number, methods: UseFormReturn) => ReactNode },
+    /** only for card element */
+    cardData?: Array<{ [p: string]: any }>,
+    /** only for card element */
+    controller?: "all" | { page?: number, size?: number, searchRaw?: string, filter?: string, sortby?: Array<{ prop: string, direction?: "ASC" | "DESC" }>, pattern?: { returns: Array<string>, [p: string]: Array<string> | { searchRaw?: string, reducers: string } } } | { ids: string, maxLength?: number | "none" },
+    /** only for card element */
+    emptyLink?: string,
+    /** only for card element */
+    emptyMessage?: string,
+    /** only for card element */
+    emptyElement?: ReactNode,
+    /** only for card element */
+    onUnMount?: () => void;
+    /** only for form element */
+    data?: { [p: string]: any };
+    /** only for form element */
+    customOptions?: { [p: string]: Array<{ [k: string]: any }> };
+    /** only for form element */
+    onSubmit?: (e?: { [p: string]: any }) => void;
+    /** only for form element */
+    onError?: (e?: { [p: string]: any }) => void;
+}
+
 interface RenderPageProps extends Props {
     layers: Array<{ [p: string]: any }>,
     bodyId?: string
@@ -35,7 +63,7 @@ interface RenderPageProps extends Props {
     /**
      * custom props of layer by id. Ex: { "gid": { style: { width: "60rem", backgroundColor: "red" }, className: "my-class" } }
      * */
-    propsData?: { [p: string]: { style?: CSSProperties, className?: string, onClick?: (ev: MouseEventHandler) => void, [p: string]: any } },
+    propsData?: { [p: string]: CustomHTMLProps },
     /**
      * replace children of parent layer by id. Ex: { "gid": <Text className="heading-7">Example</Text> }
      * */
@@ -68,7 +96,7 @@ interface RenderLayerElementProps extends Props {
     rels?: Array<{ [p: string]: any }>,
     bodyChildren?: ReactNode,
     type?: "page" | "view" | "card" | "form",
-    propsData?: { [p: string]: { style?: CSSProperties, className?: string, onClick?: (ev: MouseEventHandler) => void, [p: string]: any } } | { [p: string]: (itemData: { [p: string]: any }, index: number, methods: UseFormReturn) => { style?: CSSProperties, className?: string, onCLick?: (ev: MouseEventHandler) => void, [p: string]: any } },
+    propsData?: { [p: string]: CustomHTMLProps } | { [p: string]: (itemData: { [p: string]: any }, index: number, methods: UseFormReturn) => CustomHTMLProps },
     itemData?: { [p: string]: ReactNode } | { [p: string]: (indexItem: { [p: string]: any }, index: number, methods: UseFormReturn) => ReactNode },
     childrenData?: { [p: string]: ReactNode } | { [p: string]: (itemData: { [p: string]: any }, index: number, methods: UseFormReturn) => ReactNode },
     indexItem?: { [p: string]: any },
@@ -718,12 +746,14 @@ interface PageByIdProps extends Props {
     /**
      * custom props of layer by id. Ex: { "gid": { style: { width: "60rem", backgroundColor: "red" }, className: "my-class" } }
      * */
-    propsData?: { [p: string]: { style?: CSSProperties, className?: string, onClick?: (ev: MouseEventHandler) => void, [p: string]: any } },
+    propsData?: { [p: string]: CustomHTMLProps },
     /**
      * replace children of parent layer by id. Ex: { "gid": <Text className="heading-7">Example</Text> }
      * */
     childrenData?: { [p: string]: ReactNode },
     itemData?: { [p: string]: ReactNode },
+    onlyLayout?: boolean,
+    onlyBody?: boolean
 }
 
 export const PageById = (props: PageByIdProps) => {
@@ -741,33 +771,45 @@ export const PageById = (props: PageByIdProps) => {
                 const thisPage = res.data[0]
                 setPageItem(thisPage)
                 const layerController = new TableController("layer")
-                if (thisPage.LayoutId !== pageItem?.LayoutId) {
+                if (props.onlyLayout) {
+                    const resLayer = await layerController.getListSimple({ page: 1, size: 10000, query: `(@Id:{${thisPage.LayoutId}}) | (@LayoutId:{${thisPage.LayoutId}})` })
+                    if (resLayer.code === 200) setLayout(resLayer.data.map((e: any) => ({ ...e, Setting: JSON.parse(e.Setting), State: e.State ? JSON.parse(e.State) : undefined })))
+                } else if (props.onlyBody || thisPage.LayoutId === pageItem?.LayoutId) {
+                    const resLayer = await layerController.getListSimple({ page: 1, size: 10000, query: `@PageId:{${thisPage!.Id}}` })
+                    if (resLayer.code === 200) setLayers(resLayer.data.map((e: any) => ({ ...e, Setting: JSON.parse(e.Setting), State: e.State ? JSON.parse(e.State) : undefined })))
+                } else {
                     const resLayer = await Promise.all([
-                        layerController.getListSimple({ page: 1, size: 2000, query: `(@Id:{${thisPage.LayoutId}}) | (@LayoutId:{${thisPage.LayoutId}})` }),
-                        layerController.getListSimple({ page: 1, size: 1000, query: `@PageId:{${thisPage!.Id}}` })
+                        layerController.getListSimple({ page: 1, size: 10000, query: `(@Id:{${thisPage.LayoutId}}) | (@LayoutId:{${thisPage.LayoutId}})` }),
+                        layerController.getListSimple({ page: 1, size: 10000, query: `@PageId:{${thisPage!.Id}}` })
                     ])
                     if (resLayer[0].code === 200 && resLayer[1].code === 200) {
                         setLayout(resLayer[0].data.map((e: any) => ({ ...e, Setting: JSON.parse(e.Setting), State: e.State ? JSON.parse(e.State) : undefined })))
                         setLayers(resLayer[1].data.map((e: any) => ({ ...e, Setting: JSON.parse(e.Setting), State: e.State ? JSON.parse(e.State) : undefined })))
                     }
-                } else {
-                    const resLayer = await layerController.getListSimple({ page: 1, size: 1000, query: `@PageId:{${thisPage!.Id}}` })
-                    if (resLayer.code === 200) setLayers(resLayer.data.map((e: any) => ({ ...e, Setting: JSON.parse(e.Setting), State: e.State ? JSON.parse(e.State) : undefined })))
                 }
                 setLoading(false)
             } else setPageItem(undefined)
         })
     }, [props.id])
 
-    return pageItem && !!layout.length ? <RenderPageView
-        key={pageItem.LayoutId}
-        layers={layout}
-        {...props}
-        methods={props.methods ?? methods}
-    >
-        {loading ? <LoadingView /> :
-            <RenderPageView key={pageItem.Id} layers={layers} {...props} methods={props.methods ?? methods} bodyId={layout.find(e => e.Setting?.className?.includes("layout-body"))?.Id} />}
-    </RenderPageView> : null
+    if (pageItem) {
+        if (props.onlyLayout) {
+            return !!layout.length && <RenderPageView
+                key={pageItem.LayoutId}
+                layers={layout}
+                {...props}
+                methods={props.methods ?? methods}
+            />
+        } else if (props.onlyBody) {
+            return loading ? <LoadingView /> :
+                <RenderPageView key={pageItem.Id} layers={layers} {...props} methods={props.methods ?? methods} bodyId={layout.find(e => e.Setting?.className?.includes("layout-body"))?.Id} />
+        } else {
+            return pageItem && !!layout.length ? <RenderPageView key={pageItem.LayoutId} layers={layout} {...props} methods={props.methods ?? methods}>
+                {loading ? <LoadingView /> :
+                    <RenderPageView key={pageItem.Id} layers={layers} {...props} methods={props.methods ?? methods} bodyId={layout.find(e => e.Setting?.className?.includes("layout-body"))?.Id} />}
+            </RenderPageView> : null
+        }
+    } else return null
 }
 
 interface PageByUrlProps extends Props {
@@ -775,12 +817,17 @@ interface PageByUrlProps extends Props {
     /**
      * custom props of layer by id. Ex: { "gid": { style: { width: "60rem", backgroundColor: "red" }, className: "my-class" } }
      * */
-    propsData?: { [p: string]: { ref: any, style?: CSSProperties, className?: string, onClick?: (ev: MouseEventHandler) => void, [p: string]: any } },
+    propsData?: { [p: string]: CustomHTMLProps },
     /**
      * replace children of parent layer by id. Ex: { "gid": <Text className="heading-7">Example</Text> }
      * */
     childrenData?: { [p: string]: ReactNode },
+    /**
+     * replace layer by id. Ex: { "gid": <Text className="heading-7">Example</Text> }
+     * */
     itemData?: { [p: string]: ReactNode },
+    onlyLayout?: boolean,
+    onlyBody?: boolean
 }
 
 export const PageByUrl = (props: PageByUrlProps) => {
@@ -798,33 +845,45 @@ export const PageByUrl = (props: PageByUrlProps) => {
                 const thisPage = res.data[0]
                 setPageItem(thisPage)
                 const layerController = new TableController("layer")
-                if (thisPage.LayoutId !== pageItem?.LayoutId) {
+                if (props.onlyLayout) {
+                    const resLayer = await layerController.getListSimple({ page: 1, size: 10000, query: `(@Id:{${thisPage.LayoutId}}) | (@LayoutId:{${thisPage.LayoutId}})` })
+                    if (resLayer.code === 200) setLayout(resLayer.data.map((e: any) => ({ ...e, Setting: JSON.parse(e.Setting), State: e.State ? JSON.parse(e.State) : undefined })))
+                } else if (props.onlyBody || thisPage.LayoutId === pageItem?.LayoutId) {
+                    const resLayer = await layerController.getListSimple({ page: 1, size: 10000, query: `@PageId:{${thisPage!.Id}}` })
+                    if (resLayer.code === 200) setLayers(resLayer.data.map((e: any) => ({ ...e, Setting: JSON.parse(e.Setting), State: e.State ? JSON.parse(e.State) : undefined })))
+                } else {
                     const resLayer = await Promise.all([
-                        layerController.getListSimple({ page: 1, size: 2000, query: `(@Id:{${thisPage.LayoutId}}) | (@LayoutId:{${thisPage.LayoutId}})` }),
-                        layerController.getListSimple({ page: 1, size: 1000, query: `@PageId:{${thisPage!.Id}}` })
+                        layerController.getListSimple({ page: 1, size: 10000, query: `(@Id:{${thisPage.LayoutId}}) | (@LayoutId:{${thisPage.LayoutId}})` }),
+                        layerController.getListSimple({ page: 1, size: 10000, query: `@PageId:{${thisPage!.Id}}` })
                     ])
                     if (resLayer[0].code === 200 && resLayer[1].code === 200) {
                         setLayout(resLayer[0].data.map((e: any) => ({ ...e, Setting: JSON.parse(e.Setting), State: e.State ? JSON.parse(e.State) : undefined })))
                         setLayers(resLayer[1].data.map((e: any) => ({ ...e, Setting: JSON.parse(e.Setting), State: e.State ? JSON.parse(e.State) : undefined })))
                     }
-                } else {
-                    const resLayer = await layerController.getListSimple({ page: 1, size: 1000, query: `@PageId:{${thisPage!.Id}}` })
-                    if (resLayer.code === 200) setLayers(resLayer.data.map((e: any) => ({ ...e, Setting: JSON.parse(e.Setting), State: e.State ? JSON.parse(e.State) : undefined })))
                 }
                 setLoading(false)
             } else setPageItem(undefined)
         })
     }, [props.url])
 
-    return pageItem && !!layout.length ? <RenderPageView
-        key={pageItem.LayoutId}
-        layers={layout}
-        {...props}
-        methods={props.methods ?? methods}
-    >
-        {loading ? <LoadingView /> :
-            <RenderPageView key={pageItem.Id} layers={layers} {...props} methods={props.methods ?? methods} bodyId={layout.find(e => e.Setting?.className?.includes("layout-body"))?.Id} />}
-    </RenderPageView> : null
+    if (pageItem) {
+        if (props.onlyLayout) {
+            return !!layout.length && <RenderPageView
+                key={pageItem.LayoutId}
+                layers={layout}
+                {...props}
+                methods={props.methods ?? methods}
+            />
+        } else if (props.onlyBody) {
+            return loading ? <LoadingView /> :
+                <RenderPageView key={pageItem.Id} layers={layers} {...props} methods={props.methods ?? methods} bodyId={layout.find(e => e.Setting?.className?.includes("layout-body"))?.Id} />
+        } else {
+            return pageItem && !!layout.length ? <RenderPageView key={pageItem.LayoutId} layers={layout} {...props} methods={props.methods ?? methods}>
+                {loading ? <LoadingView /> :
+                    <RenderPageView key={pageItem.Id} layers={layers} {...props} methods={props.methods ?? methods} bodyId={layout.find(e => e.Setting?.className?.includes("layout-body"))?.Id} />}
+            </RenderPageView> : null
+        }
+    } else return null
 }
 
 const LoadingView = () => {
