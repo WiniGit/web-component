@@ -14,7 +14,10 @@ interface FTextFieldProps {
     prefix?: ReactNode;
     name?: string,
     methods: UseFormReturn<any, any, undefined>;
+    onBlur?: React.FocusEventHandler<HTMLInputElement>;
+    onChange?: React.ChangeEventHandler<HTMLInputElement>;
 }
+
 
 export function FTextField(props: FTextFieldProps) {
     const _covertErrors = useMemo(() => props.name ? convertErrors(props.methods.formState.errors, props.name) : undefined, [props.name, props.methods.formState.errors?.[props.name!]])
@@ -22,7 +25,7 @@ export function FTextField(props: FTextFieldProps) {
 
     return <TextField
         {...props}
-        register={props.name?.length ? (props.methods!.register(props.name, { required: props.required }) as any) : undefined}
+        register={props.name?.length ? (props.methods!.register(props.name, { required: props.required, onChange: props.onChange, onBlur: props.onBlur }) as any) : undefined}
         helperText={_covertErrors && (_covertErrors?.message?.length ? _covertErrors?.message : `${t("input")} ${props.name} ${t("value")}`.toLowerCase())}
         simpleStyle
     />
@@ -56,6 +59,8 @@ interface FTextAreaProps {
     prefix?: ReactNode;
     name?: string,
     methods: UseFormReturn<FieldValues, any, undefined>;
+    onBlur?: React.FocusEventHandler<HTMLTextAreaElement>;
+    onChange?: React.ChangeEventHandler<HTMLTextAreaElement>;
 }
 
 export function FTextArea(props: FTextAreaProps) {
@@ -64,7 +69,7 @@ export function FTextArea(props: FTextAreaProps) {
 
     return <TextArea
         {...props}
-        register={props.name?.length ? (props.methods!.register(props.name, { required: props.required }) as any) : undefined}
+        register={props.name?.length ? (props.methods!.register(props.name, { required: props.required, onChange: props.onChange, onBlur: props.onBlur }) as any) : undefined}
         helperText={_covertErrors && (_covertErrors?.message?.length ? _covertErrors?.message : `${t("input")} ${props.name} ${t("value")}`).toLowerCase()}
         simpleStyle
     />

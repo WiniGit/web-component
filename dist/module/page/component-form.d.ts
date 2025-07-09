@@ -11,6 +11,8 @@ interface FTextFieldProps {
     prefix?: ReactNode;
     name?: string;
     methods: UseFormReturn<any, any, undefined>;
+    onBlur?: React.FocusEventHandler<HTMLInputElement>;
+    onChange?: React.ChangeEventHandler<HTMLInputElement>;
 }
 export declare function FTextField(props: FTextFieldProps): import("react/jsx-runtime").JSX.Element;
 export declare function FInputPassword(props: FTextFieldProps): import("react/jsx-runtime").JSX.Element;
@@ -24,6 +26,8 @@ interface FTextAreaProps {
     prefix?: ReactNode;
     name?: string;
     methods: UseFormReturn<FieldValues, any, undefined>;
+    onBlur?: React.FocusEventHandler<HTMLTextAreaElement>;
+    onChange?: React.ChangeEventHandler<HTMLTextAreaElement>;
 }
 export declare function FTextArea(props: FTextAreaProps): import("react/jsx-runtime").JSX.Element;
 interface FRadioButtonProps {
