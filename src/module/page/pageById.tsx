@@ -54,9 +54,14 @@ export interface CustomHTMLProps extends HTMLAttributes<any> {
     /** only for form element */
     customOptions?: { [p: string]: Array<{ [k: string]: any }> };
     /** only for form element */
-    onSubmit?: (e?: { [p: string]: any }) => void;
+    onSubmit?: (
+        /** form data */ 
+        e?: { [p: string]: any }
+    ) => void;
     /** only for form element */
     onError?: (e?: { [p: string]: any }) => void;
+    /** only for form element */
+    autoBcrypt?: boolean
 }
 
 interface RenderPageProps extends Props {

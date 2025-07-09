@@ -28,6 +28,7 @@ interface FormByIdProps {
     onError?: (e?: {
         [p: string]: any;
     }) => void;
+    autoBcrypt?: boolean;
 }
 interface FormByIdRef {
     onSubmit: (e?: React.BaseSyntheticEvent) => Promise<void>;

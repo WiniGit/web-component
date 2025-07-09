@@ -19,6 +19,7 @@ interface FormByIdProps {
     customOptions?: { [p: string]: Array<{ [k: string]: any }> };
     onSubmit?: (e?: { [p: string]: any }) => void;
     onError?: (e?: { [p: string]: any }) => void;
+    autoBcrypt?: boolean
 }
 
 interface FormByIdRef {
@@ -168,8 +169,10 @@ export const FormById = forwardRef<FormByIdRef, FormByIdProps>((props, ref) => {
                                     else delete dataItem[_col.Name]
                                     break;
                                 case FEDataType.PASSWORD:
-                                    const getHashPassword = await accountController.hashPassword(dataItem[_col.Name])
-                                    dataItem[_col.Name] = getHashPassword.data
+                                    if (props.autoBcrypt) {
+                                        const getHashPassword = await accountController.hashPassword(dataItem[_col.Name])
+                                        dataItem[_col.Name] = getHashPassword.data
+                                    }
                                     break;
                                 case FEDataType.FILE:
                                     if (dataItem[_col.Name] && Array.isArray(dataItem[_col.Name])) {
