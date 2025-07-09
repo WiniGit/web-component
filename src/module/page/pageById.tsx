@@ -55,7 +55,7 @@ export interface CustomHTMLProps extends HTMLAttributes<any> {
     customOptions?: { [p: string]: Array<{ [k: string]: any }> };
     /** only for form element */
     onSubmit?: (
-        /** form data */ 
+        /** form data */
         e?: { [p: string]: any }
     ) => void;
     /** only for form element */
@@ -787,7 +787,11 @@ export const PageById = (props: PageByIdProps) => {
                     if (resLayer.code === 200) setLayout(resLayer.data.map((e: any) => ({ ...e, Setting: JSON.parse(e.Setting), State: e.State ? JSON.parse(e.State) : undefined })))
                 } else if (props.onlyBody || thisPage.LayoutId === pageItem?.LayoutId) {
                     const resLayer = await layerController.getListSimple({ page: 1, size: 10000, query: `@PageId:{${thisPage!.Id}}` })
-                    if (resLayer.code === 200) setLayers(resLayer.data.map((e: any) => ({ ...e, Setting: JSON.parse(e.Setting), State: e.State ? JSON.parse(e.State) : undefined })))
+                    if (resLayer.code === 200) setLayers(resLayer.data.map((e: any, _: number, arr: any[]) => {
+                        const tmp = { ...e, Setting: JSON.parse(e.Setting), State: e.State ? JSON.parse(e.State) : undefined }
+                        if (e.ParentId && !arr.some(el => el.Id === e.ParentId)) delete tmp.ParentId
+                        return tmp
+                    }))
                 } else {
                     const resLayer = await Promise.all([
                         layerController.getListSimple({ page: 1, size: 10000, query: `(@Id:{${thisPage.LayoutId}}) | (@LayoutId:{${thisPage.LayoutId}})` }),
@@ -813,7 +817,7 @@ export const PageById = (props: PageByIdProps) => {
             />
         } else if (props.onlyBody) {
             return loading ? <LoadingView /> :
-                <RenderPageView key={pageItem.Id} layers={layers} {...props} methods={props.methods ?? methods} bodyId={layout.find(e => e.Setting?.className?.includes("layout-body"))?.Id} />
+                <RenderPageView key={pageItem.Id} layers={layers} {...props} methods={props.methods ?? methods} />
         } else {
             return pageItem && !!layout.length ? <RenderPageView key={pageItem.LayoutId} layers={layout} {...props} methods={props.methods ?? methods}>
                 {loading ? <LoadingView /> :
@@ -863,7 +867,11 @@ export const PageByUrl = ({ childrenData, ...props }: PageByUrlProps) => {
                     if (resLayer.code === 200) setLayout(resLayer.data.map((e: any) => ({ ...e, Setting: JSON.parse(e.Setting), State: e.State ? JSON.parse(e.State) : undefined })))
                 } else if (props.onlyBody || thisPage.LayoutId === pageItem?.LayoutId) {
                     const resLayer = await layerController.getListSimple({ page: 1, size: 10000, query: `@PageId:{${thisPage!.Id}}` })
-                    if (resLayer.code === 200) setLayers(resLayer.data.map((e: any) => ({ ...e, Setting: JSON.parse(e.Setting), State: e.State ? JSON.parse(e.State) : undefined })))
+                    if (resLayer.code === 200) setLayers(resLayer.data.map((e: any, _: number, arr: any[]) => {
+                        const tmp = { ...e, Setting: JSON.parse(e.Setting), State: e.State ? JSON.parse(e.State) : undefined }
+                        if (e.ParentId && !arr.some(el => el.Id === e.ParentId)) delete tmp.ParentId
+                        return tmp
+                    }))
                 } else {
                     const resLayer = await Promise.all([
                         layerController.getListSimple({ page: 1, size: 10000, query: `(@Id:{${thisPage.LayoutId}}) | (@LayoutId:{${thisPage.LayoutId}})` }),
