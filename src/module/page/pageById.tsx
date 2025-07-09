@@ -878,7 +878,7 @@ export const PageByUrl = ({ childrenData, ...props }: PageByUrlProps) => {
             if (props.children) {
                 const layoutBody = layout.find(e => e.Setting?.className?.includes("layout-body"))
                 if (layoutBody) {
-                    var propsChildren: any = childrenData;
+                    var propsChildren: any = childrenData ?? {};
                     propsChildren[layoutBody.Setting?.id ?? layoutBody.Id] = props.children
                 }
             }
