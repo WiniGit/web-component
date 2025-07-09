@@ -604,10 +604,11 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
             if (props.itemData) typeProps.itemData = typeProps.itemData ? { ...props.itemData, ...typeProps.itemData } : props.itemData
             if (props.childrenData) typeProps.childrenData = typeProps.childrenData ? { ...props.childrenData, ...typeProps.childrenData } : props.childrenData
             if (props.propsData) typeProps.propsData = typeProps.propsData ? { ...props.propsData, ...typeProps.propsData } : props.propsData
-            return <FormById {...typeProps} id={typeProps.formId} ref={pageAllRefs[findId]}
-                onSubmit={(ev) => {
-                    console.log("????????? ", ev)
-                }} />
+            return <FormById onSubmit={(ev) => {
+                console.log("????????? ", ev)
+            }}
+                {...typeProps} id={typeProps.formId} ref={pageAllRefs[findId]}
+            />
         case ComponentType.card:
             if (props.itemData) typeProps.itemData = typeProps.itemData ? { ...props.itemData, ...typeProps.itemData } : props.itemData
             if (props.childrenData) typeProps.childrenData = typeProps.childrenData ? { ...props.childrenData, ...typeProps.childrenData } : props.childrenData
