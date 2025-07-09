@@ -69,17 +69,20 @@ interface RenderPageProps extends Props {
     bodyId?: string
     children?: ReactNode,
     /**
+     * type function only for card element \n
      * custom props of layer by id. Ex: { "gid": { style: { width: "60rem", backgroundColor: "red" }, className: "my-class" } }
      * */
-    propsData?: { [p: string]: CustomHTMLProps },
+    propsData?: { [p: string]: CustomHTMLProps } | { [p: string]: (itemData: { [p: string]: any }, index: number, methods: UseFormReturn) => CustomHTMLProps },
     /**
+     * type function only for card element \n
      * replace children of parent layer by id. Ex: { "gid": <Text className="heading-7">Example</Text> }
      * */
-    childrenData?: { [p: string]: ReactNode },
+    childrenData?: { [p: string]: ReactNode } | { [p: string]: (indexItem: { [p: string]: any }, index: number, methods: UseFormReturn) => ReactNode },
     /**
+     * type function only for card element \n
      * replace layer by id. Ex: { "gid": <Text className="heading-7">Example</Text> }
      * */
-    itemData?: { [p: string]: ReactNode },
+    itemData?: { [p: string]: ReactNode } | { [p: string]: (indexItem: { [p: string]: any }, index: number, methods: UseFormReturn) => ReactNode },
 }
 
 const RenderPageView = ({ childrenData, propsData, itemData, layers = [], children, methods, bodyId }: RenderPageProps) => {
@@ -755,14 +758,20 @@ const CustomText = (props: { type?: "div" | "p" | "span" | "h1" | "h2" | "h3" | 
 interface PageByIdProps extends Props {
     id: string,
     /**
+     * type function only for card element \n
      * custom props of layer by id. Ex: { "gid": { style: { width: "60rem", backgroundColor: "red" }, className: "my-class" } }
      * */
-    propsData?: { [p: string]: CustomHTMLProps },
+    propsData?: { [p: string]: CustomHTMLProps } | { [p: string]: (itemData: { [p: string]: any }, index: number, methods: UseFormReturn) => CustomHTMLProps },
     /**
+     * type function only for card element \n
      * replace children of parent layer by id. Ex: { "gid": <Text className="heading-7">Example</Text> }
      * */
-    childrenData?: { [p: string]: ReactNode },
-    itemData?: { [p: string]: ReactNode },
+    childrenData?: { [p: string]: ReactNode } | { [p: string]: (indexItem: { [p: string]: any }, index: number, methods: UseFormReturn) => ReactNode },
+    /**
+     * type function only for card element \n
+     * replace layer by id. Ex: { "gid": <Text className="heading-7">Example</Text> }
+     * */
+    itemData?: { [p: string]: ReactNode } | { [p: string]: (indexItem: { [p: string]: any }, index: number, methods: UseFormReturn) => ReactNode },
     onlyLayout?: boolean,
     onlyBody?: boolean
 }
@@ -830,17 +839,20 @@ export const PageById = (props: PageByIdProps) => {
 interface PageByUrlProps extends Props {
     url: string,
     /**
+     * type function only for card element \n
      * custom props of layer by id. Ex: { "gid": { style: { width: "60rem", backgroundColor: "red" }, className: "my-class" } }
      * */
-    propsData?: { [p: string]: CustomHTMLProps },
+    propsData?: { [p: string]: CustomHTMLProps } | { [p: string]: (itemData: { [p: string]: any }, index: number, methods: UseFormReturn) => CustomHTMLProps },
     /**
+     * type function only for card element \n
      * replace children of parent layer by id. Ex: { "gid": <Text className="heading-7">Example</Text> }
      * */
-    childrenData?: { [p: string]: ReactNode },
+    childrenData?: { [p: string]: ReactNode } | { [p: string]: (indexItem: { [p: string]: any }, index: number, methods: UseFormReturn) => ReactNode },
     /**
+     * type function only for card element \n
      * replace layer by id. Ex: { "gid": <Text className="heading-7">Example</Text> }
      * */
-    itemData?: { [p: string]: ReactNode },
+    itemData?: { [p: string]: ReactNode } | { [p: string]: (indexItem: { [p: string]: any }, index: number, methods: UseFormReturn) => ReactNode },
     onlyLayout?: boolean,
     onlyBody?: boolean;
     /** children of layout-body */

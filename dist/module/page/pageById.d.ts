@@ -141,19 +141,37 @@ export declare const RenderLayerElement: (props: RenderLayerElementProps) => any
 interface PageByIdProps extends Props {
     id: string;
     /**
+     * type function only for card element \n
      * custom props of layer by id. Ex: { "gid": { style: { width: "60rem", backgroundColor: "red" }, className: "my-class" } }
      * */
     propsData?: {
         [p: string]: CustomHTMLProps;
+    } | {
+        [p: string]: (itemData: {
+            [p: string]: any;
+        }, index: number, methods: UseFormReturn) => CustomHTMLProps;
     };
     /**
+     * type function only for card element \n
      * replace children of parent layer by id. Ex: { "gid": <Text className="heading-7">Example</Text> }
      * */
     childrenData?: {
         [p: string]: ReactNode;
+    } | {
+        [p: string]: (indexItem: {
+            [p: string]: any;
+        }, index: number, methods: UseFormReturn) => ReactNode;
     };
+    /**
+     * type function only for card element \n
+     * replace layer by id. Ex: { "gid": <Text className="heading-7">Example</Text> }
+     * */
     itemData?: {
         [p: string]: ReactNode;
+    } | {
+        [p: string]: (indexItem: {
+            [p: string]: any;
+        }, index: number, methods: UseFormReturn) => ReactNode;
     };
     onlyLayout?: boolean;
     onlyBody?: boolean;
@@ -162,22 +180,37 @@ export declare const PageById: (props: PageByIdProps) => false | import("react/j
 interface PageByUrlProps extends Props {
     url: string;
     /**
+     * type function only for card element \n
      * custom props of layer by id. Ex: { "gid": { style: { width: "60rem", backgroundColor: "red" }, className: "my-class" } }
      * */
     propsData?: {
         [p: string]: CustomHTMLProps;
+    } | {
+        [p: string]: (itemData: {
+            [p: string]: any;
+        }, index: number, methods: UseFormReturn) => CustomHTMLProps;
     };
     /**
+     * type function only for card element \n
      * replace children of parent layer by id. Ex: { "gid": <Text className="heading-7">Example</Text> }
      * */
     childrenData?: {
         [p: string]: ReactNode;
+    } | {
+        [p: string]: (indexItem: {
+            [p: string]: any;
+        }, index: number, methods: UseFormReturn) => ReactNode;
     };
     /**
+     * type function only for card element \n
      * replace layer by id. Ex: { "gid": <Text className="heading-7">Example</Text> }
      * */
     itemData?: {
         [p: string]: ReactNode;
+    } | {
+        [p: string]: (indexItem: {
+            [p: string]: any;
+        }, index: number, methods: UseFormReturn) => ReactNode;
     };
     onlyLayout?: boolean;
     onlyBody?: boolean;
