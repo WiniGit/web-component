@@ -31,8 +31,11 @@ interface Props {
 export interface CustomHTMLProps extends HTMLAttributes<any> {
     style?: CSSProperties;
     className?: string;
+    /** type function only for card element */
     propsData?: { [p: string]: CustomHTMLProps } | { [p: string]: (itemData: { [p: string]: any }, index: number, methods: UseFormReturn) => CustomHTMLProps },
+    /** type function only for card element */
     itemData?: { [p: string]: ReactNode } | { [p: string]: (indexItem: { [p: string]: any }, index: number, methods: UseFormReturn) => ReactNode },
+    /** type function only for card element */
     childrenData?: { [p: string]: ReactNode } | { [p: string]: (itemData: { [p: string]: any }, index: number, methods: UseFormReturn) => ReactNode },
     /** only for card element */
     cardData?: Array<{ [p: string]: any }>,
@@ -829,10 +832,12 @@ interface PageByUrlProps extends Props {
      * */
     itemData?: { [p: string]: ReactNode },
     onlyLayout?: boolean,
-    onlyBody?: boolean
+    onlyBody?: boolean;
+    /** children of layout-body */
+    children?: ReactNode;
 }
 
-export const PageByUrl = (props: PageByUrlProps) => {
+export const PageByUrl = ({ childrenData, ...props }: PageByUrlProps) => {
     const methods = useForm({ shouldFocusError: false })
     const [pageItem, setPageItem] = useState<{ [p: string]: any }>()
     const [layout, setLayout] = useState<Array<{ [p: string]: any }>>([])
@@ -870,19 +875,27 @@ export const PageByUrl = (props: PageByUrlProps) => {
 
     if (pageItem) {
         if (props.onlyLayout) {
+            if (props.children) {
+                const layoutBody = layout.find(e => e.Setting?.className?.includes("layout-body"))
+                if (layoutBody) {
+                    var propsChildren: any = childrenData;
+                    propsChildren[layoutBody.Setting?.id ?? layoutBody.Id] = props.children
+                }
+            }
             return !!layout.length && <RenderPageView
                 key={pageItem.LayoutId}
                 layers={layout}
                 {...props}
+                childrenData={propsChildren ?? childrenData}
                 methods={props.methods ?? methods}
             />
         } else if (props.onlyBody) {
             return loading ? <LoadingView /> :
-                <RenderPageView key={pageItem.Id} layers={layers} {...props} methods={props.methods ?? methods} bodyId={layout.find(e => e.Setting?.className?.includes("layout-body"))?.Id} />
+                <RenderPageView key={pageItem.Id} layers={layers} {...props} childrenData={childrenData} methods={props.methods ?? methods} />
         } else {
-            return pageItem && !!layout.length ? <RenderPageView key={pageItem.LayoutId} layers={layout} {...props} methods={props.methods ?? methods}>
+            return pageItem && !!layout.length ? <RenderPageView key={pageItem.LayoutId} layers={layout} {...props} childrenData={childrenData} methods={props.methods ?? methods}>
                 {loading ? <LoadingView /> :
-                    <RenderPageView key={pageItem.Id} layers={layers} {...props} methods={props.methods ?? methods} bodyId={layout.find(e => e.Setting?.className?.includes("layout-body"))?.Id} />}
+                    <RenderPageView key={pageItem.Id} layers={layers} {...props} childrenData={childrenData} methods={props.methods ?? methods} bodyId={layout.find(e => e.Setting?.className?.includes("layout-body"))?.Id} />}
             </RenderPageView> : null
         }
     } else return null

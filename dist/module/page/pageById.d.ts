@@ -6,6 +6,7 @@ interface Props {
 export interface CustomHTMLProps extends HTMLAttributes<any> {
     style?: CSSProperties;
     className?: string;
+    /** type function only for card element */
     propsData?: {
         [p: string]: CustomHTMLProps;
     } | {
@@ -13,6 +14,7 @@ export interface CustomHTMLProps extends HTMLAttributes<any> {
             [p: string]: any;
         }, index: number, methods: UseFormReturn) => CustomHTMLProps;
     };
+    /** type function only for card element */
     itemData?: {
         [p: string]: ReactNode;
     } | {
@@ -20,6 +22,7 @@ export interface CustomHTMLProps extends HTMLAttributes<any> {
             [p: string]: any;
         }, index: number, methods: UseFormReturn) => ReactNode;
     };
+    /** type function only for card element */
     childrenData?: {
         [p: string]: ReactNode;
     } | {
@@ -174,7 +177,9 @@ interface PageByUrlProps extends Props {
     };
     onlyLayout?: boolean;
     onlyBody?: boolean;
+    /** children of layout-body */
+    children?: ReactNode;
 }
-export declare const PageByUrl: (props: PageByUrlProps) => false | import("react/jsx-runtime").JSX.Element | null;
+export declare const PageByUrl: ({ childrenData, ...props }: PageByUrlProps) => false | import("react/jsx-runtime").JSX.Element | null;
 export {};
 //# sourceMappingURL=pageById.d.ts.map
