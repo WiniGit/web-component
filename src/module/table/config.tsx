@@ -8,6 +8,7 @@ import { ConfigData } from "../../controller/config";
 import { showTooltipElement } from "../../component/wini-icon/winicon";
 import { NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { i18n } from '../../language/i18n';
 
 interface AutoCellContentProps {
     colItem: { [p: string]: any };
@@ -153,7 +154,7 @@ export const cellValue = (colItem: { [p: string]: any }, data: any, fields: { [p
         const fieldItem = fields.find(e => e.Name === colItem.Name.split(".").pop())
         if (!fieldItem) return undefined
         const listData = Array.isArray(data) ? data : [data]
-        return listData.map(item => {
+        return listData.filter(e => e !== undefined && e !== null).map(item => {
             let tmp = item[fieldItem.Name]
             switch (fieldItem.DataType) {
                 case FEDataType.DATE:
@@ -165,7 +166,23 @@ export const cellValue = (colItem: { [p: string]: any }, data: any, fields: { [p
                             if (tmp) tmp = new Date(tmp).toLocaleString()
                             break;
                         default:
-                            if (tmp) tmp = Util.datetoString(new Date(tmp), "dd/mm/yyyy hh:mm")
+                            switch (colItem.Format?.toLowerCase()) {
+                                case "date month year":
+                                case "day date month year":
+                                    const days = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
+                                    const months = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
+                                    const date = new Date(tmp);
+                                    const dayName = i18n.t(days[date.getDay()]);
+                                    const day = date.getDate();
+                                    const month = i18n.t(months[date.getMonth()]);
+                                    const year = date.getFullYear();
+                                    if (colItem.Format.toLowerCase().includes("day")) tmp = `${dayName}, ${day} ${month} ${year}`;
+                                    else tmp = `${day} ${month} ${year}`;
+                                    break;
+                                default:
+                                    if (tmp) tmp = Util.datetoString(new Date(tmp), colItem.Format ?? "dd/mm/yyyy hh:mm")
+                                    break;
+                            }
                             break;
                     }
                     break;
@@ -184,8 +201,8 @@ export const cellValue = (colItem: { [p: string]: any }, data: any, fields: { [p
                     break;
             }
             if (fieldItem.Form?.Options?.length && tmp !== undefined) {
-                if (typeof tmp === "string") tmp = tmp.split(",").map(id => fieldItem.Form.Options.find((e: any) => e.id === id)?.name).filter(n => n).join(", ")
-                else tmp = fieldItem.Form.Options.find((e: any) => e.id === tmp)?.name
+                if (typeof tmp === "string") tmp = tmp.split(",").map(id => fieldItem.Form.Options.find((e:any) => e.id === id)?.name).filter(n => n).join(", ")
+                else tmp = fieldItem.Form.Options.find((e:any) => e.id === tmp)?.name
             }
             return `${tmp ?? ""}`
         }).join(", ")
