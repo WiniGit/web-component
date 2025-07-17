@@ -150,7 +150,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
     // @ts-ignore
     const { t, i18n } = useTranslation(); // t using in eval function
     const replaceThisVariables = (content: string, isEval?: boolean) => {
-        return content.replace(replaceVariables, (m: string) => {
+        const replaceTmp = content.replace(replaceVariables, (m: string) => {
             const execRegex = regexGetVariables.exec(m)
             if (!execRegex?.[1]) return m
             const variable = execRegex[1].split(".")
@@ -197,6 +197,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
             }
             return getValue
         })
+        return replaceTmp === "null" || replaceTmp === "undefined" ? undefined : replaceTmp
     }
     const watchForCustomProps = useMemo(() => {
         if (!props.item.State) return undefined
@@ -207,10 +208,12 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
             if (regexGetVariables.test(st.Trigger)) {
                 var caculate = replaceThisVariables(st.Trigger, true)
             } else caculate = st.Trigger
-            try {
-                var checked = eval(caculate)
-            } catch (error) {
-                console.log(caculate, error)
+            if (caculate) {
+                try {
+                    var checked = eval(caculate)
+                } catch (error) {
+                    console.log(caculate, error)
+                }
             }
             if (checked) {
                 for (const sp of supportProperties) {
@@ -245,8 +248,8 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                                 if (actItem.To) {
                                     if (props.indexItem && regexGetVariables.test(actItem.To)) {
                                         const url = replaceThisVariables(actItem.To)
-                                        if (url.includes("https")) window.open(url, "_blank")
-                                        else navigate((url.startsWith("/") ? "/" : "") + url.split("/").filter((e: string) => !!e.trim()).join("/"))
+                                        if (url?.includes("https")) window.open(url, "_blank")
+                                        else navigate((url?.startsWith("/") ? "/" : "") + url?.split("/").filter((e: string) => !!e.trim()).join("/"))
                                     } else if (actItem.To.includes("https")) {
                                         window.open(actItem.To, "_blank")
                                     } else {
@@ -420,11 +423,11 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                     }
                     if (newController.page && regexGetVariables.test(`${newController.page}`)) {
                         const newPageIndex = replaceThisVariables(`${newController.page}`)
-                        newController.page = parseInt(newPageIndex)
+                        if (newPageIndex) newController.page = parseInt(newPageIndex)
                     }
                     if (newController.size && regexGetVariables.test(`${newController.size}`)) {
                         const newPageSize = replaceThisVariables(`${newController.size}`)
-                        newController.page = parseInt(newPageSize)
+                        if (newPageSize) newController.page = parseInt(newPageSize)
                     }
                     if (newController.ids && regexGetVariables.test(newController.ids)) {
                         if (regexGetVariableByThis.test(newController.ids)) {
@@ -443,8 +446,8 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                 if (tmpProps.to) {
                     if (props.indexItem && regexGetVariables.test(tmpProps.to)) {
                         const url = replaceThisVariables(tmpProps.to)
-                        if (url.includes("https")) tmpProps.target = "_blank"
-                        tmpProps.to = (url.startsWith("/") ? "/" : "") + url.split("/").filter((e: string) => !!e.trim()).join("/")
+                        if (url?.includes("https")) tmpProps.target = "_blank"
+                        tmpProps.to = (url?.startsWith("/") ? "/" : "") + url?.split("/").filter((e: string) => !!e.trim()).join("/")
                     } else if (tmpProps.to.includes("https")) {
                         tmpProps.target = "_blank"
                     } else {
@@ -453,7 +456,9 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                 }
                 break;
             case ComponentType.text:
-                if (regexGetVariables.test(tmpProps.value)) tmpProps.value = replaceThisVariables(tmpProps.value)
+                if (regexGetVariables.test(tmpProps.value)) {
+                    tmpProps.value = replaceThisVariables(tmpProps.value)
+                }
                 break;
             // @ts-ignore
             case ComponentType.button:
@@ -580,7 +585,8 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
             }
         case ComponentType.text:
             if (props.item.NameField) {
-                if (typeof dataValue === "object") return <CustomText {...typeProps} html={dataValue["__html"]} />
+                // if (props.item.Id === "93eba01c29664eddbb1d4331e06dd7ec") debugger
+                if (typeof dataValue === "object") return <CustomText {...typeProps} html={dataValue?.["__html"] ?? ""} />
                 else return <CustomText {...typeProps} value={dataValue} />
             } else return <CustomText {...typeProps} />
         case ComponentType.img:
@@ -721,6 +727,7 @@ const ActionPopup = ({ id, children }: { id: string, children: ReactNode, classN
 }
 
 const CustomText = (props: { type?: "div" | "p" | "span" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6", html?: string, maxLine?: number, className?: string, style?: CSSProperties, value?: string }) => {
+    if (!props.value && !props.html) return null
     const customProps = useMemo(() => {
         let _props: any = { ...props, style: { ...(props.style ?? {}) } }
         delete _props.value
