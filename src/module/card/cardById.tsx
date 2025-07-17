@@ -7,7 +7,7 @@ import { CustomHTMLProps, RenderLayerElement } from "../page/pageById"
 import { regexGetVariableByThis } from "./config"
 import { ComponentType, FEDataType } from "../da"
 import { useTranslation } from "react-i18next"
-import { BaseDA } from "../../controller/config"
+import { BaseDA, ConfigData } from "../../controller/config"
 
 interface Props {
     style?: CSSProperties,
@@ -158,7 +158,7 @@ export const CardById = forwardRef<CardRef, CardProps>((props, ref) => {
         const fileCols = methods.getValues("_cols")?.filter((e: any) => e.DataType === FEDataType.FILE && keyNames.includes(e.Name)) ?? []
         if (fileCols.length && data.data.length && keyNames.length) {
             const currentFiles = methods.watch("_files") ?? []
-            const fileIds = data.data.map((e: any) => fileCols.map((col: any) => e[col.Name]?.split(","))).flat(Infinity).filter((e: string | undefined, i: number, arr: Array<string>) => e?.length && currentFiles.every((el: any) => el.Id !== e) && arr.indexOf(e) === i)
+            const fileIds = data.data.map((e: any) => fileCols.map((col: any) => e[col.Name]?.split(","))).flat(Infinity).filter((e: string | undefined, i: number, arr: Array<string>) => e?.length && ConfigData.regexGuid.test(e) && currentFiles.every((el: any) => el.Id !== e) && arr.indexOf(e) === i)
             if (fileIds.length) {
                 BaseDA.getFilesInfor(fileIds).then(fileRes => {
                     if (fileRes.code === 200) methods.setValue("_files", [...currentFiles, ...fileRes.data.filter((e: any) => e !== undefined && e !== null)])

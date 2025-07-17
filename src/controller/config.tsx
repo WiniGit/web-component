@@ -7,6 +7,7 @@ export class ConfigData {
     static url = ""
     static fileUrl = "";
     static imgUrlId = "";
+    static regexGuid = /^[0-9a-fA-F]{32}$/;
     static extraPlugins = undefined;
     static onInvalidToken = () => Util.clearCookie();
 }

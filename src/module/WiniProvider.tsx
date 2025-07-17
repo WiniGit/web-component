@@ -97,7 +97,7 @@ export const WiniProvider = (props: Props) => {
                     (document.head.querySelector(`:scope > title`) as HTMLTitleElement)!.innerHTML = res.data[0].Name;
                     if (props.onProjectLoaded) {
                         props.onProjectLoaded(res.data[0])
-                        ConfigData.fileUrl = res.data[0].FileDoimain
+                        ConfigData.fileUrl = res.data[0].FileDomain
                     }
                 }
             })

@@ -126,10 +126,10 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
     } else return <CaculateLayer {...props} />
 }
 
-const regexGuid = /^[0-9a-fA-F]{32}$/;
+
 const getValidLink = (link: string) => {
     if (link.startsWith("http")) return link
-    if (regexGuid.test(link)) return ConfigData.imgUrlId + link
+    if (ConfigData.regexGuid.test(link)) return ConfigData.imgUrlId + link
     else return ConfigData.fileUrl + link
 }
 
