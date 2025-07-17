@@ -79,7 +79,6 @@ export const WiniProvider = (props: Props) => {
     ConfigData.pid = props.pid
     ConfigData.url = props.url
     ConfigData.imgUrlId = props.imgUrlId
-    ConfigData.fileUrl = props.fileUrl
     if (props.onInvalidToken) ConfigData.onInvalidToken = props.onInvalidToken
     const { i18n } = useTranslation()
     const [loadedResources, setLoadedResources] = useState(false)
@@ -96,7 +95,10 @@ export const WiniProvider = (props: Props) => {
                 if (res.code === 200 && res.data[0]) {
                     (document.head.querySelector(`:scope > link[rel="icon"]`) as HTMLLinkElement)!.href = ConfigData.imgUrlId + res.data[0].LogoId;
                     (document.head.querySelector(`:scope > title`) as HTMLTitleElement)!.innerHTML = res.data[0].Name;
-                    if (props.onProjectLoaded) props.onProjectLoaded(res.data[0])
+                    if (props.onProjectLoaded) {
+                        props.onProjectLoaded(res.data[0])
+                        ConfigData.fileUrl = res.data[0].FileDoimain
+                    }
                 }
             })
             const languageController = new DataController("Language")
@@ -116,11 +118,6 @@ export const WiniProvider = (props: Props) => {
             setLoadedResources(true)
         }
     }, [props.pid])
-
-    useEffect(() => { ConfigData.url = props.url }, [props.url])
-    useEffect(() => { ConfigData.imgUrlId = props.imgUrlId }, [props.imgUrlId])
-    useEffect(() => { ConfigData.fileUrl = props.fileUrl }, [props.fileUrl])
-    useEffect(() => { if (props.onInvalidToken) ConfigData.onInvalidToken = props.onInvalidToken }, [props.onInvalidToken])
 
     return <BrowserRouter>
         <ToastContainer />

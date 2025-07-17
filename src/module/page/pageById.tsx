@@ -126,6 +126,13 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
     } else return <CaculateLayer {...props} />
 }
 
+const regexGuid = /^[0-9a-fA-F]{32}$/;
+const getValidLink = (link: string) => {
+    if (link.startsWith("http")) return link
+    if (regexGuid.test(link)) return ConfigData.imgUrlId + link
+    else return ConfigData.fileUrl + link
+}
+
 const CaculateLayer = (props: RenderLayerElementProps) => {
     const findId = props.item.Setting?.id ?? props.item.Id
     // init refs
@@ -325,7 +332,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
             switch (_rel.DataType) {
                 case FEDataType.FILE:
                     tmpValue = tmpValue?.split(",")?.[0]
-                    if (tmpValue && (props.item.Type === ComponentType.container || props.item.Type === ComponentType.navLink)) tmpValue = { backgroundImage: `url(${tmpValue.startsWith("http") ? tmpValue : (ConfigData.imgUrlId + tmpValue)})` }
+                    if (tmpValue && (props.item.Type === ComponentType.container || props.item.Type === ComponentType.navLink)) tmpValue = { backgroundImage: `url(${getValidLink(tmpValue)})` }
                     break;
                 case FEDataType.HTML:
                     tmpValue = { __html: tmpValue }
@@ -365,7 +372,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                 case FEDataType.FILE:
                     if (tmpValue) {
                         tmpValue = tmpValue?.split(",")?.[0]
-                        if (props.item.Type === ComponentType.container || props.item.Type === ComponentType.navLink) tmpValue = { backgroundImage: `url(${tmpValue.startsWith("http") ? tmpValue : (ConfigData.imgUrlId + tmpValue)})` }
+                        if (props.item.Type === ComponentType.container || props.item.Type === ComponentType.navLink) tmpValue = { backgroundImage: `url(${getValidLink(tmpValue)})` }
                     }
                     break;
                 case FEDataType.HTML:
@@ -585,7 +592,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                     referrerPolicy="no-referrer"
                     onError={(ev) => { ev.currentTarget.src = "https://cdn.jsdelivr.net/gh/WiniGit/icon-library@latest/outline/development/image-2.svg" }}
                     {...typeProps}
-                    src={dataValue.startsWith("http") ? dataValue : (ConfigData.imgUrlId + dataValue)}
+                    src={getValidLink(dataValue)}
                 />
             } else return <img
                 alt=""
