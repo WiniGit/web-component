@@ -46,7 +46,7 @@ export function IconLibrary({ onSelect, style = {}, onClose, className }: IconLi
         let query = filter ? `type=${filter}` : ""
         if (search.length) query += `${query.length ? "&" : ""}search=${search}`
         if (page) query += `${query.length ? "&" : ""}page=${page}`
-        const response = await BaseDA.get(`https://redis.ktxgroup.com.vn/api/file/icon-library?${query}`)
+        const response = await BaseDA.get(`https://dev.wini.vn/api/file/icon-library?${query}`)
         if (response.code === 200) {
             setData({ data: page && page > 1 ? [...data.data, ...response.data] : response.data, totalCount: response.totalCount })
             if (page && page > 1) {
