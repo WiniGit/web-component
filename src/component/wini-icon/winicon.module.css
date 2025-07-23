@@ -101,7 +101,7 @@
 .tooltip-container {
     position: fixed;
     z-index: 999;
-    animation: on-open-tooltip 1s ease-in-out;
+    animation: on-open-tooltip 0.8s ease-in-out;
     animation-fill-mode: forwards;
 }
 

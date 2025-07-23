@@ -30,8 +30,8 @@ export const Winicon = forwardRef<WiniconRef, WiniconProps>(({ id, src, link, cl
     const cdnSrc = "https://cdn.jsdelivr.net/gh/WiniGit/icon-library@latest/"
     const extendAttribute = useMemo(() => {
         if (tooltip) return {
-            onMouseOver: () => { setShowTooltip(true) },
-            onMouseOut: () => { setShowTooltip(false) },
+            onMouseOver: () => { setTimeout(() => setShowTooltip(true), 500) },
+            onMouseOut: () => { setTimeout(() => setShowTooltip(false), 500) },
             onMouseLeave: () => { setShowTooltip(false) },
         }
         return {}
