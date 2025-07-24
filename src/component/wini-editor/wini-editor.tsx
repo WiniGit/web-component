@@ -56,12 +56,20 @@ export const WiniEditor = forwardRef<RefProps, Props>(({ id, onChange, onBlur, d
         }
     }
 
+    const httpsUrlRegex = /^https:\/\/([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(?::\d+)?(\/[^\s?#]*)?(\?[^\s#]*)?(#[^\s]*)?$/;
     const onRestoreRange = (content?: string | HTMLElement) => {
         const selection = window.getSelection();
         if (selection) {
             if (content) {
                 if (typeof content === "string") {
-                    const emoji = document.createTextNode(content);
+                    if (httpsUrlRegex.test(content)) {
+                        var emoji: any = document.createElement("a")
+                        emoji.href = content;
+                        emoji.target = "_blank"
+                        emoji.textContent = content
+                    } else {
+                        emoji = document.createTextNode(content);
+                    }
                     savedRange.current.deleteContents();
                     savedRange.current.insertNode(emoji);
                     savedRange.current.setStartAfter(emoji);
