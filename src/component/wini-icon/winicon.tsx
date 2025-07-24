@@ -113,7 +113,7 @@ export const showTooltipElement = ({ element, tooltip }: { element: any, tooltip
                         r.style.alignItems = "end"
                     }
                 }
-            }} className={`col ${styles['tooltip-container']}`} style={{ alignItems: "center", bottom: document.body.offsetHeight - rect.top - 4, left: rect.left + (rect.width / 2), transform: "translateX(-50%)" }}>
+            }} className={`col ${styles['tooltip-container']}`} style={{ alignItems: "center", width: "max-content", bottom: document.body.offsetHeight - rect.top - 4, left: rect.left + (rect.width / 2), transform: "translateX(-50%)" }}>
                 <Text className={`body-3 ${styles['tooltip-message']}`} maxLine={2}>{tooltip.message}</Text>
                 <div className="row" style={{ padding: "0 1.2rem", transform: "translateY(-0.2rem)" }}><div style={{ borderLeft: "0.6rem solid transparent", borderRight: "0.6rem solid transparent", borderTop: "0.8rem solid var(--neutral-main-reverse-background-color,light-dark(#242428, #EFEFF0))", borderRadius: 2 }} /></div>
             </div>
@@ -132,7 +132,7 @@ export const showTooltipElement = ({ element, tooltip }: { element: any, tooltip
                         r.style.alignItems = "end"
                     }
                 }
-            }} className={`col ${styles['tooltip-container']}`} style={{ alignItems: "center", top: rect.bottom + 4, left: rect.left + (rect.width / 2), transform: "translateX(-50%)" }}>
+            }} className={`col ${styles['tooltip-container']}`} style={{ alignItems: "center", width: "max-content", top: rect.bottom + 4, left: rect.left + (rect.width / 2), transform: "translateX(-50%)" }}>
                 <div className="row" style={{ padding: "0 1.2rem", transform: "translateY(0.2rem)" }}><div style={{ borderLeft: "0.6rem solid transparent", borderRight: "0.6rem solid transparent", borderBottom: "0.8rem solid var(--neutral-main-reverse-background-color,light-dark(#242428, #EFEFF0))", borderRadius: 2 }} /></div>
                 <Text className={`body-3 ${styles['tooltip-message']}`} maxLine={2}>{tooltip.message}</Text>
             </div >
