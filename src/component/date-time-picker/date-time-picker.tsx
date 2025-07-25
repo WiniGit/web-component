@@ -164,6 +164,11 @@ export function DateTimePicker({ style = {}, ...props }: DateTimePickerProps) {
     }, [props.value, props.endValue, props.repeatValue, props.pickerType])
 
     const showCalendar = (rect: any, onClose?: () => void) => {
+        const offset: any = { top: rect.bottom + 2, left: rect.left + 16 }
+        if ((rect.bottom + 380) > document.body.offsetHeight) {
+            delete offset.top
+            offset.bottom = `calc(100dvh - ${rect.y}px + 2px)`
+        }
         showPopup({
             ref: popupRef,
             hideOverlay: true,
@@ -177,7 +182,7 @@ export function DateTimePicker({ style = {}, ...props }: DateTimePickerProps) {
                 pickerType={props.pickerType}
                 enableRepeat={props.enableRepeat || !!(!(value instanceof Date) && value?.repeatData)}
                 repeatValue={(value instanceof Date ? undefined : value?.repeatData) as any}
-                style={{ top: rect.bottom + 2, left: rect.left + 16 }}
+                style={offset}
                 onApply={(ev) => {
                     setValue(ev)
                     closePopup(popupRef)
