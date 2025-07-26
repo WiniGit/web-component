@@ -31,14 +31,8 @@ export const Winicon = forwardRef<WiniconRef, WiniconProps>(({ id, src, link, cl
     const extendAttribute = useMemo(() => {
         if (tooltip) return {
             onMouseOver: () => { setTimeout(() => setShowTooltip(true), 500) },
-            onMouseOut: () => {
-                setShowTooltip(false)
-                setTimeout(() => setShowTooltip(false), 500)
-            },
-            onMouseLeave: () => {
-                setShowTooltip(false)
-                setTimeout(() => setShowTooltip(false), 500)
-            },
+            onMouseOut: () => { setShowTooltip(false) },
+            onMouseLeave: () => { setShowTooltip(false) },
         }
         return {}
     }, [tooltip])
