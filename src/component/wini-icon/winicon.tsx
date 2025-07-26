@@ -1,5 +1,5 @@
 import ReactDOM from "react-dom";
-import React, { forwardRef, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react";
+import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
 import styles from './winicon.module.css'
 import { CSSProperties } from "react";
 import { Text } from "../text/text";
@@ -25,17 +25,10 @@ interface WiniconRef {
 
 export const Winicon = forwardRef<WiniconRef, WiniconProps>(({ id, src, link, className, style, size, color, alt, onClick, tooltip, onMouseDown, onDoubleClick }, ref) => {
     const divRef = useRef<HTMLDivElement>(null)
+    const timoutRef = useRef<NodeJS.Timeout>(null)
     const [svgData, setSvgData] = useState<string>()
     const [showTooltip, setShowTooltip] = useState<boolean>(false)
     const cdnSrc = "https://cdn.jsdelivr.net/gh/WiniGit/icon-library@latest/"
-    const extendAttribute = useMemo(() => {
-        if (tooltip) return {
-            onMouseOver: () => { setTimeout(() => setShowTooltip(true), 500) },
-            onMouseOut: () => { setShowTooltip(false) },
-            onMouseLeave: () => { setShowTooltip(false) },
-        }
-        return {}
-    }, [tooltip])
 
     const cacheImage = async (url: string) => {
         const cacheName = url.replace(cdnSrc, "");
@@ -77,7 +70,15 @@ export const Winicon = forwardRef<WiniconRef, WiniconProps>(({ id, src, link, cl
             onMouseDown={onMouseDown}
             className={`${styles['wini-icon']} ${svgData ? "" : "skeleton-loading"} ${onClick ? styles['clickable'] : ''} ${className ?? ''} ${src ? `${src.split("/")[0]}-icon` : ''}${link ? ' link-icon' : ""}`}
             style={(style ? { ...style, fontSize: size, color: color } : { fontSize: size, color: color })} dangerouslySetInnerHTML={{ __html: svgData ?? '' }}
-            {...extendAttribute}
+            onMouseOver={tooltip ? () => { timoutRef.current = setTimeout(() => setShowTooltip(true), 500) } : undefined}
+            onMouseOut={tooltip ? () => {
+                if (timoutRef.current) clearTimeout(timoutRef.current)
+                setShowTooltip(false)
+            } : undefined}
+            onMouseLeave={tooltip ? () => {
+                if (timoutRef.current) clearTimeout(timoutRef.current)
+                setShowTooltip(false)
+            } : undefined}
         />
         {tooltip && showTooltip && ReactDOM.createPortal(showTooltipElement({ element: divRef.current, tooltip: tooltip }), document.body)}
     </>
