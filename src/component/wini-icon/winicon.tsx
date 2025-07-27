@@ -23,7 +23,7 @@ interface WiniconRef {
     element?: HTMLDivElement
 }
 
-export const Winicon = forwardRef<WiniconRef, WiniconProps>(({ id, src, link, className, style, size, color, alt, onClick, tooltip, onMouseDown, onDoubleClick }, ref) => {
+export const Winicon = forwardRef<WiniconRef, WiniconProps>(({ id, src, link, className, style = {}, size, color, alt, onClick, tooltip, onMouseDown, onDoubleClick }, ref) => {
     const divRef = useRef<HTMLDivElement>(null)
     const timoutRef = useRef<NodeJS.Timeout>(null)
     const [svgData, setSvgData] = useState<string>()
@@ -69,14 +69,20 @@ export const Winicon = forwardRef<WiniconRef, WiniconProps>(({ id, src, link, cl
             onDoubleClick={onDoubleClick}
             onMouseDown={onMouseDown}
             className={`${styles['wini-icon']} ${svgData ? "" : "skeleton-loading"} ${onClick ? styles['clickable'] : ''} ${className ?? ''} ${src ? `${src.split("/")[0]}-icon` : ''}${link ? ' link-icon' : ""}`}
-            style={(style ? { ...style, fontSize: size, color: color } : { fontSize: size, color: color })} dangerouslySetInnerHTML={{ __html: svgData ?? '' }}
-            onMouseOver={tooltip ? () => { timoutRef.current = setTimeout(() => setShowTooltip(true), 500) } : undefined}
+            style={{ ...style, fontSize: size, color: color }} dangerouslySetInnerHTML={{ __html: svgData ?? '' }}
+            onMouseOver={tooltip ? () => {
+                timoutRef.current = setTimeout(() => {
+                    if (timoutRef.current) setShowTooltip(true)
+                }, 500)
+            } : undefined}
             onMouseOut={tooltip ? () => {
                 if (timoutRef.current) clearTimeout(timoutRef.current)
+                timoutRef.current = null
                 setShowTooltip(false)
             } : undefined}
             onMouseLeave={tooltip ? () => {
                 if (timoutRef.current) clearTimeout(timoutRef.current)
+                timoutRef.current = null
                 setShowTooltip(false)
             } : undefined}
         />
