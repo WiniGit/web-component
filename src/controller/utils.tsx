@@ -439,6 +439,11 @@ export class Util {
             .replace(/[ _]/g, '-');              // Replace spaces or underscores with hyphens
     };
 
+    static kebabToCamelCase = (str: string) => {
+        const parts = str.split('-');
+        return parts[0] + parts.slice(1).map(p => p.charAt(0).toUpperCase() + p.slice(1)).join('');
+    }
+
     static processHTMLContent = (html: string) => {
         // Tạo một DOMParser để parse chuỗi HTML
         const parser = new DOMParser();
