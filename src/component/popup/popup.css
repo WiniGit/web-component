@@ -50,7 +50,7 @@
 }
 
 .popup-overlay.hidden-overlay>* {
-    position: absolute !important;
+    position: fixed !important;
     z-index: 99;
     border-radius: 0.8rem;
     background-color: var(--neutral-absolute-background-color, light-dark(#FFFFFF, #14181b));
@@ -62,7 +62,6 @@
 }
 
 .popup-overlay.hidden-overlay>.popup-container {
-    position: absolute;
     width: max-content;
     height: max-content;
     background-color: transparent;
