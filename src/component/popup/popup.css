@@ -50,7 +50,7 @@
 }
 
 .popup-overlay.hidden-overlay>* {
-    position: fixed !important;
+    position: absolute !important;
     z-index: 99;
     border-radius: 0.8rem;
     background-color: var(--neutral-absolute-background-color, light-dark(#FFFFFF, #14181b));
@@ -83,7 +83,7 @@
 }
 
 .right-drawer {
-    position: fixed;
+    position: absolute;
     top: 0;
     right: 0;
     height: 100dvh;
@@ -104,7 +104,7 @@
 }
 
 .left-drawer {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     height: 100dvh;
@@ -130,7 +130,7 @@
 
 .dropdown-popup {
     animation: show-dropdown-popup 0.4s ease-in-out;
-    position: fixed;
+    position: absolute;
     border: var(--neutral-main-border, 1px solid light-dark(#EAEAEC, #313135));
     border-radius: 0.8rem;
     padding: 4px;
