@@ -73,7 +73,7 @@ export function IconLibrary({ onSelect, style = {}, onClose, className }: IconLi
                 ref={inputRef}
                 placeholder={t("search")}
                 className={`body-3 size32 ${styles['search-input']}`}
-                prefix={<Winicon src="outline/user interface/zoom" size="1.4rem" />}
+                prefix={<Winicon src="outline/user interface/zoom" size={14} />}
                 onChange={(ev) => {
                     if (ev.target.value.trim().length % 2 === 0) setSearchValue(ev.target.value.trim())
                 }}
@@ -84,10 +84,10 @@ export function IconLibrary({ onSelect, style = {}, onClose, className }: IconLi
             />
             <Button
                 prefix={<Winicon src='outline/user interface/setup-tools' color={filter ? "var(--primary-main-color)" : undefined} size={14} />}
-                className='button-text-3 size24'
+                className='button-text-3 size32'
                 label={`${filter ?? t("filter")}`}
                 style={{ width: "10rem", padding: "0.4rem", backgroundColor: filter ? "var(--primary-background)" : undefined, color: filter ? "var(--primary-main-color)" : undefined }}
-                suffix={filter ? <Winicon src={"outline/user interface/e-remove"} size={12} className="icon-button light" onClick={(ev: any) => {
+                suffix={filter ? <Winicon src={"outline/user interface/e-remove"} size={14} className="icon-button light" onClick={(ev: any) => {
                     ev.preventDefault()
                     ev.stopPropagation()
                     setFilter(undefined)
