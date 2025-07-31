@@ -49,7 +49,7 @@
     height: fit-content !important;
 }
 
-.popup-overlay.hidden-overlay>* {
+.popup-overlay.hidden-overlay>*:not(.right-drawer, .left-drawer) {
     position: fixed !important;
     z-index: 99;
     border-radius: 0.8rem;
@@ -81,12 +81,12 @@
     }
 }
 
+.popup-overlay:has(>.right-drawer) {
+    justify-content: end;
+}
+
 .right-drawer {
-    position: absolute;
-    top: 0;
-    right: 0;
     height: 100dvh;
-    border-radius: 0;
     animation: open-drawer-right-to-left 0.5s ease-in-out;
     animation-fill-mode: forwards;
     box-shadow: var(--shadow-left, 1px 0px 6px 0px #2D32390F);
@@ -102,12 +102,12 @@
     }
 }
 
+.popup-overlay:has(>.left-drawer) {
+    justify-content: start;
+}
+
 .left-drawer {
-    position: absolute;
-    top: 0;
-    left: 0;
     height: 100dvh;
-    border-radius: 0;
     animation: open-drawer-left-to-right 0.5s ease-in-out;
     animation-fill-mode: forwards;
     box-shadow: var(--shadow-right, 1px 0px 6px 0px #2D32390F);
