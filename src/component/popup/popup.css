@@ -83,6 +83,7 @@
 
 .popup-overlay:has(>.right-drawer) {
     justify-content: end;
+    left: unset !important;
 }
 
 .right-drawer {
@@ -91,6 +92,11 @@
     animation-fill-mode: forwards;
     box-shadow: var(--shadow-left, 1px 0px 6px 0px #2D32390F);
 }
+
+.right-drawer:has(.popup-overlay) {
+    overflow: visible !important;
+}
+
 
 @keyframes open-drawer-left-to-right {
     0% {
@@ -104,6 +110,10 @@
 
 .popup-overlay:has(>.left-drawer) {
     justify-content: start;
+}
+
+.left-drawer:has(.popup-overlay) {
+    overflow: visible !important;
 }
 
 .left-drawer {
