@@ -16,7 +16,7 @@ import { Util } from "../../controller/utils"
 import { ViewById } from "../view/viewById"
 import { regexGetVariableByThis, regexGetVariables, regexWatchDoubleQuote, regexWatchSingleQuote, replaceVariables } from "../card/config"
 import { CkEditorUploadAdapter, ConfigData } from "../../controller/config"
-import { regexI18n, supportProperties } from "./config"
+import { handleErrorImgSrc, LayoutElement, regexI18n, supportProperties } from "./config"
 import { Rating } from "../../component/rating/rating"
 import { ProgressBar } from "../../component/progress-bar/progress-bar"
 import { ProgressCircle } from "../../component/progress-circle/progress-circle"
@@ -503,7 +503,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                     dataValueProps.indexItem = { ...props.indexItem, [props.item.NameField.split(".").length > 1 ? props.item.NameField.split(".")[1] : props.item.NameField]: dataValueItem }
                     return <NavLink key={`${dataValueItem}-${i}`} {...dataValueProps} >
                         {childComponent ??
-                            (customProps.className?.includes("layout-body") ?
+                            (customProps.className?.includes(LayoutElement.body) ?
                                 <>
                                     {children.map(e => <RenderLayerElement key={e.Id} {...props} item={e} style={undefined} className={undefined} />)}
                                     {props.bodyChildren}
@@ -515,7 +515,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
             } else {
                 return <NavLink {...typeProps}>
                     {childComponent ??
-                        (customProps.className?.includes("layout-body") ?
+                        (customProps.className?.includes(LayoutElement.body) ?
                             <>
                                 {children.map(e => <RenderLayerElement key={e.Id} {...props} item={e} style={undefined} className={undefined} />)}
                                 {props.bodyChildren}
@@ -536,7 +536,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                         dataValueProps.indexItem = { ...props.indexItem, [props.item.NameField.split(".").length > 1 ? props.item.NameField.split(".")[1] : props.item.NameField]: dataValueItem }
                         return <form key={`${dataValueItem}-${i}`} {...dataValueProps}>
                             {childComponent ??
-                                (typeProps.className?.includes("layout-body") ?
+                                (typeProps.className?.includes(LayoutElement.body) ?
                                     <>
                                         {children.map(e => <RenderLayerElement key={e.Id} {...props} item={e} style={undefined} className={undefined} />)}
                                         {props.bodyChildren}
@@ -548,7 +548,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                 } else {
                     return <form {...dataValueProps}>
                         {childComponent ??
-                            (typeProps.className?.includes("layout-body") ?
+                            (typeProps.className?.includes(LayoutElement.body) ?
                                 <>
                                     {children.map(e => <RenderLayerElement key={e.Id} {...props} item={e} style={undefined} className={undefined} />)}
                                     {props.bodyChildren}
@@ -562,7 +562,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                     dataValueProps.indexItem = { ...props.indexItem, [props.item.NameField.split(".").length > 1 ? props.item.NameField.split(".")[1] : props.item.NameField]: dataValueItem }
                     return <div key={`${dataValueItem}-${i}`} {...dataValueProps}>
                         {childComponent ??
-                            (typeProps.className?.includes("layout-body") ?
+                            (typeProps.className?.includes(LayoutElement.body) ?
                                 <>
                                     {children.map(e => <RenderLayerElement key={e.Id} {...props} item={e} style={undefined} className={undefined} />)}
                                     {props.bodyChildren}
@@ -574,7 +574,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
             } else {
                 return <div {...dataValueProps}>
                     {childComponent ??
-                        (typeProps.className?.includes("layout-body") ?
+                        (typeProps.className?.includes(LayoutElement.body) ?
                             <>
                                 {children.map(e => <RenderLayerElement key={e.Id} {...props} item={e} style={undefined} className={undefined} />)}
                                 {props.bodyChildren}
@@ -590,20 +590,20 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                 else return <CustomText {...typeProps} value={dataValue} />
             } else return <CustomText {...typeProps} />
         case ComponentType.img:
-            if (!typeProps.src?.length) typeProps.src = "https://cdn.jsdelivr.net/gh/WiniGit/icon-library@latest/outline/development/image-2.svg"
+            if (!typeProps.src?.length) typeProps.src = handleErrorImgSrc
             if (props.item.NameField && dataValue) {
                 return <img
                     key={dataValue}
                     alt=""
                     referrerPolicy="no-referrer"
-                    onError={(ev) => { ev.currentTarget.src = "https://cdn.jsdelivr.net/gh/WiniGit/icon-library@latest/outline/development/image-2.svg" }}
+                    onError={(ev) => { ev.currentTarget.src = handleErrorImgSrc }}
                     {...typeProps}
                     src={getValidLink(dataValue)}
                 />
             } else return <img
                 alt=""
                 referrerPolicy="no-referrer"
-                onError={(ev) => { ev.currentTarget.src = "https://cdn.jsdelivr.net/gh/WiniGit/icon-library@latest/outline/development/image-2.svg" }}
+                onError={(ev) => { ev.currentTarget.src = handleErrorImgSrc }}
                 {...typeProps}
             />
         case ComponentType.rate:
@@ -734,8 +734,9 @@ const CustomText = (props: { type?: "div" | "p" | "span" | "h1" | "h2" | "h3" | 
         _props.style ??= {}
         if (props.maxLine) _props.style['--max-line'] = props.maxLine
         if (props.html) _props.dangerouslySetInnerHTML = { __html: props.html }
-        if (props.type && props.type !== "div") _props.className = `comp-text${props.html ? "-innerhtml" : ""} ${props.className ?? ""}`
+        if (props.type && props.type !== "div") _props.className = `${props.maxLine ? "comp-text" : ""}${props.html ? "-innerhtml" : ""} ${props.className ?? ""}`
         else _props.className = props.className
+        delete _props.type
         return _props
     }, [props.html, props.className, props])
 
@@ -844,7 +845,7 @@ export const PageById = (props: PageByIdProps) => {
         } else {
             return pageItem && !!layout.length ? <RenderPageView key={pageItem.LayoutId} layers={layout} {...props} methods={props.methods ?? methods}>
                 {loading ? <LoadingView /> :
-                    <RenderPageView key={pageItem.Id} layers={layers} {...props} methods={props.methods ?? methods} bodyId={layout.find(e => e.Setting?.className?.includes("layout-body"))?.Id} />}
+                    <RenderPageView key={pageItem.Id} layers={layers} {...props} methods={props.methods ?? methods} bodyId={layout.find(e => e.Setting?.className?.includes(LayoutElement.body))?.Id} />}
             </RenderPageView> : null
         }
     } else return null
@@ -916,7 +917,7 @@ export const PageByUrl = ({ childrenData, ...props }: PageByUrlProps) => {
     if (pageItem) {
         if (props.onlyLayout) {
             if (props.children) {
-                const layoutBody = layout.find(e => e.Setting?.className?.includes("layout-body"))
+                const layoutBody = layout.find(e => e.Setting?.className?.includes(LayoutElement.body))
                 if (layoutBody) {
                     var propsChildren: any = childrenData ?? {};
                     propsChildren[layoutBody.Setting?.id ?? layoutBody.Id] = props.children
@@ -935,7 +936,7 @@ export const PageByUrl = ({ childrenData, ...props }: PageByUrlProps) => {
         } else {
             return pageItem && !!layout.length ? <RenderPageView key={pageItem.LayoutId} layers={layout} {...props} childrenData={childrenData} methods={props.methods ?? methods}>
                 {loading ? <LoadingView /> :
-                    <RenderPageView key={pageItem.Id} layers={layers} {...props} childrenData={childrenData} methods={props.methods ?? methods} bodyId={layout.find(e => e.Setting?.className?.includes("layout-body"))?.Id} />}
+                    <RenderPageView key={pageItem.Id} layers={layers} {...props} childrenData={childrenData} methods={props.methods ?? methods} bodyId={layout.find(e => e.Setting?.className?.includes(LayoutElement.body))?.Id} />}
             </RenderPageView> : null
         }
     } else return null
