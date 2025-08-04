@@ -27,7 +27,7 @@ interface Props {
 
 interface RefProps {
     isOpenEmoji: boolean;
-    showEmoji: (s: CSSProperties) => void;
+    showEmoji: (s: CSSProperties, config?: { height?: number, emojiStyle?: EmojiStyle, searchDisabled?: boolean, emojiPickerClassName?: string }) => void;
     element: HTMLDivElement;
     inputElement: HTMLDivElement;
     focus: () => void;
@@ -39,7 +39,7 @@ export const WiniEditor = forwardRef<RefProps, Props>(({ id, onChange, onBlur, d
     const popupRef = useRef<any>(null)
     const emojiOffsetRef = useRef<CSSProperties>(null)
     const inserLinkOffsetRef = useRef<CSSProperties>(null)
-    const [isOpenEmoji, setIsOpenEmoji] = useState(false)
+    const [isOpenEmoji, setIsOpenEmoji] = useState<{ height?: number, emojiStyle?: EmojiStyle, searchDisabled?: boolean, emojiPickerClassName?: string }>()
     const [showLinkPrompt, setShowLinkPrompt] = useState(false);
     const [showLinkDetails, setShowLinkDetails] = useState<HTMLAnchorElement | null>(null);
 
@@ -160,10 +160,10 @@ export const WiniEditor = forwardRef<RefProps, Props>(({ id, onChange, onBlur, d
         }
     }
 
-    const showEmoji = (s: CSSProperties) => {
+    const showEmoji = (s: CSSProperties, config?: { height?: number, emojiStyle?: EmojiStyle, searchDisabled?: boolean, emojiPickerClassName?: string }) => {
         onSaveRange()
         emojiOffsetRef.current = s
-        setIsOpenEmoji(true)
+        setIsOpenEmoji(config ?? {})
     }
 
     const handleFocus = () => {
@@ -180,7 +180,7 @@ export const WiniEditor = forwardRef<RefProps, Props>(({ id, onChange, onBlur, d
     }
 
     useImperativeHandle(ref, () => ({
-        isOpenEmoji: isOpenEmoji,
+        isOpenEmoji: !!isOpenEmoji,
         showEmoji: showEmoji,
         element: inputContentRef.current!.parentElement as HTMLDivElement,
         inputElement: inputContentRef.current as HTMLDivElement,
@@ -353,8 +353,9 @@ export const WiniEditor = forwardRef<RefProps, Props>(({ id, onChange, onBlur, d
             <Winicon src='outline/user interface/hyperlink' className='icon-button size32' size={16} onMouseDown={(ev) => { ev.preventDefault() }} onClick={handleLink} />
         </div>}
         {isOpenEmoji && <PopupEmojiPicker
-            onClose={() => { setTimeout(() => { setIsOpenEmoji(false) }, 150) }}
+            onClose={() => { setTimeout(() => { setIsOpenEmoji(undefined) }, 150) }}
             style={emojiOffsetRef.current as any}
+            {...isOpenEmoji}
             onSelect={(em) => {
                 const img = document.createElement("img")
                 img.src = em.imageUrl
@@ -367,7 +368,7 @@ export const WiniEditor = forwardRef<RefProps, Props>(({ id, onChange, onBlur, d
 })
 
 
-const PopupEmojiPicker = (props: { style: CSSProperties, onClose: () => void, onSelect: (emoji: EmojiClickData) => void }) => {
+const PopupEmojiPicker = ({ height = 400, ...props }: { style: CSSProperties, emojiPickerClassName?: string, searchDisabled?: boolean, height?: number, emojiStyle?: EmojiStyle, onClose: () => void, onSelect: (emoji: EmojiClickData) => void }) => {
     const divRef = useRef<HTMLDivElement>(null)
     const { t } = useTranslation()
 
@@ -385,13 +386,15 @@ const PopupEmojiPicker = (props: { style: CSSProperties, onClose: () => void, on
 
     return <div ref={divRef} className={`col ${styles["dropdown"]}`} style={props.style}>
         <EmojiPicker
-            lazyLoadEmojis={true}
+            lazyLoadEmojis
+            className={props.emojiPickerClassName}
             theme={Util.getStorage("theme") as any}
             skinTonesDisabled
-            emojiStyle={EmojiStyle.APPLE}
-            height={400}
+            emojiStyle={props.emojiStyle ?? EmojiStyle.APPLE}
+            height={height}
             searchPlaceHolder={t("search")}
             onEmojiClick={props.onSelect}
+            searchDisabled={props.searchDisabled}
             autoFocusSearch={false}
         />
     </div>
