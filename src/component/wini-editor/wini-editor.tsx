@@ -29,6 +29,7 @@ interface RefProps {
     isOpenEmoji: boolean;
     showEmoji: (s: CSSProperties) => void;
     element: HTMLDivElement;
+    inputElement: HTMLDivElement;
     focus: () => void;
 }
 
@@ -182,6 +183,7 @@ export const WiniEditor = forwardRef<RefProps, Props>(({ id, onChange, onBlur, d
         isOpenEmoji: isOpenEmoji,
         showEmoji: showEmoji,
         element: inputContentRef.current!.parentElement as HTMLDivElement,
+        inputElement: inputContentRef.current as HTMLDivElement,
         focus: handleFocus,
     }), [isOpenEmoji]);
 
