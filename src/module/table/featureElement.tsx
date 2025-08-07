@@ -270,7 +270,7 @@ const FilterDropdown = ({ filterData, style = {}, onClose, columns = [], relativ
             hideOverlay: true,
             content: <FilterOptionsDropdown
                 onClose={() => { setTimeout(() => { btn.onOpen = false }, 150) }}
-                style={{ top: rect.bottom + 2, left: rect.x, width: rect.width }}
+                style={{ top: rect.bottom + 2, left: rect.x }}
                 columns={columns}
                 fields={fields}
                 data={[...columns, ...relativeCols].map((c) => ({ name: c.Name.split(".").length > 1 ? c.Name.split(".")[0] : c.Name, value: undefined })).filter((e => fList.every(f => f.name !== e.name)))}
@@ -753,7 +753,7 @@ const FilterOptionsDropdown = ({ onClose, onSelect, data = [], style, fields = [
     useEffect(() => {
         return () => { if (onClose) onClose() }
     }, [])
-    return <div className="col dropdown-popup popup-actions" style={{ maxHeight: "24rem", overflow: "hidden auto", ...style }}>
+    return <div className="col dropdown-popup popup-actions" style={{ maxHeight: "24rem", overflow: "hidden auto", maxWidth: 200, minWidth: 160, ...style }}>
         {data.map((op, i) => {
             const tmp = fields.find(e => (e.Column ?? e.Name) === op.name) as any
             const colData = columns.find(e => e.Name === op.name)
