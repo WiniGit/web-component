@@ -32,11 +32,11 @@ export { Slider } from './component/slider/slider'
 export { ColorPicker } from './component/color-picker/color-picker'
 export { IconPicker } from './component/icon-picker/icon-picker'
 export { WiniEditor } from './component/wini-editor/wini-editor'
-export { TextFieldForm, InputPasswordForm, TextAreaForm, DateTimePickerForm, CKEditorForm, Select1Form, SelectMultipleForm, SwitchForm, RateForm, CheckboxForm, RadioButtonForm, GroupRadioButtonForm, ImportFileForm, RangeForm, GroupCheckboxForm, ColorPickerForm, IconPickerForm, WiniEditorForm } from './component/component-form'
+export * from './component/component-form'
 export { EmptyPage } from './component/empty-page'
 export { BaseDA, CkEditorUploadAdapter, imgFileTypes } from './controller/config'
 export { Util, formatNumberConvert, randomGID, inputMoneyPattern } from './controller/utils'
-export { DataController, SettingDataController, AccountController } from './controller/data'
+export* from './controller/data'
 export { TableController, WiniController } from './controller/setting'
 export { CardById } from './module/card/cardById'
 export { ChartById } from './module/chart/chartById'
@@ -49,7 +49,7 @@ import { OptionsItem } from './component/select1/select1'
 export type { OptionsItem }
 
 export { i18n, useTranslation } from './language/i18n';
-export { Routes, Route, useNavigate, useParams, useLocation, useSearchParams, Navigate, NavLink, Outlet } from 'react-router-dom'
+export { Routes, Route, useNavigate, useParams, useLocation, useSearchParams, Navigate, NavLink, Outlet } from 'react-router'
 
 import { WiniProvider } from './module/WiniProvider'
 export default WiniProvider
