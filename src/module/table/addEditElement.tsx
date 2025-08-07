@@ -1,5 +1,5 @@
-import { forwardRef, MouseEventHandler, useEffect, useMemo, useState } from "react";
-import { useForm } from "react-hook-form";
+import { forwardRef, MouseEventHandler, ReactNode, useEffect, useMemo, useState } from "react";
+import { useForm, UseFormReturn } from "react-hook-form";
 import { BaseDA, Select1Form, SelectMultipleForm, randomGID, Util, Button, closePopup, ComponentStatus, DialogAlignment, showDialog, Text, ToastMessage, Winicon, DataController, TableController, AccountController, urlToFileType } from "../../index";
 import { useTranslation } from 'react-i18next';
 import { regexGetVariableByThis, RenderComponentByType, validateForm } from "../form/config";
@@ -14,9 +14,10 @@ interface AddEditElementFormProps {
     activeColumns: { [p: string]: any }[];
     id?: string;
     onSuccess?: Function;
+    expandForm?: (methods: UseFormReturn) => ReactNode;
 }
 
-const AddEditElementForm = forwardRef(({ tbName = "", title, activeColumns = [], id, onSuccess, ...props }: AddEditElementFormProps, ref: any) => {
+const AddEditElementForm = forwardRef(({ tbName = "", title, activeColumns = [], id, onSuccess, expandForm, ...props }: AddEditElementFormProps, ref: any) => {
     const dataController = new DataController(tbName)
     const [item, setItem] = useState<{ [p: string]: any }>()
     const [column, setColumn] = useState<{ [p: string]: any }[]>([])
@@ -83,6 +84,7 @@ const AddEditElementForm = forwardRef(({ tbName = "", title, activeColumns = [],
             rels={relative}
             item={item ?? props}
             tbName={tbName}
+            expandForm={expandForm}
             onCancel={() => {
                 showDialog({
                     alignment: DialogAlignment.center,
@@ -110,10 +112,11 @@ interface FormViewProps {
     item: { [key: string]: any };
     tbName: string;
     onCancel?: MouseEventHandler<HTMLButtonElement | HTMLAnchorElement>;
-    onSuccess?: () => void
+    onSuccess?: () => void;
+    expandForm?: (methods: UseFormReturn) => ReactNode
 }
 
-const FormView = ({ cols = [], rels = [], item, tbName, onCancel, onSuccess }: FormViewProps) => {
+const FormView = ({ cols = [], rels = [], item, tbName, onCancel, onSuccess, expandForm }: FormViewProps) => {
     const dataController = new DataController(tbName)
     const methods = useForm<any>({ shouldFocusError: false, defaultValues: { Id: randomGID() } })
     const watchRel = useMemo(() => rels.filter(e => e.Query && e.Query.match(regexGetVariableByThis)?.length), [rels.length])
@@ -407,6 +410,7 @@ const FormView = ({ cols = [], rels = [], item, tbName, onCancel, onSuccess }: F
                         />
                 }
             })}
+            {expandForm?.(methods)}
         </div>
         <div className="row popup-footer">
             <Button
