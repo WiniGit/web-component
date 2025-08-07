@@ -53,7 +53,7 @@ export const IconPicker = forwardRef<IconPickerRef, IconPickerProps>((props, ref
                 } else tmpOffset.left = divRef.current!.offsetLeft
             }
             tmp.remove()
-            if (rect.right + 8 >= document.body.offsetWidth) {
+            if (rect.x + 400 > document.body.offsetWidth) {
                 tmpOffset.right = `calc(100dvw - ${rect.right}px)`
                 delete tmpOffset.left
             }

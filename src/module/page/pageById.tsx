@@ -127,10 +127,10 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
 }
 
 
-const getValidLink = (link: string) => {
+export const getValidLink = (link: string) => {
     if (link.startsWith("http")) return link
     if (ConfigData.regexGuid.test(link)) return ConfigData.imgUrlId + link
-    else return ConfigData.fileUrl + link
+    else return ConfigData.fileUrl + (link.startsWith("/") ? link : `/${link}`)
 }
 
 const CaculateLayer = (props: RenderLayerElementProps) => {

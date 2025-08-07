@@ -1,11 +1,12 @@
-import { forwardRef, MouseEventHandler, ReactNode, useEffect, useMemo, useState } from "react";
-import { useForm, UseFormReturn } from "react-hook-form";
-import { BaseDA, Select1Form, SelectMultipleForm, randomGID, Util, Button, closePopup, ComponentStatus, DialogAlignment, showDialog, Text, ToastMessage, Winicon, DataController, TableController, AccountController } from "../../index";
+import { forwardRef, MouseEventHandler, useEffect, useMemo, useState } from "react";
+import { useForm } from "react-hook-form";
+import { BaseDA, Select1Form, SelectMultipleForm, randomGID, Util, Button, closePopup, ComponentStatus, DialogAlignment, showDialog, Text, ToastMessage, Winicon, DataController, TableController, AccountController, urlToFileType } from "../../index";
 import { useTranslation } from 'react-i18next';
 import { regexGetVariableByThis, RenderComponentByType, validateForm } from "../form/config";
 import { ConfigData } from "../../controller/config";
 import { ComponentType, FEDataType } from "../da";
 import { CustomerAvatar } from "./config";
+import { getValidLink } from "../page/pageById";
 
 interface AddEditElementFormProps {
     tbName: string;
@@ -13,10 +14,9 @@ interface AddEditElementFormProps {
     activeColumns: { [p: string]: any }[];
     id?: string;
     onSuccess?: Function;
-    expandForm?: (methods: UseFormReturn) => ReactNode;
 }
 
-const AddEditElementForm = forwardRef(({ tbName = "", title, activeColumns = [], id, onSuccess, expandForm, ...props }: AddEditElementFormProps, ref: any) => {
+const AddEditElementForm = forwardRef(({ tbName = "", title, activeColumns = [], id, onSuccess, ...props }: AddEditElementFormProps, ref: any) => {
     const dataController = new DataController(tbName)
     const [item, setItem] = useState<{ [p: string]: any }>()
     const [column, setColumn] = useState<{ [p: string]: any }[]>([])
@@ -83,7 +83,6 @@ const AddEditElementForm = forwardRef(({ tbName = "", title, activeColumns = [],
             rels={relative}
             item={item ?? props}
             tbName={tbName}
-            expandForm={expandForm}
             onCancel={() => {
                 showDialog({
                     alignment: DialogAlignment.center,
@@ -111,16 +110,16 @@ interface FormViewProps {
     item: { [key: string]: any };
     tbName: string;
     onCancel?: MouseEventHandler<HTMLButtonElement | HTMLAnchorElement>;
-    onSuccess?: () => void;
-    expandForm?: (methods: UseFormReturn) => ReactNode
+    onSuccess?: () => void
 }
 
-const FormView = ({ cols = [], rels = [], item, tbName, onCancel, onSuccess, expandForm }: FormViewProps) => {
-    const _dataController = new DataController(tbName)
+const FormView = ({ cols = [], rels = [], item, tbName, onCancel, onSuccess }: FormViewProps) => {
+    const dataController = new DataController(tbName)
     const methods = useForm<any>({ shouldFocusError: false, defaultValues: { Id: randomGID() } })
     const watchRel = useMemo(() => rels.filter(e => e.Query && e.Query.match(regexGetVariableByThis)?.length), [rels.length])
     const methodsOptions = useForm<any>({ shouldFocusError: false })
     const { t } = useTranslation()
+    const regexGuid = /^[0-9a-fA-F]{32}$/;
 
     const onSubmit = async (ev: any) => {
         let dataItem = { ...ev }
@@ -182,12 +181,12 @@ const FormView = ({ cols = [], rels = [], item, tbName, onCancel, onSuccess, exp
                             break;
                         case FEDataType.FILE:
                             if (ev[_col.Name] && Array.isArray(ev[_col.Name])) {
-                                const uploadFiles = ev[_col.Name].filter((e: any) => e instanceof File)
+                                const uploadFiles = ev[_col.Name].filter((e: any) => !!e?.file)
                                 if (uploadFiles.length) {
-                                    const res = await BaseDA.uploadFiles(uploadFiles)
-                                    if (res?.length) dataItem[_col.Name] = ev[_col.Name].map((e: any) => e instanceof File ? res.find((f: any) => f.Name === e.name)?.Id : e.Id).filter((id: string) => !!id?.length).join(",")
+                                    const res = await BaseDA.uploadFiles(uploadFiles.map((e: any) => e.file))
+                                    if (res?.length) dataItem[_col.Name] = ev[_col.Name].map((e: any) => e.file ? res.shift().Id : e.exactUrl).filter((id: string) => !!id?.length).join(",")
                                 } else {
-                                    dataItem[_col.Name] = ev[_col.Name].map((e: any) => e.Id).join(",")
+                                    dataItem[_col.Name] = ev[_col.Name].map((e: any) => e.exactUrl).join(",")
                                 }
                             }
                             break;
@@ -201,7 +200,7 @@ const FormView = ({ cols = [], rels = [], item, tbName, onCancel, onSuccess, exp
             if (dataItem[_rel.Column] && Array.isArray(dataItem[_rel.Column]))
                 dataItem[_rel.Column] = dataItem[_rel.Column].join(",")
         }
-        const res = await _dataController.add([dataItem])
+        const res = await dataController.add([dataItem])
         if (res.code !== 200) return ToastMessage.errors(res.message)
         onSuccess?.()
     }
@@ -244,7 +243,10 @@ const FormView = ({ cols = [], rels = [], item, tbName, onCancel, onSuccess, exp
                                 methods.setValue(prop, Util.money(item[prop]))
                                 break;
                             case FEDataType.FILE:
-                                if (item[prop]) _fileIds.push({ id: item[prop], name: prop, multiple: _col.Form.Multiple })
+                                if (item[prop]) {
+                                    if (_col.Form.ComponentType === ComponentType.upload) _fileIds.push({ id: item[prop], name: prop })
+                                    else methods.setValue(prop, item[prop])
+                                }
                                 break;
                             default:
                                 break;
@@ -252,9 +254,7 @@ const FormView = ({ cols = [], rels = [], item, tbName, onCancel, onSuccess, exp
                     } else if (_rel) {
                         const _tmpParse = item[prop]?.length ? item[prop].split(",") : []
                         const pkController = new DataController(_rel.TablePK)
-                        console.log("_rel", _rel)
                         pkController.getByListId(_tmpParse).then(pkRes => {
-                            console.log("pkRes", pkRes)
                             if (pkRes.code === 200) methodsOptions.setValue(`${_rel.Column}_Options`, pkRes.data ?? [])
                         })
                         methods.setValue(prop, _rel.Form.ComponentType === ComponentType.selectMultiple ? _tmpParse : _tmpParse[0])
@@ -263,12 +263,22 @@ const FormView = ({ cols = [], rels = [], item, tbName, onCancel, onSuccess, exp
                     }
                 })
                 if (_fileIds.length) {
-                    BaseDA.getFilesInfor(_fileIds.map(e => e.id.split(",")).flat(Infinity)).then(res => {
-                        if (res.code === 200) _fileIds.forEach(e => {
-                            const _file = res.data.filter((_file: any) => _file !== undefined && _file !== null && e.id.includes(_file.Id))
-                            if (_file.length) methods.setValue(e.name, _file.map((f: any) => ({ ...f, name: f.Name, size: f.Size, type: f.Type, url: ConfigData.imgUrlId + f.Id })))
+                    let filesInfor = _fileIds.map(e => e.id?.split(",")).flat(Infinity)
+                    const fileGuids = filesInfor.filter((id, i, arr) => !!id?.length && regexGuid.test(id) && arr.indexOf(id) === i)
+                    filesInfor = filesInfor.filter((id, i, arr) => !!id?.length && !regexGuid.test(id) && arr.indexOf(id) === i).map((url) => ({ id: randomGID(), name: url.split(/[\\/]/).pop(), type: urlToFileType(url), exactUrl: url, url: getValidLink(url) }))
+                    if (fileGuids.length) {
+                        BaseDA.getFilesInfor(fileGuids).then(res => {
+                            if (res.code === 200) _fileIds.forEach(e => {
+                                const tmpF = res.data.filter((f: any) => !!f && e.id.includes(f.Id)).map((f: any) => ({ id: f.Id, name: f.Name, size: f.Size, type: f.Type, url: ConfigData.url + f.Url }))
+                                methods.setValue(e.name, [...filesInfor.filter((f: any) => e.id.includes(f.exactUrl)), ...tmpF])
+                            })
                         })
-                    })
+                    } else {
+                        _fileIds.forEach(e => {
+                            const tmpF = filesInfor.filter((f: any) => e.id.includes(f.exactUrl))
+                            methods.setValue(e.name, tmpF)
+                        })
+                    }
                 }
             } else {
                 cols.filter((e) => e.Form?.DefaultValue != undefined && e.Form?.DefaultValue !== "").forEach((_col) => {
@@ -397,7 +407,6 @@ const FormView = ({ cols = [], rels = [], item, tbName, onCancel, onSuccess, exp
                         />
                 }
             })}
-            {expandForm?.(methods)}
         </div>
         <div className="row popup-footer">
             <Button

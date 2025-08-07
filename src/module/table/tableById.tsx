@@ -1,4 +1,4 @@
-import { BaseDA, Button, DataController, DialogAlignment, Pagination, Popup, SettingDataController, showDialog, showPopup, TableController, Text, ToastMessage, Winicon } from "../../index";
+import { BaseDA, Button, DataController, DialogAlignment, imgFileTypes, Pagination, Popup, SettingDataController, showDialog, showPopup, TableController, Text, ToastMessage, Winicon } from "../../index";
 import styles from "./table.module.css";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -9,6 +9,7 @@ import { ButtonImportData, SearchFilterData } from "./featureElement";
 import { ColDataType, FEDataType } from "../da";
 import { cellValue } from "./config";
 import AddEditElementForm from "./addEditElement";
+import { getValidLink } from "../page/pageById";
 
 export function TableById({ id }: { id: string }) {
     const [reportItem, setReportItem] = useState<{ [p: string]: any }>()
@@ -183,21 +184,30 @@ export const DataTable = ({ tbName, staticSearch = "", title = "", columns = [],
         return tmp
     }, [relativeData, data.data])
 
+    const regexGuid = /^[0-9a-fA-F]{32}$/;
     useEffect(() => {
         const dataFileIds: Array<string> = []
         columns.forEach(_col => {
             const tmp = _col.Name.split(".")
             if (tmp.length > 1) {
                 if (relativeFields?.[tmp[0]]?.find((e: any) => e.Name === tmp[1] && e.DataType === FEDataType.FILE))
-                    dataFileIds.push(...relativeData[tmp[0].substring(0, tmp[0].lastIndexOf("Id"))].map((e: any) => e[tmp[1]]?.split(",").slice(0, 4)).flat(Infinity).filter((id: string, i: number, arr: Array<string>) => !!id && arr.indexOf(id) === i))
+                    dataFileIds.push(...relativeData[tmp[0].substring(0, tmp[0].lastIndexOf("Id"))].map((e: any) => e[tmp[1]]?.split(",")).flat(Infinity).filter((id: string, i: number, arr: Array<string>) => !!id && arr.indexOf(id) === i))
             } else if (fields.find(e => e.Name === _col.Name && e.DataType === FEDataType.FILE)) {
-                dataFileIds.push(...data.data.map(e => e[_col.Name]?.split(",").slice(0, 2)).flat(Infinity).filter((id, i, arr) => !!id && arr.indexOf(id) === i))
+                dataFileIds.push(...data.data.map(e => e[_col.Name]?.split(",")).flat(Infinity).filter((id, i, arr) => !!id && arr.indexOf(id) === i))
             }
         })
         if (dataFileIds.length) {
-            BaseDA.getFilesInfor(dataFileIds.filter((id, i, arr) => arr.indexOf(id) === i)).then((res: any) => {
-                if (res.code === 200) setFiles(res.data.filter((f: any) => f !== undefined && f !== null))
+            const listValidIds = dataFileIds.filter(id => regexGuid.test(id))
+            const listFilesInfor = dataFileIds.filter(id => !regexGuid.test(id)).map(id => {
+                const _url = getValidLink(id)
+                const _type = id.split(".").pop()?.toLowerCase()
+                return { Id: id, Name: id, Url: _url, Type: imgFileTypes.includes(`.${_type}`) ? `image/${_type}` : _type }
             })
+            if (listValidIds.length) {
+                BaseDA.getFilesInfor(dataFileIds.filter((id, i, arr) => arr.indexOf(id) === i)).then((res: any) => {
+                    if (res.code === 200) setFiles([...listFilesInfor, ...res.data.filter((f: any) => !!f)])
+                })
+            } else setFiles(listFilesInfor)
         } else setFiles([])
     }, [data.data, relativeData, relativeFields])
 

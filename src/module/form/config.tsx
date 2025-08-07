@@ -1,4 +1,4 @@
-import { CheckboxForm, DateTimePickerForm, ImportFileForm, GroupCheckboxForm, RangeForm, Select1Form, SelectMultipleForm, SwitchForm, TextAreaForm, TextFieldForm, CKEditorForm, RateForm, ColorPickerForm, GroupRadioButtonForm, InputPasswordForm, WiniEditorForm, IconPickerForm } from "../../component/component-form";
+import { CheckboxForm, DateTimePickerForm, ImportFileForm, GroupCheckboxForm, RangeForm, Select1Form, SelectMultipleForm, SwitchForm, TextAreaForm, TextFieldForm, CKEditorForm, RateForm, ColorPickerForm, GroupRadioButtonForm, InputPasswordForm, WiniEditorForm, IconPickerForm, UploadMultipleFileTypeForm } from "../../component/component-form";
 import { differenceInCalendarDays, differenceInMinutes } from "date-fns";
 import { validate } from "validate.js";
 import { ComponentType, FEDataType, ValidateType } from "../da";
@@ -122,18 +122,30 @@ export function RenderComponentByType({ fieldItem, methods, className, style = {
                     style={style}
                 />
         case ComponentType.upload:
-            return <ImportFileForm
+            // return <ImportFileForm
+            //     methods={methods}
+            //     required={fieldItem.Form.Required}
+            //     label={label ?? fieldItem.Form.Label}
+            //     name={fieldItem.Name}
+            //     allowType={fieldItem.Form.AcceptFiles?.split(',')}
+            //     subTitle={fieldItem.Form.AcceptFiles}
+            //     maxSize={fieldItem.Form.Max}
+            //     multiple={fieldItem.Form.Multiple}
+            //     className={className}
+            //     style={style}
+            //     disabled={fieldItem.Form.Disabled}
+            // />
+            return <UploadMultipleFileTypeForm
                 methods={methods}
                 required={fieldItem.Form.Required}
                 label={label ?? fieldItem.Form.Label}
                 name={fieldItem.Name}
-                allowType={fieldItem.Form.AcceptFiles?.split(',')}
-                subTitle={fieldItem.Form.AcceptFiles}
-                maxSize={fieldItem.Form.Max}
                 multiple={fieldItem.Form.Multiple}
+                allowType={fieldItem.Form.AcceptFiles?.split(',')}
                 className={className}
                 style={style}
                 disabled={fieldItem.Form.Disabled}
+                placeholder={fieldItem.Form.Placeholder}
             />
         case ComponentType.datePicker:
         case ComponentType.dateTimePicker:

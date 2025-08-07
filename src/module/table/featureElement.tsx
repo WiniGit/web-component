@@ -392,7 +392,7 @@ const InputValueTile = ({ fieldItem, filterItem, colData, onChange }: InputValue
     }, [filterItem])
 
     const onChangeData = (vl?: string) => {
-        if (!!vl?.length) {
+        if (vl !== undefined) {
             onChange({ ...data, value: vl })
             setData({ ...data, value: vl })
         } else {
@@ -782,7 +782,7 @@ export const ButtonImportData = ({ onImport }: { onImport?: (result: { [key: str
                     const relativeTmp: any = {}
                     let result: { [key: string]: any }[] = []
                     for (const dataItem of res) {
-                        const tmp = { Id: randomGID(), DateCreated: Date.now(), ...dataItem }
+                        const tmp = { Id: randomGID(), DateCreated: Date.now(), ...dataItem, Name: `${dataItem.Name ?? ""}` }
                         findRelativeName.forEach((r) => {
                             relativeTmp[r] ??= []
                             if (!relativeTmp[r].includes(tmp[r])) relativeTmp[r].push(tmp[r])
@@ -792,10 +792,11 @@ export const ButtonImportData = ({ onImport }: { onImport?: (result: { [key: str
                     const getRelative = await Promise.all(Object.keys(relativeTmp).map((r) => {
                         const splitFields = r.split(".")
                         const kController = new DataController(splitFields[0])
-                        const size = relativeTmp[r].map((e: any) => e.split(",")).flat(Infinity).length
+                        const relTmpIds = relativeTmp[r].map((e: any) => e?.split(",")).flat(Infinity).filter((e: any) => !!e)
+                        const size = relTmpIds.length
                         return kController.getListSimple({
                             page: 1, size: size,
-                            query: `@${splitFields[1]}:(${relativeTmp[r].map((e: any) => e.split(",")).flat(Infinity).map((e: any) => `"${e.trim()}"`).join(" | ")})`,
+                            query: `@${splitFields[1]}:(${relTmpIds.map((e: any) => `"${e.trim()}"`).join(" | ")})`,
                             returns: ["Id", splitFields[1]]
                         })
                     }))
@@ -805,7 +806,8 @@ export const ButtonImportData = ({ onImport }: { onImport?: (result: { [key: str
                             result = result.map(e => {
                                 const splitFields = r.split(".")
                                 const tmp = { ...e }
-                                tmp[`${splitFields[0]}Id`] = e[r].split(",").map((el: any) => relativeResult.find((rel: any) => rel[splitFields[1]] === el.trim())).filter((el: any) => !!el).map((el: any) => el.Id).join(",")
+                                const relEIds = e[r]?.split(",").map((el: any) => relativeResult.find((rel: any) => rel[splitFields[1]] === el.trim())).filter((el: any) => !!el).map((el: any) => el.Id)
+                                if (relEIds?.length) tmp[`${splitFields[0]}Id`] = relEIds.join(",")
                                 delete tmp[r]
                                 return tmp
                             })

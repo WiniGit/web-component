@@ -20,6 +20,7 @@ import { Util } from "../controller/utils";
 import { SuggestionProps, WiniEditor } from "./wini-editor/wini-editor";
 import { IconPicker } from "./icon-picker/icon-picker";
 import { Button } from "./button/button";
+import { UploadFiles } from "./import-file/upload";
 
 interface DateRangeProps {
     start?: Date,
@@ -441,7 +442,7 @@ export function GroupRadioButtonForm(params: GroupRadioButtonFormProps) {
                     label={e.name}
                     name={params.name}
                     value={`${e.id}`}
-                    size={'1.8rem'}
+                    size={18}
                     onChange={params.onChange}
                     methods={params.methods}
                 />
@@ -476,6 +477,50 @@ export function ImportFileForm(params: ImportFileFormProps) {
                 </div> : null)}
                 <ImportFile maxSize={params.maxSize} multiple={params.multiple} label={params.title} subTitle={params.subTitle} allowType={params.allowType} value={field.value} disabled={params.disabled}
                     style={{ width: '100%', borderStyle: 'dashed', maxWidth: '100%', flex: params.className?.includes("row") ? 1 : undefined }} className={`${params.className ?? ''} ${params.direction ?? 'row'}`}
+                    onChange={(ev: any) => {
+                        field.onChange(ev);
+                        if (params.onChange) params.onChange(ev);
+                    }}
+                    helperText={_covertErrors && (_covertErrors?.message?.length ? _covertErrors?.message : `${(params.label ? `${t("upload")} ${params.label}` : t('file')).toLowerCase()}`)} />
+            </div>;
+        }}
+    />
+}
+
+interface UploadMultipleFileTypeFormProps extends SimpleFormProps {
+    multiple?: boolean,
+    allowType?: Array<string>,
+    onChange?: (a?: Array<File> | Array<{ [p: string]: any }>) => void,
+    uploadElementStyle?: CSSProperties,
+    uploadElementClassName?: string,
+    suffix?: ReactNode,
+    prefix?: ReactNode,
+}
+
+export function UploadMultipleFileTypeForm({ style = {}, uploadElementStyle = {}, ...params }: UploadMultipleFileTypeFormProps) {
+    const _covertErrors = useMemo(() => params.name ? convertErrors(params.methods.formState.errors, params.name) : undefined, [params.name, params.methods.formState.errors?.[params.name!]])
+    const { t } = useTranslation()
+
+    return <Controller
+        name={params.name}
+        control={params.methods.control}
+        rules={{ required: params.required }}
+        render={({ field }) => {
+            return <div className={params.className ?? 'col'} style={{ gap: '0.8rem', overflow: 'visible', width: '100%', ...style }}>
+                {params.labelElement ?? (!!params.label?.length && <div className="row" style={{ gap: '0.4rem', minWidth: "16rem" }}>
+                    <Text className={"label-3"}>{params.label}</Text>
+                    {params.required ? <Text className="label-4" style={{ color: '#E14337' }}>*</Text> : null}
+                </div>)}
+                <UploadFiles
+                    prefix={params.prefix}
+                    suffix={params.suffix}
+                    files={field.value}
+                    multiple={params.multiple}
+                    placeholder={params.placeholder ? params.placeholder : params.label ? `${t("select")} ${params.label.toLowerCase()}` : ''}
+                    allowType={params.allowType}
+                    disabled={params.disabled}
+                    style={{ width: '100%', flex: params.className?.includes("row") ? 1 : undefined, ...uploadElementStyle }}
+                    className={params.uploadElementClassName}
                     onChange={(ev: any) => {
                         field.onChange(ev);
                         if (params.onChange) params.onChange(ev);
@@ -674,7 +719,7 @@ export const ColorPickerForm = (props: ColorPickerForm) => {
                         field.onChange(newValue);
                         if (props.onChange) props.onChange(newValue)
                     }}
-                    style={{ flex: 1, width: "100%", ...(props.textFieldStyle ?? {}) }}
+                    style={{ flex: props.className?.includes('row') ? 1 : undefined, width: "100%", ...(props.textFieldStyle ?? {}) }}
                     maxLength={7}
                     prefix={<label style={{ backgroundColor: props.methods.watch(props.name), borderRadius: "0.6rem", width: "2.2rem", height: "2.2rem", border: "1px solid var(--neutral-lighter-border-color,light-dark(#F4F4F5, #242428))" }}>
                         <input
