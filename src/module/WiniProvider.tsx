@@ -82,7 +82,7 @@ const appendDesignTokens = (list: Array<{ [p: string]: any }>) => {
                         classValue = `font: ${e.Value.lightMode}`
                     else {
                         var tkParent = groupTokens.find(g => g.Id === e.ParentId);
-                        classValue = Object.keys(e.Value).map(k => `${k}: ${e.Value[k]}`).join(";\n")
+                        classValue = Object.keys(e.Value.webMode).map(k => `${k}: ${e.Value.webMode[k]}`).join(";\n")
                         return `.${encodeClassName(`${tkParent ? `${Util.toSlug(tkParent.Name)}-` : ""}${Util.toSlug(e.Name)}`, "font")} { \n${classValue};\n }`
                     }
                     break;
@@ -91,12 +91,12 @@ const appendDesignTokens = (list: Array<{ [p: string]: any }>) => {
                         classValue = `box-shadow: ${e.Value.lightMode}`
                     else {
                         tkParent = groupTokens.find(g => g.Id === e.ParentId);
-                        classValue = `box-shadow: ${e.Value.boxShadow ?? e.Value["box-shadow"]}`
+                        classValue = `box-shadow: ${e.Value.webMode.boxShadow ?? e.Value.webMode["box-shadow"]}`
                         return `.${encodeClassName(`${tkParent ? `${Util.toSlug(tkParent.Name)}-` : ""}${Util.toSlug(e.Name)}`, "shadow")} { \n${classValue};\n }` 
                     }
                     break;
                 case DesignTokenType.custom:
-                    return e.Value.lightMode
+                    return e.Value.webMode
                 default:
                     return ""
             }

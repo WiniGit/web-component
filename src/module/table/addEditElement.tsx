@@ -189,7 +189,7 @@ const FormView = ({ cols = [], rels = [], item, tbName, onCancel, onSuccess, exp
                                     const res = await BaseDA.uploadFiles(uploadFiles.map((e: any) => e.file))
                                     if (res?.length) dataItem[_col.Name] = ev[_col.Name].map((e: any) => e.file ? res.shift().Id : e.exactUrl).filter((id: string) => !!id?.length).join(",")
                                 } else {
-                                    dataItem[_col.Name] = ev[_col.Name].map((e: any) => e.exactUrl).join(",")
+                                    dataItem[_col.Name] = ev[_col.Name].map((e: any) => e.exactUrl ?? e.id).join(",")
                                 }
                             }
                             break;
@@ -258,7 +258,7 @@ const FormView = ({ cols = [], rels = [], item, tbName, onCancel, onSuccess, exp
                         const _tmpParse = item[prop]?.length ? item[prop].split(",") : []
                         const pkController = new DataController(_rel.TablePK)
                         pkController.getByListId(_tmpParse).then(pkRes => {
-                            if (pkRes.code === 200) methodsOptions.setValue(`${_rel.Column}_Options`, pkRes.data ?? [])
+                            if (pkRes.code === 200) methodsOptions.setValue(`${_rel.Column}_Options`, pkRes.data?.filter((e: any) => !!e) ?? [])
                         })
                         methods.setValue(prop, _rel.Form.ComponentType === ComponentType.selectMultiple ? _tmpParse : _tmpParse[0])
                     } else {
@@ -268,7 +268,7 @@ const FormView = ({ cols = [], rels = [], item, tbName, onCancel, onSuccess, exp
                 if (_fileIds.length) {
                     let filesInfor = _fileIds.map(e => e.id?.split(",")).flat(Infinity)
                     const fileGuids = filesInfor.filter((id, i, arr) => !!id?.length && regexGuid.test(id) && arr.indexOf(id) === i)
-                    filesInfor = filesInfor.filter((id, i, arr) => !!id?.length && !regexGuid.test(id) && arr.indexOf(id) === i).map((url) => ({ id: randomGID(), name: url.split(/[\\/]/).pop(), type: urlToFileType(url), exactUrl: url, url: getValidLink(url) }))
+                    filesInfor = filesInfor.filter((id, i, arr) => !!id?.length && !regexGuid.test(id) && arr.indexOf(id) === i).map((url) => ({ id: randomGID(), name: url.split(/[\\/]/).pop(), type: urlToFileType(url), exactUrl: url, url: url.startsWith("https") ? url : getValidLink(url) }))
                     if (fileGuids.length) {
                         BaseDA.getFilesInfor(fileGuids).then(res => {
                             if (res.code === 200) _fileIds.forEach(e => {
@@ -346,7 +346,7 @@ const FormView = ({ cols = [], rels = [], item, tbName, onCancel, onSuccess, exp
             const result: Array<any> = res.data
             if (res.Parent?.length && !parentId) result.push(...res.Parent)
             return {
-                data: res.data.filter((e: any, i: number, arr: Array<any>) => arr.findIndex(f => f.Id === e.Id) === i).map((e: any) => {
+                data: res.data.filter((e: any, i: number, arr: Array<any>) => !!e && arr.findIndex(f => f.Id === e.Id) === i).map((e: any) => {
                     return {
                         id: e.Id,
                         name: e.Name,
