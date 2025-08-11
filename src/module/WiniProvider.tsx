@@ -96,7 +96,7 @@ const appendDesignTokens = (list: Array<{ [p: string]: any }>) => {
                     }
                     break;
                 case DesignTokenType.custom:
-                    return e.Value.webMode
+                    return e.Value.lightMode ?? e.Value.webMode
                 default:
                     return ""
             }
