@@ -114,7 +114,8 @@ const resources = {
             uploadMore: "Upload more",
             link: "Link",
             pasteLink: "Paste link & enter",
-            files: "Files"
+            files: "Files",
+            done: "Done"
         },
     },
     vi: {
@@ -229,6 +230,7 @@ const resources = {
             link: "Đường dẫn",
             pasteLink: "Nhập đường dẫn & nhấn enter",
             files: "Danh sách tệp",
+            done: "Hoàn thành"
         },
     },
 }
