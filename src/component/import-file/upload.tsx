@@ -283,7 +283,7 @@ const UploadFilesDetailPopup = forwardRef((props: { files: FilePreview[], onChan
                 })}
             </div>}
         </div>
-        {(!!props.files.length && ((!props.files.length && !!files.length) || files.every((f => !props.files.some((pf) => pf.id === f.id))))) && <div className="row" style={{ padding: "1.6rem 2.4rem", justifyContent: "end", gap: 8 }}>
+        {((!props.files.length && !!files.length) || (!!props.files.length && files.every((f => !props.files.some((pf) => pf.id === f.id))))) && <div className="row" style={{ padding: "1.6rem 2.4rem", justifyContent: "end", gap: 8 }}>
             <Button
                 label={t("cancel")}
                 className="button-text-3 button-grey"
