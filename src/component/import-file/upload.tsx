@@ -96,7 +96,9 @@ export const UploadFiles = forwardRef<UploadFilesRef, UploadFilesProps>(({ class
                             onClick={(ev) => {
                                 ev.stopPropagation();
                                 ev.preventDefault();
-                                setFiles(prev => prev.filter(e => e.id !== f.id))
+                                const tmpFiles = files.filter(e => e.id !== f.id)
+                                setFiles(tmpFiles)
+                                props.onChange?.(tmpFiles)
                             }} />}
                     </NavLink>
                 })}
