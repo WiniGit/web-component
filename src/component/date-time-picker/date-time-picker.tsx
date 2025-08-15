@@ -10,6 +10,7 @@ import { TextField } from "../text-field/text-field"
 import { Calendar } from "../calendar/calendar"
 import { Button } from "../button/button"
 import { Checkbox } from "../checkbox/checkbox"
+import { Util } from "../../controller/utils"
 
 const today = new Date()
 const startDate = new Date(
@@ -22,84 +23,6 @@ const endDate = new Date(
     today.getMonth(),
     today.getDate()
 )
-
-const dateToString = (x: Date, y: string = "dd/mm/yyyy") => {
-    let splitDateTime: Array<string> = y.split(" ");
-    let dateFormat = splitDateTime[0]
-    let timeFormat = splitDateTime[1]
-    if (dateFormat.includes('hh')) {
-        dateFormat = splitDateTime[1]
-        timeFormat = splitDateTime[0]
-    }
-    let dateConvert: string = dateFormat.split(y.includes("/") ? "/" : "-").map(type => {
-        switch (type.toLowerCase()) {
-            case "dd":
-                return x.getDate() < 10 ? `0${x.getDate()}` : `${x.getDate()}`;
-            case "mm":
-                return (x.getMonth() + 1) < 10 ? `0${(x.getMonth() + 1)}` : `${(x.getMonth() + 1)}`;
-            case "yyyy":
-                return `${x.getFullYear()}`;
-            default:
-                return ''
-        }
-    }).join(y.includes("/") ? "/" : "-");
-    if (timeFormat) {
-        let timeConvert = timeFormat.split(":").map(type => {
-            switch (type) {
-                case "hh":
-                    return x.getHours() < 10 ? `0${x.getHours()}` : `${x.getHours()}`;
-                case "mm":
-                    return x.getMinutes() < 10 ? `0${x.getMinutes()}` : `${x.getMinutes()}`;
-                case "ss":
-                    return x.getSeconds() < 10 ? `0${x.getSeconds()}` : `${x.getSeconds()}`;
-                default:
-                    return ''
-            }
-        }).join(":")
-        return dateConvert + " " + timeConvert;
-    }
-    return dateConvert;
-}
-
-const stringToDate = (_date: string, _format: string = "dd/mm/yyyy", _delimiter: string = "/") => {
-    let dayformat: string = _format;
-    let hourformat: string = '';
-    let day: string = _date;
-    let hours: string = '';
-    let isHour: boolean = false;
-    if (_format.trim().indexOf(" ") > -1) {
-        dayformat = _format.trim().split(" ")[0];
-        hourformat = _format.trim().split(" ")[1];
-        day = _date.trim().split(" ")[0];
-        hours = _date.trim().split(" ")[1] ?? '00:00:00';
-        isHour = true;
-    }
-    let formatLowerCase: string = dayformat.toLowerCase();
-    let formatItems: Array<string> = formatLowerCase.split(_delimiter);
-    let dateItems: Array<string> = day.split(_delimiter);
-    let monthIndex: number = formatItems.indexOf("mm");
-    let dayIndex: number = formatItems.indexOf("dd");
-    let yearIndex: number = formatItems.indexOf("yyyy");
-    let hour: number = 0;
-    let min: number = 0;
-    let sec: number = 0;
-    if (isHour) {
-        let tmpHour: Array<string> = hourformat.split(":");
-        let hourindex: number = tmpHour.indexOf("HH");
-        if (hourindex < 0) {
-            hourindex = tmpHour.indexOf("hh");
-        }
-        let mmindex: number = tmpHour.indexOf("mm");
-        let ssindex: number = tmpHour.indexOf("ss");
-        let time: Array<string> = hours.split(":");
-        hour = parseInt(time[hourindex] ?? '0'); min = parseInt(time[mmindex] ?? '0'); sec = parseInt(time[ssindex] ?? '0');
-    }
-    let month: number = parseInt(dateItems[monthIndex]);
-    month -= 1;
-    var formatedDate = new Date(parseInt(dateItems[yearIndex]), month, parseInt(dateItems[dayIndex] ?? '0'), hour, min, sec);
-    return formatedDate;
-}
-const inRangeTime = (date: Date, startDate: Date, endDate: Date) => (differenceInCalendarDays(date, startDate) > -1 && differenceInCalendarDays(endDate, date) > -1)
 
 interface ValueProps {
     start?: Date,
@@ -136,17 +59,17 @@ export function DateTimePicker({ style = {}, ...props }: DateTimePickerProps) {
     const inputRef = useRef<HTMLInputElement>(null)
     const [value, setValue] = useState<Date | ValueProps>()
     const txtValue = useMemo(() => {
-        if (!value) return <Text className={styles["value"]}>{props.placeholder ?? ""}</Text>
-        if (value instanceof Date) return <Text className={styles["value"]}>{dateToString(value, `dd/mm/yyyy${props.pickerType?.includes("time") ? " hh:mm" : ""}`)}</Text>
+        if (!value) return <Text className={styles["value"]} style={{ opacity: 0.6 }}>{props.placeholder ?? ""}</Text>
+        if (value instanceof Date) return <Text className={styles["value"]}>{Util.datetoString(value, `dd/mm/yyyy${props.pickerType?.includes("time") ? " hh:mm" : ""}`)}</Text>
         else return <>
-            <Text className={styles["value"]} style={{ flex: "none", width: "fit-content" }}>{dateToString(value.start ?? new Date(), `dd/mm/yyyy${(props.pickerType?.includes("time") || props.pickerType === "auto") ? " hh:mm" : ""}`)} - {dateToString(value.end ?? new Date(), `dd/mm/yyyy${(props.pickerType?.includes("time") || props.pickerType === "auto") ? " hh:mm" : ""}`)}</Text>
+            <Text className={styles["value"]} style={{ flex: "none", width: "fit-content" }}>{Util.datetoString(value.start ?? new Date(), `dd/mm/yyyy${(props.pickerType?.includes("time") || props.pickerType === "auto") ? " hh:mm" : ""}`)} - {Util.datetoString(value.end ?? new Date(), `dd/mm/yyyy${(props.pickerType?.includes("time") || props.pickerType === "auto") ? " hh:mm" : ""}`)}</Text>
             {value.repeatData && <Winicon src="outline/arrows/loop-2" size={"1.2rem"} />}
         </>
     }, [value])
 
     useEffect(() => {
         if (inputRef.current) {
-            if (value && value instanceof Date) inputRef.current.value = dateToString(value, `dd/mm/yyyy`)
+            if (value && value instanceof Date) inputRef.current.value = Util.datetoString(value, `dd/mm/yyyy`)
             else inputRef.current.value = ""
         }
     }, [value, inputRef.current])
@@ -226,8 +149,8 @@ export function DateTimePicker({ style = {}, ...props }: DateTimePickerProps) {
                             const inputValue = ev.target.value.trim()
                             let dateValue: Date | undefined = undefined
                             if (inputValue.match(/[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{4}/g)) {
-                                dateValue = stringToDate(inputValue, 'dd/MM/yyyy', '/')
-                                if (inRangeTime(dateValue, props.min ?? startDate, props.min ?? endDate)) {
+                                dateValue = Util.stringToDate(inputValue, 'dd/MM/yyyy', '/')
+                                if (differenceInCalendarDays(dateValue, props.min ?? startDate) > -1 && differenceInCalendarDays(props.max ?? endDate, dateValue) > -1) {
                                 } else if (differenceInCalendarDays(props.min ?? startDate, dateValue) > -1) {
                                     dateValue = props.min ?? startDate
                                 } else if (differenceInCalendarDays(dateValue, props.min ?? endDate) > -1) {
@@ -321,7 +244,7 @@ const PopupDateTimePicker = forwardRef(({ value, style, endValue, repeatValue, o
         if (value) {
             const initStart = new Date(value)
             methods.setValue('date-start', initStart)
-            inputStartRef.current!.getInput()!.value = dateToString(initStart)
+            inputStartRef.current!.getInput()!.value = Util.datetoString(initStart)
             if (pickerType.includes("time") || initStart.getSeconds() === 1) {
                 setSelectTime(true)
                 methods.setValue('time-start', `${initStart.getHours() < 9 ? `0${initStart.getHours()}` : initStart.getHours()}:${initStart.getMinutes() < 9 ? `0${initStart.getMinutes()}` : initStart.getMinutes()}`)
@@ -334,7 +257,7 @@ const PopupDateTimePicker = forwardRef(({ value, style, endValue, repeatValue, o
             if (endValue) {
                 const initEnd = new Date(endValue)
                 methods.setValue('date-end', initEnd)
-                inputEndRef.current.getInput()!.value = dateToString(initEnd)
+                inputEndRef.current.getInput()!.value = Util.datetoString(initEnd)
                 if (pickerType.includes("time") || initEnd.getSeconds() === 59) methods.setValue('time-end', `${initEnd.getHours() < 9 ? `0${initEnd.getHours()}` : initEnd.getHours()}:${initEnd.getMinutes() < 9 ? `0${initEnd.getMinutes()}` : initEnd.getMinutes()}`)
             } else inputEndRef.current.getInput()!.value = ""
         }
@@ -367,13 +290,13 @@ const PopupDateTimePicker = forwardRef(({ value, style, endValue, repeatValue, o
                     onBlur={(ev) => {
                         const inputValue = ev.target.value
                         if (regexDate.test(inputValue)) {
-                            const dateValue = stringToDate(inputValue, 'dd/mm/yyyy', '/')
+                            const dateValue = Util.stringToDate(inputValue, 'dd/mm/yyyy', '/')
                             if ((pickerType.includes("range") || pickerType === "auto") && differenceInCalendarDays(methods.getValues('date-end'), dateValue) < 0) {
                                 methods.setValue('date-end', dateValue)
-                                inputEndRef.current!.getInput()!.value = dateToString(dateValue)
+                                inputEndRef.current!.getInput()!.value = Util.datetoString(dateValue)
                             }
                             methods.setValue('date-start', dateValue)
-                        } else ev.target.value = methods.getValues('date-start') ? dateToString(methods.getValues('date-start')) : ""
+                        } else ev.target.value = methods.getValues('date-start') ? Util.datetoString(methods.getValues('date-start')) : ""
                     }}
                 />
                 {(pickerType.includes("range") || pickerType === "auto") &&
@@ -387,13 +310,13 @@ const PopupDateTimePicker = forwardRef(({ value, style, endValue, repeatValue, o
                         onBlur={(ev) => {
                             const inputValue = ev.target.value
                             if (regexDate.test(inputValue)) {
-                                const dateValue = stringToDate(inputValue, 'dd/mm/yyyy', '/')
+                                const dateValue = Util.stringToDate(inputValue, 'dd/mm/yyyy', '/')
                                 if (differenceInCalendarDays(dateValue, methods.getValues('date-start')) < 0) {
                                     methods.setValue('date-start', dateValue)
-                                    inputStartRef.current!.getInput()!.value = dateToString(dateValue)
+                                    inputStartRef.current!.getInput()!.value = Util.datetoString(dateValue)
                                 }
                                 methods.setValue('date-end', dateValue)
-                            } else ev.target.value = methods.getValues('date-end') ? dateToString(methods.getValues('date-end')) : ""
+                            } else ev.target.value = methods.getValues('date-end') ? Util.datetoString(methods.getValues('date-end')) : ""
                         }}
                     />}
                 {selectTime && <>
@@ -670,13 +593,13 @@ const PopupDateTimePicker = forwardRef(({ value, style, endValue, repeatValue, o
                 if (pickerType !== "date") {
                     if (ev instanceof Date) {
                         methods.setValue('date-start', ev)
-                        if (inputStartRef.current) inputStartRef.current.getInput()!.value = dateToString(ev)
+                        if (inputStartRef.current) inputStartRef.current.getInput()!.value = Util.datetoString(ev)
                     } else {
                         methods.setValue('date-start', ev.sTime)
-                        if (inputStartRef.current) inputStartRef.current.getInput()!.value = dateToString(ev.sTime)
+                        if (inputStartRef.current) inputStartRef.current.getInput()!.value = Util.datetoString(ev.sTime)
                         if (pickerType.includes("range") || pickerType === "auto") {
                             methods.setValue('date-end', ev.eTime)
-                            if (inputEndRef.current) inputEndRef.current.getInput()!.value = dateToString(ev.eTime)
+                            if (inputEndRef.current) inputEndRef.current.getInput()!.value = Util.datetoString(ev.eTime)
                         }
                     }
                 } else if (onApply) {

@@ -51,6 +51,7 @@ export function FInputPassword(props: FTextFieldProps) {
 }
 interface FTextAreaProps {
     id?: string;
+    autoHeight?: boolean;
     placeholder?: string;
     className?: string;
     required?: boolean;
@@ -68,8 +69,23 @@ export function FTextArea(props: FTextAreaProps) {
     const { t } = useTranslation()
 
     return <TextArea
+        ref={props.autoHeight ? ((txtAreaRef) => {
+            if (txtAreaRef) {
+                const txtAreaElement = txtAreaRef.getTextarea() as any
+                txtAreaElement.style.height = `0px`
+                txtAreaElement.style.height = `${txtAreaElement.scrollHeight}px`
+            }
+        }) : undefined}
         {...props}
-        register={props.name?.length ? (props.methods!.register(props.name, { required: props.required, onChange: props.onChange, onBlur: props.onBlur }) as any) : undefined}
+        register={props.name?.length ? (props.methods!.register(props.name, {
+            required: props.required,
+            onChange: (ev) => {
+                ev.target.style.height = `0px`
+                ev.target.style.height = `${ev.target.scrollHeight}px`
+                props.onChange?.(ev)
+            },
+            onBlur: props.onBlur
+        }) as any) : undefined}
         helperText={_covertErrors && (_covertErrors?.message?.length ? _covertErrors?.message : `${t("input")} ${props.name} ${t("value")}`).toLowerCase()}
         simpleStyle
     />
