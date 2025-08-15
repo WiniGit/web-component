@@ -32,6 +32,7 @@ interface UploadFilesProps {
     allowType?: Array<string>;
     disabled?: boolean;
     simpleStyle?: boolean;
+    readOnly?: boolean;
 }
 
 interface UploadFilesRef {
@@ -86,7 +87,7 @@ export const UploadFiles = forwardRef<UploadFilesRef, UploadFilesProps>(({ class
             helper-text={props.helperText}
             className={`row ${props.simpleStyle ? styles['upload-files-simple-style'] : styles["upload-files-container"]} ${className} ${props.disabled ? styles['disabled'] : ""} ${props.helperText?.length ? styles['helper-text'] : ""}`}
             style={{ cursor: files.length ? "auto" : "pointer", ...style, '--helper-text-color': helperTextColor } as CSSProperties}
-            onClick={showUploadPopup}
+            onClick={props.disabled || props.readOnly ? undefined : showUploadPopup}
         >
             {props.prefix}
             <div className={`row ${styles["preview-container"]}`} data-placeholder={props.placeholder}>
