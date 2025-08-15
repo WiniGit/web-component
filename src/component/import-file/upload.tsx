@@ -30,7 +30,8 @@ interface UploadFilesProps {
     linkDomain?: string;
     prevewMaxLength?: number;
     allowType?: Array<string>;
-    disabled?: boolean
+    disabled?: boolean;
+    simpleStyle?: boolean;
 }
 
 interface UploadFilesRef {
@@ -38,7 +39,7 @@ interface UploadFilesRef {
     closeUploadPopup: () => void;
     setFiles: (files: FilePreview[]) => void;
     files: FilePreview[];
-    element?: HTMLDivElement
+    element?: HTMLDivElement;
 }
 
 export const UploadFiles = forwardRef<UploadFilesRef, UploadFilesProps>(({ className = "body-3", style = {}, prevewMaxLength = 3, helperTextColor = '#e14337', ...props }, ref) => {
@@ -83,7 +84,7 @@ export const UploadFiles = forwardRef<UploadFilesRef, UploadFilesProps>(({ class
             id={props.id}
             ref={divRef}
             helper-text={props.helperText}
-            className={`row ${styles["upload-files-container"]} ${className} ${props.disabled ? styles['disabled'] : ""} ${props.helperText?.length ? styles['helper-text'] : ""}`}
+            className={`row ${props.simpleStyle ? styles['upload-files-simple-style'] : styles["upload-files-container"]} ${className} ${props.disabled ? styles['disabled'] : ""} ${props.helperText?.length ? styles['helper-text'] : ""}`}
             style={{ cursor: files.length ? "auto" : "pointer", ...style, '--helper-text-color': helperTextColor } as CSSProperties}
             onClick={showUploadPopup}
         >

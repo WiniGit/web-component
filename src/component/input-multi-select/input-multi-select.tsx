@@ -23,7 +23,7 @@ interface SelectMultipleProps {
     popupClassName?: string,
     prefix?: ReactNode,
     suffix?: ReactNode,
-    simpleStyle?: boolean
+    simpleStyle?: boolean,
     customOptionsList?: ReactNode,
     previewMaxLength?: number
 }

@@ -6,6 +6,10 @@
     border: var(--neutral-main-border, 1px solid light-dark(#EAEAEC, #313135));
 }
 
+.upload-files-simple-style {
+    gap: 0.8rem;
+}
+
 .upload-files-container.disabled {
     background-color: var(--neutral-disable-background-color, light-dark(#F4F4F5, #494950));
     pointer-events: none;
@@ -89,11 +93,13 @@ button.file-preview:last-child * {
     border: var(--neutral-main-border, 1px solid light-dark(#EAEAEC, #313135));
 }
 
+.upload-files-simple-style.helper-text,
 .upload-files-container.helper-text {
     overflow: visible !important;
     border-color: var(--helper-text-color, #E14337) !important;
 }
 
+.upload-files-simple-style.helper-text::after,
 .upload-files-container.helper-text::after {
     content: attr(helper-text);
     color: var(--helper-text-color, #E14337);
