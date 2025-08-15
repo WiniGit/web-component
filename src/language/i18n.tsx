@@ -115,7 +115,8 @@ const resources = {
             link: "Link",
             pasteLink: "Paste link & enter",
             files: "Files",
-            done: "Done"
+            done: "Done",
+            repeat: "Repeat",
         },
     },
     vi: {
@@ -230,7 +231,8 @@ const resources = {
             link: "Đường dẫn",
             pasteLink: "Nhập đường dẫn & nhấn enter",
             files: "Danh sách tệp",
-            done: "Hoàn thành"
+            done: "Hoàn thành",
+            repeat: "Lặp lại",
         },
     },
 }

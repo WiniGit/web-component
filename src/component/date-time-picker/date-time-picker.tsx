@@ -473,7 +473,7 @@ const PopupDateTimePicker = forwardRef(({ value, style, endValue, repeatValue, o
             footer={pickerType !== "date" && <>
                 {isRepeat && <div className='col' style={{ borderTop: "var(--neutral-main-border,1px solid light-dark(#EAEAEC, #313135))" }}>
                     <div className='row' style={{ gap: 4, padding: "1.2rem 1.6rem" }}>
-                        <Text className='heading-8' style={{ flex: 1 }}>Lặp lại</Text>
+                        <Text className='heading-8' style={{ flex: 1 }}>{t("repeat")}</Text>
                         <Button
                             style={{ padding: 0 }}
                             label={(() => {
