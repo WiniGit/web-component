@@ -10,7 +10,7 @@ export interface OptionsItem {
     parentId?: string | number,
     name: string | ReactNode,
     disabled?: boolean,
-    totalChild?: number
+    totalChild?: number,
 }
 
 interface Select1Props {
@@ -21,6 +21,7 @@ interface Select1Props {
     onChange?: (v?: OptionsItem) => void,
     placeholder?: string,
     disabled?: boolean,
+    readOnly?: boolean,
     className?: string,
     helperText?: string,
     helperTextColor?: string,
@@ -97,15 +98,13 @@ export const Select1 = forwardRef<Select1Ref, Select1Props>(({ style = {}, ...pr
             className={`${props.simpleStyle ? styles['select1-simple-style'] : styles['select1-container']} ${isOpen ? styles["focus"] : ""} row ${props.helperText?.length ? styles['helper-text'] : ""} ${props.disabled ? styles['disabled'] : ""} ${props.className ?? (props.simpleStyle ? "" : 'body-3')}`}
             helper-text={props.helperText}
             style={{ '--helper-text-color': props.helperTextColor ?? '#e14337', ...style } as CSSProperties}
-            onClick={props.disabled ? undefined : onOpenOptions}
+            onClick={props.disabled || props.readOnly ? undefined : onOpenOptions}
         >
             {valueItem?.prefix ?? props.prefix}
             {typeof valueItem?.name === "object" ? valueItem.name : <span style={{ flex: 1, textOverflow: "ellipsis", whiteSpace: "nowrap", overflow: "hidden", opacity: valueItem ? undefined : 0.6 }}>{valueItem?.name ?? props.placeholder}</span>}
-            {props.suffix ?? <div ref={iconRef => {
-                if (iconRef?.parentElement && iconRef.parentElement.getBoundingClientRect().width < 88) iconRef.style.display = "none"
-            }} className='row'>
-                <Winicon src={`fill/arrows/${isOpen ? "up" : "down"}-arrow`} size={12} />
-            </div>}
+            {props.suffix ?? <Winicon ref={iconRef => {
+                if (iconRef?.element?.parentElement && iconRef.element.parentElement.getBoundingClientRect().width < 88) iconRef.element.style.display = "none"
+            }} src={`fill/arrows/${isOpen ? "up" : "down"}-arrow`} size={12} />}
         </div>
         {isOpen && (props.customOptionsList ?? <OptionDropList
             onClose={() => { setTimeout(() => { setIsOpen(false) }, 150) }}

@@ -14,6 +14,7 @@ interface SelectMultipleProps {
     onChange?: (value?: Array<string | number>) => void,
     placeholder?: string,
     disabled?: boolean,
+    readOnly?: boolean,
     className?: string,
     helperText?: string,
     helperTextColor?: string,
@@ -101,7 +102,7 @@ export const SelectMultiple = forwardRef<SelectMultipleRef, SelectMultipleProps>
             className={`${props.simpleStyle ? styles['select-multi-simple-style'] : styles['select-multi-container']} ${isOpen ? styles["focus"] : ""} row ${props.helperText?.length ? styles['helper-text'] : ""} ${props.disabled ? styles['disabled'] : ""} ${props.className ?? (props.simpleStyle ? "" : 'body-3')}`}
             helper-text={props.helperText}
             style={{ '--helper-text-color': props.helperTextColor ?? '#e14337', ...style } as CSSProperties}
-            onClick={props.disabled ? undefined : onOpenOptions}
+            onClick={props.disabled || props.readOnly ? undefined : onOpenOptions}
         >
             {props.prefix}
             <div className={`row ${styles["preview-container"]}`}>
