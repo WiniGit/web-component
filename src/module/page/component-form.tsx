@@ -248,9 +248,6 @@ interface FSelect1Props {
     helperText?: string;
     helperTextColor?: string;
     style?: CSSProperties;
-    handleSearch?: (e: string) => Promise<Array<OptionsItem>>;
-    handleLoadmore?: (onLoadMore: boolean, ev: React.UIEvent<HTMLDivElement, UIEvent>) => void;
-    handleLoadChildren?: () => {};
     readOnly?: boolean;
     prefix?: ReactNode;
     suffix?: ReactNode;
@@ -293,8 +290,6 @@ interface FSelectMultipleProps {
     helperText?: string;
     helperTextColor?: string;
     style?: CSSProperties;
-    handleSearch?: (e: string) => Promise<Array<OptionsItem>>;
-    handleLoadmore?: (onLoadMore: boolean, ev: React.UIEvent<HTMLDivElement, UIEvent>) => void;
     readOnly?: boolean;
     prefix?: ReactNode;
     suffix?: ReactNode;
@@ -328,7 +323,6 @@ interface FGroupRadioButtonProps extends FRadioButtonProps {
 }
 
 export const FGroupRadioButton = (props: FGroupRadioButtonProps) => {
-
     return props.options.map((e, i) => {
         return <FRadioButton key={`${e.id} - ${i}`} {...props} value={e.id} label={props.label ? e.name : ""} />
     })
