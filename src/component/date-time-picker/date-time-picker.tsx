@@ -51,7 +51,8 @@ interface DateTimePickerProps {
     prefix?: ReactNode,
     suffix?: ReactNode,
     onChange?: (ev?: Date | ValueProps) => void,
-    simpleStyle?: boolean
+    simpleStyle?: boolean,
+    readOnly?: boolean
 }
 
 export function DateTimePicker({ style = {}, ...props }: DateTimePickerProps) {
@@ -118,59 +119,61 @@ export function DateTimePicker({ style = {}, ...props }: DateTimePickerProps) {
 
     const returnUI = () => {
         switch (props.pickerType) {
+            // @ts-ignore
             case "date":
-                return <label
-                    id={props.id}
-                    className={`row ${props.simpleStyle ? styles['simple-date-time-picker'] : styles["date-time-picker"]} ${props.className ?? (props.simpleStyle ? "" : 'body-3')} ${props.helperText?.length ? styles['helper-text'] : ""}`}
-                    helper-text={props.helperText}
-                    style={{ '--helper-text-color': props.helperTextColor ?? '#e14337', ...style } as CSSProperties}
-                    onClick={(ev: any) => {
-                        const rect = ev.target.closest("label").getBoundingClientRect()
-                        showCalendar(rect)
-                    }}>
-                    {props.prefix ?? <Winicon className={styles["prefix-icon"]} src="outline/user interface/calendar-date-2" size={"1.2rem"} />}
-                    <input
-                        className={styles["value"]}
-                        ref={inputRef}
-                        autoComplete='off'
-                        disabled={props.disabled}
-                        placeholder={props.placeholder}
-                        readOnly={props.pickOnly}
-                        onKeyDown={(ev: any) => {
-                            switch (ev.key.toLowerCase()) {
-                                case "enter":
-                                    ev.target.blur()
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }}
-                        onBlur={props.pickOnly ? undefined : (ev) => {
-                            const inputValue = ev.target.value.trim()
-                            let dateValue: Date | undefined = undefined
-                            if (inputValue.match(/[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{4}/g)) {
-                                dateValue = Util.stringToDate(inputValue, 'dd/MM/yyyy', '/')
-                                if (differenceInCalendarDays(dateValue, props.min ?? startDate) > -1 && differenceInCalendarDays(props.max ?? endDate, dateValue) > -1) {
-                                } else if (differenceInCalendarDays(props.min ?? startDate, dateValue) > -1) {
-                                    dateValue = props.min ?? startDate
-                                } else if (differenceInCalendarDays(dateValue, props.min ?? endDate) > -1) {
-                                    dateValue = props.max ?? endDate
-                                } else {
-                                    dateValue = undefined
+                if (!props.readOnly)
+                    return <label
+                        id={props.id}
+                        className={`row ${props.simpleStyle ? styles['simple-date-time-picker'] : styles["date-time-picker"]} ${props.className ?? (props.simpleStyle ? "" : 'body-3')} ${props.helperText?.length ? styles['helper-text'] : ""}`}
+                        helper-text={props.helperText}
+                        style={{ '--helper-text-color': props.helperTextColor ?? '#e14337', ...style } as CSSProperties}
+                        onClick={(ev: any) => {
+                            const rect = ev.target.closest("label").getBoundingClientRect()
+                            showCalendar(rect)
+                        }}>
+                        {props.prefix ?? <Winicon className={styles["prefix-icon"]} src="outline/user interface/calendar-date-2" size={"1.2rem"} />}
+                        <input
+                            className={styles["value"]}
+                            ref={inputRef}
+                            autoComplete='off'
+                            disabled={props.disabled}
+                            placeholder={props.placeholder}
+                            readOnly={props.pickOnly}
+                            onKeyDown={(ev: any) => {
+                                switch (ev.key.toLowerCase()) {
+                                    case "enter":
+                                        ev.target.blur()
+                                        break;
+                                    default:
+                                        break;
                                 }
-                            }
-                            setValue(dateValue)
-                            if (props.onChange) props.onChange(dateValue)
-                        }}
-                    />
-                    {props.suffix}
-                </label>
+                            }}
+                            onBlur={props.pickOnly ? undefined : (ev) => {
+                                const inputValue = ev.target.value.trim()
+                                let dateValue: Date | undefined = undefined
+                                if (inputValue.match(/[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{4}/g)) {
+                                    dateValue = Util.stringToDate(inputValue, 'dd/MM/yyyy', '/')
+                                    if (differenceInCalendarDays(dateValue, props.min ?? startDate) > -1 && differenceInCalendarDays(props.max ?? endDate, dateValue) > -1) {
+                                    } else if (differenceInCalendarDays(props.min ?? startDate, dateValue) > -1) {
+                                        dateValue = props.min ?? startDate
+                                    } else if (differenceInCalendarDays(dateValue, props.min ?? endDate) > -1) {
+                                        dateValue = props.max ?? endDate
+                                    } else {
+                                        dateValue = undefined
+                                    }
+                                }
+                                setValue(dateValue)
+                                if (props.onChange) props.onChange(dateValue)
+                            }}
+                        />
+                        {props.suffix}
+                    </label>
             default:
                 return <div id={props.id}
                     className={`row ${props.simpleStyle ? styles['simple-date-time-picker'] : styles["date-time-picker"]} ${props.disabled ? styles['disabled'] : ""} ${props.className ?? (props.simpleStyle ? "" : 'body-3')} ${props.helperText?.length ? styles['helper-text'] : ""}`}
                     helper-text={props.helperText}
                     style={{ '--helper-text-color': props.helperTextColor ?? '#e14337', cursor: props.disabled ? undefined : 'pointer', ...style } as CSSProperties}
-                    onClick={(ev: any) => {
+                    onClick={props.disabled || props.readOnly ? undefined : ((ev: any) => {
                         const divElement = ev.target.closest(`div[class*="${props.simpleStyle ? 'simple-date-time-picker' : 'date-time-picker'}"]`)
                         if (divElement.isOpen) return closePopup(popupRef)
                         const rect = divElement.getBoundingClientRect()
@@ -178,7 +181,7 @@ export function DateTimePicker({ style = {}, ...props }: DateTimePickerProps) {
                         showCalendar(rect, () => {
                             divElement.isOpen = false
                         })
-                    }}>
+                    })}>
                     {props.prefix ?? <Winicon className={styles["prefix-icon"]} src="outline/user interface/calendar-date-2" size={"1.2rem"} />}
                     {txtValue}
                     {props.suffix}

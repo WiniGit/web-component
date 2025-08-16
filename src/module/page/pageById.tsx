@@ -21,7 +21,7 @@ import { Rating } from "../../component/rating/rating"
 import { ProgressBar } from "../../component/progress-bar/progress-bar"
 import { ProgressCircle } from "../../component/progress-circle/progress-circle"
 import { CustomCkEditor5 } from "../../component/ck-editor/ckeditor"
-import { FCheckbox, FColorPicker, FDateTimePicker, FGroupCheckbox, FGroupRadioButton, FInputPassword, FNumberPicker, FRadioButton, FSelect1, FSelectMultiple, FSwitch, FTextArea, FTextField, FUploadFile } from "./component-form"
+import { FCheckbox, FColorPicker, FDateTimePicker, FGroupCheckbox, FGroupRadioButton, FInputPassword, FNumberPicker, FRadioButton, FSelect1, FSelectMultiple, FSwitch, FTextArea, FTextField, FUploadFile, FUploadMultipleFileType } from "./component-form"
 import { useTranslation } from "react-i18next"
 
 interface Props {
@@ -685,12 +685,13 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
         case ComponentType.datePicker:
             return <FDateTimePicker {...typeProps} methods={props.methods} name={props.item.NameField} />
         case ComponentType.upload:
-            return <FUploadFile
-                {...typeProps}
-                methods={props.methods}
-                name={props.item.NameField}
-                simpleStyle
-            />
+            // return <FUploadFile
+            //     {...typeProps}
+            //     methods={props.methods}
+            //     name={props.item.NameField}
+            //     simpleStyle
+            // />
+            return <FUploadMultipleFileType {...typeProps} methods={props.methods} name={props.item.NameField} />
         case ComponentType.ckEditor:
             return <CustomCkEditor5 {...typeProps}
                 methods={props.methods}

@@ -2,7 +2,7 @@ import styles from "./component-form.module.css";
 import { CSSProperties, ReactNode, useMemo, useState } from "react";
 import { Controller, FieldValues, UseFormReturn } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { Checkbox, ColorPicker, DateTimePicker, ImportFile, NumberPicker, OptionsItem, RadioButton, Select1, SelectMultiple, Switch, TextArea, TextField, Winicon } from "../../index"
+import { Checkbox, ColorPicker, DateTimePicker, ImportFile, NumberPicker, OptionsItem, RadioButton, Select1, SelectMultiple, Switch, TextArea, TextField, UploadFiles, Winicon } from "../../index"
 
 interface FTextFieldProps {
     id?: string;
@@ -176,7 +176,7 @@ export const FCheckbox = ({ labelPosition = "right", shape = "rectangle", ...pro
                 }}
                 value={field.value}
                 checkColor={props.checkColor}
-                style={{ borderRadius: shape === "circle" ? "50%" : "0.4rem", backgroundColor: props.activeColor }}
+                style={{ borderRadius: shape === "circle" ? "50%" : "0.4rem", color: props.activeColor }}
             />}
         /> : <Checkbox
             size={props.size}
@@ -184,7 +184,7 @@ export const FCheckbox = ({ labelPosition = "right", shape = "rectangle", ...pro
             onChange={props.onChange}
             value={props.value}
             checkColor={props.checkColor}
-            style={{ borderRadius: shape === "circle" ? "50%" : "0.4rem", backgroundColor: props.activeColor }}
+            style={{ borderRadius: shape === "circle" ? "50%" : "0.4rem", color: props.activeColor }}
         />}
         {!!props.label && labelPosition === "right" && <span>{props.label}</span>}
     </label>
@@ -533,6 +533,46 @@ export const FUploadFile = ({ methods, ...props }: FUploadFileProps) => {
             />
         }}
     /> : <ImportFile {...props} simpleStyle />
+}
+
+interface FUploadMultipleFileTypeFormProps {
+    methods: UseFormReturn<FieldValues, any, undefined>;
+    name?: string;
+    className?: string;
+    style?: CSSProperties;
+    placeholder?: string;
+    multiple?: boolean;
+    allowType?: Array<string>;
+    onChange?: (a?: Array<File> | Array<{ [p: string]: any }>) => void;
+    uploadElementStyle?: CSSProperties;
+    uploadElementClassName?: string;
+    suffix?: ReactNode;
+    prefix?: ReactNode;
+    label?: string;
+    disabled?: boolean;
+    readOnly?: boolean;
+}
+
+export const FUploadMultipleFileType = ({ methods, ...params }: FUploadMultipleFileTypeFormProps) => {
+    const { t } = useTranslation()
+
+    return params.name ? <Controller
+        name={params.name}
+        control={methods.control}
+        render={({ field }) => {
+            const _covertErrors = convertErrors(methods.formState.errors, params.name!)
+            return <UploadFiles
+                {...params}
+                files={field.value}
+                onChange={(ev: any) => {
+                    field.onChange(ev);
+                    if (params.onChange) params.onChange(ev);
+                }}
+                helperText={_covertErrors && (_covertErrors?.message?.length ? _covertErrors?.message : `${(params.placeholder ? params.placeholder : `${t("upload")} ${t('file')}`).toLowerCase()}`)}
+                simpleStyle
+            />
+        }}
+    /> : <UploadFiles {...params} simpleStyle />
 }
 
 const convertErrors = (errors: any, name: string) => {

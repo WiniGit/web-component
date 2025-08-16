@@ -389,10 +389,11 @@ interface CheckboxFormProps extends SimpleFormProps {
 
 export function CheckboxForm(params: CheckboxFormProps) {
     return <label className="row" style={{ gap: '0.8rem', ...(params.style ?? {}) }}>
-        <Checkbox value={params.methods.watch(params.name)} disabled={params.disabled} size={params.size} onChange={(newValue) => {
-            params.methods.setValue(params.name, newValue)
-            if (params.onChange) params.onChange(newValue)
-        }} style={{ borderRadius: params.radius ?? '0.4rem' }} />
+        <Checkbox value={params.methods.watch(params.name)} disabled={params.disabled} size={params.size}
+            onChange={(newValue) => {
+                params.methods.setValue(params.name, newValue)
+                if (params.onChange) params.onChange(newValue)
+            }} style={{ borderRadius: params.radius ?? '0.4rem' }} />
         {params.labelElement ?? <Text className={"label-4"} maxLine={1}>{params.label}</Text>}
     </label>
 }
