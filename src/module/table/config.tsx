@@ -6,9 +6,10 @@ import { ColDataType, FEDataType } from "../da";
 import { Text } from "../../component/text/text";
 import { ConfigData } from "../../controller/config";
 import { showTooltipElement } from "../../component/wini-icon/winicon";
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { i18n } from '../../language/i18n';
+import { regexGetVariables, replaceVariables } from '../card/config';
 
 interface AutoCellContentProps {
     colItem: { [p: string]: any };
@@ -20,6 +21,9 @@ interface AutoCellContentProps {
 
 export const AutoCellContent = ({ colItem, data, fields = [], files = [], style = {} }: AutoCellContentProps) => {
     const { t } = useTranslation()
+    const location = useLocation()
+    const query = new URLSearchParams(location.search)
+    const params = useParams()
     const mapValue = useMemo<any>(() => {
         if (!data || colItem.Column || (Array.isArray(data) && !data.length)) return undefined // data undefined or this is relative key
         const fieldItem = fields.find(e => e.Name === colItem.Name.split(".").pop())
@@ -80,9 +84,60 @@ export const AutoCellContent = ({ colItem, data, fields = [], files = [], style 
         }).join(", ")
     }, [colItem, data])
 
+    const replaceThisVariables = (content: string, dataItem: any) => {
+        return content.replace(replaceVariables, (m) => {
+            const execRegex = regexGetVariables.exec(m)
+            if (!execRegex?.[1]) return m
+            const variable = execRegex[1].split(".")
+            let getValue: any = m
+            switch (variable[0]) {
+                case "this":
+                    getValue = dataItem?.[variable[1]]
+                    break;
+                case "location":
+                    getValue = (location as any)[variable[1]]
+                    break;
+                case "query":
+                    getValue = query.get(variable[1])
+                    break;
+                case "params":
+                    getValue = params[variable[1]]
+                    break;
+                case "cookie":
+                    getValue = Util.getCookie(variable[1])
+                    break;
+                case "storage":
+                    getValue = Util.getStorage(variable[1])
+                    break;
+                case "session":
+                    getValue = Util.getSession(variable[1])
+                    break;
+                default:
+                    break;
+            }
+            return getValue
+        })
+    }
+
     switch (colItem.Type) {
         case ColDataType.text:
-            return <p className="comp-text body-3" style={{ "--max-line": 2, margin: 0, flex: 1, ...style } as any}>{mapValue}</p>
+            if (typeof mapValue === "string")
+                return <p className="comp-text body-3" style={{ "--max-line": 2, margin: 0, flex: 1, ...style } as any}>{mapValue}</p>
+            else return mapValue
+        case ColDataType.website:
+            const listData = Array.isArray(data) ? data : [data]
+            return listData.map((item, i) => {
+                if (!item) return null
+                if (item && regexGetVariables.test(colItem.Link)) {
+                    var url = replaceThisVariables(colItem.Link, item)
+                    if (!url.includes("https")) url = (url.startsWith("/") ? "/" : "") + url.split("/").filter((e) => !!e.trim()).join("/")
+                } else if (colItem.Link.includes("https")) {
+                    url = colItem.Link
+                } else {
+                    url = colItem.Link.startsWith("/") ? colItem.Link : `/${colItem.Link}`
+                }
+                return <NavLink key={item.Id + "-" + i} to={url} target="_blank" className={`body-3 ${styles["link-hover"]}`} style={{ "--max-line": 2, margin: 0, flex: 1, ...style } as any}>{mapValue}</NavLink>
+            })
         case ColDataType.people:
             return mapValue?.map((item: any) => <div key={item.Id} className="row" style={{ gap: "0.8rem", flex: 1, ...style }}>
                 <CustomerAvatar data={item} style={{ width: "3.2rem", height: "3.2rem" }} />
@@ -94,9 +149,9 @@ export const AutoCellContent = ({ colItem, data, fields = [], files = [], style 
                 {sliceList.map((f, fIndex, arr) => {
                     const tmp: any = {}
                     if (arr.length - 1 === fIndex && mapValue.split(",").length > 2 && f.Type?.includes("image")) tmp["img-length"] = `+${mapValue.split(",").length - 2}`
-                    return <NavLink key={f.Id + "-" + fIndex} to={ConfigData.fileUrl + f.Url} target='_blank' className={styles["table-img"]} style={style} {...tmp}>
+                    return <NavLink key={f.Id + "-" + fIndex} to={f.Url.startsWith("https") ? f.Url : (ConfigData.fileUrl + f.Url)} target='_blank' className={styles["table-img"]} style={style} {...tmp}>
                         {f.Type?.includes("image") ?
-                            <img alt={f.Name} src={ConfigData.imgUrlId + f.Id} /> :
+                            <img alt={f.Name} src={f.Url.startsWith("https") ? f.Url : f.Id.startsWith("http") ? f.Id : (ConfigData.imgUrlId + f.Id)} /> :
                             <Text className='body-3' maxLine={2} style={{ color: "var(--primary-main-color)", flex: 1 }}>{f.Name},</Text>}
                     </NavLink>
                 })}
@@ -201,8 +256,8 @@ export const cellValue = (colItem: { [p: string]: any }, data: any, fields: { [p
                     break;
             }
             if (fieldItem.Form?.Options?.length && tmp !== undefined) {
-                if (typeof tmp === "string") tmp = tmp.split(",").map(id => fieldItem.Form.Options.find((e:any) => e.id === id)?.name).filter(n => n).join(", ")
-                else tmp = fieldItem.Form.Options.find((e:any) => e.id === tmp)?.name
+                if (typeof tmp === "string") tmp = tmp.split(",").map(id => fieldItem.Form.Options.find((e: any) => e.id === id)?.name).filter(n => n).join(", ")
+                else tmp = fieldItem.Form.Options.find((e: any) => e.id === tmp)?.name
             }
             return `${tmp ?? ""}`
         }).join(", ")
