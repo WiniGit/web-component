@@ -37,7 +37,12 @@ interface DataTableProps {
     title?: string;
     columns: Array<{ [p: string]: any }>,
     onChangeConfigData?: (params: Array<{ [p: string]: any }>) => void;
-    filterData?: { searchRaw: string, sortby: Array<{ prop: string, direction: string }> };
+    filterData?: {
+        searchRaw: string,
+        sortby: Array<{ prop: string, direction: string }>,
+        /** requred searchRaw */
+        required?: string
+    };
     filterList?: Array<string>;
     onChangeFilterList?: (filterList: Array<string>) => void;
     onChangeFilterData?: (params: { searchRaw: string; sortby: Array<{ prop: string, direction: string }> }) => void;
@@ -115,9 +120,10 @@ export const DataTable = ({ tbName, staticSearch = "", title = "", columns = [],
             if (!pattern[tmp[0]].includes(tmp[1])) pattern[tmp[0]].push(tmp[1])
             if (e.Type === ColDataType.people) pattern[tmp[0]].push("AvatarUrl")
         });
+        const finalSearchRaw = treeData ? `@ParentId:{empty} ${querySearch !== "*" ? querySearch : ""}` : querySearch
         const res = await dataController.patternList({
             page: page, size: size,
-            searchRaw: treeData ? `@ParentId:{empty} ${querySearch !== "*" ? querySearch : ""}` : querySearch,
+            searchRaw: filterData.required?.length ? `${filterData.required}${finalSearchRaw !== "*" ? finalSearchRaw : ""}` : finalSearchRaw,
             sortby: sortby?.length ? sortby : [{ prop: "DateCreated", direction: "DESC" }],
             pattern: pattern
         })
