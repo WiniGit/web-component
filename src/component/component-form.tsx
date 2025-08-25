@@ -145,7 +145,7 @@ export function TextAreaForm({ style = {}, textAreaStyle = {}, ...params }: Text
     const { t } = useTranslation()
     const _covertErrors = useMemo(() => params.name ? convertErrors(params.methods.formState.errors, params.name) : undefined, [params.name, params.methods.formState.errors?.[params.name!]])
 
-    return <div id={params.id} className={params.className ?? 'col'} style={{ gap: '0.8rem', overflow: 'visible', width: '100%', height: '10rem', ...style }}>
+    return <div id={params.id} className={params.className ?? 'col'} style={{ gap: '0.8rem', overflow: 'visible', width: '100%', ...style }}>
         {params.labelElement ?? (params.label ? <div className="row" style={{ gap: '0.4rem', minWidth: "16rem" }}>
             <Text className={"label-3"}>{params.label}</Text>
             {params.required ? <Text className="label-4" style={{ color: '#E14337' }}>*</Text> : null}
