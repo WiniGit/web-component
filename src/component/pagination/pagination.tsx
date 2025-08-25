@@ -41,8 +41,9 @@ export function Pagination({ id, currentPage, itemPerPage = 10, totalItem, onCha
                 <Select1
                     value={itemPerPage}
                     options={[10, 20, 50, 100, 200].map((item, _) => { return { id: item, name: `${item}` } })}
-                    style={{ width: '6.8rem', padding: '0 0.8rem', height: '2.4rem' }}
-                    suffix={<Winicon src={"fill/arrows/down-arrow"} size={"1.2rem"} />}
+                    className="body-3 size24"
+                    style={{ width: '6.8rem' }}
+                    suffix={<Winicon src={"fill/arrows/down-arrow"} size={12} />}
                     onChange={(ev: any) => {
                         onChangePage(currentPage, isNaN(parseInt(ev.id)) ? itemPerPage : parseInt(ev.id));
                     }}
