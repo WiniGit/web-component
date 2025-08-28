@@ -362,6 +362,7 @@ export const WiniEditor = forwardRef<RefProps, Props>(({ id, onChange, onBlur, d
                 img.alt = em.emoji
                 img.className = styles["emoji"]
                 onRestoreRange(img)
+                onChange?.(inputContentRef.current!.innerHTML, inputContentRef.current!)
             }}
         />}
     </div>
