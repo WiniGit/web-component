@@ -64,6 +64,11 @@ input::-webkit-inner-spin-button {
     font-style: inherit;
 }
 
+.text-field-container>input::placeholder,
+.simple-text-field>input::placeholder {
+    opacity: 0.9;
+}
+
 .text-field-container.helper-text,
 .simple-text-field.helper-text {
     overflow: visible !important;
