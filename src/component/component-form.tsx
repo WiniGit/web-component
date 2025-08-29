@@ -1,6 +1,5 @@
+import React, { CSSProperties, ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import { Controller, FieldValues, UseFormReturn } from "react-hook-form";
-import { CSSProperties, ReactNode, useEffect, useMemo, useRef, useState } from "react";
-import React from "react";
 import { useTranslation } from "react-i18next";
 import { Text } from "./text/text";
 import { TextField } from "./text-field/text-field";
@@ -303,14 +302,17 @@ export function Select1Form(params: Select1FormProps) {
 }
 
 interface SelectMultipleFormProps extends SimpleFormProps {
-    options: Array<{ id: string | number, name: string, [p: string]: any }>,
-    getOptions?: (params: { length: number, search?: string, parentId?: string | number }) => Promise<{ data: Array<OptionsItem>, totalCount: number }>,
-    onChange?: (v?: Array<string | number>) => void,
-    select1Style?: CSSProperties;
-    prefix?: ReactNode
+    options: Array<{ id: string | number, name: string, [p: string]: any }>;
+    getOptions?: (params: { length: number, search?: string, parentId?: string | number }) => Promise<{ data: Array<OptionsItem>, totalCount: number }>;
+    onChange?: (v?: Array<string | number>) => void;
+    selectMultiStyle?: CSSProperties;
+    prefix?: ReactNode;
+    suffix?: ReactNode;
+    previewMaxLength?: number;
+    showClearValueButton?: boolean;
 }
 
-export function SelectMultipleForm(params: SelectMultipleFormProps) {
+export function SelectMultipleForm({ style = {}, selectMultiStyle = {}, ...params }: SelectMultipleFormProps) {
     const _covertErrors = useMemo(() => params.name ? convertErrors(params.methods.formState.errors, params.name) : undefined, [params.name, params.methods.formState.errors?.[params.name!]])
     const { t } = useTranslation()
 
@@ -319,7 +321,7 @@ export function SelectMultipleForm(params: SelectMultipleFormProps) {
         control={params.methods.control}
         rules={{ required: params.required }}
         render={({ field }) => {
-            return <div className={params.className ?? 'col'} style={{ gap: '0.8rem', overflow: 'visible', width: '100%', ...(params.style ?? {}) }}>
+            return <div className={params.className ?? 'col'} style={{ gap: '0.8rem', overflow: 'visible', width: '100%', ...style }}>
                 {params.labelElement ?? (params.label ? <div className="row" style={{ gap: '0.4rem', minWidth: "16rem" }}>
                     <Text className={"label-3"}>{params.label}</Text>
                     {params.required ? <Text className="label-4" style={{ color: '#E14337' }}>*</Text> : null}
@@ -327,7 +329,10 @@ export function SelectMultipleForm(params: SelectMultipleFormProps) {
                 <SelectMultiple
                     className="body-3"
                     prefix={params.prefix}
-                    style={{ width: '100%', borderRadius: '0.8rem', flex: params.className?.includes('row') ? 1 : undefined }}
+                    suffix={params.suffix}
+                    previewMaxLength={params.previewMaxLength}
+                    showClearValueButton={params.showClearValueButton}
+                    style={{ width: '100%', borderRadius: '0.8rem', flex: params.className?.includes('row') ? 1 : undefined, ...selectMultiStyle }}
                     placeholder={params.placeholder ? params.placeholder : params.label ? `${t("choose")} ${params.label.toLowerCase()}` : ''}
                     value={typeof field.value === "string" ? undefined : field.value}
                     options={params.options as any}
