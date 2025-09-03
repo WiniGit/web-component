@@ -1,8 +1,8 @@
 import { BaseDA, ConfigData } from "./config";
 
 export class TableController {
-    private module: "table" | "column" | "rel" | "menu" | "page" | "layer" | "designtoken" | "workflow" | "process" | "step";
-    constructor(module: "table" | "column" | "rel" | "menu" | "page" | "layer" | "designtoken" | "workflow" | "process" | "step") {
+    private module: "table" | "column" | "rel" | "menu" | "page" | "layer" | "designtoken" | "workflow" | "process" | "step" | "status";
+    constructor(module: "table" | "column" | "rel" | "menu" | "page" | "layer" | "designtoken" | "workflow" | "process" | "step" | "status") {
         this.module = module
     }
 
