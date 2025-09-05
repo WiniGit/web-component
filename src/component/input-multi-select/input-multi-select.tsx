@@ -110,7 +110,7 @@ export const SelectMultiple = forwardRef<SelectMultipleRef, SelectMultipleProps>
         >
             {props.prefix}
             <div className={`row ${styles["preview-container"]}`}>
-                {!value.length && <span style={{ opacity: 0.6, font: "inherit" }}>{props.placeholder}</span>}
+                {!value.length && <span style={{ opacity: 0.5, font: "inherit" }}>{props.placeholder}</span>}
                 {value.slice(0, previewMaxLength).map(item => {
                     const optionItem = options.find(e => e.id === item)
                     return <div key={item} className={`row ${styles['selected-item-value']}`}>

@@ -661,6 +661,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                     methods={props.methods}
                 />
         case ComponentType.textArea:
+            if (typeProps?.style?.height === "fit-content") typeProps.autoHeight = true
             return <FTextArea
                 {...typeProps}
                 name={props.item.NameField}

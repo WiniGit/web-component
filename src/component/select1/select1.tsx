@@ -105,7 +105,7 @@ export const Select1 = forwardRef<Select1Ref, Select1Props>(({ style = {}, ...pr
             onClick={props.disabled || props.readOnly ? undefined : onOpenOptions}
         >
             {valueItem?.prefix ?? props.prefix}
-            {typeof valueItem?.name === "object" ? valueItem.name : <span style={{ flex: 1, textOverflow: "ellipsis", whiteSpace: "nowrap", overflow: "hidden", opacity: valueItem ? undefined : 0.6 }}>{valueItem?.name ?? props.placeholder}</span>}
+            {typeof valueItem?.name === "object" ? valueItem.name : <span style={{ flex: 1, textOverflow: "ellipsis", whiteSpace: "nowrap", overflow: "hidden", opacity: valueItem ? undefined : 0.5 }}>{valueItem?.name ?? props.placeholder}</span>}
             {props.suffix ?? <Winicon ref={iconRef => {
                 if (iconRef?.element?.parentElement && iconRef.element.parentElement.getBoundingClientRect().width < 88) iconRef.element.style.display = "none"
             }} src={`fill/arrows/${isOpen ? "up" : "down"}-arrow`} size={12} />}
