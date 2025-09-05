@@ -325,7 +325,7 @@ const FormView = ({ cols = [], rels = [], item, tbName, onCancel, onSuccess, exp
         if (checkTree.data?.length) checkTree = true
         else checkTree = false
         let querySearch: string = _rel.Query?.replace(regexGetVariableByThis, (m: string) => methods.getValues((regexGetVariableByThis.exec(m) ?? [])[1])) ?? ""
-        if (search?.length) querySearch += ` ((@Name:(*"${search}"*)) | (@Name:(*${search}*)))`
+        if (search?.length) querySearch += ` ((@Name:("${search}")) | (@Name:("%${search}%")))`
         else if (checkTree) querySearch += ` @ParentId:{${parentId ?? "empty"}}`
         querySearch = querySearch.trim().length ? querySearch : "*"
         const pkDataController = new DataController(_rel.TablePK)
