@@ -251,6 +251,7 @@ interface FSelect1Props {
     readOnly?: boolean;
     prefix?: ReactNode;
     suffix?: ReactNode;
+    hideAutoSuffix?: boolean;
     methods: UseFormReturn<FieldValues, any, undefined>;
 }
 
