@@ -230,6 +230,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
         }
         return tmp
     }, [props.methods!.watch(), props.item.State, location.pathname, location.search, params])
+    // 
     const customProps = useMemo(() => {
         let _props = { ...props.item.Setting }
         _props.style ??= {}
@@ -456,43 +457,46 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                 }
                 break;
             case ComponentType.text:
-                if (regexGetVariables.test(tmpProps.value)) {
-                    tmpProps.value = replaceThisVariables(tmpProps.value)
-                }
+                if (regexGetVariables.test(tmpProps.value)) tmpProps.value = replaceThisVariables(tmpProps.value)
                 break;
+            case ComponentType.select1:
+            // @ts-ignore
+            case ComponentType.selectMultiple:
+                tmpProps.getOptions = props.rels?.find(e => e.Column === props.item.NameField)?.getOptions
             // @ts-ignore
             case ComponentType.button:
-                if (regexGetVariables.test(tmpProps.label)) tmpProps.label = replaceThisVariables(tmpProps.label)
+                if (tmpProps.label && regexGetVariables.test(tmpProps.label)) tmpProps.label = replaceThisVariables(tmpProps.label)
             // @ts-ignore
             case ComponentType.textField:
-                if (regexGetVariables.test(tmpProps.placeholder)) tmpProps.placeholder = replaceThisVariables(tmpProps.placeholder)
+                if (props.item.NameField?.length && props.cols?.find(e => e.Name === props.item.NameField)?.DataType === FEDataType.PASSWORD) tmpProps.IsPassword = true
             case ComponentType.textArea:
-            case ComponentType.select1:
-            case ComponentType.selectMultiple:
+                if (tmpProps.placeholder && regexGetVariables.test(tmpProps.placeholder)) tmpProps.placeholder = replaceThisVariables(tmpProps.placeholder)
                 if (children.length) {
                     const iconPrefix = children.find(e => e.Setting.type === "prefix")
                     const iconSuffix = children.find(e => e.Setting.type === "suffix")
                     if (iconPrefix) tmpProps.prefix = <RenderLayerElement {...props} item={iconPrefix} style={undefined} className={undefined} />
                     if (iconSuffix) tmpProps.suffix = <RenderLayerElement {...props} item={iconSuffix} style={undefined} className={undefined} />
                 }
-                if (props.item.Type === ComponentType.textField && props.cols?.find(e => e.Name === props.item.NameField)?.DataType === FEDataType.PASSWORD) tmpProps.IsPassword = true
                 break;
             default:
                 break;
         }
         return tmpProps
     }, [customProps, props.item.Type, dataValue, children, JSON.stringify(props.methods!.watch()), location, i18n.language])
+    const optionByKeyName = useMemo(() => {
+        if (!props.options || !props.item.NameField) return undefined
+        const keys = props.item.NameField.split(".")
+        const keyname = keys.shift()
+        return props.options[`${keyname}_Options`]
+    }, [props.item.NameField, props.options])
     const _options = useMemo(() => {
         if (props.item.NameField) {
             const tmpCol = props.cols?.find(e => e.Name === props.item.NameField)
             if (tmpCol) return tmpCol?.Form?.Options
-            if (props.options?.[`${props.item.NameField}_Options`]) {
-                const tmpRel = props.rels?.find(e => e.Column === props.item.NameField)
-                if (tmpRel) return (props.options[`${props.item.NameField}_Options`] ?? []).map(e => ({ id: e.Id, name: e.Name }))
-            }
+            if (optionByKeyName) return optionByKeyName
         }
         return undefined
-    }, [props.cols, props.rels, props.item.NameField, props.options?.[`${props.item.NameField}_Options`]])
+    }, [props.cols, props.item.NameField, optionByKeyName])
 
     switch (props.item.Type) {
         case ComponentType.navLink:
@@ -676,7 +680,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
         case ComponentType.switch:
             return <FSwitch {...typeProps} methods={props.methods} name={props.item.NameField} />
         case ComponentType.select1:
-            return <FSelect1 {...typeProps} methods={props.methods} name={props.item.NameField} options={_options} />
+            return <FSelect1 {...typeProps} key={props.item.Id} methods={props.methods} name={props.item.NameField} options={_options} />
         case ComponentType.selectMultiple:
             return <FSelectMultiple {...typeProps} methods={props.methods} name={props.item.NameField} options={_options} />
         case ComponentType.colorPicker:

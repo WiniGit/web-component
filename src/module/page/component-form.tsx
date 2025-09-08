@@ -241,6 +241,7 @@ interface FSelect1Props {
     value?: string | number;
     required?: boolean;
     options: Required<Array<OptionsItem>>;
+    getOptions?: (params: { length: number, search?: string, parentId?: string | number }) => Promise<{ data: Array<OptionsItem>, totalCount: number }>,
     onChange?: (v?: OptionsItem) => void;
     placeholder?: string;
     disabled?: boolean;
@@ -255,7 +256,7 @@ interface FSelect1Props {
     methods: UseFormReturn<FieldValues, any, undefined>;
 }
 
-export const FSelect1 = ({ options = [], methods, ...props }: FSelect1Props) => {
+export const FSelect1 = ({ methods, ...props }: FSelect1Props) => {
     const { t } = useTranslation()
 
     return props.name ? <Controller
@@ -266,7 +267,6 @@ export const FSelect1 = ({ options = [], methods, ...props }: FSelect1Props) => 
             const _covertErrors = convertErrors(methods.formState.errors, props.name!)
             return <Select1
                 {...props}
-                options={options}
                 value={field.value}
                 onChange={(ev) => {
                     field.onChange(ev?.id);
@@ -275,7 +275,7 @@ export const FSelect1 = ({ options = [], methods, ...props }: FSelect1Props) => 
                 helperText={_covertErrors && (_covertErrors?.message?.length ? _covertErrors?.message : `${t("choose")} ${props.name} ${t("value")}`.toLowerCase())}
                 simpleStyle />;
         }}
-    /> : <Select1 {...props} options={options} simpleStyle />
+    /> : <Select1 {...props} simpleStyle />
 }
 
 interface FSelectMultipleProps {
@@ -297,7 +297,7 @@ interface FSelectMultipleProps {
     methods: UseFormReturn<FieldValues, any, undefined>;
 }
 
-export const FSelectMultiple = ({ options = [], methods, ...props }: FSelectMultipleProps) => {
+export const FSelectMultiple = ({ methods, ...props }: FSelectMultipleProps) => {
     const { t } = useTranslation()
     return props.name ? <Controller
         name={props.name}
@@ -307,7 +307,6 @@ export const FSelectMultiple = ({ options = [], methods, ...props }: FSelectMult
             const _covertErrors = convertErrors(methods.formState.errors, props.name!)
             return <SelectMultiple
                 {...props}
-                options={options}
                 value={field.value}
                 onChange={(ev) => {
                     field.onChange(ev);
@@ -316,7 +315,7 @@ export const FSelectMultiple = ({ options = [], methods, ...props }: FSelectMult
                 helperText={_covertErrors && (_covertErrors?.message?.length ? _covertErrors?.message : `${(props.placeholder ? props.placeholder : `${t("choose")} ${props.name} ${t("value")}`).toLowerCase()}`)}
                 simpleStyle />;
         }}
-    /> : <SelectMultiple {...props} options={options} simpleStyle />
+    /> : <SelectMultiple {...props} simpleStyle />
 }
 
 interface FGroupRadioButtonProps extends FRadioButtonProps {
