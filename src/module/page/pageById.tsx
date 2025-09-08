@@ -728,21 +728,21 @@ const ActionPopup = ({ id, children }: { id: string, children: ReactNode, classN
     </>
 }
 
-const CustomText = (props: { type?: "div" | "p" | "span" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6", html?: string, maxLine?: number, className?: string, style?: CSSProperties, value?: string }) => {
+const CustomText = ({ type = "div", ...props }: { type?: "div" | "p" | "span" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6", html?: string, maxLine?: number, className?: string, style?: CSSProperties, value?: string }) => {
     if (!props.value && !props.html) return null
     const customProps = useMemo(() => {
         let _props: any = { ...props, style: { ...(props.style ?? {}) } }
         delete _props.value
         _props.style ??= {}
-        if (props.maxLine) _props.style['--max-line'] = props.maxLine
+        if (props.maxLine && type !== "div") _props.style['--max-line'] = props.maxLine
         if (props.html) _props.dangerouslySetInnerHTML = { __html: props.html }
-        if (props.type && props.type !== "div") _props.className = `${props.maxLine ? "comp-text" : ""}${props.html ? "-innerhtml" : ""} ${props.className ?? ""}`
+        if (type && type !== "div") _props.className = `${props.maxLine ? "comp-text" : ""}${props.html ? "-innerhtml" : ""} ${props.className ?? ""}`
         else _props.className = props.className
         delete _props.type
         return _props
     }, [props.html, props.className, props])
 
-    switch (props.type) {
+    switch (type) {
         case "p":
             if (props.html) return <p {...customProps} />
             else return <p {...customProps}>{props.value}</p>

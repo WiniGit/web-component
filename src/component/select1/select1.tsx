@@ -32,6 +32,7 @@ interface Select1Props {
     style?: CSSProperties,
     prefix?: ReactNode,
     suffix?: ReactNode,
+    hideAutoSuffix?: boolean,
     simpleStyle?: boolean
     customOptionsList?: ReactNode,
 }
@@ -106,9 +107,9 @@ export const Select1 = forwardRef<Select1Ref, Select1Props>(({ style = {}, ...pr
         >
             {valueItem?.prefix ?? props.prefix}
             {typeof valueItem?.name === "object" ? valueItem.name : <span style={{ flex: 1, textOverflow: "ellipsis", whiteSpace: "nowrap", overflow: "hidden", opacity: valueItem ? undefined : 0.5 }}>{valueItem?.name ?? props.placeholder}</span>}
-            {props.suffix ?? <Winicon ref={iconRef => {
+            {props.suffix ?? (!props.hideAutoSuffix && <Winicon ref={iconRef => {
                 if (iconRef?.element?.parentElement && iconRef.element.parentElement.getBoundingClientRect().width < 88) iconRef.element.style.display = "none"
-            }} src={`fill/arrows/${isOpen ? "up" : "down"}-arrow`} size={12} />}
+            }} src={`fill/arrows/${isOpen ? "up" : "down"}-arrow`} size={12} />)}
         </div>
         {isOpen && (props.customOptionsList ?? <OptionDropList
             onClose={() => { setTimeout(() => { setIsOpen(false) }, 150) }}

@@ -418,6 +418,12 @@ export const FormById = forwardRef<FormByIdRef, FormByIdProps>((props, ref) => {
         })
     }
 
+    const mapColOptions = useMemo(() => {
+        if (props.customOptions && Object.keys(props.customOptions).length) {
+            return cols.map(e => (props.customOptions![e.Name] ? { ...e, Form: { ...e.Form, Options: props.customOptions![e.Name] } } : e))
+        } else return cols
+    }, [props.customOptions, cols])
+
     return formItem ? layers.filter((e: any) => !e.ParentId).map((e: any) => {
         return <RenderLayerElement
             key={e.Id}
@@ -431,7 +437,7 @@ export const FormById = forwardRef<FormByIdRef, FormByIdProps>((props, ref) => {
             propsData={props.propsData}
             childrenData={props.childrenData}
             itemData={props.itemData}
-            cols={cols}
+            cols={mapColOptions}
             rels={rels}
             options={methodsOptions.watch()}
         />
