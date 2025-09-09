@@ -193,7 +193,7 @@ export const FormById = forwardRef<FormByIdRef, FormByIdProps>((props, ref) => {
                             } else {
                                 const pkController = new DataController(_rel.TablePK)
                                 pkController.getByListId(_tmpParse).then(pkRes => {
-                                    if (pkRes.code === 200) methodsOptions.setValue(`${_rel.Column}_Options`, pkRes.data?.filter((e: any) => !!e) ?? [].map((e: any) => ({ id: e.Id, name: e.Name, prefix: (_rel.TablePK === "Customer" || _rel.TablePK === "User") ? <CustomerAvatar data={e} /> : undefined, })))
+                                    if (pkRes.code === 200) methodsOptions.setValue(`${_rel.Column}_Options`, pkRes.data?.filter((e: any) => !!e)?.map((e: any) => ({ id: e.Id, name: e.Name, prefix: (_rel.TablePK === "Customer" || _rel.TablePK === "User") ? <CustomerAvatar data={e} /> : undefined, })) ?? [])
                                 })
                             }
                             methods.setValue(prop, _rel.Form.ComponentType === ComponentType.selectMultiple ? _tmpParse : _tmpParse[0])
