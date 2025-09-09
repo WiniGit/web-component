@@ -16,10 +16,11 @@ interface TableHeaderProps {
     onChangeSelected?: (v: boolean) => void;
     onChangeConfigData?: () => void;
     fields?: Array<{ [p: string]: any }>;
-    onEditColumn?: (params: { [p: string]: any }) => void
+    onEditColumn?: (params: { [p: string]: any }) => void;
+    hideActionColumn?: boolean;
 }
 
-export const TableHeader = ({ methods, onEditColumn, onChangeConfigData, showIndex = false, hideCheckbox = false, selected, onChangeSelected }: TableHeaderProps) => {
+export const TableHeader = ({ methods, onEditColumn, onChangeConfigData, showIndex = false, hideCheckbox = false, selected, onChangeSelected, hideActionColumn }: TableHeaderProps) => {
     const columns = useMemo<Array<{ [p: string]: any }>>(() => methods.watch("columns") ?? [], [methods.watch("columns")])
     const mountedColumns = useRef<Array<{ [p: string]: any }>>([])
     const popupRef = useRef(null)
@@ -55,9 +56,9 @@ export const TableHeader = ({ methods, onEditColumn, onChangeConfigData, showInd
                     if ((i + 1) === columns.length) onMounted()
                 }) : undefined}
             />)}
-            <HeaderCell colItem={"last"} methods={methods} style={{ flex: 1, padding: "0 1.6rem", width: "12rem", justifyContent: columns.length >= 10 ? "center" : "start" }} onChangeConfigData={onChangeConfigData}>
+            {!hideActionColumn && <HeaderCell colItem={"last"} methods={methods} style={{ flex: 1, padding: "0 1.6rem", width: "12rem", justifyContent: columns.length >= 10 ? "center" : "start" }} onChangeConfigData={onChangeConfigData}>
                 <Text className="heading-9">{t("action")}</Text>
-            </HeaderCell>
+            </HeaderCell>}
         </div>
     </>
 }
@@ -258,6 +259,7 @@ interface TableRowProps {
     onDuplicate?: () => void;
     onEditActionColumn?: (params: { [p: string]: any }, actionItem: { [p: string]: any }) => void;
     customActions?: (params: { item: { [p: string]: any }, index: number }) => ReactNode;
+    hideActionColumn?: boolean;
     [p: string]: any
 }
 
@@ -435,12 +437,12 @@ export const TableRow = ({ item, setItem, onEditActionColumn, title, index, meth
                     </Cell>
                 }
             })}
-            <Cell colItem={"last"} style={{ flex: 1, padding: "0 1.6rem", minWidth: "12rem", justifyContent: columns.length >= 10 ? "center" : "start" }}>
+            {!props.hideActionColumn && <Cell colItem={"last"} style={{ flex: 1, padding: "0 1.6rem", minWidth: "12rem", justifyContent: columns.length >= 10 ? "center" : "start" }}>
                 {props.customActions?.({ item, index }) ?? <>
                     {enableEdit && <Winicon src='outline/user interface/i-edit' className='icon-button size24 light' size={14} onClick={() => showAddEditPopup(item.Id)} />}
                     <Winicon src='outline/text/menu-dots' style={{ rotate: "90deg" }} size={14} className='icon-button size24 light' onClick={showActions} />
                 </>}
-            </Cell>
+            </Cell>}
         </div>
         {isOpen && <>
             {children.map((childItem, j) => {

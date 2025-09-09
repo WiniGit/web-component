@@ -55,6 +55,7 @@ interface DataTableProps {
     customActions?: (params: { item: { [p: string]: any }, index: number }) => ReactNode;
     customAddElement?: ReactNode;
     hideToolbar?: boolean;
+    hideActionColumn?: boolean;
 }
 
 interface DataTableRef {
@@ -334,6 +335,7 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({ tbName, sta
                     showIndex={showIndex}
                     hideCheckbox={hideCheckbox}
                     fields={fields}
+                    hideActionColumn={props.hideActionColumn}
                 />
                 {
                     data.data.map((item, index) => {
