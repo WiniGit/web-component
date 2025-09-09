@@ -157,6 +157,13 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
             let getValue: any = m
             switch (variable[0]) {
                 case "this":
+                    if (props.indexItem) {
+                        try {
+                            getValue = new Function("this", `return ${m}`)({ ...props.indexItem, index: props.index })
+                        } catch (error) {
+                            getValue = m
+                        }
+                    }
                     if (props.type === "card" && variable[1] === "index") getValue = props.index
                     else getValue = props.indexItem?.[variable[1]]
                     break;
