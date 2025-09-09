@@ -38,7 +38,7 @@ export const AutoCellContent = ({ colItem, data, fields = [], files = [], style 
                 if (fieldItem.Form?.Options?.length) {
                     return listData.map(item => {
                         let tmp = item[fieldItem.Name]
-                        if (!!tmp) {
+                        if (!!tmp || tmp === 0) {
                             switch (fieldItem.DataType) {
                                 case FEDataType.BOOLEAN:
                                     if (typeof tmp === "string") tmp = tmp === "true"
@@ -48,11 +48,11 @@ export const AutoCellContent = ({ colItem, data, fields = [], files = [], style 
                                 default:
                                     break;
                             }
-                            if (typeof tmp === "string") tmp = tmp.split(",").map(id => fieldItem.Form.Options.find((e: any) => e.id === id)).filter(n => !!n)
+                            if (typeof tmp === "string") tmp = tmp.split(",").map(id => fieldItem.Form.Options.find((e: any) => e.id === id)).filter(n => !!n || n === 0)
                             else tmp = fieldItem.Form.Options.filter((e: any) => e.id === tmp)
                         }
                         return tmp
-                    }).filter(e => !!e).flat(Infinity)
+                    }).filter(e => !!e || e === 0).flat(Infinity)
                 }
             default:
                 const joinValue = listData.map(item => {
@@ -101,8 +101,8 @@ export const AutoCellContent = ({ colItem, data, fields = [], files = [], style 
                         default:
                             break;
                     }
-                    if (fieldItem.Form?.Options?.length && tmp !== undefined) {
-                        if (typeof tmp === "string") tmp = tmp.split(",").map(id => fieldItem.Form.Options.find((e: any) => e.id === id)?.name).filter(n => n).join(", ")
+                    if (fieldItem.Form?.Options?.length && (!!tmp || tmp === 0)) {
+                        if (typeof tmp === "string") tmp = tmp.split(",").map(id => fieldItem.Form.Options.find((e: any) => e.id === id)?.name).filter(n => !!n).join(", ")
                         else tmp = fieldItem.Form.Options.find((e: any) => e.id === tmp)?.name
                     }
                     return `${tmp ?? ""}`
