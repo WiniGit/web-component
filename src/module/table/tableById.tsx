@@ -52,7 +52,8 @@ interface DataTableProps {
     actions?: Array<{ [p: string]: any }>;
     onChangeActions?: () => void;
     onEditColumn?: (params: { [p: string]: any }) => void;
-    customActions?: ReactNode;
+    customActions?: (params: { item: { [p: string]: any }, index: number }) => ReactNode;
+    customAddElement?: ReactNode;
     hideToolbar?: boolean;
 }
 
@@ -250,12 +251,12 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({ tbName, sta
         <div className={`col ${styles["table-view"]}`} style={{ padding: !!data.totalCount && data.totalCount > 20 ? "0 2.4rem" : "0 2.4rem 1.6rem", flex: 1 }}>
             <Popup ref={popupRef} />
             <div className={`row ${styles["table-feature"]}`}>
-                {enableEdit && <Button
+                {props.customAddElement ?? (enableEdit && <Button
                     label={`${t("add")} ${(title ?? tbName).toLowerCase()}`}
-                    prefix={<Winicon src={"outline/user interface/e-add"} size={"1.2rem"} />}
+                    prefix={<Winicon src={"outline/user interface/e-add"} size={12} />}
                     className="button-text-3 button-neutral border"
                     onClick={() => showAddEditPopup()}
-                />}
+                />)}
                 <div style={{ flex: 1 }} />
                 <SearchFilterData
                     columns={columns}

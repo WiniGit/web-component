@@ -257,7 +257,7 @@ interface TableRowProps {
     setSelected?: Dispatch<SetStateAction<string[]>>;
     onDuplicate?: () => void;
     onEditActionColumn?: (params: { [p: string]: any }, actionItem: { [p: string]: any }) => void;
-    customActions?: ReactNode;
+    customActions?: (params: { item: { [p: string]: any }, index: number }) => ReactNode;
     [p: string]: any
 }
 
@@ -436,7 +436,7 @@ export const TableRow = ({ item, setItem, onEditActionColumn, title, index, meth
                 }
             })}
             <Cell colItem={"last"} style={{ flex: 1, padding: "0 1.6rem", minWidth: "12rem", justifyContent: columns.length >= 10 ? "center" : "start" }}>
-                {props.customActions ?? <>
+                {props.customActions?.({ item, index }) ?? <>
                     {enableEdit && <Winicon src='outline/user interface/i-edit' className='icon-button size24 light' size={14} onClick={() => showAddEditPopup(item.Id)} />}
                     <Winicon src='outline/text/menu-dots' style={{ rotate: "90deg" }} size={14} className='icon-button size24 light' onClick={showActions} />
                 </>}
@@ -475,7 +475,7 @@ export const TableRow = ({ item, setItem, onEditActionColumn, title, index, meth
             })}
             {(enableEdit || (!!totalChild && !!children.length && totalChild > children.length)) && <div className={`row ${styles["add-child-table-row"]}`}>
                 {enableEdit && <Button
-                    prefix={<Winicon src="outline/user interface/e-add" size={"1.2rem"} />}
+                    prefix={<Winicon src="outline/user interface/e-add" size={12} />}
                     label={`${t("add")} ${t("new").toLowerCase()}`}
                     className="button-text-5"
                     onClick={() => { showAddEditChildPopup() }}

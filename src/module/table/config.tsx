@@ -163,19 +163,21 @@ export const AutoCellContent = ({ colItem, data, fields = [], files = [], style 
             const listData = Array.isArray(data) ? data : [data]
             return listData.map((item, i) => {
                 if (!item) return null
-                if (item && regexGetVariables.test(colItem.Link)) {
-                    var url = replaceThisVariables(colItem.Link, item)
-                    if (!url.includes("https")) url = (url.startsWith("/") ? "/" : "") + url.split("/").filter((e) => !!e.trim()).join("/")
+                if (!colItem.Link) {
+                    var url = item[colItem.Name]
+                } else if (regexGetVariables.test(colItem.Link)) {
+                    url = replaceThisVariables(colItem.Link, item)
+                    if (!url.includes("https")) url = (url.startsWith("/") ? "/" : "") + url.split("/").filter((e: any) => !!e.trim()).join("/")
                 } else if (colItem.Link.includes("https")) {
                     url = colItem.Link
                 } else {
                     url = colItem.Link.startsWith("/") ? colItem.Link : `/${colItem.Link}`
                 }
-                return <NavLink key={item.Id + "-" + i} to={url} target="_blank" className={`body-3 ${styles["link-hover"]}`} style={{ "--max-line": 2, margin: 0, flex: 1, ...style } as any}>{mapValue}</NavLink>
+                return <NavLink key={item.Id + "-" + i} to={url} target="_blank" className={`body-3 ${styles["link-hover"]}`} style={{ "--max-line": 2, margin: 0, flex: 1, color: "var(--primary-main-color,#287CF0)", ...style } as any}>{mapValue}</NavLink>
             })
         case ColDataType.people:
             return mapValue?.map((item: any) => <div key={item.Id} className="row" style={{ gap: "0.8rem", flex: 1, ...style }}>
-                <CustomerAvatar data={item} style={{ width: "3.2rem", height: "3.2rem" }} />
+                <CustomerAvatar data={item} style={{ width: 32, height: 32, fontSize: 14 }} />
                 <Text className="label-4" style={{ flex: 1 }}>{item.Name}</Text>
             </div>)
         case ColDataType.files:

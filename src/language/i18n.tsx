@@ -117,6 +117,7 @@ const resources = {
             files: "Files",
             done: "Done",
             repeat: "Repeat",
+            action: "Action",
         },
     },
     vi: {
@@ -233,6 +234,7 @@ const resources = {
             files: "Danh sách tệp",
             done: "Hoàn thành",
             repeat: "Lặp lại",
+            action: "Hành động"
         },
     },
 }
