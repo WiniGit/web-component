@@ -132,7 +132,8 @@ export class BaseDA {
         const headersObj: any = { pid: ConfigData.pid }
         const formData = new FormData();
         listFile.forEach(e => {
-            formData.append("files", e);
+            const renamedFile = new File([e], Util.toSlug(e.name), { type: e.type });
+            formData.append("files", renamedFile);
         })
         const response = await BaseDA.postFile(ConfigData.url + 'file/uploadfiles', {
             headers: headersObj,
