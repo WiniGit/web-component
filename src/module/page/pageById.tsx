@@ -150,22 +150,20 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
     // @ts-ignore
     const { t, i18n } = useTranslation(); // t using in eval function
     const replaceThisVariables = (content: string, isEval?: boolean) => {
-        const replaceTmp = content.replace(replaceVariables, (m: string) => {
+        const replaceTmp = content.replace(replaceVariables, (m: string, p1: string) => {
             const execRegex = regexGetVariables.exec(m)
             if (!execRegex?.[1]) return m
             const variable = execRegex[1].split(".")
             let getValue: any = m
             switch (variable[0]) {
                 case "this":
-                    if (props.indexItem) {
+                    if (props.type === "card" && props.indexItem) {
                         try {
-                            getValue = new Function("this", `return ${m}`)({ ...props.indexItem, index: props.index })
+                            getValue = new Function("indexItem", `return ${p1.replace(/this/g, "indexItem")}`)({ ...props.indexItem, index: props.index })
                         } catch (error) {
                             getValue = m
                         }
-                    }
-                    if (props.type === "card" && variable[1] === "index") getValue = props.index
-                    else getValue = props.indexItem?.[variable[1]]
+                    } else getValue = props.indexItem?.[variable[1]]
                     break;
                 case "location":
                     getValue = location[variable[1]]
