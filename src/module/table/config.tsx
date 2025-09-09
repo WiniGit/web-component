@@ -1,5 +1,5 @@
 import ReactDOM from 'react-dom'
-import { CSSProperties, useMemo, useRef, useState } from "react";
+import { CSSProperties, useEffect, useMemo, useRef, useState } from "react";
 import styles from "./table.module.css";
 import { Util } from "../../controller/utils";
 import { ColDataType, FEDataType } from "../da";
@@ -10,6 +10,7 @@ import { NavLink, useLocation, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { i18n } from '../../language/i18n';
 import { regexGetVariables, replaceVariables } from '../card/config';
+import { Tag } from '../../component/tag/tag';
 
 interface AutoCellContentProps {
     colItem: { [p: string]: any };
@@ -29,59 +30,86 @@ export const AutoCellContent = ({ colItem, data, fields = [], files = [], style 
         const fieldItem = fields.find(e => e.Name === colItem.Name.split(".").pop())
         if (!fieldItem) return undefined
         const listData = Array.isArray(data) ? data : [data]
-        if (colItem.Type === ColDataType.people) return listData.filter(e => e !== undefined && e !== null)
-        return listData.map(item => {
-            let tmp = item[fieldItem.Name]
-            switch (fieldItem.DataType) {
-                case FEDataType.DATE:
-                    if (tmp) tmp = Util.datetoString(new Date(tmp))
-                    break;
-                case FEDataType.DATETIME:
-                    switch (colItem.Type) {
-                        case ColDataType.text:
-                            if (tmp) tmp = new Date(tmp).toLocaleString()
-                            break;
-                        default:
-                            switch (colItem.Format?.toLowerCase()) {
-                                case "date month year":
-                                case "day date month year":
-                                    const days = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
-                                    const months = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
-                                    const date = new Date(tmp);
-                                    const dayName = t(days[date.getDay()]);
-                                    const day = date.getDate();
-                                    const month = t(months[date.getMonth()]);
-                                    const year = date.getFullYear();
-                                    if (colItem.Format.toLowerCase().includes("day")) tmp = `${dayName}, ${day} ${month} ${year}`;
-                                    else tmp = `${day} ${month} ${year}`;
+        switch (colItem.Type) {
+            case ColDataType.people:
+                return listData.filter(e => !!e);
+            // @ts-ignore
+            case ColDataType.label:
+                if (fieldItem.Form?.Options?.length) {
+                    return listData.map(item => {
+                        let tmp = item[fieldItem.Name]
+                        if (!!tmp) {
+                            switch (fieldItem.DataType) {
+                                case FEDataType.BOOLEAN:
+                                    if (typeof tmp === "string") tmp = tmp === "true"
+                                    else if (typeof tmp === "number") tmp = tmp === 1
+                                    else tmp = tmp ? true : false
                                     break;
                                 default:
-                                    if (tmp) tmp = Util.datetoString(new Date(tmp), colItem.Format?.toLowerCase() ?? "dd/mm/yyyy hh:mm")
+                                    break;
+                            }
+                            if (typeof tmp === "string") tmp = tmp.split(",").map(id => fieldItem.Form.Options.find((e: any) => e.id === id)).filter(n => !!n)
+                            else tmp = fieldItem.Form.Options.filter((e: any) => e.id === tmp)
+                        }
+                        return tmp
+                    }).filter(e => !!e).flat(Infinity)
+                }
+            default:
+                const joinValue = listData.map(item => {
+                    let tmp = item[fieldItem.Name]
+                    switch (fieldItem.DataType) {
+                        case FEDataType.DATE:
+                            if (tmp) tmp = Util.datetoString(new Date(tmp))
+                            break;
+                        case FEDataType.DATETIME:
+                            switch (colItem.Type) {
+                                case ColDataType.text:
+                                    if (tmp) tmp = new Date(tmp).toLocaleString()
+                                    break;
+                                default:
+                                    switch (colItem.Format?.toLowerCase()) {
+                                        case "date month year":
+                                        case "day date month year":
+                                            const days = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
+                                            const months = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
+                                            const date = new Date(tmp);
+                                            const dayName = t(days[date.getDay()]);
+                                            const day = date.getDate();
+                                            const month = t(months[date.getMonth()]);
+                                            const year = date.getFullYear();
+                                            if (colItem.Format.toLowerCase().includes("day")) tmp = `${dayName}, ${day} ${month} ${year}`;
+                                            else tmp = `${day} ${month} ${year}`;
+                                            break;
+                                        default:
+                                            if (tmp) tmp = Util.datetoString(new Date(tmp), colItem.Format?.toLowerCase() ?? "dd/mm/yyyy hh:mm")
+                                            break;
+                                    }
                                     break;
                             }
                             break;
+                        case FEDataType.MONEY:
+                            if (tmp) tmp = Util.money(tmp)
+                            break;
+                        case FEDataType.PASSWORD:
+                            if (tmp) tmp = "************"
+                            break;
+                        case FEDataType.BOOLEAN:
+                            if (typeof tmp === "string") tmp = tmp === "true"
+                            else if (typeof tmp === "number") tmp = tmp === 1
+                            else tmp = tmp ? true : false
+                            break;
+                        default:
+                            break;
                     }
-                    break;
-                case FEDataType.MONEY:
-                    if (tmp) tmp = Util.money(tmp)
-                    break;
-                case FEDataType.PASSWORD:
-                    if (tmp) tmp = "************"
-                    break;
-                case FEDataType.BOOLEAN:
-                    if (typeof tmp === "string") tmp = tmp === "true"
-                    else if (typeof tmp === "number") tmp = tmp === 1
-                    else tmp = tmp ? true : false
-                    break;
-                default:
-                    break;
-            }
-            if (fieldItem.Form?.Options?.length && tmp !== undefined) {
-                if (typeof tmp === "string") tmp = tmp.split(",").map(id => fieldItem.Form.Options.find((e: any) => e.id === id)?.name).filter(n => n).join(", ")
-                else tmp = fieldItem.Form.Options.find((e: any) => e.id === tmp)?.name
-            }
-            return `${tmp ?? ""}`
-        }).join(", ")
+                    if (fieldItem.Form?.Options?.length && tmp !== undefined) {
+                        if (typeof tmp === "string") tmp = tmp.split(",").map(id => fieldItem.Form.Options.find((e: any) => e.id === id)?.name).filter(n => n).join(", ")
+                        else tmp = fieldItem.Form.Options.find((e: any) => e.id === tmp)?.name
+                    }
+                    return `${tmp ?? ""}`
+                }).join(", ")
+                if (fieldItem.DataType === FEDataType.HTML) return <ContentView content={joinValue} />
+                return joinValue
+        }
     }, [colItem, data])
 
     const replaceThisVariables = (content: string, dataItem: any) => {
@@ -124,6 +152,13 @@ export const AutoCellContent = ({ colItem, data, fields = [], files = [], style 
             if (typeof mapValue === "string")
                 return <p className="comp-text body-3" style={{ "--max-line": 2, margin: 0, flex: 1, ...style } as any}>{mapValue}</p>
             else return mapValue
+        case ColDataType.label:
+            if (typeof mapValue === "string")
+                return <p className="comp-text body-3" style={{ "--max-line": 2, margin: 0, flex: 1, ...style } as any}>{mapValue}</p>
+            else
+                return mapValue?.map((item: any, i: number) => {
+                    return <Tag key={item.id + "-" + i} title={item.name} className="size24 label-5" style={{ borderRadius: 8, border: "none", backgroundColor: item.color }} />;
+                })
         case ColDataType.website:
             const listData = Array.isArray(data) ? data : [data]
             return listData.map((item, i) => {
@@ -271,4 +306,23 @@ export const cellValue = (colItem: { [p: string]: any }, data: any, fields: { [p
         default:
             return tmp
     }
+}
+
+function ContentView({ content, maxLength = 100 }: { content: string, maxLength?: number }) {
+    const divRef = useRef<any>(null)
+    const [contentInnerText, setContentInnerText] = useState("")
+
+    useEffect(() => {
+        if (divRef.current && maxLength) {
+            setContentInnerText(divRef.current.innerText.slice(0, maxLength) + "...")
+        }
+    }, [content])
+
+    return (!!content?.length && !!contentInnerText.length) ?
+        <p className="comp-text body-3" style={{ "--max-line": 2, margin: 0, flex: 1 } as any}>{contentInnerText}</p> :
+        <div
+            ref={divRef}
+            className="body-3"
+            dangerouslySetInnerHTML={{ __html: content }}
+        />
 }

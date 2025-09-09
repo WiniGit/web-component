@@ -1,6 +1,6 @@
 import { BaseDA, Button, DataController, DialogAlignment, imgFileTypes, Pagination, Popup, SettingDataController, showDialog, showPopup, TableController, Text, ToastMessage, Winicon } from "../../index";
 import styles from "./table.module.css";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { Dispatch, forwardRef, ReactNode, SetStateAction, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useForm } from "react-hook-form";
 import { TableHeader, TableRow } from "./tableElement";
@@ -52,10 +52,19 @@ interface DataTableProps {
     actions?: Array<{ [p: string]: any }>;
     onChangeActions?: () => void;
     onEditColumn?: (params: { [p: string]: any }) => void;
-    [p: string]: any
+    customActions?: ReactNode;
+    hideToolbar?: boolean;
 }
 
-export const DataTable = ({ tbName, staticSearch = "", title = "", columns = [], onChangeConfigData, filterData = { searchRaw: "*", sortby: [] }, filterList = [], onChangeFilterList, onChangeFilterData, showIndex = false, hideCheckbox = false, enableEdit = false, actions = [], onChangeActions, onEditColumn, ...props }: DataTableProps) => {
+interface DataTableRef {
+    getData: (page?: number, size?: number, exportData?: boolean) => Promise<any>;
+    data: { data: Array<{ [p: string]: any }>, totalCount?: number };
+    setData: Dispatch<SetStateAction<{ data: Array<{ [p: string]: any }>, totalCount?: number }>>;
+    selected: string[];
+    setSelected: Dispatch<SetStateAction<string[]>>;
+}
+
+export const DataTable = forwardRef<DataTableRef, DataTableProps>(({ tbName, staticSearch = "", title = "", columns = [], onChangeConfigData, filterData = { searchRaw: "*", sortby: [] }, filterList = [], onChangeFilterList, onChangeFilterData, showIndex = false, hideCheckbox = false, enableEdit = false, actions = [], onChangeActions, onEditColumn, ...props }, ref) => {
     // static variables
     const configMethods = useForm<any>({ shouldFocusError: false, defaultValues: { columns: [], searchRaw: "*", sortby: [], TbName: tbName } })
     const dataController = new DataController(tbName)
@@ -139,6 +148,8 @@ export const DataTable = ({ tbName, staticSearch = "", title = "", columns = [],
             } else methodsRelative.reset()
         }
     }
+
+    useImperativeHandle(ref, () => ({ getData, data, setData, selected, setSelected }), [columns, staticSearch, tbName, filterData, configMethods.watch(), data, selected])
 
     useEffect(() => {
         if (columns.length && fields.length) getData(pageDetails.page, pageDetails.size)
@@ -374,7 +385,7 @@ export const DataTable = ({ tbName, staticSearch = "", title = "", columns = [],
                     }
                 }} />
         </div>}
-        {!!selected.length && <div className={`row ${styles["selected-item-options"]}`}>
+        {!props.hideToolbar && !!selected.length && <div className={`row ${styles["selected-item-options"]}`}>
             <div className={`row ${styles["selected-item-total"]}`}>
                 <Text className="button-text-5">{selected.length} items selected</Text>
                 <Winicon src="outline/user interface/e-remove" size={12} onClick={() => setSelected([])} />
@@ -437,4 +448,4 @@ export const DataTable = ({ tbName, staticSearch = "", title = "", columns = [],
             </div>
         </div>}
     </>
-}
+})

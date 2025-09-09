@@ -257,6 +257,7 @@ interface TableRowProps {
     setSelected?: Dispatch<SetStateAction<string[]>>;
     onDuplicate?: () => void;
     onEditActionColumn?: (params: { [p: string]: any }, actionItem: { [p: string]: any }) => void;
+    customActions?: ReactNode;
     [p: string]: any
 }
 
@@ -435,8 +436,10 @@ export const TableRow = ({ item, setItem, onEditActionColumn, title, index, meth
                 }
             })}
             <Cell colItem={"last"} style={{ flex: 1, padding: "0 1.6rem", minWidth: "12rem", justifyContent: columns.length >= 10 ? "center" : "start" }}>
-                {enableEdit && <Winicon src='outline/user interface/i-edit' className='icon-button size24 light' size={14} onClick={() => showAddEditPopup(item.Id)} />}
-                <Winicon src='outline/text/menu-dots' style={{ rotate: "90deg" }} size={14} className='icon-button size24 light' onClick={showActions} />
+                {props.customActions ?? <>
+                    {enableEdit && <Winicon src='outline/user interface/i-edit' className='icon-button size24 light' size={14} onClick={() => showAddEditPopup(item.Id)} />}
+                    <Winicon src='outline/text/menu-dots' style={{ rotate: "90deg" }} size={14} className='icon-button size24 light' onClick={showActions} />
+                </>}
             </Cell>
         </div>
         {isOpen && <>
