@@ -35,7 +35,7 @@ interface Props {
      * */
     formatter?: (ev: any) => void;
     expandData?: Array<DatasetItem>;
-    handleDatasets?: (datasets: Array<DatasetItem>) => Array<DatasetItem>
+    handleDatasets?: (datasets: Array<DatasetItem>, result: { [p: string]: any }[]) => Array<DatasetItem>
 }
 
 interface ChartRef {
@@ -49,7 +49,7 @@ interface ChartRef {
 
 export const ChartById = forwardRef<ChartRef, Props>(({ searchRaw = "", style = {}, chartStyle = { height: "15rem", gap: "2.4rem" }, ...props }, ref) => {
     const now = new Date()
-    const [result, setResult] = useState<Array<{ [p: string]: any }>>([])
+    const [result, setResult] = useState<{ [p: string]: any }[]>([])
     const [chartItem, setChartItem] = useState<{ [p: string]: any }>()
     const { t } = useTranslation()
     const listTime = useMemo(() => {
@@ -283,7 +283,7 @@ export const ChartById = forwardRef<ChartRef, Props>(({ searchRaw = "", style = 
             style={chartStyle}
             type={chartItem.Type}
             xAxisName={(typeof listTime[0] === "number" ? undefined : getxAxisName()) as any}
-            datasets={props.handleDatasets ? props.handleDatasets(datasets) : datasets}
+            datasets={props.handleDatasets ? props.handleDatasets(datasets, result) : datasets}
             unit={chartItem.Setting.unit}
             legend={chartItem.Setting.legend}
         />}
