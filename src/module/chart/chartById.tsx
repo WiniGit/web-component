@@ -34,7 +34,8 @@ interface Props {
      * format value of chart
      * */
     formatter?: (ev: any) => void;
-    expandData?: Array<DatasetItem>
+    expandData?: Array<DatasetItem>;
+    handleDatasets?: (datasets: Array<DatasetItem>) => Array<DatasetItem>
 }
 
 interface ChartRef {
@@ -282,7 +283,7 @@ export const ChartById = forwardRef<ChartRef, Props>(({ searchRaw = "", style = 
             style={chartStyle}
             type={chartItem.Type}
             xAxisName={(typeof listTime[0] === "number" ? undefined : getxAxisName()) as any}
-            datasets={datasets}
+            datasets={props.handleDatasets ? props.handleDatasets(datasets) : datasets}
             unit={chartItem.Setting.unit}
             legend={chartItem.Setting.legend}
         />}
