@@ -409,7 +409,7 @@ export default function RenderChartByType(props: Props) {
             </div>
         case "left":
             return <div className="row" style={props.style}>
-                <div className="col" style={{ gap: "1.6rem", flex: 1 }}>
+                <div className="col" style={{ gap: "1.6rem", flex: 1, minWidth: "9.8rem", flexWrap: "wrap", alignContent: "flex-start", maxHeight: "100%" }}>
                     {props.datasets.map(e => {
                         if (props.type.includes("bar")) {
                             return <div key={e.id} className="row" style={{ gap: "0.8rem" }}>
@@ -446,7 +446,7 @@ export default function RenderChartByType(props: Props) {
                     option={option}
                     style={{ ...(["bar", "line"].some(e => props.type.includes(e)) ? { width: "70%" } : { height: "100%" }), aspectRatio: ["bar", "line"].some(e => props.type.includes(e)) ? "5 / 3" : "1 / 1" }}
                 />
-                <div className="col" style={{ gap: "1.6rem", flex: 1, minWidth: "9.8rem" }}>
+                <div className="col" style={{ gap: "1.6rem", flex: 1, minWidth: "9.8rem", flexWrap: "wrap", alignContent: "flex-start", maxHeight: "100%" }}>
                     {props.datasets.map(e => {
                         if (props.type.includes("bar")) {
                             return <div key={e.id} className="row" style={{ gap: "0.8rem" }}>

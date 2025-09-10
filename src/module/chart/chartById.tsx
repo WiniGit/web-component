@@ -46,7 +46,7 @@ interface ChartRef {
     selectedTime?: string | number;
 }
 
-export const ChartById = forwardRef<ChartRef, Props>(({ searchRaw = "", style = {}, chartStyle = {}, ...props }, ref) => {
+export const ChartById = forwardRef<ChartRef, Props>(({ searchRaw = "", style = {}, chartStyle = { height: "15rem", gap: "2.4rem" }, ...props }, ref) => {
     const now = new Date()
     const [result, setResult] = useState<Array<{ [p: string]: any }>>([])
     const [chartItem, setChartItem] = useState<{ [p: string]: any }>()
@@ -279,7 +279,7 @@ export const ChartById = forwardRef<ChartRef, Props>(({ searchRaw = "", style = 
         {chartItem && <RenderChartByType
             handleChartClick={props.handleChartClick}
             formatter={props.formatter}
-            style={chartStyle ?? { height: "15rem", gap: "2.4rem" }}
+            style={chartStyle}
             type={chartItem.Type}
             xAxisName={(typeof listTime[0] === "number" ? undefined : getxAxisName()) as any}
             datasets={datasets}
