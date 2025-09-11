@@ -4,8 +4,6 @@
     border-radius: 100rem;
     gap: 6px;
     justify-content: center;
-    color: var(--neutral-text-subtitle-color, light-dark(#61616B, #A2A2AA));
-    border: var(--neutral-bolder-border, 1px solid light-dark(#D7D7DB, #494950));
 }
 
 .tag-container[class~="dashed"] {

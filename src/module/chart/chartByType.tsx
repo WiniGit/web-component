@@ -1,4 +1,4 @@
-import { CSSProperties, useRef } from "react";
+import { CSSProperties } from "react";
 import ReactEcharts from "echarts-for-react";
 import { Text } from "../../component/text/text";
 import { Winicon } from "../../component/wini-icon/winicon";
@@ -25,7 +25,6 @@ interface Props {
 }
 
 export default function RenderChartByType(props: Props) {
-    const chartRef = useRef(null);
     let option: any;
     switch (props.type) {
         case 'line':
@@ -230,7 +229,7 @@ export default function RenderChartByType(props: Props) {
                     textStyle: {
                         fontSize: "2.4rem",
                         fontWeight: 'bold',
-                        color: '#18181B',
+                        color: 'var(--neutral-text-title-color, light-dark(#18181B, #F4F4F5))',
                         fontFamily: "Inter"
                     },
                 },
@@ -273,7 +272,7 @@ export default function RenderChartByType(props: Props) {
                     textStyle: {
                         fontSize: "2.4rem",
                         fontWeight: 'bold',
-                        color: '#18181B',
+                        color: 'var(--neutral-text-title-color, light-dark(#18181B, #F4F4F5))',
                         fontFamily: "Inter"
                     },
                 },
