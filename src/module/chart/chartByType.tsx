@@ -229,7 +229,7 @@ export default function RenderChartByType(props: Props) {
                     textStyle: {
                         fontSize: "2.4rem",
                         fontWeight: 'bold',
-                        color: 'var(--neutral-text-title-color, light-dark(#18181B, #F4F4F5))',
+                        color: '#18181B',
                         fontFamily: "Inter"
                     },
                 },
@@ -272,7 +272,7 @@ export default function RenderChartByType(props: Props) {
                     textStyle: {
                         fontSize: "2.4rem",
                         fontWeight: 'bold',
-                        color: 'var(--neutral-text-title-color, light-dark(#18181B, #F4F4F5))',
+                        color: '#18181B',
                         fontFamily: "Inter"
                     },
                 },
