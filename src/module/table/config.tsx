@@ -157,7 +157,7 @@ export const AutoCellContent = ({ colItem, data, fields = [], files = [], style 
                 return <p className="comp-text body-3" style={{ "--max-line": 2, margin: 0, flex: 1, ...style } as any}>{mapValue}</p>
             else
                 return mapValue?.map((item: any, i: number) => {
-                    return <Tag key={item.id + "-" + i} title={item.name} className="size24 label-5" style={{ borderRadius: 8, border: "none", backgroundColor: item.color }} />;
+                    return <Tag key={item.id + "-" + i} title={item.name} className="size24 label-5" style={{ borderRadius: 8, border: "none", backgroundColor: item.color, color: "#18181B" }} />;
                 })
         case ColDataType.website:
             const listData = Array.isArray(data) ? data : [data]
