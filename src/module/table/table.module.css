@@ -131,8 +131,8 @@ div[class~="resize-cell-stick"] {
     padding: 0.8rem 1.6rem;
 }
 
-.header-cell:first-child>.title,
-.cell:first-child>.content {
+.header-cell:first-child:has(input[type="checkbox"])>.title,
+.cell:first-child:has(input[type="checkbox"])>.content {
     padding-right: 0.4rem;
     justify-content: end;
 }
