@@ -10,14 +10,14 @@
     --toastify-icon-color-success: var(--toastify-color-success);
     --toastify-icon-color-warning: var(--toastify-color-warning);
     --toastify-icon-color-error: var(--toastify-color-error);
-    --toastify-toast-width: 320px;
+    --toastify-toast-width: 38.2rem;
     --toastify-toast-offset: 16px;
     --toastify-toast-top: max(var(--toastify-toast-offset), env(safe-area-inset-top));
     --toastify-toast-right: max(var(--toastify-toast-offset), env(safe-area-inset-right));
     --toastify-toast-left: max(var(--toastify-toast-offset), env(safe-area-inset-left));
     --toastify-toast-bottom: max(var(--toastify-toast-offset), env(safe-area-inset-bottom));
     --toastify-toast-background: #fff;
-    --toastify-toast-min-height: 64px;
+    --toastify-toast-min-height: 46px;
     --toastify-toast-max-height: 800px;
     --toastify-toast-bd-radius: 6px;
     --toastify-font-family: sans-serif;
@@ -123,11 +123,14 @@
     min-height: var(--toastify-toast-min-height);
     box-sizing: border-box;
     margin-bottom: 1rem;
-    padding: 8px;
+    padding: 1.2rem 1.6rem;
+    max-width: 382px;
     border-radius: var(--toastify-toast-bd-radius);
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    /* box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1); */
+    box-shadow: 2px 0px 16px 0px #0000000A;
     display: -ms-flexbox;
     display: flex;
+    column-gap: 1.2rem;
     -ms-flex-pack: justify;
     justify-content: space-between;
     max-height: var(--toastify-toast-max-height);
