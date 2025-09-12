@@ -425,7 +425,6 @@ const InputValueTile = ({ fieldItem, filterItem, colData, onChange }: InputValue
                                     initData={fieldItem.Form.Options}
                                     selected={data.value}
                                     isMulti
-                                    searchRaw={fieldItem.Query}
                                     onSelect={onChangeData} />
                             })
                         }}
@@ -522,6 +521,7 @@ const InputValueTile = ({ fieldItem, filterItem, colData, onChange }: InputValue
                                     style={{ top: rect.bottom + 2, left: rect.x, width: rect.width }}
                                     selected={data.value}
                                     controlName={fieldItem.TablePK}
+                                    searchRaw={fieldItem.Query}
                                     isMulti
                                     onSelect={onChangeData}
                                 />
