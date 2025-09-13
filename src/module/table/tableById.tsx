@@ -320,6 +320,10 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({ tbName, sta
                     />
                 </>}
             </div>
+            {data.totalCount === 0 && <div className='col' style={{ alignItems: "center", width: "100%", margin: "1.6rem" }}>
+                <Winicon src='color/files/archive-file' size={28} />
+                <h6 className='heading-7' style={{ margin: "0.8rem" }}>{t(configMethods.watch("searchRaw") !== "*" ? "noData" : "noResultFound")}</h6>
+            </div>}
             {columns.length && fields.length ? <div className={`col ${styles["table"]}`}>
                 <TableHeader
                     key={tbName}
