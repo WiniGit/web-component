@@ -2,7 +2,7 @@ import styles from './select1.module.css'
 import { CSSProperties, Dispatch, forwardRef, ReactNode, SetStateAction, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 import { Winicon } from '../wini-icon/winicon';
-import { TextField } from '../text-field/text-field';
+import { TextField, TextFieldRef } from '../text-field/text-field';
 
 export interface OptionsItem {
     prefix?: ReactNode,
@@ -134,12 +134,12 @@ export const Select1 = forwardRef<Select1Ref, Select1Props>(({ style = {}, ...pr
 
 const OptionDropList = (props: { onClose: () => void, style: CSSProperties, selected?: string | number, onSelect: (e: OptionsItem) => void, getOptions: (params: { length: number, search?: string, parentId?: string | number }) => Promise<{ data: Array<OptionsItem>, totalCount: number }>, }) => {
     const divRef = useRef<HTMLDivElement>(null)
-    const searchInput = useRef<TextField>(null)
+    const searchInput = useRef<TextFieldRef>(null)
     const initTotal = useRef<number>(null)
     const [options, setOptions] = useState<{ data: OptionsItem[], totalCount?: number }>({ data: [], totalCount: undefined })
     const { t } = useTranslation()
     const getData = async (length?: number) => {
-        const res = await props.getOptions({ length: length ?? 0, search: searchInput.current?.getInput()?.value ?? "" })
+        const res = await props.getOptions({ length: length ?? 0, search: searchInput.current?.inputElement?.value ?? "" })
         if (initTotal.current === null) initTotal.current = res.totalCount
         setOptions(length ? { data: [...options.data, ...res.data], totalCount: res.totalCount } : res)
     }
@@ -199,7 +199,7 @@ const OptionDropList = (props: { onClose: () => void, style: CSSProperties, sele
                         selected={opt.id === props.selected}
                         children={options.data.filter(e => e.parentId === opt.id)}
                         onClick={props.onSelect}
-                        getOptions={(params) => props.getOptions?.({ ...params, search: searchInput.current?.getInput()?.value ?? "" })}
+                        getOptions={(params) => props.getOptions?.({ ...params, search: searchInput.current?.inputElement?.value ?? "" })}
                     />)}
             </>
         }

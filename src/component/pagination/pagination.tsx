@@ -3,7 +3,7 @@ import ReactPaginate from "react-paginate";
 import styles from './pagination.module.css';
 import { Select1 } from "../select1/select1";
 import { Text } from "../text/text";
-import { TextField } from "../text-field/text-field";
+import { TextField, TextFieldRef } from "../text-field/text-field";
 import { Winicon } from "../wini-icon/winicon";
 import { useTranslation } from "react-i18next";
 import { Popup } from "../popup/popup";
@@ -20,13 +20,13 @@ interface Props {
 }
 
 export function Pagination({ id, currentPage, itemPerPage = 10, totalItem, onChangePage, hidePageSize = false, hideGoToPage = false, style }: Props) {
-    const goToPageRef = useRef<TextField>(null)
+    const goToPageRef = useRef<TextFieldRef>(null)
     const { t } = useTranslation()
     const popupRef = useRef<any>(null)
 
     useEffect(() => {
         if (goToPageRef.current) {
-            const _inputPage = goToPageRef.current.getInput()
+            const _inputPage = goToPageRef.current.inputElement
             if (_inputPage) _inputPage.value = currentPage.toString()
         }
     }, [currentPage])

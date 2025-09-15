@@ -3,7 +3,7 @@ import styles from './input-multi-select.module.css'
 import { OptionsItem } from '../select1/select1'
 import { useTranslation } from 'react-i18next';
 import { Winicon } from '../wini-icon/winicon';
-import { TextField } from '../text-field/text-field';
+import { TextField, TextFieldRef } from '../text-field/text-field';
 import { Checkbox } from '../checkbox/checkbox';
 
 interface SelectMultipleProps {
@@ -177,12 +177,12 @@ interface OptionDropListProps {
 
 const OptionDropList = (props: OptionDropListProps) => {
     const divRef = useRef<HTMLDivElement>(null)
-    const searchInput = useRef<TextField>(null)
+    const searchInput = useRef<TextFieldRef>(null)
     const initTotal = useRef<number>(null)
     const [options, setOptions] = useState<{ data: OptionsItem[], totalCount?: number }>({ data: [], totalCount: undefined })
     const { t } = useTranslation()
     const getData = async (length?: number) => {
-        const res = await props.getOptions({ length: length ?? 0, search: searchInput.current?.getInput()?.value ?? "" })
+        const res = await props.getOptions({ length: length ?? 0, search: searchInput.current?.inputElement?.value ?? "" })
         if (initTotal.current === null) initTotal.current = res.totalCount
         setOptions(length ? { data: [...options.data, ...res.data], totalCount: res.totalCount } : res)
     }

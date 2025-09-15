@@ -6,6 +6,7 @@ import { handleGoogleSheetFetch } from "./exportXlsx"
 import { DataTable } from "./tableById"
 import { ColDataType, ColDataTypeIcon, FEDataType } from "../da";
 import { CustomerAvatar } from "./config";
+import { TextFieldRef } from "../../component/text-field/text-field";
 
 // #region search & filter
 interface SearchFilterDataProps {
@@ -18,7 +19,7 @@ interface SearchFilterDataProps {
 }
 
 export const SearchFilterData = ({ columns = [], fields = [], searchRaw = "*", onChange, initFilterList = [], onChangeFilterData }: SearchFilterDataProps) => {
-    const inputRef = useRef<TextField>(null)
+    const inputRef = useRef<TextFieldRef>(null)
     const popupRef = useRef<Popup>(null)
     const { t } = useTranslation()
     const searchinColumns = useMemo<{ [p: string]: any }[]>(() => columns.filter(c => {
@@ -67,7 +68,7 @@ export const SearchFilterData = ({ columns = [], fields = [], searchRaw = "*", o
     }, [searchRaw, filterColumns.length])
 
     useEffect(() => {
-        if (inputRef.current && inputRef.current.getInput()!.value !== data.searchValue && data.nameFields.length) inputRef.current.getInput()!.value = data.searchValue
+        if (inputRef.current && inputRef.current.inputElement!.value !== data.searchValue && data.nameFields.length) inputRef.current.inputElement!.value = data.searchValue
     }, [data.searchValue])
 
     const _onChange = (searchValue: string, nameFields: Array<string>) => {
@@ -554,8 +555,8 @@ interface FilterRangeDropdownProps {
 }
 
 const FilterRangeDropdown = ({ onClose, style = {}, onApply, fieldItem, filterItem }: FilterRangeDropdownProps) => {
-    const minInputRef = useRef<TextField>(null)
-    const maxInputRef = useRef<TextField>(null)
+    const minInputRef = useRef<TextFieldRef>(null)
+    const maxInputRef = useRef<TextFieldRef>(null)
     const [minMax, setMinMax] = useState({ min: 0, max: 0 })
     const [value, setValue] = useState(filterItem.value)
     const { t } = useTranslation()
@@ -582,8 +583,8 @@ const FilterRangeDropdown = ({ onClose, style = {}, onApply, fieldItem, filterIt
 
     useEffect(() => {
         if (minInputRef.current && maxInputRef.current) {
-            minInputRef.current.getInput()!.value = value ? fieldItem.DataType === FEDataType.MONEY ? Util.money(value.split(",")[0]) : value.split(",")[0] : ""
-            maxInputRef.current.getInput()!.value = value ? fieldItem.DataType === FEDataType.MONEY ? Util.money(value.split(",")[1]) : value.split(",")[1] : ""
+            minInputRef.current.inputElement!.value = value ? fieldItem.DataType === FEDataType.MONEY ? Util.money(value.split(",")[0]) : value.split(",")[0] : ""
+            maxInputRef.current.inputElement!.value = value ? fieldItem.DataType === FEDataType.MONEY ? Util.money(value.split(",")[1]) : value.split(",")[1] : ""
         }
     }, [value, minInputRef.current, maxInputRef.current])
 

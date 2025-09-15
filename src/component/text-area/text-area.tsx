@@ -1,4 +1,4 @@
-import React, { createRef, CSSProperties, ReactNode } from "react";
+import React, { CSSProperties, forwardRef, ReactNode, useImperativeHandle, useRef } from "react";
 import styles from './text-area.module.css'
 import { UseFormRegister } from "react-hook-form";
 
@@ -25,47 +25,29 @@ interface TextAreaProps {
     prefix?: ReactNode,
 }
 
-export class TextArea extends React.Component<TextAreaProps> {
-    private containerRef = createRef<HTMLLabelElement>()
-
-    getTextarea = () => {
-        return this.containerRef.current?.querySelector("textarea")
-    }
-
-    render(): React.ReactNode {
-        const _style = this.props.style ?? {}
-        return <label
-            id={this.props.id}
-            ref={this.containerRef}
-            className={`${this.props.simpleStyle ? styles['simple-text-area'] : styles['text-area-container']} row ${this.props.className ?? (this.props.simpleStyle ? "" : 'body-3')} ${this.props.helperText?.length ? styles['helper-text'] : ""}`}
-            helper-text={this.props.helperText}
-            style={{ '--helper-text-color': this.props.helperTextColor ?? '#e14337', ..._style } as CSSProperties}
-        >
-            {this.props.prefix}
-            {this.props.register ?
-                <textarea
-                    name={this.props.name}
-                    autoFocus={this.props.autoFocus}
-                    {...this.props.register}
-                    maxLength={this.props.maxLength}
-                    placeholder={this.props.placeholder}
-                    readOnly={this.props.readOnly}
-                    disabled={this.props.disabled}
-                    onFocus={this.props.onFocus}
-                /> : <textarea
-                    autoFocus={this.props.autoFocus}
-                    maxLength={this.props.maxLength}
-                    name={this.props.name}
-                    defaultValue={this.props.defaultValue}
-                    value={this.props.value}
-                    placeholder={this.props.placeholder}
-                    readOnly={this.props.readOnly}
-                    disabled={this.props.disabled}
-                    onChange={this.props.onChange}
-                    onFocus={this.props.onFocus}
-                    onBlur={this.props.onBlur}
-                />}
-            {this.props.suffix}
-        </label>
-    }
+export interface TextAreaRef {
+    element?: HTMLLabelElement;
+    inputElement?: HTMLTextAreaElement;
 }
+
+export const TextArea = forwardRef<TextAreaRef, TextAreaProps>(({ id, simpleStyle, prefix, suffix, className, helperText, helperTextColor = "#e14337", style = {}, ...props }, ref) => {
+    const containerRef = useRef<HTMLLabelElement>(null)
+    const inputRef = useRef<HTMLTextAreaElement>(null)
+
+    useImperativeHandle(ref, () => ({
+        element: containerRef.current as any,
+        inputElement: inputRef.current as any,
+    }), [containerRef.current, inputRef.current])
+
+    return <label
+        id={id}
+        ref={containerRef}
+        className={`${simpleStyle ? styles['simple-text-area'] : styles['text-area-container']} row ${className ?? (simpleStyle ? "" : 'body-3')} ${helperText?.length ? styles['helper-text'] : ""}`}
+        helper-text={helperText}
+        style={{ '--helper-text-color': helperTextColor, ...style } as CSSProperties}
+    >
+        {prefix}
+        <textarea ref={inputRef} {...props} />
+        {suffix}
+    </label>
+})

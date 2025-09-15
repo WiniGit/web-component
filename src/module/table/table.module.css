@@ -257,7 +257,7 @@ div[class~="resize-cell-stick"] {
     border-radius: 0.8rem;
 }
 
-.dropdown-select-btn:focus {
+.dropdown-select-btn:active {
     border-color: var(--primary-main-color, #287CF0);
 }
 
@@ -302,7 +302,7 @@ div[class~="resize-cell-stick"] {
     width: 100%;
 }
 
-.button-filter:focus {
+.button-filter:active {
     border-color: var(--primary-main-color, #287CF0);
 }
 

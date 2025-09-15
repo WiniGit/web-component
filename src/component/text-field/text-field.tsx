@@ -1,4 +1,4 @@
-import React, { createRef, CSSProperties, ReactNode } from "react";
+import React, { CSSProperties, ReactNode, forwardRef, useImperativeHandle, useRef } from "react";
 import styles from './text-field.module.css'
 import { UseFormRegister } from "react-hook-form";
 
@@ -33,73 +33,44 @@ interface TextFieldProps {
     simpleStyle?: boolean
 }
 
-export class TextField extends React.Component<TextFieldProps> {
-    private containerRef = createRef<HTMLLabelElement>()
-
-    getInput = () => {
-        return this.containerRef.current?.querySelector("input")
-    }
-
-    render(): React.ReactNode {
-        const _style = this.props.style ?? {}
-        return <label
-            id={this.props.id}
-            ref={this.containerRef}
-            className={`${this.props.simpleStyle ? styles['simple-text-field'] : styles['text-field-container']} row ${this.props.className ?? (this.props.simpleStyle ? "" : 'body-3')} ${this.props.helperText?.length ? styles['helper-text'] : ""}`}
-            helper-text={this.props.helperText}
-            style={{ '--helper-text-color': this.props.helperTextColor ?? '#e14337', ..._style } as CSSProperties}
-        >
-            {this.props.prefix}
-            {this.props.register ?
-                <input
-                    name={this.props.name}
-                    {...this.props.register}
-                    autoComplete={this.props.autoComplete}
-                    autoFocus={this.props.autoFocus}
-                    maxLength={this.props.maxLength}
-                    type={this.props.type ?? 'text'}
-                    placeholder={this.props.placeholder}
-                    readOnly={this.props.readOnly}
-                    disabled={this.props.disabled}
-                    onFocus={this.props.onFocus}
-                    onKeyDown={this.props.onKeyDown ?? (this.props.onComplete ? (ev) => {
-                        if (this.props.onComplete) {
-                            switch (ev.key.toLowerCase()) {
-                                case "enter":
-                                    this.props.onComplete(ev)
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-                    } : undefined)}
-                /> : <input
-                    autoComplete={this.props.autoComplete}
-                    autoFocus={this.props.autoFocus}
-                    maxLength={this.props.maxLength}
-                    name={this.props.name}
-                    type={this.props.type ?? 'text'}
-                    defaultValue={this.props.defaultValue}
-                    value={this.props.value}
-                    placeholder={this.props.placeholder}
-                    readOnly={this.props.readOnly}
-                    disabled={this.props.disabled}
-                    onChange={this.props.onChange}
-                    onFocus={this.props.onFocus}
-                    onBlur={this.props.onBlur}
-                    onKeyDown={this.props.onKeyDown ?? (this.props.onComplete ? (ev) => {
-                        if (this.props.onComplete) {
-                            switch (ev.key.toLowerCase()) {
-                                case "enter":
-                                    this.props.onComplete(ev)
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-                    } : undefined)}
-                />}
-            {this.props.suffix}
-        </label>
-    }
+export interface TextFieldRef {
+    element?: HTMLLabelElement;
+    inputElement?: HTMLInputElement;
 }
+
+export const TextField = forwardRef<TextFieldRef, TextFieldProps>(({ id, simpleStyle, prefix, suffix, className, helperText, helperTextColor = "#e14337", style = {}, onKeyDown, onComplete, ...props }, ref) => {
+    const containerRef = useRef<HTMLLabelElement>(null)
+    const inputRef = useRef<HTMLInputElement>(null)
+
+    useImperativeHandle(ref, () => ({
+        element: containerRef.current as any,
+        inputElement: inputRef.current as any,
+    }), [containerRef.current, inputRef.current])
+
+    return <label
+        id={id}
+        ref={containerRef}
+        className={`${simpleStyle ? styles['simple-text-field'] : styles['text-field-container']} row ${className ?? (simpleStyle ? "" : 'body-3')} ${helperText?.length ? styles['helper-text'] : ""}`}
+        helper-text={helperText}
+        style={{ '--helper-text-color': helperTextColor, ...style } as CSSProperties}
+    >
+        {prefix}
+        <input
+            ref={inputRef}
+            {...props}
+            type={props.type ?? 'text'}
+            onKeyDown={onKeyDown ?? (onComplete ? (ev) => {
+                if (onComplete) {
+                    switch (ev.key.toLowerCase()) {
+                        case "enter":
+                            onComplete(ev)
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            } : undefined)}
+        />
+        {suffix}
+    </label>
+})

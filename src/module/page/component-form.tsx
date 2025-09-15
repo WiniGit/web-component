@@ -71,7 +71,7 @@ export function FTextArea(props: FTextAreaProps) {
     return <TextArea
         ref={props.autoHeight ? ((txtAreaRef) => {
             if (txtAreaRef) {
-                const txtAreaElement = txtAreaRef.getTextarea() as any
+                const txtAreaElement = txtAreaRef.inputElement as any
                 txtAreaElement.style.height = `0px`
                 txtAreaElement.style.height = `${txtAreaElement.scrollHeight}px`
             }
