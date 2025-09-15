@@ -25,7 +25,7 @@ export function FTextField(props: FTextFieldProps) {
 
     return <TextField
         {...props}
-        {...props.name?.length ? (props.methods!.register(props.name, { required: props.required, onChange: props.onChange, onBlur: props.onBlur }) as any) : undefined}
+        register={props.name?.length ? (props.methods!.register(props.name, { required: props.required, onChange: props.onChange, onBlur: props.onBlur }) as any) : undefined}
         helperText={_covertErrors && (_covertErrors?.message?.length ? _covertErrors?.message : `${t("input")} ${props.name} ${t("value")}`.toLowerCase())}
         simpleStyle
     />
@@ -44,7 +44,7 @@ export function FInputPassword(props: FTextFieldProps) {
             <Winicon src={`outline/user interface/${isShowPass ? "view" : "hide"}`} size={"inherit"} onClick={() => setIsShowPass(!isShowPass)} />
             {props.suffix}
         </>}
-        {...props.name?.length ? (props.methods!.register(props.name, { required: props.required }) as any) : undefined}
+        register={props.name?.length ? (props.methods!.register(props.name, { required: props.required }) as any) : undefined}
         helperText={_covertErrors && (_covertErrors?.message?.length ? _covertErrors?.message : `${t("input")} ${props.name} ${t("value")}`.toLowerCase())}
         simpleStyle
     />
@@ -77,7 +77,7 @@ export function FTextArea(props: FTextAreaProps) {
             }
         }) : undefined}
         {...props}
-        {...props.name?.length ? (props.methods!.register(props.name, {
+        register={props.name?.length ? (props.methods!.register(props.name, {
             required: props.required,
             onChange: (ev) => {
                 ev.target.style.height = `0px`

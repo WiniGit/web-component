@@ -1,5 +1,6 @@
 import React, { CSSProperties, ReactNode, forwardRef, useImperativeHandle, useRef } from "react";
 import styles from './text-field.module.css'
+import { UseFormRegister } from "react-hook-form";
 
 interface TextFieldProps {
     id?: string,
@@ -28,6 +29,7 @@ interface TextFieldProps {
     type?: React.HTMLInputTypeAttribute,
     autoFocus?: boolean,
     autoComplete?: React.HTMLInputAutoCompleteAttribute,
+    register?: UseFormRegister<any>,
     simpleStyle?: boolean
 }
 
@@ -36,14 +38,13 @@ export interface TextFieldRef {
     inputElement?: HTMLInputElement;
 }
 
-export const TextField = forwardRef<TextFieldRef, TextFieldProps>(({ id, simpleStyle, prefix, suffix, className, helperText, helperTextColor = "#e14337", style = {}, onKeyDown, onComplete, ...props }, ref) => {
+export const TextField = forwardRef<TextFieldRef, TextFieldProps>(({ id, simpleStyle, prefix, suffix, className, helperText, helperTextColor = "#e14337", style = {}, onKeyDown, onComplete, register, ...props }, ref) => {
     const containerRef = useRef<HTMLLabelElement>(null)
-    const inputRef = useRef<HTMLInputElement>(null)
 
     useImperativeHandle(ref, () => ({
         element: containerRef.current as any,
-        inputElement: inputRef.current as any,
-    }), [containerRef.current, inputRef.current])
+        inputElement: containerRef.current?.querySelector('input') as any,
+    }), [containerRef.current])
 
     return <label
         id={id}
@@ -53,8 +54,22 @@ export const TextField = forwardRef<TextFieldRef, TextFieldProps>(({ id, simpleS
         style={{ '--helper-text-color': helperTextColor, ...style } as CSSProperties}
     >
         {prefix}
-        <input
-            ref={inputRef}
+        {register ? <input
+            {...props}
+            {...register}
+            type={props.type ?? 'text'}
+            onKeyDown={onKeyDown ?? (onComplete ? (ev) => {
+                if (onComplete) {
+                    switch (ev.key.toLowerCase()) {
+                        case "enter":
+                            onComplete(ev)
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            } : undefined)}
+        /> : <input
             {...props}
             type={props.type ?? 'text'}
             onKeyDown={onKeyDown ?? (onComplete ? (ev) => {
@@ -68,7 +83,7 @@ export const TextField = forwardRef<TextFieldRef, TextFieldProps>(({ id, simpleS
                     }
                 }
             } : undefined)}
-        />
+        />}
         {suffix}
     </label>
 })

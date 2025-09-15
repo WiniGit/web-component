@@ -1,5 +1,6 @@
 import React, { CSSProperties, forwardRef, ReactNode, useImperativeHandle, useRef } from "react";
 import styles from './text-area.module.css'
+import { UseFormRegister } from "react-hook-form";
 
 interface TextAreaProps {
     id?: string,
@@ -18,6 +19,7 @@ interface TextAreaProps {
     name?: string,
     helperTextColor?: string,
     style?: CSSProperties,
+    register?: UseFormRegister<{}>,
     simpleStyle?: boolean,
     suffix?: ReactNode,
     prefix?: ReactNode,
@@ -28,14 +30,13 @@ export interface TextAreaRef {
     inputElement?: HTMLTextAreaElement;
 }
 
-export const TextArea = forwardRef<TextAreaRef, TextAreaProps>(({ id, simpleStyle, prefix, suffix, className, helperText, helperTextColor = "#e14337", style = {}, ...props }, ref) => {
+export const TextArea = forwardRef<TextAreaRef, TextAreaProps>(({ id, simpleStyle, prefix, suffix, className, helperText, helperTextColor = "#e14337", style = {}, register, ...props }, ref) => {
     const containerRef = useRef<HTMLLabelElement>(null)
-    const inputRef = useRef<HTMLTextAreaElement>(null)
 
     useImperativeHandle(ref, () => ({
         element: containerRef.current as any,
-        inputElement: inputRef.current as any,
-    }), [containerRef.current, inputRef.current])
+        inputElement: containerRef.current?.querySelector('textarea') as any,
+    }), [containerRef.current])
 
     return <label
         id={id}
@@ -45,7 +46,7 @@ export const TextArea = forwardRef<TextAreaRef, TextAreaProps>(({ id, simpleStyl
         style={{ '--helper-text-color': helperTextColor, ...style } as CSSProperties}
     >
         {prefix}
-        <textarea ref={inputRef} {...props} />
+        {register ? <textarea {...props} {...register} /> : <textarea {...props} />}
         {suffix}
     </label>
 })

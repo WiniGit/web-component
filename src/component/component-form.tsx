@@ -78,8 +78,7 @@ export function TextFieldForm({ style = {}, textFieldStyle = {}, ...params }: Te
             disabled={params.disabled}
             readOnly={params.readOnly}
             type={params.type === 'money' ? 'text' : params.type}
-            name={params.name}
-            {...params.methods.register(params.name, {
+            register={params.methods.register(params.name, {
                 required: params.required,
                 onBlur: params.type === 'money' ? (ev) => {
                     let newPrice = ev.target.value.trim().replaceAll(',', '')
@@ -159,7 +158,7 @@ export function TextAreaForm({ style = {}, textAreaStyle = {}, ...params }: Text
             }}
             {...params}
             className={params.textAreaClassName ?? "body-3"}
-            {...params.methods.register(params.name, {
+            register={params.methods.register(params.name, {
                 required: params.required,
                 onBlur: params.onBlur,
                 onChange: (ev) => {
@@ -570,7 +569,7 @@ export function RangeForm(params: RangeFormProps) {
                             ev.target.value = ev.target.value.replaceAll(',', '')
                             ev.target.type = "number"
                         } : undefined}
-                        {...params.methods.register(params.name, {
+                        register={params.methods.register(params.name, {
                             onBlur: (ev) => {
                                 const newValue = parseFloat(ev.target.value)
                                 ev.target.type = "text"
@@ -604,7 +603,7 @@ export function RangeForm(params: RangeFormProps) {
                             ev.target.value = ev.target.value.replace(/,/g, '')
                             ev.target.type = "number"
                         } : undefined}
-                        {...params.methods.register(params.endName, {
+                        register={params.methods.register(params.endName, {
                             onBlur: (ev) => {
                                 const newValue = parseFloat(ev.target.value)
                                 ev.target.type = "text"

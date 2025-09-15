@@ -52,8 +52,7 @@ export function WLoginView(props: Props) {
                         placeholder={props.formData.username.label}
                         style={{ height: "4.8rem" }}
                         prefix={props.formData.username.prefix}
-                        name={props.formData.username.name}
-                        {...(props.methods ?? methods).register(props.formData.username.name, {
+                        register={(props.methods ?? methods).register(props.formData.username.name, {
                             onChange: (ev) => { ev.target.value = ev.target.value.trim() },
                             onBlur: props.formData.username.onValidate
                         }) as any}
@@ -70,9 +69,8 @@ export function WLoginView(props: Props) {
                         style={{ height: "4.8rem" }}
                         prefix={props.formData.password.prefix}
                         suffix={<button type='button' onClick={() => { setShowPass(!isShowPass) }}><Winicon src={`outline/user interface/${isShowPass ? "view" : "hide"}`} size={"1.6rem"} /></button>}
-                        name={props.formData.password.name}
                         type={isShowPass ? "text" : "password"}
-                        {...(props.methods ?? methods).register(props.formData.password.name, {
+                        register={(props.methods ?? methods).register(props.formData.password.name, {
                             onChange: (ev) => { ev.target.value = ev.target.value.trim() },
                             onBlur: props.formData.password.onValidate
                         }) as any}
