@@ -52,7 +52,7 @@ interface DataTableProps {
     actions?: Array<{ [p: string]: any }>;
     onChangeActions?: () => void;
     onEditColumn?: (params: { [p: string]: any }) => void;
-    customActions?: (params: { item: { [p: string]: any }, index: number }) => ReactNode;
+    customCell?: { [k: string]: (params: { item: { [p: string]: any }, index: number }) => ReactNode };
     customAddElement?: ReactNode;
     hideToolbar?: boolean;
     hideActionColumn?: boolean;

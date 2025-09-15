@@ -258,9 +258,8 @@ interface TableRowProps {
     setSelected?: Dispatch<SetStateAction<string[]>>;
     onDuplicate?: () => void;
     onEditActionColumn?: (params: { [p: string]: any }, actionItem: { [p: string]: any }) => void;
-    customActions?: (params: { item: { [p: string]: any }, index: number }) => ReactNode;
+    customCell?: { [k: string]: (params: { item: { [p: string]: any }, index: number }) => ReactNode };
     hideActionColumn?: boolean;
-    [p: string]: any
 }
 
 export const TableRow = ({ item, setItem, onEditActionColumn, title, index, methods, fields = [], files = [], relativeData, relativeFields = [], showIndex = false, hideCheckbox = false, showAddEditPopup, onDelete, actions = [], onChangeActions, selected, setSelected, onDuplicate, ...props }: TableRowProps) => {
@@ -424,21 +423,22 @@ export const TableRow = ({ item, setItem, onEditActionColumn, title, index, meth
             </div>}
             {columns.sort((a, b) => a.Sort - b.Sort).map((_col, i) => {
                 const tmp = _col.Name.split(".")
-                const props = (tmp.length > 1 ? { data: relativeData?.[tmp[0].substring(0, tmp[0].lastIndexOf("Id"))], fields: relativeFields?.[tmp[0]] } : { data: item, fields: fields }) as any
+                const contentProps = (tmp.length > 1 ? { data: relativeData?.[tmp[0].substring(0, tmp[0].lastIndexOf("Id"))], fields: relativeFields?.[tmp[0]] } : { data: item, fields: fields }) as any
+                const cellContent = props.customCell?.[_col.Name]?.({ item, index }) ?? <AutoCellContent colItem={_col} files={files} {...contentProps} />
                 if (treeData && !i) {
                     return <Cell key={_col.Id} colItem={_col} style={{ gap: "0.8rem" }}>
                         {totalChild ? <Winicon src={`fill/arrows/triangle-${isOpen ? "down" : "right"}`} size={"1.2rem"} onClick={() => setIsOpen(!isOpen)} /> : <div style={{ width: "1.6rem" }} />}
-                        <AutoCellContent colItem={_col} files={files} {...props} />
+                        {cellContent}
                         {enableEdit && <Winicon src="fill/user interface/c-add" className={styles["add-child-icon-btn"]} onClick={() => { showAddEditChildPopup() }} />}
                     </Cell>
                 } else {
                     return <Cell key={_col.Id} colItem={_col}>
-                        <AutoCellContent colItem={_col} files={files} {...props} />
+                        {cellContent}
                     </Cell>
                 }
             })}
             {!props.hideActionColumn && <Cell colItem={"last"} style={{ flex: 1, padding: "0 1.6rem", minWidth: "12rem", justifyContent: columns.length >= 10 ? "center" : "start" }}>
-                {props.customActions?.({ item, index }) ?? <>
+                {props.customCell?.["last"]?.({ item, index }) ?? <>
                     {enableEdit && <Winicon src='outline/user interface/i-edit' className='icon-button size24 light' size={14} onClick={() => showAddEditPopup(item.Id)} />}
                     <Winicon src='outline/text/menu-dots' style={{ rotate: "90deg" }} size={14} className='icon-button size24 light' onClick={showActions} />
                 </>}
