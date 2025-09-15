@@ -6,7 +6,6 @@ import { handleGoogleSheetFetch } from "./exportXlsx"
 import { DataTable } from "./tableById"
 import { ColDataType, ColDataTypeIcon, FEDataType } from "../da";
 import { CustomerAvatar } from "./config";
-import { TextFieldRef } from "../../component/text-field/text-field";
 
 // #region search & filter
 interface SearchFilterDataProps {
@@ -19,7 +18,7 @@ interface SearchFilterDataProps {
 }
 
 export const SearchFilterData = ({ columns = [], fields = [], searchRaw = "*", onChange, initFilterList = [], onChangeFilterData }: SearchFilterDataProps) => {
-    const inputRef = useRef<TextFieldRef>(null)
+    const inputRef = useRef<any>(null)
     const popupRef = useRef<Popup>(null)
     const { t } = useTranslation()
     const searchinColumns = useMemo<{ [p: string]: any }[]>(() => columns.filter(c => {
@@ -75,12 +74,12 @@ export const SearchFilterData = ({ columns = [], fields = [], searchRaw = "*", o
         let currentSearch = searchRaw
         if (currentSearch !== "*" && data.searchValue.length && data.nameFields.length) {
             data.nameFields.forEach(n => {
-                const replaceSearch = `(@${n}:("%${data.searchValue}%")) | (@${n}:("${data.searchValue}")) | (@${n}:(*${data.searchValue}*))`
+                const replaceSearch = `(@${n}:("%${data.searchValue}%")) | (@${n}:("${data.searchValue}"))`
                 currentSearch = currentSearch.replace(`${replaceSearch} | `, "").replace(replaceSearch, "");
             })
             currentSearch = currentSearch.replace(/\(/g, "").replace(/\)/g, "").trim()
         }
-        const querySearch = (searchValue.length && nameFields.length) ? `(${nameFields.map(n => `(@${n}:("%${searchValue}%")) | (@${n}:("${searchValue}")) | (@${n}:(*${searchValue}*))`).join(" | ")})` : ""
+        const querySearch = (searchValue.length && nameFields.length) ? `(${nameFields.map(n => `(@${n}:("%${searchValue}%")) | (@${n}:("${searchValue}"))`).join(" | ")})` : ""
         const finalSearchRaw = `${querySearch} ${currentSearch === "*" ? "" : currentSearch}`.trim()
         onChange?.(finalSearchRaw.length ? finalSearchRaw : "*")
     }
@@ -154,7 +153,7 @@ export const SearchFilterData = ({ columns = [], fields = [], searchRaw = "*", o
             }} />}
             onComplete={(ev: any) => {
                 setData({ ...data, searchValue: ev.target.value.trim() })
-                _onChange(ev.target.value.trim(), data.nameFields)
+                _onChange(ev.target.value.trim(), data.nameFields.length ? data.nameFields : searchinColumns.length ? searchinColumns.map(c => c.Name) : [])
                 ev.target.blur()
             }}
         />
@@ -212,6 +211,11 @@ const SearchinDropdown = ({ style = {}, columns = [], onClose, onChange, nameFie
     useEffect(() => {
         return () => { if (onClose) onClose() }
     }, [])
+
+    useEffect(() => {
+        if (!nFields.length && columns.length) setNameFields(columns.map(e => e.Name))
+    }, [columns])
+
     return <div className="col dropdown-popup" style={{ gap: 2, ...style }}>
         {columns.map((c) => {
             return <label key={c.Id} className="row default-hover popup-actions" style={{ gap: "1.2rem", padding: "0.8rem", borderRadius: "0.8rem", cursor: "pointer" }}>
@@ -522,8 +526,8 @@ const InputValueTile = ({ fieldItem, filterItem, colData, onChange }: InputValue
                                     style={{ top: rect.bottom + 2, left: rect.x, width: rect.width }}
                                     selected={data.value}
                                     controlName={fieldItem.TablePK}
-                                    searchRaw={fieldItem.Query}
                                     isMulti
+                                    searchRaw={fieldItem.Query}
                                     onSelect={onChangeData}
                                 />
                             })
@@ -532,9 +536,10 @@ const InputValueTile = ({ fieldItem, filterItem, colData, onChange }: InputValue
                         {!!labels.length ? <>
                             {labels.slice(0, 2).map(((el: any) => <Tag key={el.Id} title={el.Name}
                                 className="size24 button-text-6 tag-grey"
-                                suffix={<Winicon src="outline/user interface/e-remove" size={"1.2rem"} onClick={(ev) => {
+                                suffix={<Winicon src="outline/user interface/e-remove" size={12} onClick={(ev) => {
                                     ev.stopPropagation()
-                                    onChangeData(data.value?.split(",").filter((id: string) => id !== el.Id).join(","))
+                                    const tmpValue = data.value?.split(",").filter((id: string) => id !== el.Id).join(",")
+                                    onChangeData(tmpValue.length ? tmpValue : undefined)
                                 }} />}
                             />))}
                             {!!labels.length && data.value.split(",").length > 2 && <Tag title={`+${data.value.split(",").length - 2}`} className="size24 button-text-6 tag-grey" />}
@@ -555,8 +560,8 @@ interface FilterRangeDropdownProps {
 }
 
 const FilterRangeDropdown = ({ onClose, style = {}, onApply, fieldItem, filterItem }: FilterRangeDropdownProps) => {
-    const minInputRef = useRef<TextFieldRef>(null)
-    const maxInputRef = useRef<TextFieldRef>(null)
+    const minInputRef = useRef<any>(null)
+    const maxInputRef = useRef<any>(null)
     const [minMax, setMinMax] = useState({ min: 0, max: 0 })
     const [value, setValue] = useState(filterItem.value)
     const { t } = useTranslation()
