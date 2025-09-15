@@ -155,7 +155,7 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({ tbName, sta
 
     useEffect(() => {
         if (columns.length && fields.length) getData(pageDetails.page, pageDetails.size)
-    }, [columns, configMethods.watch("searchRaw"), configMethods.watch("sortby"), fields])
+    }, [columns, configMethods.watch("searchRaw"), configMethods.watch("sortby"), filterData.required, fields])
 
     useEffect(() => {
         if (selected.length) setSelected([])
