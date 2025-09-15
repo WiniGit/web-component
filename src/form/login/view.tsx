@@ -53,7 +53,7 @@ export function WLoginView(props: Props) {
                         style={{ height: "4.8rem" }}
                         prefix={props.formData.username.prefix}
                         name={props.formData.username.name}
-                        register={(props.methods ?? methods).register(props.formData.username.name, {
+                        {...(props.methods ?? methods).register(props.formData.username.name, {
                             onChange: (ev) => { ev.target.value = ev.target.value.trim() },
                             onBlur: props.formData.username.onValidate
                         }) as any}
@@ -72,7 +72,7 @@ export function WLoginView(props: Props) {
                         suffix={<button type='button' onClick={() => { setShowPass(!isShowPass) }}><Winicon src={`outline/user interface/${isShowPass ? "view" : "hide"}`} size={"1.6rem"} /></button>}
                         name={props.formData.password.name}
                         type={isShowPass ? "text" : "password"}
-                        register={(props.methods ?? methods).register(props.formData.password.name, {
+                        {...(props.methods ?? methods).register(props.formData.password.name, {
                             onChange: (ev) => { ev.target.value = ev.target.value.trim() },
                             onBlur: props.formData.password.onValidate
                         }) as any}
@@ -93,7 +93,7 @@ export function WLoginView(props: Props) {
                         onClick={props.onSubmit && (props.methods ?? methods).handleSubmit(_onSubmit)}
                         label={props.buttonLoginLabel ?? t("login")}
                     />
-                    <div className='row' style={{ justifyContent: "center", gap: "0.4rem" }}>
+                    <div className='row' style={{ justifyContent: "center", gap: 4 }}>
                         <Text className='label-4'>{props.registerPrefixText ?? t("dontHaveAccount")}</Text>
                         <Text className={`button-text-3 ${styles['register-btn']}`} onClick={props.onRegister}>{props.registerText ?? `${t("signupFor")} Wini`}</Text>
                     </div>

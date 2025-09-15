@@ -328,7 +328,7 @@ const PopupDateTimePicker = forwardRef(({ value, style, endValue, repeatValue, o
                         name='time-start'
                         style={{ "--gutter": "1.2rem", padding: "0.4rem 1.2rem" } as any}
                         onComplete={(ev: any) => { ev.target.blur() }}
-                        register={methods.register("time-start", {
+                        {...methods.register("time-start", {
                             onChange: (ev) => ev.target.value = ev.target.value.trim(),
                             onBlur: (ev) => {
                                 if (regexTime.test(ev.target.value)) {
@@ -364,7 +364,7 @@ const PopupDateTimePicker = forwardRef(({ value, style, endValue, repeatValue, o
                             name='time-end'
                             style={{ "--gutter": "1.2rem", padding: "0.4rem 1.2rem" } as any}
                             onComplete={(ev: any) => { ev.target.blur() }}
-                            register={methods.register("time-end", {
+                            {...methods.register("time-end", {
                                 onChange: (ev) => ev.target.value = ev.target.value.trim(),
                                 onBlur: (ev) => {
                                     if (regexTime.test(ev.target.value)) {

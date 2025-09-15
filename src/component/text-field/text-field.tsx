@@ -1,6 +1,5 @@
 import React, { CSSProperties, ReactNode, forwardRef, useImperativeHandle, useRef } from "react";
 import styles from './text-field.module.css'
-import { UseFormRegister } from "react-hook-form";
 
 interface TextFieldProps {
     id?: string,
@@ -29,7 +28,6 @@ interface TextFieldProps {
     type?: React.HTMLInputTypeAttribute,
     autoFocus?: boolean,
     autoComplete?: React.HTMLInputAutoCompleteAttribute,
-    register?: UseFormRegister<{}>,
     simpleStyle?: boolean
 }
 

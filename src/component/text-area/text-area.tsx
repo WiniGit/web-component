@@ -1,6 +1,5 @@
 import React, { CSSProperties, forwardRef, ReactNode, useImperativeHandle, useRef } from "react";
 import styles from './text-area.module.css'
-import { UseFormRegister } from "react-hook-form";
 
 interface TextAreaProps {
     id?: string,
@@ -19,7 +18,6 @@ interface TextAreaProps {
     name?: string,
     helperTextColor?: string,
     style?: CSSProperties,
-    register?: UseFormRegister<{}>,
     simpleStyle?: boolean,
     suffix?: ReactNode,
     prefix?: ReactNode,
