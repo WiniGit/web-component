@@ -324,7 +324,7 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({ tbName, sta
                 <Winicon src='color/files/archive-file' size={28} />
                 <h6 className='heading-7' style={{ margin: "0.8rem" }}>{t(configMethods.watch("searchRaw") !== "*" ? "noData" : "noResultFound")}</h6>
             </div>}
-            {columns.length && fields.length ? <div className={`col ${styles["table"]}`}>
+            {columns.length && fields.length && !!data.totalCount ? <div className={`col ${styles["table"]}`}>
                 <TableHeader
                     key={tbName}
                     onEditColumn={onEditColumn}
