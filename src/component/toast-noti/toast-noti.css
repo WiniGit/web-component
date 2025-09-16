@@ -131,6 +131,7 @@
     display: -ms-flexbox;
     display: flex;
     column-gap: 1.2rem;
+    align-items: center;
     -ms-flex-pack: justify;
     justify-content: flex-start;
     max-height: var(--toastify-toast-max-height);
@@ -224,8 +225,7 @@
 }
 
 .Toastify__toast-icon {
-    -webkit-margin-end: 10px;
-    margin-inline-end: 10px;
+    margin: 0px;
     width: 20px;
     -ms-flex-negative: 0;
     flex-shrink: 0;
@@ -326,8 +326,8 @@
     cursor: pointer;
     opacity: 0.7;
     transition: 0.3s ease;
-    -ms-flex-item-align: start;
-    align-self: flex-start;
+    -ms-flex-item-align: center;
+    align-self: center;
     z-index: 1;
 }
 
