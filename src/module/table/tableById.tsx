@@ -277,7 +277,7 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
         <div className={`col ${styles["table-view"]}`} style={{ padding: !!data.totalCount && data.totalCount > 20 ? "0 2.4rem" : "0 2.4rem 1.6rem", flex: 1 }}>
             <Popup ref={popupRef} />
             {!!features.length && <div className={`row ${styles["table-feature"]}`}>
-                {features.map(f => {
+                {features.map((f, i) => {
                     switch (f) {
                         case "add":
                             return <Button
@@ -301,7 +301,7 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
                                 }}
                             />
                         case "divider":
-                            return <div key={"divider"} className={`row ${styles["divider"]}`} />
+                            return <div key={"divider-" + i} className={`row ${styles["divider"]}`} />
                         case "export":
                             return <ExportXlsx
                                 key={"export"}
