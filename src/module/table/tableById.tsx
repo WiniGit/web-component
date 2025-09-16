@@ -55,7 +55,8 @@ interface DataTableProps {
     customCell?: { [k: string]: (params: { item: { [p: string]: any }, index: number }) => ReactNode };
     hideToolbar?: boolean;
     hideActionColumn?: boolean;
-    features?: Array<"add" | "divider" | "search" | "filter" | "export" | "import" | ReactNode>;
+    /** allow: "add" | "divider" | "search" | "filter" | "export" | "import" | ReactNode | undefined */ 
+    features?: Array<"add" | "divider" | "search" | "filter" | "export" | "import" | ReactNode | undefined>;
     getData?: (page: number, size: number, exportData?: boolean) => Promise<{ data: Array<{ [p: string]: any }>, totalCount?: number }>;
 }
 
