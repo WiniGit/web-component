@@ -35,7 +35,8 @@ interface Props {
      * */
     formatter?: (ev: any) => void;
     expandData?: Array<DatasetItem>;
-    handleDatasets?: (datasets: Array<DatasetItem>, result: { [p: string]: any }[]) => Array<DatasetItem>
+    handleDatasets?: (datasets: Array<DatasetItem>, result: { [p: string]: any }[]) => Array<DatasetItem>;
+    withoutFilterTime?: boolean;
 }
 
 interface ChartRef {
@@ -47,7 +48,7 @@ interface ChartRef {
     selectedTime?: string | number;
 }
 
-export const ChartById = forwardRef<ChartRef, Props>(({ searchRaw = "", style = {}, chartStyle = { height: "15rem", gap: "2.4rem" }, ...props }, ref) => {
+export const ChartById = forwardRef<ChartRef, Props>(({ searchRaw = "", style = {}, chartStyle = { height: "15rem", gap: "2.4rem" }, withoutFilterTime = false, ...props }, ref) => {
     const now = new Date()
     const [result, setResult] = useState<{ [p: string]: any }[]>([])
     const [chartItem, setChartItem] = useState<{ [p: string]: any }>()
@@ -119,62 +120,64 @@ export const ChartById = forwardRef<ChartRef, Props>(({ searchRaw = "", style = 
         if (!querySearch?.length) {
             querySearch = chartItem!.Query.trim() === "*" ? "" : chartItem!.Query
             if (searchRaw.length) querySearch += ` ${searchRaw}`
-            switch (selectedTime) {
-                case "thisWeek":
-                    var startDate: number | undefined = new Date(now.getFullYear(), now.getMonth(), now.getDate() - (now.getDay() ? now.getDay() : 7) + 1).getTime()
-                    var endDate: number | undefined = new Date(now.getFullYear(), now.getMonth(), now.getDate() - (now.getDay() ? now.getDay() : 7) + 7, 23, 59, 59, 999).getTime()
-                    var reducers = chartItem!.Group.replace(groupByRegex, (m: string, _: any) => {
-                        const splitV = m.split(" ")
-                        return `APPLY "dayofweek(@DateCreated / 1000)" AS _dayofweek ${splitV[0].trim()} ${parseInt(splitV[1]) + 1} ${["@_dayofweek", ...splitV.slice(2)].join(" ")}`
-                    })
-                    break;
-                case "lastWeek":
-                    startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() - (now.getDay() ? now.getDay() : 7) - 6).getTime()
-                    endDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() - (now.getDay() ? now.getDay() : 7), 23, 59, 59, 999).getTime()
-                    reducers = chartItem!.Group.replace(groupByRegex, (m: string, _: any) => {
-                        const splitV = m.split(" ")
-                        return `APPLY "dayofweek(@DateCreated / 1000)" AS _dayofweek ${splitV[0].trim()} ${parseInt(splitV[1]) + 1} ${["@_dayofweek", ...splitV.slice(2)].join(" ")}`
-                    })
-                    break;
-                case "thisMonth":
-                    startDate = new Date(now.getFullYear(), now.getMonth()).getTime()
-                    endDate = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999).getTime()
-                    reducers = chartItem!.Group.replace(groupByRegex, (m: string, _: any) => {
-                        const splitV = m.split(" ")
-                        return `APPLY "floor(dayofmonth(@DateCreated / 1000) / 7)" AS _dayofmonth ${splitV[0].trim()} ${parseInt(splitV[1]) + 1} ${["@_dayofmonth", ...splitV.slice(2)].join(" ")}`
-                    })
-                    break;
-                case "lastMonth":
-                    startDate = new Date(now.getFullYear(), now.getMonth() - 1).getTime()
-                    endDate = new Date(now.getFullYear(), now.getMonth(), 0, 23, 59, 59, 999).getTime()
-                    reducers = chartItem!.Group.replace(groupByRegex, (m: string, _: any) => {
-                        const splitV = m.split(" ")
-                        return `APPLY "floor(dayofmonth(@DateCreated / 1000) / 7)" AS _dayofmonth ${splitV[0].trim()} ${parseInt(splitV[1]) + 1} ${["@_dayofmonth", ...splitV.slice(2)].join(" ")}`
-                    })
-                    break;
-                case "lastThreeMonth":
-                    startDate = new Date(now.getFullYear(), now.getMonth() - 3).getTime()
-                    endDate = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999).getTime()
-                    reducers = chartItem!.Group.replace(groupByRegex, (m: string, _: any) => {
-                        const splitV = m.split(" ")
-                        return `APPLY "monthofyear(@DateCreated / 1000)" AS _monthofyear ${splitV[0].trim()} ${parseInt(splitV[1]) + 1} ${["@_monthofyear", ...splitV.slice(2)].join(" ")}`
-                    })
-                    break;
-                case "lastSixMonth":
-                    startDate = new Date(now.getFullYear(), now.getMonth() - 6).getTime()
-                    endDate = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999).getTime()
-                    reducers = chartItem!.Group.replace(groupByRegex, (m: string, _: any) => {
-                        const splitV = m.split(" ")
-                        return `APPLY "monthofyear(@DateCreated / 1000)" AS _monthofyear ${splitV[0].trim()} ${parseInt(splitV[1]) + 1} ${["@_monthofyear", ...splitV.slice(2)].join(" ")}`
-                    })
-                    break;
-                default:
-                    if (selectedTime === Infinity) startDate = undefined
-                    else startDate = new Date(now.getFullYear(), now.getMonth(), now.getDay() - (selectedTime as number)).getTime()
-                    reducers = chartItem!.Group
-                    break;
+            if (!withoutFilterTime) {
+                switch (selectedTime) {
+                    case "thisWeek":
+                        var startDate: number | undefined = new Date(now.getFullYear(), now.getMonth(), now.getDate() - (now.getDay() ? now.getDay() : 7) + 1).getTime()
+                        var endDate: number | undefined = new Date(now.getFullYear(), now.getMonth(), now.getDate() - (now.getDay() ? now.getDay() : 7) + 7, 23, 59, 59, 999).getTime()
+                        var reducers = chartItem!.Group.replace(groupByRegex, (m: string, _: any) => {
+                            const splitV = m.split(" ")
+                            return `APPLY "dayofweek(@DateCreated / 1000)" AS _dayofweek ${splitV[0].trim()} ${parseInt(splitV[1]) + 1} ${["@_dayofweek", ...splitV.slice(2)].join(" ")}`
+                        })
+                        break;
+                    case "lastWeek":
+                        startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() - (now.getDay() ? now.getDay() : 7) - 6).getTime()
+                        endDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() - (now.getDay() ? now.getDay() : 7), 23, 59, 59, 999).getTime()
+                        reducers = chartItem!.Group.replace(groupByRegex, (m: string, _: any) => {
+                            const splitV = m.split(" ")
+                            return `APPLY "dayofweek(@DateCreated / 1000)" AS _dayofweek ${splitV[0].trim()} ${parseInt(splitV[1]) + 1} ${["@_dayofweek", ...splitV.slice(2)].join(" ")}`
+                        })
+                        break;
+                    case "thisMonth":
+                        startDate = new Date(now.getFullYear(), now.getMonth()).getTime()
+                        endDate = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999).getTime()
+                        reducers = chartItem!.Group.replace(groupByRegex, (m: string, _: any) => {
+                            const splitV = m.split(" ")
+                            return `APPLY "floor(dayofmonth(@DateCreated / 1000) / 7)" AS _dayofmonth ${splitV[0].trim()} ${parseInt(splitV[1]) + 1} ${["@_dayofmonth", ...splitV.slice(2)].join(" ")}`
+                        })
+                        break;
+                    case "lastMonth":
+                        startDate = new Date(now.getFullYear(), now.getMonth() - 1).getTime()
+                        endDate = new Date(now.getFullYear(), now.getMonth(), 0, 23, 59, 59, 999).getTime()
+                        reducers = chartItem!.Group.replace(groupByRegex, (m: string, _: any) => {
+                            const splitV = m.split(" ")
+                            return `APPLY "floor(dayofmonth(@DateCreated / 1000) / 7)" AS _dayofmonth ${splitV[0].trim()} ${parseInt(splitV[1]) + 1} ${["@_dayofmonth", ...splitV.slice(2)].join(" ")}`
+                        })
+                        break;
+                    case "lastThreeMonth":
+                        startDate = new Date(now.getFullYear(), now.getMonth() - 3).getTime()
+                        endDate = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999).getTime()
+                        reducers = chartItem!.Group.replace(groupByRegex, (m: string, _: any) => {
+                            const splitV = m.split(" ")
+                            return `APPLY "monthofyear(@DateCreated / 1000)" AS _monthofyear ${splitV[0].trim()} ${parseInt(splitV[1]) + 1} ${["@_monthofyear", ...splitV.slice(2)].join(" ")}`
+                        })
+                        break;
+                    case "lastSixMonth":
+                        startDate = new Date(now.getFullYear(), now.getMonth() - 6).getTime()
+                        endDate = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999).getTime()
+                        reducers = chartItem!.Group.replace(groupByRegex, (m: string, _: any) => {
+                            const splitV = m.split(" ")
+                            return `APPLY "monthofyear(@DateCreated / 1000)" AS _monthofyear ${splitV[0].trim()} ${parseInt(splitV[1]) + 1} ${["@_monthofyear", ...splitV.slice(2)].join(" ")}`
+                        })
+                        break;
+                    default:
+                        if (selectedTime === Infinity) startDate = undefined
+                        else startDate = new Date(now.getFullYear(), now.getMonth(), now.getDay() - (selectedTime as number)).getTime()
+                        reducers = chartItem!.Group
+                        break;
+                }
+                querySearch += ` ${startDate ? `@DateCreated:[${startDate} ${endDate ?? Date.now()}]` : ""}`
             }
-            querySearch += ` ${startDate ? `@DateCreated:[${startDate} ${endDate ?? Date.now()}]` : ""}`
             querySearch = querySearch!.trim()
         }
         const controller = new DataController(chartItem!.TbName)
@@ -271,7 +274,7 @@ export const ChartById = forwardRef<ChartRef, Props>(({ searchRaw = "", style = 
                 <Text className='heading-7'>{chartItem?.Name}</Text>
                 {!!chartItem?.Description?.length && <Text className='subtitle-3' style={{ flex: 1 }}>{chartItem?.Description}</Text>}
             </div>
-            {selectedTime && <Select1
+            {selectedTime && !withoutFilterTime && <Select1
                 value={selectedTime}
                 options={listTime} style={{ height: "3.2rem", width: "12.8rem", padding: "0 0.8rem" }}
                 onChange={(v: any) => { setSelectedTime(v.id) }}
