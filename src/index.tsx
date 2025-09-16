@@ -43,7 +43,7 @@ export { ChartById } from './module/chart/chartById'
 export { FormById } from './module/form/formById'
 export { ViewById } from './module/view/viewById'
 export { PageById, PageByUrl } from './module/page/pageById'
-export { TableById, DataTable } from './module/table/tableById'
+export * from './module/table/tableById'
 
 import { OptionsItem } from './component/select1/select1'
 export type { OptionsItem }

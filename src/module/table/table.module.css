@@ -355,3 +355,9 @@ div:has(.selected-item-options) {
     padding: 0;
     width: 100%;
 }
+
+.divider {
+    background-color: var(--neutral-main-border-color, light-dark(#EAEAEC, #313135));
+    height: 12px;
+    width: 1px;
+}

@@ -1,5 +1,5 @@
-import { BaseDA, Button, DataController, DialogAlignment, imgFileTypes, Pagination, Popup, SettingDataController, showDialog, showPopup, TableController, Text, ToastMessage, Winicon } from "../../index";
 import styles from "./table.module.css";
+import { BaseDA, Button, DataController, DialogAlignment, imgFileTypes, Pagination, Popup, SettingDataController, showDialog, showPopup, TableController, Text, ToastMessage, Winicon } from "../../index";
 import { Dispatch, forwardRef, ReactNode, SetStateAction, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useForm } from "react-hook-form";
@@ -53,9 +53,10 @@ interface DataTableProps {
     onChangeActions?: () => void;
     onEditColumn?: (params: { [p: string]: any }) => void;
     customCell?: { [k: string]: (params: { item: { [p: string]: any }, index: number }) => ReactNode };
-    customAddElement?: ReactNode;
     hideToolbar?: boolean;
     hideActionColumn?: boolean;
+    features?: Array<"add" | "divider" | "search" | "filter" | "export" | "import" | ReactNode>;
+    getData?: (page: number, size: number, exportData?: boolean) => Promise<{ data: Array<{ [p: string]: any }>, totalCount?: number }>;
 }
 
 interface DataTableRef {
@@ -66,7 +67,24 @@ interface DataTableRef {
     setSelected: Dispatch<SetStateAction<string[]>>;
 }
 
-export const DataTable = forwardRef<DataTableRef, DataTableProps>(({ tbName, staticSearch = "", title = "", columns = [], onChangeConfigData, filterData = { searchRaw: "*", sortby: [] }, filterList = [], onChangeFilterList, onChangeFilterData, showIndex = false, hideCheckbox = false, enableEdit = false, actions = [], onChangeActions, onEditColumn, ...props }, ref) => {
+export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
+    tbName,
+    staticSearch = "",
+    title = "",
+    columns = [],
+    onChangeConfigData,
+    filterData = { searchRaw: "*", sortby: [] },
+    filterList = [],
+    onChangeFilterList,
+    onChangeFilterData,
+    showIndex = false,
+    hideCheckbox = false,
+    enableEdit = false,
+    actions = [],
+    onChangeActions,
+    onEditColumn,
+    features = ["add", <div style={{ flex: 1 }} />, ""],
+    ...props }, ref) => {
     // static variables
     const configMethods = useForm<any>({ shouldFocusError: false, defaultValues: { columns: [], searchRaw: "*", sortby: [], TbName: tbName } })
     const dataController = new DataController(tbName)
@@ -85,6 +103,7 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({ tbName, sta
     const [fields, setFields] = useState<{ [p: string]: any }[]>([])
     const [selected, setSelected] = useState<string[]>([])
     const treeData = useMemo(() => fields.some(e => e.Column === 'ParentId'), [fields])
+
     // initData
     const getFields = async () => {
         const res = await Promise.all([
@@ -116,6 +135,11 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({ tbName, sta
 
     // get data
     const getData = async (page = 1, size = 20, exportData = false) => {
+        if (props.getData) {
+            const result = await props.getData(page, size, exportData)
+            if (exportData) return result
+            else return setData(result)
+        }
         const pattern: any = {
             returns: ["Id", ...columns.map(e => e.Name.split(".").shift())],
         }
@@ -251,75 +275,82 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({ tbName, sta
     return <>
         <div className={`col ${styles["table-view"]}`} style={{ padding: !!data.totalCount && data.totalCount > 20 ? "0 2.4rem" : "0 2.4rem 1.6rem", flex: 1 }}>
             <Popup ref={popupRef} />
-            <div className={`row ${styles["table-feature"]}`}>
-                {props.customAddElement ?? (enableEdit && <Button
-                    label={`${t("add")} ${(title ?? tbName).toLowerCase()}`}
-                    prefix={<Winicon src={"outline/user interface/e-add"} size={12} />}
-                    className="button-text-3 button-neutral border"
-                    onClick={() => showAddEditPopup()}
-                />)}
-                <div style={{ flex: 1 }} />
-                <SearchFilterData
-                    columns={columns}
-                    fields={fields}
-                    initFilterList={filterList}
-                    onChangeFilterData={enableEdit ? onChangeFilterList : undefined}
-                    searchRaw={configMethods.watch("searchRaw")}
-                    onChange={(searchValue: string) => {
-                        configMethods.setValue("searchRaw", searchValue)
-                        onChangeFilterData?.({ searchRaw: searchValue, sortby: configMethods.watch("sortby") })
-                    }}
-                />
-                <div className='row divider' style={{ height: '1.2rem', margin: 0 }} />
-                <ExportXlsx
-                    label={t("export")}
-                    disabled={!data.totalCount}
-                    getData={async () => {
-                        const res = await getData(1, 2000, true)
-                        if (res.code === 200 && res.data.length) {
-                            const dataFileIds: Array<string> = []
-                            const activeColumns = configMethods.getValues("columns")
-                            activeColumns.forEach((_col: any) => {
-                                const tmp = _col.Name.split(".")
-                                if (tmp.length > 1) {
-                                    if (relativeFields?.[tmp[0]]?.find((e: any) => e.Name === tmp[1] && e.DataType === FEDataType.FILE))
-                                        dataFileIds.push(...res[tmp[0].substring(0, tmp[0].lastIndexOf("Id"))].map((e: any) => e[tmp[1]]?.split(",").slice(0, 4)).flat(Infinity).filter((id: string, i: number, arr: Array<string>) => !!id && arr.indexOf(id) === i))
-                                } else if (fields.find(e => e.Name === _col.Name && e.DataType === FEDataType.FILE)) {
-                                    dataFileIds.push(...res.data.map((e: any) => e[_col.Name]?.split(",").slice(0, 2)).flat(Infinity).filter((id: string, i: number, arr: string[]) => !!id && arr.indexOf(id) === i))
-                                }
-                            })
-                            let getFiles: any = []
-                            if (dataFileIds.length) {
-                                getFiles = await BaseDA.getFilesInfor(dataFileIds.filter((id, i, arr) => arr.indexOf(id) === i))
-                                getFiles = getFiles.data.filter((f: any) => f !== undefined && f !== null)
-                            }
-                            return res.data.map((item: any) => {
-                                let result: any = {}
-                                activeColumns.sort((a: any, b: any) => a.Sort - b.Sort).forEach((_col: any) => {
-                                    const tmp = _col.Name.split(".")
-                                    const params = (tmp.length > 1 ? { data: res[tmp[0].substring(0, tmp[0].lastIndexOf("Id"))]?.filter((e: any) => item[tmp[0]].includes(e.Id)), fields: relativeFields?.[tmp[0]] } : { data: item, fields: fields }) as any
-                                    result[_col.Title] = cellValue(_col, params.data, params.fields, getFiles)
-                                })
-                                return result
-                            })
-                        } else return []
-                    }}
-                    prefix={<Winicon src='outline/arrows/data-download' />}
-                    config={{ title: configMethods.watch("columns").map((e: any) => e.Title) }}
-                />
-                {enableEdit && <>
-                    <div className='row divider' style={{ height: '1.2rem', margin: 0 }} />
-                    <ButtonImportData
-                        onImport={async (result) => {
-                            if (result.length) {
-                                const response = await dataController.add(result.map(e => ({ ...e, ...props })))
-                                if (response.code !== 200) return ToastMessage.errors(response.message)
-                                getData()
-                            }
-                        }}
-                    />
-                </>}
-            </div>
+            {!!features.length && <div className={`row ${styles["table-feature"]}`}>
+                {features.map(f => {
+                    switch (f) {
+                        case "add":
+                            return <Button
+                                label={`${t("add")} ${(title ?? tbName).toLowerCase()}`}
+                                prefix={<Winicon src={"outline/user interface/e-add"} size={12} />}
+                                className="button-text-3 button-neutral border"
+                                onClick={() => showAddEditPopup()}
+                            />
+                        case "search":
+                            return <SearchFilterData
+                                columns={columns}
+                                fields={fields}
+                                initFilterList={filterList}
+                                onChangeFilterData={enableEdit ? onChangeFilterList : undefined}
+                                searchRaw={configMethods.watch("searchRaw")}
+                                onChange={(searchValue: string) => {
+                                    configMethods.setValue("searchRaw", searchValue)
+                                    onChangeFilterData?.({ searchRaw: searchValue, sortby: configMethods.watch("sortby") })
+                                }}
+                            />
+                        case "divider":
+                            return <div className={`row ${styles["divider"]}`} />
+                        case "export":
+                            return <ExportXlsx
+                                label={t("export")}
+                                disabled={!data.totalCount}
+                                getData={async () => {
+                                    const res = await getData(1, 2000, true)
+                                    if (res.code === 200 && res.data.length) {
+                                        const dataFileIds: Array<string> = []
+                                        const activeColumns = configMethods.getValues("columns")
+                                        activeColumns.forEach((_col: any) => {
+                                            const tmp = _col.Name.split(".")
+                                            if (tmp.length > 1) {
+                                                if (relativeFields?.[tmp[0]]?.find((e: any) => e.Name === tmp[1] && e.DataType === FEDataType.FILE))
+                                                    dataFileIds.push(...res[tmp[0].substring(0, tmp[0].lastIndexOf("Id"))].map((e: any) => e[tmp[1]]?.split(",").slice(0, 4)).flat(Infinity).filter((id: string, i: number, arr: Array<string>) => !!id && arr.indexOf(id) === i))
+                                            } else if (fields.find(e => e.Name === _col.Name && e.DataType === FEDataType.FILE)) {
+                                                dataFileIds.push(...res.data.map((e: any) => e[_col.Name]?.split(",").slice(0, 2)).flat(Infinity).filter((id: string, i: number, arr: string[]) => !!id && arr.indexOf(id) === i))
+                                            }
+                                        })
+                                        let getFiles: any = []
+                                        if (dataFileIds.length) {
+                                            getFiles = await BaseDA.getFilesInfor(dataFileIds.filter((id, i, arr) => arr.indexOf(id) === i))
+                                            getFiles = getFiles.data.filter((f: any) => f !== undefined && f !== null)
+                                        }
+                                        return res.data.map((item: any) => {
+                                            let result: any = {}
+                                            activeColumns.sort((a: any, b: any) => a.Sort - b.Sort).forEach((_col: any) => {
+                                                const tmp = _col.Name.split(".")
+                                                const params = (tmp.length > 1 ? { data: res[tmp[0].substring(0, tmp[0].lastIndexOf("Id"))]?.filter((e: any) => item[tmp[0]].includes(e.Id)), fields: relativeFields?.[tmp[0]] } : { data: item, fields: fields }) as any
+                                                result[_col.Title] = cellValue(_col, params.data, params.fields, getFiles)
+                                            })
+                                            return result
+                                        })
+                                    } else return []
+                                }}
+                                prefix={<Winicon src='outline/arrows/data-download' />}
+                                config={{ title: configMethods.watch("columns").map((e: any) => e.Title) }}
+                            />
+                        case "import":
+                            return <ButtonImportData
+                                onImport={async (result) => {
+                                    if (result.length) {
+                                        const response = await dataController.add(result.map(e => ({ ...e, ...props })))
+                                        if (response.code !== 200) return ToastMessage.errors(response.message)
+                                        getData()
+                                    }
+                                }}
+                            />
+                        default:
+                            return f
+                    }
+                })}
+            </div>}
             {data.totalCount === 0 && <div className={`col ${styles["table"]}`} style={{ alignItems: "center", justifyContent: "center", margin: "1.6rem" }}>
                 <Winicon src='color/files/archive-file' size={28} />
                 <h6 className='heading-7' style={{ margin: "0.8rem" }}>{t(configMethods.watch("searchRaw") !== "*" ? "noResultFound" : "noData")}</h6>
@@ -456,3 +487,5 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({ tbName, sta
         </div>}
     </>
 })
+
+export { TableHeader, TableRow, ExportXlsx, ButtonImportData, SearchFilterData }
