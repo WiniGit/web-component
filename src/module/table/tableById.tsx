@@ -84,7 +84,7 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
     actions = [],
     onChangeActions,
     onEditColumn,
-    features = ["add", <div style={{ flex: 1 }} />, ""],
+    features = ["add", <div style={{ flex: 1 }} />, "search", "divider", "export", "divider", "import"],
     ...props }, ref) => {
     // static variables
     const configMethods = useForm<any>({ shouldFocusError: false, defaultValues: { columns: [], searchRaw: "*", sortby: [], TbName: tbName } })
@@ -281,6 +281,7 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
                     switch (f) {
                         case "add":
                             return <Button
+                                key={"add"}
                                 label={`${t("add")} ${(title ?? tbName).toLowerCase()}`}
                                 prefix={<Winicon src={"outline/user interface/e-add"} size={12} />}
                                 className="button-text-3 button-neutral border"
@@ -288,6 +289,7 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
                             />
                         case "search":
                             return <SearchFilterData
+                                key={"search"}
                                 columns={columns}
                                 fields={fields}
                                 initFilterList={filterList}
@@ -299,9 +301,10 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
                                 }}
                             />
                         case "divider":
-                            return <div className={`row ${styles["divider"]}`} />
+                            return <div key={"divider"} className={`row ${styles["divider"]}`} />
                         case "export":
                             return <ExportXlsx
+                                key={"export"}
                                 label={t("export")}
                                 disabled={!data.totalCount}
                                 getData={async () => {
@@ -339,6 +342,7 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
                             />
                         case "import":
                             return <ButtonImportData
+                                key={"import"}
                                 onImport={async (result) => {
                                     if (result.length) {
                                         const response = await dataController.add(result.map(e => ({ ...e, ...props })))
