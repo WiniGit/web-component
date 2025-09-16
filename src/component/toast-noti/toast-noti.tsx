@@ -1,21 +1,21 @@
 import { Slide, toast, ToastOptions } from 'react-toastify';
 import './toast-noti.css';
 
-const defaultOptions = {
+const defaultOptions: ToastOptions = {
     hideProgressBar: true,
     transition: Slide,
-    autoClose: 5000,
+    autoClose: 3000,
     theme: "colored",
-    className: "body-3"
+    className: "body-3",
 }
 
 export class ToastMessage {
 
     static success(message: string, options?: ToastOptions) {
-        toast.success(message, { ...defaultOptions, ...(options ?? {}) });
+        toast.success(<span style={{ flex: 1 }}>{message}</span>, { ...defaultOptions, ...(options ?? {}) });
     }
 
     static errors(message: string, options?: ToastOptions) {
-        toast.error(message, { ...defaultOptions, ...(options ?? {}) });
+        toast.error(<span style={{ flex: 1 }}>{message}</span>, { ...defaultOptions, ...(options ?? {}) });
     }
 }

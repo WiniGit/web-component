@@ -132,7 +132,7 @@
     display: flex;
     column-gap: 1.2rem;
     -ms-flex-pack: justify;
-    justify-content: space-between;
+    justify-content: flex-start;
     max-height: var(--toastify-toast-max-height);
     font-family: var(--toastify-font-family);
     cursor: default;
@@ -319,6 +319,7 @@
 .Toastify__close-button {
     color: #fff;
     background: transparent;
+    position: static;
     outline: none;
     border: none;
     padding: 0;

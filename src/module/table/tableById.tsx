@@ -135,7 +135,7 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({ tbName, sta
         const res = await dataController.patternList({
             page: page, size: size,
             searchRaw: filterData.required?.length ? `${filterData.required}${finalSearchRaw !== "*" ? finalSearchRaw : ""}` : finalSearchRaw,
-            sortby: sortby?.length ? sortby : [{ prop: "DateCreated", direction: "DESC" }],
+            sortby: sortby?.length ? sortby.map((s: any) => (s.prop.includes(".") ? { prop: s.prop.split(".").shift(), direction: s.direction } : s)) : [{ prop: "DateCreated", direction: "DESC" }],
             pattern: pattern
         })
         if (res.code === 200) {
