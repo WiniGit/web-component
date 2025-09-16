@@ -100,7 +100,7 @@ export const FormById = forwardRef<FormByIdRef, FormByIdProps>((props, ref) => {
                             else delete dataItem[_col.Name]
                             break;
                         case FEDataType.PASSWORD:
-                            if (props.autoBcrypt) {
+                            if (props.autoBcrypt && dataItem[_col.Name]?.length && dataItem[_col.Name] !== props.data?.[_col.Name]) {
                                 const getHashPassword = await accountController.hashPassword(dataItem[_col.Name])
                                 dataItem[_col.Name] = getHashPassword.data
                             }
