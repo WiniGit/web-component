@@ -31,6 +31,7 @@ export default function RenderChartByType(props: Props) {
             option = {
                 tooltip: {
                     trigger: 'axis',
+                    appendToBody: true,
                     axisPointer: {
                         type: 'shadow'
                     }
@@ -96,6 +97,7 @@ export default function RenderChartByType(props: Props) {
             option = {
                 tooltip: {
                     trigger: 'item',
+                    appendToBody: true,
                     axisPointer: {
                         type: 'shadow'
                     },
@@ -171,6 +173,7 @@ export default function RenderChartByType(props: Props) {
             option = {
                 tooltip: {
                     trigger: 'axis',
+                    appendToBody: true,
                     axisPointer: {
                         type: 'shadow'
                     }
@@ -235,6 +238,7 @@ export default function RenderChartByType(props: Props) {
                 },
                 tooltip: {
                     trigger: 'item',
+                    appendToBody: true,
                     formatter: '{b}: {c} ({d}%)', // Shows only value and percentage
                 },
                 series: [
@@ -278,6 +282,7 @@ export default function RenderChartByType(props: Props) {
                 },
                 tooltip: {
                     trigger: 'item',
+                    appendToBody: true,
                     formatter: '{b}: {c} ({d}%)', // Shows only value and percentage
                 },
                 series: [
