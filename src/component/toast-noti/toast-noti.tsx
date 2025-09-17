@@ -7,6 +7,7 @@ const defaultOptions: ToastOptions = {
     autoClose: 3000,
     position: "bottom-right",
     theme: document.documentElement.classList.contains("dark") ? "dark" : "light",
+    className: "body-3",
 }
 
 export class ToastMessage {
