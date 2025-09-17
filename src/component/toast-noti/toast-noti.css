@@ -1,6 +1,6 @@
 :root {
     --toastify-color-light: #fff;
-    --toastify-color-dark: #121212;
+    --toastify-color-dark: #242428;
     --toastify-color-info: #287CF0;
     --toastify-color-success: #3AAC6D;
     --toastify-color-warning: #FC7A1C;
@@ -116,30 +116,16 @@
 }
 
 .Toastify__toast {
-    --y: 0;
-    position: relative;
-    -ms-touch-action: none;
-    touch-action: none;
     min-height: var(--toastify-toast-min-height);
-    box-sizing: border-box;
-    margin-bottom: 1rem;
     padding: 1.2rem 1.6rem;
     max-width: 382px;
-    border-radius: var(--toastify-toast-bd-radius);
-    /* box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1); */
     box-shadow: 2px 0px 16px 0px #0000000A;
-    display: -ms-flexbox;
-    display: flex;
+    border: 1px solid var(--neutral-main-border-color, light-dark(#EAEAEC, #313135));
     column-gap: 1.2rem;
-    align-items: center;
-    -ms-flex-pack: justify;
     justify-content: flex-start;
     max-height: var(--toastify-toast-max-height);
-    font-family: var(--toastify-font-family);
     cursor: default;
     direction: ltr;
-    /* webkit only issue #791 */
-    z-index: 0;
     overflow: hidden;
 }
 
@@ -252,12 +238,12 @@
 
 .Toastify__toast-theme--dark {
     background: var(--toastify-color-dark);
-    color: var(--toastify-text-color-dark);
+    /* color: var(--toastify-text-color-dark); */
 }
 
 .Toastify__toast-theme--light {
     background: var(--toastify-color-light);
-    color: var(--toastify-text-color-light);
+    /* color: var(--toastify-text-color-light); */
 }
 
 .Toastify__toast-theme--colored.Toastify__toast--default {
@@ -820,7 +806,7 @@
 
 .Toastify__slide-enter--top-right,
 .Toastify__slide-enter--bottom-right {
-    animation-name: Toastify__slideInRight;
+    animation-name: Toastify__slideInUp;
 }
 
 .Toastify__slide-enter--top-center {
@@ -840,7 +826,7 @@
 
 .Toastify__slide-exit--top-right,
 .Toastify__slide-exit--bottom-right {
-    animation-name: Toastify__slideOutRight;
+    animation-name: Toastify__slideOutDown;
     animation-timing-function: ease-in;
     animation-duration: 0.3s;
 }

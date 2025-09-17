@@ -5,8 +5,8 @@ const defaultOptions: ToastOptions = {
     hideProgressBar: true,
     transition: Slide,
     autoClose: 3000,
-    theme: "colored",
-    className: "body-3",
+    position: "bottom-right",
+    theme: document.documentElement.classList.contains("dark") ? "dark" : "light",
 }
 
 export class ToastMessage {
