@@ -47,6 +47,7 @@ const getHeaders = async () => {
 
 export const imgFileTypes = [".png", ".svg", ".jpg", "jpeg", ".webp", ".gif"]
 
+const maxFileSize = 200 * 1024 * 1024
 export class BaseDA {
     static post = async (url: string, options?: { headers?: { [k: string]: any }, body?: any }) => {
         try {
@@ -80,19 +81,21 @@ export class BaseDA {
                 options.headers["Content-Type"] = "multipart/form-data"
             }
             const response = await axios.post(url, options?.body, { headers: options?.headers ?? { "Content-Type": "multipart/form-data" } })
-            if (response.status === 200 || response.status === 201) {
-                return response.data
-            } else if (response.status === 204) {
-                return {
-                    message: 'ok',
-                    data: options?.body
-                }
-            } else if (response.status === 401) {
-                ToastMessage.errors('Unauthorized access')
-                window.location.replace('/login')
-            } else {
-                console.log("error: ??: ", response.statusText)
-                return { status: response.status, message: response.statusText };
+            switch (response.status) {
+                case 200:
+                case 201:
+                    return response.data
+                case 204:
+                    return {
+                        message: 'ok',
+                        data: options?.body
+                    }
+                case 401:
+                    ToastMessage.errors('Unauthorized access')
+                    return window.location.replace('/login')
+                default:
+                    console.log("error: ??: ", response.statusText)
+                    return { status: response.status, message: response.statusText };
             }
         } catch (error) {
             console.error("Failed to POST data:", error);
@@ -128,8 +131,12 @@ export class BaseDA {
 
     static uploadFiles = async (listFile: Array<File>) => {
         listFile = [...listFile];
+        if (listFile.map(f => f.size).reduce((a, b) => a + b, 0) > maxFileSize) {
+            ToastMessage.errors('File size must be not more than 200MB')
+            return null
+        }
         // const headersObj: any = await getHeaders()
-        const headersObj: any = { pid: ConfigData.pid }
+        const headersObj: any = { pid: ConfigData.pid, "Content-Type": "multipart/form-data" }
         const formData = new FormData();
         listFile.forEach(e => {
             const renamedFile = new File([e], Util.toSlug(e.name), { type: e.type });
