@@ -33,6 +33,7 @@
 
 .preview-container {
     flex-wrap: wrap;
+    flex: 1;
 }
 
 .preview-container:empty::after {

@@ -542,7 +542,7 @@ interface FUploadMultipleFileTypeFormProps {
     style?: CSSProperties;
     placeholder?: string;
     multiple?: boolean;
-    allowType?: Array<string>;
+    allowType?: string[];
     onChange?: (a?: Array<File> | Array<{ [p: string]: any }>) => void;
     uploadElementStyle?: CSSProperties;
     uploadElementClassName?: string;

@@ -57,6 +57,8 @@ interface DataTableProps {
     hideActionColumn?: boolean;
     /** allow: "add" | "divider" | "search" | "export" | "import" | ReactNode | undefined */
     features?: Array<"add" | "divider" | "search" | "export" | "import" | ReactNode | undefined>;
+    /** default: true */
+    isMultiplePage?: boolean;
     getData?: (page: number, size: number, exportData?: boolean) => Promise<{ data: Array<{ [p: string]: any }>, totalCount?: number }>;
 }
 
@@ -81,6 +83,7 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
     showIndex = false,
     hideCheckbox = false,
     enableEdit = false,
+    isMultiplePage = true,
     actions = [],
     onChangeActions,
     onEditColumn,
@@ -416,7 +419,7 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
                 }
             </div> : null}
         </div>
-        {!!data.totalCount && data.totalCount > 20 && <div style={{ padding: '1.2rem 2.4rem' }}>
+        {isMultiplePage && !!data.totalCount && data.totalCount > 20 && <div style={{ padding: '1.2rem 2.4rem' }}>
             <Pagination
                 currentPage={pageDetails.page}
                 itemPerPage={pageDetails.size}
