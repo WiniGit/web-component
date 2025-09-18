@@ -84,6 +84,7 @@ export default function RenderChartByType(props: Props) {
                 },
                 series: props.datasets.map((c) => {
                     return {
+                        ...c,
                         stack: 'Total',
                         name: c.title ?? c.name,
                         type: props.type,
@@ -151,6 +152,7 @@ export default function RenderChartByType(props: Props) {
                 },
                 series: props.datasets?.map((c) => {
                     return {
+                        ...c,
                         data: c.value,
                         type: props.type,
                         itemStyle: { color: c.color, borderRadius: [2, 2, 0, 0] },
@@ -202,6 +204,7 @@ export default function RenderChartByType(props: Props) {
                 },
                 series: props.datasets?.map((c) => {
                     return {
+                        ...c,
                         data: c.value,
                         type: 'bar',
                         itemStyle: { color: c.color, borderRadius: [2, 2, 0, 0] },
@@ -260,9 +263,7 @@ export default function RenderChartByType(props: Props) {
                         // labelLine: {
                         //     show: false,
                         // },
-                        data: props.datasets.map(e => {
-                            return { value: e.value, itemStyle: { color: e.color, borderRadius: 4 } }
-                        })
+                        data: props.datasets.map(e => ({ ...e, value: e.value, itemStyle: { color: e.color, borderRadius: 4 } }))
                     },
                 ],
             }
@@ -303,9 +304,7 @@ export default function RenderChartByType(props: Props) {
                                 fontWeight: 'bold',
                             },
                         },
-                        data: props.datasets.map(e => {
-                            return { name: e.title, value: e.value, itemStyle: { color: e.color, borderRadius: 4 } }
-                        })
+                        data: props.datasets.map(e => ({ ...e, name: e.title, value: e.value, itemStyle: { color: e.color, borderRadius: 4 } }))
                     },
                 ],
             }
@@ -330,6 +329,7 @@ export default function RenderChartByType(props: Props) {
                 },
                 series: props.datasets?.map((c) => {
                     return {
+                        ...c,
                         type: props.type,
                         itemStyle: { color: c.color, borderRadius: [2, 2, 0, 0] },
                         radius: '50%',
@@ -376,6 +376,7 @@ export default function RenderChartByType(props: Props) {
                 </div>
                 <ReactEcharts
                     onEvents={{ click: props.handleChartClick as any }}
+                    theme={document.documentElement.classList.contains("dark") ? "dark" : "light"}
                     notMerge={true}
                     lazyUpdate={true}
                     option={option}
@@ -385,6 +386,8 @@ export default function RenderChartByType(props: Props) {
         case "bottom":
             return <div className="col" style={props.style}>
                 <ReactEcharts
+                    onEvents={{ click: props.handleChartClick as any }}
+                    theme={document.documentElement.classList.contains("dark") ? "dark" : "light"}
                     notMerge={true}
                     lazyUpdate={true}
                     option={option}
@@ -434,6 +437,8 @@ export default function RenderChartByType(props: Props) {
                     })}
                 </div>
                 <ReactEcharts
+                    onEvents={{ click: props.handleChartClick as any }}
+                    theme={document.documentElement.classList.contains("dark") ? "dark" : "light"}
                     notMerge={true}
                     lazyUpdate={true}
                     option={option}
@@ -445,6 +450,7 @@ export default function RenderChartByType(props: Props) {
             return <div className="row" style={props.style}>
                 <ReactEcharts
                     onEvents={{ click: props.handleChartClick as any }}
+                    theme={document.documentElement.classList.contains("dark") ? "dark" : "light"}
                     notMerge={true}
                     lazyUpdate={true}
                     option={option}

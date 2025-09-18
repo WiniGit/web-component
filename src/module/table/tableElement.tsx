@@ -309,7 +309,7 @@ export const TableRow = ({ item, setItem, onEditActionColumn, title, index, meth
         const res = await dataController.patternList({
             page: page, size: 20,
             searchRaw: `@ParentId:{${item.Id}} ${searchRaw !== "*" ? searchRaw : ""}`,
-            sortby: sortby,
+            sortby: sortby?.length ? sortby.map((s: any) => (s.prop.includes(".") ? { prop: s.prop.split(".").shift(), direction: s.direction } : s)) : [{ prop: "DateCreated", direction: "DESC" }],
             pattern: pattern
         })
         if (res.code === 200) {
@@ -375,7 +375,10 @@ export const TableRow = ({ item, setItem, onEditActionColumn, title, index, meth
                 activeColumns={columns}
                 onSuccess={() => {
                     if (id) getData(Math.max(Math.floor(children.length / 20), 1))
-                    else getData()
+                    else {
+                        getData()
+                        setItem({ ...item, _totalChild: (item._totalChild ?? 0) + 1 })
+                    }
                 }}
                 {...({ ...props, ParentId: item.Id })}
             />
