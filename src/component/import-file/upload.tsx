@@ -92,7 +92,7 @@ export const UploadFiles = forwardRef<UploadFilesRef, UploadFilesProps>(({ class
             {props.prefix}
             <div className={`row ${styles["preview-container"]}`} data-placeholder={props.placeholder}>
                 {files.slice(0, prevewMaxLength).map((f, i) => {
-                    return <NavLink key={`${f.id}-${i}`} to={f.url ?? ""} target="_blank" className={`row ${styles["file-preview"]}`} style={props.multiple ? undefined : { flex: 1, maxWidth: "100%" }} onClick={(ev) => ev.stopPropagation()}>
+                    return <NavLink key={`${f.id}-${i}`} to={f.url ?? ""} target="_blank" className={`row ${styles["file-preview"]}`} style={props.multiple ? undefined : { maxWidth: "100%" }} onClick={(ev) => ev.stopPropagation()}>
                         <span>{f.name}</span>
                         {!props.disabled && <Winicon src="outline/user interface/e-remove" size={12} className="icon-button light"
                             onClick={(ev) => {
