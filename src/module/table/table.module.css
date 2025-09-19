@@ -197,7 +197,7 @@ div[class~="resize-cell-stick"] {
     gap: 4px;
     color: var(--neutral-text-placeholder-color, #878792);
     padding: 1rem 1.6rem;
-    margin-left: 8rem;
+    margin-left: calc(8rem + 16px);
     margin-top: 0.2rem;
 }
 

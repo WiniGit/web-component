@@ -430,9 +430,9 @@ export const TableRow = ({ item, setItem, onEditActionColumn, title, index, meth
                 const cellContent = props.customCell?.[_col.Name]?.({ item, index }) ?? <AutoCellContent colItem={_col} files={files} {...contentProps} />
                 if (treeData && !i) {
                     return <Cell key={_col.Id} colItem={_col} style={{ gap: "0.8rem" }}>
-                        {totalChild ? <Winicon src={`fill/arrows/triangle-${isOpen ? "down" : "right"}`} size={"1.2rem"} onClick={() => setIsOpen(!isOpen)} /> : <div style={{ width: "1.6rem" }} />}
+                        {totalChild ? <Winicon src={`fill/arrows/triangle-${isOpen ? "down" : "right"}`} size={12} onClick={() => setIsOpen(!isOpen)} /> : <div style={{ width: 16 }} />}
                         {cellContent}
-                        {enableEdit && <Winicon src="fill/user interface/c-add" className={styles["add-child-icon-btn"]} onClick={() => { showAddEditChildPopup() }} />}
+                        {!item.ParentId && enableEdit && <Winicon src="fill/user interface/c-add" className={styles["add-child-icon-btn"]} onClick={() => { showAddEditChildPopup() }} />}
                     </Cell>
                 } else {
                     return <Cell key={_col.Id} colItem={_col}>
