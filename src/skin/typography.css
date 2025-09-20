@@ -47,13 +47,18 @@
 }
 
 .regular4,
-.subtitle-1,
-.body-1,
 .medium4,
 .heading-6,
 .highlight-6 {
     line-height: 2.8rem;
     font-size: max(2rem, 16px);
+    color: var(--neutral-text-title-color, light-dark(#18181B, #F4F4F5));
+}
+
+.subtitle-1,
+.body-1 {
+    line-height: 2.6rem;
+    font-size: max(1.8rem, 16px);
     color: var(--neutral-text-title-color, light-dark(#18181B, #F4F4F5));
 }
 
