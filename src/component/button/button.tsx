@@ -28,7 +28,7 @@ interface ButtonProps {
     tooltip?: { message: string, position?: "top" | "bottom" | "left" | "right" },
 }
 
-export function Button({ tooltip, disabled, linkTo, className, type = "button", prefix, suffix, label, target, ...props }: ButtonProps) {
+export function Button({ tooltip, disabled, linkTo, className, type = "button", prefix, suffix, label, target, onClick, ...props }: ButtonProps) {
     const btnRef = useRef<HTMLButtonElement>(null)
     const [showTooltip, setShowTooltip] = useState<boolean>(false)
     const timoutRef = useRef<NodeJS.Timeout>(null)
@@ -74,12 +74,14 @@ export function Button({ tooltip, disabled, linkTo, className, type = "button", 
 
     return <>
         {linkTo ? <a ref={btnRef as any} href={disabled ? undefined : linkTo} target={target} className={`${styles['button-container']} row ${className ?? "button-text-3"}`}
+            onClick={disabled ? undefined : onClick}
             onMouseOver={tooltip ? onMouseOver : undefined} onMouseOut={tooltip ? onMouseOut : undefined} onMouseLeave={tooltip ? onMouseLeave : undefined}
             {...props}>
             {prefix}
             <Text maxLine={1} className={styles['button-label']}>{label}</Text>
             {suffix}
         </a> : <button ref={btnRef} type={type} disabled={disabled} className={`${styles['button-container']} row ${className ?? "button-text-3"}`}
+            onClick={disabled ? undefined : onClick}
             onMouseOver={tooltip ? onMouseOver : undefined} onMouseOut={tooltip ? onMouseOut : undefined} onMouseLeave={tooltip ? onMouseLeave : undefined}
             {...props}>
             {prefix}

@@ -172,7 +172,7 @@
 }
 
 .button-container:disabled {
-    pointer-events: none;
+    cursor: context-menu;
     background-color: var(--neutral-disable-background-color, light-dark(#F4F4F5, #494950));
     border-color: var(--neutral-bolder-border-color, light-dark(#D7D7DB, #494950));
 }
