@@ -183,8 +183,6 @@ interface DateTimePickerFormProps extends SimpleFormProps {
     onChange?: (ev?: Date | DateRangeProps) => void,
     onBlur?: React.FocusEventHandler<HTMLTextAreaElement>,
     onFocus?: React.FocusEventHandler<HTMLTextAreaElement>,
-    textAreaStyle?: CSSProperties,
-    textAreaClassName?: string,
 }
 
 export function DateTimePickerForm(params: DateTimePickerFormProps) {
@@ -204,6 +202,8 @@ export function DateTimePickerForm(params: DateTimePickerFormProps) {
                 <DateTimePicker
                     style={{ width: '100%', flex: params.className?.includes('row') ? 1 : undefined }}
                     className="body-3"
+                    prefix={params.prefix}
+                    suffix={params.suffix}
                     placeholder={params.placeholder ? params.placeholder : params.label ? `${t("choose")} ${params.label.toLowerCase()}` : ''}
                     value={field.value}
                     disabled={params.disabled}
