@@ -25,7 +25,7 @@ interface ButtonProps {
     onMouseEnter?: React.MouseEventHandler<HTMLButtonElement | HTMLAnchorElement>,
     onMouseLeave?: React.MouseEventHandler<HTMLButtonElement | HTMLAnchorElement>,
     onMouseMove?: React.MouseEventHandler<HTMLButtonElement | HTMLAnchorElement>
-    tooltip?: { message: string, position?: "top" | "bottom" | "left" | "right" },
+    tooltip?: { message: string, position?: "top" | "bottom" | "left" | "right", textStyle?: CSSProperties },
 }
 
 export function Button({ tooltip, disabled, linkTo, className, type = "button", prefix, suffix, label, target, onClick, ...props }: ButtonProps) {

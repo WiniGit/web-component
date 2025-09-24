@@ -286,8 +286,8 @@ const PopupDateTimePicker = forwardRef(({ value, style, endValue, repeatValue, o
                 <TextField
                     ref={inputStartRef}
                     autoComplete="off"
-                    className='col12 body-3'
-                    style={{ "--gutter": "1.2rem", padding: "0.4rem 1.2rem" } as any}
+                    className='col12 body-3 size32'
+                    style={{ "--gutter": "1.2rem" } as any}
                     placeholder={pickerType.includes("range") || pickerType === "auto" ? t("start-date") : "dd/mm/yyyy"}
                     onComplete={(ev: any) => ev.target.blur()}
                     onBlur={(ev) => {
@@ -306,8 +306,8 @@ const PopupDateTimePicker = forwardRef(({ value, style, endValue, repeatValue, o
                     <TextField
                         ref={inputEndRef}
                         autoComplete="off"
-                        className='col12 body-3'
-                        style={{ "--gutter": "1.2rem", padding: "0.4rem 1.2rem" } as any}
+                        className='col12 body-3 size32'
+                        style={{ "--gutter": "1.2rem" } as any}
                         placeholder={t("end-date")}
                         onComplete={(ev: any) => ev.target.blur()}
                         onBlur={(ev) => {
@@ -326,7 +326,7 @@ const PopupDateTimePicker = forwardRef(({ value, style, endValue, repeatValue, o
                     <TextField
                         autoComplete="off"
                         name='time-start'
-                        style={{ "--gutter": "1.2rem", padding: "0.4rem 1.2rem" } as any}
+                        style={{ "--gutter": "1.2rem" } as any}
                         onComplete={(ev: any) => { ev.target.blur() }}
                         register={methods.register("time-start", {
                             onChange: (ev) => ev.target.value = ev.target.value.trim(),
@@ -336,7 +336,7 @@ const PopupDateTimePicker = forwardRef(({ value, style, endValue, repeatValue, o
                                 } else ev.target.value = ""
                             }
                         }) as any}
-                        className='col12 body-3'
+                        className='col12 body-3 size32'
                         placeholder={"hh:mm"}
                         onFocus={(ev) => {
                             const rect = ev.target.closest("div")!.getBoundingClientRect()
@@ -362,7 +362,7 @@ const PopupDateTimePicker = forwardRef(({ value, style, endValue, repeatValue, o
                         <TextField
                             autoComplete="off"
                             name='time-end'
-                            style={{ "--gutter": "1.2rem", padding: "0.4rem 1.2rem" } as any}
+                            style={{ "--gutter": "1.2rem" } as any}
                             onComplete={(ev: any) => { ev.target.blur() }}
                             register={methods.register("time-end", {
                                 onChange: (ev) => ev.target.value = ev.target.value.trim(),
@@ -372,7 +372,7 @@ const PopupDateTimePicker = forwardRef(({ value, style, endValue, repeatValue, o
                                     } else ev.target.value = ""
                                 }
                             }) as any}
-                            className='col12 body-3'
+                            className='col12 body-3 size32'
                             placeholder={"hh:mm"}
                             onFocus={(ev) => {
                                 const rect = ev.target.closest("div")!.getBoundingClientRect()
