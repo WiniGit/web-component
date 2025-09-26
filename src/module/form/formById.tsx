@@ -344,7 +344,7 @@ export const FormById = forwardRef<FormByIdRef, FormByIdProps>((props, ref) => {
         } else return cols
     }, [props.customOptions, cols])
 
-    return formItem ? layers.filter((e: any) => !e.ParentId).map((e: any) => {
+    return formItem && !!cols.length && layers.filter((e: any) => !e.ParentId).map((e: any) => {
         return <RenderLayerElement
             key={e.Id}
             item={e}
@@ -360,6 +360,7 @@ export const FormById = forwardRef<FormByIdRef, FormByIdProps>((props, ref) => {
             cols={mapColOptions}
             rels={rels.map((_rel => ({ ..._rel, getOptions: async (params: any) => await getOptions({ ...params, _rel }) })))}
             options={methodsOptions.watch()}
+            onSubmit={methods.handleSubmit(onSubmit, props.onError)}
         />
-    }) : null
+    })
 })

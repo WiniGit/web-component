@@ -12,7 +12,7 @@ import { closePopup } from "../../component/popup/popup"
 import { NavLink, useLocation, useNavigate, useParams } from "react-router-dom"
 import { SimpleButton } from "../../component/button/button"
 import { useForm, UseFormReturn } from "react-hook-form"
-import { Util } from "../../controller/utils"
+import { randomGID, Util } from "../../controller/utils"
 import { ViewById } from "../view/viewById"
 import { regexGetVariableByThis, regexGetVariables, regexWatchDoubleQuote, regexWatchSingleQuote, replaceVariables } from "../card/config"
 import { CkEditorUploadAdapter, ConfigData } from "../../controller/config"
@@ -23,6 +23,9 @@ import { ProgressCircle } from "../../component/progress-circle/progress-circle"
 import { CustomCkEditor5 } from "../../component/ck-editor/ckeditor"
 import { FCheckbox, FColorPicker, FDateTimePicker, FGroupCheckbox, FGroupRadioButton, FInputPassword, FNumberPicker, FRadioButton, FSelect1, FSelectMultiple, FSwitch, FTextArea, FTextField, FUploadFile, FUploadMultipleFileType } from "./component-form"
 import { useTranslation } from "react-i18next"
+import { showDialog } from "../../component/dialog/dialog"
+import { DataController } from "../../controller/data"
+import { ToastMessage } from "../../component/toast-noti/toast-noti"
 
 interface Props {
     methods?: UseFormReturn
@@ -114,7 +117,8 @@ interface RenderLayerElementProps extends Props {
     index?: number,
     style?: CSSProperties,
     className?: string,
-    options?: { [p: string]: Array<{ [p: string]: any }> }
+    options?: { [p: string]: Array<{ [p: string]: any }> },
+    onSubmit?: () => void
 }
 
 export const pageAllRefs: { [p: string]: any } = {}
@@ -136,8 +140,9 @@ export const getValidLink = (link: string) => {
 const CaculateLayer = (props: RenderLayerElementProps) => {
     const findId = props.item.Setting?.id ?? props.item.Id
     // init refs
-    if (props.item.Type === ComponentType.form || props.item.Type === ComponentType.card)
+    if (props.item.Type.toLowerCase() === ComponentType.form.toLowerCase() || props.item.Type.toLowerCase() === ComponentType.card.toLowerCase()) {
         pageAllRefs[findId] = (props.propsData?.[findId] as any)?.ref ?? useRef(null)
+    }
     useEffect(() => {
         return () => { delete pageAllRefs[findId] }
     }, [])
@@ -264,7 +269,8 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                                 }
                                 break;
                             case ActionType.submit:
-                                pageAllRefs[actItem.To]?.current?.onSubmit()
+                                if (actItem.To === "this form") props.onSubmit?.()
+                                else pageAllRefs[actItem.To]?.current?.onSubmit()
                                 return;
                             case ActionType.showPopup:
                                 const openPopupBtn = document.querySelector(`.open-${actItem.To}`) as any
@@ -275,7 +281,25 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                                 if (closePopupBtn) closePopupBtn.click()
                                 return;
                             case ActionType.setValue:
-                                props.methods!.setValue(actItem.NameField, eval(actItem.CaculateValue))
+                                props.methods!.setValue(actItem.NameField, eval(actItem.Caculate))
+                                break;
+                            case ActionType.showDialog:
+                                showDialog({
+                                    status: actItem.Status,
+                                    title: actItem.Title,
+                                    content: actItem.Content,
+                                    submitTitle: actItem.SubmitTitle,
+                                    onSubmit: () => {
+                                        if (actItem.Caculate) {
+                                            (new Function("formResult", "Util", "DataController", "randomGID", "ToastMessage", `${actItem.Caculate}`))(props.methods?.getValues(), Util, DataController, randomGID, ToastMessage)
+                                        }
+                                    }
+                                })
+                                return;
+                            case ActionType.custom:
+                                if (actItem.Caculate) {
+                                    (new Function("formResult", "Util", "DataController", "randomGID", "ToastMessage", `${actItem.Caculate}`))(props.methods?.getValues(), Util, DataController, randomGID, ToastMessage)
+                                }
                                 return;
                             case ActionType.loadMore:
                                 if (pageAllRefs[actItem.loadingId]) {
@@ -420,6 +444,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
         let tmpProps = { ...customProps }
         if (props.item.NameField && tmpProps.validate?.some((v: any) => v.type === ValidateType.required)) tmpProps.required = true
         switch (props.item.Type) {
+            case "card":
             case ComponentType.card:
                 if (tmpProps.controller && tmpProps.controller !== "all") {
                     let newController = { ...tmpProps.controller }
@@ -630,6 +655,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
             else return <Winicon {...typeProps} />
         case ComponentType.chart:
             return <ChartById {...typeProps} id={typeProps.chartId} />
+        case "form":
         case ComponentType.form:
             if (props.itemData) typeProps.itemData = typeProps.itemData ? { ...props.itemData, ...typeProps.itemData } : props.itemData
             if (props.childrenData) typeProps.childrenData = typeProps.childrenData ? { ...props.childrenData, ...typeProps.childrenData } : props.childrenData
@@ -639,11 +665,13 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
             }}
                 {...typeProps} id={typeProps.formId} ref={pageAllRefs[findId]}
             />
+        case "card":
         case ComponentType.card:
             if (props.itemData) typeProps.itemData = typeProps.itemData ? { ...props.itemData, ...typeProps.itemData } : props.itemData
             if (props.childrenData) typeProps.childrenData = typeProps.childrenData ? { ...props.childrenData, ...typeProps.childrenData } : props.childrenData
             if (props.propsData) typeProps.propsData = typeProps.propsData ? { ...props.propsData, ...typeProps.propsData } : props.propsData
             return <CardById {...typeProps} id={typeProps.cardId} ref={pageAllRefs[findId]} />
+        case "view":
         case ComponentType.view:
             if (props.itemData) typeProps.itemData = typeProps.itemData ? { ...props.itemData, ...typeProps.itemData } : props.itemData
             if (props.childrenData) typeProps.childrenData = typeProps.childrenData ? { ...props.childrenData, ...typeProps.childrenData } : props.childrenData

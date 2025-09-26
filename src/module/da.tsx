@@ -95,11 +95,11 @@ export enum ActionType {
     showPopup = "showPopup",
     toastMessage = "toastMessage",
     closePopup = "closePopup",
-    mousedown = "mousedown",
-    mouseup = "mouseup",
     submit = "submit",
     setValue = "setValue",
     loadMore = "loadMore",
+    showDialog = "showDialog",
+    custom = "custom",
 }
 
 export interface ProjectItem {
