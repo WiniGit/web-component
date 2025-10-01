@@ -49,7 +49,7 @@ interface UploadFilesRef {
     element?: HTMLDivElement;
 }
 
-export const UploadFiles = forwardRef<UploadFilesRef, UploadFilesProps>(({ className = "body-3", style = {}, prevewMaxLength = 3, maxSize = 200 * 1024, helperTextColor = '#e14337', ...props }, ref) => {
+export const UploadFiles = forwardRef<UploadFilesRef, UploadFilesProps>(({ className = "body-3", style = {}, prevewMaxLength = 3, maxSize = 200 * 1024 * 1024, helperTextColor = '#e14337', ...props }, ref) => {
     const [files, setFiles] = useState<FilePreview[]>([])
     const popupRef = useRef<any>(null)
     const divRef = useRef<HTMLDivElement>(null)
