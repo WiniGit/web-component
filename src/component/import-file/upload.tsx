@@ -49,12 +49,14 @@ interface UploadFilesRef {
     element?: HTMLDivElement;
 }
 
-export const UploadFiles = forwardRef<UploadFilesRef, UploadFilesProps>(({ className = "body-3", style = {}, prevewMaxLength = 3, maxSize = 200 * 1024 * 1024, helperTextColor = '#e14337', ...props }, ref) => {
+const defaultSize = 200 * 1024
+
+export const UploadFiles = forwardRef<UploadFilesRef, UploadFilesProps>(({ className = "body-3", style = {}, prevewMaxLength = 3, maxSize = defaultSize, helperTextColor = '#e14337', ...props }, ref) => {
     const [files, setFiles] = useState<FilePreview[]>([])
     const popupRef = useRef<any>(null)
     const divRef = useRef<HTMLDivElement>(null)
     const { t } = useTranslation()
-    const sizeTitle: string | undefined = useMemo(() => maxSize ? formatFileSize(maxSize) : undefined, [maxSize])
+    const sizeTitle: string | undefined = useMemo(() => maxSize ? formatFileSize(maxSize * 1024) : undefined, [maxSize])
 
     useEffect(() => {
         setFiles(props.files || [])
@@ -73,8 +75,8 @@ export const UploadFiles = forwardRef<UploadFilesRef, UploadFilesProps>(({ class
                 onChange={(files) => {
                     const tmpFiles = files.filter(e => {
                         if (e.file) {
-                            return e.file.size <= maxSize * 1024
-                        } else return !e.size || e.size <= maxSize * 1024
+                            return e.file.size <= (maxSize * 1024)
+                        } else return !e.size || e.size <= (maxSize * 1024)
                     })
                     if (files.length !== tmpFiles.length) ToastMessage.errors(t("limitFileWarning", { sizeTitle: sizeTitle }))
                     setFiles(tmpFiles)
