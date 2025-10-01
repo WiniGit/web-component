@@ -76,7 +76,7 @@ export const UploadFiles = forwardRef<UploadFilesRef, UploadFilesProps>(({ class
                             return e.file.size <= maxSize * 1024
                         } else return !e.size || e.size <= maxSize * 1024
                     })
-                    if (files.length !== tmpFiles.length) ToastMessage.errors(t("limitFileWarning", { sizeTitle: maxSize }))
+                    if (files.length !== tmpFiles.length) ToastMessage.errors(t("limitFileWarning", { sizeTitle: sizeTitle }))
                     setFiles(tmpFiles)
                     props.onChange?.(tmpFiles)
                 }}
