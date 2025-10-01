@@ -1,8 +1,9 @@
 import styles from "./upload.module.css"
-import { CSSProperties, forwardRef, ReactNode, useEffect, useImperativeHandle, useRef, useState } from "react"
-import { Button, closePopup, NavLink, Popup, randomGID, showPopup, Text, TextField, Winicon } from "../../index"
+import { CSSProperties, forwardRef, ReactNode, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react"
+import { Button, closePopup, NavLink, Popup, randomGID, showPopup, Text, TextField, ToastMessage, Winicon } from "../../index"
 import { useTranslation } from "react-i18next"
 import { ConfigData } from "../../controller/config";
+import { formatFileSize } from "./import-file";
 
 interface FilePreview {
     id: string;
@@ -33,6 +34,11 @@ interface UploadFilesProps {
     disabled?: boolean;
     simpleStyle?: boolean;
     readOnly?: boolean;
+    /**
+    * maxSize unit: kb (kilobytes) \
+    * default: 200mb
+    */
+    maxSize?: number,
 }
 
 interface UploadFilesRef {
@@ -43,11 +49,12 @@ interface UploadFilesRef {
     element?: HTMLDivElement;
 }
 
-export const UploadFiles = forwardRef<UploadFilesRef, UploadFilesProps>(({ className = "body-3", style = {}, prevewMaxLength = 3, helperTextColor = '#e14337', ...props }, ref) => {
+export const UploadFiles = forwardRef<UploadFilesRef, UploadFilesProps>(({ className = "body-3", style = {}, prevewMaxLength = 3, maxSize = 200 * 1024, helperTextColor = '#e14337', ...props }, ref) => {
     const [files, setFiles] = useState<FilePreview[]>([])
     const popupRef = useRef<any>(null)
     const divRef = useRef<HTMLDivElement>(null)
     const { t } = useTranslation()
+    const sizeTitle: string | undefined = useMemo(() => maxSize ? formatFileSize(maxSize) : undefined, [maxSize])
 
     useEffect(() => {
         setFiles(props.files || [])
@@ -64,8 +71,14 @@ export const UploadFiles = forwardRef<UploadFilesRef, UploadFilesProps>(({ class
                 allowType={props.allowType}
                 linkDomain={props.linkDomain ?? ConfigData.fileUrl}
                 onChange={(files) => {
-                    setFiles(files)
-                    props.onChange?.(files)
+                    const tmpFiles = files.filter(e => {
+                        if (e.file) {
+                            return e.file.size <= maxSize * 1024
+                        } else return !e.size || e.size <= maxSize * 1024
+                    })
+                    if (files.length !== tmpFiles.length) ToastMessage.errors(t("limitFileWarning", { sizeTitle: maxSize }))
+                    setFiles(tmpFiles)
+                    props.onChange?.(tmpFiles)
                 }}
             />
         })

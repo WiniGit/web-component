@@ -47,7 +47,7 @@ interface ImportFileProps {
     simpleStyle?: boolean
 }
 
-function formatFileSize(bytes: number, decimals = 2) {
+export function formatFileSize(bytes: number, decimals = 2) {
     if (bytes === 0) return '0 Bytes';
 
     const k = 1024;

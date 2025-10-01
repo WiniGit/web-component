@@ -1,5 +1,5 @@
 import styles from "./component-form.module.css";
-import { CSSProperties, ReactNode, useMemo, useState } from "react";
+import { CSSProperties, KeyboardEventHandler, ReactNode, useMemo, useState } from "react";
 import { Controller, FieldValues, UseFormReturn } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { Checkbox, ColorPicker, DateTimePicker, ImportFile, NumberPicker, OptionsItem, RadioButton, Select1, SelectMultiple, Switch, TextArea, TextField, UploadFiles, Winicon } from "../../index"
@@ -16,6 +16,7 @@ interface FTextFieldProps {
     methods: UseFormReturn<any, any, undefined>;
     onBlur?: React.FocusEventHandler<HTMLInputElement>;
     onChange?: React.ChangeEventHandler<HTMLInputElement>;
+    onComplete?: KeyboardEventHandler<HTMLInputElement>
 }
 
 
@@ -26,6 +27,7 @@ export function FTextField(props: FTextFieldProps) {
     return <TextField
         {...props}
         register={props.name?.length ? (props.methods!.register(props.name, { required: props.required, onChange: props.onChange, onBlur: props.onBlur }) as any) : undefined}
+        onComplete={props.onComplete ?? ((ev: any) => { ev.target.blur() })}
         helperText={_covertErrors && (_covertErrors?.message?.length ? _covertErrors?.message : `${t("input")} ${props.name} ${t("value")}`.toLowerCase())}
         simpleStyle
     />

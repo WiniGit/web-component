@@ -87,7 +87,7 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
     actions = [],
     onChangeActions,
     onEditColumn,
-    features = ["add", <div style={{ flex: 1 }} />, "search", "divider", "export", "divider", "import"],
+    features = ["add", <div key={"space"} style={{ flex: 1 }} />, "search", "divider", "export", "divider", "import"],
     ...props }, ref) => {
     // static variables
     const configMethods = useForm<any>({ shouldFocusError: false, defaultValues: { columns: [], searchRaw: "*", sortby: [], TbName: tbName } })
