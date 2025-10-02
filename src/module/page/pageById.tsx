@@ -26,6 +26,8 @@ import { useTranslation } from "react-i18next"
 import { showDialog } from "../../component/dialog/dialog"
 import { DataController } from "../../controller/data"
 import { ToastMessage } from "../../component/toast-noti/toast-noti"
+import { VideoPlayer } from "../../component/video/video"
+import { IframePlayer } from "../../component/iframe/iframe"
 
 interface Props {
     methods?: UseFormReturn
@@ -189,10 +191,13 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                     getValue = Util.getSession(variable[1])
                     break;
                 default:
-                    if (regexWatchSingleQuote.test(execRegex[1])) {
-                        getValue = props.methods!.watch(execRegex[1].match(regexWatchSingleQuote)![1])
-                    } else if (regexWatchDoubleQuote.test(execRegex[1])) {
-                        getValue = props.methods!.watch(execRegex[1].match(regexWatchDoubleQuote)![1])
+                    try {
+                        if (regexWatchSingleQuote.test(execRegex[1]) || regexWatchDoubleQuote.test(execRegex[1])) {
+                            getValue = new Function("watch", `return ${p1}`)(props.methods!.watch)
+                        }
+                    } catch (error) {
+                        console.log("watch error", error)
+                        getValue = m
                     }
                     break;
             }
@@ -202,7 +207,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                 try {
                     getValue = eval(`\`${getValue}\``)
                 } catch (error) {
-                    console.log(getValue, error)
+                    console.log("getValue error", getValue, error)
                 }
             }
             return getValue
@@ -489,6 +494,12 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
             case ComponentType.text:
                 if (regexGetVariables.test(tmpProps.value)) tmpProps.value = replaceThisVariables(tmpProps.value)
                 break;
+            case ComponentType.img:
+            case ComponentType.video:
+            case ComponentType.audio:
+            case ComponentType.iframe:
+                if (regexGetVariables.test(tmpProps.src)) tmpProps.src = replaceThisVariables(tmpProps.src)
+                break;
             case ComponentType.select1:
             // @ts-ignore
             case ComponentType.selectMultiple:
@@ -638,6 +649,26 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                 alt=""
                 referrerPolicy="no-referrer"
                 onError={(ev) => { ev.currentTarget.src = handleErrorImgSrc }}
+                {...typeProps}
+            />
+        case ComponentType.video:
+            if (props.item.NameField && dataValue) {
+                return <VideoPlayer
+                    key={dataValue}
+                    {...typeProps}
+                    src={getValidLink(dataValue)}
+                />
+            } else return <VideoPlayer {...typeProps} />
+        case ComponentType.iframe:
+            if (props.item.NameField && dataValue) {
+                return <IframePlayer
+                    key={dataValue}
+                    referrerPolicy="no-referrer"
+                    {...typeProps}
+                    src={getValidLink(dataValue)}
+                />
+            } else return <IframePlayer
+                referrerPolicy="no-referrer"
                 {...typeProps}
             />
         case ComponentType.rate:
