@@ -253,7 +253,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
         if (_props.action?.length && Array.isArray(_props.action)) {
             Object.values(TriggerType).forEach(trigger => {
                 const triggerActions = _props.action.filter((e: any) => e.Type === trigger)
-                const handleEvent = async (acts = []) => {
+                const handleEvent = async (acts = [], event: any) => {
                     for (const [_, act] of acts.entries()) {
                         const actItem = act as { [p: string]: any }
                         switch (actItem.Action) {
@@ -296,14 +296,14 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                                     submitTitle: actItem.SubmitTitle,
                                     onSubmit: () => {
                                         if (actItem.Caculate) {
-                                            (new Function("formResult", "Util", "DataController", "randomGID", "ToastMessage", `${actItem.Caculate}`))(props.methods?.getValues(), Util, DataController, randomGID, ToastMessage)
+                                            (new Function("formResult", "Util", "DataController", "randomGID", "ToastMessage", "event", `${actItem.Caculate}`))(props.methods?.getValues(), Util, DataController, randomGID, ToastMessage, event)
                                         }
                                     }
                                 })
                                 return;
                             case ActionType.custom:
                                 if (actItem.Caculate) {
-                                    (new Function("formResult", "Util", "DataController", "randomGID", "ToastMessage", `${actItem.Caculate}`))(props.indexItem ?? props.methods?.getValues(), Util, DataController, randomGID, ToastMessage)
+                                    (new Function("formResult", "Util", "DataController", "randomGID", "ToastMessage", "event", `${actItem.Caculate}`))(props.indexItem ?? props.methods?.getValues(), Util, DataController, randomGID, ToastMessage, event)
                                 }
                                 return;
                             case ActionType.loadMore:
@@ -322,7 +322,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                 switch (trigger) {
                     case TriggerType.click:
                         if (triggerActions.length) {
-                            _props.onClick = () => handleEvent(triggerActions)
+                            _props.onClick = (ev: any) => handleEvent(triggerActions, ev)
                             if (_props.style) _props.style = { ..._props.style, cursor: "pointer" }
                             else _props.style = { cursor: "pointer" }
                         }
@@ -330,14 +330,14 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                     case TriggerType.onChange:
                     case TriggerType.onBlur:
                         if (triggerActions.length) {
-                            _props.onChange = () => handleEvent(triggerActions)
+                            _props.onChange = (ev: any) => handleEvent(triggerActions, ev)
                         }
                         break;
                     case TriggerType.scrollend:
                         if (triggerActions.length) {
                             _props.onScroll = (ev: any) => {
                                 let scrollElement = ev.target as HTMLDivElement
-                                if (scrollElement.scrollTop && Math.round(scrollElement.offsetHeight + scrollElement.scrollTop) >= (scrollElement.scrollHeight - 1)) handleEvent(triggerActions)
+                                if (scrollElement.scrollTop && Math.round(scrollElement.offsetHeight + scrollElement.scrollTop) >= (scrollElement.scrollHeight - 1)) handleEvent(triggerActions, ev)
                             }
                         }
                         break;
