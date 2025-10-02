@@ -87,7 +87,9 @@ export enum TriggerType {
     mouseleave = "mouseleave",
     mousedown = "mousedown",
     mouseup = "mouseup",
-    scrollend = "scrollend"
+    scrollend = "scrollend",
+    onChange = "onChange",
+    onBlur = "onBlur",
 }
 
 export enum ActionType {

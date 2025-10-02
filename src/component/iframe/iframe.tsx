@@ -38,7 +38,6 @@ export const IframePlayer = forwardRef<IframePlayerRef, IframePlayerProps>(({ sr
             height={height}
             allow={allow}
             allowFullScreen={allowFullScreen}
-            allowTransparency={allowTransparency}
             referrerPolicy={referrerPolicy}
             name={name}
             {...props}

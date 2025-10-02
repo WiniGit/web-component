@@ -303,7 +303,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                                 return;
                             case ActionType.custom:
                                 if (actItem.Caculate) {
-                                    (new Function("formResult", "Util", "DataController", "randomGID", "ToastMessage", `${actItem.Caculate}`))(props.methods?.getValues(), Util, DataController, randomGID, ToastMessage)
+                                    (new Function("formResult", "Util", "DataController", "randomGID", "ToastMessage", `${actItem.Caculate}`))(props.indexItem ?? props.methods?.getValues(), Util, DataController, randomGID, ToastMessage)
                                 }
                                 return;
                             case ActionType.loadMore:
@@ -325,6 +325,12 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                             _props.onClick = () => handleEvent(triggerActions)
                             if (_props.style) _props.style = { ..._props.style, cursor: "pointer" }
                             else _props.style = { cursor: "pointer" }
+                        }
+                        break;
+                    case TriggerType.onChange:
+                    case TriggerType.onBlur:
+                        if (triggerActions.length) {
+                            _props.onChange = () => handleEvent(triggerActions)
                         }
                         break;
                     case TriggerType.scrollend:
