@@ -303,7 +303,9 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                                 return;
                             case ActionType.custom:
                                 if (actItem.Caculate) {
-                                    (new Function("formResult", "Util", "DataController", "randomGID", "ToastMessage", "event", `${actItem.Caculate}`))(props.indexItem ?? props.methods?.getValues(), Util, DataController, randomGID, ToastMessage, event)
+                                    (async () => {
+                                        await (new Function("formResult", "Util", "DataController", "randomGID", "ToastMessage", "event", `${actItem.Caculate}`))(props.indexItem ?? props.methods?.getValues(), Util, DataController, randomGID, ToastMessage, event)
+                                    })();
                                 }
                                 return;
                             case ActionType.loadMore:
