@@ -128,18 +128,6 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
             getFields()
         }
     }, [tbName])
-    useEffect(() => {
-        if (props.customFilterOptions && fields.length) {
-            setFields(prev => prev.map((f: any) => {
-                const tmpCustom = props.customFilterOptions![f.Column ?? f.Name]
-                if (tmpCustom) {
-                    if (tmpCustom.query) return { ...f, Form: { ...f.Form, Query: tmpCustom.query } }
-                    else if (tmpCustom.options) return { ...f, Form: { ...f.Form, Options: tmpCustom.options } }
-                }
-                return f
-            }))
-        }
-    }, [fields, props.customFilterOptions])
     useEffect(() => { configMethods.setValue("columns", columns) }, [columns])
     useEffect(() => { configMethods.setValue("searchRaw", filterData.searchRaw ?? "*") }, [filterData.searchRaw])
     useEffect(() => { configMethods.setValue("sortby", filterData.sortby ?? []) }, [JSON.stringify(filterData.sortby)])
@@ -307,7 +295,14 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
                             return <SearchFilterData
                                 key={"search"}
                                 columns={columns}
-                                fields={fields}
+                                fields={props.customFilterOptions ? fields.map((f: any) => {
+                                    const tmpCustom = props.customFilterOptions![f.Column ?? f.Name]
+                                    if (tmpCustom) {
+                                        if (tmpCustom.query) return { ...f, Query: tmpCustom.query }
+                                        else if (tmpCustom.options) return { ...f, Form: { ...f.Form, Options: tmpCustom.options } }
+                                    }
+                                    return f
+                                }) : fields}
                                 initFilterList={filterList}
                                 onChangeFilterData={enableEdit ? onChangeFilterList : undefined}
                                 searchRaw={configMethods.watch("searchRaw")}
