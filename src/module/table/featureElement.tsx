@@ -527,7 +527,7 @@ const InputValueTile = ({ fieldItem, filterItem, colData, onChange }: InputValue
                                     selected={data.value}
                                     controlName={fieldItem.TablePK}
                                     isMulti
-                                    searchRaw={fieldItem.Query}
+                                    searchRaw={fieldItem.Query?.length ? fieldItem.Query : undefined}
                                     onSelect={onChangeData}
                                 />
                             })
