@@ -747,18 +747,11 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
         case ComponentType.button:
             return <SimpleButton {...typeProps} />
         case ComponentType.textField:
-            if (typeProps.IsPassword)
-                return <FInputPassword
-                    {...typeProps}
-                    name={props.item.NameField}
-                    methods={props.methods}
-                />
+            const { IsPassword, ...typeProps2 } = typeProps
+            if (IsPassword)
+                return <FInputPassword {...typeProps2} name={props.item.NameField} methods={props.methods} />
             else
-                return <FTextField
-                    {...typeProps}
-                    name={props.item.NameField}
-                    methods={props.methods}
-                />
+                return <FTextField  {...typeProps2} name={props.item.NameField} methods={props.methods} />
         case ComponentType.textArea:
             if (typeProps?.style?.height === "fit-content") typeProps.autoHeight = true
             return <FTextArea
