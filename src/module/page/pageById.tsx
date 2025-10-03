@@ -139,6 +139,7 @@ export const getValidLink = (link: string) => {
     else return ConfigData.fileUrl + (link.startsWith("/") ? link : `/${link}`)
 }
 
+const AsyncFunction = Object.getPrototypeOf(async function () { }).constructor;
 const CaculateLayer = (props: RenderLayerElementProps) => {
     const findId = props.item.Setting?.id ?? props.item.Id
     // init refs
@@ -294,18 +295,36 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                                     title: actItem.Title,
                                     content: actItem.Content,
                                     submitTitle: actItem.SubmitTitle,
-                                    onSubmit: () => {
+                                    onSubmit: async () => {
                                         if (actItem.Caculate) {
-                                            (new Function("formResult", "Util", "DataController", "randomGID", "ToastMessage", "event", `${actItem.Caculate}`))(props.methods?.getValues(), Util, DataController, randomGID, ToastMessage, event)
+                                            await (new AsyncFunction(
+                                                "formResult", "Util", "DataController", "randomGID", "ToastMessage", "event",
+                                                `${actItem.Caculate}` // This string can now safely contain the 'await' keyword
+                                            ))(
+                                                props.indexItem ?? props.methods?.getValues(),
+                                                Util,
+                                                DataController,
+                                                randomGID,
+                                                ToastMessage,
+                                                event
+                                            )
                                         }
                                     }
                                 })
                                 return;
                             case ActionType.custom:
                                 if (actItem.Caculate) {
-                                    (async () => {
-                                        await (new Function("formResult", "Util", "DataController", "randomGID", "ToastMessage", "event", `${actItem.Caculate}`))(props.indexItem ?? props.methods?.getValues(), Util, DataController, randomGID, ToastMessage, event)
-                                    })();
+                                    await (new AsyncFunction(
+                                        "formResult", "Util", "DataController", "randomGID", "ToastMessage", "event",
+                                        `${actItem.Caculate}` // This string can now safely contain the 'await' keyword
+                                    ))(
+                                        props.indexItem ?? props.methods?.getValues(),
+                                        Util,
+                                        DataController,
+                                        randomGID,
+                                        ToastMessage,
+                                        event
+                                    )
                                 }
                                 return;
                             case ActionType.loadMore:
@@ -330,9 +349,13 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                         }
                         break;
                     case TriggerType.onChange:
-                    case TriggerType.onBlur:
                         if (triggerActions.length) {
                             _props.onChange = (ev: any) => handleEvent(triggerActions, ev)
+                        }
+                        break;
+                    case TriggerType.onBlur:
+                        if (triggerActions.length) {
+                            _props.onBlur = (ev: any) => handleEvent(triggerActions, ev)
                         }
                         break;
                     case TriggerType.scrollend:
