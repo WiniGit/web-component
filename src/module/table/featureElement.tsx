@@ -359,7 +359,7 @@ const FilterTile = ({ filterItem, onScroll, onRemove, columns = [], fields = [],
             <button type="button" className={`row ${styles["dropdown-select-btn"]}`} disabled={!enableEdit} onClick={showOptions}>
                 {(ColDataTypeIcon as any)[iconType]}
                 <Text style={{ flex: 1 }} className="body-3" maxLine={1}>{colData?.Title ?? tmp.Form.Label ?? filterItem.name}</Text>
-                <Winicon src="outline/arrows/down-arrow" size={"1.2rem"} />
+                <Winicon src="outline/arrows/down-arrow" size={12} />
             </button>
             <div className="row" style={{ flex: 1, overflow: "visible" }}>
                 {tmp && <InputValueTile fieldItem={tmp} filterItem={filterItem} colData={colData} onChange={onChange} />}
@@ -425,7 +425,7 @@ const InputValueTile = ({ fieldItem, filterItem, colData, onChange }: InputValue
                                 ref: popupRef as any,
                                 hideOverlay: true,
                                 content: <FilterValueOptionsDropdown
-                                    onClose={() => { setTimeout(() => { btn.isOpen = false; }, 150); }}
+                                    onClose={() => { setTimeout(() => { btn.isOpen = false }, 150) }}
                                     style={{ top: rect.bottom + 2, left: rect.x, width: rect.width }}
                                     initData={fieldItem.Form.Options}
                                     selected={data.value}

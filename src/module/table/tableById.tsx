@@ -1,5 +1,5 @@
 import styles from "./table.module.css";
-import { BaseDA, Button, DataController, DialogAlignment, imgFileTypes, Pagination, Popup, SettingDataController, showDialog, showPopup, TableController, Text, ToastMessage, Winicon } from "../../index";
+import { BaseDA, Button, DataController, DialogAlignment, imgFileTypes, OptionsItem, Pagination, Popup, SettingDataController, showDialog, showPopup, TableController, Text, ToastMessage, Winicon } from "../../index";
 import { Dispatch, forwardRef, ReactNode, SetStateAction, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useForm } from "react-hook-form";
@@ -53,6 +53,7 @@ interface DataTableProps {
     onChangeActions?: () => void;
     onEditColumn?: (params: { [p: string]: any }) => void;
     customCell?: { [k: string]: (params: { item: { [p: string]: any }, index: number }) => ReactNode };
+    customFilterOptions?: { [k: string]: { query?: string, options?: OptionsItem[] } };
     hideToolbar?: boolean;
     hideActionColumn?: boolean;
     /** allow: "add" | "divider" | "search" | "export" | "import" | ReactNode | undefined */
@@ -127,6 +128,18 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
             getFields()
         }
     }, [tbName])
+    useEffect(() => {
+        if (props.customFilterOptions && fields.length) {
+            setFields(prev => prev.map((f: any) => {
+                const tmpCustom = props.customFilterOptions![f.Column ?? f.Name]
+                if (tmpCustom) {
+                    if (tmpCustom.query) return { ...f, Form: { ...f.Form, Query: tmpCustom.query } }
+                    else if (tmpCustom.options) return { ...f, Form: { ...f.Form, Options: tmpCustom.options } }
+                }
+                return f
+            }))
+        }
+    }, [fields, props.customFilterOptions])
     useEffect(() => { configMethods.setValue("columns", columns) }, [columns])
     useEffect(() => { configMethods.setValue("searchRaw", filterData.searchRaw ?? "*") }, [filterData.searchRaw])
     useEffect(() => { configMethods.setValue("sortby", filterData.sortby ?? []) }, [JSON.stringify(filterData.sortby)])
