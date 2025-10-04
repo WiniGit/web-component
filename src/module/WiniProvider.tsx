@@ -41,7 +41,7 @@ const appendDesignTokens = (list: Array<{ [p: string]: any }>) => {
             \n${colorVariables.map(e => {
             const tkParent = groupTokens.find(g => g.Id === e.ParentId);
             return e.Value?.lightMode ? `--${tkParent ? `${Util.toSlug(tkParent.Name)}-` : ""}${Util.toSlug(e.Name)}: ${e.Value.lightMode};` : ""
-            }).join('\n')}\n
+        }).join('\n')}\n
         }
 
         html.dark {
@@ -49,7 +49,7 @@ const appendDesignTokens = (list: Array<{ [p: string]: any }>) => {
             \n${colorVariables.map(e => {
             const tkParent = groupTokens.find(g => g.Id === e.ParentId);
             return e.Value?.lightMode ? `--${tkParent ? `${Util.toSlug(tkParent.Name)}-` : ""}${Util.toSlug(e.Name)}: ${e.Value.darkMode};` : ""
-            }).join('\n')}\n
+        }).join('\n')}\n
         }
 
         .${LayoutElement.main} { 
@@ -70,15 +70,15 @@ const appendDesignTokens = (list: Array<{ [p: string]: any }>) => {
             
         @supports (color: light-dark(black, white)) {\n
             :root { \n${colorVariables.map(e => {
-                const tkParent = groupTokens.find(g => g.Id === e.ParentId);
-                return e.Value?.lightMode ? `--${tkParent ? `${Util.toSlug(tkParent.Name)}-` : ""}${Util.toSlug(e.Name)}: light-dark(${e.Value.lightMode}, ${e.Value.darkMode});` : ""
-            }).join('\n')}\n }\n\n
+            const tkParent = groupTokens.find(g => g.Id === e.ParentId);
+            return e.Value?.lightMode ? `--${tkParent ? `${Util.toSlug(tkParent.Name)}-` : ""}${Util.toSlug(e.Name)}: light-dark(${e.Value.lightMode}, ${e.Value.darkMode});` : ""
+        }).join('\n')}\n }\n\n
         }\n\n
         ${classVariables.map(e => {
             let classValue: string | undefined = undefined
             switch (e.Type) {
                 case DesignTokenType.font:
-                    if(e.Value.lightMode)
+                    if (e.Value.lightMode)
                         classValue = `font: ${e.Value.lightMode}`
                     else {
                         var tkParent = groupTokens.find(g => g.Id === e.ParentId);
@@ -87,12 +87,12 @@ const appendDesignTokens = (list: Array<{ [p: string]: any }>) => {
                     }
                     break;
                 case DesignTokenType.boxShadow:
-                    if(e.Value.lightMode)
+                    if (e.Value.lightMode)
                         classValue = `box-shadow: ${e.Value.lightMode}`
                     else {
                         tkParent = groupTokens.find(g => g.Id === e.ParentId);
                         classValue = `box-shadow: ${e.Value.webMode.boxShadow ?? e.Value.webMode["box-shadow"]}`
-                        return `.${encodeClassName(`${tkParent ? `${Util.toSlug(tkParent.Name)}-` : ""}${Util.toSlug(e.Name)}`, "shadow")} { \n${classValue};\n }` 
+                        return `.${encodeClassName(`${tkParent ? `${Util.toSlug(tkParent.Name)}-` : ""}${Util.toSlug(e.Name)}`, "shadow")} { \n${classValue};\n }`
                     }
                     break;
                 case DesignTokenType.custom:
@@ -115,6 +115,7 @@ export const WiniProvider = (props: Props) => {
     ConfigData.pid = props.pid
     ConfigData.url = props.url
     ConfigData.imgUrlId = props.imgUrlId
+    ConfigData.fileUrl = props.fileUrl
     if (props.onInvalidToken) ConfigData.onInvalidToken = props.onInvalidToken
     const { i18n } = useTranslation()
     const [loadedResources, setLoadedResources] = useState(false)
