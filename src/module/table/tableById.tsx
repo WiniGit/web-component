@@ -1,6 +1,6 @@
 import styles from "./table.module.css";
 import { BaseDA, Button, DataController, DialogAlignment, imgFileTypes, OptionsItem, Pagination, Popup, SettingDataController, showDialog, showPopup, TableController, Text, ToastMessage, Winicon } from "../../index";
-import { Dispatch, forwardRef, ReactNode, SetStateAction, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react";
+import { CSSProperties, Dispatch, forwardRef, ReactNode, SetStateAction, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useForm } from "react-hook-form";
 import { TableHeader, TableRow } from "./tableElement";
@@ -11,7 +11,7 @@ import { cellValue } from "./config";
 import AddEditElementForm from "./addEditElement";
 import { getValidLink } from "../page/pageById";
 
-export function TableById({ id }: { id: string }) {
+export function TableById({ id, ...props }: { id: string, className?: string, style?: CSSProperties }) {
     const [reportItem, setReportItem] = useState<{ [p: string]: any }>()
     const settingDataController = new SettingDataController("report")
     const columns = useMemo(() => reportItem?.Props ?? [], [reportItem])
@@ -28,10 +28,13 @@ export function TableById({ id }: { id: string }) {
         }
     }, [id])
 
-    return reportItem && <DataTable key={reportItem.Id} tbName={reportItem.TbName} columns={columns} />
+    return reportItem && <DataTable key={reportItem.Id} tbName={reportItem.TbName} columns={columns} className={props.className} style={props.style} />
 }
 
 interface DataTableProps {
+    id?: string;
+    className?: string;
+    style?: CSSProperties;
     tbName: string;
     staticSearch?: string;
     title?: string;
@@ -72,6 +75,9 @@ interface DataTableRef {
 }
 
 export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
+    id,
+    className,
+    style = {},
     tbName,
     staticSearch = "",
     title = "",
@@ -278,7 +284,7 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
     }
 
     return <>
-        <div className={`col ${styles["table-view"]}`} style={{ padding: !!data.totalCount && data.totalCount > 20 ? "0 2.4rem" : "0 2.4rem 1.6rem", flex: 1 }}>
+        <div className={`col ${className ?? ""}`} style={{ padding: !!data.totalCount && data.totalCount > 20 ? "0 2.4rem" : "0 2.4rem 1.6rem", flex: 1, ...style }}>
             <Popup ref={popupRef} />
             {!!features.length && <div className={`row ${styles["table-feature"]}`}>
                 {features.map((f, i) => {
