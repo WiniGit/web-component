@@ -209,7 +209,7 @@ export const FormById = forwardRef<FormByIdRef, FormByIdProps>((props, ref) => {
                     if (fileGuids.length) {
                         BaseDA.getFilesInfor(fileGuids).then(res => {
                             if (res.code === 200) _fileIds.forEach(e => {
-                                const tmpF = res.data.filter((f: any) => !!f && e.id.includes(f.Id)).map((f: any) => ({ id: f.Id, name: f.Name, size: f.Size, type: f.Type, url: ConfigData.url + f.Url }))
+                                const tmpF = res.data.filter((f: any) => !!f && e.id.includes(f.Id)).map((f: any) => ({ id: f.Id, name: f.Name, size: f.Size, type: f.Type, url: ConfigData.fileUrl + f.Url }))
                                 methods.setValue(e.name, [...filesInfor.filter((f: any) => e.id.includes(f.exactUrl)), ...tmpF])
                             })
                         })

@@ -15,7 +15,7 @@ import { useForm, UseFormReturn } from "react-hook-form"
 import { randomGID, Util } from "../../controller/utils"
 import { ViewById } from "../view/viewById"
 import { regexGetVariableByThis, regexGetVariables, regexWatchDoubleQuote, regexWatchSingleQuote, replaceVariables } from "../card/config"
-import { CkEditorUploadAdapter, ConfigData } from "../../controller/config"
+import { BaseDA, CkEditorUploadAdapter, ConfigData } from "../../controller/config"
 import { handleErrorImgSrc, LayoutElement, regexI18n, supportProperties } from "./config"
 import { Rating } from "../../component/rating/rating"
 import { ProgressBar } from "../../component/progress-bar/progress-bar"
@@ -298,7 +298,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                                     onSubmit: async () => {
                                         if (actItem.Caculate) {
                                             await (new AsyncFunction(
-                                                "formResult", "Util", "DataController", "randomGID", "ToastMessage", "event",
+                                                "formResult", "Util", "DataController", "randomGID", "ToastMessage", "uploadFiles", "getFilesInfor", "event",
                                                 `${actItem.Caculate}` // This string can now safely contain the 'await' keyword
                                             ))(
                                                 props.indexItem ?? props.methods?.getValues(),
@@ -306,6 +306,8 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                                                 DataController,
                                                 randomGID,
                                                 ToastMessage,
+                                                BaseDA.uploadFiles,
+                                                BaseDA.getFilesInfor,
                                                 event
                                             )
                                         }
@@ -315,7 +317,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                             case ActionType.custom:
                                 if (actItem.Caculate) {
                                     await (new AsyncFunction(
-                                        "formResult", "Util", "DataController", "randomGID", "ToastMessage", "event",
+                                        "formResult", "Util", "DataController", "randomGID", "ToastMessage", "uploadFiles", "getFilesInfor", "event",
                                         `${actItem.Caculate}` // This string can now safely contain the 'await' keyword
                                     ))(
                                         props.indexItem ?? props.methods?.getValues(),
@@ -323,6 +325,8 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                                         DataController,
                                         randomGID,
                                         ToastMessage,
+                                        BaseDA.uploadFiles,
+                                        BaseDA.getFilesInfor,
                                         event
                                     )
                                 }
