@@ -1029,11 +1029,13 @@ export const PageByUrl = ({ childrenData, ...props }: PageByUrlProps) => {
                 methods={props.methods ?? methods}
             />
         } else if (props.onlyBody) {
-            return loading ? <LoadingView /> :
+            // return loading ? <LoadingView /> :
+            return loading ? <></> :
                 <RenderPageView key={pageItem.Id} layers={layers} {...props} childrenData={childrenData} methods={props.methods ?? methods} />
         } else {
             return pageItem && !!layout.length ? <RenderPageView key={pageItem.LayoutId} layers={layout} {...props} childrenData={childrenData} methods={props.methods ?? methods}>
-                {loading ? <LoadingView /> :
+                {/* {loading ? <LoadingView /> : */}
+                {loading ? <></> :
                     <RenderPageView key={pageItem.Id} layers={layers} {...props} childrenData={childrenData} methods={props.methods ?? methods} bodyId={layout.find(e => e.Setting?.className?.includes(LayoutElement.body))?.Id} />}
             </RenderPageView> : null
         }
