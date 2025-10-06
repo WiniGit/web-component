@@ -12,6 +12,14 @@ const defaultOptions: ToastOptions = {
 
 export class ToastMessage {
 
+    static infor(message: string, options?: ToastOptions) {
+        toast.info(<span style={{ flex: 1 }}>{message}</span>, { ...defaultOptions, ...(options ?? {}) });
+    }
+
+    static warn(message: string, options?: ToastOptions) {
+        toast.warn(<span style={{ flex: 1 }}>{message}</span>, { ...defaultOptions, ...(options ?? {}) });
+    }
+
     static success(message: string, options?: ToastOptions) {
         toast.success(<span style={{ flex: 1 }}>{message}</span>, { ...defaultOptions, ...(options ?? {}) });
     }
