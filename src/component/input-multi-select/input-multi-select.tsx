@@ -24,7 +24,8 @@ interface SelectMultipleProps {
     helperTextColor?: string,
     style?: CSSProperties,
     showClearValueButton?: boolean,
-    popupClassName?: string,
+    dropdownClassName?: string,
+    dropdownStyle?: CSSProperties,
     prefix?: ReactNode,
     suffix?: ReactNode,
     simpleStyle?: boolean,
@@ -151,7 +152,8 @@ export const SelectMultiple = forwardRef<SelectMultipleRef, SelectMultipleProps>
                 return { data: options, totalCount: options.length }
             })}
             selected={options.filter(e => value.includes(e.id))}
-            style={offsetRef.current!}
+            style={{ ...offsetRef.current!, ...(props.dropdownStyle ?? {}) }}
+            className={props.dropdownClassName}
             onChange={(ev, optList) => {
                 const newOList: OptionsItem[] = []
                 optList.forEach(newO => {
@@ -170,6 +172,7 @@ export const SelectMultiple = forwardRef<SelectMultipleRef, SelectMultipleProps>
 interface OptionDropListProps {
     onClose: (ev: any) => void,
     style: CSSProperties,
+    className?: string,
     selected: Array<OptionsItem>,
     onChange: (value: boolean, e: OptionsItem[]) => void,
     getOptions: (params: { length: number, search?: string, parentId?: string | number }) => Promise<{ data: Array<OptionsItem>, totalCount: number }>
@@ -210,7 +213,7 @@ const OptionDropList = (props: OptionDropListProps) => {
             const onLoadmore = Math.round(scrollElement.offsetHeight + scrollElement.scrollTop) >= (scrollElement.scrollHeight - 1)
             if (onLoadmore && options.totalCount && options.data.length < options.totalCount) getData(options.data.length)
         }}
-        className={`col ${styles["select-multi-popup"]}`} style={props.style}>
+        className={`col ${styles["select-multi-popup"]} ${props.className ?? ''}`} style={props.style}>
         {options.totalCount === 0 && !initTotal.current ? <div className='col' style={{ alignItems: "center" }}>
             <Winicon src='color/files/archive-file' size={28} />
             <h6 className='heading-7' style={{ margin: "0.8rem" }}>{t("noResultFound")}</h6>

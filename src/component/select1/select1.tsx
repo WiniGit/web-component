@@ -35,6 +35,8 @@ interface Select1Props {
     hideAutoSuffix?: boolean,
     simpleStyle?: boolean
     customOptionsList?: ReactNode,
+    dropdownClassName?: string,
+    dropdownStyle?: CSSProperties,
 }
 
 interface Select1Ref {
@@ -121,7 +123,8 @@ export const Select1 = forwardRef<Select1Ref, Select1Props>(({ style = {}, ...pr
                 return { data: options, totalCount: options.length }
             })}
             selected={value}
-            style={offsetRef.current!}
+            style={{ ...offsetRef.current!, ...(props.dropdownStyle ?? {}) }}
+            className={props.dropdownClassName}
             onSelect={(e) => {
                 if (options.every(o => o.id !== e.id)) setOptions([e])
                 setValue(e.id)
@@ -132,7 +135,7 @@ export const Select1 = forwardRef<Select1Ref, Select1Props>(({ style = {}, ...pr
     </>
 })
 
-const OptionDropList = (props: { onClose: () => void, style: CSSProperties, selected?: string | number, onSelect: (e: OptionsItem) => void, getOptions: (params: { length: number, search?: string, parentId?: string | number }) => Promise<{ data: Array<OptionsItem>, totalCount: number }>, }) => {
+const OptionDropList = (props: { onClose: () => void, style: CSSProperties, className?: string, selected?: string | number, onSelect: (e: OptionsItem) => void, getOptions: (params: { length: number, search?: string, parentId?: string | number }) => Promise<{ data: Array<OptionsItem>, totalCount: number }>, }) => {
     const divRef = useRef<HTMLDivElement>(null)
     const searchInput = useRef<TextFieldRef>(null)
     const initTotal = useRef<number>(null)
@@ -167,7 +170,7 @@ const OptionDropList = (props: { onClose: () => void, style: CSSProperties, sele
             const onLoadmore = Math.round(scrollElement.offsetHeight + scrollElement.scrollTop) >= (scrollElement.scrollHeight - 1)
             if (onLoadmore && options.totalCount && options.data.length < options.totalCount) getData(options.data.length)
         }}
-        className={`col ${styles["select1-popup"]}`} style={props.style}>
+        className={`col ${styles["select1-popup"]} ${props.className ?? ''}`} style={props.style}>
         {options.totalCount === 0 && !initTotal.current ? <div className='col' style={{ alignItems: "center" }}>
             <Winicon src='color/files/archive-file' size={28} />
             <h6 className='heading-7' style={{ margin: "0.8rem" }}>{t("noResultFound")}</h6>
