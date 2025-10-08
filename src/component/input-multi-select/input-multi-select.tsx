@@ -222,6 +222,7 @@ const OptionDropList = (props: OptionDropListProps) => {
             <>
                 {initTotal.current && initTotal.current > 10 && <div className={`col ${styles["search-options"]}`}>
                     <TextField
+                        autoFocus
                         className={`body-3 size32`}
                         placeholder={t("search")}
                         prefix={<Winicon src={"outline/development/zoom"} size={"1.4rem"} />}
