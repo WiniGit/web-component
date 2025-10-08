@@ -84,6 +84,7 @@ export const CardById = forwardRef<CardRef, CardProps>((props, ref) => {
 
     const mapRelativeData = async () => {
         const relKeys = keyNames.filter((e: string) => e.split(".").length > 1)
+        if (!relKeys.length) return methods.setValue("_rels", [])
         const _rels = await _relController.getListSimple({
             page: 1, size: 100,
             query: `@TableFK:{${cardItem!.TbName}} @Column:{${relKeys.map((e: any) => e.split(".")[0]).filter((k: string, i: number, arr: Array<string>) => arr.indexOf(k) === i).join(" | ")}}`,
@@ -161,7 +162,7 @@ export const CardById = forwardRef<CardRef, CardProps>((props, ref) => {
             const fileIds = data.data.map((e: any) => fileCols.map((col: any) => e[col.Name]?.split(","))).flat(Infinity).filter((e: string | undefined, i: number, arr: Array<string>) => e?.length && ConfigData.regexGuid.test(e) && currentFiles.every((el: any) => el.Id !== e) && arr.indexOf(e) === i)
             if (fileIds.length) {
                 BaseDA.getFilesInfor(fileIds).then(fileRes => {
-                    if (fileRes.code === 200) methods.setValue("_files", [...currentFiles, ...fileRes.data.filter((e: any) => e !== undefined && e !== null)])
+                    if (fileRes.code === 200) methods.setValue("_files", [...currentFiles, ...fileRes.data.filter((e: any) => !!e)])
                 })
             }
         }
