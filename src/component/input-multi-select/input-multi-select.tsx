@@ -1,4 +1,4 @@
-import React, { CSSProperties, Dispatch, forwardRef, ReactNode, SetStateAction, useEffect, useImperativeHandle, useRef, useState } from 'react'
+import React, { CSSProperties, Dispatch, forwardRef, ReactNode, SetStateAction, useDeferredValue, useEffect, useImperativeHandle, useRef, useState } from 'react'
 import styles from './input-multi-select.module.css'
 import { OptionsItem } from '../select1/select1'
 import { useTranslation } from 'react-i18next';
@@ -180,12 +180,13 @@ interface OptionDropListProps {
 
 const OptionDropList = (props: OptionDropListProps) => {
     const divRef = useRef<HTMLDivElement>(null)
-    const searchInput = useRef<TextFieldRef>(null)
+    const [searchInput, setSearchInput] = useState<string>("")
+    const searchValue = useDeferredValue(searchInput)
     const initTotal = useRef<number>(null)
     const [options, setOptions] = useState<{ data: OptionsItem[], totalCount?: number }>({ data: [], totalCount: undefined })
     const { t } = useTranslation()
     const getData = async (length?: number) => {
-        const res = await props.getOptions({ length: length ?? 0, search: searchInput.current?.inputElement?.value ?? "" })
+        const res = await props.getOptions({ length: length ?? 0, search: searchValue })
         if (initTotal.current === null) initTotal.current = res.totalCount
         setOptions(length ? { data: [...options.data, ...res.data], totalCount: res.totalCount } : res)
     }
@@ -221,16 +222,14 @@ const OptionDropList = (props: OptionDropListProps) => {
             <>
                 {initTotal.current && initTotal.current > 10 && <div className={`col ${styles["search-options"]}`}>
                     <TextField
-                        ref={searchInput}
                         className={`body-3 size32`}
                         placeholder={t("search")}
                         prefix={<Winicon src={"outline/development/zoom"} size={"1.4rem"} />}
                         onChange={(ev) => {
-                            if (ev.target.value.trim().length % 2 === 0) getData()
+                            setSearchInput(ev.target.value.trim())
                         }}
                         onComplete={(ev: any) => {
                             ev.target.blur()
-                            getData()
                         }}
                     />
                 </div>}
@@ -244,7 +243,7 @@ const OptionDropList = (props: OptionDropListProps) => {
                         item={opt}
                         selected={props.selected}
                         children={options.data.filter(e => e.parentId === opt.id)}
-                        getOptions={props.getOptions}
+                        getOptions={(params) => props.getOptions?.({ ...params, search: searchValue })}
                         arr={arr}
                         onChange={props.onChange}
                     />)}

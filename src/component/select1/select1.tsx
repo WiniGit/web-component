@@ -1,5 +1,5 @@
 import styles from './select1.module.css'
-import { CSSProperties, Dispatch, forwardRef, ReactNode, SetStateAction, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react'
+import { CSSProperties, Dispatch, forwardRef, ReactNode, SetStateAction, useDeferredValue, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 import { Winicon } from '../wini-icon/winicon';
 import { TextField, TextFieldRef } from '../text-field/text-field';
@@ -137,19 +137,20 @@ export const Select1 = forwardRef<Select1Ref, Select1Props>(({ style = {}, ...pr
 
 const OptionDropList = (props: { onClose: () => void, style: CSSProperties, className?: string, selected?: string | number, onSelect: (e: OptionsItem) => void, getOptions: (params: { length: number, search?: string, parentId?: string | number }) => Promise<{ data: Array<OptionsItem>, totalCount: number }>, }) => {
     const divRef = useRef<HTMLDivElement>(null)
-    const searchInput = useRef<TextFieldRef>(null)
+    const [searchInput, setSearchInput] = useState<string>("")
+    const searchValue = useDeferredValue(searchInput)
     const initTotal = useRef<number>(null)
     const [options, setOptions] = useState<{ data: OptionsItem[], totalCount?: number }>({ data: [], totalCount: undefined })
     const { t } = useTranslation()
     const getData = async (length?: number) => {
-        const res = await props.getOptions({ length: length ?? 0, search: searchInput.current?.inputElement?.value ?? "" })
+        const res = await props.getOptions({ length: length ?? 0, search: searchValue })
         if (initTotal.current === null) initTotal.current = res.totalCount
         setOptions(length ? { data: [...options.data, ...res.data], totalCount: res.totalCount } : res)
     }
 
     useEffect(() => {
         getData()
-    }, [])
+    }, [searchValue])
 
     useEffect(() => {
         if (divRef.current) {
@@ -178,16 +179,14 @@ const OptionDropList = (props: { onClose: () => void, style: CSSProperties, clas
             <>
                 {initTotal.current && initTotal.current > 10 && <div className={`col ${styles["search-options"]}`}>
                     <TextField
-                        ref={searchInput}
                         className={`body-3 size32`}
                         placeholder={t("search")}
-                        prefix={<Winicon src={"outline/development/zoom"} size={"1.4rem"} />}
+                        prefix={<Winicon src={"outline/development/zoom"} size={14} />}
                         onChange={(ev) => {
-                            if (ev.target.value.trim().length % 2 === 0) getData()
+                            setSearchInput(ev.target.value.trim())
                         }}
                         onComplete={(ev: any) => {
                             ev.target.blur()
-                            getData()
                         }}
                     />
                 </div>}
@@ -202,7 +201,7 @@ const OptionDropList = (props: { onClose: () => void, style: CSSProperties, clas
                         selected={opt.id === props.selected}
                         children={options.data.filter(e => e.parentId === opt.id)}
                         onClick={props.onSelect}
-                        getOptions={(params) => props.getOptions?.({ ...params, search: searchInput.current?.inputElement?.value ?? "" })}
+                        getOptions={(params) => props.getOptions?.({ ...params, search: searchValue })}
                     />)}
             </>
         }
