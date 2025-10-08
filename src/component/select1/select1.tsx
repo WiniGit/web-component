@@ -2,7 +2,8 @@ import styles from './select1.module.css'
 import { CSSProperties, Dispatch, forwardRef, ReactNode, SetStateAction, useDeferredValue, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 import { Winicon } from '../wini-icon/winicon';
-import { TextField, TextFieldRef } from '../text-field/text-field';
+import { TextField } from '../text-field/text-field';
+import { Util } from '../../controller/utils';
 
 export interface OptionsItem {
     prefix?: ReactNode,
@@ -117,7 +118,13 @@ export const Select1 = forwardRef<Select1Ref, Select1Props>(({ style = {}, ...pr
             onClose={() => { setTimeout(() => { setIsOpen(false) }, 150) }}
             getOptions={props.getOptions ?? (async ({ search }) => {
                 if (search?.length) {
-                    const filter = options.filter(e => search.toLowerCase().includes(`${e.id}`.toLowerCase()) || `${e.id}`.toLowerCase().includes(search.toLowerCase()) || search.toLowerCase().includes(`${e.name}`.toLowerCase()) || `${e.name}`.toLowerCase().includes(search.toLowerCase()))
+                    const filter = options.filter(e => {
+                        return Util.toSlug(search.toLowerCase()).includes(Util.toSlug(`${e.id}`.toLowerCase())) || Util.toSlug(`${e.id}`.toLowerCase()).includes(Util.toSlug(search.toLowerCase())) ||
+                            (typeof e.name === "string" && (Util.toSlug(search.toLowerCase()).includes(Util.toSlug(`${e.name}`.toLowerCase())) || Util.toSlug(`${e.name}`.toLowerCase()).includes(Util.toSlug(search.toLowerCase())))) ||
+                            // without slug
+                            search.toLowerCase().includes(`${e.id}`.toLowerCase()) || `${e.id}`.toLowerCase().includes(search.toLowerCase()) ||
+                            (typeof e.name === "string" && (search.toLowerCase().includes(`${e.name}`.toLowerCase()) || `${e.name}`.toLowerCase().includes(search.toLowerCase())));
+                    })
                     return { data: filter, totalCount: filter.length }
                 }
                 return { data: options, totalCount: options.length }

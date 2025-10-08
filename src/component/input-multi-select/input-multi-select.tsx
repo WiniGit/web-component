@@ -3,8 +3,9 @@ import styles from './input-multi-select.module.css'
 import { OptionsItem } from '../select1/select1'
 import { useTranslation } from 'react-i18next';
 import { Winicon } from '../wini-icon/winicon';
-import { TextField, TextFieldRef } from '../text-field/text-field';
+import { TextField } from '../text-field/text-field';
 import { Checkbox } from '../checkbox/checkbox';
+import { Util } from '../../controller/utils';
 
 interface SelectMultipleProps {
     id?: string,
@@ -146,7 +147,13 @@ export const SelectMultiple = forwardRef<SelectMultipleRef, SelectMultipleProps>
             }}
             getOptions={props.getOptions ?? (async ({ search }) => {
                 if (search?.length) {
-                    const filter = options.filter(e => search.toLowerCase().includes(`${e.id}`.toLowerCase()) || `${e.id}`.toLowerCase().includes(search.toLowerCase()) || search.toLowerCase().includes(`${e.name}`.toLowerCase()) || `${e.name}`.toLowerCase().includes(search.toLowerCase()))
+                    const filter = options.filter(e => {
+                        return Util.toSlug(search.toLowerCase()).includes(Util.toSlug(`${e.id}`.toLowerCase())) || Util.toSlug(`${e.id}`.toLowerCase()).includes(Util.toSlug(search.toLowerCase())) ||
+                            (typeof e.name === "string" && (Util.toSlug(search.toLowerCase()).includes(Util.toSlug(`${e.name}`.toLowerCase())) || Util.toSlug(`${e.name}`.toLowerCase()).includes(Util.toSlug(search.toLowerCase())))) ||
+                            // without slug
+                            search.toLowerCase().includes(`${e.id}`.toLowerCase()) || `${e.id}`.toLowerCase().includes(search.toLowerCase()) ||
+                            (typeof e.name === "string" && (search.toLowerCase().includes(`${e.name}`.toLowerCase()) || `${e.name}`.toLowerCase().includes(search.toLowerCase())));
+                    })
                     return { data: filter, totalCount: filter.length }
                 }
                 return { data: options, totalCount: options.length }
@@ -225,7 +232,7 @@ const OptionDropList = (props: OptionDropListProps) => {
                         autoFocus
                         className={`body-3 size32`}
                         placeholder={t("search")}
-                        prefix={<Winicon src={"outline/development/zoom"} size={"1.4rem"} />}
+                        prefix={<Winicon src={"outline/development/zoom"} size={14} />}
                         onChange={(ev) => {
                             setSearchInput(ev.target.value.trim())
                         }}
