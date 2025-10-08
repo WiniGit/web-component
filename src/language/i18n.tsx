@@ -119,6 +119,7 @@ const resources = {
             done: "Done",
             repeat: "Repeat",
             action: "Action",
+            search: "Search",
         },
     },
     vi: {
@@ -236,7 +237,8 @@ const resources = {
             files: "Danh sách tệp",
             done: "Hoàn thành",
             repeat: "Lặp lại",
-            action: "Hành động"
+            action: "Hành động",
+            search: "Tìm kiếm",
         },
     },
 }
