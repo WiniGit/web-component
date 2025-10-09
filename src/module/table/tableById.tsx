@@ -447,7 +447,7 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
         </div>}
         {!props.hideToolbar && !!selected.length && <div className={`row ${styles["selected-item-options"]}`}>
             <div className={`row ${styles["selected-item-total"]}`}>
-                <Text className="button-text-5">{selected.length} items selected</Text>
+                <Text className="button-text-5">{t("itemsSelected", { count: selected.length })} items selected</Text>
                 <Winicon src="outline/user interface/e-remove" size={12} onClick={() => setSelected([])} />
             </div>
             <div className={`row ${styles["selected-item-actions"]}`}>
