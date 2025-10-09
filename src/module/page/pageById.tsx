@@ -830,7 +830,10 @@ const CustomText = ({ type = "div", ...props }: { type?: "div" | "p" | "span" | 
         let _props: any = { ...props, style: { ...(props.style ?? {}) } }
         delete _props.value
         _props.style ??= {}
-        if (props.maxLine && type !== "div") _props.style['--max-line'] = props.maxLine
+        if (props.maxLine && type !== "div") {
+            _props.style['--max-line'] = props.maxLine
+            delete _props.maxLine
+        }
         if (props.html) _props.dangerouslySetInnerHTML = { __html: props.html }
         if (type && type !== "div") _props.className = `${props.maxLine ? "comp-text" : ""}${props.html ? "-innerhtml" : ""} ${props.className ?? ""}`
         else _props.className = props.className
