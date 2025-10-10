@@ -386,7 +386,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
             delete extendProps.style
             _props = { ..._props, ...extendProps }
         }
-        return _props
+        return watchForCustomProps ? { ...watchForCustomProps, ..._props } : _props
     }, [props.item, props.propsData, props.methods, watchForCustomProps])
     const watchForDataValue = useMemo(() => {
         const watchData = props.methods!.watch()
