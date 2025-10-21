@@ -209,7 +209,7 @@ const UploadFilesDetailPopup = forwardRef((props: { files: FilePreview[], onChan
                 type: type,
                 status: "uploaded",
                 exactUrl: url,
-                url: url.startsWith("https") ? url : `${props.linkDomain}${url.startsWith("/") || url.startsWith("\\") ? url : `/${url}`}`
+                url: url.startsWith("http") ? url : `${props.linkDomain}${url.startsWith("/") || url.startsWith("\\") ? url : `/${url}`}`
             };
             if (props.multiple) setFiles(prev => [...prev, file]);
             else setFiles([file]);

@@ -66,12 +66,12 @@ interface FTextAreaProps {
     onChange?: React.ChangeEventHandler<HTMLTextAreaElement>;
 }
 
-export function FTextArea(props: FTextAreaProps) {
+export function FTextArea({ autoHeight, ...props}: FTextAreaProps) {
     const _covertErrors = useMemo(() => props.name ? convertErrors(props.methods.formState.errors, props.name) : undefined, [props.name, props.methods.formState.errors?.[props.name!]])
     const { t } = useTranslation()
 
     return <TextArea
-        ref={props.autoHeight ? ((txtAreaRef) => {
+        ref={autoHeight ? ((txtAreaRef) => {
             if (txtAreaRef) {
                 const txtAreaElement = txtAreaRef.inputElement as any
                 txtAreaElement.style.height = `0px`
