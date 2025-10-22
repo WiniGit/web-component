@@ -2,7 +2,7 @@ import styles from "./table.module.css";
 import { BaseDA, Button, DataController, DialogAlignment, imgFileTypes, OptionsItem, Pagination, Popup, SettingDataController, showDialog, showPopup, TableController, Text, ToastMessage, Winicon } from "../../index";
 import { CSSProperties, Dispatch, forwardRef, ReactNode, SetStateAction, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useForm } from "react-hook-form";
+import { useForm, UseFormReturn } from "react-hook-form";
 import { TableHeader, TableRow } from "./tableElement";
 import ExportXlsx from "./exportXlsx";
 import { ButtonImportData, SearchFilterData } from "./featureElement";
@@ -64,6 +64,9 @@ interface DataTableProps {
     /** default: true */
     isMultiplePage?: boolean;
     getData?: (page: number, size: number, exportData?: boolean) => Promise<{ data: Array<{ [p: string]: any }>, totalCount?: number }>;
+    expandForm?: (methods: UseFormReturn) => ReactNode;
+    handleSubmit?: (ev: { [k: string]: any }, type: "add" | "edit") => Promise<any>;
+    customFields?: { [key: string]: (methods: UseFormReturn) => ReactNode }
 }
 
 interface DataTableRef {

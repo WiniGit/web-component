@@ -16,6 +16,7 @@ interface AddEditElementFormProps {
     onSuccess?: Function;
     expandForm?: (methods: UseFormReturn) => ReactNode;
     handleSubmit?: (ev: { [k: string]: any }, type: "add" | "edit") => Promise<any>;
+    customFields?: { [key: string]: (methods: UseFormReturn) => ReactNode }
 }
 
 const AddEditElementForm = forwardRef(({ tbName = "", title, activeColumns = [], id, onSuccess, expandForm, handleSubmit, ...props }: AddEditElementFormProps, ref: any) => {
@@ -116,10 +117,11 @@ interface FormViewProps {
     onCancel?: MouseEventHandler<HTMLButtonElement | HTMLAnchorElement>;
     onSuccess?: () => void;
     expandForm?: (methods: UseFormReturn) => ReactNode;
-    handleSubmit?: (ev: { [k: string]: any }, type: "add" | "edit") => Promise<any>
+    handleSubmit?: (ev: { [k: string]: any }, type: "add" | "edit") => Promise<any>;
+    customFields?: { [key: string]: (methods: UseFormReturn) => ReactNode }
 }
 
-const FormView = ({ cols = [], rels = [], item, tbName, onCancel, onSuccess, expandForm, handleSubmit }: FormViewProps) => {
+const FormView = ({ cols = [], rels = [], item, tbName, onCancel, onSuccess, expandForm, handleSubmit, customFields }: FormViewProps) => {
     const dataController = new DataController(tbName)
     const methods = useForm<any>({ shouldFocusError: false, defaultValues: { Id: randomGID() } })
     const watchRel = useMemo(() => rels.filter(e => e.Query && e.Query.match(regexGetVariableByThis)?.length), [rels.length])
@@ -368,8 +370,13 @@ const FormView = ({ cols = [], rels = [], item, tbName, onCancel, onSuccess, exp
 
     return <form className="col" style={{ flex: 1, width: '100%', height: '100%' }}>
         <div className="col" style={{ flex: 1, width: '100%', height: '100%', padding: '1.6rem 2.4rem', gap: '2.4rem', overflow: 'hidden auto' }}>
-            {cols.map((e) => <RenderComponentByType key={e.Id} fieldItem={e} methods={methods} style={{ order: e.Form.Sort }} />)}
+            {cols.map((e) => {
+                const checkCustom = customFields?.[e.Name]
+                return checkCustom ? checkCustom(methods) : <RenderComponentByType key={e.Id} fieldItem={e} methods={methods} style={{ order: e.Form.Sort }} />;
+            })}
             {rels.map((_rel, _) => {
+                const checkCustom = customFields?.[_rel.Column]
+                if (checkCustom) return checkCustom(methods)
                 const _options = methodsOptions.watch(`${_rel.Column}_Options`) ?? []
                 let _mapOptions = _options.map((e: any) => {
                     return {
