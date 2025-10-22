@@ -19,7 +19,7 @@ interface AddEditElementFormProps {
     customFields?: { [key: string]: (methods: UseFormReturn) => ReactNode }
 }
 
-const AddEditElementForm = forwardRef(({ tbName = "", title, activeColumns = [], id, onSuccess, expandForm, handleSubmit, ...props }: AddEditElementFormProps, ref: any) => {
+const AddEditElementForm = forwardRef(({ tbName = "", title, activeColumns = [], id, onSuccess, expandForm, handleSubmit, customFields, ...props }: AddEditElementFormProps, ref: any) => {
     const dataController = new DataController(tbName)
     const [item, setItem] = useState<{ [p: string]: any }>()
     const [column, setColumn] = useState<{ [p: string]: any }[]>([])
@@ -102,6 +102,7 @@ const AddEditElementForm = forwardRef(({ tbName = "", title, activeColumns = [],
                 onSuccess?.()
             }}
             handleSubmit={handleSubmit}
+            customFields={customFields}
         />}
     </div>
 })
