@@ -75,6 +75,7 @@ interface DataTableRef {
     setData: Dispatch<SetStateAction<{ data: Array<{ [p: string]: any }>, totalCount?: number }>>;
     selected: string[];
     setSelected: Dispatch<SetStateAction<string[]>>;
+    showAddEditPopup: (id?: string) => void
 }
 
 export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
@@ -189,7 +190,7 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
         }
     }
 
-    useImperativeHandle(ref, () => ({ getData, data, setData, selected, setSelected }), [columns, staticSearch, tbName, filterData, configMethods.watch(), data, selected])
+    useImperativeHandle(ref, () => ({ getData, data, setData, selected, setSelected, showAddEditPopup }), [columns, staticSearch, tbName, filterData, configMethods.watch(), data, selected])
 
     useEffect(() => {
         if (columns.length && fields.length) getData(pageDetails.page, pageDetails.size)
