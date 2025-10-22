@@ -15,9 +15,10 @@ interface AddEditElementFormProps {
     id?: string;
     onSuccess?: Function;
     expandForm?: (methods: UseFormReturn) => ReactNode;
+    handleSubmit?: (ev: { [k: string]: any }, type: "add" | "edit") => Promise<any>;
 }
 
-const AddEditElementForm = forwardRef(({ tbName = "", title, activeColumns = [], id, onSuccess, expandForm, ...props }: AddEditElementFormProps, ref: any) => {
+const AddEditElementForm = forwardRef(({ tbName = "", title, activeColumns = [], id, onSuccess, expandForm, handleSubmit, ...props }: AddEditElementFormProps, ref: any) => {
     const dataController = new DataController(tbName)
     const [item, setItem] = useState<{ [p: string]: any }>()
     const [column, setColumn] = useState<{ [p: string]: any }[]>([])
@@ -99,6 +100,7 @@ const AddEditElementForm = forwardRef(({ tbName = "", title, activeColumns = [],
                 ToastMessage.success(`${id ? t('edit') : t('add')} ${title ?? tbName} successfully!`)
                 onSuccess?.()
             }}
+            handleSubmit={handleSubmit}
         />}
     </div>
 })
@@ -113,10 +115,11 @@ interface FormViewProps {
     tbName: string;
     onCancel?: MouseEventHandler<HTMLButtonElement | HTMLAnchorElement>;
     onSuccess?: () => void;
-    expandForm?: (methods: UseFormReturn) => ReactNode
+    expandForm?: (methods: UseFormReturn) => ReactNode;
+    handleSubmit?: (ev: { [k: string]: any }, type: "add" | "edit") => Promise<any>
 }
 
-const FormView = ({ cols = [], rels = [], item, tbName, onCancel, onSuccess, expandForm }: FormViewProps) => {
+const FormView = ({ cols = [], rels = [], item, tbName, onCancel, onSuccess, expandForm, handleSubmit }: FormViewProps) => {
     const dataController = new DataController(tbName)
     const methods = useForm<any>({ shouldFocusError: false, defaultValues: { Id: randomGID() } })
     const watchRel = useMemo(() => rels.filter(e => e.Query && e.Query.match(regexGetVariableByThis)?.length), [rels.length])
@@ -203,8 +206,11 @@ const FormView = ({ cols = [], rels = [], item, tbName, onCancel, onSuccess, exp
             if (dataItem[_rel.Column] && Array.isArray(dataItem[_rel.Column]))
                 dataItem[_rel.Column] = dataItem[_rel.Column].join(",")
         }
-        const res = await dataController.add([dataItem])
-        if (res.code !== 200) return ToastMessage.errors(res.message)
+        if (handleSubmit) await handleSubmit(dataItem, item ? "edit" : "add")
+        else {
+            const res = await dataController.add([dataItem])
+            if (res.code !== 200) return ToastMessage.errors(res.message)
+        }
         onSuccess?.()
     }
 

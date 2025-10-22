@@ -66,7 +66,7 @@ interface FTextAreaProps {
     onChange?: React.ChangeEventHandler<HTMLTextAreaElement>;
 }
 
-export function FTextArea({ autoHeight, ...props}: FTextAreaProps) {
+export function FTextArea({ autoHeight, ...props }: FTextAreaProps) {
     const _covertErrors = useMemo(() => props.name ? convertErrors(props.methods.formState.errors, props.name) : undefined, [props.name, props.methods.formState.errors?.[props.name!]])
     const { t } = useTranslation()
 

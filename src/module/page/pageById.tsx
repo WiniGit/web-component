@@ -545,6 +545,12 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
             // @ts-ignore
             case ComponentType.textField:
                 if (props.item.NameField?.length && props.cols?.find(e => e.Name === props.item.NameField)?.DataType === FEDataType.PASSWORD) tmpProps.IsPassword = true
+            // @ts-ignore
+            case ComponentType.dateTimePicker:
+                if (props.item.NameField?.length && props.cols?.find(e => e.Name === props.item.NameField)?.DataType === FEDataType.DATE) {
+                    tmpProps.pickerType = "date"
+                    tmpProps.pickOnly = true
+                }
             case ComponentType.textArea:
                 if (tmpProps.placeholder && regexGetVariables.test(tmpProps.placeholder)) tmpProps.placeholder = replaceThisVariables(tmpProps.placeholder)
                 if (children.length) {
