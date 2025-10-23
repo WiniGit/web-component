@@ -131,7 +131,7 @@ export const SearchFilterData = ({ columns = [], fields = [], searchRaw = "*", o
             prefix={<Winicon src={"fill/development/zoom"} size={14} />}
             style={{ flex: 1, maxWidth: '26.8rem' }}
             className="body-3 size32"
-            suffix={<Winicon src={"fill/arrows/down-arrow"} size={12} onClick={(ev: any) => {
+            suffix={searchinColumns.length > 1 && <Winicon src={"fill/arrows/down-arrow"} size={12} onClick={(ev: any) => {
                 const inputContainer = ev.target.closest("label")
                 if (inputContainer.onOpen) return closePopup(popupRef as any)
                 const rect = inputContainer.getBoundingClientRect()
