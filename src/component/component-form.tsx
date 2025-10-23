@@ -309,6 +309,7 @@ interface SelectMultipleFormProps extends SimpleFormProps {
     suffix?: ReactNode;
     previewMaxLength?: number;
     showClearValueButton?: boolean;
+    customPreviewValue?: ReactNode
 }
 
 export function SelectMultipleForm({ style = {}, selectMultiStyle = {}, ...params }: SelectMultipleFormProps) {
@@ -329,6 +330,7 @@ export function SelectMultipleForm({ style = {}, selectMultiStyle = {}, ...param
                     className="body-3"
                     prefix={params.prefix}
                     suffix={params.suffix}
+                    customPreviewValue={params.customPreviewValue}
                     previewMaxLength={params.previewMaxLength}
                     showClearValueButton={params.showClearValueButton}
                     style={{ width: '100%', borderRadius: '0.8rem', flex: params.className?.includes('row') ? 1 : undefined, ...selectMultiStyle }}

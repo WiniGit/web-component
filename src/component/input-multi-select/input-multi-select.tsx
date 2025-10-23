@@ -31,7 +31,8 @@ interface SelectMultipleProps {
     suffix?: ReactNode,
     simpleStyle?: boolean,
     customOptionsList?: ReactNode,
-    previewMaxLength?: number
+    previewMaxLength?: number,
+    customPreviewValue?: ReactNode
 }
 
 interface SelectMultipleRef {
@@ -113,16 +114,18 @@ export const SelectMultiple = forwardRef<SelectMultipleRef, SelectMultipleProps>
             {props.prefix}
             <div className={`row ${styles["preview-container"]}`}>
                 {!value.length && <span style={{ opacity: 0.5, font: "inherit" }}>{props.placeholder}</span>}
-                {value.slice(0, previewMaxLength).map(item => {
-                    const optionItem = options.find(e => e.id === item)
-                    return <div key={item} className={`row ${styles['selected-item-value']}`}>
-                        <span>{optionItem?.name}</span>
-                        <Winicon src={"outline/user interface/e-remove"} className={`${styles['remove-icon']}`} size={12} onClick={optionItem?.disabled ? undefined : (ev) => onClickItem(ev, item)} />
-                    </div>
-                })}
-                {value.length > previewMaxLength && <div className={`row ${styles['selected-item-value']}`}>
-                    <span>+{value.length - previewMaxLength}</span>
-                </div>}
+                {props.customPreviewValue ?? <>
+                    {value.slice(0, previewMaxLength).map(item => {
+                        const optionItem = options.find(e => e.id === item)
+                        return <div key={item} className={`row ${styles['selected-item-value']}`}>
+                            <span>{optionItem?.name}</span>
+                            <Winicon src={"outline/user interface/e-remove"} className={`${styles['remove-icon']}`} size={12} onClick={optionItem?.disabled ? undefined : (ev) => onClickItem(ev, item)} />
+                        </div>
+                    })}
+                    {value.length > previewMaxLength && <div className={`row ${styles['selected-item-value']}`}>
+                        <span>+{value.length - previewMaxLength}</span>
+                    </div>}
+                </>}
             </div>
             {props.suffix ||
                 (
