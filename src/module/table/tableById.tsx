@@ -42,6 +42,7 @@ interface DataTableProps {
     onChangeConfigData?: (params: Array<{ [p: string]: any }>) => void;
     filterData?: {
         searchRaw: string,
+        pattern?: { returns: Array<string>, [p: string]: Array<string> | { searchRaw?: string, reducers: string } },
         sortby: Array<{ prop: string, direction: string }>,
         /** requred searchRaw */
         required?: string
@@ -175,7 +176,7 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
             page: page, size: size,
             searchRaw: filterData.required?.length ? `${filterData.required}${finalSearchRaw !== "*" ? finalSearchRaw : ""}` : finalSearchRaw,
             sortby: sortby?.length ? sortby.map((s: any) => (s.prop.includes(".") ? { prop: s.prop.split(".").shift(), direction: s.direction } : s)) : [{ prop: "DateCreated", direction: "DESC" }],
-            pattern: pattern
+            pattern: filterData.pattern ? { ...pattern, ...filterData.pattern } : pattern
         })
         if (res.code === 200) {
             if (exportData) return res
@@ -194,7 +195,7 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
 
     useEffect(() => {
         if (columns.length && fields.length) getData(pageDetails.page, pageDetails.size)
-    }, [columns, configMethods.watch("searchRaw"), configMethods.watch("sortby"), filterData.required, fields])
+    }, [columns, configMethods.watch("searchRaw"), configMethods.watch("sortby"), filterData.required, fields, filterData.pattern])
 
     useEffect(() => {
         if (selected.length) setSelected([])
