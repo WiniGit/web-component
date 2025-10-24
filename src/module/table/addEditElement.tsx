@@ -15,7 +15,7 @@ interface AddEditElementFormProps {
     id?: string;
     onSuccess?: Function;
     expandForm?: (methods: UseFormReturn) => ReactNode;
-    handleSubmit?: (ev: { [k: string]: any }, initItem?: { [k: string]: any }) => Promise<any>;
+    handleSubmit?: (params: { item: { [k: string]: any }, initItem?: { [k: string]: any }, methods: UseFormReturn }) => Promise<any>;
     customFields?: { [key: string]: (methods: UseFormReturn) => ReactNode }
 }
 
@@ -118,7 +118,7 @@ interface FormViewProps {
     onCancel?: MouseEventHandler<HTMLButtonElement | HTMLAnchorElement>;
     onSuccess?: () => void;
     expandForm?: (methods: UseFormReturn) => ReactNode;
-    handleSubmit?: (ev: { [k: string]: any }, initItem?: { [k: string]: any }) => Promise<any>;
+    handleSubmit?: (params: { item: { [k: string]: any }, initItem?: { [k: string]: any }, methods: UseFormReturn }) => Promise<any>;
     customFields?: { [key: string]: (methods: UseFormReturn) => ReactNode }
 }
 
@@ -209,7 +209,7 @@ const FormView = ({ cols = [], rels = [], item, tbName, onCancel, onSuccess, exp
             if (dataItem[_rel.Column] && Array.isArray(dataItem[_rel.Column]))
                 dataItem[_rel.Column] = dataItem[_rel.Column].join(",")
         }
-        if (handleSubmit) await handleSubmit(dataItem, item)
+        if (handleSubmit) await handleSubmit({ item: dataItem, initItem: item, methods })
         else {
             const res = await dataController.add([dataItem])
             if (res.code !== 200) return ToastMessage.errors(res.message)
