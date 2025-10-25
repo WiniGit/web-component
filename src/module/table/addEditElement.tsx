@@ -19,7 +19,7 @@ interface AddEditElementFormProps {
     customFields?: { [key: string]: (methods: UseFormReturn) => ReactNode }
 }
 
-const AddEditElementForm = forwardRef(({ tbName = "", title, activeColumns = [], id, onSuccess, expandForm, handleSubmit, customFields, ...props }: AddEditElementFormProps, ref: any) => {
+const AddEditElementForm = forwardRef(({ tbName = "", title, activeColumns = [], id, onSuccess, expandForm, handleSubmit, customFields }: AddEditElementFormProps, ref: any) => {
     const dataController = new DataController(tbName)
     const [item, setItem] = useState<{ [p: string]: any }>()
     const [column, setColumn] = useState<{ [p: string]: any }[]>([])
@@ -84,7 +84,7 @@ const AddEditElementForm = forwardRef(({ tbName = "", title, activeColumns = [],
         {!!column.length && (!id || item) && <FormView
             cols={column.filter(e => !e.Query?.length)}
             rels={relative}
-            item={item ?? props}
+            item={item}
             tbName={tbName}
             expandForm={expandForm}
             onCancel={() => {
@@ -113,7 +113,7 @@ export default AddEditElementForm
 interface FormViewProps {
     cols: { [key: string]: any }[];
     rels: { [key: string]: any }[];
-    item: { [key: string]: any };
+    item?: { [key: string]: any };
     tbName: string;
     onCancel?: MouseEventHandler<HTMLButtonElement | HTMLAnchorElement>;
     onSuccess?: () => void;
@@ -373,7 +373,9 @@ const FormView = ({ cols = [], rels = [], item, tbName, onCancel, onSuccess, exp
         <div className="col" style={{ flex: 1, width: '100%', height: '100%', padding: '1.6rem 2.4rem', gap: '2.4rem', overflow: 'hidden auto' }}>
             {cols.map((e) => {
                 const checkCustom = customFields?.[e.Name]
-                return checkCustom ? checkCustom(methods) : <RenderComponentByType key={e.Id} fieldItem={e} methods={methods} style={{ order: e.Form.Sort }} />;
+                if (checkCustom) return checkCustom(methods)
+                const tmpFieldItem = (item && e.Form.Uneditable) ? { ...e, Form: { ...e.Form, Disabled: true } } : e
+                return <RenderComponentByType key={e.Id} fieldItem={tmpFieldItem} methods={methods} style={{ order: e.Form.Sort }} />;
             })}
             {rels.map((_rel, _) => {
                 const checkCustom = customFields?.[_rel.Column]
@@ -393,6 +395,7 @@ const FormView = ({ cols = [], rels = [], item, tbName, onCancel, onSuccess, exp
                             methods={methods}
                             key={_rel.Id}
                             required={_rel.Form.Required}
+                            disabled={(item && _rel.Form.Uneditable) || _rel.Form.Disabled}
                             name={_rel.Column}
                             label={_rel.Form.Label ?? _rel.Column}
                             placeholder={_rel.Form.Placeholder}
@@ -410,6 +413,7 @@ const FormView = ({ cols = [], rels = [], item, tbName, onCancel, onSuccess, exp
                             methods={methods}
                             key={_rel.Id}
                             required={_rel.Form.Required}
+                            disabled={(item && _rel.Form.Uneditable) || _rel.Form.Disabled}
                             name={_rel.Column}
                             label={_rel.Form.Label ?? _rel.Column}
                             placeholder={_rel.Form.Placeholder}
