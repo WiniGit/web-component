@@ -66,7 +66,7 @@ interface DataTableProps {
     isMultiplePage?: boolean;
     getData?: (page: number, size: number, exportData?: boolean) => Promise<{ data: Array<{ [p: string]: any }>, totalCount?: number }>;
     expandForm?: (methods: UseFormReturn) => ReactNode;
-    handleSubmit?: (params: { item: { [k: string]: any }, initItem?: { [k: string]: any }, methods: UseFormReturn }) => Promise<any>;
+    handleSubmit?: (params: { item: { [k: string]: any }, initItem?: { [k: string]: any }, methods: UseFormReturn, onSuccess?: () => void }) => Promise<any>;
     customFields?: { [key: string]: (methods: UseFormReturn) => ReactNode }
 }
 
