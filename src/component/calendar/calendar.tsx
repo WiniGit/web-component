@@ -77,9 +77,9 @@ class TCalendar extends React.Component<CalendarProps, CalendarState> {
     private maxDate: Date;
     constructor(props: CalendarProps) {
         super(props);
-        this.minDate = !this.props.min || this.props.min.getTime() < startDate.getTime() ? startDate : this.props.min
-        this.maxDate = !this.props.max || this.props.max.getTime() > endDate.getTime() ? endDate : this.props.max
-        this.state = stateValue(this.minDate, this.maxDate, this.props.value, this.props.range)
+        this.minDate = !props.min || props.min.getTime() < startDate.getTime() ? startDate : props.min
+        this.maxDate = !props.max || props.max.getTime() > endDate.getTime() ? endDate : props.max
+        this.state = stateValue(this.minDate, this.maxDate, props.value, props.range)
         this.showDateInMonth = this.showDateInMonth.bind(this)
         this.showMonthInYear = this.showMonthInYear.bind(this)
         this.showYearInRange = this.showYearInRange.bind(this)

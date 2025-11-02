@@ -205,6 +205,7 @@ const FormView = ({ cols = [], rels = [], item, tbName, onCancel, onSuccess, exp
                 }
             }
         }
+        if(dataItem.DateCreated instanceof Date) dataItem.DateCreated = dataItem.DateCreated.getTime()
         for (let _rel of rels) {
             if (dataItem[_rel.Column] && Array.isArray(dataItem[_rel.Column]))
                 dataItem[_rel.Column] = dataItem[_rel.Column].join(",")

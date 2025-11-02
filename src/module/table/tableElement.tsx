@@ -1,4 +1,4 @@
-import { CSSProperties, Dispatch, ReactNode, SetStateAction, useEffect, useMemo, useRef, useState } from "react"
+import { CSSProperties, Dispatch, MouseEventHandler, ReactNode, SetStateAction, useEffect, useMemo, useRef, useState } from "react"
 import { BaseDA, Button, Checkbox, closePopup, DataController, Popup, showPopup, Text, ToastMessage, Winicon } from "../../index";
 import styles from "./table.module.css";
 import { FieldValues, useForm, UseFormReturn } from "react-hook-form";
@@ -257,6 +257,7 @@ interface TableRowProps {
     selected?: string[];
     setSelected?: Dispatch<SetStateAction<string[]>>;
     onDuplicate?: () => void;
+    onClickRow?: (prarams: { item: { [p: string]: any }, index: number, event: MouseEvent }) => void;
     onEditActionColumn?: (params: { [p: string]: any }, actionItem: { [p: string]: any }) => void;
     customCell?: { [k: string]: (params: { item: { [p: string]: any }, index: number }) => ReactNode };
     hideActionColumn?: boolean;
@@ -412,10 +413,11 @@ export const TableRow = ({ item, setItem, onEditActionColumn, title, index, meth
 
     return <>
         <Popup ref={popupRef} />
-        <div className={`row ${styles["table-row"]}`}>
+        <div className={`row ${styles["table-row"]} ${props.onClickRow ? styles["clickable"] : ""}`} onClick={props.onClickRow ? ((ev) => { props.onClickRow!({ item, index, event: ev as any }) }) : undefined}>
             {!hideCheckbox && <div className={`row ${styles["cell"]}`}>
                 <div className={`row ${styles["content"]}`}>
                     <Checkbox size={'1.6rem'} value={checkValue}
+                        onClick={(ev) => ev.stopPropagation()}
                         onChange={setSelected ? (v) => {
                             const newList = selected!.filter(id => id !== item.Id && id !== item.ParentId)
                             if (v) newList.push(item.Id)

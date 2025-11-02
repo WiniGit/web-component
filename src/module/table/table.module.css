@@ -51,7 +51,8 @@ div[class~="resize-cell-stick"] {
     cursor: ew-resize;
 }
 
-.table-row, .header {
+.table-row,
+.header {
     overflow: visible;
     min-width: 100%;
     align-items: stretch;
@@ -71,7 +72,12 @@ div[class~="resize-cell-stick"] {
     background-color: var(--neutral-absolute-background-color, light-dark(#FFFFFF, #14181b));
 }
 
-.cell, .header-cell {
+.table-row.clickable {
+    cursor: pointer;
+}
+
+.cell,
+.header-cell {
     min-height: 5.6rem;
     gap: 0.8rem;
     background-color: inherit;
@@ -104,7 +110,8 @@ div[class~="resize-cell-stick"] {
     width: 8rem !important;
 }
 
-.header-cell:first-child, .cell:first-child {
+.header-cell:first-child,
+.cell:first-child {
     position: sticky;
     left: 0;
     z-index: 2;
@@ -169,7 +176,8 @@ div[class~="resize-cell-stick"] {
     border-radius: 50%;
 }
 
-.header-cell:hover, .header-cell:has(>div[class~="hidden-overlay"]) {
+.header-cell:hover,
+.header-cell:has(>div[class~="hidden-overlay"]) {
     background-color: light-dark(#ededed, #262a2d);
 }
 
