@@ -498,12 +498,12 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
                         })
                     }}
                 />
-                <Button
+                {/* <Button
                     className="button-text-5 size24"
                     label={t("more")}
                     style={{ color: "var(--neutral-text-body-reverse-color)" }}
                     prefix={<Winicon src="fill/text/menu-dots" color="var(--neutral-text-body-reverse-color)" size={12} />}
-                />
+                /> */}
                 <Button
                     className="button-text-5 size24"
                     label={t("close")}

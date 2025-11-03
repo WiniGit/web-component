@@ -292,3 +292,5 @@ export const ChartById = forwardRef<ChartRef, Props>(({ searchRaw = "", style = 
         />}
     </div>
 })
+
+export { RenderChartByType as ChartByType }

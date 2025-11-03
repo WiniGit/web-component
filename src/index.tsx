@@ -41,7 +41,7 @@ export { Util, formatNumberConvert, randomGID, inputMoneyPattern } from './contr
 export * from './controller/data'
 export * from './controller/setting'
 export { CardById } from './module/card/cardById'
-export { ChartById } from './module/chart/chartById'
+export { ChartById, ChartByType } from './module/chart/chartById'
 export { FormById } from './module/form/formById'
 export { ViewById } from './module/view/viewById'
 export { PageById, PageByUrl } from './module/page/pageById'

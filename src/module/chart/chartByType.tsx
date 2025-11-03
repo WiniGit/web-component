@@ -19,9 +19,13 @@ interface Props {
     datasets: Array<DatasetItem>,
     xAxisName?: Array<string>,
     yAxisName?: Array<string>,
+    xAxisLabel?: { [k: string]: any },
+    yAxisLabel?: { [k: string]: any },
+    grid?: { [k: string]: any },
     unit?: string,
     formatter?: (ev: any) => void
-    handleChartClick?: (ev: any) => void
+    handleChartClick?: (ev: any) => void;
+    hideLegend?: boolean
 }
 
 export default function RenderChartByType(props: Props) {
@@ -57,7 +61,8 @@ export default function RenderChartByType(props: Props) {
                         formatter: props.formatter,
                         color: '#61616B',
                         fontSize: 12,
-                        lineHeight: 16
+                        lineHeight: 16,
+                        ...(props.yAxisLabel ?? {})
                     }
                 },
                 xAxis: {
@@ -73,14 +78,16 @@ export default function RenderChartByType(props: Props) {
                     axisLabel: {
                         color: '#61616B',
                         fontSize: 12,
-                        lineHeight: 16
+                        lineHeight: 16,
+                        ...(props.xAxisLabel ?? {})
                     }
                 },
                 grid: {
                     left: '3%',
                     right: '4%',
                     bottom: '3%',
-                    containLabel: true
+                    containLabel: true,
+                    ...(props.grid ?? {})
                 },
                 series: props.datasets.map((c) => {
                     return {
@@ -124,7 +131,8 @@ export default function RenderChartByType(props: Props) {
                         formatter: props.formatter,
                         color: '#61616B',
                         fontSize: 12,
-                        lineHeight: 16
+                        lineHeight: 16,
+                        ...(props.yAxisLabel ?? {})
                     }
                 },
                 xAxis: {
@@ -142,13 +150,15 @@ export default function RenderChartByType(props: Props) {
                         fontSize: 12,
                         lineHeight: 16,
                         interval: 0, // Show all labels
+                        ...(props.xAxisLabel ?? {})
                     }
                 },
                 grid: {
                     left: '0%',
                     right: '3%',
                     bottom: '0%',
-                    containLabel: true
+                    containLabel: true,
+                    ...(props.grid ?? {})
                 },
                 series: props.datasets?.map((c) => {
                     return {
@@ -189,18 +199,21 @@ export default function RenderChartByType(props: Props) {
                     },
                     axisLabel: {
                         formatter: props.formatter,
+                        ...(props.xAxisLabel ?? {})
                     }
                 },
                 yAxis: {
                     type: 'category',
                     boundaryGap: false,
-                    data: props.yAxisName
+                    data: props.yAxisName,
+                    axisLabel: props.yAxisLabel
                 },
                 grid: {
                     left: '3%',
                     right: '4%',
                     bottom: '3%',
-                    containLabel: true
+                    containLabel: true,
+                    ...(props.grid ?? {})
                 },
                 series: props.datasets?.map((c) => {
                     return {
@@ -354,7 +367,7 @@ export default function RenderChartByType(props: Props) {
     switch (props.legend) {
         case "top":
             return <div className="col" style={props.style}>
-                <div className="row" style={{ gap: "1.6rem", flexWrap: "wrap" }}>
+                {!props.hideLegend && <div className="row" style={{ gap: "1.6rem", flexWrap: "wrap" }}>
                     {props.datasets.map(e => {
                         if (props.type.includes("bar")) {
                             return <div key={e.id} className="row" style={{ gap: "0.8rem" }}>
@@ -373,7 +386,7 @@ export default function RenderChartByType(props: Props) {
                             </div>
                         }
                     })}
-                </div>
+                </div>}
                 <ReactEcharts
                     onEvents={{ click: props.handleChartClick as any }}
                     theme={document.documentElement.classList.contains("dark") ? "dark" : "light"}
@@ -393,7 +406,7 @@ export default function RenderChartByType(props: Props) {
                     option={option}
                     style={{ ...(["bar", "line"].some(e => props.type.includes(e)) ? { width: "100%" } : { height: "100%" }), aspectRatio: ["bar", "line"].some(e => props.type.includes(e)) ? "5 / 3" : "1 / 1" }}
                 />
-                <div className="row" style={{ gap: "1.6rem", flexWrap: "wrap" }}>
+                {!props.hideLegend && <div className="row" style={{ gap: "1.6rem", flexWrap: "wrap" }}>
                     {props.datasets.map(e => {
                         if (props.type.includes("bar")) {
                             return <div key={e.id} className="row" style={{ gap: "0.8rem" }}>
@@ -412,11 +425,11 @@ export default function RenderChartByType(props: Props) {
                             </div>
                         }
                     })}
-                </div>
+                </div>}
             </div>
         case "left":
             return <div className="row" style={props.style}>
-                <div className="col" style={{ gap: "1.6rem", flex: 1, minWidth: "9.8rem", flexWrap: "wrap", alignContent: "flex-start", maxHeight: "100%" }}>
+                {!props.hideLegend && <div className="col" style={{ gap: "1.6rem", flex: 1, minWidth: "9.8rem", flexWrap: "wrap", alignContent: "flex-start", maxHeight: "100%" }}>
                     {props.datasets.map(e => {
                         if (props.type.includes("bar")) {
                             return <div key={e.id} className="row" style={{ gap: "0.8rem" }}>
@@ -435,7 +448,7 @@ export default function RenderChartByType(props: Props) {
                             </div>
                         }
                     })}
-                </div>
+                </div>}
                 <ReactEcharts
                     onEvents={{ click: props.handleChartClick as any }}
                     theme={document.documentElement.classList.contains("dark") ? "dark" : "light"}
@@ -456,7 +469,7 @@ export default function RenderChartByType(props: Props) {
                     option={option}
                     style={{ ...(["bar", "line"].some(e => props.type.includes(e)) ? { width: "70%" } : { height: "100%" }), aspectRatio: ["bar", "line"].some(e => props.type.includes(e)) ? "5 / 3" : "1 / 1" }}
                 />
-                <div className="col" style={{ gap: "1.6rem", flex: 1, minWidth: "9.8rem", flexWrap: "wrap", alignContent: "flex-start", maxHeight: "100%" }}>
+                {!props.hideLegend && <div className="col" style={{ gap: "1.6rem", flex: 1, minWidth: "9.8rem", flexWrap: "wrap", alignContent: "flex-start", maxHeight: "100%" }}>
                     {props.datasets.map(e => {
                         if (props.type.includes("bar")) {
                             return <div key={e.id} className="row" style={{ gap: "0.8rem" }}>
@@ -475,7 +488,7 @@ export default function RenderChartByType(props: Props) {
                             </div>
                         }
                     })}
-                </div>
+                </div>}
             </div>
     }
 }
