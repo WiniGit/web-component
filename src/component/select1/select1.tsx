@@ -238,7 +238,7 @@ function OptionsItemTile({ item, children, selected, onClick, getOptions }: Opti
     }, [isOpen])
 
     return <>
-        {<button type='button' className={`row label-4 ${styles["select-tile"]} ${item.disabled ? styles["disabled"] : ""} ${selected ? styles["selected"] : ""}`} onClick={() => {
+        {<button type='button' disabled={item.disabled} className={`row label-4 ${styles["select-tile"]} ${item.disabled ? styles["disabled"] : ""} ${selected ? styles["selected"] : ""}`} onClick={() => {
             if (item.totalChild) setIsOpen(!isOpen)
             else onClick(item)
         }}>

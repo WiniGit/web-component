@@ -137,6 +137,7 @@
 }
 
 .select1-popup .select-tile.disabled {
+    pointer-events: none;
     background-color: var(--neutral-disable-background-color, light-dark(#F4F4F5, #494950));
 }
 

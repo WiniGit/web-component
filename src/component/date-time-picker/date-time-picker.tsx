@@ -66,7 +66,7 @@ export function DateTimePicker({ style = {}, ...props }: DateTimePickerProps) {
             <Text className={styles["value"]} style={{ flex: "none", width: "fit-content" }}>{Util.datetoString(value.start ?? new Date(), `dd/mm/yyyy${(props.pickerType?.includes("time") || props.pickerType === "auto") ? " hh:mm" : ""}`)} - {Util.datetoString(value.end ?? new Date(), `dd/mm/yyyy${(props.pickerType?.includes("time") || props.pickerType === "auto") ? " hh:mm" : ""}`)}</Text>
             {value.repeatData && <Winicon src="outline/arrows/loop-2" size={"1.2rem"} />}
         </>
-    }, [value])
+    }, [value, props.placeholder])
 
     useEffect(() => {
         if (inputRef.current) {

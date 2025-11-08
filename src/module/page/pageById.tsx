@@ -165,13 +165,15 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
             let getValue: any = m
             switch (variable[0]) {
                 case "this":
-                    if (props.type === "card" && props.indexItem) {
-                        try {
-                            getValue = new Function("indexItem", `return ${p1.replace(/this/g, "indexItem")}`)({ ...props.indexItem, index: props.index })
-                        } catch (error) {
-                            getValue = m
-                        }
-                    } else getValue = props.indexItem?.[variable[1]]
+                    if (props.indexItem) {
+                        if ((props.type === "card" || props.type === "view") && props.indexItem) {
+                            try {
+                                getValue = new Function("indexItem", "Util", `return \`${p1.replace(/this/g, "indexItem")}\``)({ ...props.indexItem, index: props.index }, Util)
+                            } catch (error) {
+                                getValue = m
+                            }
+                        } else getValue = props.indexItem?.[variable[1]]
+                    }
                     break;
                 case "location":
                     getValue = location[variable[1]]
@@ -546,6 +548,8 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
             case ComponentType.textField:
                 if (props.item.NameField?.length && props.cols?.find(e => e.Name === props.item.NameField)?.DataType === FEDataType.PASSWORD) tmpProps.IsPassword = true
             // @ts-ignore
+            case ComponentType.datePicker:
+            // @ts-ignore
             case ComponentType.dateTimePicker:
                 if (props.item.NameField?.length && props.cols?.find(e => e.Name === props.item.NameField)?.DataType === FEDataType.DATE) {
                     tmpProps.pickerType = "date"
@@ -785,6 +789,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
             return <FColorPicker {...typeProps} methods={props.methods} name={props.item.NameField} />
         case ComponentType.numberPicker:
             return <FNumberPicker {...typeProps} methods={props.methods} name={props.item.NameField} />
+        case ComponentType.dateTimePicker:
         case ComponentType.datePicker:
             return <FDateTimePicker {...typeProps} methods={props.methods} name={props.item.NameField} />
         case ComponentType.upload:

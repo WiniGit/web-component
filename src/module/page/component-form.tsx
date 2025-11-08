@@ -470,7 +470,7 @@ interface FDateTimePickerProps {
     methods: UseFormReturn<FieldValues, any, undefined>;
 }
 
-export const FDateTimePicker = ({ methods, ...props }: FDateTimePickerProps) => {
+export const FDateTimePicker = ({ methods, prefix, ...props }: FDateTimePickerProps) => {
     const { t } = useTranslation()
 
     return props.name ? <Controller
@@ -486,9 +486,10 @@ export const FDateTimePicker = ({ methods, ...props }: FDateTimePickerProps) => 
                 }}
                 helperText={_covertErrors && (_covertErrors?.message?.length ? _covertErrors?.message : `${(props.placeholder ? props.placeholder : `${t("choose")} ${props.name} ${t("value")}`).toLowerCase()}`)}
                 simpleStyle
+                prefix={prefix ?? <></>}
             />
         }}
-    /> : <DateTimePicker {...props} simpleStyle />
+    /> : <DateTimePicker {...props} simpleStyle prefix={prefix ?? <></>} />
 }
 
 interface FUploadFileProps {
