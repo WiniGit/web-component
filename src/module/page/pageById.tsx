@@ -168,7 +168,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                     if (props.indexItem) {
                         if ((props.type === "card" || props.type === "view") && props.indexItem) {
                             try {
-                                getValue = new Function("indexItem", "Util", `return \`${p1.replace(/this/g, "indexItem")}\``)({ ...props.indexItem, index: props.index }, Util)
+                                getValue = new Function("indexItem", "Util", `return \`${m.replace(/this/g, "indexItem")}\``)({ ...props.indexItem, index: props.index }, Util)
                             } catch (error) {
                                 getValue = m
                             }
