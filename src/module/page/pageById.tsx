@@ -681,7 +681,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
             } else return <CustomText {...typeProps} />
         case ComponentType.img:
             if (!typeProps.src?.length) typeProps.src = handleErrorImgSrc
-            if (props.item.NameField && dataValue) {
+            if (props.item.NameField && !!dataValue?.length) {
                 return <img
                     key={dataValue}
                     alt=""
@@ -697,7 +697,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                 {...typeProps}
             />
         case ComponentType.video:
-            if (props.item.NameField && dataValue) {
+            if (props.item.NameField && !!dataValue?.length) {
                 return <VideoPlayer
                     key={dataValue}
                     {...typeProps}
@@ -705,7 +705,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                 />
             } else return <VideoPlayer {...typeProps} />
         case ComponentType.iframe:
-            if (props.item.NameField && dataValue) {
+            if (props.item.NameField && !!dataValue?.length) {
                 return <IframePlayer
                     key={dataValue}
                     referrerPolicy="no-referrer"

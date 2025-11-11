@@ -131,25 +131,34 @@ export class BaseDA {
 
     static uploadFiles = async (listFile: Array<File>) => {
         listFile = [...listFile];
-        if (listFile.map(f => f.size).reduce((a, b) => a + b, 0) > maxFileSize) {
+        if (listFile.some(f => f.size > maxFileSize)) {
             ToastMessage.errors('File size must be not more than 200MB')
             return null
         }
         // const headersObj: any = await getHeaders()
         const headersObj: any = { pid: ConfigData.pid, "Content-Type": "multipart/form-data" }
-        const formData = new FormData();
-        listFile.forEach(e => {
-            const renamedFile = new File([e], Util.toSlug(e.name), { type: e.type });
-            formData.append("files", renamedFile);
-        })
-        const response = await BaseDA.postFile(ConfigData.url + 'file/uploadfiles', {
-            headers: headersObj,
-            body: formData,
-        })
-        if (response.code === 200) {
-            return response.data
+        const listRequest: Array<File[]> = [[]]
+        for (const file of listFile) {
+            const tmp = listRequest[0]
+            if (tmp.length > 12 || [...tmp, file].map(f => f.size).reduce((a, b) => a + b, 0) > maxFileSize) {
+                listRequest.unshift([file])
+            } else listRequest[0].push(file)
+        }
+        const response = await Promise.all(listRequest.map(rq => {
+            const formData = new FormData();
+            rq.forEach(e => {
+                const renamedFile = new File([e], Util.toSlug(e.name), { type: e.type });
+                formData.append("files", renamedFile);
+            })
+            return BaseDA.postFile(ConfigData.url + 'file/uploadfiles', {
+                headers: headersObj,
+                body: formData,
+            })
+        }))
+        if (response.every(r => r.code === 200)) {
+            return response.map(r => r.data).flat(Infinity)
         } else {
-            ToastMessage.errors(response.message)
+            ToastMessage.errors(response.find(r => r.code !== 200)?.message ?? "Failed to upload files")
         }
         return null;
     }
