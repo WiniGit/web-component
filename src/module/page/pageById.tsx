@@ -28,6 +28,7 @@ import { DataController } from "../../controller/data"
 import { ToastMessage } from "../../component/toast-noti/toast-noti"
 import { VideoPlayer } from "../../component/video/video"
 import { IframePlayer } from "../../component/iframe/iframe"
+import { ComponentStatus } from "../../component/component-status"
 
 interface Props {
     methods?: UseFormReturn
@@ -300,7 +301,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                                     onSubmit: async () => {
                                         if (actItem.Caculate) {
                                             await (new AsyncFunction(
-                                                "formResult", "Util", "DataController", "randomGID", "ToastMessage", "uploadFiles", "getFilesInfor", "event",
+                                                "formResult", "Util", "DataController", "randomGID", "ToastMessage", "uploadFiles", "getFilesInfor", "showDialog", "ComponentStatus", "event",
                                                 `${actItem.Caculate}` // This string can now safely contain the 'await' keyword
                                             ))(
                                                 props.indexItem ?? props.methods?.getValues(),
@@ -310,6 +311,8 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                                                 ToastMessage,
                                                 BaseDA.uploadFiles,
                                                 BaseDA.getFilesInfor,
+                                                showDialog,
+                                                ComponentStatus,
                                                 event
                                             )
                                         }
@@ -319,7 +322,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                             case ActionType.custom:
                                 if (actItem.Caculate) {
                                     await (new AsyncFunction(
-                                        "formResult", "Util", "DataController", "randomGID", "ToastMessage", "uploadFiles", "getFilesInfor", "event",
+                                        "formResult", "Util", "DataController", "randomGID", "ToastMessage", "uploadFiles", "getFilesInfor", "showDialog", "ComponentStatus", "event",
                                         `${actItem.Caculate}` // This string can now safely contain the 'await' keyword
                                     ))(
                                         props.indexItem ?? props.methods?.getValues(),
@@ -329,6 +332,8 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                                         ToastMessage,
                                         BaseDA.uploadFiles,
                                         BaseDA.getFilesInfor,
+                                        showDialog,
+                                        ComponentStatus,
                                         event
                                     )
                                 }

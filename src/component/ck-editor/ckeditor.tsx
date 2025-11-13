@@ -78,7 +78,8 @@ import {
     TodoList,
     Underline,
     WordCount,
-    EventInfo
+    EventInfo,
+    Fullscreen
 } from 'ckeditor5';
 import './ck-editor.css';
 import { useTranslation } from 'react-i18next';
@@ -146,6 +147,7 @@ export function CustomCkEditor5({ style = {}, ...props }: Props) {
             editorConfig: {
                 toolbar: {
                     items: [
+                        'fullscreen',
                         'heading',
                         '|',
                         // 'sourceEditing',
@@ -192,6 +194,7 @@ export function CustomCkEditor5({ style = {}, ...props }: Props) {
                     shouldNotGroupWhenFull: false,
                 },
                 plugins: [
+                    Fullscreen,
                     Alignment,
                     Autoformat,
                     AutoImage,
