@@ -181,6 +181,10 @@
     border-radius: 0.8rem 0.8rem 0 0 !important;
 }
 
+.ck-fullscreen__toolbar .ck.ck-toolbar {
+    border-radius: var(--ck-border-radius) !important;
+}
+
 .ck.ck-editor__top .ck-sticky-panel .ck-sticky-panel__content {
     height: 40px;
     border: none !important;
