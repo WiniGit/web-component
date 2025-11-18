@@ -258,6 +258,7 @@ interface TableRowProps {
     setSelected?: Dispatch<SetStateAction<string[]>>;
     onDuplicate?: () => void;
     onClickRow?: (prarams: { item: { [p: string]: any }, index: number, event: MouseEvent }) => void;
+    onContextMenu?: (prarams: { item: { [p: string]: any }, index: number, event: MouseEvent }) => void;
     onEditActionColumn?: (params: { [p: string]: any }, actionItem: { [p: string]: any }) => void;
     customCell?: { [k: string]: (params: { item: { [p: string]: any }, index: number }) => ReactNode };
     hideActionColumn?: boolean;
@@ -413,7 +414,7 @@ export const TableRow = ({ item, setItem, onEditActionColumn, title, index, meth
 
     return <>
         <Popup ref={popupRef} />
-        <div className={`row ${styles["table-row"]} ${props.onClickRow ? styles["clickable"] : ""}`} onClick={props.onClickRow ? ((ev) => { props.onClickRow!({ item, index, event: ev as any }) }) : undefined}>
+        <div className={`row ${styles["table-row"]} ${props.onClickRow ? styles["clickable"] : ""}`} onContextMenu={props.onContextMenu ? ((ev) => { props.onContextMenu!({ item, index, event: ev as any }) }) : undefined} onClick={props.onClickRow ? ((ev) => { props.onClickRow!({ item, index, event: ev as any }) }) : undefined}>
             {!hideCheckbox && <div className={`row ${styles["cell"]}`}>
                 <div className={`row ${styles["content"]}`}>
                     <Checkbox size={'1.6rem'} value={checkValue}

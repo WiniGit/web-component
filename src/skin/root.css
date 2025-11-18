@@ -131,10 +131,6 @@ html {
     --shadow-card: 0px 3px 4px 0px rgba(0, 0, 0, .03)
 }
 
-html.dark {
-    color-scheme: dark;
-}
-
 @supports (color: light-dark(black, white)) {
     :root {
         /* primary */
@@ -238,12 +234,12 @@ html.dark {
         --neutral-text-disabled-color: light-dark(#A2A2AA, #61616B);
         --neutral-text-stable-color: #FFFFFF;
         /* reverse */
-        --neutral-text-title-reverse-color: #F4F4F5;
-        --neutral-text-subtitle-reverse-color: #A2A2AA;
-        --neutral-text-body-reverse-color: #EAEAEC;
-        --neutral-text-label-reverse-color: #EAEAEC;
+        --neutral-text-title-reverse-color: light-dark(#F4F4F5, #18181B);
+        --neutral-text-subtitle-reverse-color: light-dark(#A2A2AA, #61616B);
+        --neutral-text-body-reverse-color: light-dark(#EAEAEC, #313135);
+        --neutral-text-label-reverse-color: light-dark(#EAEAEC, #313135);
         --neutral-text-placeholder-reverse-color: #878792;
-        --neutral-text-disabled-reverse-color: #61616B;
+        --neutral-text-disabled-reverse-color: light-dark(#61616B, #A2A2AA);
         --neutral-text-stable-reverse-color: #000000;
         /* neutral-border-color */
         --neutral-bolder-border-color: light-dark(#D7D7DB, #494950);

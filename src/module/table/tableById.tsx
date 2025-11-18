@@ -69,6 +69,7 @@ interface DataTableProps {
     handleSubmit?: (params: { item: { [k: string]: any }, initItem?: { [k: string]: any }, methods: UseFormReturn, onSuccess?: () => void }) => Promise<any>;
     customFields?: { [key: string]: (methods: UseFormReturn) => ReactNode };
     onClickRow?: (prarams: { item: { [p: string]: any }, index: number, event: MouseEvent }) => void;
+    onContextMenu?: (prarams: { item: { [p: string]: any }, index: number, event: MouseEvent }) => void;
 }
 
 interface DataTableRef {
