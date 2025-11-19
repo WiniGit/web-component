@@ -301,7 +301,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                                     onSubmit: async () => {
                                         if (actItem.Caculate) {
                                             await (new AsyncFunction(
-                                                "formResult", "Util", "DataController", "randomGID", "ToastMessage", "uploadFiles", "getFilesInfor", "showDialog", "ComponentStatus", "event",
+                                                "formResult", "Util", "DataController", "randomGID", "ToastMessage", "uploadFiles", "getFilesInfor", "showDialog", "ComponentStatus", "event", "methods",
                                                 `${actItem.Caculate}` // This string can now safely contain the 'await' keyword
                                             ))(
                                                 props.indexItem ?? props.methods?.getValues(),
@@ -313,7 +313,8 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                                                 BaseDA.getFilesInfor,
                                                 showDialog,
                                                 ComponentStatus,
-                                                event
+                                                event,
+                                                props.methods
                                             )
                                         }
                                     }
@@ -322,7 +323,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                             case ActionType.custom:
                                 if (actItem.Caculate) {
                                     await (new AsyncFunction(
-                                        "formResult", "Util", "DataController", "randomGID", "ToastMessage", "uploadFiles", "getFilesInfor", "showDialog", "ComponentStatus", "event",
+                                        "formResult", "Util", "DataController", "randomGID", "ToastMessage", "uploadFiles", "getFilesInfor", "showDialog", "ComponentStatus", "event", "methods",
                                         `${actItem.Caculate}` // This string can now safely contain the 'await' keyword
                                     ))(
                                         props.indexItem ?? props.methods?.getValues(),
@@ -334,7 +335,8 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                                         BaseDA.getFilesInfor,
                                         showDialog,
                                         ComponentStatus,
-                                        event
+                                        event,
+                                        props.methods
                                     )
                                 }
                                 return;

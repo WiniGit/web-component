@@ -245,7 +245,7 @@ const PopupDateTimePicker = forwardRef(({ value, style, endValue, repeatValue, o
 
     const initStartValue = () => {
         if (value) {
-            const initStart = new Date(value)
+            const initStart = typeof value === "number" ? (new Date(value)) : value
             methods.setValue('date-start', initStart)
             inputStartRef.current!.inputElement!.value = Util.datetoString(initStart)
             if (pickerType.includes("time") || initStart.getSeconds() === 1) {
@@ -258,7 +258,7 @@ const PopupDateTimePicker = forwardRef(({ value, style, endValue, repeatValue, o
     const initEndValue = () => {
         if ((pickerType?.includes("range") || pickerType === "auto") && inputEndRef.current) {
             if (endValue) {
-                const initEnd = new Date(endValue)
+                const initEnd = typeof endValue === "number" ? (new Date(endValue)) : endValue
                 methods.setValue('date-end', initEnd)
                 inputEndRef.current.inputElement!.value = Util.datetoString(initEnd)
                 if (pickerType.includes("time") || initEnd.getSeconds() === 59) methods.setValue('time-end', `${initEnd.getHours() < 9 ? `0${initEnd.getHours()}` : initEnd.getHours()}:${initEnd.getMinutes() < 9 ? `0${initEnd.getMinutes()}` : initEnd.getMinutes()}`)
@@ -267,7 +267,14 @@ const PopupDateTimePicker = forwardRef(({ value, style, endValue, repeatValue, o
     }
 
     useEffect(() => {
-        if (value && inputStartRef.current) initStartValue()
+        switch (pickerType) {
+            case "date":
+                if (value) methods.setValue('date-start', value)
+                break;
+            default:
+                if (value && inputStartRef.current) initStartValue()
+                break;
+        }
     }, [value, inputStartRef])
 
     useEffect(() => {

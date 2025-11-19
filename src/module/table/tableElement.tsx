@@ -156,7 +156,7 @@ const HeaderCell = ({ colItem, methods, style = {}, children, onMounted, onChang
 
     const onMouseMove = (ev: any) => {
         ev.preventDefault()
-        if (onResize) return
+        if (onResize || ev.target.closest(".popup-actions")) return;
         const cellRect = divRef.current!.getBoundingClientRect()
         if (typeof colItem === "string") {
             var checkResize = ev.pageX <= (cellRect.x + 8)

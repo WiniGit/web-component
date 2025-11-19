@@ -1,4 +1,4 @@
-import { CSSProperties, forwardRef, MouseEventHandler, useEffect, useMemo, useRef, useState } from "react"
+import { CSSProperties, forwardRef, MouseEventHandler, useDeferredValue, useEffect, useMemo, useRef, useState } from "react"
 import styles from "./table.module.css";
 import { useTranslation } from "react-i18next"
 import { Button, Checkbox, closePopup, DateTimePicker, InfiniteScroll, Popup, RadioButton, showPopup, Slider, Switch, Tag, Text, TextField, Util, Winicon, i18n as i18component, showDialog, DialogAlignment, randomGID, DataController } from "../../index"
@@ -696,6 +696,10 @@ interface FilterValueOptionsDropdownProps {
 const FilterValueOptionsDropdown = ({ onClose, onSelect, style = {}, selected, initData = [], controlName, searchRaw = "*", isMulti = false }: FilterValueOptionsDropdownProps) => {
     const [options, setOptions] = useState<{ data: { [p: string]: any }[], totalCount?: number }>({ data: [], totalCount: undefined })
     const [value, setValue] = useState<string | undefined>(selected)
+    const [search, setSearch] = useState("")
+    const searchDefer = useDeferredValue(search)
+    const { t } = useTranslation()
+    const totalCountAll = useRef<number>(0)
 
     useEffect(() => {
         return () => { if (onClose) onClose() }
@@ -705,14 +709,21 @@ const FilterValueOptionsDropdown = ({ onClose, onSelect, style = {}, selected, i
         const controller = new DataController(controlName!)
         const returns: Array<string> = ["Id", "Name"]
         if (controlName === "User" || controlName === "Customer") returns.push("AvatarUrl")
-        const res = await controller.aggregateList({ page: page ?? 1, size: 20, searchRaw: searchRaw, returns: returns })
-        if (res.code === 200) setOptions({ data: page ? [...options.data, ...res.data] : res.data, totalCount: res.totalCount })
+        let querySearch = searchRaw;
+        if (searchDefer.length) {
+            querySearch = querySearch === "*" ? `(@Name:("${searchDefer}") | @Name:("*${searchDefer}*")${controlName === "User" || controlName === "Customer" ? ` | @Email:("${searchDefer}") | @Mobile:("${searchDefer}")` : ""})` : `${querySearch} (@Name:("${searchDefer}") | @Name:("*${searchDefer}*")${controlName === "User" || controlName === "Customer" ? ` | @Email:("${searchDefer}") | @Mobile:("${searchDefer}")` : ""})`
+        }
+        const res = await controller.aggregateList({ page: page ?? 1, size: 20, searchRaw: querySearch, returns: returns })
+        if (res.code === 200) {
+            setOptions({ data: page ? [...options.data, ...res.data] : res.data, totalCount: res.totalCount })
+            if (!searchDefer.length) totalCountAll.current = res.totalCount
+        }
     }
 
     useEffect(() => {
         if (initData.length) setOptions({ data: initData, totalCount: initData.length })
         else if (controlName) getData()
-    }, [])
+    }, [searchDefer])
 
 
     return <InfiniteScroll
@@ -720,6 +731,25 @@ const FilterValueOptionsDropdown = ({ onClose, onSelect, style = {}, selected, i
             if (onLoadMore && options.totalCount && options.data.length < options.totalCount) await getData(Math.floor(options.data.length / 20) + 1)
         }}
         className="col dropdown-popup popup-actions" style={{ maxHeight: "32rem", overflow: "hidden auto", ...style }}>
+        {totalCountAll.current > 20 && <div className="row" style={{ padding: 4, backgroundColor: "var(--neutral-absolute-background-color, #fff)", position: "sticky", top: 0, zIndex: 2, transform: "translateY(-4px)" }}>
+            <TextField
+                autoFocus
+                placeholder={t("search")}
+                className="body-3 size24"
+                style={{ flex: 1, backgroundColor: "var(--neutral-main-background-color, #EFEFF0)" }}
+                prefix={<Winicon src="outline/user interface/search" size={12} />}
+                onChange={(ev) => { setSearch(ev.target.value.trim()) }}
+                onComplete={(ev) => {
+                    switch (ev.key.toLowerCase()) {
+                        case "enter":
+                            (ev.target as any).blur()
+                            break;
+                        default:
+                            break;
+                    }
+                }}
+            />
+        </div>}
         {isMulti ? options.data.map((op) => {
             const checked = `${value}` === `${op.Id ?? op.id}` || (typeof value === "string" && value?.includes(op.Id ?? op.id))
             return <label key={op.Id ?? op.id} className="row default-hover" style={{ gap: "0.8rem", padding: "0.8rem", borderRadius: "0.8rem", cursor: "pointer" }} >
