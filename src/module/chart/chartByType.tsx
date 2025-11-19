@@ -366,7 +366,7 @@ export default function RenderChartByType(props: Props) {
 
     switch (props.legend) {
         case "top":
-            return <div className="col" style={props.style}>
+            return <div className={`col ${props.className ?? ''}`} style={props.style}>
                 {!props.hideLegend && <div className="row" style={{ gap: "1.6rem", flexWrap: "wrap" }}>
                     {props.datasets.map(e => {
                         if (props.type.includes("bar")) {
@@ -397,7 +397,7 @@ export default function RenderChartByType(props: Props) {
                 />
             </div>
         case "bottom":
-            return <div className="col" style={props.style}>
+            return <div className={`col ${props.className ?? ''}`} style={props.style}>
                 <ReactEcharts
                     onEvents={{ click: props.handleChartClick as any }}
                     theme={document.documentElement.classList.contains("dark") ? "dark" : "light"}
@@ -428,7 +428,7 @@ export default function RenderChartByType(props: Props) {
                 </div>}
             </div>
         case "left":
-            return <div className="row" style={props.style}>
+            return <div className={`row ${props.className ?? ''}`} style={props.style}>
                 {!props.hideLegend && <div className="col" style={{ gap: "1.6rem", flex: 1, minWidth: "9.8rem", flexWrap: "wrap", alignContent: "flex-start", maxHeight: "100%" }}>
                     {props.datasets.map(e => {
                         if (props.type.includes("bar")) {
@@ -460,7 +460,7 @@ export default function RenderChartByType(props: Props) {
             </div>
         case "right":
         default:
-            return <div className="row" style={props.style}>
+            return <div className={`row ${props.className ?? ''}`} style={props.style}>
                 <ReactEcharts
                     onEvents={{ click: props.handleChartClick as any }}
                     theme={document.documentElement.classList.contains("dark") ? "dark" : "light"}
