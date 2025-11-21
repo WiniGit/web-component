@@ -230,7 +230,7 @@ export class AccountController {
     }
 
     async hashPassword(password: string) {
-        const res = await BaseDA.get(ConfigData.url + `data/bcrypt?password=${password}`)
+        const res = await BaseDA.get(ConfigData.url + `data/bcrypt?password=${encodeURIComponent(password)}`)
         return res
     }
 }

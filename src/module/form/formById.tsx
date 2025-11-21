@@ -1,4 +1,4 @@
-import { CSSProperties, forwardRef, ReactNode, useEffect, useImperativeHandle, useMemo, useState } from "react"
+import { CSSProperties, forwardRef, ReactNode, useDeferredValue, useEffect, useImperativeHandle, useMemo, useState } from "react"
 import { FieldValues, useForm, UseFormReturn } from "react-hook-form"
 import { CustomHTMLProps, getValidLink, RenderLayerElement } from "../page/pageById"
 import { AccountController, BaseDA, DataController, OptionsItem, randomGID, SettingDataController, urlToFileType, useLocation, Util } from "../../index"
@@ -344,6 +344,16 @@ export const FormById = forwardRef<FormByIdRef, FormByIdProps>((props, ref) => {
         } else return cols
     }, [props.customOptions, cols])
 
+    const formValues = useMemo(() => {
+        const tmp = methods.getValues()
+        const tmpValue: any = {};
+        [...cols, ...rels].forEach(c => {
+            tmpValue[c.Column ?? c.Name] = tmp[c.Column ?? c.Name]
+        })
+        return tmpValue
+    }, [cols.length, rels.length, methods.watch()])
+    const finalFormValues = useDeferredValue(formValues);
+
     return formItem && !!cols.length && layers.filter((e: any) => !e.ParentId).map((e: any) => {
         return <RenderLayerElement
             key={e.Id}
@@ -353,7 +363,7 @@ export const FormById = forwardRef<FormByIdRef, FormByIdProps>((props, ref) => {
             className={props.className}
             type={"form"}
             methods={methods}
-            indexItem={props.data}
+            indexItem={finalFormValues}
             propsData={props.propsData}
             childrenData={props.childrenData}
             itemData={props.itemData}

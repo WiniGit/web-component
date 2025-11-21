@@ -129,26 +129,26 @@ export class BaseDA {
         }
     }
 
-    static uploadFiles = async (listFile: Array<File>) => {
+    static uploadFiles = async (listFile: File[]) => {
         listFile = [...listFile];
-        if (listFile.some(f => f.size > maxFileSize)) {
-            ToastMessage.errors('File size must be not more than 200MB')
-            return null
-        }
         // const headersObj: any = await getHeaders()
         const headersObj: any = { pid: ConfigData.pid, "Content-Type": "multipart/form-data" }
         const listRequest: Array<File[]> = [[]]
         for (const file of listFile) {
-            const tmp = listRequest[0]
-            if (tmp.length > 12 || [...tmp, file].map(f => f.size).reduce((a, b) => a + b, 0) > maxFileSize) {
-                listRequest.unshift([file])
-            } else listRequest[0].push(file)
+            if (file.size > maxFileSize) {
+                ToastMessage.errors('File size must be not more than 200MB')
+                return null
+            } else {
+                const tmp = listRequest[0]
+                if (tmp.length > 12 || [...tmp, file].map(f => f.size).reduce((a, b) => a + b, 0) > maxFileSize) {
+                    listRequest.unshift([file])
+                } else listRequest[0].push(file)
+            }
         }
         const response = await Promise.all(listRequest.map(rq => {
             const formData = new FormData();
             rq.forEach(e => {
-                const renamedFile = new File([e], Util.toSlug(e.name), { type: e.type });
-                formData.append("files", renamedFile);
+                formData.append("files", e);
             })
             return BaseDA.postFile(ConfigData.url + 'file/uploadfiles', {
                 headers: headersObj,

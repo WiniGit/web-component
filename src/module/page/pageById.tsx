@@ -322,6 +322,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                                 return;
                             case ActionType.custom:
                                 if (actItem.Caculate) {
+                                    debugger
                                     await (new AsyncFunction(
                                         "formResult", "Util", "DataController", "randomGID", "ToastMessage", "uploadFiles", "getFilesInfor", "showDialog", "ComponentStatus", "event", "methods",
                                         `${actItem.Caculate}` // This string can now safely contain the 'await' keyword
@@ -396,14 +397,14 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
             _props = { ..._props, ...extendProps }
         }
         return watchForCustomProps ? { ...watchForCustomProps, ..._props } : _props
-    }, [props.item, props.propsData, props.methods, watchForCustomProps])
+    }, [props.item, props.propsData, props.indexItem, watchForCustomProps])
     const watchForDataValue = useMemo(() => {
-        const watchData = props.methods!.watch()
+        const watchData = props.type?.toLowerCase() === "form" ? { "_rels": props.rels, "_cols": props.cols } : props.methods!.watch()
         const tmp: { [p: string]: any } = { rels: watchData["_rels"], cols: watchData["_cols"] }
         const keys = props.item.NameField?.split(".")
         if (keys && keys.length > 1) tmp[`${keys[0]}`] = watchData[`_${keys[0]}`]
         return tmp
-    }, [JSON.stringify(props.methods!.watch()), props.item.NameField])
+    }, [JSON.stringify(props.methods!.watch()), props.item.NameField, props.cols?.length, props.rels?.length])
     const dataValue = useMemo(() => {
         if (props.type === "page" || !props.item.NameField?.length || !props.indexItem) return undefined
         const keys = props.item.NameField.split(".")
