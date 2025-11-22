@@ -419,17 +419,16 @@ export class Util {
     }
 
     static toSlug(input: string) {
-        return input.toString().toLowerCase()
-            .replace(/đ/g, 'd')
-            .replace(/[í|ì|ỉ|ĩ|ị]/g, 'i')
-            .replace(/[ý|ỳ|ỷ|ỹ|ỵ]/g, 'y')
-            .replace(/[á|à|ả|ã|ạ|â|ă|ấ|ầ|ẩ|ẫ|ậ|ắ|ằ|ẳ|ẵ|ặ]/g, 'a')
-            .replace(/[é|è|ẻ|ẽ|ẹ|ê|ế|ề|ể|ễ|ệ]/g, 'e')
-            .replace(/[ú|ù|ủ|ũ|ụ|ư|ứ|ừ|ử|ữ|ự]/g, 'u')
-            .replace(/[ó|ò|ỏ|õ|ọ|ô|ơ|ố|ồ|ổ|ỗ|ộ|ớ|ờ|ở|ỡ|ợ]/g, 'o')
-            .replace(/\s+/g, ' ')
-            .replace(/({|}|\(|\)|<|>)/g, "")
-            .replaceAll(" ", "-");
+        return input
+            .normalize('NFD')                // split accents
+            .replace(/[\u0300-\u036f]/g, '') // remove accents
+            .replace(/đ/g, 'd')              // Vietnamese special
+            .replace(/Đ/g, 'D')
+            .toLowerCase()
+            .replace(/[^a-z0-9-_ ]/g, "")    // REMOVE all special characters EXCEPT - _
+            .replace(/\s+/g, "-")            // spaces → hyphens
+            .replace(/-+/g, "-")             // remove duplicated -
+            .replace(/^-+|-+$/g, "");        // trim - at start / end
     }
 
     static convertToKebabCase = (str: string) => {

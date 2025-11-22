@@ -32,7 +32,8 @@ interface SelectMultipleProps {
     simpleStyle?: boolean,
     customOptionsList?: ReactNode,
     previewMaxLength?: number,
-    customPreviewValue?: ReactNode
+    customPreviewValue?: ReactNode,
+    hiddenSearchOptions?: boolean
 }
 
 interface SelectMultipleRef {
@@ -164,6 +165,7 @@ export const SelectMultiple = forwardRef<SelectMultipleRef, SelectMultipleProps>
             selected={options.filter(e => value.includes(e.id))}
             style={{ ...offsetRef.current!, ...(props.dropdownStyle ?? {}) }}
             className={props.dropdownClassName}
+            hiddenSearchOptions={props.hiddenSearchOptions}
             onChange={(ev, optList) => {
                 const newOList: OptionsItem[] = []
                 optList.forEach(newO => {
@@ -185,7 +187,8 @@ interface OptionDropListProps {
     className?: string,
     selected: Array<OptionsItem>,
     onChange: (value: boolean, e: OptionsItem[]) => void,
-    getOptions: (params: { length: number, search?: string, parentId?: string | number }) => Promise<{ data: Array<OptionsItem>, totalCount: number }>
+    getOptions: (params: { length: number, search?: string, parentId?: string | number }) => Promise<{ data: Array<OptionsItem>, totalCount: number }>,
+    hiddenSearchOptions?: boolean
 }
 
 const OptionDropList = (props: OptionDropListProps) => {
@@ -230,7 +233,7 @@ const OptionDropList = (props: OptionDropListProps) => {
             <h6 className='heading-7' style={{ margin: "0.8rem" }}>{t("noResultFound")}</h6>
         </div> :
             <>
-                {initTotal.current && initTotal.current > 10 && <div className={`col ${styles["search-options"]}`}>
+                {!props.hiddenSearchOptions && initTotal.current && initTotal.current > 10 && <div className={`col ${styles["search-options"]}`}>
                     <TextField
                         autoFocus
                         className={`body-3 size32`}

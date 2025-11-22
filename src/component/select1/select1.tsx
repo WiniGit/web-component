@@ -38,6 +38,7 @@ interface Select1Props {
     customOptionsList?: ReactNode,
     dropdownClassName?: string,
     dropdownStyle?: CSSProperties,
+    hiddenSearchOptions?: boolean,
 }
 
 interface Select1Ref {
@@ -132,6 +133,7 @@ export const Select1 = forwardRef<Select1Ref, Select1Props>(({ style = {}, ...pr
             selected={value}
             style={{ ...offsetRef.current!, ...(props.dropdownStyle ?? {}) }}
             className={props.dropdownClassName}
+            hiddenSearchOptions={props.hiddenSearchOptions}
             onSelect={(e) => {
                 if (options.every(o => o.id !== e.id)) setOptions([e])
                 setValue(e.id)
@@ -142,7 +144,7 @@ export const Select1 = forwardRef<Select1Ref, Select1Props>(({ style = {}, ...pr
     </>
 })
 
-const OptionDropList = (props: { onClose: () => void, style: CSSProperties, className?: string, selected?: string | number, onSelect: (e: OptionsItem) => void, getOptions: (params: { length: number, search?: string, parentId?: string | number }) => Promise<{ data: Array<OptionsItem>, totalCount: number }>, }) => {
+const OptionDropList = (props: { onClose: () => void, style: CSSProperties, className?: string, selected?: string | number, onSelect: (e: OptionsItem) => void, getOptions: (params: { length: number, search?: string, parentId?: string | number }) => Promise<{ data: Array<OptionsItem>, totalCount: number }>, hiddenSearchOptions?: boolean }) => {
     const divRef = useRef<HTMLDivElement>(null)
     const [searchInput, setSearchInput] = useState<string>("")
     const searchValue = useDeferredValue(searchInput)
@@ -184,7 +186,7 @@ const OptionDropList = (props: { onClose: () => void, style: CSSProperties, clas
             <h6 className='heading-7' style={{ margin: "0.8rem" }}>{t("noResultFound")}</h6>
         </div> :
             <>
-                {initTotal.current && initTotal.current > 10 && <div className={`col ${styles["search-options"]}`}>
+                {!props.hiddenSearchOptions && initTotal.current && initTotal.current > 10 && <div className={`col ${styles["search-options"]}`}>
                     <TextField
                         autoFocus
                         className={`body-3 size32`}
