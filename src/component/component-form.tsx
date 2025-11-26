@@ -245,11 +245,13 @@ export function CKEditorForm(params: CKEditorFormProps) {
                     value={field.value}
                     disabled={params.disabled}
                     customConfig={params.customConfig as any}
-                    extraPlugins={params.ckEditorUploadPlugin ?? [function (editor: { plugins: { get: (arg0: string) => { (): any; new(): any; createUploadAdapter: (loader: any) => CkEditorUploadAdapter; }; }; }) {
-                        editor.plugins.get('FileRepository').createUploadAdapter = (loader: any) => {
-                            return new CkEditorUploadAdapter(loader);
-                        };
-                    }]}
+                    extraPlugins={params.ckEditorUploadPlugin ?? [
+                        function (editor: { plugins: { get: (arg0: string) => { (): any; new(): any; createUploadAdapter: (loader: any) => CkEditorUploadAdapter; }; }; }) {
+                            editor.plugins.get('FileRepository').createUploadAdapter = (loader: any) => {
+                                return new CkEditorUploadAdapter(loader);
+                            };
+                        }
+                    ]}
                     onBlur={(_: any, editor: any) => { field.onChange(editor.getData()) }}
                     placeholder={params.placeholder ? params.placeholder : params.label ? `${t("input")} ${params.label.toLowerCase()}` : ''}
                     helperText={_covertErrors && (_covertErrors?.message?.length ? _covertErrors?.message : `${t("input")} ${(params.placeholder ? params.placeholder : params.label ? `${params.label}` : t('value')).toLowerCase()}`)} />

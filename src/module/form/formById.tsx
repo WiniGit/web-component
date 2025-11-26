@@ -1,7 +1,7 @@
 import { CSSProperties, forwardRef, ReactNode, useDeferredValue, useEffect, useImperativeHandle, useMemo, useState } from "react"
 import { FieldValues, useForm, UseFormReturn } from "react-hook-form"
 import { CustomHTMLProps, getValidLink, RenderLayerElement } from "../page/pageById"
-import { AccountController, BaseDA, DataController, OptionsItem, randomGID, SettingDataController, urlToFileType, useLocation, Util } from "../../index"
+import { AccountController, BaseDA, DataController, OptionsItem, randomGID, SettingDataController, urlToFileType, Util } from "../../index"
 import { regexGetVariableByThis } from "../card/config"
 import { ComponentType, FEDataType } from "../da"
 import { validateForm } from "./config"
@@ -39,8 +39,6 @@ export const FormById = forwardRef<FormByIdRef, FormByIdProps>((props, ref) => {
     const _relController = new TableController("rel")
     const [cols, setCols] = useState<Array<{ [p: string]: any }>>([])
     const [rels, setRels] = useState<Array<{ [p: string]: any }>>([])
-    const location = useLocation()
-    const params = new URLSearchParams(location.search);
     const accountController = new AccountController()
     const regexGuid = /^[0-9a-fA-F]{32}$/;
 
@@ -171,7 +169,7 @@ export const FormById = forwardRef<FormByIdRef, FormByIdProps>((props, ref) => {
                                     break;
                                 case FEDataType.DATE:
                                 case FEDataType.DATETIME:
-                                    methods.setValue(prop, new Date(typeof dataItem[prop] === 'string' ? parseInt(dataItem[prop]) : dataItem[prop]))
+                                    methods.setValue(prop, new Date(typeof dataItem[prop] === 'string' && !isNaN(Number(dataItem[prop])) ? parseInt(dataItem[prop]) : dataItem[prop]))
                                     break;
                                 case FEDataType.MONEY:
                                     methods.setValue(prop, Util.money(dataItem[prop]))
@@ -255,7 +253,7 @@ export const FormById = forwardRef<FormByIdRef, FormByIdProps>((props, ref) => {
                 })
             }
         }
-    }, [props.data, cols.length, params.toString()])
+    }, [props.data, cols.length])
 
     useEffect(() => {
         if (props.id) {

@@ -98,13 +98,13 @@ export const CardById = forwardRef<CardRef, CardProps>((props, ref) => {
                     return relKeyFilter
                 }).flat(Infinity).join(" | ")}}`
             })
-            if (relRes.code === 200) methods.setValue("_rels", relRes.data)
+            if (relRes.code === 200) methods.setValue("_rels", relRes.data.map((r: any) => ({ ...r, Form: JSON.parse(r.Form) })))
         }
     }
 
     const mapColumnData = async () => {
         const _colRes = await _colController.getListSimple({ page: 1, size: 200, query: `@TableName:{${cardItem!.TbName}} @Name:{${keyNames.filter((e: string) => e.split(".").length === 1).join(" | ")}}` })
-        if (_colRes.code === 200) methods.setValue("_cols", _colRes.data)
+        if (_colRes.code === 200) methods.setValue("_cols", _colRes.data.map((c: any) => ({ ...c, Form: JSON.parse(c.Form) })))
     }
 
     const getData = async (page?: number) => {

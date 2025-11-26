@@ -480,6 +480,7 @@ export const FDateTimePicker = ({ methods, prefix, ...props }: FDateTimePickerPr
             const _covertErrors = convertErrors(methods.formState.errors, props.name!)
             return <DateTimePicker
                 {...props}
+                value={field.value}
                 onChange={(ev) => {
                     field.onChange(ev)
                     props.onChange?.(ev)

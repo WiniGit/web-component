@@ -107,7 +107,7 @@ export const Select1 = forwardRef<Select1Ref, Select1Props>(({ style = {}, ...pr
             className={`${props.simpleStyle ? styles['select1-simple-style'] : styles['select1-container']} ${isOpen ? styles["focus"] : ""} row ${props.helperText?.length ? styles['helper-text'] : ""} ${props.disabled ? styles['disabled'] : ""} ${props.className ?? (props.simpleStyle ? "" : 'body-3')}`}
             helper-text={props.helperText}
             style={{ '--helper-text-color': props.helperTextColor ?? '#e14337', ...style } as CSSProperties}
-            onClick={props.disabled || props.readOnly ? undefined : onOpenOptions}
+            onClick={(props.disabled || props.readOnly) ? undefined : onOpenOptions}
         >
             {valueItem?.prefix ?? props.prefix}
             {typeof valueItem?.name === "object" ? valueItem.name : <span style={{ flex: 1, textOverflow: "ellipsis", whiteSpace: "nowrap", overflow: "hidden", opacity: valueItem ? undefined : 0.5 }}>{valueItem?.name ?? props.placeholder}</span>}
@@ -189,7 +189,7 @@ const OptionDropList = (props: { onClose: () => void, style: CSSProperties, clas
                 {!props.hiddenSearchOptions && initTotal.current && initTotal.current > 10 && <div className={`col ${styles["search-options"]}`}>
                     <TextField
                         autoFocus
-                        className={`body-3 size32`}
+                        className={`body-3 ${divRef.current!.offsetWidth > 88 ? "size32" : "size24"}`}
                         placeholder={t("search")}
                         prefix={<Winicon src={"outline/development/zoom"} size={14} />}
                         onChange={(ev) => {

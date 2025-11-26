@@ -16,14 +16,15 @@ interface WiniconProps {
     tooltip?: { message: string, position?: "top" | "bottom" | "left" | "right", textStyle?: CSSProperties },
     onClick?: React.MouseEventHandler<HTMLDivElement>,
     onMouseDown?: React.MouseEventHandler<HTMLDivElement>,
-    onDoubleClick?: React.MouseEventHandler<HTMLDivElement>
+    onDoubleClick?: React.MouseEventHandler<HTMLDivElement>,
+    simpleStyle?: boolean
 }
 
 interface WiniconRef {
     element?: HTMLDivElement
 }
 
-export const Winicon = forwardRef<WiniconRef, WiniconProps>(({ id, src, link, className, style = {}, size, color, alt, onClick, tooltip, onMouseDown, onDoubleClick }, ref) => {
+export const Winicon = forwardRef<WiniconRef, WiniconProps>(({ id, src, link, className, style = {}, size, color, alt, onClick, tooltip, onMouseDown, onDoubleClick, simpleStyle }, ref) => {
     const divRef = useRef<HTMLDivElement>(null)
     const timoutRef = useRef<NodeJS.Timeout>(null)
     const [svgData, setSvgData] = useState<string>()
@@ -68,7 +69,7 @@ export const Winicon = forwardRef<WiniconRef, WiniconProps>(({ id, src, link, cl
             onClick={onClick}
             onDoubleClick={onDoubleClick}
             onMouseDown={onMouseDown}
-            className={`${styles['wini-icon']} ${svgData ? "" : "skeleton-loading"} ${onClick ? styles['clickable'] : ''} ${className ?? ''} ${src ? `${src.split("/")[0]}-icon` : ''}${link ? ' link-icon' : ""}`}
+            className={`${styles['wini-icon']} ${simpleStyle ? styles["simple-icon"] : ""} ${svgData ? "" : "skeleton-loading"} ${onClick ? styles['clickable'] : ''} ${className ?? ''} ${src ? `${src.split("/")[0]}-icon` : ''}${link ? ' link-icon' : ""}`}
             style={{ ...style, fontSize: size, color: color }} dangerouslySetInnerHTML={{ __html: svgData ?? '' }}
             onMouseOver={tooltip ? () => {
                 timoutRef.current = setTimeout(() => {

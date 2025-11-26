@@ -144,6 +144,7 @@ export class Util {
     /** date: dd/mm/yyyy | yyyy/mm/dd | dd/mm | mm/yyyy
         time: hh:mm:ss | hh:mm */
     static datetoString(x = new Date(), y = "dd/mm/yyyy") {
+        if (typeof x === "number") x = new Date(x)
         let splitDateTime = y.toLowerCase().split(" ");
         let dateConvert = splitDateTime[0]
         let timeConvert = splitDateTime[1]
@@ -476,30 +477,30 @@ export class Util {
         return `<p>${textContent}</p>`;
     };
 
-    static timeSince = (dateCreate: number) => {
+    static timeSince = (dateCreate: number, translate?: (key: string) => string) => {
         const now = new Date(); // Thời điểm hiện tại
         const createdDate = new Date(dateCreate); // Chuyển dateCreate thành Date object
         const seconds = differenceInSeconds(now, createdDate); // Chênh lệch thời gian (giây)
 
         // Định nghĩa các khoảng thời gian
         const intervals = [
-            { label: "năm", seconds: 31536000 }, // 365 ngày
-            { label: "tháng", seconds: 2592000 }, // 30 ngày
-            { label: "ngày", seconds: 86400 },
-            { label: "giờ", seconds: 3600 },
-            { label: "phút", seconds: 60 },
-            { label: "giây", seconds: 1 },
+            { label: translate ? translate("year").toLowerCase() : "năm", multitipleLabel: translate ? translate("years").toLowerCase() : "năm", seconds: 31536000 }, // 365 ngày
+            { label: translate ? translate("month").toLowerCase() : "tháng", multitipleLabel: translate ? translate("months").toLowerCase() : "tháng", seconds: 2592000 }, // 30 ngày
+            { label: translate ? translate("day").toLowerCase() : "ngày", multitipleLabel: translate ? translate("days").toLowerCase() : "ngày", seconds: 86400 },
+            { label: translate ? translate("hour").toLowerCase() : "giờ", multitipleLabel: translate ? translate("hours").toLowerCase() : "giờ", seconds: 3600 },
+            { label: translate ? translate("minute").toLowerCase() : "phút", multitipleLabel: translate ? translate("minutes").toLowerCase() : "phút", seconds: 60 },
+            { label: translate ? translate("second").toLowerCase() : "giây", multitipleLabel: translate ? translate("seconds").toLowerCase() : "giây", seconds: 1 },
         ];
 
         // Tìm khoảng thời gian phù hợp
         for (const interval of intervals) {
             const count = Math.floor(seconds / interval.seconds);
             if (count >= 1) {
-                return `${count} ${interval.label}${count > 1 ? "" : ""} trước`;
+                return `${count} ${count > 1 ? interval.multitipleLabel : interval.label} ${translate ? translate("ago").toLowerCase() : "trước"}`;
             }
         }
 
-        return "vừa xong"; // Nếu nhỏ hơn 1 giây
+        return translate ? translate("now").toLowerCase() : "vừa xong"; // Nếu nhỏ hơn 1 giây
     }
 
     static extractHashtags = (content: string) => {

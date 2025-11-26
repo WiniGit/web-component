@@ -4,9 +4,12 @@
     align-items: center;
     width: fit-content;
     height: fit-content;
-    padding: 0.2rem;
     font-size: 1.6rem;
     color: var(--neutral-text-subtitle-color, light-dark(#61616B, #A2A2AA));
+}
+
+.wini-icon:not(.simple-icon) {
+    padding: max(0.2rem, 1px);
 }
 
 .wini-icon * {

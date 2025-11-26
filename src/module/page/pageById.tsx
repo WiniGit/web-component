@@ -165,9 +165,16 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
             const variable = execRegex[1].split(".")
             let getValue: any = m
             switch (variable[0]) {
+                case "Util":
+                    try {
+                        getValue = new Function("indexItem", "Util", `return \`${m.replace(/this/g, "indexItem")}\``)({ ...(props.indexItem ?? {}), index: props.index }, Util)
+                    } catch (error) {
+                        getValue = m
+                    }
+                    break;
                 case "this":
                     if (props.indexItem) {
-                        if ((props.type === "card" || props.type === "view") && props.indexItem) {
+                        if ((props.type === "card" || props.type === "view") && props.indexItem && !isEval) {
                             try {
                                 getValue = new Function("indexItem", "Util", `return \`${m.replace(/this/g, "indexItem")}\``)({ ...props.indexItem, index: props.index }, Util)
                             } catch (error) {
@@ -248,7 +255,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
             }
         }
         return tmp
-    }, [props.methods!.watch(), props.item.State, location.pathname, location.search, params])
+    }, [props.methods!.watch(), props.item.State, location.pathname, location.search, params, props.indexItem])
     // 
     const customProps = useMemo(() => {
         let _props = { ...props.item.Setting }
@@ -322,7 +329,6 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                                 return;
                             case ActionType.custom:
                                 if (actItem.Caculate) {
-                                    debugger
                                     await (new AsyncFunction(
                                         "formResult", "Util", "DataController", "randomGID", "ToastMessage", "uploadFiles", "getFilesInfor", "showDialog", "ComponentStatus", "event", "methods",
                                         `${actItem.Caculate}` // This string can now safely contain the 'await' keyword
@@ -414,7 +420,11 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
             let tmpValue = watchForDataValue[`${keys[0]}`]?.find((e: any) => e && props.indexItem![keys[0]]?.includes(e.Id))?.[keys[1]]
             switch (_rel.DataType) {
                 case FEDataType.FILE:
-                    tmpValue = tmpValue?.split(",")?.[0]
+                    if (Array.isArray(tmpValue)) {
+                        tmpValue = tmpValue[0]?.url
+                    } else {
+                        tmpValue = tmpValue?.split(",")?.[0]
+                    }
                     if (tmpValue && (props.item.Type === ComponentType.container || props.item.Type === ComponentType.navLink)) tmpValue = { backgroundImage: `url(${getValidLink(tmpValue)})` }
                     break;
                 case FEDataType.HTML:
@@ -454,7 +464,11 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
             switch (_col.DataType) {
                 case FEDataType.FILE:
                     if (tmpValue) {
-                        tmpValue = tmpValue?.split(",")?.[0]
+                        if (Array.isArray(tmpValue)) {
+                            tmpValue = tmpValue[0]?.url
+                        } else {
+                            tmpValue = tmpValue?.split(",")?.[0]
+                        }
                         if (props.item.Type === ComponentType.container || props.item.Type === ComponentType.navLink) tmpValue = { backgroundImage: `url(${getValidLink(tmpValue)})` }
                     }
                     break;
@@ -683,7 +697,6 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
             }
         case ComponentType.text:
             if (props.item.NameField) {
-                // if (props.item.Id === "93eba01c29664eddbb1d4331e06dd7ec") debugger
                 if (typeof dataValue === "object") return <CustomText {...typeProps} html={dataValue?.["__html"] ?? ""} />
                 else return <CustomText {...typeProps} value={dataValue} />
             } else return <CustomText {...typeProps} />
