@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { Util } from "./utils";
 import { ToastMessage } from '../component/toast-noti/toast-noti';
+import ReactDOM from 'react-dom'
 
 export class ConfigData {
     static pid = ""
@@ -130,6 +131,9 @@ export class BaseDA {
     }
 
     static uploadFiles = async (listFile: File[]) => {
+        const loader = document.createElement("div")
+        loader.className = "loader"
+        document.body.appendChild(loader)
         listFile = [...listFile];
         // const headersObj: any = await getHeaders()
         const headersObj: any = { pid: ConfigData.pid, "Content-Type": "multipart/form-data" }
@@ -137,6 +141,7 @@ export class BaseDA {
         for (const file of listFile) {
             if (file.size > maxFileSize) {
                 ToastMessage.errors('File size must be not more than 200MB')
+                loader.remove()
                 return null
             } else {
                 const tmp = listRequest[0]
@@ -155,6 +160,7 @@ export class BaseDA {
                 body: formData,
             })
         }))
+        loader.remove()
         if (response.every(r => r.code === 200)) {
             return response.map(r => r.data).flat(Infinity)
         } else {
