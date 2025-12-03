@@ -19,7 +19,7 @@ interface AddEditElementFormProps {
     customFields?: { [key: string]: (methods: UseFormReturn) => ReactNode }
 }
 
-const AddEditElementForm = forwardRef(({ tbName = "", title, activeColumns = [], id, onSuccess, expandForm, handleSubmit, customFields }: AddEditElementFormProps, ref: any) => {
+const AddEditElementForm = forwardRef(({ tbName = "", title, activeColumns = [], id, onSuccess, expandForm, handleSubmit, customFields, ...props }: AddEditElementFormProps, ref: any) => {
     const dataController = new DataController(tbName)
     const [item, setItem] = useState<{ [p: string]: any }>()
     const [column, setColumn] = useState<{ [p: string]: any }[]>([])
@@ -85,6 +85,7 @@ const AddEditElementForm = forwardRef(({ tbName = "", title, activeColumns = [],
             cols={column.filter(e => !e.Query?.length)}
             rels={relative}
             item={item}
+            parentId={(props as any).ParentId}
             tbName={tbName}
             expandForm={expandForm}
             onCancel={() => {
@@ -119,10 +120,11 @@ interface FormViewProps {
     onSuccess?: () => void;
     expandForm?: (methods: UseFormReturn) => ReactNode;
     handleSubmit?: (params: { item: { [k: string]: any }, initItem?: { [k: string]: any }, methods: UseFormReturn, onSuccess?: () => void }) => Promise<any>;
-    customFields?: { [key: string]: (methods: UseFormReturn) => ReactNode }
+    customFields?: { [key: string]: (methods: UseFormReturn) => ReactNode },
+    parentId?: string
 }
 
-const FormView = ({ cols = [], rels = [], item, tbName, onCancel, onSuccess, expandForm, handleSubmit, customFields }: FormViewProps) => {
+const FormView = ({ cols = [], rels = [], item, tbName, onCancel, onSuccess, expandForm, handleSubmit, customFields, ...props }: FormViewProps) => {
     const dataController = new DataController(tbName)
     const methods = useForm<any>({ shouldFocusError: false, defaultValues: { Id: randomGID() } })
     const watchRel = useMemo(() => rels.filter(e => e.Query && e.Query.match(regexGetVariableByThis)?.length), [rels.length])
@@ -205,7 +207,7 @@ const FormView = ({ cols = [], rels = [], item, tbName, onCancel, onSuccess, exp
                 }
             }
         }
-        if(dataItem.DateCreated instanceof Date) dataItem.DateCreated = dataItem.DateCreated.getTime()
+        if (dataItem.DateCreated instanceof Date) dataItem.DateCreated = dataItem.DateCreated.getTime()
         for (let _rel of rels) {
             if (dataItem[_rel.Column] && Array.isArray(dataItem[_rel.Column]))
                 dataItem[_rel.Column] = dataItem[_rel.Column].join(",")
@@ -327,7 +329,8 @@ const FormView = ({ cols = [], rels = [], item, tbName, onCancel, onSuccess, exp
                 })
             }
         }
-    }, [item, cols.length])
+        if (props.parentId) methods.setValue("ParentId", props.parentId)
+    }, [item, cols.length, props.parentId])
 
     const getOptions = async ({ length, search, parentId, _rel }: { length: number, search?: string, parentId?: string | number, _rel: { [p: string]: any } }) => {
         const pkTableController = new TableController("rel")

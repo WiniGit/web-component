@@ -236,7 +236,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
             } else caculate = st.Trigger
             if (caculate) {
                 try {
-                    var checked = eval(caculate)
+                    var checked = new Function(`return ${caculate}`)()
                 } catch (error) {
                     console.log(caculate, error)
                 }
@@ -247,13 +247,14 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                         Object.keys(st[sp]).forEach(k => {
                             if (st[sp][k]) {
                                 tmp[k] ??= {}
-                                tmp[k] = { ...tmp[k], ...st[sp][k] }
+                                tmp[k] = typeof st[sp][k] === "object" ? { ...tmp[k], ...st[sp][k] } : st[sp][k]
                             }
                         })
                     }
                 }
             }
         }
+        if (props.item.Type === ComponentType.icon) console.log("????: ", props.item.State, tmp)
         return tmp
     }, [props.methods!.watch(), props.item.State, location.pathname, location.search, params, props.indexItem])
     // 
@@ -392,9 +393,15 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
             })
         }
         if (props.style) _props.style = { ..._props.style, ...props.style }
-        if (watchForCustomProps?.style) _props.style = { ..._props.style, ...watchForCustomProps.style }
+        if (watchForCustomProps?.style) {
+            _props.style = { ..._props.style, ...watchForCustomProps.style }
+            delete watchForCustomProps.style
+        }
         if (props.className) _props.className = [..._props.className.split(" "), ...props.className.split(" ")].filter((cls, i, arr) => cls.length && arr.indexOf(cls) === i).join(" ")
-        if (watchForCustomProps?.className) _props.className = [..._props.className.split(" "), ...watchForCustomProps.className.split(" ")].filter((cls, i, arr) => cls.length && arr.indexOf(cls) === i).join(" ")
+        if (watchForCustomProps?.className) {
+            _props.className = [..._props.className.split(" "), ...watchForCustomProps.className.split(" ")].filter((cls, i, arr) => cls.length && arr.indexOf(cls) === i).join(" ")
+            delete watchForCustomProps.className
+        }
         delete _props.action
         if (props.propsData && props.propsData[findId]) var extendProps = props.type === "card" ? (props.propsData[findId] as any)(props.indexItem, props.index, props.methods) : props.propsData[findId]
         if (extendProps) {
@@ -402,7 +409,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
             delete extendProps.style
             _props = { ..._props, ...extendProps }
         }
-        return watchForCustomProps ? { ...watchForCustomProps, ..._props } : _props
+        return watchForCustomProps ? { ..._props, ...watchForCustomProps } : _props
     }, [props.item, props.propsData, props.indexItem, watchForCustomProps])
     const watchForDataValue = useMemo(() => {
         const watchData = props.type?.toLowerCase() === "form" ? { "_rels": props.rels, "_cols": props.cols } : props.methods!.watch()

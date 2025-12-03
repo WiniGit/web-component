@@ -464,7 +464,7 @@ export const TableRow = ({ item, setItem, onEditActionColumn, title, index, meth
                     hideCheckbox={hideCheckbox}
                     showAddEditPopup={enableEdit ? showAddEditChildPopup : undefined}
                     onDelete={enableEdit ? (() => {
-                        dataController.delete([item.Id]).then(res => {
+                        dataController.delete([childItem.Id]).then(res => {
                             if (res.code === 200) {
                                 getData(Math.max(Math.floor(children.length / 20), 1))
                                 setItem({ ...item, _totalChild: item._totalChild - 1 })
@@ -489,7 +489,7 @@ export const TableRow = ({ item, setItem, onEditActionColumn, title, index, meth
                     onClick={() => { showAddEditChildPopup() }}
                 />}
                 {!!totalChild && !!children.length && totalChild > children.length &&
-                    <Text className="button-text-5" onClick={() => { getData(Math.floor(children.length / 20) + 1) }}>See more</Text>}
+                    <span className="button-text-5" style={{ marginTop: "1.1rem" }} onClick={() => { getData(Math.floor(children.length / 20) + 1) }}>{t("seemore")}</span>}
             </div>}
         </>
         }
