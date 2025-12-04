@@ -173,15 +173,15 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                     }
                     break;
                 case "this":
-                    if (props.indexItem) {
-                        if ((props.type === "card" || props.type === "view") && props.indexItem && !isEval) {
+                    if (props.indexItem && !isEval) {
+                        if ((props.type === "card" || props.type === "view") && props.indexItem) {
                             try {
                                 getValue = new Function("indexItem", "Util", `return \`${m.replace(/this/g, "indexItem")}\``)({ ...props.indexItem, index: props.index }, Util)
                             } catch (error) {
                                 getValue = m
                             }
                         } else getValue = props.indexItem?.[variable[1]]
-                    }
+                    } else getValue = m
                     break;
                 case "location":
                     getValue = location[variable[1]]
@@ -212,9 +212,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                     }
                     break;
             }
-            if (isEval && (typeof getValue === "string")) {
-                getValue = `"${getValue}"`
-            } else if (regexI18n.test(getValue)) {
+            if (regexI18n.test(getValue)) {
                 try {
                     getValue = eval(`\`${getValue}\``)
                 } catch (error) {
@@ -236,7 +234,9 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
             } else caculate = st.Trigger
             if (caculate) {
                 try {
-                    var checked = new Function(`return ${caculate}`)()
+                    var checked = new Function("indexItem", "Util", `return ${caculate.replace(regexGetVariables, (_, p1) => {
+                        return p1.replace(/this/g, "indexItem")
+                    })}`)({ ...(props.indexItem ?? {}), index: props.index }, Util)
                 } catch (error) {
                     console.log(caculate, error)
                 }
@@ -254,7 +254,6 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                 }
             }
         }
-        if (props.item.Type === ComponentType.icon) console.log("????: ", props.item.State, tmp)
         return tmp
     }, [props.methods!.watch(), props.item.State, location.pathname, location.search, params, props.indexItem])
     // 
@@ -486,10 +485,10 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                     tmpValue = tmpValue ? Util.money(tmpValue) : undefined
                     break;
                 case FEDataType.DATE:
-                    tmpValue = tmpValue ? Util.datetoString(new Date(typeof tmpValue === 'string' ? parseInt(tmpValue) : tmpValue)) : undefined
+                    tmpValue = tmpValue ? Util.datetoString((tmpValue instanceof Date) ? tmpValue : new Date(typeof tmpValue === 'string' ? parseInt(tmpValue) : tmpValue)) : undefined
                     break;
                 case FEDataType.DATETIME:
-                    tmpValue = tmpValue ? Util.datetoString(new Date(typeof tmpValue === 'string' ? parseInt(tmpValue) : tmpValue), "dd/mm/yyyy hh:mm") : undefined
+                    tmpValue = tmpValue ? Util.datetoString((tmpValue instanceof Date) ? tmpValue : new Date(typeof tmpValue === 'string' ? parseInt(tmpValue) : tmpValue), "dd/mm/yyyy hh:mm") : undefined
                     break;
                 default:
                     if (_col.Form?.Options?.length) {
@@ -580,9 +579,19 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
             case ComponentType.datePicker:
             // @ts-ignore
             case ComponentType.dateTimePicker:
-                if (props.item.NameField?.length && props.cols?.find(e => e.Name === props.item.NameField)?.DataType === FEDataType.DATE) {
-                    tmpProps.pickerType = "date"
-                    tmpProps.pickOnly = true
+                if (props.item.NameField?.length) {
+                    const propsColDataType = props.cols?.find(e => e.Name === props.item.NameField)?.DataType
+                    switch (propsColDataType) {
+                        case FEDataType.DATE:
+                            tmpProps.pickerType = "date"
+                            tmpProps.pickOnly = true
+                            break;
+                        case FEDataType.DATETIME:
+                            tmpProps.pickerType = "datetime"
+                            break;
+                        default:
+                            break;
+                    }
                 }
             case ComponentType.textArea:
                 if (tmpProps.placeholder && regexGetVariables.test(tmpProps.placeholder)) tmpProps.placeholder = replaceThisVariables(tmpProps.placeholder)

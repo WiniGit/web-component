@@ -687,3 +687,26 @@ textarea::placeholder {
         transform: rotate(360deg);
     }
 }
+
+@keyframes loading-change-view {
+    0% {
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 0.2;
+    }
+
+    80% {
+        opacity: 0.6;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+._wini-main-layout_axts4_37>div:not(._wini-header-layout_axts4_37, ._wini-siderbar-layout_axts4_37),
+._wini-main-layout_axts4_37>div:not(._wini-header-layout_axts4_37, ._wini-siderbar-layout_axts4_37)>* {
+    animation: loading-change-view 0.8s ease-in-out;
+}

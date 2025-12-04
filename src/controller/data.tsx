@@ -105,24 +105,24 @@ export class DataController {
         return res
     }
 
-    async add(data: Array<{ [p: string]: any }>) {
+    async add(data: Array<{ [p: string]: any }>, type?: string) {
         const res = await BaseDA.post(ConfigData.url + 'data/action?action=add', {
             headers: {
                 pid: ConfigData.pid,
                 module: this.module
             },
-            body: { data: data }
+            body: { data: data, type }
         })
         return res
     }
 
-    async edit(data: Array<{ [p: string]: any }>) {
+    async edit(data: Array<{ [p: string]: any }>, type?: string) {
         const res = await BaseDA.post(ConfigData.url + 'data/action?action=edit', {
             headers: {
                 pid: ConfigData.pid,
                 module: this.module
             },
-            body: { data: data }
+            body: { data: data, type }
         })
         return res
     }
