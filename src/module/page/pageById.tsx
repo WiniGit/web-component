@@ -259,6 +259,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
     // 
     const customProps = useMemo(() => {
         let _props = { ...props.item.Setting }
+        if (watchForCustomProps?.unmounted || (_props.unmounted && typeof watchForCustomProps?.unmounted === "boolean")) return { unmounted: true };
         _props.style ??= {}
         _props.className ??= ""
         if (_props.action?.length && Array.isArray(_props.action)) {
@@ -410,6 +411,9 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
         }
         return watchForCustomProps ? { ..._props, ...watchForCustomProps } : _props
     }, [props.item, props.propsData, props.indexItem, watchForCustomProps])
+    // 
+    if (customProps.unmounted) return null;
+    // 
     const watchForDataValue = useMemo(() => {
         const watchData = props.type?.toLowerCase() === "form" ? { "_rels": props.rels, "_cols": props.cols } : props.methods!.watch()
         const tmp: { [p: string]: any } = { rels: watchData["_rels"], cols: watchData["_cols"] }
@@ -417,6 +421,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
         if (keys && keys.length > 1) tmp[`${keys[0]}`] = watchData[`_${keys[0]}`]
         return tmp
     }, [JSON.stringify(props.methods!.watch()), props.item.NameField, props.cols?.length, props.rels?.length])
+
     const dataValue = useMemo(() => {
         if (props.type === "page" || !props.item.NameField?.length || !props.indexItem) return undefined
         const keys = props.item.NameField.split(".")

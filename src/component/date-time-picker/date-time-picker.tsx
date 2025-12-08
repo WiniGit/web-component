@@ -63,8 +63,8 @@ export function DateTimePicker({ style = {}, ...props }: DateTimePickerProps) {
         if (!value) return <Text className={styles["value"]} style={{ opacity: 0.6 }}>{props.placeholder ?? ""}</Text>
         if (value instanceof Date) return <Text className={styles["value"]}>{Util.datetoString(value, `dd/mm/yyyy${props.pickerType?.includes("time") ? " hh:mm" : ""}`)}</Text>
         else return <>
-            <Text className={styles["value"]} style={{ flex: "none", width: "fit-content" }}>{Util.datetoString(value.start ?? new Date(), `dd/mm/yyyy${(props.pickerType?.includes("time") || props.pickerType === "auto") ? " hh:mm" : ""}`)} - {Util.datetoString(value.end ?? new Date(), `dd/mm/yyyy${(props.pickerType?.includes("time") || props.pickerType === "auto") ? " hh:mm" : ""}`)}</Text>
-            {value.repeatData && <Winicon src="outline/arrows/loop-2" size={"1.2rem"} />}
+            <span className={styles["value"]} style={{ flex: "none", width: "fit-content" }}>{Util.datetoString(value.start ?? new Date(), `dd/mm/yyyy${(props.pickerType?.includes("time") || props.pickerType === "auto") ? " hh:mm" : ""}`)} - {Util.datetoString(value.end ?? new Date(), `dd/mm/yyyy${(props.pickerType?.includes("time") || props.pickerType === "auto") ? " hh:mm" : ""}`)}</span>
+            {value.repeatData && <Winicon src="outline/arrows/loop-2" size={12} />}
         </>
     }, [value, props.placeholder])
 

@@ -76,13 +76,21 @@ export function PopupOverlay({ children, onClose, className, style, onOpen }: { 
     const overlayRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
-        if (overlayRef.current && onClose) {
-            const onClickDropDown = (ev: any) => {
-                if (ev.target === overlayRef.current || !overlayRef.current!.contains(ev.target)) onClose(ev)
+        if (overlayRef.current) {
+            const parentElement = overlayRef.current.parentElement
+            if (parentElement) {
+                const parentRect = parentElement.getBoundingClientRect()
+                overlayRef.current.style.setProperty("--originX", `-${Math.round(parentRect.x)}px`)
+                overlayRef.current.style.setProperty("--originY", `-${Math.round(parentRect.y)}px`)
             }
-            window.document.body.addEventListener("mousedown", onClickDropDown)
-            return () => {
-                window.document.body.removeEventListener("mousedown", onClickDropDown)
+            if (onClose) {
+                const onClickDropDown = (ev: any) => {
+                    if (ev.target === overlayRef.current || !overlayRef.current!.contains(ev.target)) onClose(ev)
+                }
+                window.document.body.addEventListener("mousedown", onClickDropDown)
+                return () => {
+                    window.document.body.removeEventListener("mousedown", onClickDropDown)
+                }
             }
         }
     }, [overlayRef.current])
@@ -100,6 +108,8 @@ export function PopupOverlay({ children, onClose, className, style, onOpen }: { 
                     if (rect.x < 0) {
                         popupContent.style.left = "0px"
                         popupContent.style.right = "unset"
+                    } else if (rect.x > document.body.offsetWidth) {
+                        popupContent.style.transform = "translateX(var(--originX))"
                     } else if (rect.right > document.body.offsetWidth) {
                         popupContent.style.right = "0px"
                         popupContent.style.left = "unset"
@@ -107,11 +117,14 @@ export function PopupOverlay({ children, onClose, className, style, onOpen }: { 
                     if (rect.y < 0) {
                         popupContent.style.top = "0px"
                         popupContent.style.bottom = "unset"
+                    } else if (rect.y > document.body.offsetHeight) {
+                        if (popupContent.style.transform) popupContent.style.transform = "translate(var(--originX),var(--originY))"
+                        else popupContent.style.transform = "translateY(var(--originY))"
                     } else if (rect.bottom > document.body.offsetHeight) {
                         popupContent.style.bottom = "0px"
                         popupContent.style.top = "unset"
                     }
-                }, 300)
+                }, 250)
                 return () => { clearTimeout(timer) }
             }
         }
