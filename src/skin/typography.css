@@ -28,7 +28,7 @@
 .button-text-3,
 .label-3 {
     line-height: 2.2rem;
-    font-size: max(1.4rem, 12px);
+    font-size: max(1.4rem, 12.8px);
     color: var(--neutral-text-title-color, light-dark(#18181B, #F4F4F5));
 }
 
@@ -42,7 +42,7 @@
 .button-text-2,
 .label-1 {
     line-height: 2.4rem;
-    font-size: max(1.6rem, 14px);
+    font-size: max(1.6rem, 14.8px);
     color: var(--neutral-text-title-color, light-dark(#18181B, #F4F4F5));
 }
 
@@ -58,7 +58,7 @@
 .subtitle-1,
 .body-1 {
     line-height: 2.6rem;
-    font-size: max(1.8rem, 16px);
+    font-size: max(1.8rem, 15.6px);
     color: var(--neutral-text-title-color, light-dark(#18181B, #F4F4F5));
 }
 

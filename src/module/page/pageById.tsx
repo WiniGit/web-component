@@ -255,7 +255,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
             }
         }
         return tmp
-    }, [props.methods!.watch(), props.item.State, location.pathname, location.search, params, props.indexItem])
+    }, [props.item.State, location, props.indexItem])
     // 
     const customProps = useMemo(() => {
         let _props = { ...props.item.Setting }
@@ -415,12 +415,12 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
     if (customProps.unmounted) return null;
     // 
     const watchForDataValue = useMemo(() => {
-        const watchData = props.type?.toLowerCase() === "form" ? { "_rels": props.rels, "_cols": props.cols } : props.methods!.watch()
+        const watchData = props.type?.toLowerCase() === "form" ? { "_rels": props.rels, "_cols": props.cols } : {}
         const tmp: { [p: string]: any } = { rels: watchData["_rels"], cols: watchData["_cols"] }
         const keys = props.item.NameField?.split(".")
-        if (keys && keys.length > 1) tmp[`${keys[0]}`] = watchData[`_${keys[0]}`]
+        if (keys && keys.length > 1 && props.indexItem) tmp[`${keys[0]}`] = props.indexItem[`_${keys[0]}`]
         return tmp
-    }, [JSON.stringify(props.methods!.watch()), props.item.NameField, props.cols?.length, props.rels?.length])
+    }, [JSON.stringify(props.indexItem), props.item.NameField, props.cols?.length, props.rels?.length])
 
     const dataValue = useMemo(() => {
         if (props.type === "page" || !props.item.NameField?.length || !props.indexItem) return undefined

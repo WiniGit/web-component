@@ -349,7 +349,7 @@ export const FormById = forwardRef<FormByIdRef, FormByIdProps>((props, ref) => {
             tmpValue[c.Column ?? c.Name] = tmp[c.Column ?? c.Name]
         })
         return tmpValue
-    }, [cols.length, rels.length, methods.watch()])
+    }, [cols.length, rels.length, JSON.stringify(methods.watch())])
     const finalFormValues = useDeferredValue(formValues);
 
     return formItem && !!cols.length && layers.filter((e: any) => !e.ParentId).map((e: any) => {

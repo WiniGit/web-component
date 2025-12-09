@@ -195,7 +195,7 @@ const FormView = ({ cols = [], rels = [], item, tbName, onCancel, onSuccess, exp
                                 const uploadFiles = ev[_col.Name].filter((e: any) => !!e?.file)
                                 if (uploadFiles.length) {
                                     const res = await BaseDA.uploadFiles(uploadFiles.map((e: any) => e.file))
-                                    if (res?.length) dataItem[_col.Name] = ev[_col.Name].map((e: any) => e.file ? res.shift().Id : e.exactUrl).filter((id: string) => !!id?.length).join(",")
+                                    if (res?.length) dataItem[_col.Name] = ev[_col.Name].map((e: any) => e.file ? res.shift().Id : (e.exactUrl ?? e.id)).filter((id: string) => !!id?.length).join(",")
                                 } else {
                                     dataItem[_col.Name] = ev[_col.Name].map((e: any) => e.exactUrl ?? e.id).join(",")
                                 }

@@ -354,7 +354,7 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
                                             let result: any = {}
                                             activeColumns.sort((a: any, b: any) => a.Sort - b.Sort).forEach((_col: any) => {
                                                 const tmp = _col.Name.split(".")
-                                                const params = (tmp.length > 1 ? { data: res[tmp[0].substring(0, tmp[0].lastIndexOf("Id"))]?.filter((e: any) => item[tmp[0]].includes(e.Id)), fields: relativeFields?.[tmp[0]] } : { data: item, fields: fields }) as any
+                                                const params = (tmp.length > 1 ? { data: res[tmp[0].substring(0, tmp[0].lastIndexOf("Id"))]?.filter((e: any) => item[tmp[0]]?.includes(e.Id)), fields: relativeFields?.[tmp[0]] } : { data: item, fields: fields }) as any
                                                 result[_col.Title] = cellValue(_col, params.data, params.fields, getFiles)
                                             })
                                             return result

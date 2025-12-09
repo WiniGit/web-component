@@ -81,7 +81,9 @@ import {
     EventInfo,
     Fullscreen,
     IconExportPdf,
-    ButtonView
+    ButtonView,
+    Plugin,
+    Command
 } from 'ckeditor5';
 import './ck-editor.css';
 import 'ckeditor5/ckeditor5.css';
@@ -127,24 +129,85 @@ interface Props {
     handleExportPdf?: (editor: ClassicEditor) => void,
 }
 
-class ExportPdfPlugin {
-    editor: ClassicEditor;
-    static get pluginName() {
-        return 'ExportPdf';
+class ExportPdfCommand extends Command {
+    execute() {
+        const editor = this.editor;
+        const content = editor.getData();
+
+        const printWindow = window.open("", "_blank", "width=800,height=900");
+        if (!printWindow) return;
+
+        printWindow.document.open();
+        printWindow.document.write(`
+            <html>
+            <head>
+                <title>Export PDF</title>
+                <style>
+                    body {
+                        font-family: Arial, sans-serif;
+                        margin: 0;
+                        padding: 0;
+                        display: flex;
+                        justify-content: center;
+                    }
+
+                    .a4-page {
+                        width: 210mm;
+                        min-height: 297mm;
+                        padding: 20mm;
+                        box-sizing: border-box;
+                    }
+
+                    img {
+                        max-width: 100%;
+                        height: auto;
+                    }
+
+                    @page {
+                        size: A4;
+                        margin: 15mm;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="a4-page">
+                    ${content}
+                </div>
+            </body>
+            </html>
+        `);
+        printWindow.document.close();
+
+        printWindow.onload = () => {
+            printWindow.focus();
+            printWindow.print();
+        };
     }
 
-    constructor(editor: ClassicEditor) {
-        this.editor = editor;
+    refresh() {
+        // This ensures the button is clickable
+        this.isEnabled = true;
+    }
+}
+
+// 2. Your Plugin Class
+class ExportPdfPlugin extends Plugin {
+    static get pluginName() {
+        return 'ExportPdf';
     }
 
     init() {
         const editor = this.editor;
 
+        // CORRECT: Instantiate the class. 
+        // The Command class parent automatically handles .destroy() logic.
+        editor.commands.add('exportPdf', new ExportPdfCommand(editor));
+
         editor.ui.componentFactory.add('exportPdf', (locale) => {
             const view = new ButtonView(locale);
 
             view.set({
-                label: 'Xuất PDF',
+                label: 'Export PDF',
                 icon: IconExportPdf,
                 tooltip: true
             });
@@ -155,71 +218,6 @@ class ExportPdfPlugin {
 
             return view;
         });
-
-        editor.commands.add('exportPdf', {
-            execute() {
-                // if (props.handleExportPdf) return props.handleExportPdf(editor);
-                const content = editor.getData();
-
-                const printWindow = window.open("", "_blank", "width=800,height=900");
-                if (!printWindow) return;
-
-                printWindow.document.open();
-                printWindow.document.write(`
-                <html>
-                <head>
-                    <title>Export PDF</title>
-                    <style>
-                        /* Giới hạn chiều ngang theo chuẩn A4 */
-                        body {
-                            font-family: Arial, sans-serif;
-                            margin: 0;
-                            padding: 0;
-                            display: flex;
-                            justify-content: center;
-                        }
-    
-                        .a4-page {
-                            width: 210mm;
-                            min-height: 297mm;
-                            padding: 20mm;
-                            box-sizing: border-box;
-                        }
-    
-                        img {
-                            max-width: 100%;
-                            height: auto;
-                        }
-    
-                        /* Khi in: đảm bảo A4 */
-                        @page {
-                            size: A4;
-                            margin: 15mm;
-                        }
-                    </style>
-                </head>
-                <body>
-                    <div class="a4-page">
-                        ${content}
-                    </div>
-                </body>
-                </html>
-            `);
-                printWindow.document.close();
-
-                printWindow.onload = () => {
-                    printWindow.focus();
-                    printWindow.print();
-                };
-            }
-        } as any);
-    }
-
-    exec() {
-        const editor = this.editor;
-
-        //editor.destroy(); // this leads to an error, so we use a timeout
-        setTimeout(function () { editor?.destroy?.() }, 0);
     }
 }
 

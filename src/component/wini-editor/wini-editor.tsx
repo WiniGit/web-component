@@ -23,6 +23,7 @@ interface Props {
     disabled?: boolean;
     helperText?: string;
     helperTextColor?: string;
+    customToolbar?: ReactNode | Array<ReactNode | "emoji" | "bold" | "italic" | "underline" | "hyperlink">;
 }
 
 interface RefProps {
@@ -33,7 +34,7 @@ interface RefProps {
     focus: () => void;
 }
 
-export const WiniEditor = forwardRef<RefProps, Props>(({ id, onChange, onBlur, disabled, placeholder, style = {}, className, onSuggest, autoFocus, initValue, hideToolbar, helperText, helperTextColor }, ref) => {
+export const WiniEditor = forwardRef<RefProps, Props>(({ id, onChange, onBlur, disabled, placeholder, style = {}, className, onSuggest, autoFocus, initValue, hideToolbar, helperText, helperTextColor, customToolbar }, ref) => {
     const inputContentRef = useRef<HTMLDivElement>(null)
     const savedRange = useRef<any>(null)
     const popupRef = useRef<any>(null)
@@ -278,6 +279,84 @@ export const WiniEditor = forwardRef<RefProps, Props>(({ id, onChange, onBlur, d
         };
     }, [updateActiveStyles]);
 
+    const returnEmoji = (k?: string) => {
+        return <Winicon
+            key={k}
+            src='outline/emoticons/smile' size={16}
+            onMouseDown={(ev) => { ev.preventDefault() }}
+            onClick={(ev) => {
+                if (isOpenEmoji) return null;
+                const rect = ev.currentTarget.getBoundingClientRect()
+                const tmp = document.createElement("div")
+                tmp.style.position = "fixed"
+                ev.currentTarget.after(tmp)
+                let tmpRect = tmp.getBoundingClientRect()
+                let offset: any = {}
+                if (rect.bottom + 240 >= document.body.offsetHeight) offset.bottom = `calc(100dvh - ${rect.y}px + 2px)`
+                else offset.top = rect.bottom + 2
+                if (Math.abs(tmpRect.x - rect.x) > 2) {
+                    tmp.style.left = `${ev.currentTarget.offsetLeft}px`
+                    tmpRect = tmp.getBoundingClientRect()
+                    if (Math.abs(tmpRect.x - rect.x) > 2) {
+                        offset.left = rect.x
+                    } else offset.left = ev.currentTarget.offsetLeft
+                }
+                tmp.remove()
+                if (rect.right + 16 >= document.body.offsetWidth) {
+                    offset.right = `calc(100dvw - ${rect.right}px)`
+                    delete offset.left
+                }
+                showEmoji(offset)
+            }} />
+    }
+
+    const returnBold = (k?: string) => {
+        return <Winicon
+            key={k}
+            src='outline/text/bold'
+            className="icon-button size24 light"
+            size={14}
+            color={activeStyles.bold ? "var(--primary-main-color)" : undefined}
+            onMouseDown={(ev) => { ev.preventDefault() }}
+            onClick={() => { handleFormat("bold") }}
+        />
+    }
+
+    const returnItalic = (k?: string) => {
+        return <Winicon
+            key={k}
+            src='outline/editing/text-italic'
+            className="icon-button size24 light"
+            size={14}
+            color={activeStyles.italic ? "var(--primary-main-color)" : undefined}
+            onMouseDown={(ev) => { ev.preventDefault() }}
+            onClick={() => { handleFormat("italic") }}
+        />
+    }
+
+    const returnUnderline = (k?: string) => {
+        return <Winicon
+            key={k}
+            src='outline/text/underline'
+            className="icon-button size24 light"
+            size={14}
+            color={activeStyles.underline ? "var(--primary-main-color)" : undefined}
+            onMouseDown={(ev) => { ev.preventDefault() }}
+            onClick={() => { handleFormat("underline") }}
+        />
+    }
+
+    const returnHyperlink = (k?: string) => {
+        return <Winicon
+            key={k}
+            src='outline/user interface/hyperlink'
+            className='icon-button size32'
+            size={16}
+            onMouseDown={(ev) => { ev.preventDefault() }}
+            onClick={handleLink}
+        />
+    }
+
     return <div
         id={id}
         className={`col ${styles["wini-editor-container"]} ${disabled ? styles["disabled"] : ""} ${className ?? "body-3"} ${helperText?.length ? styles['helper-text'] : ""}`}
@@ -320,38 +399,31 @@ export const WiniEditor = forwardRef<RefProps, Props>(({ id, onChange, onBlur, d
             onApply={applyLink}
             style={inserLinkOffsetRef.current as any}
         />}
-        {!hideToolbar && <div className='row' style={{ gap: 4 }}>
-            <Winicon src='outline/emoticons/smile' size={16}
-                onMouseDown={(ev) => { ev.preventDefault() }}
-                onClick={(ev) => {
-                    if (isOpenEmoji) return null;
-                    const rect = ev.currentTarget.getBoundingClientRect()
-                    const tmp = document.createElement("div")
-                    tmp.style.position = "fixed"
-                    ev.currentTarget.after(tmp)
-                    let tmpRect = tmp.getBoundingClientRect()
-                    let offset: any = {}
-                    if (rect.bottom + 240 >= document.body.offsetHeight) offset.bottom = `calc(100dvh - ${rect.y}px + 2px)`
-                    else offset.top = rect.bottom + 2
-                    if (Math.abs(tmpRect.x - rect.x) > 2) {
-                        tmp.style.left = `${ev.currentTarget.offsetLeft}px`
-                        tmpRect = tmp.getBoundingClientRect()
-                        if (Math.abs(tmpRect.x - rect.x) > 2) {
-                            offset.left = rect.x
-                        } else offset.left = ev.currentTarget.offsetLeft
-                    }
-                    tmp.remove()
-                    if (rect.right + 16 >= document.body.offsetWidth) {
-                        offset.right = `calc(100dvw - ${rect.right}px)`
-                        delete offset.left
-                    }
-                    showEmoji(offset)
-                }} />
-            <Winicon src='outline/text/bold' className="icon-button size24 light" size={14} color={activeStyles.bold ? "var(--primary-main-color)" : undefined} onMouseDown={(ev) => { ev.preventDefault() }} onClick={() => { handleFormat("bold") }} />
-            <Winicon src='outline/editing/text-italic' className="icon-button size24 light" size={14} color={activeStyles.italic ? "var(--primary-main-color)" : undefined} onMouseDown={(ev) => { ev.preventDefault() }} onClick={() => { handleFormat("italic") }} />
-            <Winicon src='outline/text/underline' className="icon-button size24 light" size={14} color={activeStyles.underline ? "var(--primary-main-color)" : undefined} onMouseDown={(ev) => { ev.preventDefault() }} onClick={() => { handleFormat("underline") }} />
-            <Winicon src='outline/user interface/hyperlink' className='icon-button size32' size={16} onMouseDown={(ev) => { ev.preventDefault() }} onClick={handleLink} />
-        </div>}
+        {!hideToolbar && ((!customToolbar || Array.isArray(customToolbar)) ? <div className='row' style={{ gap: 4 }}>
+            {Array.isArray(customToolbar) ? customToolbar.map((tb, i) => {
+                switch (tb) {
+                    case "emoji":
+                        return returnEmoji(`${tb}-${i}`)
+                    case "bold":
+                        return returnBold(`${tb}-${i}`)
+                    case "italic":
+                        return returnItalic(`${tb}-${i}`)
+                    case "underline":
+                        return returnUnderline(`${tb}-${i}`)
+                    case "hyperlink":
+                        return returnHyperlink(`${tb}-${i}`)
+                    default:
+                        return tb
+                }
+            }) :
+                <>
+                    {returnEmoji()}
+                    {returnBold()}
+                    {returnItalic()}
+                    {returnUnderline()}
+                    {returnHyperlink()}
+                </>}
+        </div> : customToolbar)}
         {isOpenEmoji && <PopupEmojiPicker
             onClose={() => { setTimeout(() => { setIsOpenEmoji(undefined) }, 150) }}
             style={emojiOffsetRef.current as any}
