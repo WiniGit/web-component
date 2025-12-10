@@ -78,7 +78,7 @@ export const CardById = forwardRef<CardRef, CardProps>((props, ref) => {
         if (!props.controller && !controller) setController({ page: 1, size: 8, searchRaw: "*" })
         else if (controller !== props.controller) {
             if (props.controller === "all" || !controller) setController(props.controller)
-            else if (Object.keys(props.controller as any).some((p: string) => `${controller[p]}` !== `${(props.controller as any)[p]}`)) setController(props.controller)
+            else if (props.controller && Object.keys(props.controller as any).some((p: string) => `${controller[p]}` !== `${(props.controller as any)[p]}`)) setController(props.controller)
         }
     }, [props.controller])
 
@@ -236,10 +236,14 @@ interface RenderCardProps extends Props {
 
 const RenderCard = (props: RenderCardProps) => {
     const methods = useForm({ shouldFocusError: false })
+    const [rels, setRels] = useState<Array<{ [p: string]: any }>>([])
+    const [cols, setCols] = useState<Array<{ [p: string]: any }>>([])
 
     useEffect(() => {
         Object.keys(props.extendData).forEach(p => {
-            methods.setValue(p, props.extendData[p])
+            if (p === "_cols") setCols(props.extendData[p])
+            else if (p === "_rels") setRels(props.extendData[p])
+            else methods.setValue(p, props.extendData[p])
         })
     }, [props.extendData])
 
@@ -257,6 +261,8 @@ const RenderCard = (props: RenderCardProps) => {
             itemData={props.itemData}
             childrenData={props.childrenData}
             propsData={props.propsData}
+            cols={cols}
+            rels={rels}
         />
     })
 }

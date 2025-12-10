@@ -23,6 +23,7 @@ interface Props {
     disabled?: boolean;
     helperText?: string;
     helperTextColor?: string;
+    /** default: ["emoji", "bold", "italic", "underline", "hyperlink"] */
     customToolbar?: ReactNode | Array<ReactNode | "emoji" | "bold" | "italic" | "underline" | "hyperlink">;
 }
 

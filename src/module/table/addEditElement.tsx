@@ -76,15 +76,24 @@ const AddEditElementForm = forwardRef(({ tbName = "", title, activeColumns = [],
         getSetting()
     }, [])
 
+    const initFormItem = useMemo(() => {
+        const tmp = item ?? {}
+        Object.keys(props).forEach(k => {
+            if (k.endsWith("Id") && k !== "ParentId") tmp[k] = (props as any)[k]
+        })
+        if (!Object.keys(tmp).length) return undefined
+        return tmp
+    }, [item])
+
     return <div className="col right-drawer" style={{ width: "100dvw", maxWidth: 680 }}>
         <div className='popup-header row' style={{ gap: '0.8rem' }}>
             <Text className="heading-7" style={{ flex: 1 }}>{id ? `${t("edit")} ${title ?? tbName}` : `${t("add")} ${title ?? tbName}`}</Text>
             <Winicon src={"fill/user interface/e-remove"} className="icon-button size24" onClick={() => { closePopup(ref) }} />
         </div>
-        {!!column.length && (!id || item) && <FormView
+        {!!column.length && (!id || initFormItem) && <FormView
             cols={column.filter(e => !e.Query?.length)}
             rels={relative}
-            item={item}
+            item={initFormItem}
             parentId={(props as any).ParentId}
             tbName={tbName}
             expandForm={expandForm}

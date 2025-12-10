@@ -1,4 +1,4 @@
-import React, { CSSProperties, ReactNode } from 'react';
+import React, { CSSProperties, forwardRef, ReactNode, useImperativeHandle, useRef } from 'react';
 import styles from './infinite-scroll.module.css'
 
 
@@ -8,28 +8,37 @@ interface InfiniteScrollProps {
     style?: CSSProperties,
     handleScroll?: (onLoadMore: boolean, ev: React.UIEvent<HTMLDivElement, UIEvent>) => Promise<any> | null,
     children?: ReactNode,
-    totalCount?: number,
+    horizontal?: boolean
 }
 
-interface InfiniteScrollState {
-    loading: boolean
+interface InfiniteScrollRef {
+    element?: HTMLDivElement;
+    loading?: boolean
 }
 
-export class InfiniteScroll extends React.Component<InfiniteScrollProps, InfiniteScrollState> {
-    state: Readonly<InfiniteScrollState> = {
-        loading: false
-    }
+export const InfiniteScroll = forwardRef<InfiniteScrollRef, InfiniteScrollProps>((props: InfiniteScrollProps, ref) => {
+    const [loading, setLoading] = React.useState(false)
+    const scrollRef = useRef<HTMLDivElement>(null)
 
-    render() {
-        return <div id={this.props.id} onScroll={async (ev) => {
-            if (this.props.handleScroll) {
-                this.setState({ ...this.state, loading: true })
+    useImperativeHandle(ref, () => ({
+        element: scrollRef.current as any,
+        loading
+    }), [loading])
+
+    return <div
+        ref={scrollRef}
+        id={props.id}
+        onScroll={async (ev) => {
+            if (props.handleScroll) {
+                setLoading(true)
                 let scrollElement = ev.target as HTMLDivElement
-                await this.props.handleScroll(Math.round(scrollElement.offsetHeight + Math.abs(scrollElement.scrollTop)) >= (scrollElement.scrollHeight - 1), ev)
-                this.setState({ loading: false })
+                await props.handleScroll(Math.round(scrollElement.offsetHeight + Math.abs(scrollElement.scrollTop)) >= (scrollElement.scrollHeight - 1), ev)
+                setLoading(false)
             }
-        }} className={`${styles['infinite-scroll']} ${this.state.loading ? styles['loading'] : ''} ${this.props.className ?? 'col'}`} style={this.props.style ?? { 'overflow': 'hidden auto' }}>
-            {this.props.children}
-        </div>
-    }
-}
+        }}
+        className={`${styles['infinite-scroll']} ${loading ? styles['loading'] : ''} ${props.className ?? (props.horizontal ? 'row' : 'col')}`}
+        style={props.style ?? { 'overflow': props.horizontal ? 'auto hidden' : 'hidden auto' }}
+    >
+        {props.children}
+    </div>
+})

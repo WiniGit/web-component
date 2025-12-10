@@ -1,15 +1,34 @@
 import { CSSProperties, ReactNode } from 'react';
 import { Text } from "./text/text";
 
-export function EmptyPage(props: { title?: string, subtitle?: string, style?: CSSProperties, className?: string, button?: ReactNode, imgStyle?: CSSProperties, imgUrl?: string }) {
-    return <div className={`col ${props.className ?? ''}`} style={{ alignItems: "center", ...(props.style ?? {}) }}>
+const defaultUrl = "https://cdn.jsdelivr.net/gh/WiniGit/icon-library@latest/error-file.png"
+interface EmptyPageProps {
+    title?: string | ReactNode,
+    subtitle?: string | ReactNode,
+    style?: CSSProperties,
+    className?: string,
+    button?: ReactNode,
+    imgStyle?: CSSProperties,
+    imgUrl?: string
+}
+
+export function EmptyPage({ imgUrl = defaultUrl, className = "", style = {}, imgStyle = {}, ...props }: EmptyPageProps) {
+    return <div className={`col ${className ?? ''}`} style={{ alignItems: "center", ...style }}>
         <img
             alt=""
-            src={props.imgUrl ?? "https://cdn.jsdelivr.net/gh/WiniGit/icon-library@latest/error-file.png"}
-            style={{ aspectRatio: "1/1", width: "100%", maxWidth: "35rem", ...(props.imgStyle ?? {}) }}
+            src={imgUrl ?? "https://cdn.jsdelivr.net/gh/WiniGit/icon-library@latest/error-file.png"}
+            style={{ aspectRatio: "1/1", width: "100%", maxWidth: "35rem", ...imgStyle }}
         />
-        <Text className="highlight-6" style={{ textAlign: "center", marginTop: "1.6rem" }}>{props.title}</Text>
-        <Text className="subtitle-2" style={{ textAlign: "center", marginTop: 4 }}>{props.subtitle}</Text>
+        {props.title && (
+            typeof props.title === "string" ?
+                <Text className="heading-5" style={{ textAlign: "center", marginTop: "1.6rem" }}>{props.title}</Text> :
+                props.title
+        )}
+        {props.subtitle && (
+            typeof props.subtitle === "string" ?
+                <Text className="subtitle-2" style={{ textAlign: "center", marginTop: 4 }}>{props.subtitle}</Text> :
+                props.subtitle
+        )}
         {props.button}
     </div>
 }

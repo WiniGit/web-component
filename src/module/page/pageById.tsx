@@ -415,7 +415,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
     if (customProps.unmounted) return null;
     // 
     const watchForDataValue = useMemo(() => {
-        const watchData = props.type?.toLowerCase() === "form" ? { "_rels": props.rels, "_cols": props.cols } : {}
+        const watchData = { "_rels": props.rels, "_cols": props.cols }
         const tmp: { [p: string]: any } = { rels: watchData["_rels"], cols: watchData["_cols"] }
         const keys = props.item.NameField?.split(".")
         if (keys && keys.length > 1 && props.indexItem) tmp[`${keys[0]}`] = props.indexItem[`_${keys[0]}`]
