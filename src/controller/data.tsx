@@ -27,7 +27,7 @@ export class DataController {
         return res
     }
 
-    async aggregateList(options: { page?: number, size?: number, searchRaw?: string, filter?: string, sortby?: Array<{ prop: string, direction?: "ASC" | "DESC" }>, returns?: Array<string> } | undefined) {
+    async aggregateList(options: { page?: number, size?: number, searchRaw?: string, filter?: string, sortby?: Array<{ prop: string, direction?: "ASC" | "DESC" }>, returns?: Array<string>, exact?: boolean }) {
         const res = await BaseDA.post(ConfigData.url + 'data/aggregateList', {
             headers: {
                 pid: ConfigData.pid,
@@ -49,7 +49,7 @@ export class DataController {
         return res
     }
 
-    async patternList(options: { page?: number, size?: number, searchRaw?: string, filter?: string, sortby?: Array<{ prop: string, direction?: "ASC" | "DESC" }>, pattern?: { returns: Array<string>, [p: string]: Array<string> | { searchRaw?: string, reducers: string } } } | undefined) {
+    async patternList(options: { page?: number, size?: number, searchRaw?: string, filter?: string, sortby?: Array<{ prop: string, direction?: "ASC" | "DESC" }>, exact?: boolean, pattern?: { returns: Array<string>, [p: string]: Array<string> | { searchRaw?: string, reducers: string } } }) {
         const res = await BaseDA.post(ConfigData.url + 'data/patternList', {
             headers: {
                 pid: ConfigData.pid,
@@ -71,7 +71,7 @@ export class DataController {
         return res
     }
 
-    async getListSimple(options: { page?: number, size?: number, query?: string, returns?: Array<string>, sortby?: { BY: string, DIRECTION?: "ASC" | "DESC" } } | undefined) {
+    async getListSimple(options: { page?: number, size?: number, query?: string, returns?: Array<string>, sortby?: { BY: string, DIRECTION?: "ASC" | "DESC" } }) {
         const body = { ...options, searchRaw: options?.query?.length ? options?.query : "*" }
         delete body.query
         const res = await BaseDA.post(ConfigData.url + 'data/getListSimple', {
@@ -170,10 +170,10 @@ export class SettingDataController {
         return res
     }
 
-    async getListSimple(options: { page?: number, size?: number, query?: string, returns?: Array<string>, sortby?: { BY: string, DIRECTION?: "ASC" | "DESC" } } | undefined) {
+    async getListSimple({ query = "*", ...options }: { page?: number, size?: number, query?: string, returns?: Array<string>, sortby?: { BY: string, DIRECTION?: "ASC" | "DESC" }, exact?: boolean }) {
         const res = await BaseDA.post(ConfigData.url + `data/${this.setting}/getListSimple`, {
             headers: { pid: ConfigData.pid },
-            body: { searchRaw: options?.query?.length ? options?.query : "*", page: options?.page, size: options?.size, returns: options?.returns, sortby: options?.sortby }
+            body: { searchRaw: query, ...options }
         })
         return res
     }

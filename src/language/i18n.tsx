@@ -133,6 +133,7 @@ const resources = {
             repeat: "Repeat",
             action: "Action",
             search: "Search",
+            now: "Now",
         },
     },
     vi: {
@@ -265,6 +266,7 @@ const resources = {
             repeat: "Lặp lại",
             action: "Hành động",
             search: "Tìm kiếm",
+            now: "Vừa xong"
         },
     },
 }

@@ -444,39 +444,6 @@ export class Util {
         return parts[0] + parts.slice(1).map(p => p.charAt(0).toUpperCase() + p.slice(1)).join('');
     }
 
-    static processHTMLContent = (html: string) => {
-        // Tạo một DOMParser để parse chuỗi HTML
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(html, 'text/html');
-
-        // Loại bỏ tất cả thẻ <img>
-        const images = doc.getElementsByTagName('img') as any;
-        while (images.length > 0) {
-            images[0].parentNode.removeChild(images[0]);
-        }
-
-        // Lấy toàn bộ nội dung văn bản từ các thẻ HTML
-        let textContent = '';
-        const elements = doc.body.getElementsByTagName('*') as any;
-        for (let element of elements) {
-            // Bỏ qua các thẻ không cần thiết như script, style
-            if (['SCRIPT', 'STYLE'].includes(element.tagName)) continue;
-
-            // Lấy văn bản từ từng phần tử
-            const text = element.innerText.trim();
-            if (text) {
-                textContent += text + ' ';
-            }
-        }
-
-        // Loại bỏ khoảng trắng thừa và gộp thành 1 đoạn văn
-        textContent = textContent.trim();
-        if (!textContent) return '';
-
-        // Tạo thẻ <p> mới chứa toàn bộ nội dung
-        return `<p>${textContent}</p>`;
-    };
-
     static timeSince = (dateCreate: number, translate?: (key: string) => string) => {
         const now = new Date(); // Thời điểm hiện tại
         const createdDate = new Date(dateCreate); // Chuyển dateCreate thành Date object
@@ -489,7 +456,6 @@ export class Util {
             { label: translate ? translate("day").toLowerCase() : "ngày", multitipleLabel: translate ? translate("days").toLowerCase() : "ngày", seconds: 86400 },
             { label: translate ? translate("hour").toLowerCase() : "giờ", multitipleLabel: translate ? translate("hours").toLowerCase() : "giờ", seconds: 3600 },
             { label: translate ? translate("minute").toLowerCase() : "phút", multitipleLabel: translate ? translate("minutes").toLowerCase() : "phút", seconds: 60 },
-            { label: translate ? translate("second").toLowerCase() : "giây", multitipleLabel: translate ? translate("seconds").toLowerCase() : "giây", seconds: 1 },
         ];
 
         // Tìm khoảng thời gian phù hợp
@@ -500,7 +466,7 @@ export class Util {
             }
         }
 
-        return translate ? translate("now").toLowerCase() : "vừa xong"; // Nếu nhỏ hơn 1 giây
+        return translate ? translate("now").toLowerCase() : "vừa xong"; // Nếu nhỏ hơn 1 phút
     }
 
     static extractHashtags = (content: string) => {

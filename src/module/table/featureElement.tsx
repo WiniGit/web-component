@@ -74,12 +74,12 @@ export const SearchFilterData = ({ columns = [], fields = [], searchRaw = "*", o
         let currentSearch = searchRaw
         if (currentSearch !== "*" && data.searchValue.length && data.nameFields.length) {
             data.nameFields.forEach(n => {
-                const replaceSearch = `(@${n}:("%${data.searchValue}%")) | (@${n}:("${data.searchValue}"))`
+                const replaceSearch = `(@${n}:("${data.searchValue}"))`
                 currentSearch = currentSearch.replace(`${replaceSearch} | `, "").replace(replaceSearch, "");
             })
             currentSearch = currentSearch.replace(/\(/g, "").replace(/\)/g, "").trim()
         }
-        const querySearch = (searchValue.length && nameFields.length) ? `(${nameFields.map(n => `(@${n}:("%${searchValue}%")) | (@${n}:("${searchValue}"))`).join(" | ")})` : ""
+        const querySearch = (searchValue.length && nameFields.length) ? `(${nameFields.map(n => `(@${n}:("${searchValue}"))`).join(" | ")})` : ""
         const finalSearchRaw = `${querySearch} ${currentSearch === "*" ? "" : currentSearch}`.trim()
         onChange?.(finalSearchRaw.length ? finalSearchRaw : "*")
     }
@@ -711,7 +711,7 @@ const FilterValueOptionsDropdown = ({ onClose, onSelect, style = {}, selected, i
         if (controlName === "User" || controlName === "Customer") returns.push("AvatarUrl")
         let querySearch = searchRaw;
         if (searchDefer.length) {
-            querySearch = querySearch === "*" ? `(@Name:("${searchDefer}") | @Name:("*${searchDefer}*")${controlName === "User" || controlName === "Customer" ? ` | @Email:("${searchDefer}") | @Mobile:("${searchDefer}")` : ""})` : `${querySearch} (@Name:("${searchDefer}") | @Name:("*${searchDefer}*")${controlName === "User" || controlName === "Customer" ? ` | @Email:("${searchDefer}") | @Mobile:("${searchDefer}")` : ""})`
+            querySearch = querySearch === "*" ? `(@Name:("${searchDefer}")${controlName === "User" || controlName === "Customer" ? ` | @Email:("${searchDefer}") | @Mobile:("${searchDefer}")` : ""})` : `${querySearch} (@Name:("${searchDefer}")${controlName === "User" || controlName === "Customer" ? ` | @Email:("${searchDefer}") | @Mobile:("${searchDefer}")` : ""})`
         }
         const res = await controller.aggregateList({ page: page ?? 1, size: 20, searchRaw: querySearch, returns: returns })
         if (res.code === 200) {
