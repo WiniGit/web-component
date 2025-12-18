@@ -71,9 +71,8 @@ export class DataController {
         return res
     }
 
-    async getListSimple(options: { page?: number, size?: number, query?: string, returns?: Array<string>, sortby?: { BY: string, DIRECTION?: "ASC" | "DESC" } }) {
-        const body = { ...options, searchRaw: options?.query?.length ? options?.query : "*" }
-        delete body.query
+    async getListSimple({ query = "*", ...options }: { page?: number, size?: number, query?: string, returns?: Array<string>, sortby?: { BY: string, DIRECTION?: "ASC" | "DESC" }, exact?: boolean }) {
+        const body = { ...options, searchRaw: query }
         const res = await BaseDA.post(ConfigData.url + 'data/getListSimple', {
             headers: {
                 pid: ConfigData.pid,

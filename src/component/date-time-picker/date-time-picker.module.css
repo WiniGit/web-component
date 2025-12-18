@@ -80,6 +80,30 @@
     transform: translateY(100%);
 }
 
+@keyframes show-dropdown {
+    0% {
+        opacity: 0;
+        height: 0;
+        width: 0;
+        transform: scale(0);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.calendar-popup {
+    position: fixed;
+    animation: show-dropdown 0.4s ease-in-out;
+    background-color: var(--neutral-absolute-background-color, light-dark(#FFFFFF, #14181b));
+    border-radius: 0.8rem;
+    z-index: 999;
+    box-shadow: 2px 0px 16px 0px #0000000A;
+    overflow: hidden auto;
+}
+
 .popup-actions {
     max-height: 28rem;
     min-width: 10rem;

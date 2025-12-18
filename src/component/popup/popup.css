@@ -136,7 +136,7 @@
 }
 
 .dropdown-popup {
-    animation: show-dropdown-popup 0.4s ease-in-out;
+    animation: show-dropdown-popup 0.2s ease-in-out;
     position: absolute;
     border: var(--neutral-main-border, 1px solid light-dark(#EAEAEC, #313135));
     border-radius: 0.8rem;

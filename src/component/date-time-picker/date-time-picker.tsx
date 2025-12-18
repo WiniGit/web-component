@@ -56,7 +56,6 @@ interface DateTimePickerProps {
 }
 
 export function DateTimePicker({ style = {}, ...props }: DateTimePickerProps) {
-    const popupRef = useRef<any>(null)
     const inputRef = useRef<HTMLInputElement>(null)
     const [value, setValue] = useState<Date | ValueProps>()
     const txtValue = useMemo(() => {
@@ -67,6 +66,9 @@ export function DateTimePicker({ style = {}, ...props }: DateTimePickerProps) {
             {value.repeatData && <Winicon src="outline/arrows/loop-2" size={12} />}
         </>
     }, [value, props.placeholder])
+    const containerRef = useRef<any>(null)
+    const offsetRef = useRef<{ [p: string]: any }>(null)
+    const [isOpen, setIsOpen] = useState(false)
 
     useEffect(() => {
         if (inputRef.current) {
@@ -87,34 +89,30 @@ export function DateTimePicker({ style = {}, ...props }: DateTimePickerProps) {
         }
     }, [props.value, props.endValue, props.repeatValue, props.pickerType])
 
-    const showCalendar = (rect: any, onClose?: () => void) => {
-        const offset: any = { top: rect.bottom + 2, left: rect.left + 16 }
-        if ((rect.bottom + 380) > document.body.offsetHeight) {
-            delete offset.top
-            offset.bottom = `calc(100dvh - ${rect.y}px + 2px)`
+    const showCalendar = () => {
+        if (isOpen) return null;
+        const rect = containerRef.current.getBoundingClientRect()
+        const tmp = document.createElement("div")
+        tmp.style.position = "fixed"
+        containerRef.current.after(tmp)
+        let tmpRect = tmp.getBoundingClientRect()
+        let offset: any = {}
+        if (rect.bottom + 240 >= document.body.offsetHeight) offset.bottom = `calc(100dvh - ${rect.y}px + 2px)`
+        else offset.top = rect.bottom + 2
+        if (Math.abs(tmpRect.x - rect.x) > 2) {
+            tmp.style.left = `${containerRef.current.offsetLeft}px`
+            tmpRect = tmp.getBoundingClientRect()
+            if (Math.abs(tmpRect.x - rect.x) > 2) {
+                offset.left = rect.x
+            } else offset.left = containerRef.current.offsetLeft
         }
-        showPopup({
-            ref: popupRef,
-            hideOverlay: true,
-            content: <PopupDateTimePicker
-                ref={popupRef}
-                max={props.max}
-                min={props.min}
-                onClose={onClose}
-                value={value instanceof Date ? value : value?.start}
-                endValue={value instanceof Date ? undefined : value?.end}
-                pickerType={props.pickerType}
-                enableRepeat={props.enableRepeat || !!(!(value instanceof Date) && value?.repeatData)}
-                repeatValue={(value instanceof Date ? undefined : value?.repeatData) as any}
-                style={offset}
-                onApply={(ev) => {
-                    setValue(ev)
-                    closePopup(popupRef)
-                    if (props.onChange) props.onChange(ev)
-                    if (inputRef.current) inputRef.current.focus()
-                }}
-            />
-        })
+        tmp.remove()
+        if (rect.right + 16 >= document.body.offsetWidth) {
+            offset.right = `calc(100dvw - ${rect.right}px)`
+            delete offset.left
+        }
+        offsetRef.current = offset
+        setIsOpen(true)
     }
 
     const returnUI = () => {
@@ -124,14 +122,12 @@ export function DateTimePicker({ style = {}, ...props }: DateTimePickerProps) {
                 if (!props.readOnly)
                     return <label
                         id={props.id}
+                        ref={containerRef}
                         className={`row ${props.simpleStyle ? styles['simple-date-time-picker'] : styles["date-time-picker"]} ${props.className ?? (props.simpleStyle ? "" : 'body-3')} ${props.helperText?.length ? styles['helper-text'] : ""}`}
                         helper-text={props.helperText}
                         style={{ '--helper-text-color': props.helperTextColor ?? '#e14337', ...style } as CSSProperties}
-                        onClick={(ev: any) => {
-                            const rect = ev.target.closest("label").getBoundingClientRect()
-                            showCalendar(rect)
-                        }}>
-                        {props.prefix ?? <Winicon className={styles["prefix-icon"]} src="outline/user interface/calendar-date-2" size={"1.2rem"} />}
+                        onClick={showCalendar}>
+                        {props.prefix ?? <Winicon className={styles["prefix-icon"]} src="outline/user interface/calendar-date-2" size={12} />}
                         <input
                             className={styles["value"]}
                             ref={inputRef}
@@ -170,19 +166,12 @@ export function DateTimePicker({ style = {}, ...props }: DateTimePickerProps) {
                     </label>
             default:
                 return <div id={props.id}
+                    ref={containerRef}
                     className={`row ${props.simpleStyle ? styles['simple-date-time-picker'] : styles["date-time-picker"]} ${props.disabled ? styles['disabled'] : ""} ${props.className ?? (props.simpleStyle ? "" : 'body-3')} ${props.helperText?.length ? styles['helper-text'] : ""}`}
                     helper-text={props.helperText}
                     style={{ '--helper-text-color': props.helperTextColor ?? '#e14337', cursor: props.disabled ? undefined : 'pointer', ...style } as CSSProperties}
-                    onClick={props.disabled || props.readOnly ? undefined : ((ev: any) => {
-                        const divElement = ev.target.closest(`div[class*="${props.simpleStyle ? 'simple-date-time-picker' : 'date-time-picker'}"]`)
-                        if (divElement.isOpen) return closePopup(popupRef)
-                        const rect = divElement.getBoundingClientRect()
-                        divElement.isOpen = true
-                        showCalendar(rect, () => {
-                            divElement.isOpen = false
-                        })
-                    })}>
-                    {props.prefix ?? <Winicon className={styles["prefix-icon"]} src="outline/user interface/calendar-date-2" size={"1.2rem"} />}
+                    onClick={(props.disabled || props.readOnly) ? undefined : showCalendar}>
+                    {props.prefix ?? <Winicon className={styles["prefix-icon"]} src="outline/user interface/calendar-date-2" size={12} />}
                     {txtValue}
                     {props.suffix}
                 </div>
@@ -190,8 +179,24 @@ export function DateTimePicker({ style = {}, ...props }: DateTimePickerProps) {
     }
 
     return <>
-        <Popup ref={popupRef} />
         {returnUI()}
+        {isOpen && <PopupDateTimePicker
+            max={props.max}
+            min={props.min}
+            onClose={() => { setTimeout(() => { setIsOpen(false) }, 150) }}
+            value={value instanceof Date ? value : value?.start}
+            endValue={value instanceof Date ? undefined : value?.end}
+            pickerType={props.pickerType}
+            enableRepeat={props.enableRepeat || !!(!(value instanceof Date) && value?.repeatData)}
+            repeatValue={(value instanceof Date ? undefined : value?.repeatData) as any}
+            style={offsetRef.current as any}
+            onApply={(ev) => {
+                setValue(ev)
+                setIsOpen(false)
+                if (props.onChange) props.onChange(ev)
+                if (inputRef.current) inputRef.current.focus()
+            }}
+        />}
     </>
 
 }
@@ -206,10 +211,11 @@ interface PopupPickerProps {
     repeatValue?: { type: 1 | 2 | 3, value: Array<"everyday" | "last" | number> },
     onApply?: (ev: Date | ValueProps) => void,
     enableRepeat?: boolean,
-    onClose?: () => void
+    onClose: () => void
 }
 
-const PopupDateTimePicker = forwardRef(({ value, style, endValue, repeatValue, onApply, pickerType = "auto", enableRepeat = false, min, max, onClose }: PopupPickerProps, ref: any) => {
+const PopupDateTimePicker = ({ value, style, endValue, repeatValue, onApply, pickerType = "auto", enableRepeat = false, min, max, onClose }: PopupPickerProps) => {
+    const divRef = useRef<HTMLDivElement>(null)
     const methods = useForm({ shouldFocusError: false })
     const [selectTime, setSelectTime] = useState(false)
     const [isRepeat, setIsRepeat] = useState(false)
@@ -281,7 +287,19 @@ const PopupDateTimePicker = forwardRef(({ value, style, endValue, repeatValue, o
         initEndValue()
     }, [endValue, inputEndRef, pickerType])
 
-    return <div className="col dropdown-popup" style={{ padding: 0, border: "none", backgroundColor: "transparent", ...style }}>
+    useEffect(() => {
+        if (divRef.current) {
+            const onClickDropDown = (ev: any) => {
+                if (ev.target === divRef.current || !divRef.current!.contains(ev.target)) onClose()
+            }
+            window.document.body.addEventListener("mousedown", onClickDropDown)
+            return () => {
+                window.document.body.removeEventListener("mousedown", onClickDropDown)
+            }
+        }
+    }, [divRef.current])
+
+    return <div ref={divRef} className={`col ${styles["calendar-popup"]}`} style={style}>
         <Popup ref={popupRef} />
         <Calendar
             min={min}
@@ -594,7 +612,6 @@ const PopupDateTimePicker = forwardRef(({ value, style, endValue, repeatValue, o
                                 dateEndValue.setHours(parseInt(timeEndValue.split(':')[0]), parseInt(timeEndValue.split(':')[1]), selectTime ? 59 : 0, 0)
                             }
                             onApply(!pickerType.includes("range") && pickerType !== "auto" ? dateStartValue : { start: dateStartValue, end: dateEndValue, repeatData: isRepeat ? repeatData : undefined })
-                            closePopup(ref)
                         }}
                     />
                 </div>}
@@ -614,9 +631,8 @@ const PopupDateTimePicker = forwardRef(({ value, style, endValue, repeatValue, o
                     }
                 } else if (onApply) {
                     onApply(ev)
-                    closePopup(ref)
                 }
             }}
         />
     </div>
-})
+}
