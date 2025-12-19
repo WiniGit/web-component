@@ -1,16 +1,15 @@
 import styles from "./date-time-picker.module.css"
-import { CSSProperties, forwardRef, ReactNode, useEffect, useMemo, useRef, useState } from "react"
+import { CSSProperties, ReactNode, useEffect, useMemo, useRef, useState } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { differenceInCalendarDays } from "date-fns"
-import { closePopup, Popup, showPopup } from "../popup/popup"
 import { Text } from "../text/text"
+import { Util } from "../../controller/utils"
 import { Winicon } from "../wini-icon/winicon"
-import { TextField, TextFieldRef } from "../text-field/text-field"
 import { Calendar } from "../calendar/calendar"
+import { TextField } from "../text-field/text-field"
 import { Button } from "../button/button"
 import { Checkbox } from "../checkbox/checkbox"
-import { Util } from "../../controller/utils"
 
 const today = new Date()
 const startDate = new Date(
@@ -52,42 +51,54 @@ interface DateTimePickerProps {
     suffix?: ReactNode,
     onChange?: (ev?: Date | ValueProps) => void,
     simpleStyle?: boolean,
-    readOnly?: boolean
+    readOnly?: boolean,
+    /** date: dd/mm/yyyy | yyyy/mm/dd | dd/mm | mm/yyyy \n
+        time: hh:mm:ss | hh:mm */
+    format?: string
 }
 
-export function DateTimePicker({ style = {}, ...props }: DateTimePickerProps) {
+export function DateTimePicker({ style = {}, pickerType = "auto", ...props }: DateTimePickerProps) {
     const inputRef = useRef<HTMLInputElement>(null)
     const [value, setValue] = useState<Date | ValueProps>()
     const txtValue = useMemo(() => {
         if (!value) return <Text className={styles["value"]} style={{ opacity: 0.6 }}>{props.placeholder ?? ""}</Text>
-        if (value instanceof Date) return <Text className={styles["value"]}>{Util.datetoString(value, `dd/mm/yyyy${props.pickerType?.includes("time") ? " hh:mm" : ""}`)}</Text>
-        else return <>
-            <span className={styles["value"]} style={{ flex: "none", width: "fit-content" }}>{Util.datetoString(value.start ?? new Date(), `dd/mm/yyyy${(props.pickerType?.includes("time") || props.pickerType === "auto") ? " hh:mm" : ""}`)} - {Util.datetoString(value.end ?? new Date(), `dd/mm/yyyy${(props.pickerType?.includes("time") || props.pickerType === "auto") ? " hh:mm" : ""}`)}</span>
-            {value.repeatData && <Winicon src="outline/arrows/loop-2" size={12} />}
-        </>
-    }, [value, props.placeholder])
+        if (value instanceof Date) return <Text className={styles["value"]}>{Util.datetoString(value, props.format ?? `dd/mm/yyyy${pickerType?.includes("time") ? " hh:mm" : ""}`)}</Text>
+        else {
+            const tmpStart = value.start ?? new Date()
+            return <>
+                <span className={styles["value"]} style={{ flex: "none", width: "fit-content" }}>
+                    {Util.datetoString(tmpStart, props.format ?? `dd/mm/yyyy${(pickerType.includes("time") || (pickerType === "auto" && tmpStart.getSeconds() === 1)) ? " hh:mm" : ""}`)} - {Util.datetoString(value.end ?? new Date(), props.format ?? `dd/mm/yyyy${(pickerType?.includes("time") || (pickerType === "auto" && tmpStart.getSeconds() === 1)) ? " hh:mm" : ""}`)}
+                </span>
+                {value.repeatData && <Winicon src="outline/arrows/loop-2" size={13} />}
+            </>
+        }
+    }, [value, props.placeholder, props.format])
     const containerRef = useRef<any>(null)
     const offsetRef = useRef<{ [p: string]: any }>(null)
     const [isOpen, setIsOpen] = useState(false)
 
     useEffect(() => {
         if (inputRef.current) {
-            if (value && value instanceof Date) inputRef.current.value = Util.datetoString(value, `dd/mm/yyyy`)
+            if (value && value instanceof Date) inputRef.current.value = Util.datetoString(value, props.format ?? `dd/mm/yyyy`)
             else inputRef.current.value = ""
         }
     }, [value, inputRef.current])
 
     useEffect(() => {
-        switch (props.pickerType) {
+        switch (pickerType) {
             case "date":
             case "datetime":
                 setValue(props.value)
                 break;
+            case "auto":
+                if (props.endValue) setValue({ start: props.value, end: props.endValue, repeatData: props.repeatValue })
+                else setValue(props.value)
+                break;
             default:
-                setValue((!props.value || !props.endValue) ? undefined : { start: props.value, end: props.endValue, repeatData: props.pickerType === "auto" || !props.pickerType ? props.repeatValue : undefined })
+                setValue((!props.value || !props.endValue) ? undefined : { start: props.value, end: props.endValue })
                 break;
         }
-    }, [props.value, props.endValue, props.repeatValue, props.pickerType])
+    }, [props.value, props.endValue, props.repeatValue, pickerType])
 
     const showCalendar = () => {
         if (isOpen) return null;
@@ -116,7 +127,7 @@ export function DateTimePicker({ style = {}, ...props }: DateTimePickerProps) {
     }
 
     const returnUI = () => {
-        switch (props.pickerType) {
+        switch (pickerType) {
             // @ts-ignore
             case "date":
                 if (!props.readOnly)
@@ -184,9 +195,9 @@ export function DateTimePicker({ style = {}, ...props }: DateTimePickerProps) {
             max={props.max}
             min={props.min}
             onClose={() => { setTimeout(() => { setIsOpen(false) }, 150) }}
-            value={value instanceof Date ? value : value?.start}
-            endValue={value instanceof Date ? undefined : value?.end}
-            pickerType={props.pickerType}
+            value={value instanceof Date ? pickerType === "auto" ? undefined : value : value?.start}
+            endValue={value instanceof Date ? pickerType === "auto" ? value : undefined : value?.end}
+            pickerType={pickerType}
             enableRepeat={props.enableRepeat || !!(!(value instanceof Date) && value?.repeatData)}
             repeatValue={(value instanceof Date ? undefined : value?.repeatData) as any}
             style={offsetRef.current as any}
@@ -194,11 +205,9 @@ export function DateTimePicker({ style = {}, ...props }: DateTimePickerProps) {
                 setValue(ev)
                 setIsOpen(false)
                 if (props.onChange) props.onChange(ev)
-                if (inputRef.current) inputRef.current.focus()
             }}
         />}
     </>
-
 }
 
 interface PopupPickerProps {
@@ -221,12 +230,16 @@ const PopupDateTimePicker = ({ value, style, endValue, repeatValue, onApply, pic
     const [isRepeat, setIsRepeat] = useState(false)
     const today = new Date()
     const [repeatData, setRepeatData] = useState<{ type: 1 | 2 | 3, value: Array<string | number> }>({ type: 1, value: ["everyday"] }) // 1: daily, 2: weekly, 3: monthly
-    const popupRef = useRef<any>(null)
-    const inputStartRef = useRef<TextFieldRef>(null)
-    const inputEndRef = useRef<TextFieldRef>(null)
+    const inputStartRef = useRef<any>(null)
+    const inputEndRef = useRef<any>(null)
     const { t } = useTranslation()
     const regexDate = /[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{4}/g
     const regexTime = /^(?:[01]\d|2[0-3]):[0-5]\d(?:[:][0-5]\d)?$/g
+    const [isOpenDropdown, setIsOpenDropdown] = useState(false)
+    const dropdownContentRef = useRef<any>({
+        children: <></>,
+        style: {}
+    })
 
     useEffect(() => {
         return () => onClose?.()
@@ -256,7 +269,7 @@ const PopupDateTimePicker = ({ value, style, endValue, repeatValue, onApply, pic
             inputStartRef.current!.inputElement!.value = Util.datetoString(initStart)
             if (pickerType.includes("time") || initStart.getSeconds() === 1) {
                 setSelectTime(true)
-                methods.setValue('time-start', `${initStart.getHours() < 9 ? `0${initStart.getHours()}` : initStart.getHours()}:${initStart.getMinutes() < 9 ? `0${initStart.getMinutes()}` : initStart.getMinutes()}`)
+                methods.setValue('time-start', Util.datetoString(initStart, "hh:mm"))
             }
         } else inputStartRef.current!.inputElement!.value = ""
     }
@@ -267,7 +280,7 @@ const PopupDateTimePicker = ({ value, style, endValue, repeatValue, onApply, pic
                 const initEnd = typeof endValue === "number" ? (new Date(endValue)) : endValue
                 methods.setValue('date-end', initEnd)
                 inputEndRef.current.inputElement!.value = Util.datetoString(initEnd)
-                if (pickerType.includes("time") || initEnd.getSeconds() === 59) methods.setValue('time-end', `${initEnd.getHours() < 9 ? `0${initEnd.getHours()}` : initEnd.getHours()}:${initEnd.getMinutes() < 9 ? `0${initEnd.getMinutes()}` : initEnd.getMinutes()}`)
+                if (pickerType.includes("time") || initEnd.getSeconds() === 59) methods.setValue('time-end', Util.datetoString(initEnd, "hh:mm"))
             } else inputEndRef.current.inputElement!.value = ""
         }
     }
@@ -299,16 +312,26 @@ const PopupDateTimePicker = ({ value, style, endValue, repeatValue, onApply, pic
         }
     }, [divRef.current])
 
+    const appliable = useMemo(() => {
+        switch (pickerType) {
+            case "auto":
+                return !!methods.watch("date-end")
+            case "datetime":
+                return !!methods.watch("date-end")
+            default:
+                return !!methods.watch("date-start") && !!methods.watch("date-end")
+        }
+    }, [methods.watch("date-start"), methods.watch("date-end"), pickerType])
+
     return <div ref={divRef} className={`col ${styles["calendar-popup"]}`} style={style}>
-        <Popup ref={popupRef} />
         <Calendar
             min={min}
             max={max}
             style={{ width: "31.2rem" }}
-            range={pickerType.includes("range") || pickerType === "auto"}
+            range={pickerType.includes("range") || (pickerType === "auto" && !!methods.watch("date-start"))}
             value={(pickerType === "date" || pickerType === "datetime") ? methods.watch('date-start') : (methods.watch('date-start') && methods.watch('date-end') ? { sTime: methods.watch('date-start'), eTime: methods.watch('date-end') } : undefined)}
             header={pickerType !== "date" && <div className='row' style={{ flexWrap: "wrap", gap: "0.8rem 1.2rem", padding: "1.6rem", borderBottom: "var(--neutral-main-border,1px solid light-dark(#EAEAEC, #313135))" }}>
-                <TextField
+                {(pickerType !== "auto" || value || methods.watch("date-start")) ? <TextField
                     ref={inputStartRef}
                     autoComplete="off"
                     className='col12 body-3 size32'
@@ -326,7 +349,18 @@ const PopupDateTimePicker = ({ value, style, endValue, repeatValue, onApply, pic
                             methods.setValue('date-start', dateValue)
                         } else ev.target.value = methods.getValues('date-start') ? Util.datetoString(methods.getValues('date-start')) : ""
                     }}
-                />
+                /> : <Button
+                    label="Start date"
+                    prefix={<Winicon src="outline/user interface/e-add" size={14} />}
+                    className='col12 label-3 size32 border'
+                    style={{ "--gutter": "1.2rem" } as any}
+                    onClick={() => {
+                        const tmp = methods.watch('date-end') ? new Date(methods.watch('date-end')?.getTime()) : new Date()
+                        tmp.setHours(1, 0, 1)
+                        methods.setValue('date-start', tmp)
+                        setTimeout(() => { inputStartRef.current!.inputElement!.value = Util.datetoString(tmp) }, 150)
+                    }}
+                />}
                 {(pickerType.includes("range") || pickerType === "auto") &&
                     <TextField
                         ref={inputEndRef}
@@ -348,7 +382,7 @@ const PopupDateTimePicker = ({ value, style, endValue, repeatValue, onApply, pic
                         }}
                     />}
                 {selectTime && <>
-                    <TextField
+                    {(pickerType !== "auto" || methods.watch("date-start")) ? <TextField
                         autoComplete="off"
                         name='time-start'
                         style={{ "--gutter": "1.2rem" } as any}
@@ -364,25 +398,35 @@ const PopupDateTimePicker = ({ value, style, endValue, repeatValue, onApply, pic
                         className='col12 body-3 size32'
                         placeholder={"hh:mm"}
                         onFocus={(ev) => {
-                            const rect = ev.target.closest("div")!.getBoundingClientRect()
-                            showPopup({
-                                ref: popupRef,
-                                hideOverlay: true,
-                                content: <div className={`col ${styles['popup-actions']} dropdown-popup`} style={{ maxHeight: "24rem", top: rect.bottom + 2, right: document.body.offsetWidth - rect.right, width: rect.width, overflow: "hidden auto", border: "var(--neutral-main-border,1px solid light-dark(#EAEAEC, #313135))" }}>
-                                    {Array.from({ length: 48 }).map((_, i) => {
-                                        if (i % 2 === 0) var timeValue = `${(i / 2) < 9 ? `0${i / 2}` : (i / 2)}:00`
-                                        else timeValue = `${((i - 1) / 2) < 9 ? `0${(i - 1) / 2}` : ((i - 1) / 2)}:30`
-                                        return <button key={"time-" + i} type="button" className="row" onClick={() => {
+                            const rect = ev.target.closest("label")!.getBoundingClientRect()
+                            dropdownContentRef.current = {
+                                children: Array.from({ length: 48 }).map((_, i) => {
+                                    if (i % 2 === 0) var timeValue = `${(i / 2) < 9 ? `0${i / 2}` : (i / 2)}:00`
+                                    else timeValue = `${((i - 1) / 2) < 9 ? `0${(i - 1) / 2}` : ((i - 1) / 2)}:30`
+                                    return <button key={"time-" + i} type="button" className="row"
+                                        onClick={() => {
                                             methods.setValue("time-start", timeValue)
-                                            closePopup(popupRef)
+                                            setIsOpenDropdown(false)
                                         }}>
-                                            <Text className="body-3">{timeValue}</Text>
-                                        </button>
-                                    })}
-                                </div>
-                            })
+                                        <Text className="body-3">{timeValue}</Text>
+                                    </button>
+                                }),
+                                style: { top: rect.bottom + 2, right: `calc(100dvw - ${rect.right}px)`, width: rect.width }
+                            }
+                            setIsOpenDropdown(true)
                         }}
-                    />
+                    /> : <Button
+                        label="Start time"
+                        prefix={<Winicon src="outline/user interface/e-add" size={14} />}
+                        className='col12 label-3 size32 border'
+                        style={{ "--gutter": "1.2rem" } as any}
+                        onClick={() => {
+                            const tmp = endValue ? new Date(endValue?.getTime()) : new Date()
+                            tmp.setHours(1, 0, 1)
+                            methods.setValue('date-start', tmp)
+                            setTimeout(() => { inputStartRef.current!.inputElement!.value = Util.datetoString(tmp) }, 150)
+                        }}
+                    />}
                     {(pickerType.includes("range") || pickerType === "auto") &&
                         <TextField
                             autoComplete="off"
@@ -400,23 +444,22 @@ const PopupDateTimePicker = ({ value, style, endValue, repeatValue, onApply, pic
                             className='col12 body-3 size32'
                             placeholder={"hh:mm"}
                             onFocus={(ev) => {
-                                const rect = ev.target.closest("div")!.getBoundingClientRect()
-                                showPopup({
-                                    ref: popupRef,
-                                    hideOverlay: true,
-                                    content: <div className={`col ${styles['popup-actions']}`} style={{ maxHeight: "24rem", top: rect.bottom + 2, right: document.body.offsetWidth - rect.right, width: rect.width, overflow: "hidden auto", border: "var(--neutral-main-border,1px solid light-dark(#EAEAEC, #313135))" }}>
-                                        {Array.from({ length: 48 }).map((_, i) => {
-                                            if (i % 2 === 0) var timeValue = `${(i / 2) < 9 ? `0${i / 2}` : (i / 2)}:00`
-                                            else timeValue = `${((i - 1) / 2) < 9 ? `0${(i - 1) / 2}` : ((i - 1) / 2)}:30`
-                                            return <button key={"time-" + i} type="button" className="row" onClick={() => {
+                                const rect = ev.target.closest("label")!.getBoundingClientRect()
+                                dropdownContentRef.current = {
+                                    children: Array.from({ length: 48 }).map((_, i) => {
+                                        if (i % 2 === 0) var timeValue = `${(i / 2) < 9 ? `0${i / 2}` : (i / 2)}:00`
+                                        else timeValue = `${((i - 1) / 2) < 9 ? `0${(i - 1) / 2}` : ((i - 1) / 2)}:30`
+                                        return <button key={"time-" + i} type="button" className="row"
+                                            onClick={() => {
                                                 methods.setValue("time-end", timeValue)
-                                                closePopup(popupRef)
+                                                setIsOpenDropdown(false)
                                             }}>
-                                                <Text className="body-3">{timeValue}</Text>
-                                            </button>
-                                        })}
-                                    </div>
-                                })
+                                            <Text className="body-3">{timeValue}</Text>
+                                        </button>
+                                    }),
+                                    style: { top: rect.bottom + 2, right: `calc(100dvw - ${rect.right}px)`, width: rect.width }
+                                }
+                                setIsOpenDropdown(true)
                             }}
                         />}
                 </>}
@@ -439,52 +482,50 @@ const PopupDateTimePicker = ({ value, style, endValue, repeatValue, onApply, pic
                                         return ""
                                 }
                             })()}
-                            suffix={<Winicon src='outline/arrows/down-arrow' size={"1.4rem"} style={{ padding: "0.2rem" }} />}
+                            suffix={<Winicon src='outline/arrows/down-arrow' size={14} />}
                             onClick={(ev: any) => {
-                                const rect = ev.target.closest("button").getBoundingClientRect()
-                                showPopup({
-                                    ref: popupRef,
-                                    hideOverlay: true,
-                                    style: { position: "absolute", top: rect.bottom + 2, left: rect.x + 8 },
-                                    body: <div className="col popup-actions">
-                                        {Array.from({ length: 3 }).map((_, num) => {
-                                            let label = ""
+                                const btn = ev.target.closest("button")
+                                const rect = btn.getBoundingClientRect()
+                                dropdownContentRef.current = {
+                                    children: Array.from({ length: 3 }).map((_, num) => {
+                                        let label = ""
+                                        switch (num) {
+                                            case 0:
+                                                label = t("daily")
+                                                break;
+                                            case 1:
+                                                label = t("weekly")
+                                                break;
+                                            case 2:
+                                                label = t("monthly")
+                                                break;
+                                            default:
+                                                break;
+                                        }
+                                        return <button key={"tStatus-" + num} type="button" className="row" onClick={() => {
+                                            let newValue: any = ["everyday"]
                                             switch (num) {
                                                 case 0:
-                                                    label = t("daily")
+                                                    newValue = ["everyday"]
                                                     break;
                                                 case 1:
-                                                    label = t("weekly")
+                                                    newValue = today.getDay()
                                                     break;
                                                 case 2:
-                                                    label = t("monthly")
+                                                    newValue = today.getDate()
                                                     break;
                                                 default:
                                                     break;
                                             }
-                                            return <button key={"tStatus-" + num} type="button" className="row" onClick={() => {
-                                                let newValue: any = ["everyday"]
-                                                switch (num) {
-                                                    case 0:
-                                                        newValue = ["everyday"]
-                                                        break;
-                                                    case 1:
-                                                        newValue = today.getDay()
-                                                        break;
-                                                    case 2:
-                                                        newValue = today.getDate()
-                                                        break;
-                                                    default:
-                                                        break;
-                                                }
-                                                setRepeatData({ type: (num + 1) as any, value: [newValue] })
-                                                closePopup(popupRef)
-                                            }}>
-                                                <Text className="button-text-3">{label}</Text>
-                                            </button>
-                                        })}
-                                    </div>
-                                })
+                                            setRepeatData({ type: (num + 1) as any, value: [newValue] })
+                                            setIsOpenDropdown(false)
+                                        }}>
+                                            <Text className="label-3">{label}</Text>
+                                        </button>
+                                    }),
+                                    style: { top: rect.bottom + 2, right: `calc(100dvw - ${rect.right}px)`, width: rect.width }
+                                }
+                                setIsOpenDropdown(true)
                             }}
                         />
                     </div>
@@ -537,32 +578,29 @@ const PopupDateTimePicker = ({ value, style, endValue, repeatValue, onApply, pic
                                     <Button
                                         style={{ padding: 0 }}
                                         label={repeatData.value[0] === "last" ? t("Last") : `${repeatData.value[0]}`}
-                                        suffix={<Winicon src='outline/arrows/down-arrow' size={"1.4rem"} style={{ padding: "0.2rem" }} />}
+                                        suffix={<Winicon src='outline/arrows/down-arrow' size={14} />}
                                         onClick={(ev: any) => {
                                             const rect = ev.target.closest("button").getBoundingClientRect()
-                                            showPopup({
-                                                ref: popupRef,
-                                                hideOverlay: true,
-                                                style: { top: rect.bottom + 2, right: document.body.offsetWidth - rect.right, maxHeight: "30.4rem" },
-                                                body: <div className="col popup-actions" style={{ flex: 1, overflow: "hidden auto" }}>
-                                                    {Array.from({ length: 29 }).map((_, num) => {
-                                                        switch (num) {
-                                                            case 28:
-                                                                var label = t("Last")
-                                                                break;
-                                                            default:
-                                                                label = `${num + 1}`
-                                                                break;
-                                                        }
-                                                        return <button key={"date-" + num} type="button" className="row" onClick={() => {
-                                                            setRepeatData({ type: 3, value: [num === 28 ? "last" : (num + 1)] })
-                                                            closePopup(popupRef)
-                                                        }}>
-                                                            <Text className="button-text-3">{label}</Text>
-                                                        </button>
-                                                    })}
-                                                </div>
-                                            })
+                                            dropdownContentRef.current = {
+                                                children: Array.from({ length: 29 }).map((_, num) => {
+                                                    switch (num) {
+                                                        case 28:
+                                                            var label = t("Last")
+                                                            break;
+                                                        default:
+                                                            label = `${num + 1}`
+                                                            break;
+                                                    }
+                                                    return <button key={"date-" + num} type="button" className="row" onClick={() => {
+                                                        setRepeatData({ type: 3, value: [num === 28 ? "last" : (num + 1)] })
+                                                        setIsOpenDropdown(false)
+                                                    }}>
+                                                        <Text className="label-3">{label}</Text>
+                                                    </button>
+                                                }),
+                                                style: { bottom: `calc(100dvh - ${rect.y - 1}px)`, right: `calc(100dvw - ${rect.right}px)`, width: rect.width }
+                                            }
+                                            setIsOpenDropdown(true)
                                         }}
                                     />
                                 </div>
@@ -575,15 +613,23 @@ const PopupDateTimePicker = ({ value, style, endValue, repeatValue, onApply, pic
                     {pickerType === "auto" && <div className='row' style={{ gap: 4 }}>
                         <Winicon
                             src='outline/user interface/time-alarm'
-                            size={"1.6rem"}
-                            style={{ padding: "0.7rem", borderRadius: "50%", backgroundColor: selectTime ? "var(--neutral-disable-background-color,light-dark(#F4F4F5, #494950))" : undefined }}
+                            size={14}
+                            style={{ padding: 5, borderRadius: "50%", backgroundColor: selectTime ? "var(--neutral-disable-background-color,light-dark(#F4F4F5, #494950))" : undefined }}
                             onClick={() => { setSelectTime(!selectTime) }}
                         />
                         {(enableRepeat || pickerType === "auto") && <Winicon
                             src='outline/arrows/loop-2'
-                            size={"1.6rem"}
-                            style={{ padding: "0.7rem", borderRadius: "50%", backgroundColor: isRepeat ? "var(--neutral-disable-background-color,light-dark(#F4F4F5, #494950))" : undefined }}
-                            onClick={() => { setIsRepeat(!isRepeat) }}
+                            size={14}
+                            style={{ padding: 5, borderRadius: "50%", backgroundColor: isRepeat ? "var(--neutral-disable-background-color,light-dark(#F4F4F5, #494950))" : undefined }}
+                            onClick={() => {
+                                if (pickerType === "auto" && !methods.watch("date-start")) {
+                                    const tmp = endValue ? new Date(endValue?.getTime()) : new Date()
+                                    tmp.setHours(1, 0, 1)
+                                    methods.setValue('date-start', tmp)
+                                    setTimeout(() => { inputStartRef.current!.inputElement!.value = Util.datetoString(tmp) }, 150)
+                                }
+                                setIsRepeat(!isRepeat)
+                            }}
                         />}
                     </div>}
                     <div style={{ flex: 1 }} />
@@ -600,18 +646,32 @@ const PopupDateTimePicker = ({ value, style, endValue, repeatValue, onApply, pic
                     />
                     <Button
                         label={t("apply")}
-                        disabled={!methods.watch("date-start") || (!methods.watch("date-end") && (pickerType.includes("range") || pickerType === "auto"))}
-                        className={`button-text-3 button-primary`}
+                        disabled={!appliable}
+                        className={`label-3 button-primary`}
                         onClick={() => {
+                            debugger
                             let dateStartValue = methods.getValues("date-start")
-                            let timeStartValue = selectTime ? (methods.getValues("time-start")?.length ? methods.getValues("time-start") : "00:00") : "00:00"
-                            dateStartValue.setHours(parseInt(timeStartValue.split(':')[0]), parseInt(timeStartValue.split(':')[1]), selectTime ? 1 : 0, 0)
-                            if (pickerType.includes("range") || pickerType === "auto") {
-                                var dateEndValue = methods.getValues("date-end")
-                                let timeEndValue = selectTime ? (methods.getValues("time-end")?.length ? methods.getValues("time-end") : "23:59") : "23:59"
-                                dateEndValue.setHours(parseInt(timeEndValue.split(':')[0]), parseInt(timeEndValue.split(':')[1]), selectTime ? 59 : 0, 0)
+                            switch (pickerType) {
+                                // @ts-ignore 
+                                case "auto":
+                                    if (!dateStartValue) {
+                                        const dateEndValue = methods.getValues("date-end")
+                                        let timeEndValue = selectTime ? (methods.getValues("time-end")?.length ? methods.getValues("time-end") : "23:59") : "23:59"
+                                        dateEndValue.setHours(parseInt(timeEndValue.split(':')[0]), parseInt(timeEndValue.split(':')[1]), selectTime ? 59 : 0, 0)
+                                        onApply(dateEndValue)
+                                        break;
+                                    }
+                                default:
+                                    let timeStartValue = selectTime ? (methods.getValues("time-start")?.length ? methods.getValues("time-start") : "00:00") : "00:00"
+                                    dateStartValue.setHours(parseInt(timeStartValue.split(':')[0]), parseInt(timeStartValue.split(':')[1]), selectTime ? 1 : 0, 0)
+                                    if (pickerType.includes("range") || pickerType === "auto") {
+                                        var dateEndValue = methods.getValues("date-end")
+                                        let timeEndValue = selectTime ? (methods.getValues("time-end")?.length ? methods.getValues("time-end") : "23:59") : "23:59"
+                                        dateEndValue.setHours(parseInt(timeEndValue.split(':')[0]), parseInt(timeEndValue.split(':')[1]), selectTime ? 59 : 0, 0)
+                                    }
+                                    onApply(pickerType.includes("range") || pickerType === "auto" ? { start: dateStartValue, end: dateEndValue, repeatData: isRepeat ? repeatData : undefined } : dateStartValue)
+                                    break;
                             }
-                            onApply(!pickerType.includes("range") && pickerType !== "auto" ? dateStartValue : { start: dateStartValue, end: dateEndValue, repeatData: isRepeat ? repeatData : undefined })
                         }}
                     />
                 </div>}
@@ -619,8 +679,13 @@ const PopupDateTimePicker = ({ value, style, endValue, repeatValue, onApply, pic
             onSelect={(ev: any) => {
                 if (pickerType !== "date") {
                     if (ev instanceof Date) {
-                        methods.setValue('date-start', ev)
-                        if (inputStartRef.current) inputStartRef.current.inputElement!.value = Util.datetoString(ev)
+                        if (pickerType === "auto" && !methods.watch("date-start")) {
+                            methods.setValue('date-end', ev)
+                            if (inputEndRef.current) inputEndRef.current.inputElement!.value = Util.datetoString(ev)
+                        } else {
+                            methods.setValue('date-start', ev)
+                            if (inputStartRef.current) inputStartRef.current.inputElement!.value = Util.datetoString(ev)
+                        }
                     } else {
                         methods.setValue('date-start', ev.sTime)
                         if (inputStartRef.current) inputStartRef.current.inputElement!.value = Util.datetoString(ev.sTime)
@@ -634,5 +699,33 @@ const PopupDateTimePicker = ({ value, style, endValue, repeatValue, onApply, pic
                 }
             }}
         />
+        {isOpenDropdown && <DropdownOptions
+            onClose={() => { setTimeout(() => { setIsOpenDropdown(false) }, 150) }}
+            style={dropdownContentRef.current.style}
+        >
+            {dropdownContentRef.current.children}
+        </DropdownOptions>}
+    </div>
+}
+
+const DropdownOptions = ({ onClose, style = {}, children }: any) => {
+    const divRef = useRef<HTMLDivElement>(null)
+    useEffect(() => {
+        if (divRef.current) {
+            const onClickDropDown = (ev: any) => {
+                if (ev.target === divRef.current || !divRef.current!.contains(ev.target)) onClose()
+            }
+            window.document.body.addEventListener("mousedown", onClickDropDown)
+            return () => {
+                window.document.body.removeEventListener("mousedown", onClickDropDown)
+            }
+        }
+    }, [divRef.current])
+    useEffect(() => {
+        return () => onClose?.()
+    }, [])
+
+    return <div ref={divRef} className={`col ${styles["options-dropdown"]}`} style={style}>
+        {children}
     </div>
 }

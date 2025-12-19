@@ -104,17 +104,26 @@
     overflow: hidden auto;
 }
 
-.popup-actions {
-    max-height: 28rem;
-    min-width: 10rem;
+.options-dropdown {
+    position: fixed;
+    animation: show-dropdown 0.4s ease-in-out;
     background-color: var(--neutral-absolute-background-color, light-dark(#FFFFFF, #14181b));
+    border-radius: 0.8rem;
+    z-index: 9999;
+    box-shadow: 2px 0px 16px 0px #0000000A;
+    overflow: hidden auto;
+    max-height: 24rem;
+    min-width: 10rem;
+    padding: 0.8rem;
+    scrollbar-width: thin;
+    border: var(--neutral-main-border, 1px solid light-dark(#EAEAEC, #313135))
 }
 
-.popup-actions>button {
+.options-dropdown>button {
     padding: 0.8rem 1.2rem;
     border-radius: 0.8rem;
 }
 
-.popup-actions>button:hover {
+.options-dropdown>button:hover {
     background-color: var(--neutral-hover-background-color, light-dark(#18181B0A, #FFFFFF0A));
 }
