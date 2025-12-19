@@ -62,7 +62,7 @@ export function DateTimePicker({ style = {}, pickerType = "auto", ...props }: Da
     const [value, setValue] = useState<Date | ValueProps>()
     const txtValue = useMemo(() => {
         if (!value) return <Text className={styles["value"]} style={{ opacity: 0.6 }}>{props.placeholder ?? ""}</Text>
-        if (value instanceof Date) return <Text className={styles["value"]}>{Util.datetoString(value, props.format ?? `dd/mm/yyyy${pickerType?.includes("time") ? " hh:mm" : ""}`)}</Text>
+        if (value instanceof Date) return <Text className={styles["value"]}>{Util.datetoString(value, props.format ?? `dd/mm/yyyy${pickerType?.includes("time") || (pickerType === "auto" && value.getSeconds() === 59) ? " hh:mm" : ""}`)}</Text>
         else {
             const tmpStart = value.start ?? new Date()
             return <>
@@ -280,7 +280,10 @@ const PopupDateTimePicker = ({ value, style, endValue, repeatValue, onApply, pic
                 const initEnd = typeof endValue === "number" ? (new Date(endValue)) : endValue
                 methods.setValue('date-end', initEnd)
                 inputEndRef.current.inputElement!.value = Util.datetoString(initEnd)
-                if (pickerType.includes("time") || initEnd.getSeconds() === 59) methods.setValue('time-end', Util.datetoString(initEnd, "hh:mm"))
+                if (pickerType.includes("time") || initEnd.getSeconds() === 59) {
+                    setSelectTime(true)
+                    methods.setValue('time-end', Util.datetoString(initEnd, "hh:mm"))
+                }
             } else inputEndRef.current.inputElement!.value = ""
         }
     }
@@ -323,14 +326,27 @@ const PopupDateTimePicker = ({ value, style, endValue, repeatValue, onApply, pic
         }
     }, [methods.watch("date-start"), methods.watch("date-end"), pickerType])
 
+    const convertCalendarValue = useMemo(() => {
+        switch (pickerType) {
+            case "date":
+            case "datetime":
+                return methods.watch('date-start');
+            // @ts-ignore
+            case "auto":
+                if (!methods.watch("date-start")) return methods.watch('date-end')
+            default:
+                return (methods.watch('date-start') && methods.watch('date-end')) ? { sTime: methods.watch('date-start'), eTime: methods.watch('date-end') } : undefined
+        }
+    }, [pickerType, methods.watch("date-start"), methods.watch("date-end")])
+
     return <div ref={divRef} className={`col ${styles["calendar-popup"]}`} style={style}>
         <Calendar
             min={min}
             max={max}
             style={{ width: "31.2rem" }}
             range={pickerType.includes("range") || (pickerType === "auto" && !!methods.watch("date-start"))}
-            value={(pickerType === "date" || pickerType === "datetime") ? methods.watch('date-start') : (methods.watch('date-start') && methods.watch('date-end') ? { sTime: methods.watch('date-start'), eTime: methods.watch('date-end') } : undefined)}
-            header={pickerType !== "date" && <div className='row' style={{ flexWrap: "wrap", gap: "0.8rem 1.2rem", padding: "1.6rem", borderBottom: "var(--neutral-main-border,1px solid light-dark(#EAEAEC, #313135))" }}>
+            value={convertCalendarValue}
+            header={pickerType !== "date" && <div className={`row ${styles["header"]}`}>
                 {(pickerType !== "auto" || value || methods.watch("date-start")) ? <TextField
                     ref={inputStartRef}
                     autoComplete="off"

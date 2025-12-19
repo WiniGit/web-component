@@ -24,7 +24,8 @@ interface Props {
     imgUrlId: string,
     onInvalidToken?: () => void,
     children?: React.ReactNode,
-    onProjectLoaded?: (item: ProjectItem) => void
+    onProjectLoaded?: (item: ProjectItem) => void,
+    theme?: "light" | "dark"
 }
 
 const appendDesignTokens = (list: Array<{ [p: string]: any }>) => {
@@ -120,6 +121,11 @@ export const WiniProvider = (props: Props) => {
     if (props.onInvalidToken) ConfigData.onInvalidToken = props.onInvalidToken
     const { i18n } = useTranslation()
     const [loadedResources, setLoadedResources] = useState(false)
+
+    useEffect(() => {
+        if (props.theme === "dark") document.documentElement.classList.add("dark");
+        else document.documentElement.classList.remove("dark");
+    }, [props.theme])
 
     useEffect(() => {
         ConfigData.pid = props.pid
