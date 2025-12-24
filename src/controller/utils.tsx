@@ -462,6 +462,9 @@ export class Util {
         for (const interval of intervals) {
             const count = Math.floor(seconds / interval.seconds);
             if (count >= 1) {
+                if(seconds === 86400 && count === 1) {
+                    return translate ? translate("yesterday").toLowerCase() : "hôm qua";
+                }
                 return `${count} ${count > 1 ? interval.multitipleLabel : interval.label} ${translate ? translate("ago").toLowerCase() : "trước"}`;
             }
         }

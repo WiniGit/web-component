@@ -1,7 +1,7 @@
 import { CSSProperties, forwardRef, MouseEventHandler, useDeferredValue, useEffect, useMemo, useRef, useState } from "react"
 import styles from "./table.module.css";
 import { useTranslation } from "react-i18next"
-import { Button, Checkbox, closePopup, DateTimePicker, InfiniteScroll, Popup, RadioButton, showPopup, Slider, Switch, Tag, Text, TextField, Util, Winicon, i18n as i18component, showDialog, DialogAlignment, randomGID, DataController } from "../../index"
+import { Button, Checkbox, closePopup, DateTimePicker, InfiniteScroll, Popup, RadioButton, showPopup, Slider, Switch, Tag, Text, TextField, Util, Winicon, showDialog, DialogAlignment, randomGID, DataController } from "../../index"
 import { handleGoogleSheetFetch } from "./exportXlsx"
 import { DataTable } from "./tableById"
 import { ColDataType, ColDataTypeIcon, FEDataType } from "../da";
@@ -409,7 +409,7 @@ const InputValueTile = ({ fieldItem, filterItem, colData, onChange }: InputValue
     switch (fieldItem.DataType) {
         case FEDataType.NUMBER:
         case FEDataType.MONEY:
-            if (fieldItem.Form.Options) {
+            if (fieldItem.Form.Options?.length) {
                 let label = fieldItem.Form.Options.filter((e: any) => data.value?.split(",").map((vl: string) => Number(vl)).includes(e.id))
                 if (label.length) label = label.map((e: any) => e.name).join(", ")
                 else label = undefined
@@ -434,7 +434,7 @@ const InputValueTile = ({ fieldItem, filterItem, colData, onChange }: InputValue
                             })
                         }}
                     >
-                        <Text className={label ? "body-3" : "placeholder-2"}>{label ?? `${i18component.t("select")} ${(colData?.Title ?? fieldItem.Form.Label ?? data.name).toLowerCase()}`}</Text>
+                        <Text className={label ? "body-3" : "placeholder-2"}>{label ?? `${t("select")} ${(colData?.Title ?? fieldItem.Form.Label ?? data.name).toLowerCase()}`}</Text>
                     </button>
                 </>
             } else {
@@ -464,7 +464,7 @@ const InputValueTile = ({ fieldItem, filterItem, colData, onChange }: InputValue
                             fieldItem.DataType === FEDataType.MONEY ?
                                 data.value.split(",").map((e: any) => Util.money(e)).join(" - ") :
                                 data.value.split(",").join(" - ") :
-                            `${i18component.t("select")} ${(colData?.Title ?? fieldItem.Form.Label ?? data.name).toLowerCase()}`
+                            `${t("select")} ${(colData?.Title ?? fieldItem.Form.Label ?? data.name).toLowerCase()}`
                         }</Text>
                     </button>
                 </>
@@ -474,7 +474,7 @@ const InputValueTile = ({ fieldItem, filterItem, colData, onChange }: InputValue
             return <DateTimePicker
                 className={fieldItem.value ? "body-3" : "placeholder-2"}
                 pickerType={fieldItem.DataType === FEDataType.DATE ? "daterange" : "datetimerange"}
-                placeholder={`${i18component.t("select")} ${(colData?.Title ?? fieldItem.Form.Label ?? data.name).toLowerCase()}`}
+                placeholder={`${t("select")} ${(colData?.Title ?? fieldItem.Form.Label ?? data.name).toLowerCase()}`}
                 style={{ width: "100%", padding: "0 1.2rem", height: "3.2rem", border: "var(--neutral-main-border)" }}
                 prefix={<Winicon src="outline/user interface/calendar-date-2" style={{ marginRight: "0.4rem" }} size={"1.2rem"} />}
                 value={data.value?.split(",").map((e: string) => new Date(parseInt(e))) ?? []}
@@ -543,7 +543,7 @@ const InputValueTile = ({ fieldItem, filterItem, colData, onChange }: InputValue
                                 }} />}
                             />))}
                             {!!labels.length && data.value.split(",").length > 2 && <Tag title={`+${data.value.split(",").length - 2}`} className="size24 button-text-6 tag-grey" />}
-                        </> : <Text className="placeholder-2">{`${i18component.t("select")} ${(colData?.Title ?? fieldItem.Form.Label ?? data.name).toLowerCase()}`}</Text>}
+                        </> : <Text className="placeholder-2">{`${t("select")} ${(colData?.Title ?? fieldItem.Form.Label ?? data.name).toLowerCase()}`}</Text>}
                     </button>
                 </>
             }

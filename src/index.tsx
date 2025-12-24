@@ -50,8 +50,9 @@ export * from './module/table/tableById'
 import { OptionsItem } from './component/select1/select1'
 export type { OptionsItem }
 
-export { i18n, useTranslation } from './language/i18n';
+export { useTranslation } from './language/i18n';
 export { Routes, Route, useNavigate, useParams, useLocation, useSearchParams, Navigate, NavLink, Outlet } from 'react-router'
 
-import { WiniProvider } from './module/WiniProvider'
+import { WiniProvider, useWiniContext } from './module/WiniProvider'
+export { useWiniContext }
 export default WiniProvider

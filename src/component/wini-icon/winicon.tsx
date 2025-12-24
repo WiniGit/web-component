@@ -8958,6 +8958,7 @@ export type WiniIconName = "color/accessibility/accessibility-lift" |
     "color/development/hot-key" |
     "color/development/html5" |
     "color/development/image" |
+    "color/development/image-folder" |
     "color/development/image-2" |
     "color/development/img-stack" |
     "color/development/invert-process" |

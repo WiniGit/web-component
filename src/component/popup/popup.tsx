@@ -85,7 +85,7 @@ export function PopupOverlay({ children, onClose, className, style, onOpen }: { 
             }
             if (onClose) {
                 const onClickDropDown = (ev: any) => {
-                    if (ev.target === overlayRef.current || !overlayRef.current!.contains(ev.target)) onClose(ev)
+                    if ((ev.target === overlayRef.current || !overlayRef.current!.contains(ev.target)) && !ev.target.closest(`div[class*="_dialog-overlay"]`)) onClose(ev)
                 }
                 window.document.body.addEventListener("mousedown", onClickDropDown)
                 return () => {

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { createContext, useContext, useEffect, useState } from "react"
 import { BrowserRouter, Routes } from "react-router-dom"
 import { BaseDA, ConfigData } from "../controller/config"
 import { TableController, WiniController } from "../controller/setting"
@@ -113,6 +113,8 @@ const appendDesignTokens = (list: Array<{ [p: string]: any }>) => {
     }
 }
 
+const WiniContext = createContext<any>(null)
+
 export const WiniProvider = (props: Props) => {
     ConfigData.pid = props.pid
     ConfigData.url = props.url
@@ -121,11 +123,16 @@ export const WiniProvider = (props: Props) => {
     if (props.onInvalidToken) ConfigData.onInvalidToken = props.onInvalidToken
     const { i18n } = useTranslation()
     const [loadedResources, setLoadedResources] = useState(false)
+    const [theme, setTheme] = useState<"light" | "dark">("light")
 
     useEffect(() => {
-        if (props.theme === "dark") document.documentElement.classList.add("dark");
-        else document.documentElement.classList.remove("dark");
+        setTheme(props.theme ?? "light")
     }, [props.theme])
+
+    useEffect(() => {
+        if (theme === "dark") document.documentElement.classList.add("dark");
+        else document.documentElement.classList.remove("dark");
+    }, [theme])
 
     useEffect(() => {
         ConfigData.pid = props.pid
@@ -163,9 +170,21 @@ export const WiniProvider = (props: Props) => {
         }
     }, [props.pid])
 
-    return <BrowserRouter>
-        <ToastContainer />
-        <Dialog />
-        {loadedResources && <Routes>{props.children}</Routes>}
-    </BrowserRouter>
+    return <WiniContext.Provider value={{ theme, setTheme, i18n }}>
+        <BrowserRouter>
+            <ToastContainer />
+            <Dialog />
+            {loadedResources && <Routes>{props.children}</Routes>}
+        </BrowserRouter>
+    </WiniContext.Provider>
+}
+
+export const useWiniContext = () => {
+    const context = useContext(WiniContext);
+    if (context === undefined) {
+        throw new Error(
+            "useWiniContext must be used within a WiniProvider"
+        );
+    }
+    return context;
 }

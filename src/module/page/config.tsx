@@ -24,4 +24,4 @@ export const decodeClassName = (cls: string, prefix?: string) => {
     return cls.replace(`_${prefix ?? "wini"}-`, "").replace("_axts4_37", "")
 }
 
-export const handleErrorImgSrc = "https://cdn.jsdelivr.net/gh/WiniGit/icon-library@latest/outline/development/image-2.svg";
+export const handleErrorImgSrc = "https://cdn.jsdelivr.net/gh/WiniGit/icon-library@latest/image-placeholder.png";
