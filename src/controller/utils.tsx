@@ -144,6 +144,7 @@ export class Util {
     /** date: dd/mm/yyyy | yyyy/mm/dd | dd/mm | mm/yyyy
         time: hh:mm:ss | hh:mm */
     static datetoString(x = new Date(), y = "dd/mm/yyyy") {
+        if(!x) return ""
         if (typeof x === "number") x = new Date(x)
         let splitDateTime = y.toLowerCase().split(" ");
         let dateConvert = splitDateTime[0]

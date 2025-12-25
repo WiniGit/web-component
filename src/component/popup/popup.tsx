@@ -85,7 +85,21 @@ export function PopupOverlay({ children, onClose, className, style, onOpen }: { 
             }
             if (onClose) {
                 const onClickDropDown = (ev: any) => {
-                    if ((ev.target === overlayRef.current || !overlayRef.current!.contains(ev.target)) && !ev.target.closest(`div[class*="_dialog-overlay"]`)) onClose(ev)
+                    if ((ev.target === overlayRef.current || !overlayRef.current!.contains(ev.target)) && !ev.target.closest(`div[class*="_dialog-overlay"]`)) {
+                        const firstChild = overlayRef.current?.firstChild as HTMLElement
+                        if (firstChild) {
+                            if (firstChild.classList.contains("right-drawer")) {
+                                firstChild.classList.add("right-drawer-collapse")
+                                firstChild.classList.remove("right-drawer")
+                                return setTimeout(() => { onClose(ev) }, 500)
+                            } else if (firstChild.classList.contains("left-drawer")) {
+                                firstChild.classList.add("left-drawer-collapse")
+                                firstChild.classList.remove("left-drawer")
+                                return setTimeout(() => { onClose(ev) }, 500)
+                            }
+                        }
+                        onClose(ev)
+                    }
                 }
                 window.document.body.addEventListener("mousedown", onClickDropDown)
                 return () => {
