@@ -851,7 +851,11 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                     };
                 }]}
                 value={props.methods?.watch(props.item.NameField)}
-                onBlur={(_: any, editor: any) => { props.methods?.setValue(props.item.NameField, editor.getData()) }}
+                onBlur={(_: any, editor: any) => {
+                    const editorData = editor.getData()
+                    props.methods?.setValue(props.item.NameField, editorData)
+                    if (typeProps.onBlur) typeProps.onBlur(editorData)
+                }}
             />
         default:
             return <div {...typeProps} />
