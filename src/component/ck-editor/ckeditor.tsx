@@ -407,27 +407,27 @@ export function CustomCkEditor5({ style = {}, extraPlugins = [], ...props }: Pro
                             columns: 6,
                             colors: [
                                 {
-                                    color: '#18181B',
+                                    color: 'var(--neutral-text-title-color)',
                                     label: 'title'
                                 },
                                 {
-                                    color: '#61616B',
+                                    color: 'var(--neutral-text-subtitle-color)',
                                     label: 'subtitle'
                                 },
                                 {
-                                    color: '#313135',
+                                    color: 'var(--neutral-text-body-color)',
                                     label: 'body'
                                 },
                                 {
-                                    color: '#878792',
+                                    color: 'var(--neutral-text-placeholder-color)',
                                     label: 'placeholder'
                                 },
                                 {
-                                    color: '#A2A2AA',
+                                    color: 'var(--neutral-text-disabled-color)',
                                     label: 'disabled'
                                 },
                                 {
-                                    color: '#FFFFFF',
+                                    color: 'var(--neutral-text-stable-color)',
                                     label: 'stable'
                                 },
                                 {
