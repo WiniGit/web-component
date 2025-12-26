@@ -59,7 +59,7 @@ export const IconPicker = forwardRef<IconPickerRef, IconPickerProps>((props, ref
             }
             offsetRef.current = tmpOffset
         }
-        setIsOpen(true)
+        setTimeout(() => { setIsOpen(true) }, 100)
     }
 
     useImperativeHandle(ref, () => ({

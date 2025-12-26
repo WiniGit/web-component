@@ -91,7 +91,7 @@ export const SelectMultiple = forwardRef<SelectMultipleRef, SelectMultipleProps>
             delete offset.left
         }
         offsetRef.current = offset
-        setIsOpen(true)
+        setTimeout(() => { setIsOpen(true) }, 100)
     }
 
     useImperativeHandle(ref, () => ({

@@ -123,7 +123,7 @@ export function DateTimePicker({ style = {}, pickerType = "auto", ...props }: Da
             delete offset.left
         }
         offsetRef.current = offset
-        setIsOpen(true)
+        setTimeout(() => { setIsOpen(true) }, 100)
     }
 
     const returnUI = () => {

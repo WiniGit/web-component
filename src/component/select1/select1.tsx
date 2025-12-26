@@ -88,7 +88,7 @@ export const Select1 = forwardRef<Select1Ref, Select1Props>(({ style = {}, ...pr
             delete offset.left
         }
         offsetRef.current = offset
-        setIsOpen(true)
+        setTimeout(() => { setIsOpen(true) }, 100)
     }
 
     useImperativeHandle(ref, () => ({
