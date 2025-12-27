@@ -58,10 +58,11 @@ interface DataTableProps {
     onEditColumn?: (params: { [p: string]: any }) => void;
     customCell?: { [k: string]: (params: { item: { [p: string]: any }, index: number }) => ReactNode };
     customFilterOptions?: { [k: string]: { query?: string, options?: OptionsItem[] } };
-    hideToolbar?: boolean;
     hideActionColumn?: boolean;
     /** allow: "add" | "divider" | "search" | "export" | "import" | ReactNode | undefined */
     features?: Array<"add" | "divider" | "search" | "export" | "import" | ReactNode | undefined>;
+    /** toolbars = false OR an array allow: "total" | "export" | "duplicate" | "delete" | ReactNode | undefined */
+    toolbars?: Array<"total" | "export" | "duplicate" | "delete" | ReactNode | undefined> | false;
     /** default: true */
     isMultiplePage?: boolean;
     getData?: (page: number, size: number, exportData?: boolean) => Promise<{ data: Array<{ [p: string]: any }>, totalCount?: number }>;
@@ -102,6 +103,7 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
     onChangeActions,
     onEditColumn,
     features = ["add", <div key={"space"} style={{ flex: 1 }} />, "search", "divider", "export", "divider", "import"],
+    toolbars = ["total", <div key={"space"} style={{ flex: 1 }} />, "export", "duplicate", "delete"],
     ...props }, ref) => {
     // static variables
     const configMethods = useForm<any>({ shouldFocusError: false, defaultValues: { columns: [], searchRaw: "*", sortby: [], TbName: tbName } })
@@ -452,67 +454,72 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
                     }
                 }} />
         </div>}
-        {!props.hideToolbar && !!selected.length && <div className={`row ${styles["selected-item-options"]}`}>
-            <div className={`row ${styles["selected-item-total"]}`}>
-                <Text className="button-text-5">{t("itemsSelected", { count: selected.length })}</Text>
-                <Winicon src="outline/user interface/e-remove" size={12} onClick={() => setSelected([])} />
-            </div>
-            <div className={`row ${styles["selected-item-actions"]}`}>
-                <Button
-                    className="button-text-5 size24"
-                    label={t("export")}
-                    style={{ color: "var(--neutral-text-body-reverse-color)" }}
-                    prefix={<Winicon src="outline/user interface/data-download" color="var(--neutral-text-body-reverse-color)" size={12} />}
-                />
-                <Button
-                    className="button-text-5 size24"
-                    label={t("duplicate")}
-                    style={{ color: "var(--neutral-text-body-reverse-color)" }}
-                    prefix={<Winicon src="outline/layout/copy-2" color="var(--neutral-text-body-reverse-color)" size={12} />}
-                    onClick={() => {
-                        dataController.duplicate(selected).then((res: any) => {
-                            if (res.code !== 200) return ToastMessage.errors(res.message)
-                            getData(pageDetails.page, pageDetails.size)
-                            ToastMessage.success(`Duplicate these ${title.toLowerCase()} successfully!`)
-                            setSelected([])
-                        })
-                    }}
-                />
-                <Button
-                    className="button-text-5 size24"
-                    label={t("delete")}
-                    style={{ color: "var(--neutral-text-body-reverse-color)" }}
-                    prefix={<Winicon src="outline/user interface/trash-can" color="var(--neutral-text-body-reverse-color)" size={12} />}
-                    onClick={() => {
-                        showDialog({
-                            alignment: DialogAlignment.center,
-                            title: "Confirm delete",
-                            content: `Are you sure to delete these ${selected.length} ${title.toLowerCase()}?`,
-                            submitTitle: t("delete"),
-                            onSubmit: () => {
-                                dataController.delete(selected).then((res: any) => {
+        {!!selected.length && toolbars && !!toolbars.length && <div className={`row ${styles["selected-item-options"]}`}>
+            {toolbars.map((tl, i) => {
+                switch (tl) {
+                    case "total":
+                        return <div key={tl + "-" + i} className={`row ${styles["selected-item-total"]}`}>
+                            <Text className="button-text-5">{t("itemsSelected", { count: selected.length })}</Text>
+                            <Winicon src="outline/user interface/e-remove" size={12} onClick={() => setSelected([])} />
+                        </div>
+                    case "export":
+                        return <Button
+                            key={tl + "-" + i}
+                            className="button-text-5 size24"
+                            label={t("export")}
+                            style={{ color: "var(--neutral-text-body-reverse-color)" }}
+                            prefix={<Winicon src="outline/user interface/data-download" color="var(--neutral-text-body-reverse-color)" size={12} />}
+                        />
+                    case "duplicate":
+                        return <Button
+                            key={tl + "-" + i}
+                            className="button-text-5 size24"
+                            label={t("duplicate")}
+                            style={{ color: "var(--neutral-text-body-reverse-color)" }}
+                            prefix={<Winicon src="outline/layout/copy-2" color="var(--neutral-text-body-reverse-color)" size={12} />}
+                            onClick={() => {
+                                dataController.duplicate(selected).then((res: any) => {
                                     if (res.code !== 200) return ToastMessage.errors(res.message)
                                     getData(pageDetails.page, pageDetails.size)
+                                    ToastMessage.success(`Duplicate these ${title.toLowerCase()} successfully!`)
                                     setSelected([])
                                 })
-                            }
-                        })
-                    }}
-                />
-                {/* <Button
-                    className="button-text-5 size24"
-                    label={t("more")}
-                    style={{ color: "var(--neutral-text-body-reverse-color)" }}
-                    prefix={<Winicon src="fill/text/menu-dots" color="var(--neutral-text-body-reverse-color)" size={12} />}
-                /> */}
-                <Button
-                    className="button-text-5 size24"
-                    label={t("close")}
-                    style={{ color: "var(--error-lighter-color)" }}
-                    prefix={<Winicon src="outline/user interface/e-remove" color="var(--error-lighter-color)" size={12} />}
-                    onClick={() => setSelected([])}
-                />
-            </div>
+                            }}
+                        />
+                    case "delete":
+                        return <Button
+                            key={tl + "-" + i}
+                            className="button-text-5 size24"
+                            label={t("delete")}
+                            style={{ color: "var(--neutral-text-body-reverse-color)" }}
+                            prefix={<Winicon src="outline/user interface/trash-can" color="var(--neutral-text-body-reverse-color)" size={12} />}
+                            onClick={() => {
+                                showDialog({
+                                    alignment: DialogAlignment.center,
+                                    title: "Confirm delete",
+                                    content: `Are you sure to delete these ${selected.length} ${title.toLowerCase()}?`,
+                                    submitTitle: t("delete"),
+                                    onSubmit: () => {
+                                        dataController.delete(selected).then((res: any) => {
+                                            if (res.code !== 200) return ToastMessage.errors(res.message)
+                                            getData(pageDetails.page, pageDetails.size)
+                                            setSelected([])
+                                        })
+                                    }
+                                })
+                            }}
+                        />
+                    default:
+                        return tl
+                }
+            })}
+            <Button
+                className="button-text-5 size24"
+                label={t("close")}
+                style={{ color: "var(--error-lighter-color)" }}
+                prefix={<Winicon src="outline/user interface/e-remove" color="var(--error-lighter-color)" size={12} />}
+                onClick={() => setSelected([])}
+            />
         </div>}
     </>
 })

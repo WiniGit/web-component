@@ -10,6 +10,7 @@ import { useTranslation } from "react-i18next"
 import { DataController } from "../controller/data"
 import { encodeClassName, LayoutElement } from "./page/config"
 import { getValidLink } from "./page/pageById"
+import { i18n } from "i18next"
 
 interface Props {
     /**
@@ -113,7 +114,13 @@ const appendDesignTokens = (list: Array<{ [p: string]: any }>) => {
     }
 }
 
-const WiniContext = createContext<any>(null)
+interface WiniContextProps {
+    i18n: i18n,
+    theme: "light" | "dark",
+    setTheme: (theme: "light" | "dark") => void
+}
+
+const WiniContext = createContext<WiniContextProps | undefined>(undefined)
 
 export const WiniProvider = (props: Props) => {
     ConfigData.pid = props.pid

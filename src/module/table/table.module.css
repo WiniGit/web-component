@@ -318,7 +318,7 @@ div[class~="resize-cell-stick"] {
     background-color: var(--neutral-hover-background-color, light-dark(#18181B0A, #FFFFFF0A));
 }
 
-div:has(.selected-item-options) {
+div:has(>.selected-item-options) {
     position: relative;
 }
 
@@ -328,12 +328,13 @@ div:has(.selected-item-options) {
     max-width: 972px;
     height: 4.2rem;
     padding: 0 2.4rem;
+    gap: 1.2rem;
     border-radius: 0.8rem;
     background-color: var(--neutral-main-reverse-background-color, light-dark(#242428, #EFEFF0));
     bottom: 2.4rem;
     left: 50%;
     transform: translateX(-50%);
-    z-index: 9;
+    z-index: 90;
 }
 
 .selected-item-total {
@@ -346,12 +347,6 @@ div:has(.selected-item-options) {
 
 .selected-item-total * {
     color: var(--neutral-text-body-reverse-color, #EAEAEC) !important;
-}
-
-.selected-item-actions {
-    flex: 1;
-    justify-content: end;
-    gap: 1.2rem;
 }
 
 .html-value-cell * {
