@@ -14,7 +14,7 @@ import { getValidLink } from "../page/pageById";
 export function TableById({ id, ...props }: { id: string, className?: string, style?: CSSProperties }) {
     const [reportItem, setReportItem] = useState<{ [p: string]: any }>()
     const settingDataController = new SettingDataController("report")
-    const columns = useMemo(() => reportItem?.Props ?? [], [reportItem])
+    const [filterSearch, setFilterSearch] = useState<any>({ searchRaw: "*", sortby: [] })
 
     useEffect(() => {
         if (id) {
@@ -28,7 +28,25 @@ export function TableById({ id, ...props }: { id: string, className?: string, st
         }
     }, [id])
 
-    return reportItem && <DataTable key={reportItem.Id} tbName={reportItem.TbName} columns={columns} className={props.className} style={props.style} />
+    return reportItem && <>
+        {reportItem.Props && <DataTable
+            enableEdit
+            key={reportItem.Id}
+            showIndex
+            tbName={reportItem.TbName}
+            actions={reportItem.Props.actions ?? []}
+            title={reportItem.Name}
+            columns={reportItem.Props.props ?? []}
+            filterList={reportItem.Props.filter ?? []}
+            onChangeFilterData={setFilterSearch}
+            filterData={{
+                required: reportItem.Props.requiredSearchRaw,
+                ...filterSearch
+            }}
+            className={props.className}
+            style={props.style}
+        />}
+    </>
 }
 
 interface DataTableProps {
