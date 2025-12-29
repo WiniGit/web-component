@@ -20,12 +20,16 @@ interface FormByIdProps {
     customOptions?: { [p: string]: Array<OptionsItem> };
     onSubmit?: (e?: { [p: string]: any }) => void;
     onError?: (e?: { [p: string]: any }) => void;
+    onGetFormError?: (e: { [p: string]: any }) => void;
     autoBcrypt?: boolean
+    onUnMount?: () => void
 }
 
 interface FormByIdRef {
     onSubmit: (e?: React.BaseSyntheticEvent) => Promise<void>,
-    methods: UseFormReturn<FieldValues, any, FieldValues>
+    methods: UseFormReturn<FieldValues, any, FieldValues>,
+    cols: Array<{ [p: string]: any }>,
+    rels: Array<{ [p: string]: any }>,
 }
 
 export const FormById = forwardRef<FormByIdRef, FormByIdProps>((props, ref) => {
@@ -129,11 +133,6 @@ export const FormById = forwardRef<FormByIdRef, FormByIdProps>((props, ref) => {
         })
         props.onSubmit?.(dataItem)
     }
-
-    useImperativeHandle(ref, () => ({
-        onSubmit: methods.handleSubmit(onSubmit, props.onError),
-        methods: methods as any
-    }), [methods.watch(), cols.length, rels.length]);
 
     useEffect(() => {
         if (cols.length) {
@@ -264,9 +263,10 @@ export const FormById = forwardRef<FormByIdRef, FormByIdProps>((props, ref) => {
                     if (_formItem.Props && typeof _formItem.Props === "string") _formItem.Props = JSON.parse(_formItem.Props)
                     if (!Array.isArray(_formItem.Props)) _formItem.Props = []
                     setFormItem(_formItem)
-                }
+                } else if (props.onGetFormError) props.onGetFormError(res)
             })
         }
+        return () => props.onUnMount?.()
     }, [props.id])
 
     useEffect(() => {
@@ -351,6 +351,13 @@ export const FormById = forwardRef<FormByIdRef, FormByIdProps>((props, ref) => {
         return tmpValue
     }, [cols.length, rels.length, JSON.stringify(methods.watch())])
     const finalFormValues = useDeferredValue(formValues);
+
+    useImperativeHandle(ref, () => ({
+        onSubmit: methods.handleSubmit(onSubmit, props.onError),
+        methods: methods as any,
+        cols,
+        rels
+    }), [finalFormValues, cols.length, rels.length]);
 
     return formItem && !!cols.length && layers.filter((e: any) => !e.ParentId).map((e: any) => {
         return <RenderLayerElement

@@ -17,6 +17,7 @@ interface Props {
     childrenData?: { [p: string]: ReactNode },
     itemData?: { [p: string]: ReactNode },
     onUnMount?: () => void
+    onGetViewError?: (e: { [p: string]: any }) => void;
 }
 
 export const ViewById = (props: Props) => {
@@ -35,14 +36,11 @@ export const ViewById = (props: Props) => {
                     let _viewItem = res.data[0]
                     if (_viewItem.Props && typeof _viewItem.Props === "string") _viewItem.Props = JSON.parse(_viewItem.Props)
                     setViewItem(_viewItem)
-                }
+                } else if (props.onGetViewError) props.onGetViewError(res)
             })
-        }
+        } 
+        return () => props.onUnMount?.()
     }, [props.id])
-
-    useEffect(() => {
-        return props.onUnMount?.()
-    }, [])
 
     const mapRelativeData = async () => {
         const relKeys = keyNames.filter((e: string) => e.split(".").length > 1)

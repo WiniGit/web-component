@@ -32,7 +32,6 @@ interface Props {
     emptyLink?: string,
     emptyMessage?: string,
     emptyElement?: ReactNode,
-    onUnMount?: () => void
 }
 
 interface CardProps extends Props {
@@ -40,6 +39,8 @@ interface CardProps extends Props {
     methods?: UseFormReturn,
     onLoaded?: (ev: { data: Array<{ [p: string]: any }>, totalCount: number }) => void,
     onRelativeLoaded?: (ev: any) => void,
+    onUnMount?: () => void,
+    onGetCardError?: (e: { [p: string]: any }) => void;
 }
 
 interface CardRef {
@@ -69,9 +70,10 @@ export const CardById = forwardRef<CardRef, CardProps>((props, ref) => {
                     let _cardItem = res.data[0]
                     if (_cardItem.Props && typeof _cardItem.Props === "string") _cardItem.Props = JSON.parse(_cardItem.Props)
                     setCardItem(_cardItem)
-                }
+                } else if (props.onGetCardError) props.onGetCardError(res)
             })
-        } else if (cardItem) setCardItem(undefined)
+        }
+        return () => props.onUnMount?.()
     }, [props.id])
 
     useEffect(() => {
@@ -177,10 +179,6 @@ export const CardById = forwardRef<CardRef, CardProps>((props, ref) => {
             }
         }
     }, [cardItem, controller, props.cardData?.length])
-
-    useEffect(() => {
-        return props.onUnMount?.()
-    }, [])
 
     const extendData = useMemo(() => methods.watch(), [JSON.stringify(methods.watch())])
     const getRelativeData = useMemo(() => {
