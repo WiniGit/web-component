@@ -1039,6 +1039,13 @@ const FKTable = ({ fkItem, item, tbName, actions, onChangeActions, onEditActionC
                         onChangeActions(actions!.map(a => a.Id === fkItem.Id ? tmp : a))
                     }
                 }) : undefined}
+                onSelectCustomForm={onChangeActions ? (formId) => {
+                    if (formId !== fkItem.FormId) {
+                        const tmp = { ...fkItem, FormId: formId }
+                        onChangeActions(actions!.map(a => a.Id === fkItem.Id ? tmp : a))
+                    }
+                } : undefined}
+                customFormId={fkItem.FormId}
                 {...props}
             />
         </div>

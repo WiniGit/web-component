@@ -357,7 +357,7 @@ export const FormById = forwardRef<FormByIdRef, FormByIdProps>((props, ref) => {
         methods: methods as any,
         cols,
         rels
-    }), [finalFormValues, cols.length, rels.length]);
+    }), [methods.watch()]);
 
     return formItem && !!cols.length && layers.filter((e: any) => !e.ParentId).map((e: any) => {
         return <RenderLayerElement

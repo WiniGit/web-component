@@ -1,6 +1,6 @@
-import { forwardRef, MouseEventHandler, ReactNode, useEffect, useMemo, useState } from "react";
+import { forwardRef, MouseEventHandler, ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import { useForm, UseFormReturn } from "react-hook-form";
-import { BaseDA, Select1Form, SelectMultipleForm, randomGID, Util, Button, closePopup, ComponentStatus, DialogAlignment, showDialog, Text, ToastMessage, Winicon, DataController, TableController, AccountController, urlToFileType } from "../../index";
+import { BaseDA, Select1Form, SelectMultipleForm, randomGID, Util, Button, closePopup, ComponentStatus, DialogAlignment, showDialog, Text, ToastMessage, Winicon, DataController, TableController, AccountController, urlToFileType, FormById } from "../../index";
 import { useTranslation } from 'react-i18next';
 import { regexGetVariableByThis, RenderComponentByType, validateForm } from "../form/config";
 import { ConfigData } from "../../controller/config";
@@ -16,7 +16,9 @@ interface AddEditElementFormProps {
     onSuccess?: Function;
     expandForm?: (methods: UseFormReturn) => ReactNode;
     handleSubmit?: (params: { item: { [k: string]: any }, initItem?: { [k: string]: any }, methods: UseFormReturn, onSuccess?: () => void }) => Promise<any>;
-    customFields?: { [key: string]: (methods: UseFormReturn) => ReactNode }
+    customFields?: { [key: string]: (methods: UseFormReturn) => ReactNode };
+    formId?: string;
+    onSelectCustomForm?: (formId: string | null) => void
 }
 
 const AddEditElementForm = forwardRef(({ tbName = "", title, activeColumns = [], id, onSuccess, expandForm, handleSubmit, customFields, ...props }: AddEditElementFormProps, ref: any) => {
@@ -25,6 +27,9 @@ const AddEditElementForm = forwardRef(({ tbName = "", title, activeColumns = [],
     const [column, setColumn] = useState<{ [p: string]: any }[]>([])
     const [relative, setRelative] = useState<{ [p: string]: any }[]>([])
     const { t } = useTranslation()
+    const formRef = useRef<any>(null)
+    const submitBtnRef = useRef<any>(null)
+    const [selectedFormId, setSelectedFormId] = useState<string | null>(props.formId ?? null)
 
     //#region getSetting
     const getSetting = async () => {
@@ -90,30 +95,74 @@ const AddEditElementForm = forwardRef(({ tbName = "", title, activeColumns = [],
             <Text className="heading-7" style={{ flex: 1 }}>{id ? `${t("edit")} ${title ?? tbName}` : `${t("add")} ${title ?? tbName}`}</Text>
             <Winicon src={"fill/user interface/e-remove"} className="icon-button size24" onClick={() => { closePopup(ref) }} />
         </div>
-        {!!column.length && (!id || initFormItem) && <FormView
-            cols={column.filter(e => !e.Query?.length)}
-            rels={relative}
-            item={initFormItem}
-            parentId={(props as any).ParentId}
-            tbName={tbName}
-            expandForm={expandForm}
-            onCancel={() => {
-                showDialog({
-                    alignment: DialogAlignment.center,
-                    status: ComponentStatus.WARNING,
-                    submitTitle: t("submit"),
-                    title: `${t("confirm")} ${t("cancel").toLowerCase()} ` + (id ? t('edit') : t('add')).toLowerCase(),
-                    onSubmit: () => { closePopup(ref) }
-                })
-            }}
-            onSuccess={() => {
-                closePopup(ref)
-                ToastMessage.success(`${id ? t('edit') : t('add')} ${title ?? tbName} ${t("successfully").toLowerCase()}!`)
-                onSuccess?.()
-            }}
-            handleSubmit={handleSubmit}
-            customFields={customFields}
-        />}
+        {!!column.length && (!id || initFormItem) &&
+            (selectedFormId ?
+                <>
+                    <FormById
+                        key={selectedFormId}
+                        id={selectedFormId}
+                        ref={formRef}
+                        data={initFormItem}
+                        style={{ flex: 1, width: '100%', height: '100%', overflow: 'hidden auto', scrollbarWidth: "thin", animation: "loading-change-view 0.5s ease-in-out" }}
+                        onGetFormError={() => {
+                            setSelectedFormId(null)
+                            props.onSelectCustomForm?.(null)
+                        }}
+                        onSubmit={async (ev) => {
+                            if (ev) {
+                                const res = await (item?.Id ? dataController.edit([ev]) : dataController.add([ev]))
+                                if (res.code !== 200) {
+                                    if (submitBtnRef.current) submitBtnRef.current.disabled = false
+                                    ToastMessage.errors(`Failed to ${item?.Id ? "edit" : "add"} ${tbName.toLowerCase()}`)
+                                    return console.error(`Failed to ${item?.Id ? "edit" : "add"} ${tbName.toLowerCase()} : `, res?.message)
+                                }
+                                closePopup(ref)
+                                ToastMessage.success(`${id ? "Edit" : "Add"} ${title ?? tbName} successfully!`)
+                                onSuccess?.()
+                            } else if (submitBtnRef.current) submitBtnRef.current.disabled = false
+                        }}
+                    />
+                    <div className="row popup-footer">
+                        <Button
+                            label={"Cancel"}
+                            className="label-3 button-grey"
+                            onClick={() => { closePopup(ref) }}
+                        />
+                        <Button
+                            label={id ? "Save" : "Add"}
+                            className="button-primary label-3"
+                            onClick={(ev: any) => {
+                                submitBtnRef.current = ev.target.closest("button")
+                                submitBtnRef.current.disabled = true
+                                formRef.current?.onSubmit()
+                            }}
+                        />
+                    </div>
+                </> :
+                <FormView
+                    cols={column.filter(e => !e.Query?.length)}
+                    rels={relative}
+                    item={initFormItem}
+                    parentId={(props as any).ParentId}
+                    tbName={tbName}
+                    expandForm={expandForm}
+                    onCancel={() => {
+                        showDialog({
+                            alignment: DialogAlignment.center,
+                            status: ComponentStatus.WARNING,
+                            submitTitle: t("submit"),
+                            title: `${t("confirm")} ${t("cancel").toLowerCase()} ` + (id ? t('edit') : t('add')).toLowerCase(),
+                            onSubmit: () => { closePopup(ref) }
+                        })
+                    }}
+                    onSuccess={() => {
+                        closePopup(ref)
+                        ToastMessage.success(`${id ? t('edit') : t('add')} ${title ?? tbName} ${t("successfully").toLowerCase()}!`)
+                        onSuccess?.()
+                    }}
+                    handleSubmit={handleSubmit}
+                    customFields={customFields}
+                />)}
     </div>
 })
 

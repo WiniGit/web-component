@@ -262,9 +262,11 @@ interface TableRowProps {
     onEditActionColumn?: (params: { [p: string]: any }, actionItem: { [p: string]: any }) => void;
     customCell?: { [k: string]: (params: { item: { [p: string]: any }, index: number }) => ReactNode };
     hideActionColumn?: boolean;
+    onSelectCustomForm?: (formId: string | null) => void;
+    customFormId?: string;
 }
 
-export const TableRow = ({ item, setItem, onEditActionColumn, title, index, methods, fields = [], files = [], relativeData, relativeFields = [], showIndex = false, hideCheckbox = false, showAddEditPopup, onDelete, actions = [], onChangeActions, selected, setSelected, onDuplicate, ...props }: TableRowProps) => {
+export const TableRow = ({ item, setItem, onEditActionColumn, title, index, methods, fields = [], files = [], relativeData, relativeFields = [], showIndex = false, hideCheckbox = false, showAddEditPopup, onDelete, actions = [], onChangeActions, selected, setSelected, onDuplicate, customFormId, ...props }: TableRowProps) => {
     const popupRef = useRef<Popup>(null)
     const tbName = methods.getValues("TbName")
     const dataController = new DataController(tbName)
@@ -382,6 +384,7 @@ export const TableRow = ({ item, setItem, onEditActionColumn, title, index, meth
                         setItem({ ...item, _totalChild: (item._totalChild ?? 0) + 1 })
                     }
                 }}
+                formId={customFormId}
                 {...({ ...props, ParentId: item.Id })}
             />
         })

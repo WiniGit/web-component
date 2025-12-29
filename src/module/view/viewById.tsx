@@ -18,6 +18,7 @@ interface Props {
     itemData?: { [p: string]: ReactNode },
     onUnMount?: () => void
     onGetViewError?: (e: { [p: string]: any }) => void;
+    controller?: { searchRaw?: string, filter?: string, sortby?: Array<{ prop: string, direction?: "ASC" | "DESC" }>, pattern?: { returns: Array<string>, [p: string]: Array<string> | { searchRaw?: string, reducers: string } } },
 }
 
 export const ViewById = (props: Props) => {
@@ -27,6 +28,7 @@ export const ViewById = (props: Props) => {
     const _colController = new TableController("column")
     const _relController = new TableController("rel")
     const keyNames = useMemo<Array<string>>(() => layers.filter((e: any) => e.NameField?.length).map((e: any) => e.NameField), [layers.length])
+    const [indexItem, setIndexItem] = useState<{ [p: string]: any } | undefined>(props.data)
 
     useEffect(() => {
         if (props.id) {
@@ -38,7 +40,7 @@ export const ViewById = (props: Props) => {
                     setViewItem(_viewItem)
                 } else if (props.onGetViewError) props.onGetViewError(res)
             })
-        } 
+        }
         return () => props.onUnMount?.()
     }, [props.id])
 
@@ -75,29 +77,39 @@ export const ViewById = (props: Props) => {
     }, [keyNames])
 
     useEffect(() => {
+        if (props.data) setIndexItem(props.data)
+        else if (props.controller && viewItem?.TbName) {
+            const dataController = new DataController(viewItem.TbName)
+            dataController.patternList({ ...props.controller, page: 1, size: 1 }).then(res => {
+                if (res.code === 200 && res.data[0]) setIndexItem(res.data[0])
+            })
+        }
+    }, [props.data, props.controller, viewItem?.TbName])
+
+    useEffect(() => {
         const fileCols = methods.getValues("_cols")?.filter((e: any) => e.DataType === FEDataType.FILE && keyNames.includes(e.Name)) ?? []
-        if (fileCols.length && props.data && keyNames.length) {
+        if (fileCols.length && indexItem && keyNames.length) {
             const currentFiles = methods.watch("_files") ?? []
-            const fileIds = fileCols.map((col: any) => props.data![col.Name]?.split(",")).flat(Infinity).filter((e: string | undefined, i: number, arr: Array<string>) => e?.length && ConfigData.regexGuid.test(e) && currentFiles.every((el: any) => el.Id !== e) && arr.indexOf(e) === i)
+            const fileIds = fileCols.map((col: any) => indexItem![col.Name]?.split(",")).flat(Infinity).filter((e: string | undefined, i: number, arr: Array<string>) => e?.length && ConfigData.regexGuid.test(e) && currentFiles.every((el: any) => el.Id !== e) && arr.indexOf(e) === i)
             if (fileIds.length) {
                 BaseDA.getFilesInfor(fileIds).then(fileRes => {
                     if (fileRes.code === 200) methods.setValue("_files", [...currentFiles, ...fileRes.data.filter((e: any) => !!e)])
                 })
             }
         }
-    }, [props.data, methods.watch("_cols"), keyNames])
+    }, [indexItem, methods.watch("_cols"), keyNames])
 
     const extendData = useMemo(() => methods.watch(), [JSON.stringify(methods.watch())])
 
     useEffect(() => {
-        if (layers.length && props.data && keyNames.length) {
+        if (layers.length && indexItem && keyNames.length) {
             let relKeys = layers.filter((e: any) => e.Type === ComponentType.card && e.Setting.controller?.ids && regexGetVariableByThis.test(e.Setting.controller.ids)).map((e: any) => regexGetVariableByThis.exec(e.Setting.controller.ids)![1])
             relKeys.push(...keyNames.filter((e: string) => e.split(".").length > 1).map((e: string) => e.split(".")[0]))
             relKeys = relKeys.filter((e: string, i: number, arr: Array<string>) => arr.indexOf(e) === i)
             for (const k of relKeys) {
                 const currentTmp = methods.getValues(`_${k}`) ?? []
                 const dataController = new DataController(k.replace("Id", ""))
-                const relDataIds = props.data![k]?.split(",").flat(Infinity).filter((e: string | undefined, i: number, arr: Array<string>) => e?.length && currentTmp.every((el: any) => el.Id !== e) && arr.indexOf(e) === i)
+                const relDataIds = indexItem![k]?.split(",").flat(Infinity).filter((e: string | undefined, i: number, arr: Array<string>) => e?.length && currentTmp.every((el: any) => el.Id !== e) && arr.indexOf(e) === i)
                 if (relDataIds.length) {
                     dataController.getByListId(relDataIds).then(relRes => {
                         if (relRes.code === 200) methods.setValue(`_${k}`, [...currentTmp, ...relRes.data.filter((e: any) => e !== undefined && e !== null)])
@@ -105,13 +117,13 @@ export const ViewById = (props: Props) => {
                 }
             }
         }
-    }, [props.data, layers, keyNames.length])
+    }, [indexItem, layers, keyNames.length])
 
     return viewItem ? <RenderView
         key={viewItem.Id}
         {...props}
         layers={layers}
-        indexItem={props.data}
+        indexItem={indexItem}
         extendData={extendData}
     /> : null
 }

@@ -89,6 +89,8 @@ interface DataTableProps {
     customFields?: { [key: string]: (methods: UseFormReturn) => ReactNode };
     onClickRow?: (prarams: { item: { [p: string]: any }, index: number, event: MouseEvent }) => void;
     onContextMenu?: (prarams: { item: { [p: string]: any }, index: number, event: MouseEvent }) => void;
+    onSelectCustomForm?: (formId: string | null) => void;
+    customFormId?: string;
 }
 
 interface DataTableRef {
@@ -122,6 +124,7 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
     onEditColumn,
     features = ["add", <div key={"space"} style={{ flex: 1 }} />, "search", "divider", "export", "divider", "import"],
     toolbars = ["total", <div key={"space"} style={{ flex: 1 }} />, "export", "duplicate", "delete"],
+    customFormId, onSelectCustomForm,
     ...props }, ref) => {
     // static variables
     const configMethods = useForm<any>({ shouldFocusError: false, defaultValues: { columns: [], searchRaw: "*", sortby: [], TbName: tbName } })
@@ -305,6 +308,8 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
                     if (id) getData(pageDetails.page, pageDetails.size)
                     else getData()
                 }}
+                formId={customFormId}
+                onSelectCustomForm={onSelectCustomForm}
                 {...props}
             />
         })
@@ -454,6 +459,8 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
                                     ToastMessage.success(`Duplicate this ${title.toLowerCase()} successfully!`)
                                 })
                             }) : undefined}
+                            customFormId={customFormId}
+                            onSelectCustomForm={enableEdit ? onSelectCustomForm : undefined}
                             {...props}
                         />
                     })

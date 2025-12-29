@@ -320,7 +320,7 @@ const PopupDateTimePicker = ({ value, style, endValue, repeatValue, onApply, pic
             case "auto":
                 return !!methods.watch("date-end")
             case "datetime":
-                return !!methods.watch("date-end")
+                return !!methods.watch("date-start")
             default:
                 return !!methods.watch("date-start") && !!methods.watch("date-end")
         }
@@ -665,7 +665,6 @@ const PopupDateTimePicker = ({ value, style, endValue, repeatValue, onApply, pic
                         disabled={!appliable}
                         className={`label-3 button-primary`}
                         onClick={() => {
-                            debugger
                             let dateStartValue = methods.getValues("date-start")
                             switch (pickerType) {
                                 // @ts-ignore 
