@@ -13,7 +13,7 @@ interface AddEditElementFormProps {
     title?: string;
     activeColumns: { [p: string]: any }[];
     id?: string;
-    onSuccess?: Function;
+    onSuccess?: () => void;
     expandForm?: (methods: UseFormReturn) => ReactNode;
     handleSubmit?: (params: { item: { [k: string]: any }, initItem?: { [k: string]: any }, methods: UseFormReturn, onSuccess?: () => void }) => Promise<any>;
     customFields?: { [key: string]: (methods: UseFormReturn) => ReactNode };
@@ -110,15 +110,29 @@ const AddEditElementForm = forwardRef(({ tbName = "", title, activeColumns = [],
                         }}
                         onSubmit={async (ev) => {
                             if (ev) {
-                                const res = await (item?.Id ? dataController.edit([ev]) : dataController.add([ev]))
-                                if (res.code !== 200) {
+                                if (handleSubmit) {
+                                    await handleSubmit({
+                                        item: ev,
+                                        initItem: initFormItem,
+                                        methods: formRef.current.methods,
+                                        onSuccess: () => {
+                                            closePopup(ref)
+                                            ToastMessage.success(`${id ? t('edit') : t('add')} ${title ?? tbName} ${t("successfully").toLowerCase()}!`)
+                                            onSuccess?.()
+                                        }
+                                    })
                                     if (submitBtnRef.current) submitBtnRef.current.disabled = false
-                                    ToastMessage.errors(`Failed to ${item?.Id ? "edit" : "add"} ${tbName.toLowerCase()}`)
-                                    return console.error(`Failed to ${item?.Id ? "edit" : "add"} ${tbName.toLowerCase()} : `, res?.message)
+                                } else {
+                                    const res = await (item?.Id ? dataController.edit([ev]) : dataController.add([ev]))
+                                    if (res.code !== 200) {
+                                        if (submitBtnRef.current) submitBtnRef.current.disabled = false
+                                        ToastMessage.errors(`Failed to ${item?.Id ? "edit" : "add"} ${tbName.toLowerCase()}`)
+                                        return console.error(`Failed to ${item?.Id ? "edit" : "add"} ${tbName.toLowerCase()} : `, res?.message)
+                                    }
+                                    closePopup(ref)
+                                    ToastMessage.success(`${id ? "Edit" : "Add"} ${title ?? tbName} successfully!`)
+                                    onSuccess?.()
                                 }
-                                closePopup(ref)
-                                ToastMessage.success(`${id ? "Edit" : "Add"} ${title ?? tbName} successfully!`)
-                                onSuccess?.()
                             } else if (submitBtnRef.current) submitBtnRef.current.disabled = false
                         }}
                     />
