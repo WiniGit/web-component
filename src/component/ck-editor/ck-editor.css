@@ -228,3 +228,15 @@ a.ck.ck-button:not(.ck-disabled):hover,
 .ck-reset_all *:not(.ck-reset_all-excluded *, .ck-tooltip__text) {
     color: var(--neutral-text-subtitle-color, light-dark(#61616B, #A2A2AA)) !important;
 }
+
+.ck.ck-fullscreen__main-wrapper {
+    --ck-color-base-background: var(--neutral-lighter-background-color);
+}
+
+.ck-fullscreen__main-wrapper .ck-fullscreen__editable-wrapper {
+    background-color: var(--neutral-lighter-background-color);
+}
+
+.ck-fullscreen__editable .ck.ck-editor__editable {
+    background-color: var(--neutral-absolute-background-color) !important;
+}

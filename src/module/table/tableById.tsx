@@ -491,12 +491,48 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
                             <Winicon src="outline/user interface/e-remove" size={12} onClick={() => setSelected([])} />
                         </div>
                     case "export":
-                        return <Button
+                        return <ExportXlsx
                             key={tl + "-" + i}
                             className="button-text-5 size24"
                             label={t("export")}
                             style={{ color: "var(--neutral-text-body-reverse-color)" }}
                             prefix={<Winicon src="outline/user interface/data-download" color="var(--neutral-text-body-reverse-color)" size={12} />}
+                            config={{
+                                title: configMethods.watch("columns").filter((e: any) => !fields.find(c => c.Name === e.Name && c.DataType === FEDataType.HTML)).map((e: any) => e.Title)
+                            }}
+                            getData={async () => {
+                                const exportList = data.data.filter((e: any) => selected.includes(e.Id))
+                                const relativeData = methodsRelative.getValues()
+                                const dataFileIds: Array<string> = []
+                                let activeColumns = configMethods.getValues("columns");
+                                const tmpActiveCols = [...activeColumns];
+                                tmpActiveCols.forEach((_col: any) => {
+                                    const tmp = _col.Name.split(".")
+                                    if (tmp.length > 1) {
+                                        if (relativeFields?.[tmp[0]]?.find((e: any) => e.Name === tmp[1] && e.DataType === FEDataType.FILE)) {
+                                            const relKey = tmp[0].substring(0, tmp[0].lastIndexOf("Id"))
+                                            if (relativeData[relKey]) dataFileIds.push(...relativeData[relKey].map((e: any) => e[tmp[1]]?.split(",").slice(0, 4)).flat(Infinity).filter((id: string, i: number, arr: Array<string>) => !!id && arr.indexOf(id) === i))
+                                        }
+                                    } else if (fields.find(e => e.Name === _col.Name && e.DataType === FEDataType.FILE)) {
+                                        dataFileIds.push(...exportList.map((e: any) => e[_col.Name]?.split(",").slice(0, 2)).flat(Infinity).filter((id: string, i: number, arr: string[]) => !!id && arr.indexOf(id) === i))
+                                    } else if (fields.find(e => e.Name === _col.Name && e.DataType === FEDataType.HTML)) activeColumns = activeColumns.filter((e: any) => e.Id !== _col.Id)
+                                })
+                                let getFiles: any = []
+                                if (dataFileIds.length) {
+                                    getFiles = await BaseDA.getFilesInfor(dataFileIds.filter((id, i, arr) => arr.indexOf(id) === i))
+                                    getFiles = getFiles.data.filter((f: any) => f !== undefined && f !== null)
+                                }
+                                return exportList.map((item: any) => {
+                                    let result: any = {}
+                                    activeColumns.sort((a: any, b: any) => a.Sort - b.Sort).forEach((_col: any) => {
+                                        const tmp = _col.Name.split(".")
+                                        const relKey = tmp[0].substring(0, tmp[0].lastIndexOf("Id"))
+                                        const params = (tmp.length > 1 ? { data: relativeData[relKey]?.filter((e: any) => item[tmp[0]]?.includes(e.Id)), fields: relativeFields?.[tmp[0]] } : { data: item, fields: fields }) as any
+                                        result[_col.Title] = cellValue(_col, params.data, params.fields, getFiles)
+                                    })
+                                    return result
+                                })
+                            }}
                         />
                     case "duplicate":
                         return <Button
