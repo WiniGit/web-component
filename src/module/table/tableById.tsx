@@ -360,15 +360,16 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
                                     const res = await getData(1, 2000, true)
                                     if (res.code === 200 && res.data.length) {
                                         const dataFileIds: Array<string> = []
-                                        const activeColumns = configMethods.getValues("columns")
-                                        activeColumns.forEach((_col: any) => {
+                                        let activeColumns = configMethods.getValues("columns");
+                                        const tmpActiveCols = [...activeColumns];
+                                        tmpActiveCols.forEach((_col: any) => {
                                             const tmp = _col.Name.split(".")
                                             if (tmp.length > 1) {
                                                 if (relativeFields?.[tmp[0]]?.find((e: any) => e.Name === tmp[1] && e.DataType === FEDataType.FILE))
                                                     dataFileIds.push(...res[tmp[0].substring(0, tmp[0].lastIndexOf("Id"))].map((e: any) => e[tmp[1]]?.split(",").slice(0, 4)).flat(Infinity).filter((id: string, i: number, arr: Array<string>) => !!id && arr.indexOf(id) === i))
                                             } else if (fields.find(e => e.Name === _col.Name && e.DataType === FEDataType.FILE)) {
                                                 dataFileIds.push(...res.data.map((e: any) => e[_col.Name]?.split(",").slice(0, 2)).flat(Infinity).filter((id: string, i: number, arr: string[]) => !!id && arr.indexOf(id) === i))
-                                            }
+                                            } else if (fields.find(e => e.Name === _col.Name && e.DataType === FEDataType.HTML)) activeColumns = activeColumns.filter((e: any) => e.Id !== _col.Id)
                                         })
                                         let getFiles: any = []
                                         if (dataFileIds.length) {
@@ -387,7 +388,9 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
                                     } else return []
                                 }}
                                 prefix={<Winicon src='outline/arrows/data-download' />}
-                                config={{ title: configMethods.watch("columns").map((e: any) => e.Title) }}
+                                config={{
+                                    title: configMethods.watch("columns").filter((e: any) => !fields.find(c => c.Name === e.Name && c.DataType === FEDataType.HTML)).map((e: any) => e.Title)
+                                }}
                             />
                         case "import":
                             return <ButtonImportData

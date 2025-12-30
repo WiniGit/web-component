@@ -74,7 +74,7 @@ export default function ExportXlsx(props: Props) {
                 }
             });
             XLSX.utils.book_append_sheet(workbook, worksheet, props.sheetName ?? "Sheet 1");
-            XLSX.writeFile(workbook, `${props.fileName ?? "Exported"}.xlsx`, { compression: true });
+            XLSX.writeFile(workbook, `${props.fileName ?? "Exported"}.xlsx`, { compression: true, bookType: 'xlsx', cellStyles: true });
         }
         btn.disabled = false
     }
