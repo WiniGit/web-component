@@ -129,7 +129,7 @@ export const CardById = forwardRef<CardRef, CardProps>((props, ref) => {
             let listIds = controller.ids.split(",")
             if (controller.maxLength && controller.maxLength !== "none") listIds = listIds.slice(0, controller.maxLength)
             const res = await dataController.getByListId(listIds)
-            const listData = res.data.filter((e: any) => e !== undefined && e !== null)
+            const listData = res.data.filter((e: any) => !!e)
             if (res.code === 200) tmp = { data: listData, totalCount: listData.length }
         }
         if (!tmp) return undefined
@@ -142,7 +142,7 @@ export const CardById = forwardRef<CardRef, CardProps>((props, ref) => {
             const relDataIds = tmp.data.map((e: any) => e[k]?.split(",")).flat(Infinity).filter((e: string | undefined, i: number, arr: Array<string>) => e?.length && currentTmp.every((el: any) => el.Id !== e) && arr.indexOf(e) === i)
             if (relDataIds.length) {
                 dataController.getByListId(relDataIds).then(relRes => {
-                    if (relRes.code === 200) methods.setValue(`_${k}`, [...currentTmp, ...relRes.data.filter((e: any) => e !== undefined && e !== null)])
+                    if (relRes.code === 200) methods.setValue(`_${k}`, [...currentTmp, ...relRes.data.filter((e: any) => !!e)])
                 })
             }
         }
@@ -261,6 +261,7 @@ const RenderCard = (props: RenderCardProps) => {
             propsData={props.propsData}
             cols={cols}
             rels={rels}
+            options={methods.watch()}
         />
     })
 }

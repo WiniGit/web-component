@@ -413,22 +413,14 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
     }, [props.item, props.propsData, props.indexItem, watchForCustomProps])
     // 
     if (customProps.unmounted) return null;
-    // 
-    const watchForDataValue = useMemo(() => {
-        const watchData = { "_rels": props.rels, "_cols": props.cols }
-        const tmp: { [p: string]: any } = { rels: watchData["_rels"], cols: watchData["_cols"] }
-        const keys = props.item.NameField?.split(".")
-        if (keys && keys.length > 1 && props.indexItem) tmp[`${keys[0]}`] = props.indexItem[`_${keys[0]}`]
-        return tmp
-    }, [JSON.stringify(props.indexItem), props.item.NameField, props.cols?.length, props.rels?.length])
-
     const dataValue = useMemo(() => {
         if (props.type === "page" || !props.item.NameField?.length || !props.indexItem) return undefined
         const keys = props.item.NameField.split(".")
         if (keys.length > 1) {
-            const _rel = watchForDataValue.rels?.find((e: any) => e.TableName === keys[0].replace("Id", "") && e.Name === keys[1])
+            const _rel = props.rels?.find((e: any) => e.TableName === keys[0].replace("Id", "") && e.Name === keys[1])
             if (!_rel) return undefined
-            let tmpValue = watchForDataValue[`${keys[0]}`]?.find((e: any) => e && props.indexItem![keys[0]]?.includes(e.Id))?.[keys[1]]
+            const findOptions = props.options?.[`${keys[0]}`] ?? props.options?.[`${keys[0]}_Options`] ?? props.options?.[`_${keys[0]}`]
+            let tmpValue = findOptions?.find((e: any) => e && props.indexItem![keys[0]]?.includes(e.Id))?.[keys[1]]
             switch (_rel.DataType) {
                 case FEDataType.FILE:
                     if (Array.isArray(tmpValue)) {
@@ -469,7 +461,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
             }
             return tmpValue
         } else {
-            const _col = watchForDataValue.cols?.find((e: any) => e.Name === props.item.NameField)
+            const _col = props.cols?.find((e: any) => e.Name === props.item.NameField)
             if (!_col) return undefined
             let tmpValue = props.indexItem[props.item.NameField]
             switch (_col.DataType) {
@@ -514,7 +506,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
             }
             return tmpValue
         }
-    }, [props.indexItem, props.item, watchForDataValue])
+    }, [props.indexItem, props.item, props.cols, props.rels, props.options])
     const typeProps = useMemo(() => {
         let tmpProps = { ...customProps }
         if (props.item.NameField && tmpProps.validate?.some((v: any) => v.type === ValidateType.required)) tmpProps.required = true

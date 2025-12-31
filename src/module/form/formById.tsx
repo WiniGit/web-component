@@ -37,12 +37,14 @@ export const FormById = forwardRef<FormByIdRef, FormByIdProps>((props, ref) => {
     const methodsOptions = useForm({ shouldFocusError: false })
     const [formItem, setFormItem] = useState<{ [p: string]: any }>()
     const layers = useMemo(() => formItem?.Props ?? [], [formItem])
+    const keyNames = useMemo<Array<string>>(() => layers.filter((e: any) => e.NameField?.length).map((e: any) => e.NameField), [layers.length])
     const inputComponents = [ComponentType.textField, ComponentType.textArea, ComponentType.select1, ComponentType.selectMultiple, ComponentType.checkbox, ComponentType.switch, ComponentType.radio, ComponentType.colorPicker, ComponentType.ckEditor, ComponentType.datePicker, ComponentType.upload, ComponentType.numberPicker]
     const inputLayers = useMemo<Array<{ [p: string]: any }>>(() => layers.filter((e: any) => e.NameField?.length && inputComponents.includes(e.Type)), [layers])
     const _colController = new TableController("column")
     const _relController = new TableController("rel")
     const [cols, setCols] = useState<Array<{ [p: string]: any }>>([])
     const [rels, setRels] = useState<Array<{ [p: string]: any }>>([])
+    const [relativeCols, setRelativeCols] = useState<Array<{ [p: string]: any }>>([])
     const accountController = new AccountController()
     const regexGuid = /^[0-9a-fA-F]{32}$/;
 
@@ -190,7 +192,7 @@ export const FormById = forwardRef<FormByIdRef, FormByIdProps>((props, ref) => {
                             } else {
                                 const pkController = new DataController(_rel.TablePK)
                                 pkController.getByListId(_tmpParse).then(pkRes => {
-                                    if (pkRes.code === 200) methodsOptions.setValue(`${_rel.Column}_Options`, pkRes.data?.filter((e: any) => !!e)?.map((e: any) => ({ id: e.Id, name: e.Name, prefix: (_rel.TablePK === "Customer" || _rel.TablePK === "User") ? <CustomerAvatar data={e} /> : undefined, })) ?? [])
+                                    if (pkRes.code === 200) methodsOptions.setValue(`${_rel.Column}_Options`, pkRes.data?.filter((e: any) => !!e)?.map((e: any) => ({ id: e.Id, name: e.Name, prefix: (_rel.TablePK === "Customer" || _rel.TablePK === "User") ? <CustomerAvatar data={e} /> : undefined, ...e })) ?? [])
                                 })
                             }
                             methods.setValue(prop, _rel.Form.ComponentType === ComponentType.selectMultiple ? _tmpParse : _tmpParse[0])
@@ -290,6 +292,30 @@ export const FormById = forwardRef<FormByIdRef, FormByIdProps>((props, ref) => {
         }
     }, [formItem])
 
+    const mapRelativeData = async () => {
+        const relKeys = keyNames.filter((e: string) => e.split(".").length > 1)
+        if (!relKeys.length) return null;
+        const _rels = await _relController.getListSimple({
+            page: 1, size: 100,
+            query: `@TableFK:{${formItem!.TbName}} @Column:{${relKeys.map((e: any) => e.split(".")[0]).filter((k: string, i: number, arr: Array<string>) => arr.indexOf(k) === i).join(" | ")}}`,
+            returns: ["Id", "Column", "TablePK"]
+        })
+        if (_rels.code === 200) {
+            const relRes = await _colController.getListSimple({
+                page: 1, size: _rels.data.length * 50,
+                query: `@TableName:{${_rels.data.map((e: any) => e.TablePK).join(" | ")}} @Name:{${_rels.data.map((relItem: any) => {
+                    const relKeyFilter = relKeys.filter((e: any) => e.split(".")[0] === relItem.Column).map((e: any) => e.split(".")[1])
+                    return relKeyFilter
+                }).flat(Infinity).join(" | ")}}`
+            })
+            if (relRes.code === 200) setRelativeCols(relRes.data.map((r: any) => ({ ...r, Form: JSON.parse(r.Form) })))
+        }
+    }
+
+    useEffect(() => {
+        if (keyNames.length) mapRelativeData()
+    }, [keyNames])
+
     const getOptions = async ({ length, search, parentId, _rel }: { length: number, search?: string, parentId?: string | number, _rel: { [p: string]: any } }) => {
         if (props.customOptions?.[_rel.Column]) {
             let _opt = props.customOptions?.[_rel.Column] ?? []
@@ -373,7 +399,7 @@ export const FormById = forwardRef<FormByIdRef, FormByIdProps>((props, ref) => {
             childrenData={props.childrenData}
             itemData={props.itemData}
             cols={mapColOptions}
-            rels={rels.map((_rel => ({ ..._rel, getOptions: async (params: any) => await getOptions({ ...params, _rel }) })))}
+            rels={rels.map((_rel => ({ ..._rel, getOptions: async (params: any) => await getOptions({ ...params, _rel }) }))).concat(relativeCols as any)}
             options={methodsOptions.watch()}
             onSubmit={methods.handleSubmit(onSubmit, props.onError)}
         />

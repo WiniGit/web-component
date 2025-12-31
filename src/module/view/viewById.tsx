@@ -112,7 +112,7 @@ export const ViewById = (props: Props) => {
                 const relDataIds = indexItem![k]?.split(",").flat(Infinity).filter((e: string | undefined, i: number, arr: Array<string>) => e?.length && currentTmp.every((el: any) => el.Id !== e) && arr.indexOf(e) === i)
                 if (relDataIds.length) {
                     dataController.getByListId(relDataIds).then(relRes => {
-                        if (relRes.code === 200) methods.setValue(`_${k}`, [...currentTmp, ...relRes.data.filter((e: any) => e !== undefined && e !== null)])
+                        if (relRes.code === 200) methods.setValue(`_${k}`, [...currentTmp, ...relRes.data.filter((e: any) => !!e)])
                     })
                 }
             }
@@ -137,12 +137,6 @@ interface RenderViewProps extends Props {
 const RenderView = (props: RenderViewProps) => {
     const methods = useForm({ shouldFocusError: false })
 
-    useEffect(() => {
-        Object.keys(props.extendData).forEach(p => {
-            methods.setValue(p, props.extendData[p])
-        })
-    }, [props.extendData])
-
     return props.layers.filter((e: any) => !e.ParentId).map((e: any) => {
         return <RenderLayerElement
             key={e.Id}
@@ -156,6 +150,7 @@ const RenderView = (props: RenderViewProps) => {
             propsData={props.propsData}
             childrenData={props.childrenData}
             itemData={props.itemData}
+            options={props.extendData}
         />
     })
 }
