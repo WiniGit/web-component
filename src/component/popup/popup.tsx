@@ -85,7 +85,7 @@ export function PopupOverlay({ children, onClose, className, style, onOpen }: { 
             }
             if (onClose) {
                 const onClickDropDown = (ev: any) => {
-                    if ((ev.target === overlayRef.current || !overlayRef.current!.contains(ev.target)) && !ev.target.closest(`div[class*="_dialog-overlay"]`)) {
+                    if ((ev.target === overlayRef.current || !overlayRef.current!.contains(ev.target)) && !ev.target.closest(`div[class*="_dialog-overlay"]`) && !ev.target.closest(`div[class*="ck-fullscreen__main-wrapper"]`)) {
                         const firstChild = overlayRef.current?.firstChild as HTMLElement
                         if (firstChild) {
                             if (firstChild.classList.contains("right-drawer")) {
