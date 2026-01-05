@@ -450,7 +450,7 @@ const FormView = ({ cols = [], rels = [], item, tbName, onCancel, onSuccess, exp
             {cols.map((e) => {
                 const checkCustom = customFields?.[e.Name]
                 if (checkCustom) return checkCustom(methods)
-                const tmpFieldItem = (item && e.Form.Uneditable) ? { ...e, Form: { ...e.Form, Disabled: true } } : e
+                const tmpFieldItem = (item?.Id && e.Form.Uneditable) ? { ...e, Form: { ...e.Form, Disabled: true } } : e
                 return <RenderComponentByType key={e.Id} fieldItem={tmpFieldItem} methods={methods} style={{ order: e.Form.Sort }} />;
             })}
             {rels.map((_rel, _) => {
@@ -471,7 +471,7 @@ const FormView = ({ cols = [], rels = [], item, tbName, onCancel, onSuccess, exp
                             methods={methods}
                             key={_rel.Id}
                             required={_rel.Form.Required}
-                            disabled={(item && _rel.Form.Uneditable) || _rel.Form.Disabled}
+                            disabled={(item?.Id && _rel.Form.Uneditable) || _rel.Form.Disabled}
                             name={_rel.Column}
                             label={_rel.Form.Label ?? _rel.Column}
                             placeholder={_rel.Form.Placeholder}
@@ -489,7 +489,7 @@ const FormView = ({ cols = [], rels = [], item, tbName, onCancel, onSuccess, exp
                             methods={methods}
                             key={_rel.Id}
                             required={_rel.Form.Required}
-                            disabled={(item && _rel.Form.Uneditable) || _rel.Form.Disabled}
+                            disabled={(item?.Id && _rel.Form.Uneditable) || _rel.Form.Disabled}
                             name={_rel.Column}
                             label={_rel.Form.Label ?? _rel.Column}
                             placeholder={_rel.Form.Placeholder}

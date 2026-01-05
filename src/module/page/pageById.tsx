@@ -157,7 +157,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
     const navigate = useNavigate()
     const children = useMemo(() => props.list.filter(e => e.ParentId === props.item.Id), [props.list, props.item])
     // @ts-ignore
-    const { t, i18n } = useTranslation(); // t using in eval function
+    const { i18n } = useTranslation(); // t using in eval function
     const replaceThisVariables = (content: string, isEval?: boolean) => {
         const replaceTmp = content.replace(replaceVariables, (m: string, p1: string) => {
             const execRegex = regexGetVariables.exec(m)
@@ -214,7 +214,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
             }
             if (regexI18n.test(getValue)) {
                 try {
-                    getValue = eval(`\`${getValue}\``)
+                    getValue = new Function("t", `return \`${getValue}\``)(i18n.t)
                 } catch (error) {
                     console.log("getValue error", getValue, error)
                 }
@@ -298,7 +298,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                                 if (closePopupBtn) closePopupBtn.click()
                                 return;
                             case ActionType.setValue:
-                                props.methods!.setValue(actItem.NameField, eval(actItem.Caculate))
+                                props.methods!.setValue(actItem.NameField, new Function((isNaN(Number(actItem.Caculate)) && actItem.Calculate !== "true" && actItem.Calculate !== "false" && actItem.Calculate !== "null") ? `return \`${actItem.Caculate}\`` : `return ${actItem.Caculate}`)())
                                 break;
                             case ActionType.showDialog:
                                 showDialog({
@@ -509,6 +509,8 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
     }, [props.indexItem, props.item, props.cols, props.rels, props.options])
     const typeProps = useMemo(() => {
         let tmpProps = { ...customProps }
+        if (regexGetVariables.test(tmpProps.id)) tmpProps.id = replaceThisVariables(tmpProps.id)
+        if (regexGetVariables.test(tmpProps.className)) tmpProps.className = replaceThisVariables(tmpProps.className)
         if (props.item.NameField && tmpProps.validate?.some((v: any) => v.type === ValidateType.required)) tmpProps.required = true
         switch (props.item.Type) {
             case "card":
