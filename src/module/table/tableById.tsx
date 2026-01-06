@@ -122,7 +122,7 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
     actions = [],
     onChangeActions,
     onEditColumn,
-    features = ["add", <div key={"space"} style={{ flex: 1 }} />, "search", "divider", "export", "divider", "import"],
+    features = ["add", <div key={"space"} style={{ flex: 1 }} />, "search", "divider", "export"],
     toolbars = ["total", <div key={"space"} style={{ flex: 1 }} />, "export", "duplicate", "delete"],
     customFormId, onSelectCustomForm,
     ...props }, ref) => {

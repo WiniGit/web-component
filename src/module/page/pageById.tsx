@@ -1,4 +1,4 @@
-import { CSSProperties, HTMLAttributes, ReactNode, useEffect, useMemo, useRef, useState } from "react"
+import { CSSProperties, HTMLAttributes, ReactNode, useDeferredValue, useEffect, useMemo, useRef, useState } from "react"
 import { ActionType, ComponentType, FEDataType, TriggerType, ValidateType } from "../da"
 import { FormById } from "../form/formById"
 import { CardById } from "../card/cardById"
@@ -67,7 +67,7 @@ export interface CustomHTMLProps extends HTMLAttributes<any> {
     /** only for form element */
     onError?: (e?: { [p: string]: any }) => void;
     /** only for form element */
-    autoBcrypt?: boolean
+    autoBcrypt?: boolean;
 }
 
 interface RenderPageProps extends Props {
@@ -133,7 +133,6 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
     } else return <CaculateLayer {...props} />
 }
 
-
 export const getValidLink = (link: string) => {
     if (link.startsWith("http")) return link
     if (ConfigData.regexGuid.test(link)) return ConfigData.imgUrlId + link
@@ -158,6 +157,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
     const children = useMemo(() => props.list.filter(e => e.ParentId === props.item.Id), [props.list, props.item])
     // @ts-ignore
     const { i18n } = useTranslation(); // t using in eval function
+    const defferWatch = useDeferredValue(JSON.stringify(props.methods!.watch()))
     const replaceThisVariables = (content: string, isEval?: boolean) => {
         const replaceTmp = content.replace(replaceVariables, (m: string, p1: string) => {
             const execRegex = regexGetVariables.exec(m)
@@ -224,38 +224,43 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
         return replaceTmp === "null" || replaceTmp === "undefined" ? undefined : replaceTmp
     }
     const watchForCustomProps = useMemo(() => {
-        if (!props.item.State) return undefined
         const tmp: { [p: string]: any } = {}
-        const triggerState = props.item.State.filter((e: any) => e.Trigger?.length)
-        if (!triggerState.length) return undefined
-        for (const st of triggerState) {
-            if (regexGetVariables.test(st.Trigger)) {
-                var caculate = replaceThisVariables(st.Trigger, true)
-            } else caculate = st.Trigger
-            if (caculate) {
+        const triggerState = props.item.State?.filter((e: any) => e.Trigger?.length)
+        if (triggerState?.length) {
+            for (const st of triggerState) {
                 try {
-                    var checked = new Function("indexItem", "Util", `return ${caculate.replace(regexGetVariables, (_, p1) => {
-                        return p1.replace(/this/g, "indexItem")
-                    })}`)({ ...(props.indexItem ?? {}), index: props.index }, Util)
+                    var checked = new Function(
+                        "indexItem",
+                        "Util",
+                        "watch",
+                        "location",
+                        "query",
+                        "params",
+                        `return ${st.Trigger.replace(replaceVariables, (m: string) => {
+                            const execRegex = regexGetVariables.exec(m)
+                            if (!execRegex?.[1]) return m
+                            return execRegex[1].replace(/this/g, "indexItem")
+                        })}`
+                    )({ ...(props.indexItem ?? {}), index: props.index }, Util, props.methods!.watch, location, query, params)
                 } catch (error) {
-                    console.log(caculate, error)
+                    console.log(st.Trigger, error)
                 }
-            }
-            if (checked) {
-                for (const sp of supportProperties) {
-                    if (st[sp]) {
-                        Object.keys(st[sp]).forEach(k => {
-                            if (st[sp][k]) {
-                                tmp[k] ??= {}
-                                tmp[k] = typeof st[sp][k] === "object" ? { ...tmp[k], ...st[sp][k] } : st[sp][k]
-                            }
-                        })
+                if (checked) {
+                    for (const sp of supportProperties) {
+                        if (st[sp]) {
+                            Object.keys(st[sp]).forEach(k => {
+                                if (st[sp][k]) {
+                                    tmp[k] ??= {}
+                                    tmp[k] = typeof st[sp][k] === "object" ? { ...tmp[k], ...st[sp][k] } : st[sp][k]
+                                }
+                            })
+                        }
                     }
                 }
             }
         }
         return tmp
-    }, [props.item.State, location, props.indexItem])
+    }, [props.item.State, location, props.indexItem, defferWatch, i18n.language])
     // 
     const customProps = useMemo(() => {
         let _props = { ...props.item.Setting }
@@ -605,7 +610,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                 break;
         }
         return tmpProps
-    }, [customProps, props.item.Type, dataValue, children, JSON.stringify(props.methods!.watch()), location, i18n.language])
+    }, [customProps, props.item.Type, dataValue, children, location, i18n.language])
     const optionByKeyName = useMemo(() => {
         if (!props.options || !props.item.NameField) return undefined
         const keys = props.item.NameField.split(".")
@@ -623,71 +628,17 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
 
     switch (props.item.Type) {
         case ComponentType.navLink:
-            if (props.childrenData && props.childrenData[findId]) var childComponent = props.type === "card" ? (props.childrenData[findId] as any)(props.indexItem, props.index, props.methods) : props.childrenData[findId]
-            if (Array.isArray(dataValue)) {
-                return dataValue.map((dataValueItem, i) => {
-                    const dataValueProps = { ...typeProps }
-                    dataValueProps.indexItem = { ...props.indexItem, [props.item.NameField.split(".").length > 1 ? props.item.NameField.split(".")[1] : props.item.NameField]: dataValueItem }
-                    return <NavLink key={`${dataValueItem}-${i}`} {...dataValueProps} >
-                        {childComponent ??
-                            (customProps.className?.includes(LayoutElement.body) ?
-                                <>
-                                    {children.map(e => <RenderLayerElement key={e.Id} {...props} item={e} style={undefined} className={undefined} />)}
-                                    {props.bodyChildren}
-                                </> :
-                                children.map(e => <RenderLayerElement key={e.Id} {...props} item={e} style={undefined} className={undefined} />)
-                            )}
-                    </NavLink>
-                })
-            } else {
-                return <NavLink {...typeProps}>
-                    {childComponent ??
-                        (customProps.className?.includes(LayoutElement.body) ?
-                            <>
-                                {children.map(e => <RenderLayerElement key={e.Id} {...props} item={e} style={undefined} className={undefined} />)}
-                                {props.bodyChildren}
-                            </> :
-                            children.map(e => <RenderLayerElement key={e.Id} {...props} item={e} style={undefined} className={undefined} />)
-                        )}
-                </NavLink>
-            }
         case ComponentType.container:
             if (props.childrenData && props.childrenData[findId]) var childComponent = props.type === "card" ? (props.childrenData[findId] as any)(props.indexItem, props.index, props.methods) : props.childrenData[findId]
             if (dataValue && dataValue.backgroundImage) var containerProps = { ...typeProps, style: { ...typeProps.style, ...dataValue } }
             const dataValueProps = { ...(containerProps ?? typeProps) }
             delete dataValueProps.emptyElement
             delete dataValueProps.onLoaded
-            if (!props.item.ParentId && props.type === "form") {
-                if (Array.isArray(dataValue)) {
-                    return dataValue.map((dataValueItem, i) => {
-                        dataValueProps.indexItem = { ...props.indexItem, [props.item.NameField.split(".").length > 1 ? props.item.NameField.split(".")[1] : props.item.NameField]: dataValueItem }
-                        return <form key={`${dataValueItem}-${i}`} {...dataValueProps}>
-                            {childComponent ??
-                                (typeProps.className?.includes(LayoutElement.body) ?
-                                    <>
-                                        {children.map(e => <RenderLayerElement key={e.Id} {...props} item={e} style={undefined} className={undefined} />)}
-                                        {props.bodyChildren}
-                                    </> :
-                                    children.map(e => <RenderLayerElement key={e.Id} {...props} item={e} style={undefined} className={undefined} />)
-                                )}
-                        </form>
-                    })
-                } else {
-                    return <form {...dataValueProps}>
-                        {childComponent ??
-                            (typeProps.className?.includes(LayoutElement.body) ?
-                                <>
-                                    {children.map(e => <RenderLayerElement key={e.Id} {...props} item={e} style={undefined} className={undefined} />)}
-                                    {props.bodyChildren}
-                                </> :
-                                children.map(e => <RenderLayerElement key={e.Id} {...props} item={e} style={undefined} className={undefined} />)
-                            )}
-                    </form>
-                }
-            } else if (Array.isArray(dataValue)) {
+            const getType = props.item.Type === ComponentType.navLink ? "a" : (props.type === "form" && !props.item.ParentId) ? "form" : dataValueProps.type
+            if (Array.isArray(dataValue)) {
                 return dataValue.map((dataValueItem, i) => {
                     dataValueProps.indexItem = { ...props.indexItem, [props.item.NameField.split(".").length > 1 ? props.item.NameField.split(".")[1] : props.item.NameField]: dataValueItem }
-                    return <div key={`${dataValueItem}-${i}`} {...dataValueProps}>
+                    return <RenderContainer key={`${dataValueItem}-${i}`} {...dataValueProps} type={getType}>
                         {childComponent ??
                             (typeProps.className?.includes(LayoutElement.body) ?
                                 <>
@@ -696,10 +647,10 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                                 </> :
                                 children.map(e => <RenderLayerElement key={e.Id} {...props} item={e} style={undefined} className={undefined} />)
                             )}
-                    </div>
+                    </RenderContainer>
                 })
             } else {
-                return <div {...dataValueProps}>
+                return <RenderContainer {...dataValueProps} type={getType}>
                     {childComponent ??
                         (typeProps.className?.includes(LayoutElement.body) ?
                             <>
@@ -708,7 +659,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                             </> :
                             children.map(e => <RenderLayerElement key={e.Id} {...props} item={e} style={undefined} className={undefined} />)
                         )}
-                </div>
+                </RenderContainer>
             }
         case ComponentType.text:
             if (props.item.NameField) {
@@ -772,9 +723,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
             if (props.itemData) typeProps.itemData = typeProps.itemData ? { ...props.itemData, ...typeProps.itemData } : props.itemData
             if (props.childrenData) typeProps.childrenData = typeProps.childrenData ? { ...props.childrenData, ...typeProps.childrenData } : props.childrenData
             if (props.propsData) typeProps.propsData = typeProps.propsData ? { ...props.propsData, ...typeProps.propsData } : props.propsData
-            return <FormById onSubmit={(ev) => {
-                console.log("????????? ", ev)
-            }}
+            return <FormById onSubmit={(ev) => { console.log("????????? ", ev) }}
                 {...typeProps} id={typeProps.formId} ref={pageAllRefs[findId]}
             />
         case "card":
@@ -853,6 +802,22 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
             />
         default:
             return <div {...typeProps} />
+    }
+}
+
+const RenderContainer = ({ type, children, ...props }: { type: "label" | "p" | "form" | "a" | "div", children: ReactNode, [key: string]: any }) => {
+    switch (type) {
+        case "label":
+            return <label {...props}>{children}</label>
+        case "p":
+            return <p {...props}>{children}</p>
+        case "form":
+            return <form {...props}>{children}</form>
+        case "a":
+            return <NavLink {...(props as any)}>{children}</NavLink>
+        case "div":
+        default:
+            return <div {...props}>{children}</div>
     }
 }
 

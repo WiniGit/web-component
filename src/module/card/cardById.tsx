@@ -210,41 +210,56 @@ export const CardById = forwardRef<CardRef, CardProps>((props, ref) => {
             imgStyle={{ maxWidth: "16.4rem" }}
             style={props.style}
             title={props.emptyMessage ?? t("noDataFound")}
-        />)) :
-        data.data.map((item, index) => {
-            return <RenderCard
-                key={item.Id}
-                {...props}
-                cardItem={cardItem}
-                layers={layers}
-                indexItem={item}
-                index={index}
-                extendData={extendData}
-            />
-        }) : null
+        />)) : <StateCard
+            data={data.data}
+            cardItem={cardItem}
+            extendData={extendData}
+            layers={layers}
+        />
+        : null
 })
+
+const StateCard = ({ data, cardItem, layers, extendData, ...props }: { data: { [k: string]: any }[], cardItem: { [k: string]: any }, layers: { [k: string]: any }[], extendData: { [k: string]: any }, }) => {
+    const methods = useForm({ shouldFocusError: false })
+    const [rels, setRels] = useState<Array<{ [p: string]: any }>>([])
+    const [cols, setCols] = useState<Array<{ [p: string]: any }>>([])
+
+    useEffect(() => {
+        Object.keys(extendData).forEach(p => {
+            if (p === "_cols") setCols(extendData[p])
+            else if (p === "_rels") setRels(extendData[p])
+            else methods.setValue(p, extendData[p])
+        })
+    }, [extendData])
+
+    return data.map((item, index) => {
+        return <RenderCard
+            key={item.Id}
+            {...props}
+            cardItem={cardItem}
+            layers={layers}
+            indexItem={item}
+            index={index}
+            extendData={extendData}
+            cols={cols}
+            rels={rels}
+            methods={methods}
+        />
+    })
+}
 
 interface RenderCardProps extends Props {
     layers: Array<{ [p: string]: any }>,
     cardItem: { [p: string]: any },
     indexItem: { [p: string]: any },
     index: number,
-    extendData: { [p: string]: any }
+    extendData: { [p: string]: any },
+    methods: UseFormReturn,
+    cols: Array<{ [p: string]: any }>,
+    rels: Array<{ [p: string]: any }>
 }
 
 const RenderCard = (props: RenderCardProps) => {
-    const methods = useForm({ shouldFocusError: false })
-    const [rels, setRels] = useState<Array<{ [p: string]: any }>>([])
-    const [cols, setCols] = useState<Array<{ [p: string]: any }>>([])
-
-    useEffect(() => {
-        Object.keys(props.extendData).forEach(p => {
-            if (p === "_cols") setCols(props.extendData[p])
-            else if (p === "_rels") setRels(props.extendData[p])
-            else methods.setValue(p, props.extendData[p])
-        })
-    }, [props.extendData])
-
     return props.cardItem.Props.filter((e: any) => !e.ParentId).map((e: any) => {
         return <RenderLayerElement
             key={e.Id}
@@ -253,15 +268,15 @@ const RenderCard = (props: RenderCardProps) => {
             style={props.style}
             className={props.className}
             type={"card"}
-            methods={methods}
+            methods={props.methods}
             indexItem={props.indexItem}
             index={props.index}
             itemData={props.itemData}
             childrenData={props.childrenData}
             propsData={props.propsData}
-            cols={cols}
-            rels={rels}
-            options={methods.watch()}
+            cols={props.cols}
+            rels={props.rels}
+            options={props.methods.watch()}
         />
     })
 }
