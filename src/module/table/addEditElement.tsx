@@ -28,8 +28,8 @@ const AddEditElementForm = forwardRef(({ tbName = "", title, activeColumns = [],
     const [relative, setRelative] = useState<{ [p: string]: any }[]>([])
     const { t } = useTranslation()
     const formRef = useRef<any>(null)
-    const submitBtnRef = useRef<any>(null)
     const [selectedFormId, setSelectedFormId] = useState<string | null>(props.formId ?? null)
+    const diveRef = useRef<HTMLDivElement>(null)
 
     //#region getSetting
     const getSetting = async () => {
@@ -90,69 +90,35 @@ const AddEditElementForm = forwardRef(({ tbName = "", title, activeColumns = [],
         return tmp
     }, [item])
 
-    return <div className="col right-drawer" style={{ width: "100dvw", maxWidth: 680 }}>
+    return <div ref={diveRef} className="col right-drawer" style={{ width: "100dvw", maxWidth: 680 }}>
         <div className='popup-header row' style={{ gap: '0.8rem' }}>
             <Text className="heading-7" style={{ flex: 1 }}>{id ? `${t("edit")} ${title ?? tbName}` : `${t("add")} ${title ?? tbName}`}</Text>
-            <Winicon src={"fill/user interface/e-remove"} className="icon-button size24" onClick={() => { closePopup(ref) }} />
+            <Winicon
+                src="outline/user interface/e-remove"
+                size={14} className="icon-button size24"
+                onClick={() => {
+                    if (diveRef.current) {
+                        diveRef.current.classList.add("right-drawer-collapse")
+                        diveRef.current.classList.remove("right-drawer")
+                        setTimeout(() => { closePopup(ref) }, 500)
+                    } else closePopup(ref)
+                }}
+            />
         </div>
         {!!column.length && (!id || initFormItem) &&
             (selectedFormId ?
-                <>
-                    <FormById
-                        key={selectedFormId}
-                        id={selectedFormId}
-                        ref={formRef}
-                        data={initFormItem}
-                        style={{ flex: 1, width: '100%', height: '100%', overflow: 'hidden auto', scrollbarWidth: "thin", animation: "loading-change-view 0.5s ease-in-out" }}
-                        onGetFormError={() => {
-                            setSelectedFormId(null)
-                            props.onSelectCustomForm?.(null)
-                        }}
-                        onSubmit={async (ev) => {
-                            if (ev) {
-                                if (handleSubmit) {
-                                    await handleSubmit({
-                                        item: ev,
-                                        initItem: initFormItem,
-                                        methods: formRef.current.methods,
-                                        onSuccess: () => {
-                                            closePopup(ref)
-                                            ToastMessage.success(`${id ? t('edit') : t('add')} ${title ?? tbName} ${t("successfully").toLowerCase()}!`)
-                                            onSuccess?.()
-                                        }
-                                    })
-                                    if (submitBtnRef.current) submitBtnRef.current.disabled = false
-                                } else {
-                                    const res = await (item?.Id ? dataController.edit([ev]) : dataController.add([ev]))
-                                    if (res.code !== 200) {
-                                        if (submitBtnRef.current) submitBtnRef.current.disabled = false
-                                        ToastMessage.errors(`Failed to ${item?.Id ? "edit" : "add"} ${tbName.toLowerCase()}`)
-                                        return console.error(`Failed to ${item?.Id ? "edit" : "add"} ${tbName.toLowerCase()} : `, res?.message)
-                                    }
-                                    closePopup(ref)
-                                    ToastMessage.success(`${id ? "Edit" : "Add"} ${title ?? tbName} successfully!`)
-                                    onSuccess?.()
-                                }
-                            } else if (submitBtnRef.current) submitBtnRef.current.disabled = false
-                        }}
-                    />
-                    <div className="row popup-footer">
-                        <Button
-                            label={"Cancel"}
-                            className="label-3 button-grey"
-                            onClick={() => { closePopup(ref) }}
-                        />
-                        <Button
-                            label={id ? "Save" : "Add"}
-                            className="button-primary label-3"
-                            onClick={(ev: any) => {
-                                submitBtnRef.current = ev.target.closest("button")
-                                submitBtnRef.current.disabled = true
-                                formRef.current?.onSubmit()
-                            }}
-                        />
-                    </div>
-                </> :
+                <FormById
+                    key={selectedFormId}
+                    id={selectedFormId}
+                    ref={formRef}
+                    data={initFormItem}
+                    style={{ flex: 1, width: '100%', height: '100%', overflow: 'hidden auto', scrollbarWidth: "thin", animation: "loading-change-view 0.5s ease-in-out" }}
+                    onGetFormError={() => {
+                        setSelectedFormId(null)
+                        props.onSelectCustomForm?.(null)
+                    }}
+                    onSubmit={onSuccess}
+                /> :
                 <FormView
                     cols={column.filter(e => !e.Query?.length)}
                     rels={relative}

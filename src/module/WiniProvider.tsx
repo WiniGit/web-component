@@ -117,7 +117,9 @@ const appendDesignTokens = (list: Array<{ [p: string]: any }>) => {
 interface WiniContextProps {
     i18n: i18n,
     theme: "light" | "dark",
-    setTheme: (theme: "light" | "dark") => void
+    setTheme: (theme: "light" | "dark") => void,
+    userData?: { [k: string]: any },
+    setUserData: (data?: { [k: string]: any }) => void
 }
 
 const WiniContext = createContext<WiniContextProps | undefined>(undefined)
@@ -131,6 +133,7 @@ export const WiniProvider = (props: Props) => {
     const { i18n } = useTranslation()
     const [loadedResources, setLoadedResources] = useState(false)
     const [theme, setTheme] = useState<"light" | "dark">("light")
+    const [userData, setUserData] = useState<{ [k: string]: any } | undefined>(undefined)
 
     useEffect(() => {
         setTheme(props.theme ?? "light")
@@ -177,7 +180,7 @@ export const WiniProvider = (props: Props) => {
         }
     }, [props.pid])
 
-    return <WiniContext.Provider value={{ theme, setTheme, i18n }}>
+    return <WiniContext.Provider value={{ theme, setTheme, i18n, userData, setUserData }}>
         <BrowserRouter>
             <ToastContainer />
             <Dialog />

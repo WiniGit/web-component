@@ -93,7 +93,13 @@ export function Button({ tooltip, disabled, linkTo, className, type = "button", 
 }
 
 export function SimpleButton(props: ButtonProps) {
-    return <button id={props.id} type={"button"} disabled={props.disabled} className={`row ${props.className ?? ""}`} style={props.style} onClick={props.onClick} onFocus={props.onFocus} onMouseEnter={props.onMouseEnter} onMouseLeave={props.onMouseLeave} onMouseMove={props.onMouseMove}>
+    return <button id={props.id} type={"button"} disabled={props.disabled} className={`row ${props.className ?? ""}`} style={props.style}
+        onClick={async (ev: any) => {
+            const btn = ev.target.closest("button")
+            btn.disabled = true
+            await props.onClick?.(ev)
+            if (btn) btn.disabled = false
+        }} onFocus={props.onFocus} onMouseEnter={props.onMouseEnter} onMouseLeave={props.onMouseLeave} onMouseMove={props.onMouseMove}>
         {props.prefix}
         <Text maxLine={1} className={styles['button-label']}>{props.label}</Text>
         {props.suffix}

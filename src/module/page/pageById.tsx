@@ -29,6 +29,7 @@ import { ToastMessage } from "../../component/toast-noti/toast-noti"
 import { VideoPlayer } from "../../component/video/video"
 import { IframePlayer } from "../../component/iframe/iframe"
 import { ComponentStatus } from "../../component/component-status"
+import { useWiniContext } from "../WiniProvider"
 
 interface Props {
     methods?: UseFormReturn
@@ -262,6 +263,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
         return tmp
     }, [props.item.State, location, props.indexItem, defferWatch, i18n.language])
     // 
+    const winiContextData = useWiniContext()
     const customProps = useMemo(() => {
         let _props = { ...props.item.Setting }
         if (watchForCustomProps?.unmounted || (_props.unmounted && typeof watchForCustomProps?.unmounted === "boolean")) return { unmounted: true };
@@ -271,6 +273,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
             Object.values(TriggerType).forEach(trigger => {
                 const triggerActions = _props.action.filter((e: any) => e.Type === trigger)
                 const handleEvent = async (acts = [], event: any) => {
+                    event.target.style.pointerEvents = "none"
                     for (const [_, act] of acts.entries()) {
                         const actItem = act as { [p: string]: any }
                         switch (actItem.Action) {
@@ -314,7 +317,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                                     onSubmit: async () => {
                                         if (actItem.Caculate) {
                                             await (new AsyncFunction(
-                                                "formResult", "Util", "DataController", "randomGID", "ToastMessage", "uploadFiles", "getFilesInfor", "showDialog", "ComponentStatus", "event", "methods",
+                                                "entityData", "Util", "DataController", "randomGID", "ToastMessage", "uploadFiles", "getFilesInfor", "showDialog", "ComponentStatus", "event", "methods", "useWiniContext",
                                                 `${actItem.Caculate}` // This string can now safely contain the 'await' keyword
                                             ))(
                                                 props.indexItem ?? props.methods?.getValues(),
@@ -327,7 +330,8 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                                                 showDialog,
                                                 ComponentStatus,
                                                 event,
-                                                props.methods
+                                                props.methods,
+                                                () => winiContextData
                                             )
                                         }
                                     }
@@ -335,8 +339,8 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                                 return;
                             case ActionType.custom:
                                 if (actItem.Caculate) {
-                                    await (new AsyncFunction(
-                                        "formResult", "Util", "DataController", "randomGID", "ToastMessage", "uploadFiles", "getFilesInfor", "showDialog", "ComponentStatus", "event", "methods",
+                                    const asyncFuncResponse = await (new AsyncFunction(
+                                        "entityData", "Util", "DataController", "randomGID", "ToastMessage", "uploadFiles", "getFilesInfor", "showDialog", "ComponentStatus", "event", "methods", "useWiniContext",
                                         `${actItem.Caculate}` // This string can now safely contain the 'await' keyword
                                     ))(
                                         props.indexItem ?? props.methods?.getValues(),
@@ -349,10 +353,12 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                                         showDialog,
                                         ComponentStatus,
                                         event,
-                                        props.methods
+                                        props.methods,
+                                        () => winiContextData
                                     )
+                                    if (!asyncFuncResponse) return;
                                 }
-                                return;
+                                break;
                             case ActionType.loadMore:
                                 if (pageAllRefs[actItem.loadingId]) {
                                     const cardData = pageAllRefs[actItem.loadingId].current?.data
@@ -365,11 +371,14 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                                 break;
                         }
                     }
+                    if (event.target) event.target.style.pointerEvents = ""
                 }
                 switch (trigger) {
                     case TriggerType.click:
                         if (triggerActions.length) {
-                            _props.onClick = (ev: any) => handleEvent(triggerActions, ev)
+                            _props.onClick = (ev: any) => {
+                                handleEvent(triggerActions, ev)
+                            }
                             if (_props.style) _props.style = { ..._props.style, cursor: "pointer" }
                             else _props.style = { cursor: "pointer" }
                         }
@@ -415,8 +424,8 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
             _props = { ..._props, ...extendProps }
         }
         return watchForCustomProps ? { ..._props, ...watchForCustomProps } : _props
-    }, [props.item, props.propsData, props.indexItem, watchForCustomProps])
-    // 
+    }, [props.item, props.propsData, props.indexItem, watchForCustomProps, winiContextData?.userData])
+    /** Check unmounted */
     if (customProps.unmounted) return null;
     const dataValue = useMemo(() => {
         if (props.type === "page" || !props.item.NameField?.length || !props.indexItem) return undefined
