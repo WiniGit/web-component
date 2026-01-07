@@ -1,4 +1,4 @@
-import { CSSProperties, Dispatch, forwardRef, ReactNode, SetStateAction, useEffect, useImperativeHandle, useMemo, useState } from "react"
+import { CSSProperties, Dispatch, forwardRef, ReactNode, SetStateAction, useDeferredValue, useEffect, useImperativeHandle, useMemo, useState } from "react"
 import { DataController, SettingDataController } from "../../controller/data"
 import { useForm, UseFormReturn } from "react-hook-form"
 import { TableController } from "../../controller/setting"
@@ -172,24 +172,22 @@ export const CardById = forwardRef<CardRef, CardProps>((props, ref) => {
 
     useEffect(() => {
         if (cardItem) {
-            if (controller && !props.cardData) {
-                getData()
-            } else if (props.cardData) {
-                setData({ data: props.cardData, totalCount: props.cardData.length })
-            }
+            if (controller && !props.cardData) getData()
+            else if (props.cardData) setData({ data: props.cardData, totalCount: props.cardData.length })
         }
     }, [cardItem, controller, props.cardData?.length])
 
     const extendData = useMemo(() => methods.watch(), [JSON.stringify(methods.watch())])
+    const finalExtendData = useDeferredValue(extendData)
     const getRelativeData = useMemo(() => {
-        if (extendData) {
-            const tmp = { ...extendData }
+        if (finalExtendData) {
+            const tmp = { ...finalExtendData }
             delete tmp._rels
             delete tmp._cols
             return tmp
         }
         return undefined
-    }, [extendData])
+    }, [finalExtendData])
 
     useEffect(() => {
         props.onRelativeLoaded?.(getRelativeData)
@@ -213,7 +211,7 @@ export const CardById = forwardRef<CardRef, CardProps>((props, ref) => {
         />)) : <StateCard
             data={data.data}
             cardItem={cardItem}
-            extendData={extendData}
+            extendData={finalExtendData}
             layers={layers}
         />
         : null
@@ -223,13 +221,16 @@ const StateCard = ({ data, cardItem, layers, extendData, ...props }: { data: { [
     const methods = useForm({ shouldFocusError: false })
     const [rels, setRels] = useState<Array<{ [p: string]: any }>>([])
     const [cols, setCols] = useState<Array<{ [p: string]: any }>>([])
+    const [tmpExtendData, setTmpExtendData] = useState<{ [p: string]: any }>({})
 
     useEffect(() => {
+        const tmp: { [p: string]: any } = {}
         Object.keys(extendData).forEach(p => {
             if (p === "_cols") setCols(extendData[p])
             else if (p === "_rels") setRels(extendData[p])
-            else methods.setValue(p, extendData[p])
+            else tmp[p] = extendData[p]
         })
+        if (Object.keys(tmp).length) setTmpExtendData(tmp)
     }, [extendData])
 
     return data.map((item, index) => {
@@ -240,10 +241,10 @@ const StateCard = ({ data, cardItem, layers, extendData, ...props }: { data: { [
             layers={layers}
             indexItem={item}
             index={index}
-            extendData={extendData}
             cols={cols}
             rels={rels}
             methods={methods}
+            options={tmpExtendData}
         />
     })
 }
@@ -253,8 +254,8 @@ interface RenderCardProps extends Props {
     cardItem: { [p: string]: any },
     indexItem: { [p: string]: any },
     index: number,
-    extendData: { [p: string]: any },
     methods: UseFormReturn,
+    options: { [p: string]: any },
     cols: Array<{ [p: string]: any }>,
     rels: Array<{ [p: string]: any }>
 }
@@ -276,7 +277,7 @@ const RenderCard = (props: RenderCardProps) => {
             propsData={props.propsData}
             cols={props.cols}
             rels={props.rels}
-            options={props.methods.watch()}
+            options={props.options}
         />
     })
 }

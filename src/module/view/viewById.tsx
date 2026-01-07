@@ -1,4 +1,4 @@
-import { CSSProperties, ReactNode, useEffect, useMemo, useState } from "react"
+import { CSSProperties, ReactNode, useDeferredValue, useEffect, useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
 import { CustomHTMLProps, RenderLayerElement } from "../page/pageById"
 import { DataController, SettingDataController } from "../../controller/data"
@@ -136,6 +136,19 @@ interface RenderViewProps extends Props {
 
 const RenderView = (props: RenderViewProps) => {
     const methods = useForm({ shouldFocusError: false })
+    const [rels, setRels] = useState<Array<{ [p: string]: any }>>([])
+    const [cols, setCols] = useState<Array<{ [p: string]: any }>>([])
+    const [extendData, setExtendData] = useState<{ [p: string]: any }>({})
+
+    useEffect(() => {
+        const tmp: { [p: string]: any } = {}
+        Object.keys(props.extendData).forEach(p => {
+            if (p === "_cols") setCols(props.extendData[p])
+            else if (p === "_rels") setRels(props.extendData[p])
+            else tmp[p] = props.extendData[p]
+        })
+        if (Object.keys(tmp).length) setExtendData(tmp)
+    }, [props.extendData])
 
     return props.layers.filter((e: any) => !e.ParentId).map((e: any) => {
         return <RenderLayerElement
@@ -145,12 +158,14 @@ const RenderView = (props: RenderViewProps) => {
             style={props.style}
             className={props.className}
             type={"view"}
+            cols={cols}
+            rels={rels}
             methods={methods}
             indexItem={props.data}
             propsData={props.propsData}
             childrenData={props.childrenData}
             itemData={props.itemData}
-            options={props.extendData}
+            options={extendData}
         />
     })
 }

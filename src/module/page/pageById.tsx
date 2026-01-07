@@ -15,7 +15,7 @@ import { useForm, UseFormReturn } from "react-hook-form"
 import { randomGID, Util } from "../../controller/utils"
 import { ViewById } from "../view/viewById"
 import { regexGetVariableByThis, regexGetVariables, regexWatchDoubleQuote, regexWatchSingleQuote, replaceVariables } from "../card/config"
-import { BaseDA, CkEditorUploadAdapter, ConfigData } from "../../controller/config"
+import { BaseDA, CkEditorUploadAdapter, ConfigData, imgFileTypes } from "../../controller/config"
 import { handleErrorImgSrc, LayoutElement, regexI18n, supportProperties } from "./config"
 import { Rating } from "../../component/rating/rating"
 import { ProgressBar } from "../../component/progress-bar/progress-bar"
@@ -140,6 +140,7 @@ export const getValidLink = (link: string) => {
     else return ConfigData.fileUrl + (link.startsWith("/") ? link : `/${link}`)
 }
 
+const regexGuid = /^[0-9a-fA-F]{32}$/;
 const AsyncFunction = Object.getPrototypeOf(async function () { }).constructor;
 const CaculateLayer = (props: RenderLayerElementProps) => {
     const findId = props.item.Setting?.id ?? props.item.Id
@@ -150,15 +151,16 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
     useEffect(() => {
         return () => { delete pageAllRefs[findId] }
     }, [])
-    // 
+    /** declare parameters */
+    const winiContextData = useWiniContext()
     const location = useLocation() as any
     const params = useParams()
     const query = new URLSearchParams(location.search)
     const navigate = useNavigate()
     const children = useMemo(() => props.list.filter(e => e.ParentId === props.item.Id), [props.list, props.item])
-    // @ts-ignore
-    const { i18n } = useTranslation(); // t using in eval function
+    const { i18n } = useTranslation();
     const defferWatch = useDeferredValue(JSON.stringify(props.methods!.watch()))
+    /** handle replace variables */
     const replaceThisVariables = (content: string, isEval?: boolean) => {
         const replaceTmp = content.replace(replaceVariables, (m: string, p1: string) => {
             const execRegex = regexGetVariables.exec(m)
@@ -263,7 +265,6 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
         return tmp
     }, [props.item.State, location, props.indexItem, defferWatch, i18n.language])
     // 
-    const winiContextData = useWiniContext()
     const customProps = useMemo(() => {
         let _props = { ...props.item.Setting }
         if (watchForCustomProps?.unmounted || (_props.unmounted && typeof watchForCustomProps?.unmounted === "boolean")) return { unmounted: true };
@@ -393,12 +394,9 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                             _props.onBlur = (ev: any) => handleEvent(triggerActions, ev)
                         }
                         break;
-                    case TriggerType.scrollend:
+                    case TriggerType.scroll:
                         if (triggerActions.length) {
-                            _props.onScroll = (ev: any) => {
-                                let scrollElement = ev.target as HTMLDivElement
-                                if (scrollElement.scrollTop && Math.round(scrollElement.offsetHeight + scrollElement.scrollTop) >= (scrollElement.scrollHeight - 1)) handleEvent(triggerActions, ev)
-                            }
+                            _props.onScroll = (ev: any) => handleEvent(triggerActions, ev)
                         }
                         break;
                     default:
@@ -427,14 +425,25 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
     }, [props.item, props.propsData, props.indexItem, watchForCustomProps, winiContextData?.userData])
     /** Check unmounted */
     if (customProps.unmounted) return null;
+    const _options = useMemo(() => {
+        if (!props.options || !props.item.NameField?.length) return undefined
+        const keys = props.item.NameField.split(".")
+        const keyname = keys.shift()
+        const tmp = props.options?.[`${keyname}`] ?? props.options?.[`${keyname}_Options`] ?? props.options?.[`_${keyname}`]
+        if (tmp?.length) return tmp
+        if (!keys.length && props.cols?.length) {
+            const tmpCol = props.cols?.find(e => e.Name === keyname)
+            if (tmpCol) return tmpCol?.Form?.Options
+        }
+        return undefined
+    }, [props.item.NameField, props.options, props.cols])
     const dataValue = useMemo(() => {
         if (props.type === "page" || !props.item.NameField?.length || !props.indexItem) return undefined
         const keys = props.item.NameField.split(".")
         if (keys.length > 1) {
             const _rel = props.rels?.find((e: any) => e.TableName === keys[0].replace("Id", "") && e.Name === keys[1])
             if (!_rel) return undefined
-            const findOptions = props.options?.[`${keys[0]}`] ?? props.options?.[`${keys[0]}_Options`] ?? props.options?.[`_${keys[0]}`]
-            let tmpValue = findOptions?.find((e: any) => e && props.indexItem![keys[0]]?.includes(e.Id))?.[keys[1]]
+            let tmpValue = _options?.find((e: any) => e && props.indexItem![keys[0]]?.includes(e.Id))?.[keys[1]]
             switch (_rel.DataType) {
                 case FEDataType.FILE:
                     if (Array.isArray(tmpValue)) {
@@ -480,13 +489,20 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
             let tmpValue = props.indexItem[props.item.NameField]
             switch (_col.DataType) {
                 case FEDataType.FILE:
-                    if (tmpValue) {
-                        if (Array.isArray(tmpValue)) {
-                            tmpValue = tmpValue[0]?.url
-                        } else {
-                            tmpValue = tmpValue?.split(",")?.[0]
+                    if (tmpValue?.length) {
+                        if (!Array.isArray(tmpValue)) {
+                            tmpValue = tmpValue.split(",").map((fid: string) => {
+                                if (regexGuid.test(fid)) {
+                                    const tmpF = props.options?.["_files"].find(f => f.Id === fid)
+                                    if (!tmpF) return undefined;
+                                    return { id: tmpF.Id, name: tmpF.Name, size: tmpF.Size, type: tmpF.Type, url: ConfigData.fileUrl + tmpF.Url }
+                                } else {
+                                    const _url = getValidLink(fid)
+                                    const _type = fid.split(".").pop()?.toLowerCase()
+                                    return { id: fid, name: fid, url: _url, type: imgFileTypes.includes(`.${_type}`) ? `image/${_type}` : _type }
+                                }
+                            }).filter((f: any) => !!f)
                         }
-                        if (props.item.Type === ComponentType.container || props.item.Type === ComponentType.navLink) tmpValue = { backgroundImage: `url(${getValidLink(tmpValue)})` }
                     }
                     break;
                 case FEDataType.HTML:
@@ -520,7 +536,8 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
             }
             return tmpValue
         }
-    }, [props.indexItem, props.item, props.cols, props.rels, props.options])
+    }, [props.indexItem, props.item, props.cols, props.rels, _options])
+    /***/
     const typeProps = useMemo(() => {
         let tmpProps = { ...customProps }
         if (regexGetVariables.test(tmpProps.id)) tmpProps.id = replaceThisVariables(tmpProps.id)
@@ -557,16 +574,9 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                 break;
             case ComponentType.navLink:
                 if (dataValue && dataValue.backgroundImage) tmpProps = { ...customProps, style: { ...customProps.style, ...dataValue } }
-                if (tmpProps.to) {
-                    if (props.indexItem && regexGetVariables.test(tmpProps.to)) {
-                        const url = replaceThisVariables(tmpProps.to)
-                        if (url?.includes("https")) tmpProps.target = "_blank"
-                        tmpProps.to = (url?.startsWith("/") ? "/" : "") + url?.split("/").filter((e: string) => !!e.trim()).join("/")
-                    } else if (tmpProps.to.includes("https")) {
-                        tmpProps.target = "_blank"
-                    } else {
-                        tmpProps.to = tmpProps.to.startsWith("/") ? tmpProps.to : `/${tmpProps.to}`
-                    }
+                if (tmpProps.to && props.indexItem && regexGetVariables.test(tmpProps.to)) {
+                    const url = replaceThisVariables(tmpProps.to)
+                    tmpProps.to = (url?.startsWith("/") ? "/" : "") + url?.split("/").filter((e: string) => !!e.trim()).join("/")
                 }
                 break;
             case ComponentType.text:
@@ -587,8 +597,6 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                 if (tmpProps.label && regexGetVariables.test(tmpProps.label)) tmpProps.label = replaceThisVariables(tmpProps.label)
             // @ts-ignore
             case ComponentType.textField:
-                if (props.item.NameField?.length && props.cols?.find(e => e.Name === props.item.NameField)?.DataType === FEDataType.PASSWORD) tmpProps.IsPassword = true
-            // @ts-ignore
             case ComponentType.datePicker:
             // @ts-ignore
             case ComponentType.dateTimePicker:
@@ -601,6 +609,9 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                             break;
                         case FEDataType.DATETIME:
                             tmpProps.pickerType = "datetime"
+                            break;
+                        case FEDataType.PASSWORD:
+                            tmpProps.IsPassword = true
                             break;
                         default:
                             break;
@@ -620,20 +631,6 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
         }
         return tmpProps
     }, [customProps, props.item.Type, dataValue, children, location, i18n.language])
-    const optionByKeyName = useMemo(() => {
-        if (!props.options || !props.item.NameField) return undefined
-        const keys = props.item.NameField.split(".")
-        const keyname = keys.shift()
-        return props.options[`${keyname}_Options`]
-    }, [props.item.NameField, props.options])
-    const _options = useMemo(() => {
-        if (props.item.NameField) {
-            const tmpCol = props.cols?.find(e => e.Name === props.item.NameField)
-            if (tmpCol) return tmpCol?.Form?.Options
-            if (optionByKeyName) return optionByKeyName
-        }
-        return undefined
-    }, [props.cols, props.item.NameField, optionByKeyName])
 
     switch (props.item.Type) {
         case ComponentType.navLink:
@@ -672,46 +669,55 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
             }
         case ComponentType.text:
             if (props.item.NameField) {
-                if (typeof dataValue === "object") return <CustomText {...typeProps} html={dataValue?.["__html"] ?? ""} />
-                else return <CustomText {...typeProps} value={dataValue} />
-            } else return <CustomText {...typeProps} />
+                if (Array.isArray(dataValue)) { // list file
+                    return dataValue.map((f, i) => <FileName
+                        key={f.id + "-" + i}
+                        file={f}
+                        index={i}
+                        {...typeProps}
+                    />)
+                } else if (typeof dataValue === "object") return typeProps.html = dataValue?.["__html"] ?? ""
+                else typeProps.value = dataValue
+            }
+            return <CustomText {...typeProps} />
         case ComponentType.img:
             if (!typeProps.src?.length) typeProps.src = handleErrorImgSrc
             if (props.item.NameField && !!dataValue?.length) {
-                return <img
-                    key={dataValue}
-                    alt=""
-                    referrerPolicy="no-referrer"
-                    onError={(ev) => { ev.currentTarget.src = handleErrorImgSrc }}
-                    {...typeProps}
-                    src={getValidLink(dataValue)}
-                />
-            } else return <img
-                alt=""
-                referrerPolicy="no-referrer"
-                onError={(ev) => { ev.currentTarget.src = handleErrorImgSrc }}
-                {...typeProps}
-            />
+                if (Array.isArray(dataValue)) {
+                    return dataValue.map((f, i) => <img
+                        key={f.id + "-" + i}
+                        alt=""
+                        referrerPolicy="no-referrer"
+                        onError={(ev) => { ev.currentTarget.src = handleErrorImgSrc }}
+                        {...typeProps}
+                        src={f.url}
+                    />)
+                } else typeProps.src = getValidLink(dataValue)
+            }
+            return <img alt="" referrerPolicy="no-referrer" onError={(ev) => { ev.currentTarget.src = handleErrorImgSrc }} {...typeProps} />
         case ComponentType.video:
             if (props.item.NameField && !!dataValue?.length) {
-                return <VideoPlayer
-                    key={dataValue}
-                    {...typeProps}
-                    src={getValidLink(dataValue)}
-                />
-            } else return <VideoPlayer {...typeProps} />
+                if (Array.isArray(dataValue)) {
+                    return dataValue.map((f, i) => <VideoPlayer
+                        key={f.id + "-" + i}
+                        {...typeProps}
+                        src={f.url}
+                    />)
+                } else typeProps.src = getValidLink(dataValue)
+            }
+            return <VideoPlayer {...typeProps} />
         case ComponentType.iframe:
             if (props.item.NameField && !!dataValue?.length) {
-                return <IframePlayer
-                    key={dataValue}
-                    referrerPolicy="no-referrer"
-                    {...typeProps}
-                    src={getValidLink(dataValue)}
-                />
-            } else return <IframePlayer
-                referrerPolicy="no-referrer"
-                {...typeProps}
-            />
+                if (Array.isArray(dataValue)) {
+                    return dataValue.map((f, i) => <IframePlayer
+                        key={f.id + "-" + i}
+                        referrerPolicy="no-referrer"
+                        {...typeProps}
+                        src={f.url}
+                    />)
+                } else typeProps.src = getValidLink(dataValue)
+            }
+            return <IframePlayer referrerPolicy="no-referrer" {...typeProps} />
         case ComponentType.rate:
             if (props.item.NameField) return <Rating {...typeProps} value={dataValue} />
             else return <Rating {...typeProps} />
@@ -849,7 +855,18 @@ const ActionPopup = ({ id, children }: { id: string, children: ReactNode, classN
     </>
 }
 
-const CustomText = ({ type = "div", ...props }: { type?: "div" | "p" | "span" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6", html?: string, maxLine?: number, className?: string, style?: CSSProperties, value?: string }) => {
+const FileName = ({ file, index, ...props }: { type?: "div" | "p" | "span" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6", file: { [k: string]: any }, index: number, maxLine?: number, className?: string, style?: CSSProperties, value?: string, [k: string]: any }) => {
+    return <>
+        {!!index && <span className={props.className} style={{ ...(props.style ?? {}), color: "--neutral-text-body-reverse-color" }}>, </span>}
+        <CustomText
+            {...props}
+            value={file.name?.split("/").pop() ?? "unknown"}
+            onClick={() => { window.open(file.url, "_blank") }}
+        />
+    </>
+}
+
+const CustomText = ({ type = "div", ...props }: { type?: "div" | "p" | "span" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6", html?: string, maxLine?: number, className?: string, style?: CSSProperties, value?: string, [k: string]: any }) => {
     if (!props.value && !props.html) return null
     const customProps = useMemo(() => {
         let _props: any = { ...props, style: { ...(props.style ?? {}) } }

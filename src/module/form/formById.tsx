@@ -34,7 +34,7 @@ interface FormByIdRef {
 
 export const FormById = forwardRef<FormByIdRef, FormByIdProps>((props, ref) => {
     const methods = useForm({ shouldFocusError: false })
-    const methodsOptions = useForm({ shouldFocusError: false })
+    const methodOptions = useForm({ shouldFocusError: false })
     const [formItem, setFormItem] = useState<{ [p: string]: any }>()
     const layers = useMemo(() => formItem?.Props ?? [], [formItem])
     const keyNames = useMemo<Array<string>>(() => layers.filter((e: any) => e.NameField?.length).map((e: any) => e.NameField), [layers.length])
@@ -188,11 +188,11 @@ export const FormById = forwardRef<FormByIdRef, FormByIdProps>((props, ref) => {
                             const _tmpParse = dataItem[prop]?.length ? dataItem[prop].split(",") : []
                             if (props.customOptions?.[_rel.Column]) {
                                 let _opt = props.customOptions?.[_rel.Column] ?? []
-                                methodsOptions.setValue(`${_rel.Column}_Options`, _opt)
+                                methodOptions.setValue(`${_rel.Column}_Options`, _opt)
                             } else {
                                 const pkController = new DataController(_rel.TablePK)
                                 pkController.getByListId(_tmpParse).then(pkRes => {
-                                    if (pkRes.code === 200) methodsOptions.setValue(`${_rel.Column}_Options`, pkRes.data?.filter((e: any) => !!e)?.map((e: any) => ({ id: e.Id, name: e.Name, prefix: (_rel.TablePK === "Customer" || _rel.TablePK === "User") ? <CustomerAvatar data={e} /> : undefined, ...e })) ?? [])
+                                    if (pkRes.code === 200) methodOptions.setValue(`${_rel.Column}_Options`, pkRes.data?.filter((e: any) => !!e)?.map((e: any) => ({ id: e.Id, name: e.Name, prefix: (_rel.TablePK === "Customer" || _rel.TablePK === "User") ? <CustomerAvatar data={e} /> : undefined, ...e })) ?? [])
                                 })
                             }
                             methods.setValue(prop, _rel.Form.ComponentType === ComponentType.selectMultiple ? _tmpParse : _tmpParse[0])
@@ -369,6 +369,7 @@ export const FormById = forwardRef<FormByIdRef, FormByIdProps>((props, ref) => {
     }, [props.customOptions, cols])
 
     const formValues = useMemo(() => {
+        if (!cols.length) return undefined
         const tmp = methods.getValues()
         const tmpValue: any = {};
         [...cols, ...rels].forEach(c => {
@@ -385,7 +386,9 @@ export const FormById = forwardRef<FormByIdRef, FormByIdProps>((props, ref) => {
         rels
     }), [methods.watch()]);
 
-    return formItem && !!cols.length && layers.filter((e: any) => !e.ParentId).map((e: any) => {
+    const opts = useDeferredValue(methodOptions.watch())
+
+    return formItem && !!cols.length && finalFormValues && layers.filter((e: any) => !e.ParentId).map((e: any) => {
         return <RenderLayerElement
             key={e.Id}
             item={e}
@@ -400,7 +403,7 @@ export const FormById = forwardRef<FormByIdRef, FormByIdProps>((props, ref) => {
             itemData={props.itemData}
             cols={mapColOptions}
             rels={rels.map((_rel => ({ ..._rel, getOptions: async (params: any) => await getOptions({ ...params, _rel }) }))).concat(relativeCols as any)}
-            options={methodsOptions.watch()}
+            options={opts}
             onSubmit={methods.handleSubmit(onSubmit, props.onError)}
         />
     })
