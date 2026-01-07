@@ -274,7 +274,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
             Object.values(TriggerType).forEach(trigger => {
                 const triggerActions = _props.action.filter((e: any) => e.Type === trigger)
                 const handleEvent = async (acts = [], event: any) => {
-                    event.target.style.pointerEvents = "none"
+                    if (event?.target) event.target.style.pointerEvents = "none"
                     for (const [_, act] of acts.entries()) {
                         const actItem = act as { [p: string]: any }
                         switch (actItem.Action) {
@@ -372,7 +372,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                                 break;
                         }
                     }
-                    if (event.target) event.target.style.pointerEvents = ""
+                    if (event?.target) event.target.style.pointerEvents = ""
                 }
                 switch (trigger) {
                     case TriggerType.click:
@@ -493,7 +493,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                         if (!Array.isArray(tmpValue)) {
                             tmpValue = tmpValue.split(",").map((fid: string) => {
                                 if (regexGuid.test(fid)) {
-                                    const tmpF = props.options?.["_files"].find(f => f.Id === fid)
+                                    const tmpF = props.options?.["_files"]?.find(f => f.Id === fid)
                                     if (!tmpF) return undefined;
                                     return { id: tmpF.Id, name: tmpF.Name, size: tmpF.Size, type: tmpF.Type, url: ConfigData.fileUrl + tmpF.Url }
                                 } else {
