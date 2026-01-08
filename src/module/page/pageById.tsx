@@ -146,8 +146,6 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
     /** handle replace variables */
     const replaceThisVariables = (content: string) => {
         const replaceTmp = content.replace(replaceVariables, (m: string, p1: string) => {
-            const execRegex = regexGetVariables.exec(m)
-            if (!execRegex?.[1]) return m
             let getValue: any = m
             try {
                 getValue = new Function(
@@ -161,7 +159,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                     `return ${p1.replace(/this/g, "indexItem")}`
                 )({ ...(props.indexItem ?? {}), index: props.index }, Util, props.methods!.watch, location, query, params, i18n.t)
             } catch (error) {
-                console.error("item: ", props.item, " --- content: ", content, " --- error: ", error)
+                console.error("item: ", props.item, " --- match: ", m, " --- p1: ", p1, " --- error: ", error)
                 getValue = m
             }
             return getValue
@@ -321,6 +319,26 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                     case TriggerType.keydown:
                         if (triggerActions.length) {
                             _props.onKeyDown = (ev: any) => handleEvent(triggerActions, ev)
+                        }
+                        break;
+                    case TriggerType.mouseenter:
+                        if (triggerActions.length) {
+                            _props.onMouseEnter = (ev: any) => handleEvent(triggerActions, ev)
+                        }
+                        break;
+                    case TriggerType.mouseleave:
+                        if (triggerActions.length) {
+                            _props.onMouseLeave = (ev: any) => handleEvent(triggerActions, ev)
+                        }
+                        break;
+                    case TriggerType.mousedown:
+                        if (triggerActions.length) {
+                            _props.onMouseDown = (ev: any) => handleEvent(triggerActions, ev)
+                        }
+                        break;
+                    case TriggerType.mouseup:
+                        if (triggerActions.length) {
+                            _props.onMouseUp = (ev: any) => handleEvent(triggerActions, ev)
                         }
                         break;
                     case TriggerType.change:
