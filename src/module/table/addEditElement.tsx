@@ -90,7 +90,7 @@ const AddEditElementForm = forwardRef(({ tbName = "", title, activeColumns = [],
         return tmp
     }, [item])
 
-    return <div ref={diveRef} className="col right-drawer" style={{ width: "100dvw", maxWidth: 680 }}>
+    return <div ref={diveRef} className="col right-drawer" style={{ width: "100dvw", maxWidth: 720 }}>
         <div className='popup-header row' style={{ gap: '0.8rem' }}>
             <Text className="heading-7" style={{ flex: 1 }}>{id ? `${t("edit")} ${title ?? tbName}` : `${t("add")} ${title ?? tbName}`}</Text>
             <Winicon

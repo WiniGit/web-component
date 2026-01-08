@@ -209,6 +209,8 @@ export const CardById = forwardRef<CardRef, CardProps>((props, ref) => {
             style={props.style}
             title={props.emptyMessage ?? t("noDataFound")}
         />)) : <StateCard
+            key={cardItem.Id}
+            {...props}
             data={data.data}
             cardItem={cardItem}
             extendData={finalExtendData}
