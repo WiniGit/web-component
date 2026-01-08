@@ -1,35 +1,19 @@
 import { CSSProperties, HTMLAttributes, ReactNode, useDeferredValue, useEffect, useMemo, useRef, useState } from "react"
+import { useTranslation } from "react-i18next"
+import { useForm, UseFormReturn } from "react-hook-form"
+import { NavLink, useLocation, useNavigate, useParams } from "react-router-dom"
+import { handleErrorImgSrc, LayoutElement, supportProperties } from "./config"
 import { ActionType, ComponentType, FEDataType, TriggerType, ValidateType } from "../da"
 import { FormById } from "../form/formById"
 import { CardById } from "../card/cardById"
 import { ChartById } from "../chart/chartById"
-import { TableController } from "../../controller/setting"
-import { Text } from "../../component/text/text"
-import { Winicon } from "../../component/wini-icon/winicon"
-import { Popup } from "../../component/popup/popup"
-import { showPopup } from "../../component/popup/popup"
-import { closePopup } from "../../component/popup/popup"
-import { NavLink, useLocation, useNavigate, useParams } from "react-router-dom"
-import { SimpleButton } from "../../component/button/button"
-import { useForm, UseFormReturn } from "react-hook-form"
-import { randomGID, Util } from "../../controller/utils"
 import { ViewById } from "../view/viewById"
-import { regexGetVariableByThis, regexGetVariables, regexWatchDoubleQuote, regexWatchSingleQuote, replaceVariables } from "../card/config"
+import { SimpleButton } from "../../component/button/button"
+import { randomGID, Util } from "../../controller/utils"
+import { regexGetVariableByThis, regexGetVariables, replaceVariables } from "../card/config"
 import { BaseDA, CkEditorUploadAdapter, ConfigData, imgFileTypes } from "../../controller/config"
-import { handleErrorImgSrc, LayoutElement, regexI18n, supportProperties } from "./config"
-import { Rating } from "../../component/rating/rating"
-import { ProgressBar } from "../../component/progress-bar/progress-bar"
-import { ProgressCircle } from "../../component/progress-circle/progress-circle"
-import { CustomCkEditor5 } from "../../component/ck-editor/ckeditor"
-import { FCheckbox, FColorPicker, FDateTimePicker, FGroupCheckbox, FGroupRadioButton, FInputPassword, FNumberPicker, FRadioButton, FSelect1, FSelectMultiple, FSwitch, FTextArea, FTextField, FUploadFile, FUploadMultipleFileType } from "./component-form"
-import { useTranslation } from "react-i18next"
-import { showDialog } from "../../component/dialog/dialog"
-import { DataController } from "../../controller/data"
-import { ToastMessage } from "../../component/toast-noti/toast-noti"
-import { VideoPlayer } from "../../component/video/video"
-import { IframePlayer } from "../../component/iframe/iframe"
-import { ComponentStatus } from "../../component/component-status"
-import { useWiniContext } from "../WiniProvider"
+import { FCheckbox, FColorPicker, FDateTimePicker, FGroupCheckbox, FGroupRadioButton, FInputPassword, FNumberPicker, FRadioButton, FSelect1, FSelectMultiple, FSwitch, FTextArea, FTextField, FUploadMultipleFileType } from "./component-form"
+import { Winicon, Text, Rating, CustomCkEditor5, ProgressCircle, ProgressBar, VideoPlayer, IframePlayer, ComponentStatus, useWiniContext, Pagination, AudioPlayer, ToastMessage, TableController, DataController, showDialog } from "../../index"
 
 interface Props {
     methods?: UseFormReturn
@@ -161,70 +145,29 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
     const { i18n } = useTranslation();
     const defferWatch = useDeferredValue(JSON.stringify(props.methods!.watch()))
     /** handle replace variables */
-    const replaceThisVariables = (content: string, isEval?: boolean) => {
+    const replaceThisVariables = (content: string) => {
         const replaceTmp = content.replace(replaceVariables, (m: string, p1: string) => {
             const execRegex = regexGetVariables.exec(m)
             if (!execRegex?.[1]) return m
-            const variable = execRegex[1].split(".")
             let getValue: any = m
-            switch (variable[0]) {
-                case "Util":
-                    try {
-                        getValue = new Function("indexItem", "Util", `return \`${m.replace(/this/g, "indexItem")}\``)({ ...(props.indexItem ?? {}), index: props.index }, Util)
-                    } catch (error) {
-                        getValue = m
-                    }
-                    break;
-                case "this":
-                    if (props.indexItem && !isEval) {
-                        if ((props.type === "card" || props.type === "view") && props.indexItem) {
-                            try {
-                                getValue = new Function("indexItem", "Util", `return \`${m.replace(/this/g, "indexItem")}\``)({ ...props.indexItem, index: props.index }, Util)
-                            } catch (error) {
-                                getValue = m
-                            }
-                        } else getValue = props.indexItem?.[variable[1]]
-                    } else getValue = m
-                    break;
-                case "location":
-                    getValue = location[variable[1]]
-                    break;
-                case "query":
-                    getValue = query.get(variable[1])
-                    break;
-                case "params":
-                    getValue = params[variable[1]]
-                    break;
-                case "cookie":
-                    getValue = Util.getCookie(variable[1])
-                    break;
-                case "storage":
-                    getValue = Util.getStorage(variable[1])
-                    break;
-                case "session":
-                    getValue = Util.getSession(variable[1])
-                    break;
-                default:
-                    try {
-                        if (regexWatchSingleQuote.test(execRegex[1]) || regexWatchDoubleQuote.test(execRegex[1])) {
-                            getValue = new Function("watch", `return ${p1}`)(props.methods!.watch)
-                        }
-                    } catch (error) {
-                        console.log("watch error", error)
-                        getValue = m
-                    }
-                    break;
-            }
-            if (regexI18n.test(getValue)) {
-                try {
-                    getValue = new Function("t", `return \`${getValue}\``)(i18n.t)
-                } catch (error) {
-                    console.log("getValue error", getValue, error)
-                }
+            try {
+                getValue = new Function(
+                    "indexItem",
+                    "Util",
+                    "watch",
+                    "location",
+                    "query",
+                    "params",
+                    "t",
+                    `return ${p1.replace(/this/g, "indexItem")}`
+                )({ ...(props.indexItem ?? {}), index: props.index }, Util, props.methods!.watch, location, query, params, i18n.t)
+            } catch (error) {
+                console.error("item: ", props.item, " --- content: ", content, " --- error: ", error)
+                getValue = m
             }
             return getValue
         })
-        return replaceTmp === "null" || replaceTmp === "undefined" ? undefined : replaceTmp
+        return replaceTmp === "null" ? null : replaceTmp === "undefined" ? undefined : replaceTmp === "true" ? true : replaceTmp === "false" ? false : isNaN(Number(replaceTmp)) ? replaceTmp : Number(replaceTmp)
     }
     const watchForCustomProps = useMemo(() => {
         const tmp: { [p: string]: any } = {}
@@ -239,14 +182,10 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                         "location",
                         "query",
                         "params",
-                        `return ${st.Trigger.replace(replaceVariables, (m: string) => {
-                            const execRegex = regexGetVariables.exec(m)
-                            if (!execRegex?.[1]) return m
-                            return execRegex[1].replace(/this/g, "indexItem")
-                        })}`
+                        `return ${st.Trigger.replace(replaceVariables, (_: string, p1: string) => p1.replace(/this/g, "indexItem"))}`
                     )({ ...(props.indexItem ?? {}), index: props.index }, Util, props.methods!.watch, location, query, params)
                 } catch (error) {
-                    console.log(st.Trigger, error)
+                    console.error("item: ", props.item, " --- trigger: ", st.Trigger, " --- error: ", error)
                 }
                 if (checked) {
                     for (const sp of supportProperties) {
@@ -283,10 +222,10 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                                 break;
                             case ActionType.navigate:
                                 if (actItem.To) {
-                                    if (props.indexItem && regexGetVariables.test(actItem.To)) {
-                                        const url = replaceThisVariables(actItem.To)
-                                        if (url?.includes("https")) window.open(url, "_blank")
-                                        else navigate((url?.startsWith("/") ? "/" : "") + url?.split("/").filter((e: string) => !!e.trim()).join("/"))
+                                    if (regexGetVariables.test(actItem.To)) {
+                                        const url = `${replaceThisVariables(actItem.To)}`
+                                        if (url.includes("https")) window.open(url, "_blank")
+                                        else navigate((url?.startsWith("/") ? "/" : "") + url.split("/").filter((e: string) => !!e.trim()).join("/"))
                                     } else if (actItem.To.includes("https")) {
                                         window.open(actItem.To, "_blank")
                                     } else {
@@ -297,14 +236,6 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                             case ActionType.submit:
                                 if (actItem.To === "this form") props.onSubmit?.()
                                 else pageAllRefs[actItem.To]?.current?.onSubmit()
-                                return;
-                            case ActionType.showPopup:
-                                const openPopupBtn = document.querySelector(`.open-${actItem.To}`) as any
-                                if (openPopupBtn) openPopupBtn.click()
-                                return;
-                            case ActionType.closePopup:
-                                const closePopupBtn = document.querySelector(`.close-${actItem.To}`) as any
-                                if (closePopupBtn) closePopupBtn.click()
                                 return;
                             case ActionType.setValue:
                                 props.methods!.setValue(actItem.NameField, new Function((isNaN(Number(actItem.Caculate)) && actItem.Calculate !== "true" && actItem.Calculate !== "false" && actItem.Calculate !== "null") ? `return \`${actItem.Caculate}\`` : `return ${actItem.Caculate}`)())
@@ -384,12 +315,12 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                             else _props.style = { cursor: "pointer" }
                         }
                         break;
-                    case TriggerType.onChange:
+                    case TriggerType.change:
                         if (triggerActions.length) {
                             _props.onChange = (ev: any) => handleEvent(triggerActions, ev)
                         }
                         break;
-                    case TriggerType.onBlur:
+                    case TriggerType.blur:
                         if (triggerActions.length) {
                             _props.onBlur = (ev: any) => handleEvent(triggerActions, ev)
                         }
@@ -397,6 +328,11 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                     case TriggerType.scroll:
                         if (triggerActions.length) {
                             _props.onScroll = (ev: any) => handleEvent(triggerActions, ev)
+                        }
+                        break;
+                    case TriggerType.loaded:
+                        if (triggerActions.length) {
+                            _props.onLoaded = (ev: any) => handleEvent(triggerActions, ev)
                         }
                         break;
                     default:
@@ -522,14 +458,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                         if (_col.Form.ComponentType === ComponentType.select1) {
                             tmpValue = _col.Form.Options.find((e: any) => e.id === tmpValue)?.name ?? tmpValue
                         } else {
-                            tmpValue = _col.Form.Options.filter((e: any) => {
-                                switch (_col.DataType) {
-                                    case FEDataType.BOOLEAN:
-                                        return tmpValue === e.id || `${tmpValue}` === `${e.id}`
-                                    default:
-                                        return tmpValue?.includes(e.id);
-                                }
-                            }).map((e: any) => e.name).join(",")
+                            tmpValue = _col.Form.Options.filter((e: any) => (_col.DataType === FEDataType.BOOLEAN ? (tmpValue === e.id || `${tmpValue}` === `${e.id}`) : tmpValue?.includes(e.id))).map((e: any) => e.name).join(",")
                         }
                     }
                     break;
@@ -554,11 +483,11 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                     }
                     if (newController.page && regexGetVariables.test(`${newController.page}`)) {
                         const newPageIndex = replaceThisVariables(`${newController.page}`)
-                        if (newPageIndex) newController.page = parseInt(newPageIndex)
+                        if (newPageIndex) newController.page = newPageIndex
                     }
                     if (newController.size && regexGetVariables.test(`${newController.size}`)) {
                         const newPageSize = replaceThisVariables(`${newController.size}`)
-                        if (newPageSize) newController.page = parseInt(newPageSize)
+                        if (newPageSize) newController.page = newPageSize
                     }
                     if (newController.ids && regexGetVariables.test(newController.ids)) {
                         if (regexGetVariableByThis.test(newController.ids)) {
@@ -574,9 +503,9 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                 break;
             case ComponentType.navLink:
                 if (dataValue && dataValue.backgroundImage) tmpProps = { ...customProps, style: { ...customProps.style, ...dataValue } }
-                if (tmpProps.to && props.indexItem && regexGetVariables.test(tmpProps.to)) {
-                    const url = replaceThisVariables(tmpProps.to)
-                    tmpProps.to = (url?.startsWith("/") ? "/" : "") + url?.split("/").filter((e: string) => !!e.trim()).join("/")
+                if (tmpProps.to && regexGetVariables.test(tmpProps.to)) {
+                    const url = `${replaceThisVariables(tmpProps.to)}`
+                    tmpProps.to = url
                 }
                 break;
             case ComponentType.text:
@@ -626,6 +555,27 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                     if (iconSuffix) tmpProps.suffix = <RenderLayerElement {...props} item={iconSuffix} style={undefined} className={undefined} />
                 }
                 break;
+            case ComponentType.pagination:
+                if (tmpProps.onChange) {
+                    tmpProps.onChangePage = tmpProps.onChange
+                    delete tmpProps.onChange
+                }
+                if (tmpProps.currentPage && regexGetVariables.test(tmpProps.currentPage)) {
+                    const newCurrentPage = replaceThisVariables(tmpProps.currentPage)
+                    if (newCurrentPage) tmpProps.currentPage = newCurrentPage
+                }
+                if (tmpProps.itemPerPage && regexGetVariables.test(`${tmpProps.itemPerPage}`)) {
+                    const newItemPerPage = replaceThisVariables(tmpProps.itemPerPage)
+                    if (newItemPerPage) tmpProps.itemPerPage = newItemPerPage
+                }
+                if (tmpProps.totalItem && regexGetVariables.test(`${tmpProps.totalItem}`)) {
+                    const newTotalItem = replaceThisVariables(tmpProps.totalItem)
+                    if (newTotalItem) tmpProps.totalItem = newTotalItem
+                }
+                if (typeof tmpProps.currentPage === "string") tmpProps.currentPage = parseInt(tmpProps.currentPage)
+                if (typeof tmpProps.itemPerPage === "string") tmpProps.itemPerPage = parseInt(tmpProps.itemPerPage)
+                if (typeof tmpProps.totalItem === "string") tmpProps.totalItem = parseInt(tmpProps.totalItem)
+                break;
             default:
                 break;
         }
@@ -670,12 +620,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
         case ComponentType.text:
             if (props.item.NameField) {
                 if (Array.isArray(dataValue)) { // list file
-                    return dataValue.map((f, i) => <FileName
-                        key={f.id + "-" + i}
-                        file={f}
-                        index={i}
-                        {...typeProps}
-                    />)
+                    return dataValue.map((f, i) => <FileName key={f.id + "-" + i} file={f} index={i} {...typeProps} />)
                 } else if (typeof dataValue === "object") return typeProps.html = dataValue?.["__html"] ?? ""
                 else typeProps.value = dataValue
             }
@@ -698,23 +643,21 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
         case ComponentType.video:
             if (props.item.NameField && !!dataValue?.length) {
                 if (Array.isArray(dataValue)) {
-                    return dataValue.map((f, i) => <VideoPlayer
-                        key={f.id + "-" + i}
-                        {...typeProps}
-                        src={f.url}
-                    />)
+                    return dataValue.map((f, i) => <VideoPlayer key={f.id + "-" + i} {...typeProps} src={f.url} />)
                 } else typeProps.src = getValidLink(dataValue)
             }
             return <VideoPlayer {...typeProps} />
+        case ComponentType.audio:
+            if (props.item.NameField && !!dataValue?.length) {
+                if (Array.isArray(dataValue)) {
+                    return dataValue.map((f, i) => <AudioPlayer key={f.id + "-" + i} {...typeProps} src={f.url} />)
+                } else typeProps.src = getValidLink(dataValue)
+            }
+            return <AudioPlayer {...typeProps} />
         case ComponentType.iframe:
             if (props.item.NameField && !!dataValue?.length) {
                 if (Array.isArray(dataValue)) {
-                    return dataValue.map((f, i) => <IframePlayer
-                        key={f.id + "-" + i}
-                        referrerPolicy="no-referrer"
-                        {...typeProps}
-                        src={f.url}
-                    />)
+                    return dataValue.map((f, i) => <IframePlayer key={f.id + "-" + i} referrerPolicy="no-referrer" {...typeProps} src={f.url} />)
                 } else typeProps.src = getValidLink(dataValue)
             }
             return <IframePlayer referrerPolicy="no-referrer" {...typeProps} />
@@ -738,9 +681,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
             if (props.itemData) typeProps.itemData = typeProps.itemData ? { ...props.itemData, ...typeProps.itemData } : props.itemData
             if (props.childrenData) typeProps.childrenData = typeProps.childrenData ? { ...props.childrenData, ...typeProps.childrenData } : props.childrenData
             if (props.propsData) typeProps.propsData = typeProps.propsData ? { ...props.propsData, ...typeProps.propsData } : props.propsData
-            return <FormById onSubmit={(ev) => { console.log("????????? ", ev) }}
-                {...typeProps} id={typeProps.formId} ref={pageAllRefs[findId]}
-            />
+            return <FormById  {...typeProps} id={typeProps.formId} ref={pageAllRefs[findId]} />
         case "card":
         case ComponentType.card:
             if (props.itemData) typeProps.itemData = typeProps.itemData ? { ...props.itemData, ...typeProps.itemData } : props.itemData
@@ -753,11 +694,6 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
             if (props.childrenData) typeProps.childrenData = typeProps.childrenData ? { ...props.childrenData, ...typeProps.childrenData } : props.childrenData
             if (props.propsData) typeProps.propsData = typeProps.propsData ? { ...props.propsData, ...typeProps.propsData } : props.propsData
             return <ViewById {...typeProps} id={typeProps.viewId} />
-        case ComponentType.popup:
-            typeProps.id = props.item.Id
-            return <ActionPopup {...typeProps}>
-                {children.map(e => <RenderLayerElement key={e.Id} {...props} item={e} style={undefined} className={undefined} />)}
-            </ActionPopup>
         case ComponentType.button:
             return <SimpleButton {...typeProps} />
         case ComponentType.textField:
@@ -767,12 +703,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
             else
                 return <FTextField  {...typeProps2} name={props.item.NameField} methods={props.methods} />
         case ComponentType.textArea:
-            if (typeProps?.style?.height === "fit-content") typeProps.autoHeight = true
-            return <FTextArea
-                {...typeProps}
-                name={props.item.NameField}
-                methods={props.methods}
-            />
+            return <FTextArea {...typeProps} name={props.item.NameField} methods={props.methods} />
         case ComponentType.radio:
             if (_options?.length) return <FGroupRadioButton {...typeProps} methods={props.methods} name={props.item.NameField} options={_options} />
             else return <FRadioButton {...typeProps} methods={props.methods} name={props.item.NameField} />
@@ -793,21 +724,17 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
         case ComponentType.datePicker:
             return <FDateTimePicker {...typeProps} methods={props.methods} name={props.item.NameField} />
         case ComponentType.upload:
-            // return <FUploadFile
-            //     {...typeProps}
-            //     methods={props.methods}
-            //     name={props.item.NameField}
-            //     simpleStyle
-            // />
             return <FUploadMultipleFileType {...typeProps} methods={props.methods} name={props.item.NameField} />
         case ComponentType.ckEditor:
             return <CustomCkEditor5 {...typeProps}
                 methods={props.methods}
-                extraPlugins={params.ckEditorUploadPlugin ?? [function (editor: { plugins: { get: (arg0: string) => { (): any; new(): any; createUploadAdapter: (loader: any) => CkEditorUploadAdapter; }; }; }) {
-                    editor.plugins.get('FileRepository').createUploadAdapter = (loader: any) => {
-                        return new CkEditorUploadAdapter(loader);
-                    };
-                }]}
+                extraPlugins={params.ckEditorUploadPlugin ?? [
+                    function (editor: { plugins: { get: (arg0: string) => { (): any; new(): any; createUploadAdapter: (loader: any) => CkEditorUploadAdapter; }; }; }) {
+                        editor.plugins.get('FileRepository').createUploadAdapter = (loader: any) => {
+                            return new CkEditorUploadAdapter(loader);
+                        };
+                    }
+                ]}
                 value={props.methods?.watch(props.item.NameField)}
                 onBlur={(_: any, editor: any) => {
                     const editorData = editor.getData()
@@ -815,6 +742,8 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                     if (typeProps.onBlur) typeProps.onBlur(editorData)
                 }}
             />
+        case ComponentType.pagination:
+            return <Pagination simpleStyle {...typeProps} />
         default:
             return <div {...typeProps} />
     }
@@ -836,33 +765,10 @@ const RenderContainer = ({ type, children, ...props }: { type: "label" | "p" | "
     }
 }
 
-const ActionPopup = ({ id, children }: { id: string, children: ReactNode, className?: string }) => {
-    const ref = useRef<any>(null)
-
-    useEffect(() => {
-        if (ref.current) ref.current.setState({ ...ref.current.state, content: children })
-    }, [children])
-
-    return <>
-        <Popup ref={ref} />
-        <button hidden type="button" className={`open-${id}`} onClick={() => {
-            showPopup({
-                ref: ref,
-                content: children ?? <div />
-            })
-        }} />
-        <button hidden type="button" className={`close-${id}`} onClick={() => { closePopup(ref) }} />
-    </>
-}
-
 const FileName = ({ file, index, ...props }: { type?: "div" | "p" | "span" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6", file: { [k: string]: any }, index: number, maxLine?: number, className?: string, style?: CSSProperties, value?: string, [k: string]: any }) => {
     return <>
         {!!index && <span className={props.className} style={{ ...(props.style ?? {}), color: "--neutral-text-body-reverse-color" }}>, </span>}
-        <CustomText
-            {...props}
-            value={file.name?.split("/").pop() ?? "unknown"}
-            onClick={() => { window.open(file.url, "_blank") }}
-        />
+        <CustomText {...props} value={file.name?.split("/").pop() ?? "unknown"} onClick={() => { window.open(file.url, "_blank") }} />
     </>
 }
 
@@ -983,12 +889,10 @@ export const PageById = (props: PageByIdProps) => {
                 methods={props.methods ?? methods}
             />
         } else if (props.onlyBody) {
-            return loading ? <LoadingView /> :
-                <RenderPageView key={pageItem.Id} layers={layers} {...props} methods={props.methods ?? methods} />
+            return <RenderPageView key={pageItem.Id} layers={layers} {...props} methods={props.methods ?? methods} />
         } else {
             return pageItem && !!layout.length ? <RenderPageView key={pageItem.LayoutId} layers={layout} {...props} methods={props.methods ?? methods}>
-                {loading ? <LoadingView /> :
-                    <RenderPageView key={pageItem.Id} layers={layers} {...props} methods={props.methods ?? methods} bodyId={layout.find(e => e.Setting?.className?.includes(LayoutElement.body))?.Id} />}
+                <RenderPageView key={pageItem.Id} layers={layers} {...props} methods={props.methods ?? methods} bodyId={layout.find(e => e.Setting?.className?.includes(LayoutElement.body))?.Id} />
             </RenderPageView> : null
         }
     } else return null
@@ -1074,21 +978,11 @@ export const PageByUrl = ({ childrenData, ...props }: PageByUrlProps) => {
                 methods={props.methods ?? methods}
             />
         } else if (props.onlyBody) {
-            // return loading ? <LoadingView /> :
-            return loading ? <></> :
-                <RenderPageView key={pageItem.Id} layers={layers} {...props} childrenData={childrenData} methods={props.methods ?? methods} />
+            return !loading && <RenderPageView key={pageItem.Id} layers={layers} {...props} childrenData={childrenData} methods={props.methods ?? methods} />
         } else {
             return pageItem && !!layout.length ? <RenderPageView key={pageItem.LayoutId} layers={layout} {...props} childrenData={childrenData} methods={props.methods ?? methods}>
-                {/* {loading ? <LoadingView /> : */}
-                {loading ? <></> :
-                    <RenderPageView key={pageItem.Id} layers={layers} {...props} childrenData={childrenData} methods={props.methods ?? methods} bodyId={layout.find(e => e.Setting?.className?.includes(LayoutElement.body))?.Id} />}
+                {!loading && <RenderPageView key={pageItem.Id} layers={layers} {...props} childrenData={childrenData} methods={props.methods ?? methods} bodyId={layout.find(e => e.Setting?.className?.includes(LayoutElement.body))?.Id} />}
             </RenderPageView> : null
         }
     } else return null
-}
-
-const LoadingView = () => {
-    return <div className="col" style={{ width: "100%", gap: "2rem", padding: "2.4rem" }}>
-        {Array.from({ length: 5 }).map((_, i) => <div key={i} className="skeleton-loading" style={{ height: "16rem" }}></div>)}
-    </div>
 }

@@ -1,11 +1,10 @@
 .custom-pagination {
-    width: 100%;
     height: 24px;
-    justify-content: space-between;
     gap: 1.6rem;
 }
 
-.custom-pagination>.row {
+.custom-pagination>.row,
+.simple-custom-pagination>.row {
     gap: 1.6rem;
     height: 100%;
 }

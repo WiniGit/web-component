@@ -1,4 +1,4 @@
-import { CheckboxForm, DateTimePickerForm, ImportFileForm, GroupCheckboxForm, RangeForm, Select1Form, SelectMultipleForm, SwitchForm, TextAreaForm, TextFieldForm, CKEditorForm, RateForm, ColorPickerForm, GroupRadioButtonForm, InputPasswordForm, WiniEditorForm, IconPickerForm, UploadMultipleFileTypeForm } from "../../component/component-form";
+import { CheckboxForm, DateTimePickerForm, GroupCheckboxForm, RangeForm, Select1Form, SelectMultipleForm, SwitchForm, TextAreaForm, TextFieldForm, CKEditorForm, RateForm, ColorPickerForm, GroupRadioButtonForm, InputPasswordForm, WiniEditorForm, IconPickerForm, UploadMultipleFileTypeForm } from "../../component/component-form";
 import { differenceInCalendarDays, differenceInMinutes } from "date-fns";
 import { validate } from "validate.js";
 import { ComponentType, FEDataType, ValidateType } from "../da";

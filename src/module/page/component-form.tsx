@@ -66,7 +66,7 @@ interface FTextAreaProps {
     onChange?: React.ChangeEventHandler<HTMLTextAreaElement>;
 }
 
-export function FTextArea({ autoHeight, ...props }: FTextAreaProps) {
+export function FTextArea({ autoHeight, onChange, ...props }: FTextAreaProps) {
     const _covertErrors = useMemo(() => props.name ? convertErrors(props.methods.formState.errors, props.name) : undefined, [props.name, props.methods.formState.errors?.[props.name!]])
     const { t } = useTranslation()
 
@@ -79,12 +79,17 @@ export function FTextArea({ autoHeight, ...props }: FTextAreaProps) {
             }
         }) : undefined}
         {...props}
+        onChange={props.name?.length ? undefined : ((ev) => {
+            ev.target.style.height = `0px`
+            ev.target.style.height = `${ev.target.scrollHeight}px`
+            onChange?.(ev)
+        })}
         register={props.name?.length ? (props.methods!.register(props.name, {
             required: props.required,
             onChange: (ev) => {
                 ev.target.style.height = `0px`
                 ev.target.style.height = `${ev.target.scrollHeight}px`
-                props.onChange?.(ev)
+                onChange?.(ev)
             },
             onBlur: props.onBlur
         }) as any) : undefined}

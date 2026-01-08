@@ -6,7 +6,6 @@ import { Text } from "../text/text";
 import { TextField, TextFieldRef } from "../text-field/text-field";
 import { Winicon } from "../wini-icon/winicon";
 import { useTranslation } from "react-i18next";
-import { Popup } from "../popup/popup";
 
 interface Props {
     id?: string,
@@ -17,13 +16,13 @@ interface Props {
     hideGoToPage?: boolean,
     hidePageSize?: boolean,
     style?: CSSProperties,
-    className?: string
+    className?: string,
+    simpleStyle?: boolean
 }
 
 export function Pagination({ itemPerPage = 10, ...props }: Props) {
     const goToPageRef = useRef<TextFieldRef>(null)
     const { t } = useTranslation()
-    const popupRef = useRef<any>(null)
 
     useEffect(() => {
         if (goToPageRef.current) {
@@ -36,9 +35,8 @@ export function Pagination({ itemPerPage = 10, ...props }: Props) {
         props.onChangePage?.(1, itemPerPage);
         return <div></div>;
     } else if (props.totalItem) {
-        return <div id={props.id} className={`${styles['custom-pagination']} row ${props.className ?? ""}`} style={props.style}>
+        return <div id={props.id} className={`${styles[props.simpleStyle ? 'simple-custom-pagination' : 'custom-pagination']} row ${props.className ?? ""}`} style={props.style}>
             {!props.hidePageSize && <div className="row" style={{ gap: '0.8rem' }}>
-                <Popup ref={popupRef} />
                 <Select1
                     value={itemPerPage}
                     options={[10, 20, 50, 100, 200].map((item, _) => { return { id: item, name: `${item}` } })}
@@ -61,9 +59,9 @@ export function Pagination({ itemPerPage = 10, ...props }: Props) {
                 breakLabel="..."
                 pageCount={Math.ceil(props.totalItem / itemPerPage)}
                 previousClassName="row"
-                previousLabel={<Winicon src={"fill/arrows/left-arrow"} size={"1.4rem"} />}
+                previousLabel={<Winicon src={"fill/arrows/left-arrow"} size={14} />}
                 nextClassName="row"
-                nextLabel={<Winicon src={"fill/arrows/right-arrow"} size={"1.4rem"} />}
+                nextLabel={<Winicon src={"fill/arrows/right-arrow"} size={14} />}
                 containerClassName={`${styles['pagination']} row`}
                 pageClassName="row button-text-3"
                 activeClassName={styles['active']}

@@ -38,6 +38,7 @@ export enum ComponentType {
     colorPicker = "ColorPicker",
     emoji = "Emoji",
     winiEditor = "WiniEditor",
+    pagination = "Pagination",
     none = "none"
 }
 
@@ -80,6 +81,7 @@ export enum ValidateType {
 
 export enum TriggerType {
     click = "click",
+    rightClick = "rightClick",
     dbclick = "dbclick",
     hover = "hover",
     keydown = "keydown",
@@ -87,19 +89,17 @@ export enum TriggerType {
     mouseleave = "mouseleave",
     mousedown = "mousedown",
     mouseup = "mouseup",
-    onChange = "onChange",
-    onBlur = "onBlur",
+    change = "change",
+    blur = "blur",
     scroll = "scroll",
+    loaded = "loaded",
 }
 
 export enum ActionType {
     navigate = "navigate",
     reload = "reload",
     back = "back",
-    scrollTo = "scrollTo",
-    showPopup = "showPopup",
     toastMessage = "toastMessage",
-    closePopup = "closePopup",
     submit = "submit",
     setValue = "setValue",
     loadMore = "loadMore",

@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { Util } from "./utils";
 import { ToastMessage } from '../component/toast-noti/toast-noti';
-import ReactDOM from 'react-dom'
 
 export class ConfigData {
     static pid = ""
