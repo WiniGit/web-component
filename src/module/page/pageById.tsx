@@ -212,7 +212,6 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
             Object.values(TriggerType).forEach(trigger => {
                 const triggerActions = _props.action.filter((e: any) => e.Type === trigger)
                 const handleEvent = async (acts = [], event: any) => {
-                    if (event?.target) event.target.style.pointerEvents = "none"
                     for (const [_, act] of acts.entries()) {
                         const actItem = act as { [p: string]: any }
                         switch (actItem.Action) {
@@ -302,7 +301,6 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                                 break;
                         }
                     }
-                    if (event?.target) event.target.style.pointerEvents = ""
                 }
                 switch (trigger) {
                     case TriggerType.click:
@@ -310,8 +308,6 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                             _props.onClick = (ev: any) => {
                                 handleEvent(triggerActions, ev)
                             }
-                            if (_props.style) _props.style = { ..._props.style, cursor: "pointer" }
-                            else _props.style = { cursor: "pointer" }
                         }
                         break;
                     case TriggerType.change:
