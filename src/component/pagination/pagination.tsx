@@ -12,7 +12,7 @@ interface Props {
     currentPage: number,
     itemPerPage: number,
     totalItem?: number,
-    onChangePage?: Function,
+    onChange?: (ev: { page: number, size: number }) => void,
     hideGoToPage?: boolean,
     hidePageSize?: boolean,
     style?: CSSProperties,
@@ -32,7 +32,7 @@ export function Pagination({ itemPerPage = 10, ...props }: Props) {
     }, [props.currentPage])
 
     if (props.currentPage > 1 && (!props.totalItem || (Math.floor(props.totalItem / itemPerPage) + (props.totalItem % itemPerPage === 0 ? 0 : 1)) < props.currentPage)) {
-        props.onChangePage?.(1, itemPerPage);
+        props.onChange?.({ page: 1, size: itemPerPage });
         return <div></div>;
     } else if (props.totalItem) {
         return <div id={props.id} className={`${styles[props.simpleStyle ? 'simple-custom-pagination' : 'custom-pagination']} row ${props.className ?? ""}`} style={props.style}>
@@ -45,7 +45,7 @@ export function Pagination({ itemPerPage = 10, ...props }: Props) {
                         style={{ width: '6.8rem' }}
                         suffix={<Winicon src={"fill/arrows/down-arrow"} size={12} />}
                         onChange={(ev: any) => {
-                            props.onChangePage?.(props.currentPage, isNaN(parseInt(ev.id)) ? itemPerPage : parseInt(ev.id));
+                            props.onChange?.({ page: props.currentPage, size: isNaN(parseInt(ev.id)) ? itemPerPage : parseInt(ev.id) });
                         }}
                     />
                     <Text className="body-3">{t("ofItems", { totalItem: props.totalItem })}</Text>
@@ -54,7 +54,7 @@ export function Pagination({ itemPerPage = 10, ...props }: Props) {
             </>}
             <ReactPaginate
                 onPageChange={(ev) => {
-                    props.onChangePage?.(ev.selected + 1, itemPerPage);
+                    props.onChange?.({ page: ev.selected + 1, size: itemPerPage });
                 }}
                 forcePage={props.currentPage - 1}
                 breakClassName="row button-text-3"
@@ -74,7 +74,7 @@ export function Pagination({ itemPerPage = 10, ...props }: Props) {
             />
             {!props.hideGoToPage && <>
                 <div style={{ height: '1.6rem', backgroundColor: "var(--neutral-bolder-border-color, light-dark(#D7D7DB, #494950))", width: 1 }} />
-                <Text className="label-3">{t("go")} {t("page").toLowerCase()}</Text>
+                <span className="label-3">{t("go")} {t("page").toLowerCase()}</span>
                 <TextField
                     ref={goToPageRef as any}
                     style={{ width: '4.8rem', textAlign: "center" }}
@@ -83,7 +83,7 @@ export function Pagination({ itemPerPage = 10, ...props }: Props) {
                     onBlur={(ev) => {
                         const _tmp = ev.target.value.trim().length ? parseInt(ev.target.value.trim()) : undefined
                         if (_tmp && !isNaN(_tmp) && _tmp > 0 && _tmp <= Math.ceil(props.totalItem! / itemPerPage)) {
-                            props.onChangePage?.(_tmp, itemPerPage)
+                            props.onChange?.({ page: _tmp, size: itemPerPage })
                         } else ev.target.value = ""
                     }}
                 />

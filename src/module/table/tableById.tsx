@@ -475,7 +475,7 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
                 currentPage={pageDetails.page}
                 itemPerPage={pageDetails.size}
                 totalItem={data.totalCount}
-                onChangePage={(page: number, size: number) => {
+                onChange={({ page, size }) => {
                     if (pageDetails.page !== page || pageDetails.size !== size) {
                         setPageDetails({ page: page, size: size });
                         getData(page, size);

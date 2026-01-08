@@ -558,10 +558,6 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                 }
                 break;
             case ComponentType.pagination:
-                if (tmpProps.onChange) {
-                    tmpProps.onChangePage = tmpProps.onChange
-                    delete tmpProps.onChange
-                }
                 if (tmpProps.currentPage && regexGetVariables.test(tmpProps.currentPage)) {
                     const newCurrentPage = replaceThisVariables(tmpProps.currentPage)
                     if (newCurrentPage) tmpProps.currentPage = newCurrentPage
