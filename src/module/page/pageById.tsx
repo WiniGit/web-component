@@ -124,7 +124,6 @@ export const getValidLink = (link: string) => {
     else return ConfigData.fileUrl + (link.startsWith("/") ? link : `/${link}`)
 }
 
-const regexGuid = /^[0-9a-fA-F]{32}$/;
 const AsyncFunction = Object.getPrototypeOf(async function () { }).constructor;
 const CaculateLayer = (props: RenderLayerElementProps) => {
     const findId = props.item.Setting?.id ?? props.item.Id
@@ -369,7 +368,10 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
         if (tmp?.length) return tmp
         if (!keys.length && props.cols?.length) {
             const tmpCol = props.cols?.find(e => e.Name === keyname)
-            if (tmpCol) return tmpCol?.Form?.Options
+            if (tmpCol) {
+                if (tmpCol.DataType === FEDataType.FILE) return props.options?.["_files"]
+                return tmpCol?.Form?.Options
+            }
         }
         return undefined
     }, [props.item.NameField, props.options, props.cols])
@@ -428,8 +430,8 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                     if (tmpValue?.length) {
                         if (!Array.isArray(tmpValue)) {
                             tmpValue = tmpValue.split(",").map((fid: string) => {
-                                if (regexGuid.test(fid)) {
-                                    const tmpF = props.options?.["_files"]?.find(f => f.Id === fid)
+                                if (ConfigData.regexGuid.test(fid)) {
+                                    const tmpF = _options?.find((f: any) => f.Id === fid)
                                     if (!tmpF) return undefined;
                                     return { id: tmpF.Id, name: tmpF.Name, size: tmpF.Size, type: tmpF.Type, url: ConfigData.fileUrl + tmpF.Url }
                                 } else {
@@ -635,7 +637,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                         referrerPolicy="no-referrer"
                         onError={(ev) => { ev.currentTarget.src = handleErrorImgSrc }}
                         {...typeProps}
-                        src={f.url}
+                        src={ConfigData.regexGuid.test(f.id) ? (ConfigData.imgUrlId + f.id) : f.url}
                     />)
                 } else typeProps.src = getValidLink(dataValue)
             }
@@ -743,7 +745,6 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                 }}
             />
         case ComponentType.pagination:
-            if (typeof typeProps.currentPage === "string" || typeof typeProps.itemPerPage === "string" || typeof typeProps.totalItem === "string") return null
             return <Pagination simpleStyle {...typeProps} />
         default:
             return <div {...typeProps} />
