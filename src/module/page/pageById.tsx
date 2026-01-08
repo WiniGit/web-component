@@ -487,7 +487,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                     }
                     if (newController.size && regexGetVariables.test(`${newController.size}`)) {
                         const newPageSize = replaceThisVariables(`${newController.size}`)
-                        if (newPageSize) newController.page = newPageSize
+                        if (newPageSize) newController.size = newPageSize
                     }
                     if (newController.ids && regexGetVariables.test(newController.ids)) {
                         if (regexGetVariableByThis.test(newController.ids)) {
@@ -743,6 +743,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                 }}
             />
         case ComponentType.pagination:
+            if (typeof typeProps.currentPage === "string" || typeof typeProps.itemPerPage === "string" || typeof typeProps.totalItem === "string") return null
             return <Pagination simpleStyle {...typeProps} />
         default:
             return <div {...typeProps} />
