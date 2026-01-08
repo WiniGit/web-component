@@ -193,14 +193,16 @@ export const CardById = forwardRef<CardRef, CardProps>((props, ref) => {
         props.onRelativeLoaded?.(getRelativeData)
     }, [getRelativeData])
 
+    const stateMethods = useForm({ shouldFocusError: false })
+
     useImperativeHandle(ref, () => ({
         getData: getData,
         data: data,
         controller: controller,
         setData: setData,
-        methods: methods,
+        methods: stateMethods,
         relativeData: getRelativeData
-    }), [data, cardItem, controller, getRelativeData, methods]);
+    }), [data, cardItem, controller, getRelativeData, stateMethods]);
 
     return cardItem ? data.totalCount === 0 ?
         (props.emptyElement ?? (props.emptyLink && <EmptyPage
@@ -211,6 +213,7 @@ export const CardById = forwardRef<CardRef, CardProps>((props, ref) => {
         />)) : <StateCard
             key={cardItem.Id}
             {...props}
+            methods={stateMethods}
             data={data.data}
             cardItem={cardItem}
             extendData={finalExtendData}
@@ -219,8 +222,7 @@ export const CardById = forwardRef<CardRef, CardProps>((props, ref) => {
         : null
 })
 
-const StateCard = ({ data, cardItem, layers, extendData, ...props }: { data: { [k: string]: any }[], cardItem: { [k: string]: any }, layers: { [k: string]: any }[], extendData: { [k: string]: any }, }) => {
-    const methods = useForm({ shouldFocusError: false })
+const StateCard = ({ data, cardItem, layers, extendData, methods, ...props }: { methods: UseFormReturn, data: { [k: string]: any }[], cardItem: { [k: string]: any }, layers: { [k: string]: any }[], extendData: { [k: string]: any }, }) => {
     const [rels, setRels] = useState<Array<{ [p: string]: any }>>([])
     const [cols, setCols] = useState<Array<{ [p: string]: any }>>([])
     const [tmpExtendData, setTmpExtendData] = useState<{ [p: string]: any }>({})

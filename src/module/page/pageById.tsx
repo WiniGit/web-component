@@ -305,9 +305,22 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                 switch (trigger) {
                     case TriggerType.click:
                         if (triggerActions.length) {
-                            _props.onClick = (ev: any) => {
-                                handleEvent(triggerActions, ev)
-                            }
+                            _props.onClick = (ev: any) => handleEvent(triggerActions, ev)
+                        }
+                        break;
+                    case TriggerType.rightClick:
+                        if (triggerActions.length) {
+                            _props.onContextMenu = (ev: any) => handleEvent(triggerActions, ev)
+                        }
+                        break;
+                    case TriggerType.hover:
+                        if (triggerActions.length) {
+                            _props.onMouseOver = (ev: any) => handleEvent(triggerActions, ev)
+                        }
+                        break;
+                    case TriggerType.keydown:
+                        if (triggerActions.length) {
+                            _props.onKeyDown = (ev: any) => handleEvent(triggerActions, ev)
                         }
                         break;
                     case TriggerType.change:
@@ -809,7 +822,8 @@ const CustomText = ({ type = "div", ...props }: { type?: "div" | "p" | "span" | 
             if (props.html) return <h6 {...customProps} />
             else return <h6 {...customProps}>{props.value}</h6>
         default:
-            return <Text {...customProps}>{props.value}</Text>
+            const { onMouseOver, ...tmpProps } = customProps
+            return <Text {...tmpProps} onHover={onMouseOver}>{props.value}</Text>
     }
 }
 
