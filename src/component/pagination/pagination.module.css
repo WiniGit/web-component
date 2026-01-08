@@ -16,6 +16,8 @@
 
 .pagination {
     gap: 0.8rem;
+    margin: 0;
+    padding: 0;
 }
 
 .pagination>li {
