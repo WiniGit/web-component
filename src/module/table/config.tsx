@@ -9,7 +9,6 @@ import { showTooltipElement } from "../../component/wini-icon/winicon";
 import { NavLink, useLocation, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { i18n } from '../../language/i18n';
-import { regexGetVariables, replaceVariables } from '../card/config';
 import { Tag } from '../../component/tag/tag';
 
 interface AutoCellContentProps {
@@ -20,6 +19,8 @@ interface AutoCellContentProps {
     style?: CSSProperties;
 }
 
+const regexGetVariables = /\${([^}]*)}/;
+const replaceVariables = /\${([^}]*)}/g;
 export const AutoCellContent = ({ colItem, data, fields = [], files = [], style = {} }: AutoCellContentProps) => {
     const { t } = useTranslation()
     const location = useLocation()
