@@ -1,6 +1,6 @@
 import { forwardRef, MouseEventHandler, ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import { useForm, UseFormReturn } from "react-hook-form";
-import { BaseDA, Select1Form, SelectMultipleForm, randomGID, Util, Button, closePopup, ComponentStatus, DialogAlignment, showDialog, Text, ToastMessage, Winicon, DataController, TableController, AccountController, urlToFileType, FormById } from "../../index";
+import { BaseDA, Select1Form, SelectMultipleForm, randomGID, Util, Button, closePopup, ComponentStatus, DialogAlignment, showDialog, ToastMessage, Winicon, DataController, TableController, AccountController, urlToFileType, FormById } from "../../index";
 import { useTranslation } from 'react-i18next';
 import { regexGetVariableByThis, RenderComponentByType, validateForm } from "../form/config";
 import { ConfigData } from "../../controller/config";
@@ -22,14 +22,14 @@ interface AddEditElementFormProps {
     onSelectCustomForm?: (params: { formAdd?: string | null, formEdit?: string | null }) => void;
 }
 
-const AddEditElementForm = forwardRef(({ tbName = "", title, activeColumns = [], id, onSuccess, expandForm, handleSubmit, customFields, ...props }: AddEditElementFormProps, ref: any) => {
+const AddEditElementForm = forwardRef(({ tbName = "", title, activeColumns = [], id, onSuccess, expandForm, handleSubmit, customFields, formId, onChangeTitle, onSelectCustomForm, ...props }: AddEditElementFormProps, ref: any) => {
     const dataController = new DataController(tbName)
     const [item, setItem] = useState<{ [p: string]: any }>()
     const [column, setColumn] = useState<{ [p: string]: any }[]>([])
     const [relative, setRelative] = useState<{ [p: string]: any }[]>([])
     const { t } = useTranslation()
     const formRef = useRef<any>(null)
-    const [selectedFormId, setSelectedFormId] = useState<{ formAdd?: string | null, formEdit?: string | null }>(props.formId ?? { formAdd: null, formEdit: null })
+    const [selectedFormId, setSelectedFormId] = useState<{ formAdd?: string | null, formEdit?: string | null }>(formId ?? { formAdd: null, formEdit: null })
     const [isExpand, setExpand] = useState(false)
     const diveRef = useRef<HTMLDivElement>(null)
 
@@ -96,9 +96,9 @@ const AddEditElementForm = forwardRef(({ tbName = "", title, activeColumns = [],
         <div className='popup-header row' style={{ gap: 8, width: "100%" }}>
             <span
                 className="heading-7" style={{ flex: 1 }}
-                contentEditable={!!props.onChangeTitle}
-                suppressContentEditableWarning={!!props.onChangeTitle}
-                onKeyDown={props.onChangeTitle ?
+                contentEditable={!!onChangeTitle}
+                suppressContentEditableWarning={!!onChangeTitle}
+                onKeyDown={onChangeTitle ?
                     ((ev: any) => {
                         switch (ev.key.toLowerCase()) {
                             case "enter":
@@ -110,13 +110,13 @@ const AddEditElementForm = forwardRef(({ tbName = "", title, activeColumns = [],
                                 break;
                         }
                     }) : undefined}
-                onBlur={props.onChangeTitle ?
+                onBlur={onChangeTitle ?
                     ((ev) => {
                         const newTitle = ev.target.innerText.trim()
-                        if (newTitle.length) props.onChangeTitle!(newTitle)
+                        if (newTitle.length) onChangeTitle!(newTitle)
                         else {
                             ev.target.innerText = `${id ? "Edit" : "Add"} ${tbName}`
-                            props.onChangeTitle!(null)
+                            onChangeTitle!(null)
                         }
                     }) : undefined}
             >{title ?? `${id ? "Edit" : "Add"} ${tbName}`}</span>
@@ -151,7 +151,7 @@ const AddEditElementForm = forwardRef(({ tbName = "", title, activeColumns = [],
                             if (id) tmp.formEdit = null
                             else tmp.formAdd = null
                             setSelectedFormId(tmp)
-                            props.onSelectCustomForm?.(tmp)
+                            onSelectCustomForm?.(tmp)
                         }}
                         onSubmit={onSuccess}
                     /> :
