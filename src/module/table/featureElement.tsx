@@ -1018,12 +1018,18 @@ interface FKTableProps {
 
 const FKTable = ({ fkItem, item, tbName, actions, onChangeActions, onEditActionColumn, enableEdit, onClose }: FKTableProps) => {
     const [filterData, setFilterData] = useState({ searchRaw: "*", sortby: [] })
+    const [isExpand, setExpand] = useState(false)
     const props: any = {}
     props[`${tbName}Id`] = item.Id
 
-    return <div className="col" style={{ width: "calc(100dvw - 4.8rem)", maxWidth: 1320, height: "calc(100dvh - 4.8rem)", maxHeight: 800 }}>
+    return <div className="col" style={{ transition: "max-width, max-height, width, height 0.6s", width: isExpand ? "100dvw" : "calc(100dvw - 4.8rem)", height: isExpand ? "100dvh" : "calc(100dvh - 4.8rem)", maxWidth: isExpand ? "100dvw" : 1320, maxHeight: isExpand ? "100dvh" : 800 }}>
         <div className='row popup-header'>
             <Text className='heading-7' style={{ flex: 1 }} maxLine={2}>{fkItem.Name}</Text>
+            <Winicon
+                src={isExpand ? "fill/arrows/centralize" : "fill/multimedia/fullscreen"}
+                size={14} className="icon-button size24"
+                onClick={() => { setExpand(!isExpand) }}
+            />
             <Winicon src={"fill/user interface/e-remove"} className="icon-button size24" onClick={onClose} />
         </div>
         <div className="col" style={{ flex: 1 }}>
@@ -1037,24 +1043,27 @@ const FKTable = ({ fkItem, item, tbName, actions, onChangeActions, onEditActionC
                 onChangeFilterData={setFilterData}
                 filterData={filterData}
                 onEditColumn={onChangeActions ? ((_col) => { onEditActionColumn?.(_col, fkItem) }) : undefined}
-                onChangeConfigData={onChangeActions ? (async (ev) => {
+                onChangeConfigData={onChangeActions ? ((ev) => {
                     const tmp = { ...fkItem, Columns: ev }
                     onChangeActions(actions!.map(a => a.Id === fkItem.Id ? tmp : a))
                 }) : undefined}
                 filterList={fkItem.Filter ?? []}
-                onChangeFilterList={onChangeActions ? (async (ev) => {
+                onChangeFilterList={onChangeActions ? ((ev) => {
                     if (JSON.stringify(ev) !== JSON.stringify(fkItem.Filter)) {
                         const tmp = { ...fkItem, Filter: ev }
                         onChangeActions(actions!.map(a => a.Id === fkItem.Id ? tmp : a))
                     }
                 }) : undefined}
-                onSelectCustomForm={onChangeActions ? (formId) => {
-                    if (formId !== fkItem.FormId) {
-                        const tmp = { ...fkItem, FormId: formId }
-                        onChangeActions(actions!.map(a => a.Id === fkItem.Id ? tmp : a))
-                    }
+                onSelectCustomForm={onChangeActions ? ({ formAdd, formEdit }) => {
+                    const tmp = { ...fkItem, FormId: formAdd, EditFormId: formEdit }
+                    onChangeActions(actions!.map(a => a.Id === fkItem.Id ? tmp : a))
                 } : undefined}
-                customFormId={fkItem.FormId}
+                customFormId={{ formAdd: fkItem.FormId, formEdit: fkItem.EditFormId }}
+                formTitle={{ formAdd: fkItem.FormTitle, formEdit: fkItem.EditFormTitle }}
+                onChangeFormTitle={onChangeActions ? (({ formAdd, formEdit }) => {
+                    const tmp = { ...fkItem, FormTitle: formAdd, EditFormTitle: formEdit }
+                    onChangeActions(actions!.map(a => a.Id === fkItem.Id ? tmp : a))
+                }) : undefined}
                 {...props}
             />
         </div>

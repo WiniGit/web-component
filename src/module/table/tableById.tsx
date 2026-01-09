@@ -39,6 +39,8 @@ export function TableById({ id, ...props }: { id: string, className?: string, st
             columns={reportItem.Props.props ?? []}
             filterList={reportItem.Props.filter ?? []}
             onChangeFilterData={setFilterSearch}
+            formTitle={{ formAdd: reportItem.Props.FormTitle, formEdit: reportItem.Props.EditFormTitle }}
+            customFormId={{ formAdd: reportItem.Props.FormId, formEdit: reportItem.Props.EditFormId }}
             filterData={{
                 required: reportItem.Props.requiredSearchRaw,
                 ...filterSearch
@@ -89,8 +91,10 @@ interface DataTableProps {
     customFields?: { [key: string]: (methods: UseFormReturn) => ReactNode };
     onClickRow?: (prarams: { item: { [p: string]: any }, index: number, event: MouseEvent }) => void;
     onContextMenu?: (prarams: { item: { [p: string]: any }, index: number, event: MouseEvent }) => void;
-    onSelectCustomForm?: (formId: string | null) => void;
-    customFormId?: string;
+    onSelectCustomForm?: (params: { formAdd?: string | null, formEdit?: string | null }) => void;
+    customFormId?: { formAdd?: string, formEdit?: string };
+    formTitle?: { formAdd?: string, formEdit?: string };
+    onChangeFormTitle?: (params: { formAdd?: string | null, formEdit?: string | null }) => void;
 }
 
 interface DataTableRef {
@@ -125,6 +129,7 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
     features = ["add", <div key={"space"} style={{ flex: 1 }} />, "search", "divider", "export"],
     toolbars = ["total", <div key={"space"} style={{ flex: 1 }} />, "export", "duplicate", "delete"],
     customFormId, onSelectCustomForm,
+    formTitle, onChangeFormTitle,
     ...props }, ref) => {
     // static variables
     const configMethods = useForm<any>({ shouldFocusError: false, defaultValues: { columns: [], searchRaw: "*", sortby: [], TbName: tbName } })
@@ -302,7 +307,13 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
                 ref={popupRef}
                 tbName={tbName}
                 id={id}
-                title={title.toLowerCase()}
+                title={(id ? formTitle?.formEdit : formTitle?.formAdd) ?? title}
+                onChangeTitle={onChangeFormTitle ? (newTitle) => {
+                    const tmp: any = { ...formTitle }
+                    if (id) tmp.formEdit = newTitle
+                    else tmp.formAdd = newTitle
+                    onChangeFormTitle(tmp)
+                } : undefined}
                 activeColumns={columns}
                 onSuccess={() => {
                     if (id) getData(pageDetails.page, pageDetails.size)
@@ -464,6 +475,8 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
                             }) : undefined}
                             customFormId={customFormId}
                             onSelectCustomForm={enableEdit ? onSelectCustomForm : undefined}
+                            formTitle={formTitle}
+                            onChangeFormTitle={enableEdit ? onChangeFormTitle : undefined}
                             {...props}
                         />
                     })

@@ -262,11 +262,13 @@ interface TableRowProps {
     onEditActionColumn?: (params: { [p: string]: any }, actionItem: { [p: string]: any }) => void;
     customCell?: { [k: string]: (params: { item: { [p: string]: any }, index: number }) => ReactNode };
     hideActionColumn?: boolean;
-    onSelectCustomForm?: (formId: string | null) => void;
-    customFormId?: string;
+    onSelectCustomForm?: (params: { formAdd?: string | null, formEdit?: string | null }) => void;
+    customFormId?: { formAdd?: string, formEdit?: string };
+    formTitle?: { formAdd?: string, formEdit?: string };
+    onChangeFormTitle?: (params: { formAdd?: string | null, formEdit?: string | null }) => void;
 }
 
-export const TableRow = ({ item, setItem, onEditActionColumn, title, index, methods, fields = [], files = [], relativeData, relativeFields = [], showIndex = false, hideCheckbox = false, showAddEditPopup, onDelete, actions = [], onChangeActions, selected, setSelected, onDuplicate, customFormId, ...props }: TableRowProps) => {
+export const TableRow = ({ item, setItem, onEditActionColumn, title, index, methods, fields = [], files = [], relativeData, relativeFields = [], showIndex = false, hideCheckbox = false, showAddEditPopup, onDelete, actions = [], onChangeActions, selected, setSelected, onDuplicate, customFormId, formTitle, onChangeFormTitle, ...props }: TableRowProps) => {
     const popupRef = useRef<Popup>(null)
     const tbName = methods.getValues("TbName")
     const dataController = new DataController(tbName)
@@ -375,7 +377,13 @@ export const TableRow = ({ item, setItem, onEditActionColumn, title, index, meth
                 ref={popupRef}
                 tbName={tbName}
                 id={id}
-                title={title?.toLowerCase()}
+                title={(id ? formTitle?.formEdit : formTitle?.formAdd) ?? title}
+                onChangeTitle={onChangeFormTitle ? (newTitle) => {
+                    const tmp: any = { ...formTitle }
+                    if (id) tmp.formEdit = newTitle
+                    else tmp.formAdd = newTitle
+                    onChangeFormTitle(tmp)
+                } : undefined}
                 activeColumns={columns}
                 onSuccess={() => {
                     if (id) getData(Math.max(Math.floor(children.length / 20), 1))

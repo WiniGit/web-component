@@ -9,16 +9,17 @@ import { CustomerAvatar } from "./config";
 import { getValidLink } from "../page/pageById";
 
 interface AddEditElementFormProps {
+    id?: string;
     tbName: string;
     title?: string;
+    onChangeTitle?: (newTitle?: string | null) => void;
     activeColumns: { [p: string]: any }[];
-    id?: string;
     onSuccess?: () => void;
     expandForm?: (methods: UseFormReturn) => ReactNode;
     handleSubmit?: (params: { item: { [k: string]: any }, initItem?: { [k: string]: any }, methods: UseFormReturn, onSuccess?: () => void }) => Promise<any>;
     customFields?: { [key: string]: (methods: UseFormReturn) => ReactNode };
-    formId?: string;
-    onSelectCustomForm?: (formId: string | null) => void
+    formId?: { formAdd?: string, formEdit?: string };
+    onSelectCustomForm?: (params: { formAdd?: string | null, formEdit?: string | null }) => void;
 }
 
 const AddEditElementForm = forwardRef(({ tbName = "", title, activeColumns = [], id, onSuccess, expandForm, handleSubmit, customFields, ...props }: AddEditElementFormProps, ref: any) => {
@@ -28,7 +29,8 @@ const AddEditElementForm = forwardRef(({ tbName = "", title, activeColumns = [],
     const [relative, setRelative] = useState<{ [p: string]: any }[]>([])
     const { t } = useTranslation()
     const formRef = useRef<any>(null)
-    const [selectedFormId, setSelectedFormId] = useState<string | null>(props.formId ?? null)
+    const [selectedFormId, setSelectedFormId] = useState<{ formAdd?: string | null, formEdit?: string | null }>(props.formId ?? { formAdd: null, formEdit: null })
+    const [isExpand, setExpand] = useState(false)
     const diveRef = useRef<HTMLDivElement>(null)
 
     //#region getSetting
@@ -90,9 +92,39 @@ const AddEditElementForm = forwardRef(({ tbName = "", title, activeColumns = [],
         return tmp
     }, [item])
 
-    return <div ref={diveRef} className="col right-drawer" style={{ width: "100dvw", maxWidth: 720 }}>
-        <div className='popup-header row' style={{ gap: '0.8rem' }}>
-            <Text className="heading-7" style={{ flex: 1 }}>{id ? `${t("edit")} ${title ?? tbName}` : `${t("add")} ${title ?? tbName}`}</Text>
+    return <div ref={diveRef} className="col right-drawer" style={{ transition: "max-width 0.6s", width: "100dvw", maxWidth: isExpand ? "100dvw" : 720 }}>
+        <div className='popup-header row' style={{ gap: 8 }}>
+            <span
+                className="heading-7" style={{ flex: 1 }}
+                contentEditable={!!props.onChangeTitle}
+                suppressContentEditableWarning={!!props.onChangeTitle}
+                onKeyDown={props.onChangeTitle ?
+                    ((ev: any) => {
+                        switch (ev.key.toLowerCase()) {
+                            case "enter":
+                                ev.preventDefault()
+                                ev.target.blur()
+                                break;
+
+                            default:
+                                break;
+                        }
+                    }) : undefined}
+                onBlur={props.onChangeTitle ?
+                    ((ev) => {
+                        const newTitle = ev.target.innerText.trim()
+                        if (newTitle.length) props.onChangeTitle!(newTitle)
+                        else {
+                            ev.target.innerText = `${id ? "Edit" : "Add"} ${tbName}`
+                            props.onChangeTitle!(null)
+                        }
+                    }) : undefined}
+            >{title ?? `${id ? "Edit" : "Add"} ${tbName}`}</span>
+            <Winicon
+                src={isExpand ? "outline/arrows/box-arrow-right" : "fill/multimedia/fullscreen"}
+                size={14} className="icon-button size24"
+                onClick={() => { setExpand(!isExpand) }}
+            />
             <Winicon
                 src="outline/user interface/e-remove"
                 size={14} className="icon-button size24"
@@ -106,16 +138,19 @@ const AddEditElementForm = forwardRef(({ tbName = "", title, activeColumns = [],
             />
         </div>
         {!!column.length && (!id || initFormItem) &&
-            (selectedFormId ?
+            (((id && selectedFormId.formEdit) || (!id && selectedFormId.formAdd)) ?
                 <FormById
-                    key={selectedFormId}
-                    id={selectedFormId}
+                    key={id ? selectedFormId.formEdit : selectedFormId.formAdd}
+                    id={id ? selectedFormId.formEdit! : selectedFormId.formAdd!}
                     ref={formRef}
                     data={initFormItem}
                     style={{ flex: 1, width: '100%', height: '100%', overflow: 'hidden auto', scrollbarWidth: "thin", animation: "loading-change-view 0.5s ease-in-out" }}
                     onGetFormError={() => {
-                        setSelectedFormId(null)
-                        props.onSelectCustomForm?.(null)
+                        const tmp = { ...selectedFormId }
+                        if (id) tmp.formEdit = null
+                        else tmp.formAdd = null
+                        setSelectedFormId(tmp)
+                        props.onSelectCustomForm?.(tmp)
                     }}
                     onSubmit={onSuccess}
                 /> :
