@@ -750,9 +750,17 @@ const FilterValueOptionsDropdown = ({ onClose, onSelect, style = {}, selected, i
                 }}
             />
         </div>}
+        {totalCountAll.current === 0 && <div className="col" style={{ gap: "0.8rem", alignItems: "inherit" }}>
+            <Winicon src="color/files/archive-doc" size={"2.8rem"} />
+            <Text className="heading-7">No data</Text>
+        </div>}
+        {options.totalCount === 0 && !totalCountAll.current && <div className="col" style={{ gap: "0.8rem", alignItems: "inherit" }}>
+            <Winicon src="color/files/archive-doc" size={"2.8rem"} />
+            <Text className="heading-7">No result</Text>
+        </div>}
         {isMulti ? options.data.map((op) => {
             const checked = `${value}` === `${op.Id ?? op.id}` || (typeof value === "string" && value?.includes(op.Id ?? op.id))
-            return <label key={op.Id ?? op.id} className="row default-hover" style={{ gap: "0.8rem", padding: "0.8rem", borderRadius: "0.8rem", cursor: "pointer" }} >
+            return <label key={op.Id ?? op.id} className="row default-hover" style={{ gap: "0.8rem", padding: "5px 0.8rem", borderRadius: 8, cursor: "pointer" }} >
                 <Checkbox onChange={(ev) => {
                     let tmp = value?.split(",") ?? []
                     if (ev) tmp.push(`${op.Id ?? op.id}`)
@@ -760,18 +768,19 @@ const FilterValueOptionsDropdown = ({ onClose, onSelect, style = {}, selected, i
                     onSelect(tmp.length ? tmp.join(",") : undefined)
                     setValue(tmp.length ? tmp.join(",") : undefined)
                 }} value={checked} size={"1.8rem"} />
+                {(controlName === "User" || controlName === "Customer") && <CustomerAvatar data={op} style={{ width: "2.8rem" }} />}
                 <Text style={{ flex: 1 }} className="label-3" maxLine={1}>{op.Name ?? op.name}</Text>
             </label>
         }) : options.data.map((op) => {
             const checked = `${value}` === `${op.Id ?? op.id}` || (typeof value === "string" && value.includes(op.Id ?? op.id))
             return <button key={op.Id ?? op.id} type="button" className="row"
-                style={{ backgroundColor: checked ? "var(--neutral-selected-background-color)" : undefined }}
+                style={{ gap: 8, padding: "5px 0.8rem", borderRadius: 8, backgroundColor: checked ? "var(--neutral-selected-background-color)" : undefined }}
                 onClick={() => {
                     onSelect(op.Id);
                     setValue(op.Id);
                 }}>
-                {(controlName === "User" || controlName === "Customer") && <CustomerAvatar data={op} style={{ width: "2.8rem", height: "2.8rem" }} />}
-                <Text style={{ flex: 1 }} className="button-text-3" maxLine={1}>{op.Name ?? op.name}</Text>
+                {(controlName === "User" || controlName === "Customer") && <CustomerAvatar data={op} style={{ width: "2.8rem" }} />}
+                <Text style={{ flex: 1 }} className="label-3" maxLine={1}>{op.Name ?? op.name}</Text>
             </button>
         })}
     </InfiniteScroll>
