@@ -2,7 +2,7 @@ import { CSSProperties, forwardRef, useImperativeHandle, useRef } from "react";
 import styles from "./iframe.module.css";
 
 interface IframePlayerProps {
-    id: string;
+    id?: string;
     /** nodownload nofullscreen noremoteplayback */
     src: string;
     style?: CSSProperties;

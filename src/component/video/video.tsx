@@ -2,7 +2,7 @@ import { CSSProperties, forwardRef, ReactEventHandler, ReactNode, useImperativeH
 import styles from "./video.module.css";
 
 interface VideoPlayerProps {
-    id: string;
+    id?: string;
     /** nodownload nofullscreen noremoteplayback */
     controlsList?: string;
     src: string;

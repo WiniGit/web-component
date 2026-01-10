@@ -80,6 +80,7 @@ export enum ValidateType {
 }
 
 export enum TriggerType {
+    init = "init",
     click = "click",
     rightClick = "rightClick",
     dbclick = "dbclick",

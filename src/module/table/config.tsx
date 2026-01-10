@@ -3,13 +3,11 @@ import { CSSProperties, useEffect, useMemo, useRef, useState } from "react";
 import styles from "./table.module.css";
 import { Util } from "../../controller/utils";
 import { ColDataType, FEDataType } from "../da";
-import { Text } from "../../component/text/text";
+import { Text, Tag, showTooltipElement } from "../../index";
 import { ConfigData } from "../../controller/config";
-import { showTooltipElement } from "../../component/wini-icon/winicon";
 import { NavLink, useLocation, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { i18n } from '../../language/i18n';
-import { Tag } from '../../component/tag/tag';
 
 interface AutoCellContentProps {
     colItem: { [p: string]: any };

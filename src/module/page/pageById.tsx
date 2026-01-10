@@ -14,6 +14,7 @@ import { regexGetVariableByThis, regexGetVariables, replaceVariables } from "../
 import { BaseDA, CkEditorUploadAdapter, ConfigData, imgFileTypes } from "../../controller/config"
 import { FCheckbox, FColorPicker, FDateTimePicker, FGroupCheckbox, FGroupRadioButton, FInputPassword, FNumberPicker, FRadioButton, FSelect1, FSelectMultiple, FSwitch, FTextArea, FTextField, FUploadMultipleFileType } from "./component-form"
 import { Winicon, Text, Rating, CustomCkEditor5, ProgressCircle, ProgressBar, VideoPlayer, IframePlayer, ComponentStatus, useWiniContext, Pagination, AudioPlayer, ToastMessage, TableController, DataController, showDialog } from "../../index"
+import { init } from "i18next"
 
 interface Props {
     methods?: UseFormReturn
@@ -301,6 +302,11 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                     }
                 }
                 switch (trigger) {
+                    case TriggerType.init:
+                        if (triggerActions.length) {
+                            _props.onInit = (ev: any) => handleEvent(triggerActions, ev)
+                        }
+                        break;
                     case TriggerType.click:
                         if (triggerActions.length) {
                             _props.onClick = (ev: any) => handleEvent(triggerActions, ev)
@@ -498,6 +504,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
     /***/
     const typeProps = useMemo(() => {
         let tmpProps = { ...customProps }
+        delete tmpProps.onInit
         if (regexGetVariables.test(tmpProps.id)) tmpProps.id = replaceThisVariables(tmpProps.id)
         if (regexGetVariables.test(tmpProps.className)) tmpProps.className = replaceThisVariables(tmpProps.className)
         if (props.item.NameField && tmpProps.validate?.some((v: any) => v.type === ValidateType.required)) tmpProps.required = true
@@ -607,11 +614,36 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
         return tmpProps
     }, [customProps, props.item.Type, dataValue, children, location, i18n.language])
 
+    return <ElementUI
+        typeProps={typeProps}
+        findId={findId}
+        dataValue={dataValue}
+        children={children}
+        onInit={customProps.onInit}
+        {...props}
+    />
+}
+
+interface ElementUIProps extends RenderLayerElementProps {
+    typeProps: any,
+    findId: string,
+    dataValue: any,
+    children: { [p: string]: any }[],
+    onInit?: () => void,
+    [p: string]: any
+}
+
+const ElementUI = ({ typeProps, findId, dataValue, children, options, onInit, ...props }: ElementUIProps) => {
+
+    useEffect(() => {
+        if (onInit) onInit()
+    }, [onInit])
+
     switch (props.item.Type) {
         case ComponentType.navLink:
         case ComponentType.container:
             if (props.childrenData && props.childrenData[findId]) var childComponent = props.type === "card" ? (props.childrenData[findId] as any)(props.indexItem, props.index, props.methods) : props.childrenData[findId]
-            if (dataValue && dataValue.backgroundImage) var containerProps = { ...typeProps, style: { ...typeProps.style, ...dataValue } }
+            if (dataValue && dataValue.backgroundImage) var containerProps: any = { ...typeProps, style: { ...typeProps.style, ...dataValue } }
             const dataValueProps = { ...(containerProps ?? typeProps) }
             delete dataValueProps.emptyElement
             delete dataValueProps.onLoaded
@@ -730,17 +762,17 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
         case ComponentType.textArea:
             return <FTextArea {...typeProps} name={props.item.NameField} methods={props.methods} />
         case ComponentType.radio:
-            if (_options?.length) return <FGroupRadioButton {...typeProps} methods={props.methods} name={props.item.NameField} options={_options} />
+            if (options?.length) return <FGroupRadioButton {...typeProps} methods={props.methods} name={props.item.NameField} options={options} />
             else return <FRadioButton {...typeProps} methods={props.methods} name={props.item.NameField} />
         case ComponentType.checkbox:
-            if (_options?.length) return <FGroupCheckbox {...typeProps} methods={props.methods} name={props.item.NameField} options={_options} />
+            if (options?.length) return <FGroupCheckbox {...typeProps} methods={props.methods} name={props.item.NameField} options={options} />
             else return <FCheckbox {...typeProps} methods={props.methods} name={props.item.NameField} />
         case ComponentType.switch:
             return <FSwitch {...typeProps} methods={props.methods} name={props.item.NameField} />
         case ComponentType.select1:
-            return <FSelect1 {...typeProps} key={props.item.Id} methods={props.methods} name={props.item.NameField} options={_options} />
+            return <FSelect1 {...typeProps} key={props.item.Id} methods={props.methods} name={props.item.NameField} options={options} />
         case ComponentType.selectMultiple:
-            return <FSelectMultiple {...typeProps} methods={props.methods} name={props.item.NameField} options={_options} />
+            return <FSelectMultiple {...typeProps} methods={props.methods} name={props.item.NameField} options={options} />
         case ComponentType.colorPicker:
             return <FColorPicker {...typeProps} methods={props.methods} name={props.item.NameField} />
         case ComponentType.numberPicker:
@@ -753,7 +785,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
         case ComponentType.ckEditor:
             return <CustomCkEditor5 {...typeProps}
                 methods={props.methods}
-                extraPlugins={params.ckEditorUploadPlugin ?? [
+                extraPlugins={[
                     function (editor: { plugins: { get: (arg0: string) => { (): any; new(): any; createUploadAdapter: (loader: any) => CkEditorUploadAdapter; }; }; }) {
                         editor.plugins.get('FileRepository').createUploadAdapter = (loader: any) => {
                             return new CkEditorUploadAdapter(loader);

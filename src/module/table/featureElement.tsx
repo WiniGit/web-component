@@ -966,7 +966,7 @@ export const ActionOptionsDropdown = forwardRef(({ onClose, actions = [], onChan
         </button>}
         {onDuplicate && <button type='button' className='row' onClick={onDuplicate}>
             <Winicon src={"outline/layout/copy-2"} size={"1.4rem"} />
-            <Text className='button-text-3'>{t("duplicate")}</Text>
+            <Text className='label-3'>{t("duplicate")}</Text>
         </button>}
         {actions.map(e => {
             return <button key={e.Id} type='button' className='row' onClick={() => {
@@ -986,7 +986,7 @@ export const ActionOptionsDropdown = forwardRef(({ onClose, actions = [], onChan
                 })
             }}>
                 {e.Prefix ? <Winicon src={e.Prefix} size={"1.4rem"} /> : <div style={{ width: "1.8rem" }} />}
-                <Text className='button-text-3'>{e.Name} ({data?.[`total${e.TableFK}`] ?? 0})</Text>
+                <Text className='label-3'>{e.Name} ({data?.[`total${e.TableFK}`] ?? 0})</Text>
             </button>
         })}
         {onDelete && <button type="button" className="row" onClick={() => {

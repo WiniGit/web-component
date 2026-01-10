@@ -483,7 +483,7 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
                 }
             </div> : null}
         </div>
-        {isMultiplePage && !!data.totalCount && data.totalCount > 20 && <div style={{ padding: '1.2rem 2.4rem' }}>
+        {isMultiplePage && !!data.totalCount && data.totalCount > 20 && <div style={{ width: "100%", padding: '1.2rem 2.4rem' }}>
             <Pagination
                 currentPage={pageDetails.page}
                 itemPerPage={pageDetails.size}

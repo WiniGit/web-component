@@ -2,7 +2,7 @@ import { CSSProperties, forwardRef, ReactEventHandler, ReactNode, useImperativeH
 import styles from "./audio.module.css";
 
 interface AudioPlayerProps {
-    id: string;
+    id?: string;
     /** nodownload nofullscreen noremoteplayback */
     controlsList?: string;
     src: string;
