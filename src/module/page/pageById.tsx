@@ -14,7 +14,6 @@ import { regexGetVariableByThis, regexGetVariables, replaceVariables } from "../
 import { BaseDA, CkEditorUploadAdapter, ConfigData, imgFileTypes } from "../../controller/config"
 import { FCheckbox, FColorPicker, FDateTimePicker, FGroupCheckbox, FGroupRadioButton, FInputPassword, FNumberPicker, FRadioButton, FSelect1, FSelectMultiple, FSwitch, FTextArea, FTextField, FUploadMultipleFileType } from "./component-form"
 import { Winicon, Text, Rating, CustomCkEditor5, ProgressCircle, ProgressBar, VideoPlayer, IframePlayer, ComponentStatus, useWiniContext, Pagination, AudioPlayer, ToastMessage, TableController, DataController, showDialog } from "../../index"
-import { init } from "i18next"
 
 interface Props {
     methods?: UseFormReturn
@@ -621,12 +620,13 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
     }, [customProps, props.item.Type, dataValue, children, location, i18n.language])
 
     return <ElementUI
+        {...props}
         typeProps={typeProps}
         findId={findId}
         dataValue={dataValue}
         children={children}
         onInit={customProps.onInit}
-        {...props}
+        convertedOptions={_options}
     />
 }
 
@@ -636,10 +636,11 @@ interface ElementUIProps extends RenderLayerElementProps {
     dataValue: any,
     children: { [p: string]: any }[],
     onInit?: () => void,
+    convertedOptions?: { [k: string]: any }[],
     [p: string]: any
 }
 
-const ElementUI = ({ typeProps, findId, dataValue, children, options, onInit, ...props }: ElementUIProps) => {
+const ElementUI = ({ typeProps, findId, dataValue, children, convertedOptions, onInit, ...props }: ElementUIProps) => {
 
     useEffect(() => {
         if (onInit) onInit()
@@ -768,17 +769,17 @@ const ElementUI = ({ typeProps, findId, dataValue, children, options, onInit, ..
         case ComponentType.textArea:
             return <FTextArea {...typeProps} name={props.item.NameField} methods={props.methods} />
         case ComponentType.radio:
-            if (options?.length) return <FGroupRadioButton {...typeProps} methods={props.methods} name={props.item.NameField} options={options} />
+            if (convertedOptions?.length) return <FGroupRadioButton {...typeProps} methods={props.methods} name={props.item.NameField} options={convertedOptions} />
             else return <FRadioButton {...typeProps} methods={props.methods} name={props.item.NameField} />
         case ComponentType.checkbox:
-            if (options?.length) return <FGroupCheckbox {...typeProps} methods={props.methods} name={props.item.NameField} options={options} />
+            if (convertedOptions?.length) return <FGroupCheckbox {...typeProps} methods={props.methods} name={props.item.NameField} options={convertedOptions} />
             else return <FCheckbox {...typeProps} methods={props.methods} name={props.item.NameField} />
         case ComponentType.switch:
             return <FSwitch {...typeProps} methods={props.methods} name={props.item.NameField} />
         case ComponentType.select1:
-            return <FSelect1 {...typeProps} key={props.item.Id} methods={props.methods} name={props.item.NameField} options={options} />
+            return <FSelect1 {...typeProps} key={props.item.Id} methods={props.methods} name={props.item.NameField} options={convertedOptions} />
         case ComponentType.selectMultiple:
-            return <FSelectMultiple {...typeProps} methods={props.methods} name={props.item.NameField} options={options} />
+            return <FSelectMultiple {...typeProps} methods={props.methods} name={props.item.NameField} options={convertedOptions} />
         case ComponentType.colorPicker:
             return <FColorPicker {...typeProps} methods={props.methods} name={props.item.NameField} />
         case ComponentType.numberPicker:
