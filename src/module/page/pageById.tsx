@@ -246,10 +246,11 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                                     onSubmit: async () => {
                                         if (actItem.Caculate) {
                                             await (new AsyncFunction(
-                                                "entityData", "Util", "DataController", "randomGID", "ToastMessage", "uploadFiles", "getFilesInfor", "showDialog", "ComponentStatus", "event", "methods", "useWiniContext",
+                                                "entityData", "entityIndex", "Util", "DataController", "randomGID", "ToastMessage", "uploadFiles", "getFilesInfor", "showDialog", "ComponentStatus", "event", "methods", "useParams", "useNavigate", "useWiniContext",
                                                 `${actItem.Caculate}` // This string can now safely contain the 'await' keyword
                                             ))(
                                                 props.indexItem ?? props.methods?.getValues(),
+                                                props.index,
                                                 Util,
                                                 DataController,
                                                 randomGID,
@@ -260,6 +261,8 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                                                 ComponentStatus,
                                                 event,
                                                 props.methods,
+                                                () => params,
+                                                () => navigate,
                                                 () => winiContextData
                                             )
                                         }
@@ -269,10 +272,11 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                             case ActionType.custom:
                                 if (actItem.Caculate) {
                                     const asyncFuncResponse = await (new AsyncFunction(
-                                        "entityData", "Util", "DataController", "randomGID", "ToastMessage", "uploadFiles", "getFilesInfor", "showDialog", "ComponentStatus", "event", "methods", "useWiniContext",
+                                        "entityData", "entityIndex", "Util", "DataController", "randomGID", "ToastMessage", "uploadFiles", "getFilesInfor", "showDialog", "ComponentStatus", "event", "methods", "useParams", "useNavigate", "useWiniContext",
                                         `${actItem.Caculate}` // This string can now safely contain the 'await' keyword
                                     ))(
                                         props.indexItem ?? props.methods?.getValues(),
+                                        props.index,
                                         Util,
                                         DataController,
                                         randomGID,
@@ -283,6 +287,8 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                                         ComponentStatus,
                                         event,
                                         props.methods,
+                                        () => params,
+                                        () => navigate,
                                         () => winiContextData
                                     )
                                     if (!asyncFuncResponse) return;
