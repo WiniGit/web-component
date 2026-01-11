@@ -152,11 +152,12 @@ const RenderView = (props: RenderViewProps) => {
         if (Object.keys(tmp).length) setExtendData(tmp)
     }, [props.extendData])
 
-    const viewStateData = useDeferredValue(methods.watch())
+    const viewStateData = useMemo(() => methods.watch(), [JSON.stringify(methods.watch())])
+    const finalStateData = useDeferredValue(viewStateData)
 
     useEffect(() => {
-        if (props.onChange) props.onChange({ data: props.data, state: viewStateData })
-    }, [viewStateData, props.data])
+        if (props.onChange) props.onChange({ data: props.data, state: finalStateData })
+    }, [finalStateData, props.data])
 
     return props.layers.filter((e: any) => !e.ParentId).map((e: any) => {
         return <RenderLayerElement

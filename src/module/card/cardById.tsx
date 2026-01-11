@@ -196,11 +196,12 @@ export const CardById = forwardRef<CardRef, CardProps>((props, ref) => {
     }, [getRelativeData])
 
     const stateMethods = useForm({ shouldFocusError: false })
-    const cardStateData = useDeferredValue(stateMethods.watch())
+    const cardStateData = useMemo(() => stateMethods.watch(), [JSON.stringify(stateMethods.watch())])
+    const finalStateData = useDeferredValue(cardStateData)
 
     useEffect(() => {
-        if (props.onChange) props.onChange({ data: data, state: cardStateData })
-    }, [cardStateData, data])
+        if (props.onChange) props.onChange({ data: data, state: finalStateData })
+    }, [finalStateData, data])
 
     useImperativeHandle(ref, () => ({
         getData: getData,
