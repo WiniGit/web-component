@@ -635,7 +635,7 @@ interface ElementUIProps extends RenderLayerElementProps {
     findId: string,
     dataValue: any,
     children: { [p: string]: any }[],
-    onInit?: () => void,
+    onInit?: (event: any) => void,
     convertedOptions?: { [k: string]: any }[],
     [p: string]: any
 }
@@ -643,7 +643,7 @@ interface ElementUIProps extends RenderLayerElementProps {
 const ElementUI = ({ typeProps, findId, dataValue, children, convertedOptions, onInit, ...props }: ElementUIProps) => {
 
     useEffect(() => {
-        if (onInit) onInit()
+        if (onInit) onInit(pageAllRefs[findId]?.current)
     }, [onInit])
 
     switch (props.item.Type) {
