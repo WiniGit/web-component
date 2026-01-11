@@ -23,6 +23,8 @@ interface FormByIdProps {
     onGetFormError?: (e: { [p: string]: any }) => void;
     autoBcrypt?: boolean
     onUnMount?: () => void
+    /** Listen form data change */
+    onChange?: (ev: { data?: { [p: string]: any } }) => void
 }
 
 interface FormByIdRef {
@@ -378,6 +380,10 @@ export const FormById = forwardRef<FormByIdRef, FormByIdProps>((props, ref) => {
         return tmpValue
     }, [cols.length, rels.length, JSON.stringify(methods.watch())])
     const finalFormValues = useDeferredValue(formValues);
+
+    useEffect(() => {
+        if (props.onChange) props.onChange(finalFormValues)
+    }, [finalFormValues])
 
     useImperativeHandle(ref, () => ({
         onSubmit: methods.handleSubmit(onSubmit, props.onError),

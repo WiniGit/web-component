@@ -19,6 +19,8 @@ interface Props {
     onUnMount?: () => void
     onGetViewError?: (e: { [p: string]: any }) => void;
     controller?: { searchRaw?: string, filter?: string, sortby?: Array<{ prop: string, direction?: "ASC" | "DESC" }>, pattern?: { returns: Array<string>, [p: string]: Array<string> | { searchRaw?: string, reducers: string } } },
+    /** Listen view state */
+    onChange?: (ev: { data?: { [p: string]: any }, state: { [p: string]: any } }) => void
 }
 
 export const ViewById = (props: Props) => {
@@ -149,6 +151,12 @@ const RenderView = (props: RenderViewProps) => {
         })
         if (Object.keys(tmp).length) setExtendData(tmp)
     }, [props.extendData])
+
+    const viewStateData = useDeferredValue(methods.watch())
+
+    useEffect(() => {
+        if (props.onChange) props.onChange({ data: props.data, state: viewStateData })
+    }, [viewStateData, props.data])
 
     return props.layers.filter((e: any) => !e.ParentId).map((e: any) => {
         return <RenderLayerElement

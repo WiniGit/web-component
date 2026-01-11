@@ -41,6 +41,8 @@ interface CardProps extends Props {
     onRelativeLoaded?: (ev: any) => void,
     onUnMount?: () => void,
     onGetCardError?: (e: { [p: string]: any }) => void;
+    /** Listen card state */
+    onChange?: (ev: { data: { data: Array<{ [p: string]: any }>, totalCount?: number }, state: { [p: string]: any } }) => void
 }
 
 interface CardRef {
@@ -194,6 +196,11 @@ export const CardById = forwardRef<CardRef, CardProps>((props, ref) => {
     }, [getRelativeData])
 
     const stateMethods = useForm({ shouldFocusError: false })
+    const cardStateData = useDeferredValue(stateMethods.watch())
+
+    useEffect(() => {
+        if (props.onChange) props.onChange({ data: data, state: cardStateData })
+    }, [cardStateData, data])
 
     useImperativeHandle(ref, () => ({
         getData: getData,
