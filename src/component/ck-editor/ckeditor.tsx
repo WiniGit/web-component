@@ -156,6 +156,7 @@ class ExportPdfCommand extends Command {
                         width: 100%;
                         display: table;
                         margin: 0.9em auto;
+                        overflow: hidden;
                     }
 
                     figure.table table {
