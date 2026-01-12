@@ -131,6 +131,7 @@ export enum DesignTokenType {
 
 export enum ColDataType {
     text = "text",
+    icon = "icon",
     label = "label",
     datetime = "datetime",
     money = "money",
@@ -144,6 +145,7 @@ export enum ColDataType {
 
 export const ColDataTypeIcon = {
     [ColDataType.text]: <Winicon src='outline/text/text' size={"1.2rem"} />,
+    [ColDataType.icon]: <Winicon src='fill/development/icon' size={"1.2rem"} />,
     [ColDataType.people]: <Winicon src='outline/location/explore-user' size={"1.2rem"} />,
     [ColDataType.label]: <Winicon src='outline/shopping/tag' size={"1.2rem"} />,
     [ColDataType.datetime]: <Winicon src='outline/user interface/calendar-date-2' size={"1.2rem"} />,

@@ -149,6 +149,33 @@ class ExportPdfCommand extends Command {
                         padding: 0;
                         display: flex;
                         justify-content: center;
+                        font-size: 14px;
+                    }
+
+                    figure.table {
+                        width: 100%;
+                        display: table;
+                        margin: 0.9em auto;
+                    }
+
+                    figure.table table {
+                        width: 100%;
+                        height: 100%;
+                        border-collapse: collapse;
+                        border-spacing: 0;
+                        border: 1px double hsl(0, 0%, 70%);
+                    }
+
+                    figure.table table>thead>tr>th,
+                    figure.table table>tbody>tr>td {
+                        min-width: 2em;
+                        padding: 0.4em;
+                        border: 1px solid hsl(0, 0%, 75%);
+                    }
+                            
+                    figure.table table>thead>tr>th {
+                        font-weight: 700;
+                        background: #0000000d;
                     }
 
                     .a4-page {
