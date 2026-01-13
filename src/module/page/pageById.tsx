@@ -97,6 +97,7 @@ interface RenderLayerElementProps extends Props {
     cols?: Array<{ [p: string]: any }>,
     rels?: Array<{ [p: string]: any }>,
     bodyChildren?: ReactNode,
+    tbName?: string,
     type?: "page" | "view" | "card" | "form",
     propsData?: { [p: string]: CustomHTMLProps } | { [p: string]: (itemData: { [p: string]: any }, index: number, methods: UseFormReturn) => CustomHTMLProps },
     itemData?: { [p: string]: ReactNode } | { [p: string]: (indexItem: { [p: string]: any }, index: number, methods: UseFormReturn) => ReactNode },
@@ -245,11 +246,13 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                                     onSubmit: async () => {
                                         if (actItem.Caculate) {
                                             await (new AsyncFunction(
-                                                "entityData", "entityIndex", "Util", "DataController", "randomGID", "ToastMessage", "uploadFiles", "getFilesInfor", "showDialog", "ComponentStatus", "event", "methods", "useParams", "useNavigate", "useWiniContext",
+                                                "entityData", "entityIndex", "tableName", "tableTitle", "Util", "DataController", "randomGID", "ToastMessage", "uploadFiles", "getFilesInfor", "showDialog", "ComponentStatus", "event", "methods", "useParams", "useNavigate", "useWiniContext",
                                                 `${actItem.Caculate}` // This string can now safely contain the 'await' keyword
                                             ))(
                                                 props.indexItem ?? props.methods?.getValues(),
                                                 props.index,
+                                                props.tbName,
+                                                props.tbName?.split("_").map((e, i) => (i ? e.toLowerCase() : e)).join(" "),
                                                 Util,
                                                 DataController,
                                                 randomGID,
@@ -271,11 +274,13 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                             case ActionType.custom:
                                 if (actItem.Caculate) {
                                     const asyncFuncResponse = await (new AsyncFunction(
-                                        "entityData", "entityIndex", "Util", "DataController", "randomGID", "ToastMessage", "uploadFiles", "getFilesInfor", "showDialog", "ComponentStatus", "event", "methods", "useParams", "useNavigate", "useWiniContext",
+                                        "entityData", "entityIndex", "tableName", "tableTitle", "Util", "DataController", "randomGID", "ToastMessage", "uploadFiles", "getFilesInfor", "showDialog", "ComponentStatus", "event", "methods", "useParams", "useNavigate", "useWiniContext",
                                         `${actItem.Caculate}` // This string can now safely contain the 'await' keyword
                                     ))(
                                         props.indexItem ?? props.methods?.getValues(),
                                         props.index,
+                                        props.tbName,
+                                        props.tbName?.split("_").map((e, i) => (i ? e.toLowerCase() : e)).join(" "),
                                         Util,
                                         DataController,
                                         randomGID,

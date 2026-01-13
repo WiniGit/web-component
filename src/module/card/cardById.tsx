@@ -290,6 +290,7 @@ const RenderCard = (props: RenderCardProps) => {
             cols={props.cols}
             rels={props.rels}
             options={props.options}
+            tbName={props.cardItem.TbName}
         />
     })
 }

@@ -62,6 +62,12 @@ export const Winicon = forwardRef<WiniconRef, WiniconProps>(({ id, src, link, cl
         element: divRef.current as any,
     }), [divRef.current]);
 
+    useEffect(() => {
+        if (showTooltip) {
+            return () => { setShowTooltip(false) }
+        }
+    }, [showTooltip])
+
     return <>
         <div
             ref={divRef}
@@ -74,7 +80,7 @@ export const Winicon = forwardRef<WiniconRef, WiniconProps>(({ id, src, link, cl
             onMouseOver={tooltip ? () => {
                 timoutRef.current = setTimeout(() => {
                     if (timoutRef.current) setShowTooltip(true)
-                }, 500)
+                }, 800)
             } : undefined}
             onMouseOut={tooltip ? () => {
                 if (timoutRef.current) clearTimeout(timoutRef.current)

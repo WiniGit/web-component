@@ -127,13 +127,15 @@ export const ViewById = (props: Props) => {
         layers={layers}
         indexItem={indexItem}
         extendData={extendData}
+        tbName={viewItem.TbName}
     /> : null
 }
 
 interface RenderViewProps extends Props {
     layers: Array<{ [p: string]: any }>,
     indexItem?: { [p: string]: any },
-    extendData: { [p: string]: any }
+    extendData: { [p: string]: any },
+    tbName?: string
 }
 
 const RenderView = (props: RenderViewProps) => {
@@ -175,6 +177,7 @@ const RenderView = (props: RenderViewProps) => {
             childrenData={props.childrenData}
             itemData={props.itemData}
             options={extendData}
+            tbName={props.tbName}
         />
     })
 }

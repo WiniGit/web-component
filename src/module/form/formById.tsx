@@ -411,6 +411,7 @@ export const FormById = forwardRef<FormByIdRef, FormByIdProps>((props, ref) => {
             rels={rels.map((_rel => ({ ..._rel, getOptions: async (params: any) => await getOptions({ ...params, _rel }) }))).concat(relativeCols as any)}
             options={opts}
             onSubmit={methods.handleSubmit(onSubmit, props.onError)}
+            tbName={formItem.TbName}
         />
     })
 })
