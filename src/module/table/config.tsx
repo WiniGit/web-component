@@ -176,7 +176,7 @@ export const AutoCellContent = ({ colItem, data, fields = [], files = [], style 
                 } else {
                     url = colItem.Link.startsWith("/") ? colItem.Link : `/${colItem.Link}`
                 }
-                return <NavLink key={item.Id + "-" + i} to={url} target="_blank" className={`body-3 ${styles["link-hover"]}`} style={{ "--max-line": 2, margin: 0, flex: 1, color: "var(--primary-main-color,#287CF0)", ...style } as any}>{mapValue}</NavLink>
+                return <NavLink key={item.Id + "-" + i} to={url} target={colItem.Target ?? "_blank"} className={`body-3 ${styles["link-hover"]}`} style={{ "--max-line": 2, margin: 0, flex: 1, color: "var(--primary-main-color,#287CF0)", ...style } as any}>{mapValue}</NavLink>
             })
         case ColDataType.people:
             return mapValue?.map((item: any) => <div key={item.Id} className="row" style={{ gap: "0.8rem", flex: 1, ...style }}>
