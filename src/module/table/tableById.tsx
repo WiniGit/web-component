@@ -32,7 +32,8 @@ export function TableById({ id, ...props }: { id: string, className?: string, st
         {reportItem.Props && <DataTable
             enableEdit
             key={reportItem.Id}
-            showIndex
+            showIndex={reportItem.Props.showIndex}
+            hideCheckbox={reportItem.Props.hideCheckbox}
             tbName={reportItem.TbName}
             actions={reportItem.Props.actions ?? []}
             title={reportItem.Name}

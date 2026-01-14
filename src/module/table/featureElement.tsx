@@ -961,11 +961,11 @@ export const ActionOptionsDropdown = forwardRef(({ onClose, actions = [], onChan
             closePopup(ref)
             onEdit()
         }}>
-            <Winicon src={"outline/user interface/edit"} size={"1.4rem"} />
+            <Winicon src={"outline/user interface/edit"} size={14} />
             <Text className='label-3'>{t("edit")}</Text>
         </button>}
         {onDuplicate && <button type='button' className='row' onClick={onDuplicate}>
-            <Winicon src={"outline/layout/copy-2"} size={"1.4rem"} />
+            <Winicon src={"outline/layout/copy-2"} size={14} />
             <Text className='label-3'>{t("duplicate")}</Text>
         </button>}
         {actions.map(e => {
@@ -985,21 +985,21 @@ export const ActionOptionsDropdown = forwardRef(({ onClose, actions = [], onChan
                     />
                 })
             }}>
-                {e.Prefix ? <Winicon src={e.Prefix} size={"1.4rem"} /> : <div style={{ width: "1.8rem" }} />}
-                <Text className='label-3'>{e.Name} ({data?.[`total${e.TableFK}`] ?? 0})</Text>
+                {e.Prefix ? <Winicon src={e.Prefix} size={14} /> : <div style={{ width: "1.8rem" }} />}
+                <Text className='label-3' maxLine={1}>{e.Name} ({data?.[`total${e.TableFK}`] ?? 0})</Text>
             </button>
         })}
         {onDelete && <button type="button" className="row" onClick={() => {
             closePopup(ref)
             showDialog({
                 alignment: DialogAlignment.center,
-                title: "Confirm delete",
-                content: `Are you sure to delete this ${title?.toLowerCase() ?? tbName}?`,
+                title: `${t("confirm")} ${t("delete").toLowerCase()}`,
+                content: t("areYouSure", { act: t("delete"), name: title?.toLowerCase() ?? tbName }),
                 submitTitle: t("delete"),
                 onSubmit: onDelete
             })
         }}>
-            <Winicon src={"outline/user interface/trash-can"} size={"1.4rem"} />
+            <Winicon src={"outline/user interface/trash-can"} size={14} />
             <Text className='label-3'>{t("delete")}</Text>
         </button>}
     </div>
