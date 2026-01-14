@@ -40,7 +40,7 @@ export const FormById = forwardRef<FormByIdRef, FormByIdProps>((props, ref) => {
     const [formItem, setFormItem] = useState<{ [p: string]: any }>()
     const layers = useMemo(() => formItem?.Props ?? [], [formItem])
     const keyNames = useMemo<Array<string>>(() => layers.filter((e: any) => e.NameField?.length).map((e: any) => e.NameField), [layers.length])
-    const inputComponents = [ComponentType.textField, ComponentType.textArea, ComponentType.select1, ComponentType.selectMultiple, ComponentType.checkbox, ComponentType.switch, ComponentType.radio, ComponentType.colorPicker, ComponentType.ckEditor, ComponentType.datePicker, ComponentType.upload, ComponentType.numberPicker]
+    const inputComponents = [ComponentType.img, ComponentType.textField, ComponentType.textArea, ComponentType.select1, ComponentType.selectMultiple, ComponentType.checkbox, ComponentType.switch, ComponentType.radio, ComponentType.colorPicker, ComponentType.ckEditor, ComponentType.datePicker, ComponentType.upload, ComponentType.numberPicker]
     const inputLayers = useMemo<Array<{ [p: string]: any }>>(() => layers.filter((e: any) => e.NameField?.length && inputComponents.includes(e.Type)), [layers])
     const _colController = new TableController("column")
     const _relController = new TableController("rel")
@@ -392,7 +392,11 @@ export const FormById = forwardRef<FormByIdRef, FormByIdProps>((props, ref) => {
         rels
     }), [methods.watch()]);
 
-    const opts = useDeferredValue(methodOptions.watch())
+    const finalOptions = useMemo(() => {
+        return methodOptions.watch()
+    }, [JSON.stringify(methodOptions.watch())])
+
+    const opts = useDeferredValue(finalOptions)
 
     return formItem && !!cols.length && finalFormValues && layers.filter((e: any) => !e.ParentId).map((e: any) => {
         return <RenderLayerElement
