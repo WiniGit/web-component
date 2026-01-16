@@ -357,6 +357,11 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                             _props.onMouseUp = (ev: any) => handleEvent(triggerActions, ev)
                         }
                         break;
+                    case TriggerType.focus:
+                        if (triggerActions.length) {
+                            _props.onFocus = (ev: any) => handleEvent(triggerActions, ev)
+                        }
+                        break;
                     case TriggerType.change:
                         if (triggerActions.length) {
                             _props.onChange = (ev: any) => handleEvent(triggerActions, ev)

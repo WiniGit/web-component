@@ -90,6 +90,7 @@ export enum TriggerType {
     mouseleave = "mouseleave",
     mousedown = "mousedown",
     mouseup = "mouseup",
+    focus = "focus",
     change = "change",
     blur = "blur",
     scroll = "scroll",

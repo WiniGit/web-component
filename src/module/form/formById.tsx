@@ -390,12 +390,9 @@ export const FormById = forwardRef<FormByIdRef, FormByIdProps>((props, ref) => {
         methods: methods as any,
         cols,
         rels
-    }), [methods.watch()]);
+    }), [finalFormValues]);
 
-    const finalOptions = useMemo(() => {
-        return methodOptions.watch()
-    }, [JSON.stringify(methodOptions.watch())])
-
+    const finalOptions = useMemo(() => methodOptions.watch(), [JSON.stringify(methodOptions.watch())])
     const opts = useDeferredValue(finalOptions)
 
     return formItem && !!cols.length && finalFormValues && layers.filter((e: any) => !e.ParentId).map((e: any) => {
