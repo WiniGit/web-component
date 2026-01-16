@@ -226,7 +226,7 @@ interface CKEditorFormProps extends SimpleFormProps {
     ckEditorStyle?: CSSProperties,
 }
 
-export function CKEditorForm(params: CKEditorFormProps) {
+export function CKEditorForm({ ckEditorStyle = { width: "100%", height: 400, maxHeight: 600, borderRadius: 8 }, ...params }: CKEditorFormProps) {
     const _covertErrors = useMemo(() => params.name ? convertErrors(params.methods.formState.errors, params.name) : undefined, [params.name, params.methods.formState.errors?.[params.name!]])
     const { t } = useTranslation()
 
@@ -241,7 +241,7 @@ export function CKEditorForm(params: CKEditorFormProps) {
                     {params.required ? <Text className="label-4" style={{ color: '#E14337' }}>*</Text> : null}
                 </div> : null)}
                 <CustomCkEditor5
-                    style={params.className?.includes("row") ? { flex: 1, overflow: "hidden visible", ...(params.ckEditorStyle ?? {}) } : params.ckEditorStyle}
+                    style={params.className?.includes("row") ? { flex: 1, overflow: "hidden visible", ...ckEditorStyle } : ckEditorStyle}
                     value={field.value}
                     disabled={params.disabled}
                     customConfig={params.customConfig as any}

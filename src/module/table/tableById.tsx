@@ -80,8 +80,8 @@ interface DataTableProps {
     customCell?: { [k: string]: (params: { item: { [p: string]: any }, index: number }) => ReactNode };
     customFilterOptions?: { [k: string]: { query?: string, options?: OptionsItem[] } };
     hideActionColumn?: boolean;
-    /** allow: "add" | "divider" | "search" | "export" | "import" | ReactNode | undefined */
-    features?: Array<"add" | "divider" | "search" | "export" | "import" | ReactNode | undefined>;
+    /** allow: "add" | "total" | "divider" | "search" | "export" | "import" | ReactNode | undefined */
+    features?: Array<"add" | "total" | "divider" | "search" | "export" | "import" | ReactNode | undefined>;
     /** toolbars = false OR an array allow: "total" | "export" | "duplicate" | "delete" | ReactNode | undefined */
     toolbars?: Array<"total" | "export" | "duplicate" | "delete" | ReactNode | undefined> | false;
     /** default: true */
@@ -126,7 +126,7 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
     actions = [],
     onChangeActions,
     onEditColumn,
-    features = ["add", <div key={"space"} style={{ flex: 1 }} />, "search", "divider", "export"],
+    features = ["add", "total", <div key={"space"} style={{ flex: 1 }} />, "search", "divider", "export"],
     toolbars = ["total", <div key={"space"} style={{ flex: 1 }} />, "export", "duplicate", "delete"],
     customFormId, onSelectCustomForm,
     formTitle, onChangeFormTitle,
@@ -337,9 +337,11 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
                                 key={"add"}
                                 label={`${t("add")} ${t("new").toLowerCase()}`}
                                 prefix={<Winicon src={"outline/user interface/e-add"} size={12} />}
-                                className="button-text-3 button-neutral border"
+                                className="label-3 button-neutral border"
                                 onClick={() => showAddEditPopup()}
                             />
+                        case "total":
+                            return !!data.totalCount && <span key={"total"} className="label-3">{data.totalCount ?? 0} totals</span>
                         case "search":
                             return <SearchFilterData
                                 key={"search"}

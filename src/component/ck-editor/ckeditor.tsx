@@ -250,7 +250,7 @@ class ExportPdfPlugin extends Plugin {
 }
 
 
-export function CustomCkEditor5({ style = {}, extraPlugins = [], ...props }: Props) {
+export function CustomCkEditor5({ style = { width: "100%", height: 400, maxHeight: 600, borderRadius: 8 }, extraPlugins = [], ...props }: Props) {
     const editorContainerRef = useRef(null);
     const editorRef = useRef(null);
     // const editorWordCountRef = useRef(null);
