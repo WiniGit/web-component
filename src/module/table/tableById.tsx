@@ -113,7 +113,6 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
     style = {},
     tbName,
     staticSearch = "",
-    title = "",
     columns = [],
     onChangeConfigData,
     filterData = { searchRaw: "*", sortby: [] },
@@ -308,7 +307,7 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
                 ref={popupRef}
                 tbName={tbName}
                 id={id}
-                title={(id ? formTitle?.formEdit : formTitle?.formAdd) ?? title}
+                title={(id ? formTitle?.formEdit : formTitle?.formAdd) ?? tbName}
                 onChangeTitle={onChangeFormTitle ? (newTitle) => {
                     const tmp: any = { ...formTitle }
                     if (id) tmp.formEdit = newTitle
@@ -336,7 +335,7 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
                         case "add":
                             return <Button
                                 key={"add"}
-                                label={`${t("add")} ${(title ?? tbName).toLowerCase()}`}
+                                label={`${t("add")} ${t("new").toLowerCase()}`}
                                 prefix={<Winicon src={"outline/user interface/e-add"} size={12} />}
                                 className="button-text-3 button-neutral border"
                                 onClick={() => showAddEditPopup()}
@@ -456,7 +455,6 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
                             relativeFields={relativeFields}
                             selected={selected}
                             setSelected={setSelected}
-                            title={title}
                             showIndex={showIndex}
                             hideCheckbox={hideCheckbox}
                             onChangeActions={enableEdit ? onChangeActions : undefined}
@@ -471,7 +469,7 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
                                 dataController.duplicate([item.Id]).then((res: any) => {
                                     if (res.code !== 200) return ToastMessage.errors(res.message)
                                     getData(pageDetails.page, pageDetails.size)
-                                    ToastMessage.success(`Duplicate this ${title.toLowerCase()} successfully!`)
+                                    ToastMessage.success(`${t("duplicated")} ${tbName.toLowerCase()} ${t("successfully").toLowerCase()}!`)
                                 })
                             }) : undefined}
                             customFormId={customFormId}
@@ -559,7 +557,7 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
                                 dataController.duplicate(selected).then((res: any) => {
                                     if (res.code !== 200) return ToastMessage.errors(res.message)
                                     getData(pageDetails.page, pageDetails.size)
-                                    ToastMessage.success(`Duplicate these ${title.toLowerCase()} successfully!`)
+                                    ToastMessage.success(`${t("duplicate")} these ${tbName.toLowerCase()} ${t("successfully").toLowerCase()}!`)
                                     setSelected([])
                                 })
                             }}
@@ -574,8 +572,8 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
                             onClick={() => {
                                 showDialog({
                                     alignment: DialogAlignment.center,
-                                    title: "Confirm delete",
-                                    content: `Are you sure to delete these ${selected.length} ${title.toLowerCase()}?`,
+                                    title: `${t("confirm")} ${t("delete").toLowerCase()}`,
+                                    content: t("areYouSureMany", { act: t("delete").toLowerCase(), name: tbName.toLowerCase() }),
                                     submitTitle: t("delete"),
                                     onSubmit: () => {
                                         dataController.delete(selected).then((res: any) => {

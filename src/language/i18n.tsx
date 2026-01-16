@@ -98,6 +98,7 @@ const resources = {
             value: "Value",
             noDataFound: "There are no data to found.",
             areYouSure: "Are you sure to {{act}} this {{name}} ?",
+            areYouSureMany: "Are you sure to {{act}} these {{name}} ?",
             noData: "No data.",
             export: 'Export',
             import: 'Import',
@@ -135,6 +136,7 @@ const resources = {
             action: "Action",
             search: "Search",
             now: "Now",
+            new: "New",
         },
     },
     vi: {
@@ -232,6 +234,7 @@ const resources = {
             value: "Giá trị",
             noDataFound: "Không tìm thấy dữ liệu.",
             areYouSure: "Bạn chắc chắn muốn {{act}} {{name}} này ?",
+            areYouSureMany: "Bạn chắc chắn muốn {{act}} những {{name}} này ?",
             noData: "Không có dữ liệu.",
             export: 'Xuất tệp',
             import: 'Tải lên',
@@ -268,7 +271,8 @@ const resources = {
             repeat: "Lặp lại",
             action: "Hành động",
             search: "Tìm kiếm",
-            now: "Vừa xong"
+            now: "Vừa xong",
+            new: "Mới"
         },
     },
 }

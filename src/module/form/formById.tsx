@@ -175,7 +175,7 @@ export const FormById = forwardRef<FormByIdRef, FormByIdProps>((props, ref) => {
                                     methods.setValue(prop, new Date(typeof dataItem[prop] === 'string' && !isNaN(Number(dataItem[prop])) ? parseInt(dataItem[prop]) : dataItem[prop]))
                                     break;
                                 case FEDataType.MONEY:
-                                    methods.setValue(prop, Util.money(dataItem[prop]))
+                                    if (typeof dataItem[prop] === 'number') methods.setValue(prop, Util.money(dataItem[prop]))
                                     break;
                                 case FEDataType.FILE:
                                     if (dataItem[prop]) {
@@ -248,7 +248,7 @@ export const FormById = forwardRef<FormByIdRef, FormByIdProps>((props, ref) => {
                             methods.setValue(_col.Name, new Date(typeof _col.Form.DefaultValue === 'string' ? parseInt(_col.Form.DefaultValue) : _col.Form.DefaultValue))
                             break;
                         case FEDataType.MONEY:
-                            methods.setValue(_col.Name, Util.money(_col.Form.DefaultValue))
+                            if (typeof _col.Form.DefaultValue === 'number') methods.setValue(_col.Name, Util.money(_col.Form.DefaultValue))
                             break;
                         default:
                             break;

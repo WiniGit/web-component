@@ -241,7 +241,6 @@ const HeaderCell = ({ colItem, methods, style = {}, children, onMounted, onChang
 interface TableRowProps {
     item: { [p: string]: any };
     setItem: (params: { [p: string]: any }) => void;
-    title?: string;
     index: number;
     methods: UseFormReturn<FieldValues, any, undefined>;
     fields?: Array<{ [p: string]: any }>;
@@ -268,7 +267,7 @@ interface TableRowProps {
     onChangeFormTitle?: (params: { formAdd?: string | null, formEdit?: string | null }) => void;
 }
 
-export const TableRow = ({ item, setItem, onEditActionColumn, title, index, methods, fields = [], files = [], relativeData, relativeFields = [], showIndex = false, hideCheckbox = false, showAddEditPopup, onDelete, actions = [], onChangeActions, selected, setSelected, onDuplicate, customFormId, formTitle, onChangeFormTitle, ...props }: TableRowProps) => {
+export const TableRow = ({ item, setItem, onEditActionColumn, index, methods, fields = [], files = [], relativeData, relativeFields = [], showIndex = false, hideCheckbox = false, showAddEditPopup, onDelete, actions = [], onChangeActions, selected, setSelected, onDuplicate, customFormId, formTitle, onChangeFormTitle, ...props }: TableRowProps) => {
     const popupRef = useRef<Popup>(null)
     const tbName = methods.getValues("TbName")
     const dataController = new DataController(tbName)
@@ -377,7 +376,7 @@ export const TableRow = ({ item, setItem, onEditActionColumn, title, index, meth
                 ref={popupRef}
                 tbName={tbName}
                 id={id}
-                title={(id ? formTitle?.formEdit : formTitle?.formAdd) ?? title}
+                title={(id ? formTitle?.formEdit : formTitle?.formAdd) ?? tbName}
                 onChangeTitle={onChangeFormTitle ? (newTitle) => {
                     const tmp: any = { ...formTitle }
                     if (id) tmp.formEdit = newTitle
@@ -408,7 +407,6 @@ export const TableRow = ({ item, setItem, onEditActionColumn, title, index, meth
             hideOverlay: true,
             content: <ActionOptionsDropdown
                 ref={popupRef}
-                title={title}
                 actions={actions}
                 onChangeActions={onChangeActions}
                 onEditActionColumn={onEditActionColumn}
@@ -434,7 +432,8 @@ export const TableRow = ({ item, setItem, onEditActionColumn, title, index, meth
                             const newList = selected!.filter(id => id !== item.Id && id !== item.ParentId)
                             if (v) newList.push(item.Id)
                             setSelected!(newList)
-                        } : undefined} />
+                        } : undefined}
+                    />
                     {showIndex && <Text className='label-3' style={{ flex: 1 }}>{item.ParentId ? "" : index}</Text>}
                 </div>
             </div>}
@@ -471,7 +470,7 @@ export const TableRow = ({ item, setItem, onEditActionColumn, title, index, meth
                     item={childItem}
                     files={localFiles}
                     relativeData={mapLocalRelativeData[childItem.Id]}
-                    showIndex
+                    showIndex={showIndex}
                     hideCheckbox={hideCheckbox}
                     showAddEditPopup={enableEdit ? showAddEditChildPopup : undefined}
                     onDelete={enableEdit ? (() => {
@@ -487,7 +486,7 @@ export const TableRow = ({ item, setItem, onEditActionColumn, title, index, meth
                             if (res.code !== 200) return ToastMessage.errors(res.message)
                             setItem({ ...item, _totalChild: item._totalChild + 1 })
                             getData(Math.max(Math.floor(children.length / 20), 1))
-                            ToastMessage.success(`Duplicate this ${title?.toLowerCase()} successfully!`)
+                            ToastMessage.success(`${t("duplicate")} ${tbName?.toLowerCase()} ${t("successfully").toLowerCase()}!`)
                         })
                     } : undefined}
                 />

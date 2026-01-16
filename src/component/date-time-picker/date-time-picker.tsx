@@ -539,7 +539,7 @@ const PopupDateTimePicker = ({ value, style, endValue, repeatValue, onApply, pic
                                             <Text className="label-3">{label}</Text>
                                         </button>
                                     }),
-                                    style: { top: rect.bottom + 2, right: `calc(100dvw - ${rect.right}px)`, width: rect.width }
+                                    style: { top: rect.bottom + 2, right: `calc(100dvw - ${rect.right}px)`, minWidth: rect.width }
                                 }
                                 setIsOpenDropdown(true)
                             }}

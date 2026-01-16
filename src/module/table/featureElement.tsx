@@ -927,10 +927,9 @@ interface ActionOptionsDropdownProps {
     onDelete?: () => void;
     item: { [p: string]: any };
     tbName: string;
-    title?: string;
 }
 
-export const ActionOptionsDropdown = forwardRef(({ onClose, actions = [], onChangeActions, onEditActionColumn, style, onEdit, onDuplicate, onDelete, item, tbName, title }: ActionOptionsDropdownProps, ref: any) => {
+export const ActionOptionsDropdown = forwardRef(({ onClose, actions = [], onChangeActions, onEditActionColumn, style, onEdit, onDuplicate, onDelete, item, tbName }: ActionOptionsDropdownProps, ref: any) => {
     const controller = new DataController(tbName)
     const [data, setData] = useState()
     const { t } = useTranslation()
@@ -994,7 +993,7 @@ export const ActionOptionsDropdown = forwardRef(({ onClose, actions = [], onChan
             showDialog({
                 alignment: DialogAlignment.center,
                 title: `${t("confirm")} ${t("delete").toLowerCase()}`,
-                content: t("areYouSure", { act: t("delete"), name: title?.toLowerCase() ?? tbName }),
+                content: t("areYouSure", { act: t("delete").toLowerCase(), name: tbName.toLowerCase() }),
                 submitTitle: t("delete"),
                 onSubmit: onDelete
             })

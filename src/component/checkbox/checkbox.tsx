@@ -44,7 +44,7 @@ export const Checkbox = (props: CheckboxProps) => {
         if (props.value !== checked) setChecked(props.value)
     }, [props.value])
 
-    return <label id={props.id} className={`${styles['checkbox-container']} row ${props.className ?? ''}`} style={convertStyle} is-null-value={`${props.value === null}`}>
+    return <label id={props.id} onClick={props.onClick} className={`${styles['checkbox-container']} row ${props.className ?? ''}`} style={convertStyle} is-null-value={`${props.value === null}`}>
         <input
             name={props.name}
             ref={inputRef}
