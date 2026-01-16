@@ -390,7 +390,7 @@ export const FormById = forwardRef<FormByIdRef, FormByIdProps>((props, ref) => {
         methods: methods as any,
         cols,
         rels
-    }), [finalFormValues]);
+    }), [JSON.stringify(methods.watch())]);
 
     const finalOptions = useMemo(() => methodOptions.watch(), [JSON.stringify(methodOptions.watch())])
     const opts = useDeferredValue(finalOptions)
