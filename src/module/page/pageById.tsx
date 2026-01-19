@@ -696,7 +696,7 @@ const ElementUI = ({ typeProps, findId, dataValue, children, convertedOptions, o
             if (props.item.NameField) {
                 if (Array.isArray(dataValue)) { // list file
                     return dataValue.map((f, i) => <FileName key={f.id + "-" + i} file={f} index={i} {...typeProps} />)
-                } else if (typeof dataValue === "object") return typeProps.html = dataValue?.["__html"] ?? ""
+                } else if (typeof dataValue === "object") typeProps.html = dataValue?.["__html"] ?? ""
                 else typeProps.value = dataValue
             }
             return <CustomText {...typeProps} />
