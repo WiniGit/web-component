@@ -110,6 +110,16 @@ div[class~="resize-cell-stick"] {
     width: 8rem !important;
 }
 
+.header-cell:first-child label.hidden,
+.cell:first-child label.hidden {
+    display: none !important;
+}
+
+.header-cell:first-child:has(label.hidden + div),
+.cell:first-child:has(label.hidden + div) {
+    width: 6rem !important;
+}
+
 .header-cell:first-child,
 .cell:first-child {
     position: sticky;
@@ -127,6 +137,11 @@ div[class~="resize-cell-stick"] {
 .header-cell:first-child:has(label + div)+.header-cell:nth-child(2),
 .cell:first-child:has(label + div)+.cell:nth-child(2) {
     left: 8rem !important;
+}
+
+.header-cell:first-child:has(label.hidden + div)+.header-cell:nth-child(2),
+.cell:first-child:has(label.hidden + div)+.cell:nth-child(2) {
+    left: 6rem !important;
 }
 
 .header-cell>.title,

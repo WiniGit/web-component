@@ -39,9 +39,17 @@ export const TableHeader = ({ methods, onEditColumn, onChangeConfigData, showInd
     return <>
         <Popup ref={popupRef} />
         <div className={`row ${styles["header"]}`}>
-            {!hideCheckbox && <div className={`row ${styles["header-cell"]}`}>
+            {(!hideCheckbox || showIndex) && <div className={`row ${styles["header-cell"]}`}>
                 <div className={`row ${styles["title"]}`}>
-                    <Checkbox size={'1.6rem'} value={selected as any} onChange={onChangeSelected} />
+                    <Checkbox
+                        size={'1.6rem'}
+                        value={selected as any}
+                        onChange={onChangeSelected}
+                        onClick={(ev) => {
+                            ev.stopPropagation()
+                        }}
+                        className={hideCheckbox ? styles["hidden"] : undefined}
+                    />
                     {showIndex && <div style={{ flex: 1 }} />}
                 </div>
             </div>}
@@ -212,7 +220,7 @@ const HeaderCell = ({ colItem, methods, style = {}, children, onMounted, onChang
     }, [onResize])
 
     const editable = useMemo(() => {
-        if (onChangeConfigData && !onResize) return { onMouseMove: onMouseMove, onMouseOut: onMouseOut }
+        if (onChangeConfigData && !onResize) return { onMouseMove, onMouseOut }
         return {}
     }, [onChangeConfigData, onResize, resizeRef.current])
 
@@ -424,17 +432,20 @@ export const TableRow = ({ item, setItem, onEditActionColumn, index, methods, fi
     return <>
         <Popup ref={popupRef} />
         <div className={`row ${styles["table-row"]} ${props.onClickRow ? styles["clickable"] : ""}`} onContextMenu={props.onContextMenu ? ((ev) => { props.onContextMenu!({ item, index, event: ev as any }) }) : undefined} onClick={props.onClickRow ? ((ev) => { props.onClickRow!({ item, index, event: ev as any }) }) : undefined}>
-            {!hideCheckbox && <div className={`row ${styles["cell"]}`}>
+            {(!hideCheckbox || showIndex) && <div className={`row ${styles["cell"]}`}>
                 <div className={`row ${styles["content"]}`}>
                     <Checkbox size={'1.6rem'} value={checkValue}
-                        onClick={(ev) => ev.stopPropagation()}
                         onChange={setSelected ? (v) => {
                             const newList = selected!.filter(id => id !== item.Id && id !== item.ParentId)
                             if (v) newList.push(item.Id)
                             setSelected!(newList)
                         } : undefined}
+                        onClick={(ev) => {
+                            ev.stopPropagation()
+                        }}
+                        className={hideCheckbox ? styles["hidden"] : undefined}
                     />
-                    {showIndex && <Text className='label-3' style={{ flex: 1 }}>{item.ParentId ? "" : index}</Text>}
+                    {showIndex && <Text className={index > 9999 ? 'label-5' : 'label-3'} style={{ flex: 1 }}>{item.ParentId ? "" : index}</Text>}
                 </div>
             </div>}
             {columns.sort((a, b) => a.Sort - b.Sort).map((_col, i) => {
