@@ -3,13 +3,7 @@ import { CSSProperties, ReactNode, useEffect, useMemo, useRef, useState } from "
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { differenceInCalendarDays } from "date-fns"
-import { Text } from "../text/text"
-import { Util } from "../../controller/utils"
-import { Winicon } from "../wini-icon/winicon"
-import { Calendar } from "../calendar/calendar"
-import { TextField } from "../text-field/text-field"
-import { Button } from "../button/button"
-import { Checkbox } from "../checkbox/checkbox"
+import { Text, Util, Winicon, Calendar, TextField, Button, Checkbox } from "../../index"
 
 const today = new Date()
 const startDate = new Date(
@@ -138,7 +132,7 @@ export function DateTimePicker({ style = {}, pickerType = "auto", ...props }: Da
                         helper-text={props.helperText}
                         style={{ '--helper-text-color': props.helperTextColor ?? '#e14337', ...style } as CSSProperties}
                         onClick={showCalendar}>
-                        {props.prefix ?? <Winicon className={styles["prefix-icon"]} src="outline/user interface/calendar-date-2" size={12} />}
+                        {props.prefix ?? <Winicon className={styles["prefix-icon"]} src="outline/user interface/calendar-date-2" size={11} color="var(--neutral-text-placeholder-color, #878792)" style={value ? undefined : { borderColor: "var(--neutral-text-placeholder-color, #878792)" }} />}
                         <input
                             className={styles["value"]}
                             ref={inputRef}
@@ -182,7 +176,7 @@ export function DateTimePicker({ style = {}, pickerType = "auto", ...props }: Da
                     helper-text={props.helperText}
                     style={{ '--helper-text-color': props.helperTextColor ?? '#e14337', cursor: props.disabled ? undefined : 'pointer', ...style } as CSSProperties}
                     onClick={(props.disabled || props.readOnly) ? undefined : showCalendar}>
-                    {props.prefix ?? <Winicon className={styles["prefix-icon"]} src="outline/user interface/calendar-date-2" size={12} />}
+                    {props.prefix ?? <Winicon className={styles["prefix-icon"]} src="outline/user interface/calendar-date-2" size={11} color="var(--neutral-text-placeholder-color, #878792)" style={value ? undefined : { borderColor: "var(--neutral-text-placeholder-color, #878792)" }} />}
                     {txtValue}
                     {props.suffix}
                 </div>

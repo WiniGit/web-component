@@ -6,7 +6,8 @@
 }
 
 .date-time-picker>.prefix-icon {
-    padding: 0.5rem;
+    width: 24px;
+    height: 24px;
     margin-right: 0.8rem;
     border-radius: 50%;
     border: 1px dashed var(--neutral-text-subtitle-color, light-dark(#61616B, #A2A2AA))
