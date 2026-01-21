@@ -166,26 +166,23 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
             }
             return getValue
         })
-        return replaceTmp === "null" ? null : replaceTmp === "undefined" ? undefined : replaceTmp === "true" ? true : replaceTmp === "false" ? false : isNaN(Number(replaceTmp)) ? replaceTmp : Number(replaceTmp)
+        switch (replaceTmp.trim()) {
+            case "undefined":
+                return undefined;
+            default:
+                try {
+                    return JSON.parse(replaceTmp)
+                } catch (error) {
+                    return replaceTmp
+                }
+        }
     }
     const watchForCustomProps = useMemo(() => {
         const tmp: { [p: string]: any } = {}
         const triggerState = props.item.State?.filter((e: any) => e.Trigger?.length)
         if (triggerState?.length) {
             for (const st of triggerState) {
-                try {
-                    var checked = new Function(
-                        "indexItem",
-                        "Util",
-                        "watch",
-                        "location",
-                        "query",
-                        "params",
-                        `return ${st.Trigger.replace(replaceVariables, (_: string, p1: string) => p1.replace(/this/g, "indexItem"))}`
-                    )({ ...(props.indexItem ?? {}), index: props.index }, Util, props.methods!.watch, location, query, params)
-                } catch (error) {
-                    console.error("item: ", props.item, " --- trigger: ", st.Trigger, " --- error: ", error)
-                }
+                const checked = replaceThisVariables(st.Trigger)
                 if (checked) {
                     for (const sp of supportProperties) {
                         if (st[sp]) {
@@ -433,12 +430,21 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
             let tmpValue = _options?.find((e: any) => e && props.indexItem![keys[0]]?.includes(e.Id))?.[keys[1]]
             switch (_rel.DataType) {
                 case FEDataType.FILE:
-                    if (Array.isArray(tmpValue)) {
-                        tmpValue = tmpValue[0]?.url
-                    } else {
-                        tmpValue = tmpValue?.split(",")?.[0]
+                    if (tmpValue?.length) {
+                        if (!Array.isArray(tmpValue)) {
+                            tmpValue = tmpValue.split(",").map((fid: string) => {
+                                if (ConfigData.regexGuid.test(fid)) {
+                                    const tmpF = _options?.find((f: any) => f.Id === fid)
+                                    if (!tmpF) return undefined;
+                                    return { id: tmpF.Id, name: tmpF.Name, size: tmpF.Size, type: tmpF.Type, url: ConfigData.fileUrl + tmpF.Url }
+                                } else {
+                                    const _url = getValidLink(fid)
+                                    const _type = fid.split(".").pop()?.toLowerCase()
+                                    return { id: fid, name: fid, url: _url, type: imgFileTypes.includes(`.${_type}`) ? `image/${_type}` : _type }
+                                }
+                            }).filter((f: any) => !!f)
+                        }
                     }
-                    if (tmpValue && (props.item.Type === ComponentType.container || props.item.Type === ComponentType.navLink)) tmpValue = { backgroundImage: `url(${getValidLink(tmpValue)})` }
                     break;
                 case FEDataType.HTML:
                     tmpValue = { __html: tmpValue }
@@ -569,44 +575,6 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
             case ComponentType.iframe:
                 if (regexGetVariables.test(tmpProps.src)) tmpProps.src = replaceThisVariables(tmpProps.src)
                 break;
-            case ComponentType.select1:
-            // @ts-ignore
-            case ComponentType.selectMultiple:
-                tmpProps.getOptions = props.rels?.find(e => e.Column === props.item.NameField)?.getOptions
-            // @ts-ignore
-            case ComponentType.button:
-                if (tmpProps.label && regexGetVariables.test(tmpProps.label)) tmpProps.label = replaceThisVariables(tmpProps.label)
-            // @ts-ignore
-            case ComponentType.textField:
-            case ComponentType.datePicker:
-            // @ts-ignore
-            case ComponentType.dateTimePicker:
-                if (props.item.NameField?.length) {
-                    const propsColDataType = props.cols?.find(e => e.Name === props.item.NameField)?.DataType
-                    switch (propsColDataType) {
-                        case FEDataType.DATE:
-                            tmpProps.pickerType = "date"
-                            tmpProps.pickOnly = true
-                            break;
-                        case FEDataType.DATETIME:
-                            tmpProps.pickerType = "datetime"
-                            break;
-                        case FEDataType.PASSWORD:
-                            tmpProps.IsPassword = true
-                            break;
-                        default:
-                            break;
-                    }
-                }
-            case ComponentType.textArea:
-                if (tmpProps.placeholder && regexGetVariables.test(tmpProps.placeholder)) tmpProps.placeholder = replaceThisVariables(tmpProps.placeholder)
-                if (children.length) {
-                    const iconPrefix = children.find(e => e.Setting.type === "prefix")
-                    const iconSuffix = children.find(e => e.Setting.type === "suffix")
-                    if (iconPrefix) tmpProps.prefix = <RenderLayerElement {...props} item={iconPrefix} style={undefined} className={undefined} />
-                    if (iconSuffix) tmpProps.suffix = <RenderLayerElement {...props} item={iconSuffix} style={undefined} className={undefined} />
-                }
-                break;
             case ComponentType.pagination:
                 if (tmpProps.currentPage && regexGetVariables.test(tmpProps.currentPage)) {
                     const newCurrentPage = replaceThisVariables(tmpProps.currentPage)
@@ -625,6 +593,50 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                 if (typeof tmpProps.totalItem === "string") tmpProps.totalItem = parseInt(tmpProps.totalItem)
                 break;
             default:
+                switch (props.item.Type) {
+                    case ComponentType.button:
+                        if (tmpProps.label && regexGetVariables.test(tmpProps.label)) tmpProps.label = replaceThisVariables(tmpProps.label)
+                        break;
+                    case ComponentType.select1:
+                    case ComponentType.selectMultiple:
+                        tmpProps.getOptions = props.rels?.find(e => e.Column === props.item.NameField)?.getOptions
+                        if (!props.item.NameField?.length && regexGetVariables.test(tmpProps.value)) tmpProps.value = replaceThisVariables(tmpProps.value)
+                        break;
+                    case ComponentType.textArea:
+                    case ComponentType.textField:
+                        if (!props.item.NameField?.length && regexGetVariables.test(tmpProps.defaultValue)) tmpProps.defaultValue = replaceThisVariables(tmpProps.defaultValue)
+                        break;
+                    case ComponentType.datePicker:
+                    case ComponentType.dateTimePicker:
+                        if (props.item.NameField?.length) {
+                            const propsColDataType = props.cols?.find(e => e.Name === props.item.NameField)?.DataType
+                            switch (propsColDataType) {
+                                case FEDataType.DATE:
+                                    tmpProps.pickerType = "date"
+                                    tmpProps.pickOnly = true
+                                    break;
+                                case FEDataType.DATETIME:
+                                    tmpProps.pickerType = "datetime"
+                                    break;
+                                case FEDataType.PASSWORD:
+                                    tmpProps.IsPassword = true
+                                    break;
+                                default:
+                                    break;
+                            }
+                        } else if (regexGetVariables.test(tmpProps.value)) tmpProps.value = replaceThisVariables(tmpProps.value)
+                        break;
+                    default:
+                        if (!props.item.NameField?.length && regexGetVariables.test(tmpProps.value)) tmpProps.value = replaceThisVariables(tmpProps.value)
+                        break;
+                }
+                if (tmpProps.placeholder && regexGetVariables.test(tmpProps.placeholder)) tmpProps.placeholder = replaceThisVariables(tmpProps.placeholder)
+                if (children.length) {
+                    const iconPrefix = children.find(e => e.Setting.type === "prefix")
+                    const iconSuffix = children.find(e => e.Setting.type === "suffix")
+                    if (iconPrefix) tmpProps.prefix = <RenderLayerElement {...props} item={iconPrefix} style={undefined} className={undefined} />
+                    if (iconSuffix) tmpProps.suffix = <RenderLayerElement {...props} item={iconSuffix} style={undefined} className={undefined} />
+                }
                 break;
         }
         return tmpProps

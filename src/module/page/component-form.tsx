@@ -73,7 +73,8 @@ export function FTextArea({ autoHeight, onChange, ...props }: FTextAreaProps) {
     return <TextArea
         ref={autoHeight ? ((txtAreaRef) => {
             if (txtAreaRef) {
-                const txtAreaElement = txtAreaRef.inputElement as any
+                const txtAreaElement = txtAreaRef.inputElement as HTMLTextAreaElement
+                txtAreaElement.style.scrollbarWidth = `none`
                 txtAreaElement.style.height = `0px`
                 txtAreaElement.style.height = `${txtAreaElement.scrollHeight}px`
             }
