@@ -171,7 +171,9 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                 return undefined;
             default:
                 try {
-                    return JSON.parse(replaceTmp)
+                    if (replaceTmp.startsWith("!")) return !JSON.parse(replaceTmp.substring(1))
+                    else if (replaceTmp.startsWith("!!")) return !!JSON.parse(replaceTmp.substring(2))
+                    else return JSON.parse(replaceTmp)
                 } catch (error) {
                     return replaceTmp
                 }
