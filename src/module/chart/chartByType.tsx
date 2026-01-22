@@ -14,6 +14,7 @@ export interface DatasetItem {
 
 interface Props {
     style?: CSSProperties,
+    chartStyle?: CSSProperties,
     className?: string,
     legend?: "left" | "top" | "right" | "bottom" | "none",
     type: 'line' | 'bar' | 'horizontal bar' | 'scatter' | 'bubble' | 'radar' | 'area' | 'doughnut' | 'pie',
@@ -25,7 +26,10 @@ interface Props {
     handleChartClick?: (ev: any) => void;
 }
 
-export default function RenderChartByType({ xAxisConfig, yAxisConfig, legend = "none", ...props }: Props) {
+const pieStyle = { width: 200, height: 200 }
+const barStyle = { height: 314, width: "100%" }
+
+export const ChartByType = ({ xAxisConfig, yAxisConfig, legend = "none", ...props }: Props) => {
     const { theme } = useWiniContext()
     const grid = useMemo(() => {
         let _left = 24;
@@ -35,7 +39,7 @@ export default function RenderChartByType({ xAxisConfig, yAxisConfig, legend = "
             tmp.style.cssText = "font-size: 12px; font-family: Inter; opacity: 0; position: fixed;";
             tmp.innerText = xAxisConfig.unit;
             document.body.appendChild(tmp);
-            _left = tmp.offsetWidth + 8;
+            _right = tmp.offsetWidth + 8;
             tmp.remove();
         }
         if (yAxisConfig?.unit?.length) {
@@ -43,10 +47,10 @@ export default function RenderChartByType({ xAxisConfig, yAxisConfig, legend = "
             tmp.style.cssText = "font-size: 12px; font-family: Inter; opacity: 0; position: fixed;";
             tmp.innerText = yAxisConfig.unit;
             document.body.appendChild(tmp);
-            _right = tmp.offsetWidth + 8;
+            _left = tmp.offsetWidth;
             tmp.remove();
         }
-        return { containLabel: true, left: Math.max(0, _left), right: Math.max(0, _right) }
+        return { left: Math.max(0, _left), right: Math.max(0, _right) }
     }, [xAxisConfig?.unit, yAxisConfig?.unit, props.type]);
     const option = useMemo(() => {
         const tmp: any = {
@@ -157,7 +161,7 @@ export default function RenderChartByType({ xAxisConfig, yAxisConfig, legend = "
                         data: xAxisConfig?.name?.map((n: string | { name: string, color?: string }) => (typeof n === "string" ? n : { value: n.name, textStyle: { color: n.color } })),
                         name: xAxisConfig?.unit,
                         nameLocation: 'end',
-                        nameGap: 20,
+                        nameGap: 8,
                         nameTextStyle: {
                             color: theme === "dark" ? "#A2A2AA" : "#61616B",
                             fontSize: 12,
@@ -228,7 +232,7 @@ export default function RenderChartByType({ xAxisConfig, yAxisConfig, legend = "
                         data: yAxisConfig?.name?.map((n: string | { name: string, color?: string }) => (typeof n === "string" ? n : { value: n.name, textStyle: { color: n.color } })),
                         name: yAxisConfig?.unit,
                         nameLocation: 'end',
-                        nameGap: 20,
+                        nameGap: 8,
                         nameTextStyle: {
                             color: theme === "dark" ? "#A2A2AA" : "#61616B",
                             fontSize: 12,
@@ -337,6 +341,7 @@ export default function RenderChartByType({ xAxisConfig, yAxisConfig, legend = "
         }
     }, [grid, props.datasets, xAxisConfig, yAxisConfig, props.formatter, theme]);
 
+
     switch (legend) {
         case "top":
             return <div className={`${styles["chart-block"]} ${props.className ?? ''}`} style={{ flexDirection: "column", ...props.style }}>
@@ -350,7 +355,7 @@ export default function RenderChartByType({ xAxisConfig, yAxisConfig, legend = "
                     notMerge={true}
                     lazyUpdate={true}
                     option={option}
-                    style={{ width: "100%", aspectRatio: ["bar", "horizontal bar", "line"].includes(props.type) ? undefined : "1 / 1" }}
+                    style={props.chartStyle ?? (["bar", "horizontal bar", "line"].includes(props.type) ? barStyle : pieStyle)}
                 />
             </div>
         case "bottom":
@@ -362,7 +367,7 @@ export default function RenderChartByType({ xAxisConfig, yAxisConfig, legend = "
                     notMerge={true}
                     lazyUpdate={true}
                     option={option}
-                    style={{ width: "100%", aspectRatio: ["bar", "horizontal bar", "line"].includes(props.type) ? undefined : "1 / 1" }}
+                    style={props.chartStyle ?? (["bar", "horizontal bar", "line"].includes(props.type) ? barStyle : pieStyle)}
                 />
                 {!!props.datasets.length && <div className={`row ${styles["legend"]}`} style={{ rowGap: "2rem" }}>
                     <CustomLegend datasets={props.datasets as any} type={props.type} />
@@ -370,7 +375,7 @@ export default function RenderChartByType({ xAxisConfig, yAxisConfig, legend = "
             </div>
         case "left":
             return <div className={`${styles["chart-block"]} ${props.className ?? ''}`} style={{ alignItems: "center", ...props.style }}>
-                {!!props.datasets.length && <div className={`col ${styles["legend"]}`} style={{ flex: 1, maxHeight: "100%", columnGap: "2rem" }}>
+                {!!props.datasets.length && <div className={`col ${styles["legend"]}`} style={{ flex: ["bar", "horizontal bar", "line"].includes(props.type) ? undefined : 1, maxHeight: "100%", columnGap: "2rem" }}>
                     <CustomLegend datasets={props.datasets as any} type={props.type} />
                 </div>}
                 <ReactEcharts
@@ -380,7 +385,7 @@ export default function RenderChartByType({ xAxisConfig, yAxisConfig, legend = "
                     notMerge={true}
                     lazyUpdate={true}
                     option={option}
-                    style={{ height: "100%", aspectRatio: ["bar", "horizontal bar", "line"].includes(props.type) ? undefined : "1 / 1" }}
+                    style={props.chartStyle ?? (["bar", "horizontal bar", "line"].includes(props.type) ? { ...barStyle, flex: 1 } : pieStyle)}
                 />
             </div>
         case "right":
@@ -393,9 +398,9 @@ export default function RenderChartByType({ xAxisConfig, yAxisConfig, legend = "
                     notMerge={true}
                     lazyUpdate={true}
                     option={option}
-                    style={{ height: "100%", aspectRatio: ["bar", "horizontal bar", "line"].includes(props.type) ? "5 / 3" : "1 / 1" }}
+                    style={props.chartStyle ?? (["bar", "horizontal bar", "line"].includes(props.type) ? { ...barStyle, flex: 1 } : pieStyle)}
                 />
-                {legend === "right" && !!props.datasets.length && <div className={`col ${styles["legend"]}`} style={{ flex: 1, maxHeight: "100%", columnGap: "2rem" }}>
+                {legend === "right" && !!props.datasets.length && <div className={`col ${styles["legend"]}`} style={{ flex: ["bar", "horizontal bar", "line"].includes(props.type) ? undefined : 1, maxHeight: "100%", columnGap: "2rem" }}>
                     <CustomLegend datasets={props.datasets as any} type={props.type} />
                 </div>}
             </div>

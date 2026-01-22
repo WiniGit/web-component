@@ -1,7 +1,7 @@
 import { CSSProperties, Dispatch, forwardRef, ReactNode, SetStateAction, useEffect, useImperativeHandle, useMemo, useState } from "react"
 import { DataController, SettingDataController } from "../../controller/data"
 import styles from './chart.module.css'
-import RenderChartByType, { DatasetItem } from "./chartByType"
+import { DatasetItem, ChartByType } from "./chartByType"
 import { useTranslation } from "react-i18next"
 import { Text } from "../../component/text/text"
 import { Select1 } from "../../component/select1/select1"
@@ -48,7 +48,7 @@ interface ChartRef {
     selectedTime?: string | number;
 }
 
-export const ChartById = forwardRef<ChartRef, Props>(({ searchRaw = "", style = {}, chartStyle = { height: "15rem", gap: "2.4rem" }, withoutFilterTime = false, ...props }, ref) => {
+const ChartById = forwardRef<ChartRef, Props>(({ searchRaw = "", style = {}, chartStyle = { height: "15rem", gap: "2.4rem" }, withoutFilterTime = false, ...props }, ref) => {
     const now = new Date()
     const [result, setResult] = useState<{ [p: string]: any }[]>([])
     const [chartItem, setChartItem] = useState<{ [p: string]: any }>()
@@ -280,7 +280,7 @@ export const ChartById = forwardRef<ChartRef, Props>(({ searchRaw = "", style = 
                 onChange={(v: any) => { setSelectedTime(v.id) }}
             />}
         </div>}
-        {chartItem && <RenderChartByType
+        {chartItem && <ChartByType
             handleChartClick={props.handleChartClick}
             formatter={props.formatter}
             style={chartStyle}
@@ -293,4 +293,4 @@ export const ChartById = forwardRef<ChartRef, Props>(({ searchRaw = "", style = 
     </div>
 })
 
-export { RenderChartByType as ChartByType }
+export { ChartById, ChartByType }
