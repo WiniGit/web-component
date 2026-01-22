@@ -285,9 +285,9 @@ export const ChartById = forwardRef<ChartRef, Props>(({ searchRaw = "", style = 
             formatter={props.formatter}
             style={chartStyle}
             type={chartItem.Type}
-            xAxisName={(typeof listTime[0] === "number" ? undefined : getxAxisName()) as any}
+            // xAxisName={(typeof listTime[0] === "number" ? undefined : getxAxisName()) as any}
             datasets={props.handleDatasets ? props.handleDatasets(datasets, result) : datasets}
-            unit={chartItem.Setting.unit}
+            // unit={chartItem.Setting.unit}
             legend={chartItem.Setting.legend}
         />}
     </div>

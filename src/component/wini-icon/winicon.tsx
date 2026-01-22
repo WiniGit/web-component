@@ -75,7 +75,7 @@ export const Winicon = forwardRef<WiniconRef, WiniconProps>(({ id, src, link, cl
             onClick={onClick}
             onDoubleClick={onDoubleClick}
             onMouseDown={onMouseDown}
-            className={`${styles['wini-icon']} ${simpleStyle ? styles["simple-icon"] : ""} ${svgData ? "" : "skeleton-loading"} ${onClick ? styles['clickable'] : ''} ${className ?? ''} ${src ? `${src.split("/")[0]}-icon` : ''}${link ? ' link-icon' : ""}`}
+            className={`${styles['wini-icon']} ${simpleStyle ? styles["simple-icon"] : ""} ${onClick ? styles['clickable'] : ''} ${className ?? ''} ${src ? `${src.split("/")[0]}-icon` : ''}${link ? ' link-icon' : ""}`}
             style={{ ...style, fontSize: size, color: color }} dangerouslySetInnerHTML={{ __html: svgData ?? '' }}
             onMouseOver={tooltip ? () => {
                 timoutRef.current = setTimeout(() => {
