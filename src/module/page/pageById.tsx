@@ -137,11 +137,9 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
         return () => { delete pageAllRefs[findId] }
     }, [])
     /** declare parameters */
-    const winiContextData = useWiniContext()
     const location = useLocation() as any
     const params = useParams()
     const query = new URLSearchParams(location.search)
-    const navigate = useNavigate()
     const children = useMemo(() => props.list.filter(e => e.ParentId === props.item.Id), [props.list, props.item])
     const { i18n } = useTranslation();
     const defferWatch = useDeferredValue(JSON.stringify(props.methods!.watch()))
@@ -179,7 +177,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                 }
         }
     }
-    const watchForCustomProps = useMemo(() => {
+    const stateCustomProps = useMemo(() => {
         const tmp: { [p: string]: any } = {}
         const triggerState = props.item.State?.filter((e: any) => e.Trigger?.length)
         if (triggerState?.length) {
@@ -200,11 +198,36 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
             }
         }
         return tmp
-    }, [props.item.State, location, props.indexItem, defferWatch, i18n.language])
+    }, [props.item.State, location.pathname, location.search, params, JSON.stringify(location.state), props.indexItem, defferWatch, i18n.language])
     // 
+    const watchForCustomProps = useDeferredValue(stateCustomProps)
+    /** Check unmounted */
+    if (watchForCustomProps?.unmounted || (props.item.Setting?.unmounted && typeof watchForCustomProps?.unmounted === "boolean")) return null;
+    else return <ElementUI
+        {...props}
+        watchForCustomProps={watchForCustomProps}
+        findId={findId}
+        children={children}
+        replaceThisVariables={replaceThisVariables}
+    />
+}
+
+interface ElementUIProps extends RenderLayerElementProps {
+    findId: string,
+    watchForCustomProps: { [p: string]: any },
+    children: { [p: string]: any }[],
+    replaceThisVariables: (content: string) => any,
+    [p: string]: any
+}
+
+const ElementUI = ({ findId, children, watchForCustomProps, replaceThisVariables, ...props }: ElementUIProps) => {
+    const winiContextData = useWiniContext()
+    const location = useLocation()
+    const navigate = useNavigate()
+    const params = useParams()
+    const { i18n } = useTranslation();
     const customProps = useMemo(() => {
         let _props = { ...props.item.Setting }
-        if (watchForCustomProps?.unmounted || (_props.unmounted && typeof watchForCustomProps?.unmounted === "boolean")) return { unmounted: true };
         _props.style ??= {}
         _props.className ??= ""
         if (_props.action?.length && Array.isArray(_props.action)) {
@@ -274,7 +297,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                             case ActionType.custom:
                                 if (actItem.Caculate) {
                                     const asyncFuncResponse = await (new AsyncFunction(
-                                        "entityData", "entityIndex", "tableName", "tableTitle", "Util", "DataController", "randomGID", "ToastMessage", "uploadFiles", "getFilesInfor", "showDialog", "ComponentStatus", "event", "methods", "useParams", "useNavigate", "useWiniContext",
+                                        "entityData", "entityIndex", "tableName", "tableTitle", "Util", "DataController", "randomGID", "ToastMessage", "uploadFiles", "getFilesInfor", "showDialog", "ComponentStatus", "event", "methods", "useParams", "useNavigate", "location", "useWiniContext",
                                         `${actItem.Caculate}` // This string can now safely contain the 'await' keyword
                                     ))(
                                         props.indexItem ?? props.methods?.getValues(),
@@ -293,6 +316,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                                         props.methods,
                                         () => params,
                                         () => navigate,
+                                        location,
                                         () => winiContextData
                                     )
                                     if (!asyncFuncResponse) return;
@@ -405,9 +429,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
             _props = { ..._props, ...extendProps }
         }
         return watchForCustomProps ? { ..._props, ...watchForCustomProps } : _props
-    }, [props.item, props.propsData, props.indexItem, watchForCustomProps, winiContextData?.userData])
-    /** Check unmounted */
-    if (customProps.unmounted) return null;
+    }, [props.item, props.propsData, props.indexItem, JSON.stringify(watchForCustomProps), winiContextData?.userData, location.pathname, location.search, params, JSON.stringify(location.state)])
     const _options = useMemo(() => {
         if (!props.options || !props.item.NameField?.length) return undefined
         const keys = props.item.NameField.split(".")
@@ -642,34 +664,11 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                 break;
         }
         return tmpProps
-    }, [customProps, props.item.Type, dataValue, children, location, i18n.language])
-
-    return <ElementUI
-        {...props}
-        typeProps={typeProps}
-        findId={findId}
-        dataValue={dataValue}
-        children={children}
-        onInit={customProps.onInit}
-        convertedOptions={_options}
-    />
-}
-
-interface ElementUIProps extends RenderLayerElementProps {
-    typeProps: any,
-    findId: string,
-    dataValue: any,
-    children: { [p: string]: any }[],
-    onInit?: (event: any) => void,
-    convertedOptions?: { [k: string]: any }[],
-    [p: string]: any
-}
-
-const ElementUI = ({ typeProps, findId, dataValue, children, convertedOptions, onInit, ...props }: ElementUIProps) => {
+    }, [customProps, props.item.Type, dataValue, children, i18n.language])
 
     useEffect(() => {
-        if (onInit) onInit(pageAllRefs[findId]?.current)
-    }, [onInit])
+        if (customProps.onInit) customProps.onInit(pageAllRefs[findId]?.current)
+    }, [customProps.onInit])
 
     switch (props.item.Type) {
         case ComponentType.navLink:
@@ -794,17 +793,17 @@ const ElementUI = ({ typeProps, findId, dataValue, children, convertedOptions, o
         case ComponentType.textArea:
             return <FTextArea {...typeProps} name={props.item.NameField} methods={props.methods} />
         case ComponentType.radio:
-            if (convertedOptions?.length) return <FGroupRadioButton {...typeProps} methods={props.methods} name={props.item.NameField} options={convertedOptions} />
+            if (_options?.length) return <FGroupRadioButton {...typeProps} methods={props.methods} name={props.item.NameField} options={_options} />
             else return <FRadioButton {...typeProps} methods={props.methods} name={props.item.NameField} />
         case ComponentType.checkbox:
-            if (convertedOptions?.length) return <FGroupCheckbox {...typeProps} methods={props.methods} name={props.item.NameField} options={convertedOptions} />
+            if (_options?.length) return <FGroupCheckbox {...typeProps} methods={props.methods} name={props.item.NameField} options={_options} />
             else return <FCheckbox {...typeProps} methods={props.methods} name={props.item.NameField} />
         case ComponentType.switch:
             return <FSwitch {...typeProps} methods={props.methods} name={props.item.NameField} />
         case ComponentType.select1:
-            return <FSelect1 {...typeProps} key={props.item.Id} methods={props.methods} name={props.item.NameField} options={convertedOptions} />
+            return <FSelect1 {...typeProps} key={props.item.Id} methods={props.methods} name={props.item.NameField} options={_options} />
         case ComponentType.selectMultiple:
-            return <FSelectMultiple {...typeProps} methods={props.methods} name={props.item.NameField} options={convertedOptions} />
+            return <FSelectMultiple {...typeProps} methods={props.methods} name={props.item.NameField} options={_options} />
         case ComponentType.colorPicker:
             return <FColorPicker {...typeProps} methods={props.methods} name={props.item.NameField} />
         case ComponentType.numberPicker:

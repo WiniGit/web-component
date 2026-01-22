@@ -29,7 +29,7 @@ export const ViewById = (props: Props) => {
     const layers = useMemo(() => viewItem?.Props ?? [], [viewItem])
     const _colController = new TableController("column")
     const _relController = new TableController("rel")
-    const keyNames = useMemo<Array<string>>(() => layers.filter((e: any) => e.NameField?.length).map((e: any) => e.NameField), [layers.length])
+    const keyNames = useMemo<string[]>(() => layers.filter((e: any) => e.NameField?.length).map((e: any) => e.NameField), [layers.length])
     const [indexItem, setIndexItem] = useState<{ [p: string]: any } | undefined>(props.data)
 
     useEffect(() => {
