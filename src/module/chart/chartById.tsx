@@ -1,294 +1,93 @@
-import { CSSProperties, Dispatch, forwardRef, ReactNode, SetStateAction, useEffect, useImperativeHandle, useMemo, useState } from "react"
+import { CSSProperties, forwardRef, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react"
 import { DataController, SettingDataController } from "../../controller/data"
-import styles from './chart.module.css'
-import { DatasetItem, ChartByType } from "./chartByType"
-import { useTranslation } from "react-i18next"
-import { Text } from "../../component/text/text"
-import { Select1 } from "../../component/select1/select1"
+import { ChartByType } from "./chartByType"
+import { BaseDA, ComponentStatus, randomGID, showDialog, ToastMessage, useWiniContext, Util } from "../../index"
+import { AsyncFunction } from "../page/pageById"
 
 interface Props {
     id: string;
-    searchRaw?: string;
-    /** replace all searchRaw and filter date time */
-    query?: string;
     className?: string;
-    /**
-     * style of chart block
-     * */
+    title?: string;
     style?: CSSProperties;
-    /**
-     * style of chart
-     * */
-    chartStyle?: CSSProperties;
-    allowGetAll?: boolean;
-    handleChartClick?: (e: any) => void;
-    /**
-     * hide heading & filter
-     * */
-    chartOnly?: boolean;
-    /**
-     * content between heading & chart
-     * */
-    content?: ReactNode;
-    /**
-     * format value of chart
-     * */
-    formatter?: (ev: any) => void;
-    expandData?: Array<DatasetItem>;
-    handleDatasets?: (datasets: Array<DatasetItem>, result: { [p: string]: any }[]) => Array<DatasetItem>;
-    withoutFilterTime?: boolean;
 }
 
 interface ChartRef {
     chartInfor?: { [p: string]: any };
-    result: Array<{ [p: string]: any }>;
-    setResult: Dispatch<SetStateAction<{ [p: string]: any; }[]>>
-    getData: () => Promise<void>;
-    datasets?: Array<DatasetItem>;
-    selectedTime?: string | number;
+    result: { datasets: { [p: string]: any }[], textValue: { value: number, name: string } };
+    element?: HTMLDivElement
 }
 
-const ChartById = forwardRef<ChartRef, Props>(({ searchRaw = "", style = {}, chartStyle = { height: "15rem", gap: "2.4rem" }, withoutFilterTime = false, ...props }, ref) => {
-    const now = new Date()
-    const [result, setResult] = useState<{ [p: string]: any }[]>([])
+const ChartById = forwardRef<ChartRef, Props>(({ id, style, className, ...props }, ref) => {
     const [chartItem, setChartItem] = useState<{ [p: string]: any }>()
-    const { t } = useTranslation()
-    const listTime = useMemo(() => {
-        if (!chartItem) return []
-        switch (chartItem?.Type) {
-            case "line":
-            case "bar":
-            case "horizontal bar":
-                return [
-                    { id: "thisWeek", name: t('thisWeek') },
-                    { id: "lastWeek", name: t('lastWeek') },
-                    { id: "thisMonth", name: t('thisMonth') },
-                    { id: "lastMonth", name: t('lastMonth') },
-                    { id: "lastThreeMonth", name: t('lastThreeMonth') },
-                    { id: "lastSixMonth", name: t('lastSixMonth') },
-                    { id: "thisYear", name: t('thisYear') },
-                ]
-            default:
-                return [7, 30, 45, 60, 90, ...(props.allowGetAll ? [Infinity] : [])].map((e, i) => ({ id: e, name: i === 5 ? t("all") : t("lastNumberOfDay", { day: e }) }))
-        }
-    }, [chartItem?.Type])
-    const [selectedTime, setSelectedTime] = useState<string | number>()
-    const groupByRegex = /(GROUPBY\s+\d+\s+(?:@\w+\s*)+)/g;
-    const datasets = useMemo(() => {
-        const tmp = chartItem?.Setting.datasets.map((e: any) => {
-            try {
-                const data = result
-                switch (selectedTime) {
-                    case "thisWeek":
-                    case "lastWeek":
-                        var listData = [1, 2, 3, 4, 5, 6, 0]
-                        var filterByTime = (ev: any, num: number) => parseInt(ev._dayofweek) === num
-                        break;
-                    case "thisMonth":
-                    case "lastMonth":
-                        listData = [0, 1, 2, 3]
-                        filterByTime = (ev, num) => num === 3 ? parseInt(ev._dayofmonth) >= num : parseInt(ev._dayofmonth) === num
-                        break;
-                    case "lastThreeMonth":
-                        listData = [new Date(now.getFullYear(), now.getMonth() - 2).getMonth(), new Date(now.getFullYear(), now.getMonth() - 1).getMonth(), now.getMonth()]
-                        filterByTime = (ev, num) => parseInt(ev._monthofyear) === num
-                        break;
-                    case "lastSixMonth":
-                        listData = [new Date(now.getFullYear(), now.getMonth() - 5).getMonth(), new Date(now.getFullYear(), now.getMonth() - 4).getMonth(), new Date(now.getFullYear(), now.getMonth() - 3).getMonth(), new Date(now.getFullYear(), now.getMonth() - 2).getMonth(), new Date(now.getFullYear(), now.getMonth() - 1).getMonth(), now.getMonth()]
-                        filterByTime = (ev, num) => parseInt(ev._monthofyear) === num
-                        break;
-                    case "thisYear":
-                        break;
-                    default:
-                        break;
-                }
-                var evalValue = eval(e.value)
-            } catch (error) {
-                evalValue = 0
-            }
-            return {
-                ...e,
-                value: evalValue
-            }
-        })
-        if (tmp && props.expandData) tmp.push(...props.expandData)
-        return tmp
-    }, [chartItem?.Setting?.datasets, selectedTime, props.expandData, result])
-
-    const getData = async () => {
-        let querySearch = props.query
-        if (!querySearch?.length) {
-            querySearch = chartItem!.Query.trim() === "*" ? "" : chartItem!.Query
-            if (searchRaw.length) querySearch += ` ${searchRaw}`
-            if (!withoutFilterTime) {
-                switch (selectedTime) {
-                    case "thisWeek":
-                        var startDate: number | undefined = new Date(now.getFullYear(), now.getMonth(), now.getDate() - (now.getDay() ? now.getDay() : 7) + 1).getTime()
-                        var endDate: number | undefined = new Date(now.getFullYear(), now.getMonth(), now.getDate() - (now.getDay() ? now.getDay() : 7) + 7, 23, 59, 59, 999).getTime()
-                        var reducers = chartItem!.Group.replace(groupByRegex, (m: string, _: any) => {
-                            const splitV = m.split(" ")
-                            return `APPLY "dayofweek(@DateCreated / 1000)" AS _dayofweek ${splitV[0].trim()} ${parseInt(splitV[1]) + 1} ${["@_dayofweek", ...splitV.slice(2)].join(" ")}`
-                        })
-                        break;
-                    case "lastWeek":
-                        startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() - (now.getDay() ? now.getDay() : 7) - 6).getTime()
-                        endDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() - (now.getDay() ? now.getDay() : 7), 23, 59, 59, 999).getTime()
-                        reducers = chartItem!.Group.replace(groupByRegex, (m: string, _: any) => {
-                            const splitV = m.split(" ")
-                            return `APPLY "dayofweek(@DateCreated / 1000)" AS _dayofweek ${splitV[0].trim()} ${parseInt(splitV[1]) + 1} ${["@_dayofweek", ...splitV.slice(2)].join(" ")}`
-                        })
-                        break;
-                    case "thisMonth":
-                        startDate = new Date(now.getFullYear(), now.getMonth()).getTime()
-                        endDate = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999).getTime()
-                        reducers = chartItem!.Group.replace(groupByRegex, (m: string, _: any) => {
-                            const splitV = m.split(" ")
-                            return `APPLY "floor(dayofmonth(@DateCreated / 1000) / 7)" AS _dayofmonth ${splitV[0].trim()} ${parseInt(splitV[1]) + 1} ${["@_dayofmonth", ...splitV.slice(2)].join(" ")}`
-                        })
-                        break;
-                    case "lastMonth":
-                        startDate = new Date(now.getFullYear(), now.getMonth() - 1).getTime()
-                        endDate = new Date(now.getFullYear(), now.getMonth(), 0, 23, 59, 59, 999).getTime()
-                        reducers = chartItem!.Group.replace(groupByRegex, (m: string, _: any) => {
-                            const splitV = m.split(" ")
-                            return `APPLY "floor(dayofmonth(@DateCreated / 1000) / 7)" AS _dayofmonth ${splitV[0].trim()} ${parseInt(splitV[1]) + 1} ${["@_dayofmonth", ...splitV.slice(2)].join(" ")}`
-                        })
-                        break;
-                    case "lastThreeMonth":
-                        startDate = new Date(now.getFullYear(), now.getMonth() - 3).getTime()
-                        endDate = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999).getTime()
-                        reducers = chartItem!.Group.replace(groupByRegex, (m: string, _: any) => {
-                            const splitV = m.split(" ")
-                            return `APPLY "monthofyear(@DateCreated / 1000)" AS _monthofyear ${splitV[0].trim()} ${parseInt(splitV[1]) + 1} ${["@_monthofyear", ...splitV.slice(2)].join(" ")}`
-                        })
-                        break;
-                    case "lastSixMonth":
-                        startDate = new Date(now.getFullYear(), now.getMonth() - 6).getTime()
-                        endDate = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999).getTime()
-                        reducers = chartItem!.Group.replace(groupByRegex, (m: string, _: any) => {
-                            const splitV = m.split(" ")
-                            return `APPLY "monthofyear(@DateCreated / 1000)" AS _monthofyear ${splitV[0].trim()} ${parseInt(splitV[1]) + 1} ${["@_monthofyear", ...splitV.slice(2)].join(" ")}`
-                        })
-                        break;
-                    default:
-                        if (selectedTime === Infinity) startDate = undefined
-                        else startDate = new Date(now.getFullYear(), now.getMonth(), now.getDay() - (selectedTime as number)).getTime()
-                        reducers = chartItem!.Group
-                        break;
-                }
-                querySearch += ` ${startDate ? `@DateCreated:[${startDate} ${endDate ?? Date.now()}]` : ""}`
-            }
-            querySearch = querySearch!.trim()
-        }
-        const controller = new DataController(chartItem!.TbName)
-        const res = await controller.group({
-            searchRaw: querySearch.length ? querySearch : "*",
-            reducers: reducers ?? chartItem!.Group
-        })
-        if (res.code === 200) setResult(res.data)
-    }
-
-    const getMonthName = (m: number) => {
-        switch (m) {
-            case 0:
-                return t('january')
-            case 1:
-                return t('february')
-            case 2:
-                return t('march')
-            case 3:
-                return t('april')
-            case 4:
-                return t('may')
-            case 5:
-                return t('june')
-            case 6:
-                return t('july')
-            case 7:
-                return t('august')
-            case 8:
-                return t('september')
-            case 9:
-                return t('october')
-            case 10:
-                return t('november')
-            case 11:
-                return t('december')
-            default:
-                return ''
-        }
-    }
-
-    const getxAxisName = () => {
-        switch (selectedTime) {
-            case "thisWeek":
-            case "lastWeek":
-                return [t("mo"), t("tu"), t("we"), t("th"), t("fr"), t("sa"), t("su")];
-            case "thisMonth":
-            case "lastMonth":
-                return ["1 - 7", "8 - 14", "15 - 21", `22 - ${t("last").toLowerCase()}`];
-            case "lastThreeMonth":
-                return [new Date(now.getFullYear(), now.getMonth() - 2).getMonth(), new Date(now.getFullYear(), now.getMonth() - 1).getMonth(), now.getMonth()].map(num => getMonthName(num));
-            case "lastSixMonth":
-                return [new Date(now.getFullYear(), now.getMonth() - 5).getMonth(), new Date(now.getFullYear(), now.getMonth() - 4).getMonth(), new Date(now.getFullYear(), now.getMonth() - 3).getMonth(), new Date(now.getFullYear(), now.getMonth() - 2).getMonth(), new Date(now.getFullYear(), now.getMonth() - 1).getMonth(), now.getMonth()].map(num => getMonthName(num));
-            case "thisYear":
-                return Array.from({ length: 12 }).map((_, index) => index + 1);
-            default:
-                return []
-        }
-    }
+    const [datasets, setDatasets] = useState<{ [p: string]: any }[]>([])
+    const [textValue, setTextValue] = useState({ value: 0, name: '' })
+    const winiContextData = useWiniContext()
+    const divRef = useRef<HTMLDivElement>(undefined)
+    const settingData = useMemo(() => chartItem?.Setting && typeof chartItem.Setting === "string" ? JSON.parse(chartItem.Setting) : (chartItem?.Setting ?? {}), [chartItem])
 
     useEffect(() => {
-        if (listTime.length) setSelectedTime(listTime[0].id)
-    }, [listTime])
-
-    useEffect(() => {
-        if (chartItem && (selectedTime || props.query?.length)) getData()
-    }, [selectedTime, props.query, chartItem])
-
-    useEffect(() => {
-        if (props.id) {
-            const controller = new SettingDataController("chart")
-            controller.getByIds([props.id]).then(async (res) => {
-                if (res.code === 200) {
-                    const tmp = res.data[0]
-                    tmp.Setting = JSON.parse(tmp.Setting)
-                    setChartItem(tmp)
-                }
+        if (id) {
+            const _settingDataController = new SettingDataController("chart")
+            _settingDataController.getByIds([id]).then(async (res) => {
+                if (res.code === 200 && res.data[0]) {
+                    let _chartItem = res.data[0]
+                    if (_chartItem.Setting && typeof _chartItem.Setting === "string") _chartItem.Setting = JSON.parse(_chartItem.Setting)
+                    setChartItem(_chartItem)
+                } else setChartItem(undefined)
             })
         }
-    }, [props.id])
+    }, [id])
+
+    useEffect(() => {
+        if (settingData.GetData?.length) {
+            try {
+                (new AsyncFunction(
+                    "entityData", "tableName", "Util", "DataController", "randomGID", "ToastMessage", "uploadFiles", "getFilesInfor", "showDialog", "ComponentStatus", "useWiniContext",
+                    settingData.GetData // This string can now safely contain the 'await' keyword
+                ))(
+                    {},
+                    chartItem!.TbName,
+                    Util,
+                    DataController,
+                    randomGID,
+                    ToastMessage,
+                    BaseDA.uploadFiles,
+                    BaseDA.getFilesInfor,
+                    showDialog,
+                    ComponentStatus,
+                    () => winiContextData
+                ).then((result: any) => {
+                    if (chartItem!.Type === "text" && typeof result === "object") setTextValue(result)
+                    else if (Array.isArray(result)) setDatasets(result)
+                    else {
+                        ToastMessage.infor("Your code should return a list of DatasetItem")
+                        console.error("Your code should return a list of DatasetItem: ", result)
+                    }
+                })
+            } catch (error) {
+                console.error("Error in Chart code: ", error)
+            }
+        }
+    }, [settingData.GetData, winiContextData, chartItem?.TbName])
 
     useImperativeHandle(ref, () => ({
-        getData: getData,
         chartInfor: chartItem,
-        result: result,
-        setResult: setResult,
-        datasets: datasets,
-        selectedTime: selectedTime
-    }), [selectedTime, datasets, result, chartItem]);
+        result: { datasets, textValue },
+        element: divRef.current
+    }), [chartItem, datasets, textValue])
 
-    return <div className={`col ${styles["chart-block"]} ${props.className ?? ""}`} style={style}>
-        {!props.chartOnly && <div className='row' style={{ gap: "1.6rem" }}>
-            <div className="col" style={{ flex: 1, gap: "0.4rem" }}>
-                <Text className='heading-7'>{chartItem?.Name}</Text>
-                {!!chartItem?.Description?.length && <Text className='subtitle-3' style={{ flex: 1 }}>{chartItem?.Description}</Text>}
-            </div>
-            {selectedTime && !withoutFilterTime && <Select1
-                value={selectedTime}
-                options={listTime} style={{ height: "3.2rem", width: "12.8rem", padding: "0 0.8rem" }}
-                onChange={(v: any) => { setSelectedTime(v.id) }}
-            />}
-        </div>}
-        {chartItem && <ChartByType
-            handleChartClick={props.handleChartClick}
-            formatter={props.formatter}
-            style={chartStyle}
+    return chartItem && <div ref={divRef as any} className={`col ${className ?? ""}`} style={style}>
+        {(!!chartItem.Name?.length || !!props.title?.length) && <span className="heading-7">{props.title ?? chartItem.Name}</span>}
+        {chartItem.Type === "text" ? <div className="col" style={{ alignItems: "center", flex: 1, justifyContent: "center", gap: 8 }}>
+            <h4 className="heading-4" style={{ margin: 0 }}>{textValue.value}</h4>
+            {!!textValue.name.length && <span className="subtitle-3">{textValue.name}</span>}
+        </div> : <ChartByType
             type={chartItem.Type}
-            // xAxisName={(typeof listTime[0] === "number" ? undefined : getxAxisName()) as any}
-            datasets={props.handleDatasets ? props.handleDatasets(datasets, result) : datasets}
-            // unit={chartItem.Setting.unit}
-            legend={chartItem.Setting.legend}
+            xAxisConfig={settingData.XConfig}
+            yAxisConfig={settingData.YConfig}
+            indicator={settingData.Indicator}
+            datasets={datasets as any}
+            legend={settingData.Legend}
         />}
     </div>
 })

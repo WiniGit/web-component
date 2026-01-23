@@ -126,7 +126,7 @@ export const getValidLink = (link: string) => {
     else return link
 }
 
-const AsyncFunction = Object.getPrototypeOf(async function () { }).constructor;
+export const AsyncFunction = Object.getPrototypeOf(async function () { }).constructor;
 const CaculateLayer = (props: RenderLayerElementProps) => {
     const findId = props.item.Setting?.id ?? props.item.Id
     // init refs
@@ -763,7 +763,7 @@ const ElementUI = ({ findId, children, watchForCustomProps, replaceThisVariables
             else if (props.item.NameField) return null
             else return <Winicon {...typeProps} />
         case ComponentType.chart:
-            return <ChartById {...typeProps} id={typeProps.chartId} />
+            return <ChartById {...typeProps} id={typeProps.chartId} ref={pageAllRefs[findId]} />
         case "form":
         case ComponentType.form:
             if (props.itemData) typeProps.itemData = typeProps.itemData ? { ...props.itemData, ...typeProps.itemData } : props.itemData
