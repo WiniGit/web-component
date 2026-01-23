@@ -55,13 +55,13 @@ const appendDesignTokens = (list: Array<{ [p: string]: any }>) => {
         }).join('\n')}\n
         }
 
-        .${LayoutElement.main} { 
+        #root>.${LayoutElement.main} { 
             width: 100%;
             height: 100%;
             overflow: hidden auto;
         }
 
-        .${LayoutElement.main}.row { 
+        #root>.${LayoutElement.main}.row { 
             flex-wrap: wrap;
             align-items: start;
             align-content: start;
