@@ -1,5 +1,4 @@
 import { CSSProperties, HTMLAttributes, ReactNode, useDeferredValue, useEffect, useMemo, useRef, useState } from "react"
-import { useTranslation } from "react-i18next"
 import { useForm, UseFormReturn } from "react-hook-form"
 import { NavLink, useLocation, useNavigate, useParams } from "react-router-dom"
 import { handleErrorImgSrc, LayoutElement, supportProperties } from "./config"
@@ -137,11 +136,11 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
         return () => { delete pageAllRefs[findId] }
     }, [])
     /** declare parameters */
+    const winiContextData = useWiniContext()
     const location = useLocation() as any
     const params = useParams()
     const query = new URLSearchParams(location.search)
     const children = useMemo(() => props.list.filter(e => e.ParentId === props.item.Id), [props.list, props.item])
-    const { i18n } = useTranslation();
     const defferWatch = useDeferredValue(JSON.stringify(props.methods!.watch()))
     /** handle replace variables */
     const replaceThisVariables = (content: string) => {
@@ -150,6 +149,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
             try {
                 getValue = new Function(
                     "indexItem",
+                    "user",
                     "Util",
                     "watch",
                     "location",
@@ -157,7 +157,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
                     "params",
                     "t",
                     `return ${p1.replace(/this/g, "indexItem")}`
-                )({ ...(props.indexItem ?? {}), index: props.index }, Util, props.methods!.watch, location, query, params, i18n.t)
+                )({ ...(props.indexItem ?? {}), index: props.index }, winiContextData.userData, Util, props.methods!.watch, location, query, params, winiContextData.i18n.t)
             } catch (error) {
                 console.error("item: ", props.item, " --- match: ", m, " --- p1: ", p1, " --- error: ", error)
                 getValue = m
@@ -198,7 +198,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
             }
         }
         return tmp
-    }, [props.item.State, location.pathname, location.search, params, JSON.stringify(location.state), props.indexItem, defferWatch, i18n.language])
+    }, [props.item.State, location.pathname, location.search, params, JSON.stringify(location.state), props.indexItem, defferWatch, winiContextData.i18n.language, winiContextData.userData])
     // 
     const watchForCustomProps = useDeferredValue(stateCustomProps)
     /** Check unmounted */
@@ -225,7 +225,6 @@ const ElementUI = ({ findId, children, watchForCustomProps, replaceThisVariables
     const location = useLocation()
     const navigate = useNavigate()
     const params = useParams()
-    const { i18n } = useTranslation();
     const customProps = useMemo(() => {
         let _props = { ...props.item.Setting }
         _props.style ??= {}
@@ -664,7 +663,7 @@ const ElementUI = ({ findId, children, watchForCustomProps, replaceThisVariables
                 break;
         }
         return tmpProps
-    }, [customProps, props.item.Type, dataValue, children, i18n.language])
+    }, [customProps, props.item.Type, dataValue, children, winiContextData.i18n.language])
 
     useEffect(() => {
         if (customProps.onInit) customProps.onInit(pageAllRefs[findId]?.current)
@@ -789,7 +788,7 @@ const ElementUI = ({ findId, children, watchForCustomProps, replaceThisVariables
             if (IsPassword)
                 return <FInputPassword {...typeProps2} name={props.item.NameField} methods={props.methods} />
             else
-                return <FTextField  {...typeProps2} name={props.item.NameField} methods={props.methods} />
+                return <FTextField {...typeProps2} name={props.item.NameField} methods={props.methods} />
         case ComponentType.textArea:
             return <FTextArea {...typeProps} name={props.item.NameField} methods={props.methods} />
         case ComponentType.radio:

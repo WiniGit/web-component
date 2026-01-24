@@ -154,7 +154,7 @@ export const WiniProvider = (props: Props) => {
             const projectController = new WiniController("Project")
             projectController.getByIds([props.pid]).then(res => {
                 if (res.code === 200 && res.data[0]) {
-                    (document.head.querySelector(`:scope > link[rel="icon"]`) as HTMLLinkElement)!.href = getValidLink(res.data[0].LogoId);
+                    if (res.data[0].LogoId) (document.head.querySelector(`:scope > link[rel="icon"]`) as HTMLLinkElement)!.href = getValidLink(res.data[0].LogoId);
                     (document.head.querySelector(`:scope > title`) as HTMLTitleElement)!.innerHTML = res.data[0].Name;
                     if (props.onProjectLoaded) {
                         props.onProjectLoaded(res.data[0])
