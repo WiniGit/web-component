@@ -621,9 +621,13 @@ const ElementUI = ({ findId, children, watchForCustomProps, replaceThisVariables
                         if (tmpProps.label && regexGetVariables.test(tmpProps.label)) tmpProps.label = replaceThisVariables(tmpProps.label)
                         break;
                     case ComponentType.select1:
+                        tmpProps.getOptions = props.rels?.find(e => e.Column === props.item.NameField)?.getOptions
+                        if (!props.item.NameField?.length && regexGetVariables.test(tmpProps.value)) tmpProps.value = replaceThisVariables(tmpProps.value)
+                        break;
                     case ComponentType.selectMultiple:
                         tmpProps.getOptions = props.rels?.find(e => e.Column === props.item.NameField)?.getOptions
                         if (!props.item.NameField?.length && regexGetVariables.test(tmpProps.value)) tmpProps.value = replaceThisVariables(tmpProps.value)
+                        if (tmpProps.value && !Array.isArray(tmpProps.value)) tmpProps.value = []
                         break;
                     case ComponentType.textArea:
                     case ComponentType.textField:
