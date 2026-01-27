@@ -3,8 +3,8 @@ import { Util } from "./utils";
 import { ToastMessage } from '../component/toast-noti/toast-noti';
 
 export class ConfigData {
-    static pid = ""
-    static url = ""
+    static pid = "";
+    static url = "";
     static fileUrl = "";
     static imgUrlId = "";
     static regexGuid = /^[0-9a-fA-F]{32}$/;
@@ -121,10 +121,7 @@ export class BaseDA {
             if (response.status === 200 || response.status === 201) {
                 return response.data
             } else if (response.status === 204) {
-                return {
-                    message: 'ok',
-                    // data: options?.body
-                }
+                return { message: 'ok' }
             } else if (response.status === 401) {
                 ToastMessage.errors('Unauthorized access')
                 window.location.replace('/login')

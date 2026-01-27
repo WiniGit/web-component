@@ -163,17 +163,17 @@ export const AutoCellContent = ({ colItem, data, fields = [], files = [], style 
                                 key={item.id + "-" + i}
                                 title={item.name}
                                 className="size24 label-5"
-                                style={{ borderRadius: 8, lineHeight: "normal", backgroundColor: item.color, color: "#000" }}
-                                prefix={!!item.prefix?.length && <Winicon src={item.prefix} color={"#000"} size={13} style={{ padding: 0 }} />}
+                                style={{ borderRadius: 8, lineHeight: "normal", backgroundColor: `hsl(from ${item.color} h s calc(l + 30))`, color: "#000", gap: 8 }}
+                                prefix={!!item.prefix?.length && <Winicon src={item.prefix} color={"#000"} size={12} style={{ padding: 0 }} />}
                             />;
                         case "ghost":
-                            return <div className="row" style={{ gap: 12 }}>
+                            return <div key={item.id + "-" + i} className="row" style={{ gap: 12 }}>
                                 {!!item.prefix?.length && <Winicon src={item.prefix} color={item.color} size={12} style={{ width: 24, height: 24, border: `1px dashed ${item.color}`, borderRadius: "50%" }} />}
-                                <span style={{ flex: 1, color: "var(--neutral-text-title-color)", fontSize: 14, fontWeight: 400 }}>{item.name}</span>
+                                <span style={{ flex: 1, color: item.color, fontSize: 14, fontWeight: 400 }}>{item.name}</span>
                             </div>
                         default:
-                            return <div className="row" style={{ gap: 12 }}>
-                                {!!item.prefix?.length && <Winicon src={item.prefix} color={item.color} size={12} style={{ width: 24, height: 24, border: `1px dashed ${item.color}`, borderRadius: "50%" }} />}
+                            return <div key={item.id + "-" + i} className="row" style={{ gap: 12 }}>
+                                {!!item.prefix?.length && <Winicon src={item.prefix} color="var(--neutral-text-title-color)" size={14} />}
                                 <span style={{ flex: 1, color: "var(--neutral-text-title-color)", fontSize: 14, fontWeight: 400 }}>{item.name}</span>
                             </div>
                     }

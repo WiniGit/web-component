@@ -1,4 +1,5 @@
-.select1-container, .select1-simple-style {
+.select1-container,
+.select1-simple-style {
     position: relative;
     box-sizing: border-box;
     cursor: pointer;
@@ -108,13 +109,17 @@
 }
 
 .select1-popup .select-tile {
-    gap: max(0.8rem, 5px);
+    gap: 8px;
     padding: 5px max(0.8rem, 5px);
     border-radius: 0.8rem;
 }
 
 .select1-popup .select-tile * {
     font-size: inherit;
+}
+
+div:has(>.option-ghost) {
+    justify-content: space-between;
 }
 
 .select-tile>span {

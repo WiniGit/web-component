@@ -395,8 +395,9 @@ export const TableRow = ({ item, setItem, onEditActionColumn, index, methods, fi
                 onSuccess={() => {
                     if (id) getData(Math.max(Math.floor(children.length / 20), 1))
                     else {
-                        getData()
-                        setItem({ ...item, _totalChild: (item._totalChild ?? 0) + 1 })
+                        getData().then(() => {
+                            setItem({ ...item, _totalChild: (totalChild ?? 0) + 1 })
+                        })
                     }
                 }}
                 formId={customFormId}
@@ -488,14 +489,14 @@ export const TableRow = ({ item, setItem, onEditActionColumn, index, methods, fi
                         dataController.delete([childItem.Id]).then(res => {
                             if (res.code === 200) {
                                 getData(Math.max(Math.floor(children.length / 20), 1))
-                                setItem({ ...item, _totalChild: item._totalChild - 1 })
+                                setItem({ ...item, _totalChild: totalChild! - 1 })
                             }
                         })
                     }) : undefined}
                     onDuplicate={enableEdit ? () => {
                         dataController.duplicate([childItem.Id]).then(res => {
                             if (res.code !== 200) return ToastMessage.errors(res.message)
-                            setItem({ ...item, _totalChild: item._totalChild + 1 })
+                            setItem({ ...item, _totalChild: (totalChild ?? 0) + 1 })
                             getData(Math.max(Math.floor(children.length / 20), 1))
                             ToastMessage.success(`${t("duplicate")} ${tbName?.toLowerCase()} ${t("successfully").toLowerCase()}!`)
                         })

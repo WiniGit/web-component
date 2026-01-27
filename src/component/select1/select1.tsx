@@ -4,9 +4,11 @@ import { useTranslation } from 'react-i18next';
 import { Winicon } from '../wini-icon/winicon';
 import { TextField } from '../text-field/text-field';
 import { Util } from '../../controller/utils';
+import { Tag } from '../tag/tag';
 
 export interface OptionsItem {
     prefix?: ReactNode | string,
+    color?: string,
     id: string | number,
     parentId?: string | number,
     name: string | ReactNode,
@@ -23,6 +25,7 @@ interface Select1Props {
     placeholder?: string,
     disabled?: boolean,
     readOnly?: boolean,
+    optionStyle?: "default" | "solid" | "ghost",
     /** 
      * default: size40: body-3
      * recommend: size48: body-3 | size32: body-3 | size24: body-3
@@ -100,6 +103,41 @@ export const Select1 = forwardRef<Select1Ref, Select1Props>(({ style = {}, ...pr
         onOpenOptions: onOpenOptions
     }), [isOpen, options, containerRef]);
 
+    const returnUIByStyle = () => {
+        if (valueItem) {
+            if (typeof valueItem?.name === "object")
+                return <>
+                    {valueItem!.prefix ? (typeof valueItem!.prefix === "string" && !!valueItem!.prefix.length ? <Winicon src={valueItem!.prefix as any} size={14} /> : valueItem!.prefix) : props.prefix}
+                    {valueItem!.name}
+                </>
+            else
+                switch (props.optionStyle) {
+                    case "ghost":
+                        return <>
+                            {valueItem!.prefix ? ((typeof valueItem!.prefix === "string" && !!valueItem!.prefix?.length) ? <Winicon src={valueItem!.prefix as any} color={valueItem!.color} size={14} style={{ width: 28, height: 28, border: `1px dashed ${valueItem!.color}`, borderRadius: "50%" }} /> : valueItem!.prefix) : props.prefix}
+                            <span style={{ flex: 1, textOverflow: "ellipsis", whiteSpace: "nowrap", overflow: "hidden", color: valueItem!.color }}>{valueItem!.name}</span>
+                        </>
+                    case "solid":
+                        return <Tag
+                            title={valueItem!.name as any}
+                            className={`size24 ${styles["option-ghost"]}`}
+                            style={{ borderRadius: 8, lineHeight: "normal", backgroundColor: `hsl(from ${valueItem!.color} h s calc(l + 30))`, gap: 8, font: "inherit", fontFamily: "inherit", fontSize: "inherit", fontWeight: "inherit", color: "#000" }}
+                            prefix={valueItem!.prefix ? ((typeof valueItem!.prefix === "string" && !!valueItem!.prefix?.length) ? <Winicon src={valueItem!.prefix as any} color={"#000"} size={12} style={{ padding: 0 }} /> : valueItem!.prefix) : props.prefix}
+                        />;
+                    default:
+                        return <>
+                            {valueItem!.prefix ? (typeof valueItem!.prefix === "string" && !!valueItem!.prefix.length ? <Winicon src={valueItem!.prefix as any} size={14} /> : valueItem!.prefix) : props.prefix}
+                            <span style={{ flex: 1, textOverflow: "ellipsis", whiteSpace: "nowrap", overflow: "hidden" }}>{valueItem!.name}</span>
+                        </>
+                }
+        } else {
+            return <>
+                {props.prefix}
+                <span style={{ flex: 1, textOverflow: "ellipsis", whiteSpace: "nowrap", overflow: "hidden", opacity: 0.5 }}>{props.placeholder}</span>
+            </>
+        }
+    }
+
     return <>
         <div
             id={props.id}
@@ -109,8 +147,7 @@ export const Select1 = forwardRef<Select1Ref, Select1Props>(({ style = {}, ...pr
             style={{ '--helper-text-color': props.helperTextColor ?? '#e14337', ...style } as CSSProperties}
             onClick={(props.disabled || props.readOnly) ? undefined : onOpenOptions}
         >
-            {valueItem?.prefix ?? props.prefix}
-            {typeof valueItem?.name === "object" ? valueItem.name : <span style={{ flex: 1, textOverflow: "ellipsis", whiteSpace: "nowrap", overflow: "hidden", opacity: valueItem ? undefined : 0.5 }}>{valueItem?.name ?? props.placeholder}</span>}
+            {returnUIByStyle()}
             {props.suffix ?? (!props.hideAutoSuffix && <Winicon ref={iconRef => {
                 if (iconRef?.element?.parentElement && iconRef.element.parentElement.getBoundingClientRect().width < 88) iconRef.element.style.display = "none"
             }} src={`fill/arrows/${isOpen ? "up" : "down"}-arrow`} size={12} />)}
@@ -132,6 +169,7 @@ export const Select1 = forwardRef<Select1Ref, Select1Props>(({ style = {}, ...pr
             })}
             selected={value}
             style={{ ...offsetRef.current!, ...(props.dropdownStyle ?? {}) }}
+            optionStyle={props.optionStyle}
             className={props.dropdownClassName}
             hiddenSearchOptions={props.hiddenSearchOptions}
             onSelect={(e) => {
@@ -144,7 +182,7 @@ export const Select1 = forwardRef<Select1Ref, Select1Props>(({ style = {}, ...pr
     </>
 })
 
-const OptionDropList = (props: { onClose: () => void, style: CSSProperties, className?: string, selected?: string | number, onSelect: (e: OptionsItem) => void, getOptions: (params: { length: number, search?: string, parentId?: string | number }) => Promise<{ data: Array<OptionsItem>, totalCount: number }>, hiddenSearchOptions?: boolean }) => {
+const OptionDropList = (props: { onClose: () => void, style: CSSProperties, className?: string, selected?: string | number, onSelect: (e: OptionsItem) => void, getOptions: (params: { length: number, search?: string, parentId?: string | number }) => Promise<{ data: Array<OptionsItem>, totalCount: number }>, hiddenSearchOptions?: boolean, optionStyle?: "default" | "solid" | "ghost" }) => {
     const divRef = useRef<HTMLDivElement>(null)
     const [searchInput, setSearchInput] = useState<string>("")
     const searchValue = useDeferredValue(searchInput)
@@ -211,6 +249,7 @@ const OptionDropList = (props: { onClose: () => void, style: CSSProperties, clas
                         selected={opt.id === props.selected}
                         children={options.data.filter(e => e.parentId === opt.id)}
                         onClick={props.onSelect}
+                        optionStyle={props.optionStyle}
                         getOptions={(params) => props.getOptions?.({ ...params, search: searchValue })}
                     />)}
             </>
@@ -223,10 +262,11 @@ interface OptionTileProps {
     children?: Array<OptionsItem>,
     selected?: boolean,
     onClick: (e: OptionsItem) => void,
+    optionStyle?: "default" | "solid" | "ghost",
     getOptions?: (params: { length: number, search?: string, parentId?: string | number }) => Promise<{ data: Array<OptionsItem>, totalCount: number }>
 }
 
-function OptionsItemTile({ item, children, selected, onClick, getOptions }: OptionTileProps) {
+function OptionsItemTile({ item, children, selected, onClick, getOptions, optionStyle = "default" }: OptionTileProps) {
     const [isOpen, setIsOpen] = useState<boolean>(false)
     const [options, setOptions] = useState<{ data: OptionsItem[], totalCount: number }>({ data: [], totalCount: 0 })
     const { t } = useTranslation()
@@ -239,24 +279,43 @@ function OptionsItemTile({ item, children, selected, onClick, getOptions }: Opti
         if (isOpen && !options.totalCount) getOptions?.({ length: 0, parentId: item.id }).then(res => setOptions(res))
     }, [isOpen])
 
+    const returnUIByStyle = (optItem: OptionsItem) => {
+        switch (optionStyle) {
+            case "ghost":
+                return <>
+                    {optItem.prefix ? ((typeof optItem.prefix === "string" && !!optItem.prefix?.length) ? <Winicon src={optItem.prefix as any} color={optItem.color} size={14} style={{ width: 28, height: 28, border: `1px dashed ${optItem.color}`, borderRadius: "50%" }} /> : optItem.prefix) : null}
+                    <span style={{ color: optItem.color }}>{optItem.name}</span>
+                </>
+            case "solid":
+                return <Tag
+                    title={optItem.name as any}
+                    className={`size24 label-4 ${styles["option-ghost"]}`}
+                    style={{ borderRadius: 8, lineHeight: "normal", backgroundColor: `hsl(from ${optItem.color} h s calc(l + 30))`, color: "#000", gap: 8 }}
+                    prefix={optItem.prefix ? ((typeof optItem.prefix === "string" && !!optItem.prefix?.length) ? <Winicon src={optItem.prefix as any} color={"#000"} size={12} style={{ padding: 0 }} /> : optItem.prefix) : null}
+                />;
+            default:
+                return <>
+                    {optItem.prefix ? (typeof optItem.prefix === "string" && !!optItem.prefix.length ? <Winicon src={optItem.prefix as any} size={14} /> : optItem.prefix) : null}
+                    <span>{optItem.name}</span>
+                </>
+        }
+    }
+
     return <>
         {<button type='button' disabled={item.disabled} className={`row label-4 ${styles["select-tile"]} ${item.disabled ? styles["disabled"] : ""} ${selected ? styles["selected"] : ""}`} onClick={() => {
             if (item.totalChild) setIsOpen(!isOpen)
             else onClick(item)
         }}>
-            {typeof item?.name === "object" ? item.name : <>
+            {typeof item?.name === "object" ? item.name : ((item.totalChild === undefined || item.totalChild === null) && optionStyle !== "default" ? returnUIByStyle(item) : <>
                 {item.totalChild !== undefined && <Winicon src={`fill/arrows/triangle-${isOpen ? "down" : "right"}`} size={12} />}
                 {item.prefix ? (typeof item.prefix === "string" && !!item.prefix.length ? <Winicon src={item.prefix as any} size={14} /> : item.prefix) : null}
                 <span>{item.name}</span>
-            </>}
+            </>)}
         </button>}
         {isOpen && <>
             {options.data.map((child, i) => {
                 return <button key={child.id + "-" + i} type='button' style={{ paddingLeft: `calc(max(0.8rem, 5px) + max(0.8rem, 5px) + 16px)` }} className={`row label-4 ${styles["select-tile"]} ${child.disabled ? styles["disabled"] : ""} ${selected ? styles["selected"] : ""}`} onClick={() => onClick(child)}>
-                    {typeof child?.name === "object" ? child.name : <>
-                        {child.prefix ? (typeof child.prefix === "string" && !!child.prefix.length ? <Winicon src={child.prefix as any} size={14} /> : child.prefix) : null}
-                        <span>{child.name}</span>
-                    </>}
+                    {typeof child?.name === "object" ? child.name : returnUIByStyle(child)}
                 </button>
             })}
             {options.data.length < options.totalCount && <div className={`button-text-5 ${styles["see-more"]}`}
@@ -266,4 +325,4 @@ function OptionsItemTile({ item, children, selected, onClick, getOptions }: Opti
 
         </>}
     </>
-} 
+}
