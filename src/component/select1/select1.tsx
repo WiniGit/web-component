@@ -6,7 +6,7 @@ import { TextField } from '../text-field/text-field';
 import { Util } from '../../controller/utils';
 
 export interface OptionsItem {
-    prefix?: ReactNode,
+    prefix?: ReactNode | string,
     id: string | number,
     parentId?: string | number,
     name: string | ReactNode,
@@ -246,7 +246,7 @@ function OptionsItemTile({ item, children, selected, onClick, getOptions }: Opti
         }}>
             {typeof item?.name === "object" ? item.name : <>
                 {item.totalChild !== undefined && <Winicon src={`fill/arrows/triangle-${isOpen ? "down" : "right"}`} size={12} />}
-                {item.prefix}
+                {item.prefix ? (typeof item.prefix === "string" && !!item.prefix.length ? <Winicon src={item.prefix as any} size={14} /> : item.prefix) : null}
                 <span>{item.name}</span>
             </>}
         </button>}
@@ -254,7 +254,7 @@ function OptionsItemTile({ item, children, selected, onClick, getOptions }: Opti
             {options.data.map((child, i) => {
                 return <button key={child.id + "-" + i} type='button' style={{ paddingLeft: `calc(max(0.8rem, 5px) + max(0.8rem, 5px) + 16px)` }} className={`row label-4 ${styles["select-tile"]} ${child.disabled ? styles["disabled"] : ""} ${selected ? styles["selected"] : ""}`} onClick={() => onClick(child)}>
                     {typeof child?.name === "object" ? child.name : <>
-                        {child.prefix}
+                        {child.prefix ? (typeof child.prefix === "string" && !!child.prefix.length ? <Winicon src={child.prefix as any} size={14} /> : child.prefix) : null}
                         <span>{child.name}</span>
                     </>}
                 </button>

@@ -121,8 +121,7 @@ export const RenderLayerElement = (props: RenderLayerElementProps) => {
 export const getValidLink = (link: string) => {
     if (link.startsWith("http")) return link
     if (ConfigData.regexGuid.test(link)) return ConfigData.imgUrlId + link
-    else if (link.startsWith("/")) return ConfigData.fileUrl + link
-    else return link
+    else return ConfigData.fileUrl + link
 }
 
 export const AsyncFunction = Object.getPrototypeOf(async function () { }).constructor;

@@ -8,6 +8,7 @@ import { ConfigData } from "../../controller/config";
 import { NavLink, useLocation, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { i18n } from '../../language/i18n';
+import { getValidLink } from '../page/pageById';
 
 interface AutoCellContentProps {
     colItem: { [p: string]: any };
@@ -156,7 +157,26 @@ export const AutoCellContent = ({ colItem, data, fields = [], files = [], style 
                 return <p className="comp-text body-3" style={{ "--max-line": 2, margin: 0, flex: 1, ...style } as any}>{mapValue}</p>
             else
                 return mapValue?.map((item: any, i: number) => {
-                    return <Tag key={item.id + "-" + i} title={item.name} className="size24 label-5" style={{ borderRadius: 8, border: "none", backgroundColor: item.color, color: "#18181B" }} />;
+                    switch (colItem.Style) {
+                        case "solid":
+                            return <Tag
+                                key={item.id + "-" + i}
+                                title={item.name}
+                                className="size24 label-5"
+                                style={{ borderRadius: 8, lineHeight: "normal", backgroundColor: item.color, color: "#000" }}
+                                prefix={!!item.prefix?.length && <Winicon src={item.prefix} color={"#000"} size={13} style={{ padding: 0 }} />}
+                            />;
+                        case "ghost":
+                            return <div className="row" style={{ gap: 12 }}>
+                                {!!item.prefix?.length && <Winicon src={item.prefix} color={item.color} size={12} style={{ width: 24, height: 24, border: `1px dashed ${item.color}`, borderRadius: "50%" }} />}
+                                <span style={{ flex: 1, color: "var(--neutral-text-title-color)", fontSize: 14, fontWeight: 400 }}>{item.name}</span>
+                            </div>
+                        default:
+                            return <div className="row" style={{ gap: 12 }}>
+                                {!!item.prefix?.length && <Winicon src={item.prefix} color={item.color} size={12} style={{ width: 24, height: 24, border: `1px dashed ${item.color}`, borderRadius: "50%" }} />}
+                                <span style={{ flex: 1, color: "var(--neutral-text-title-color)", fontSize: 14, fontWeight: 400 }}>{item.name}</span>
+                            </div>
+                    }
                 })
         case ColDataType.icon:
             if (mapValue && (mapValue.startsWith("color/") || mapValue.startsWith("fill/") || mapValue.startsWith("outline/")))
@@ -191,7 +211,7 @@ export const AutoCellContent = ({ colItem, data, fields = [], files = [], style 
                     if (arr.length - 1 === fIndex && mapValue.split(",").length > 2 && f.Type?.includes("image")) tmp["img-length"] = `+${mapValue.split(",").length - 2}`
                     return <NavLink key={f.Id + "-" + fIndex} to={f.Url.startsWith("https") ? f.Url : (ConfigData.fileUrl + f.Url)} target='_blank' className={styles["table-img"]} style={style} {...tmp}>
                         {f.Type?.includes("image") ?
-                            <img alt={f.Name} src={f.Url.startsWith("https") ? f.Url : f.Id.startsWith("http") ? f.Id : (ConfigData.imgUrlId + f.Id)} /> :
+                            <img alt={f.Name} src={f.Url.startsWith("https") ? f.Url : getValidLink(f.Id)} /> :
                             <Text className='body-3' maxLine={2} style={{ color: "var(--primary-main-color)", flex: 1 }}>{f.Name},</Text>}
                     </NavLink>
                 })}

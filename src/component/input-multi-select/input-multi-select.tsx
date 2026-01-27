@@ -353,7 +353,7 @@ function OptionsItemTile({ item, children, selected, onChange, getOptions }: Opt
                     />
                 </div>
                 {typeof item?.name === "object" ? item.name : <>
-                    {item.prefix}
+                    {item.prefix ? (typeof item.prefix === "string" && !!item.prefix.length ? <Winicon src={item.prefix as any} size={14} /> : item.prefix) : null}
                     <span>{item.name}</span>
                 </>}
             </label>}
@@ -372,7 +372,7 @@ function OptionsItemTile({ item, children, selected, onChange, getOptions }: Opt
                         />
                     </div>
                     {typeof child?.name === "object" ? child.name : <>
-                        {child.prefix}
+                        {child.prefix ? (typeof child.prefix === "string" && !!child.prefix.length ? <Winicon src={child.prefix as any} size={14} /> : child.prefix) : null}
                         <span>{child.name}</span>
                     </>}
                 </label>
