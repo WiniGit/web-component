@@ -36,6 +36,35 @@ interface SelectMultipleProps {
     hiddenSearchOptions?: boolean
 }
 
+interface SelectMultipleProps {
+    id?: string,
+    value?: Array<string | number>,
+    options: Required<Array<OptionsItem>>,
+    getOptions?: (params: { length: number, search?: string, parentId?: string | number }) => Promise<{ data: Array<OptionsItem>, totalCount: number }>,
+    onChange?: (value?: Array<string | number>) => void,
+    placeholder?: string,
+    disabled?: boolean,
+    readOnly?: boolean,
+    /** 
+     * default: size40: body-3
+     * recommend: size48: body-3 | size32: body-3
+     *  */
+    className?: string,
+    helperText?: string,
+    helperTextColor?: string,
+    style?: CSSProperties,
+    showClearValueButton?: boolean,
+    dropdownClassName?: string,
+    dropdownStyle?: CSSProperties,
+    prefix?: ReactNode,
+    suffix?: ReactNode,
+    simpleStyle?: boolean,
+    customOptionsList?: ReactNode,
+    previewMaxLength?: number,
+    customPreviewValue?: ReactNode,
+    hiddenSearchOptions?: boolean
+}
+
 interface SelectMultipleRef {
     element: HTMLDivElement
     isOpen: boolean
@@ -206,7 +235,7 @@ const OptionDropList = (props: OptionDropListProps) => {
 
     useEffect(() => {
         getData()
-    }, [])
+    }, [searchValue])
 
     useEffect(() => {
         if (divRef.current) {
@@ -252,15 +281,16 @@ const OptionDropList = (props: OptionDropListProps) => {
                         <Winicon src='color/files/archive-file' size={28} />
                         <h6 className='heading-7' style={{ margin: "0.8rem" }}>{t("noResultFound")}</h6>
                     </div> :
-                    options.data.filter(e => !e.parentId).map((opt, i, arr) => <OptionsItemTile
-                        key={opt.id + "-" + i}
-                        item={opt}
-                        selected={props.selected}
-                        children={options.data.filter(e => e.parentId === opt.id)}
-                        getOptions={(params) => props.getOptions?.({ ...params, search: searchValue })}
-                        arr={arr}
-                        onChange={props.onChange}
-                    />)}
+                    options.data.filter(e => !e.parentId).map((opt, i, arr) => {
+                        return <OptionsItemTile
+                            key={opt.id + "-" + i}
+                            item={opt}
+                            selected={props.selected}
+                            children={options.data.filter(e => e.parentId === opt.id)}
+                            getOptions={(params) => props.getOptions?.({ ...params, search: searchValue })}
+                            arr={arr}
+                            onChange={props.onChange} />;
+                    })}
             </>
         }
     </div>
@@ -281,11 +311,15 @@ function OptionsItemTile({ item, children, selected, onChange, getOptions }: Opt
     const { t } = useTranslation()
 
     useEffect(() => {
-        if (children && !options.totalCount) setOptions({ data: children, totalCount: children.length })
+        if (children && !options.totalCount) {
+            setOptions({ data: children, totalCount: children.length })
+        }
     }, [children])
 
     useEffect(() => {
-        if (isOpen && !options.totalCount) getOptions?.({ length: 0, parentId: item.id }).then(res => setOptions(res))
+        if (isOpen && !options.totalCount) {
+            getOptions?.({ length: 0, parentId: item.id }).then(res => setOptions(res))
+        }
     }, [isOpen])
 
     return <>
@@ -325,6 +359,7 @@ function OptionsItemTile({ item, children, selected, onChange, getOptions }: Opt
             </label>}
         {isOpen && <>
             {options.data.map((child, i) => {
+                console.log(child.id)
                 return <label key={child.id + "-" + i} style={{ paddingLeft: `calc(max(0.8rem, 5px) + max(0.8rem, 5px) + 20px)` }} className={`row label-4 ${styles["select-tile"]} ${child.disabled ? styles["disabled"] : ""}`}>
                     <div className='row' style={{ padding: 2 }}>
                         <Checkbox
