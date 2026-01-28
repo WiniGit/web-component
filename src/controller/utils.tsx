@@ -84,7 +84,7 @@ export class Util {
         return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
 
-    static stringToDate(_date: string, _format = "dd/MM/yyyy", _delimiter = "/") {
+    static stringToDate(_date: string, _format = "dd/mm/yyyy", _delimiter = "/") {
         let dayformat = _format.toLowerCase();
         let hourformat = '';
         let day = _date;

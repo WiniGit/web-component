@@ -639,10 +639,10 @@ const ElementUI = ({ findId, children, watchForCustomProps, replaceThisVariables
                             switch (propsColDataType) {
                                 case FEDataType.DATE:
                                     tmpProps.pickerType = "date"
-                                    tmpProps.pickOnly = true
                                     break;
                                 case FEDataType.DATETIME:
                                     tmpProps.pickerType = "datetime"
+                                    tmpProps.pickOnly = true
                                     break;
                                 case FEDataType.PASSWORD:
                                     tmpProps.IsPassword = true

@@ -153,7 +153,7 @@ export function DateTimePicker({ style = {}, pickerType = "auto", ...props }: Da
                                 const inputValue = ev.target.value.trim()
                                 let dateValue: Date | undefined = undefined
                                 if (inputValue.match(/[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{4}/g)) {
-                                    dateValue = Util.stringToDate(inputValue, 'dd/MM/yyyy', '/')
+                                    dateValue = Util.stringToDate(inputValue, 'dd/mm/yyyy', '/')
                                     if (differenceInCalendarDays(dateValue, props.min ?? startDate) > -1 && differenceInCalendarDays(props.max ?? endDate, dateValue) > -1) {
                                     } else if (differenceInCalendarDays(props.min ?? startDate, dateValue) > -1) {
                                         dateValue = props.min ?? startDate

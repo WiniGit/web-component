@@ -262,6 +262,7 @@ interface FSelect1Props {
     suffix?: ReactNode;
     hideAutoSuffix?: boolean;
     methods: UseFormReturn<FieldValues, any, undefined>;
+    optionStyle?: "default" | "solid" | "ghost",
 }
 
 export const FSelect1 = ({ methods, ...props }: FSelect1Props) => {
