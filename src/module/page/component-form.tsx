@@ -105,6 +105,7 @@ interface FRadioButtonProps {
     labelPosition?: "left" | "right";
     onChange?: React.ChangeEventHandler<HTMLInputElement>;
     value?: string | number | readonly string[];
+    cheked?: boolean;
     disabled?: boolean;
     style?: CSSProperties;
     size?: number | string;
@@ -136,14 +137,13 @@ export const FRadioButton = ({ labelPosition = "right", ...props }: FRadioButton
             />}
         /> : <RadioButton
             name={props.name}
-            onChange={(ev) => {
-                props.onChange?.(ev)
-            }}
+            onChange={props.onChange}
             size={props.size}
             disabled={props.disabled}
             value={props.value}
             activeColor={props.activeColor}
             offColor={props.offColor}
+            checked={props.cheked}
         />}
         {!!props.label && labelPosition === "right" && <span>{props.label}</span>}
     </label>

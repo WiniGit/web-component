@@ -652,6 +652,10 @@ const ElementUI = ({ findId, children, watchForCustomProps, replaceThisVariables
                             }
                         } else if (regexGetVariables.test(tmpProps.value)) tmpProps.value = replaceThisVariables(tmpProps.value)
                         break;
+                    case ComponentType.radio:
+                        if (!props.item.NameField?.length && regexGetVariables.test(tmpProps.value)) tmpProps.value = replaceThisVariables(tmpProps.value)
+                        if (!props.item.NameField?.length && regexGetVariables.test(tmpProps.checked)) tmpProps.checked = replaceThisVariables(tmpProps.checked)
+                        break;
                     default:
                         if (!props.item.NameField?.length && regexGetVariables.test(tmpProps.value)) tmpProps.value = replaceThisVariables(tmpProps.value)
                         break;

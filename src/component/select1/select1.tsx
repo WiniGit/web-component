@@ -114,7 +114,7 @@ export const Select1 = forwardRef<Select1Ref, Select1Props>(({ style = {}, ...pr
                 switch (props.optionStyle) {
                     case "ghost":
                         return <>
-                            {valueItem!.prefix ? ((typeof valueItem!.prefix === "string" && !!valueItem!.prefix?.length) ? <Winicon src={valueItem!.prefix as any} color={valueItem!.color} size={14} style={{ width: 28, height: 28, border: `1px dashed ${valueItem!.color}`, borderRadius: "50%" }} /> : valueItem!.prefix) : props.prefix}
+                            {valueItem!.prefix ? ((typeof valueItem!.prefix === "string" && !!valueItem!.prefix?.length) ? <Winicon src={valueItem!.prefix as any} color={valueItem!.color} size={13} style={{ width: 24, height: 24, border: `1px dashed ${valueItem!.color}`, borderRadius: "50%" }} /> : valueItem!.prefix) : props.prefix}
                             <span style={{ flex: 1, textOverflow: "ellipsis", whiteSpace: "nowrap", overflow: "hidden", color: valueItem!.color }}>{valueItem!.name}</span>
                         </>
                     case "solid":
@@ -283,7 +283,7 @@ function OptionsItemTile({ item, children, selected, onClick, getOptions, option
         switch (optionStyle) {
             case "ghost":
                 return <>
-                    {optItem.prefix ? ((typeof optItem.prefix === "string" && !!optItem.prefix?.length) ? <Winicon src={optItem.prefix as any} color={optItem.color} size={14} style={{ width: 28, height: 28, border: `1px dashed ${optItem.color}`, borderRadius: "50%" }} /> : optItem.prefix) : null}
+                    {optItem.prefix ? ((typeof optItem.prefix === "string" && !!optItem.prefix?.length) ? <Winicon src={optItem.prefix as any} color={optItem.color} size={13} style={{ width: 24, height: 24, border: `1px dashed ${optItem.color}`, borderRadius: "50%" }} /> : optItem.prefix) : null}
                     <span style={{ color: optItem.color }}>{optItem.name}</span>
                 </>
             case "solid":
