@@ -25,7 +25,6 @@ interface Props {
     imgUrlId: string,
     onInvalidToken?: () => void,
     children?: React.ReactNode,
-    onProjectLoaded?: (item: ProjectItem) => void,
     theme?: "light" | "dark"
 }
 
@@ -118,8 +117,11 @@ interface WiniContextProps {
     i18n: i18n,
     theme: "light" | "dark",
     setTheme: (theme: "light" | "dark") => void,
+    projectData?: { [k: string]: any },
     userData?: { [k: string]: any },
-    setUserData: (data?: { [k: string]: any }) => void
+    setUserData: (data?: { [k: string]: any }) => void,
+    globalData?: { [k: string]: any },
+    setGlobalData: (data?: { [k: string]: any }) => void
 }
 
 const WiniContext = createContext<WiniContextProps | undefined>(undefined)
@@ -134,6 +136,26 @@ export const WiniProvider = (props: Props) => {
     const [loadedResources, setLoadedResources] = useState(false)
     const [theme, setTheme] = useState<"light" | "dark">("light")
     const [userData, setUserData] = useState<{ [k: string]: any } | undefined>(undefined)
+    const [projectData, setProjectData] = useState<ProjectItem | undefined>(undefined)
+    const [globalData, setGlobalData] = useState<{ [k: string]: any } | undefined>(undefined)
+
+    useEffect(() => {
+        const rootLink = document.createElement("link")
+        rootLink.rel = "stylesheet"
+        rootLink.href = "https://cdn.jsdelivr.net/gh/WiniGit/web-component@471a8f8/src/skin/root.css"
+        const typoLink = document.createElement("link")
+        typoLink.rel = "stylesheet"
+        typoLink.href = "https://cdn.jsdelivr.net/gh/WiniGit/web-component@471a8f8/src/skin/typography.css"
+        const layoutLink = document.createElement("link")
+        layoutLink.rel = "stylesheet"
+        layoutLink.href = "https://cdn.jsdelivr.net/gh/WiniGit/web-component@471a8f8/src/skin/layout.css"
+        document.head.children[0].before(rootLink, typoLink, layoutLink)
+        return () => {
+            rootLink.remove()
+            typoLink.remove()
+            layoutLink.remove()
+        }
+    }, [])
 
     useEffect(() => {
         setTheme(props.theme ?? "light")
@@ -156,10 +178,8 @@ export const WiniProvider = (props: Props) => {
                 if (res.code === 200 && res.data[0]) {
                     if (res.data[0].LogoId) (document.head.querySelector(`:scope > link[rel="icon"]`) as HTMLLinkElement)!.href = getValidLink(res.data[0].LogoId);
                     (document.head.querySelector(`:scope > title`) as HTMLTitleElement)!.innerHTML = res.data[0].Name;
-                    if (props.onProjectLoaded) {
-                        props.onProjectLoaded(res.data[0])
-                        ConfigData.fileUrl = res.data[0].FileDomain
-                    }
+                    setProjectData(res.data[0])
+                    ConfigData.fileUrl = res.data[0].FileDomain
                 }
             })
             const languageController = new DataController("Language")
@@ -167,9 +187,7 @@ export const WiniProvider = (props: Props) => {
                 if (res.code === 200 && res.data.length) {
                     const languages = await Promise.all(res.data.map((e: any) => BaseDA.get(ConfigData.imgUrlId + e.Json)))
                     languages.forEach((lngData, i) => {
-                        if (lngData) {
-                            i18n.addResourceBundle(res.data[i].Lng, "translation", lngData, true, true)
-                        }
+                        if (lngData) i18n.addResourceBundle(res.data[i].Lng, "translation", lngData, true, true)
                     })
                     setLoadedResources(true)
                 } else setLoadedResources(true)
@@ -180,7 +198,7 @@ export const WiniProvider = (props: Props) => {
         }
     }, [props.pid])
 
-    return <WiniContext.Provider value={{ theme, setTheme, i18n, userData, setUserData }}>
+    return <WiniContext.Provider value={{ projectData, theme, setTheme, i18n, userData, setUserData, globalData, setGlobalData }}>
         <BrowserRouter>
             <ToastContainer />
             <Dialog />
