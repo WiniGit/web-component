@@ -166,6 +166,8 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
         switch (replaceTmp.trim()) {
             case "undefined":
                 return undefined;
+            case "null":
+                return null;
             default:
                 try {
                     if (replaceTmp.startsWith("!")) return !JSON.parse(replaceTmp.substring(1))
@@ -267,13 +269,14 @@ const ElementUI = ({ findId, children, watchForCustomProps, replaceThisVariables
                                     onSubmit: async () => {
                                         if (actItem.Caculate) {
                                             await (new AsyncFunction(
-                                                "entityData", "entityIndex", "tableName", "tableTitle", "Util", "DataController", "randomGID", "ToastMessage", "uploadFiles", "getFilesInfor", "showDialog", "ComponentStatus", "event", "methods", "useParams", "useNavigate", "useWiniContext",
+                                                "entityData", "entityIndex", "tableName", "tableTitle", "nameField", "Util", "DataController", "randomGID", "ToastMessage", "uploadFiles", "getFilesInfor", "showDialog", "ComponentStatus", "event", "methods", "useParams", "useNavigate", "useWiniContext",
                                                 `${actItem.Caculate}` // This string can now safely contain the 'await' keyword
                                             ))(
                                                 props.indexItem ?? props.methods?.getValues(),
                                                 props.index,
                                                 props.tbName,
                                                 props.tbName?.split("_").map((e, i) => (i ? e.toLowerCase() : e)).join(" "),
+                                                props.item.NameField,
                                                 Util,
                                                 DataController,
                                                 randomGID,
@@ -295,13 +298,14 @@ const ElementUI = ({ findId, children, watchForCustomProps, replaceThisVariables
                             case ActionType.custom:
                                 if (actItem.Caculate) {
                                     const asyncFuncResponse = await (new AsyncFunction(
-                                        "entityData", "entityIndex", "tableName", "tableTitle", "Util", "DataController", "randomGID", "ToastMessage", "uploadFiles", "getFilesInfor", "showDialog", "ComponentStatus", "event", "methods", "useParams", "useNavigate", "location", "useWiniContext",
+                                        "entityData", "entityIndex", "tableName", "tableTitle", "nameField", "Util", "DataController", "randomGID", "ToastMessage", "uploadFiles", "getFilesInfor", "showDialog", "ComponentStatus", "event", "methods", "useParams", "useNavigate", "location", "useWiniContext",
                                         `${actItem.Caculate}` // This string can now safely contain the 'await' keyword
                                     ))(
                                         props.indexItem ?? props.methods?.getValues(),
                                         props.index,
                                         props.tbName,
                                         props.tbName?.split("_").map((e, i) => (i ? e.toLowerCase() : e)).join(" "),
+                                        props.item.NameField,
                                         Util,
                                         DataController,
                                         randomGID,
