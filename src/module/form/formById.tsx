@@ -9,7 +9,7 @@ import { TableController } from "../../controller/setting"
 import { ConfigData } from "../../controller/config"
 import { CustomerAvatar } from "../table/config"
 
-interface FormByIdProps {
+interface Props {
     id: string;
     style?: CSSProperties;
     className?: string;
@@ -23,6 +23,7 @@ interface FormByIdProps {
     onGetFormError?: (e: { [p: string]: any }) => void;
     autoBcrypt?: boolean
     onUnMount?: () => void
+    controller?: { searchRaw?: string, filter?: string, sortby?: Array<{ prop: string, direction?: "ASC" | "DESC" }>, pattern?: { returns: Array<string>, [p: string]: Array<string> | { searchRaw?: string, reducers: string } } } | { ids: string, maxLength?: number | "none" },
     /** Listen form data change */
     onChange?: (ev: { data?: { [p: string]: any } }) => void
 }
@@ -34,7 +35,7 @@ interface FormByIdRef {
     rels: Array<{ [p: string]: any }>,
 }
 
-export const FormById = forwardRef<FormByIdRef, FormByIdProps>((props, ref) => {
+export const FormById = forwardRef<FormByIdRef, Props>((props, ref) => {
     const methods = useForm({ shouldFocusError: false })
     const methodOptions = useForm({ shouldFocusError: false })
     const [formItem, setFormItem] = useState<{ [p: string]: any }>()
@@ -44,11 +45,16 @@ export const FormById = forwardRef<FormByIdRef, FormByIdProps>((props, ref) => {
     const inputLayers = useMemo<Array<{ [p: string]: any }>>(() => layers.filter((e: any) => e.NameField?.length && inputComponents.includes(e.Type)), [layers])
     const _colController = new TableController("column")
     const _relController = new TableController("rel")
+    const [controller, setController] = useState<any>(undefined)
     const [cols, setCols] = useState<Array<{ [p: string]: any }>>([])
     const [rels, setRels] = useState<Array<{ [p: string]: any }>>([])
     const [relativeCols, setRelativeCols] = useState<Array<{ [p: string]: any }>>([])
     const accountController = new AccountController()
     const regexGuid = /^[0-9a-fA-F]{32}$/;
+
+    useEffect(() => {
+        if (JSON.stringify(controller) !== JSON.stringify(props.controller)) setController(props.controller)
+    }, [props.controller])
 
     const onSubmit = async (ev: any) => {
         let dataItem = { ...ev }
@@ -138,125 +144,143 @@ export const FormById = forwardRef<FormByIdRef, FormByIdProps>((props, ref) => {
         props.onSubmit?.(dataItem)
     }
 
+    const getInitData = async () => {
+        let initData = props.data
+        if (!props.data && controller) {
+            const dataController = new DataController(formItem!.TbName)
+            if (controller.searchRaw) {
+                const tmpController = { ...controller, page: 1, size: 1, searchRaw: controller!.searchRaw ?? "*" }
+                const res = await dataController.patternList(tmpController)
+                if (res.code === 200 && res.data[0]) initData = res.data[0]
+            } else { // get by ids
+                let listIds = controller.ids.split(",")
+                if (controller.maxLength && controller.maxLength !== "none") listIds = listIds.slice(0, controller.maxLength)
+                const res = await dataController.getByListId(listIds)
+                if (res.code === 200 && res.data.length) initData = res.data.find((e: any) => !!e)
+            }
+        }
+        if (initData) {
+            const dataItem = initData
+            const _fileIds: Array<any> = []
+            Object.keys(dataItem).forEach(prop => {
+                const tmpLayer = inputLayers.find(e => e.NameField === prop)
+                if (tmpLayer) {
+                    const _col = cols.find(e => e.Name === prop)
+                    const _rel = rels.find(e => e.Column === prop)
+                    if (_col) {
+                        switch (_col.DataType) {
+                            case FEDataType.GID:
+                            case FEDataType.HTML:
+                            case FEDataType.PASSWORD:
+                                methods.setValue(prop, dataItem[prop])
+                                break;
+                            case FEDataType.STRING:
+                                if (_col.Form.Options?.length) {
+                                    methods.setValue(prop, (dataItem[prop] ?? "").split(","))
+                                } else {
+                                    methods.setValue(prop, dataItem[prop])
+                                }
+                                break;
+                            case FEDataType.BOOLEAN:
+                                methods.setValue(prop, dataItem[prop])
+                                if (_col.Form.ComponentType === ComponentType.radio) methods.setValue(prop, `${dataItem[prop]}`)
+                                break;
+                            case FEDataType.NUMBER:
+                                methods.setValue(prop, typeof dataItem[prop] === 'string' ? parseFloat(dataItem[prop]) : dataItem[prop])
+                                break;
+                            case FEDataType.DATE:
+                            case FEDataType.DATETIME:
+                                methods.setValue(prop, new Date(typeof dataItem[prop] === 'string' && !isNaN(Number(dataItem[prop])) ? parseInt(dataItem[prop]) : dataItem[prop]))
+                                break;
+                            case FEDataType.MONEY:
+                                if (typeof dataItem[prop] === 'number') methods.setValue(prop, Util.money(dataItem[prop]))
+                                break;
+                            case FEDataType.FILE:
+                                if (dataItem[prop]) {
+                                    if (_col.Form.ComponentType === ComponentType.upload) _fileIds.push({ id: dataItem[prop], name: prop })
+                                    else methods.setValue(prop, dataItem[prop])
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+                    } else if (_rel) {
+                        const _tmpParse = dataItem[prop]?.length ? dataItem[prop].split(",") : []
+                        if (props.customOptions?.[_rel.Column]) {
+                            let _opt = props.customOptions?.[_rel.Column] ?? []
+                            methodOptions.setValue(`${_rel.Column}_Options`, _opt)
+                        } else {
+                            const pkController = new DataController(_rel.TablePK)
+                            pkController.getByListId(_tmpParse).then(pkRes => {
+                                if (pkRes.code === 200) methodOptions.setValue(`${_rel.Column}_Options`, pkRes.data?.filter((e: any) => !!e)?.map((e: any) => ({ id: e.Id, name: e.Name, prefix: (_rel.TablePK === "Customer" || _rel.TablePK === "User") ? <CustomerAvatar data={e} /> : undefined, ...e })) ?? [])
+                            })
+                        }
+                        methods.setValue(prop, _rel.Form.ComponentType === ComponentType.selectMultiple ? _tmpParse : _tmpParse[0])
+                    } else {
+                        methods.setValue(prop, dataItem[prop])
+                    }
+                } else methods.setValue(prop, dataItem[prop])
+            })
+            if (_fileIds.length) {
+                let filesInfor = _fileIds.map(e => e.id?.split(",")).flat(Infinity)
+                const fileGuids = filesInfor.filter((id, i, arr) => !!id?.length && regexGuid.test(id) && arr.indexOf(id) === i)
+                filesInfor = filesInfor.filter((id, i, arr) => !!id?.length && !regexGuid.test(id) && arr.indexOf(id) === i).map((url) => ({ id: randomGID(), name: url.split(/[\\/]/).pop(), type: urlToFileType(url), exactUrl: url, url: url.startsWith("https") ? url : getValidLink(url) }))
+                if (fileGuids.length) {
+                    BaseDA.getFilesInfor(fileGuids).then(res => {
+                        if (res.code === 200) _fileIds.forEach(e => {
+                            const tmpF = res.data.filter((f: any) => !!f && e.id.includes(f.Id)).map((f: any) => ({ id: f.Id, name: f.Name, size: f.Size, type: f.Type, url: ConfigData.fileUrl + f.Url }))
+                            methods.setValue(e.name, [...filesInfor.filter((f: any) => e.id.includes(f.exactUrl)), ...tmpF])
+                        })
+                    })
+                } else {
+                    _fileIds.forEach(e => {
+                        const tmpF = filesInfor.filter((f: any) => e.id.includes(f.exactUrl))
+                        methods.setValue(e.name, tmpF)
+                    })
+                }
+            }
+        } else {
+            inputLayers.filter(e => e.Setting.default !== undefined && e.Setting.default !== null).forEach((tmpLayer) => {
+                const _col = cols.find(e => tmpLayer.NameField === e.Name)
+                switch (_col?.DataType) {
+                    case FEDataType.GID:
+                    case FEDataType.HTML:
+                    case FEDataType.PASSWORD:
+                        methods.setValue(_col.Name, _col.Form.DefaultValue)
+                        break;
+                    case FEDataType.STRING:
+                        if (_col.Form.Options?.length) {
+                            methods.setValue(_col.Name, _col.Form.DefaultValue.split(","))
+                        } else {
+                            methods.setValue(_col.Name, _col.Form.DefaultValue)
+                        }
+                        break;
+                    case FEDataType.BOOLEAN:
+                        methods.setValue(_col.Name, _col.Form.DefaultValue)
+                        break;
+                    case FEDataType.NUMBER:
+                        methods.setValue(_col.Name, typeof _col.Form.DefaultValue === 'string' ? parseFloat(_col.Form.DefaultValue) : _col.Form.DefaultValue)
+                        break;
+                    case FEDataType.DATE:
+                    case FEDataType.DATETIME:
+                        methods.setValue(_col.Name, new Date(typeof _col.Form.DefaultValue === 'string' ? parseInt(_col.Form.DefaultValue) : _col.Form.DefaultValue))
+                        break;
+                    case FEDataType.MONEY:
+                        if (typeof _col.Form.DefaultValue === 'number') methods.setValue(_col.Name, Util.money(_col.Form.DefaultValue))
+                        break;
+                    default:
+                        break;
+                }
+            })
+        }
+    }
+
     useEffect(() => {
         if (cols.length) {
             methods.reset()
-            if (props.data) {
-                const dataItem = props.data
-                const _fileIds: Array<any> = []
-                Object.keys(dataItem).forEach(prop => {
-                    const tmpLayer = inputLayers.find(e => e.NameField === prop)
-                    if (tmpLayer) {
-                        const _col = cols.find(e => e.Name === prop)
-                        const _rel = rels.find(e => e.Column === prop)
-                        if (_col) {
-                            switch (_col.DataType) {
-                                case FEDataType.GID:
-                                case FEDataType.HTML:
-                                case FEDataType.PASSWORD:
-                                    methods.setValue(prop, dataItem[prop])
-                                    break;
-                                case FEDataType.STRING:
-                                    if (_col.Form.Options?.length) {
-                                        methods.setValue(prop, (dataItem[prop] ?? "").split(","))
-                                    } else {
-                                        methods.setValue(prop, dataItem[prop])
-                                    }
-                                    break;
-                                case FEDataType.BOOLEAN:
-                                    methods.setValue(prop, dataItem[prop])
-                                    if (_col.Form.ComponentType === ComponentType.radio) methods.setValue(prop, `${dataItem[prop]}`)
-                                    break;
-                                case FEDataType.NUMBER:
-                                    methods.setValue(prop, typeof dataItem[prop] === 'string' ? parseFloat(dataItem[prop]) : dataItem[prop])
-                                    break;
-                                case FEDataType.DATE:
-                                case FEDataType.DATETIME:
-                                    methods.setValue(prop, new Date(typeof dataItem[prop] === 'string' && !isNaN(Number(dataItem[prop])) ? parseInt(dataItem[prop]) : dataItem[prop]))
-                                    break;
-                                case FEDataType.MONEY:
-                                    if (typeof dataItem[prop] === 'number') methods.setValue(prop, Util.money(dataItem[prop]))
-                                    break;
-                                case FEDataType.FILE:
-                                    if (dataItem[prop]) {
-                                        if (_col.Form.ComponentType === ComponentType.upload) _fileIds.push({ id: dataItem[prop], name: prop })
-                                        else methods.setValue(prop, dataItem[prop])
-                                    }
-                                    break;
-                                default:
-                                    break;
-                            }
-                        } else if (_rel) {
-                            const _tmpParse = dataItem[prop]?.length ? dataItem[prop].split(",") : []
-                            if (props.customOptions?.[_rel.Column]) {
-                                let _opt = props.customOptions?.[_rel.Column] ?? []
-                                methodOptions.setValue(`${_rel.Column}_Options`, _opt)
-                            } else {
-                                const pkController = new DataController(_rel.TablePK)
-                                pkController.getByListId(_tmpParse).then(pkRes => {
-                                    if (pkRes.code === 200) methodOptions.setValue(`${_rel.Column}_Options`, pkRes.data?.filter((e: any) => !!e)?.map((e: any) => ({ id: e.Id, name: e.Name, prefix: (_rel.TablePK === "Customer" || _rel.TablePK === "User") ? <CustomerAvatar data={e} /> : undefined, ...e })) ?? [])
-                                })
-                            }
-                            methods.setValue(prop, _rel.Form.ComponentType === ComponentType.selectMultiple ? _tmpParse : _tmpParse[0])
-                        } else {
-                            methods.setValue(prop, dataItem[prop])
-                        }
-                    } else methods.setValue(prop, dataItem[prop])
-                })
-                if (_fileIds.length) {
-                    let filesInfor = _fileIds.map(e => e.id?.split(",")).flat(Infinity)
-                    const fileGuids = filesInfor.filter((id, i, arr) => !!id?.length && regexGuid.test(id) && arr.indexOf(id) === i)
-                    filesInfor = filesInfor.filter((id, i, arr) => !!id?.length && !regexGuid.test(id) && arr.indexOf(id) === i).map((url) => ({ id: randomGID(), name: url.split(/[\\/]/).pop(), type: urlToFileType(url), exactUrl: url, url: url.startsWith("https") ? url : getValidLink(url) }))
-                    if (fileGuids.length) {
-                        BaseDA.getFilesInfor(fileGuids).then(res => {
-                            if (res.code === 200) _fileIds.forEach(e => {
-                                const tmpF = res.data.filter((f: any) => !!f && e.id.includes(f.Id)).map((f: any) => ({ id: f.Id, name: f.Name, size: f.Size, type: f.Type, url: ConfigData.fileUrl + f.Url }))
-                                methods.setValue(e.name, [...filesInfor.filter((f: any) => e.id.includes(f.exactUrl)), ...tmpF])
-                            })
-                        })
-                    } else {
-                        _fileIds.forEach(e => {
-                            const tmpF = filesInfor.filter((f: any) => e.id.includes(f.exactUrl))
-                            methods.setValue(e.name, tmpF)
-                        })
-                    }
-                }
-            } else {
-                inputLayers.filter(e => e.Setting.default !== undefined && e.Setting.default !== null).forEach((tmpLayer) => {
-                    const _col = cols.find(e => tmpLayer.NameField === e.Name)
-                    switch (_col?.DataType) {
-                        case FEDataType.GID:
-                        case FEDataType.HTML:
-                        case FEDataType.PASSWORD:
-                            methods.setValue(_col.Name, _col.Form.DefaultValue)
-                            break;
-                        case FEDataType.STRING:
-                            if (_col.Form.Options?.length) {
-                                methods.setValue(_col.Name, _col.Form.DefaultValue.split(","))
-                            } else {
-                                methods.setValue(_col.Name, _col.Form.DefaultValue)
-                            }
-                            break;
-                        case FEDataType.BOOLEAN:
-                            methods.setValue(_col.Name, _col.Form.DefaultValue)
-                            break;
-                        case FEDataType.NUMBER:
-                            methods.setValue(_col.Name, typeof _col.Form.DefaultValue === 'string' ? parseFloat(_col.Form.DefaultValue) : _col.Form.DefaultValue)
-                            break;
-                        case FEDataType.DATE:
-                        case FEDataType.DATETIME:
-                            methods.setValue(_col.Name, new Date(typeof _col.Form.DefaultValue === 'string' ? parseInt(_col.Form.DefaultValue) : _col.Form.DefaultValue))
-                            break;
-                        case FEDataType.MONEY:
-                            if (typeof _col.Form.DefaultValue === 'number') methods.setValue(_col.Name, Util.money(_col.Form.DefaultValue))
-                            break;
-                        default:
-                            break;
-                    }
-                })
-            }
+            getInitData()
         }
-    }, [props.data, cols.length])
+    }, [props.data, cols.length, controller])
 
     useEffect(() => {
         if (props.id) {

@@ -557,7 +557,8 @@ const ElementUI = ({ findId, children, watchForCustomProps, replaceThisVariables
         if (regexGetVariables.test(tmpProps.className)) tmpProps.className = replaceThisVariables(tmpProps.className)
         if (props.item.NameField && tmpProps.validate?.some((v: any) => v.type === ValidateType.required)) tmpProps.required = true
         switch (props.item.Type) {
-            case "card":
+            case ComponentType.form:
+            case ComponentType.view:
             case ComponentType.card:
                 if (tmpProps.controller && tmpProps.controller !== "all") {
                     let newController = { ...tmpProps.controller }
