@@ -254,7 +254,7 @@ interface TableRowProps {
     fields?: Array<{ [p: string]: any }>;
     files?: Array<{ [p: string]: any }>;
     relativeData?: Array<{ [p: string]: any }>;
-    relativeFields?: Array<{ [p: string]: any }>;
+    relativeFields?: { [p: string]: any[] };
     showIndex?: boolean;
     hideCheckbox?: boolean;
     showAddEditPopup?: (id?: string) => void;
@@ -275,7 +275,7 @@ interface TableRowProps {
     onChangeFormTitle?: (params: { formAdd?: string | null, formEdit?: string | null }) => void;
 }
 
-export const TableRow = ({ item, setItem, onEditActionColumn, index, methods, fields = [], files = [], relativeData, relativeFields = [], showIndex = false, hideCheckbox = false, showAddEditPopup, onDelete, actions = [], onChangeActions, selected, setSelected, onDuplicate, customFormId, formTitle, onChangeFormTitle, ...props }: TableRowProps) => {
+export const TableRow = ({ item, setItem, onEditActionColumn, index, methods, fields = [], files = [], relativeData, relativeFields, showIndex = false, hideCheckbox = false, showAddEditPopup, onDelete, actions = [], onChangeActions, selected, setSelected, onDuplicate, customFormId, formTitle, onChangeFormTitle, ...props }: TableRowProps) => {
     const popupRef = useRef<Popup>(null)
     const tbName = methods.getValues("TbName")
     const dataController = new DataController(tbName)
@@ -452,6 +452,10 @@ export const TableRow = ({ item, setItem, onEditActionColumn, index, methods, fi
             {columns.sort((a, b) => a.Sort - b.Sort).map((_col, i) => {
                 const tmp = _col.Name.split(".")
                 const contentProps = (tmp.length > 1 ? { data: relativeData?.[tmp[0].substring(0, tmp[0].lastIndexOf("Id"))], fields: relativeFields?.[tmp[0]] } : { data: item, fields: fields }) as any
+                contentProps.rowItem = item
+                contentProps.rowIndex = index
+                contentProps.relativeData = relativeData
+                contentProps.tbName = tbName
                 const cellContent = props.customCell?.[_col.Name]?.({ item, index }) ?? <AutoCellContent colItem={_col} files={files} {...contentProps} />
                 if (treeData && !i) {
                     return <Cell key={_col.Id} colItem={_col} style={{ gap: "0.8rem" }}>

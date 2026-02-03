@@ -142,13 +142,13 @@ export const WiniProvider = (props: Props) => {
     useEffect(() => {
         const rootLink = document.createElement("link")
         rootLink.rel = "stylesheet"
-        rootLink.href = "https://cdn.jsdelivr.net/gh/WiniGit/web-component@471a8f8/src/skin/root.css"
+        rootLink.href = "https://cdn.jsdelivr.net/gh/WiniGit/web-component@5c9b1ca/src/skin/root.css"
         const typoLink = document.createElement("link")
         typoLink.rel = "stylesheet"
-        typoLink.href = "https://cdn.jsdelivr.net/gh/WiniGit/web-component@471a8f8/src/skin/typography.css"
+        typoLink.href = "https://cdn.jsdelivr.net/gh/WiniGit/web-component@5c9b1ca/src/skin/typography.css"
         const layoutLink = document.createElement("link")
         layoutLink.rel = "stylesheet"
-        layoutLink.href = "https://cdn.jsdelivr.net/gh/WiniGit/web-component@471a8f8/src/skin/layout.css"
+        layoutLink.href = "https://cdn.jsdelivr.net/gh/WiniGit/web-component@5c9b1ca/src/skin/layout.css"
         document.head.children[0].before(rootLink, typoLink, layoutLink)
         return () => {
             rootLink.remove()

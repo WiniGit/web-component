@@ -1,14 +1,13 @@
 import ReactDOM from 'react-dom'
 import { CSSProperties, useEffect, useMemo, useRef, useState } from "react";
 import styles from "./table.module.css";
-import { Util } from "../../controller/utils";
 import { ColDataType, FEDataType } from "../da";
-import { Text, Tag, showTooltipElement, Winicon } from "../../index";
-import { ConfigData } from "../../controller/config";
+import { Util, Text, Tag, showTooltipElement, Winicon, useWiniContext, DataController, randomGID, ToastMessage, showDialog, ComponentStatus } from "../../index";
+import { BaseDA, ConfigData } from "../../controller/config";
 import { NavLink, useLocation, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { i18n } from '../../language/i18n';
-import { getValidLink } from '../page/pageById';
+import { AsyncFunction, getValidLink } from '../page/pageById';
 
 interface AutoCellContentProps {
     colItem: { [p: string]: any };
@@ -16,16 +15,22 @@ interface AutoCellContentProps {
     fields: { [p: string]: any }[];
     files: { [p: string]: any }[];
     style?: CSSProperties;
+    rowItem?: { [p: string]: any };
+    rowIndex?: number;
+    relativeData?: { [p: string]: any[] };
+    tbName: string
 }
 
 const regexGetVariables = /\${([^}]*)}/;
 const replaceVariables = /\${([^}]*)}/g;
-export const AutoCellContent = ({ colItem, data, fields = [], files = [], style = {} }: AutoCellContentProps) => {
+export const AutoCellContent = ({ colItem, data, fields = [], files = [], style = {}, rowItem, rowIndex, relativeData, tbName }: AutoCellContentProps) => {
+    const winiContextData = useWiniContext()
     const { t } = useTranslation()
     const location = useLocation()
     const query = new URLSearchParams(location.search)
     const params = useParams()
     const mapValue = useMemo<any>(() => {
+        if (colItem.Type === ColDataType.formula) return ""
         if (!data || colItem.Column || (Array.isArray(data) && !data.length)) return undefined // data undefined or this is relative key
         const fieldItem = fields.find(e => e.Name === colItem.Name.split(".").pop())
         if (!fieldItem) return undefined
@@ -111,6 +116,43 @@ export const AutoCellContent = ({ colItem, data, fields = [], files = [], style 
                 return joinValue
         }
     }, [colItem, data])
+    const [formulaValue, setFormulaValue] = useState<string>()
+
+    useEffect(() => {
+        if (colItem.Type === ColDataType.formula && colItem.Caculate?.length && rowItem) {
+            try {
+                (new AsyncFunction(
+                    "rowItem", "rowIndex", "relativeData", "tableName", "tableTitle", "nameField", "files", "Util", "DataController", "randomGID", "ToastMessage", "uploadFiles", "getFilesInfor", "showDialog", "ComponentStatus", "useWiniContext",
+                    colItem.Caculate // This string can now safely contain the 'await' keyword
+                ))(
+                    rowItem,
+                    rowIndex,
+                    relativeData,
+                    tbName,
+                    tbName.split("_").map((e, i) => (i ? e.toLowerCase() : e)).join(" "),
+                    colItem.Name,
+                    files,
+                    Util,
+                    DataController,
+                    randomGID,
+                    ToastMessage,
+                    BaseDA.uploadFiles,
+                    BaseDA.getFilesInfor,
+                    showDialog,
+                    ComponentStatus,
+                    () => winiContextData
+                ).then((result: any) => {
+                    if (typeof result === "string") setFormulaValue(result)
+                    else {
+                        ToastMessage.infor("Your code should return a string that is innerHTML of cell element")
+                        console.error("Your code should return a string that is innerHTML of cell element: ", result)
+                    }
+                })
+            } catch (error) {
+                console.error("Error in formula code: ", error)
+            }
+        }
+    }, [colItem.Type, rowItem, rowIndex, relativeData, winiContextData, tbName, files])
 
     const replaceThisVariables = (content: string, dataItem: any) => {
         return content.replace(replaceVariables, (m) => {
@@ -148,6 +190,8 @@ export const AutoCellContent = ({ colItem, data, fields = [], files = [], style 
     }
 
     switch (colItem.Type) {
+        case ColDataType.formula:
+            return <div className="body-3" style={{ width: "100%", height: "100%" }} dangerouslySetInnerHTML={{ __html: formulaValue } as any} suppressHydrationWarning />
         case ColDataType.text:
             if (typeof mapValue === "string")
                 return <p className="comp-text body-3" style={{ "--max-line": 2, margin: 0, flex: 1, ...style } as any}>{mapValue}</p>
@@ -199,7 +243,7 @@ export const AutoCellContent = ({ colItem, data, fields = [], files = [], style 
                 return <NavLink key={item.Id + "-" + i} to={url} target={colItem.Target ?? "_blank"} className={`body-3 ${styles["link-hover"]}`} style={{ "--max-line": 2, margin: 0, flex: 1, color: "var(--primary-main-color,#287CF0)", ...style } as any}>{mapValue}</NavLink>
             })
         case ColDataType.people:
-            return mapValue?.map((item: any) => <div key={item.Id} className="row" style={{ gap: "0.8rem", flex: 1, ...style }}>
+            return mapValue?.map((item: any, i: number) => <div key={`people-${item.Id}-${i}`} className="row" style={{ gap: "0.8rem", flex: 1, ...style }}>
                 <CustomerAvatar data={item} style={{ width: 32, height: 32, fontSize: 14 }} />
                 <Text className="label-4" style={{ flex: 1 }}>{item.Name}</Text>
             </div>)

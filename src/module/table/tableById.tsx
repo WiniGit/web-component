@@ -144,7 +144,7 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
     const methodsRelative = useForm<any>({ shouldFocusError: false })
     const relativeData = useMemo<{ [p: string]: any }>(() => methodsRelative.watch(), [JSON.stringify(methodsRelative.watch())])
     const methodsRelativeFields = useForm<any>({ shouldFocusError: false })
-    const relativeFields = useMemo<{ [p: string]: any }[]>(() => methodsRelativeFields.watch(), [JSON.stringify(methodsRelativeFields.watch())])
+    const relativeFields = useMemo<{ [p: string]: any[] }>(() => methodsRelativeFields.watch(), [JSON.stringify(methodsRelativeFields.watch())])
     const [files, setFiles] = useState<{ [p: string]: any }[]>([])
     const [fields, setFields] = useState<{ [p: string]: any }[]>([])
     const [selected, setSelected] = useState<string[]>([])
@@ -201,7 +201,7 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
                 if (!pattern[tmp[0]].includes(tmp[1])) pattern[tmp[0]].push(tmp[1])
                 if (!pattern.returns.includes(tmp[0])) pattern.returns.push(tmp[0])
             })
-            filterData.pattern.returns = [...pattern.returns, ...filterData.pattern.returns].filter((k: string) => k.split(".").length === 1).filter((k, i, a) => a.indexOf(k) === i)
+            pattern.returns = [...pattern.returns, ...filterData.pattern.returns].filter((k: string) => k.split(".").length === 1).filter((k, i, a) => a.indexOf(k) === i)
         }
         const pkKeys = columns.filter(e => e.Name.split(".").length > 1);
         pkKeys.forEach((e) => {
@@ -214,7 +214,7 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
             page: page, size: size,
             searchRaw: filterData.required?.length ? `${filterData.required}${finalSearchRaw !== "*" ? finalSearchRaw : ""}` : finalSearchRaw,
             sortby: sortby?.length ? sortby.map((s: any) => (s.prop.includes(".") ? { prop: s.prop.split(".").shift(), direction: s.direction } : s)) : [{ prop: "DateCreated", direction: "DESC" }],
-            pattern: filterData.pattern ? { ...pattern, ...filterData.pattern } : pattern
+            pattern: filterData.pattern ? { ...pattern, ...filterData.pattern, returns: pattern.returns } : pattern
         })
         if (res.code === 200) {
             if (exportData) return res
@@ -242,16 +242,17 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
     const relativeCols = useMemo(() => columns.filter(e => e.Name.split(".").length > 1), [columns.length])
 
     useEffect(() => {
-        if (relativeCols.length) {
-            const relativeTb = relativeCols.map(e => {
-                const tmp = e.Name.split(".").shift()
-                return tmp.substring(0, tmp.lastIndexOf("Id"))
+        const mergeRelFields: string[] = [...relativeCols.map(rl => rl.Name), ...(filterData.pattern?.returns ?? []).filter((k) => k.split(".").length > 1)]
+        if (mergeRelFields.length) {
+            const relativeTb = mergeRelFields.map(rl => {
+                const tmp = rl.split(".").shift()
+                return tmp!.substring(0, tmp!.lastIndexOf("Id"))
             }).filter((e, i, a) => a.indexOf(e) === i)
-            const relativeKeyNames = relativeCols.map(e => e.Name.split(".").pop()).filter((e, i, a) => a.indexOf(e) === i)
+            const relativeKeyNames = mergeRelFields.map(rl => rl.split(".").pop()).filter((e, i, a) => a.indexOf(e) === i)
             colController.getListSimple({
                 page: 1, size: 1000,
                 query: `@TableName:{${relativeTb.join(" | ")}} @Name:{${relativeKeyNames.join(" | ")}}`,
-                returns: ["Id", "Name", "DataType", "Query", "Form", "TableName"],
+                returns: ["Id", "Name", "DataType", "Query", "Form", "TableName"]
             }).then((res: any) => {
                 if (res.code === 200) {
                     relativeTb.forEach((tb) => {
@@ -261,7 +262,7 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
                 }
             })
         }
-    }, [relativeCols])
+    }, [relativeCols, filterData.pattern?.returns?.length])
 
     const mapRelativeData = useMemo(() => {
         const tmp: any = {}
@@ -283,14 +284,18 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
 
     const regexGuid = /^[0-9a-fA-F]{32}$/;
     useEffect(() => {
+        const mergeFields: string[] = [...columns.map(c => c.Name), ...(filterData.pattern?.returns ?? [])]
         const dataFileIds: Array<string> = []
-        columns.forEach(_col => {
-            const tmp = _col.Name.split(".")
+        mergeFields.forEach((mf) => {
+            const tmp = mf.split(".")
             if (tmp.length > 1) {
-                if (relativeFields?.[tmp[0]]?.find((e: any) => e.Name === tmp[1] && e.DataType === FEDataType.FILE))
-                    dataFileIds.push(...relativeData[tmp[0].substring(0, tmp[0].lastIndexOf("Id"))].map((e: any) => e[tmp[1]]?.split(",")).flat(Infinity).filter((id: string, i: number, arr: Array<string>) => !!id && arr.indexOf(id) === i))
-            } else if (fields.find(e => e.Name === _col.Name && e.DataType === FEDataType.FILE)) {
-                dataFileIds.push(...data.data.map(e => e[_col.Name]?.split(",")).flat(Infinity).filter((id, i, arr) => !!id && arr.indexOf(id) === i))
+                const getFileField = relativeFields[tmp[0]]?.find((e: any) => e.Name === tmp[1] && e.DataType === FEDataType.FILE)
+                const fileFieldData = relativeData[tmp[0].substring(0, tmp[0].lastIndexOf("Id"))]
+                if (getFileField && fileFieldData) {
+                    dataFileIds.push(...fileFieldData.map((e: any) => e[tmp[1]]?.split(",")).flat(Infinity).filter((id: string, i: number, arr: Array<string>) => !!id && arr.indexOf(id) === i))
+                }
+            } else if (fields.find(e => e.Name === mf && e.DataType === FEDataType.FILE)) {
+                dataFileIds.push(...data.data.map(e => e[mf]?.split(",")).flat(Infinity).filter((id, i, arr) => !!id && arr.indexOf(id) === i))
             }
         })
         if (dataFileIds.length) {

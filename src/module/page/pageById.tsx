@@ -848,7 +848,7 @@ const ElementUI = ({ findId, children, watchForCustomProps, replaceThisVariables
     }
 }
 
-const RenderContainer = ({ type, children, ...props }: { type: "label" | "p" | "form" | "a" | "div", children: ReactNode, [key: string]: any }) => {
+const RenderContainer = ({ type, children, indexItem, ...props }: { type: "label" | "p" | "form" | "a" | "div", children: ReactNode, [key: string]: any }) => {
     switch (type) {
         case "label":
             return <label {...props}>{children}</label>
@@ -866,7 +866,7 @@ const RenderContainer = ({ type, children, ...props }: { type: "label" | "p" | "
 
 const FileName = ({ file, index, ...props }: { type?: "div" | "p" | "span" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6", file: { [k: string]: any }, index: number, maxLine?: number, className?: string, style?: CSSProperties, value?: string, [k: string]: any }) => {
     return <>
-        {!!index && <span className={props.className} style={{ ...(props.style ?? {}), color: "--neutral-text-body-reverse-color" }}>, </span>}
+        {!!index && <span className={props.className?.split(" ")?.filter(c => !c.includes("col"))?.join(" ")} style={{ ...(props.style ?? {}), width: "fit-content", maxWidth: "fit-content", color: "--neutral-text-body-reverse-color" }}>, </span>}
         <CustomText {...props} value={file.name?.split("/").pop() ?? "unknown"} onClick={() => { window.open(file.url, "_blank") }} />
     </>
 }
