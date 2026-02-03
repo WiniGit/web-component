@@ -112,7 +112,7 @@ export const ViewById = (props: Props) => {
                 const currentTmp = methods.getValues(`_${k}`) ?? []
                 const dataController = new DataController(k.replace("Id", ""))
                 const relDataIds = indexItem![k]?.split(",").flat(Infinity).filter((e: string | undefined, i: number, arr: Array<string>) => e?.length && currentTmp.every((el: any) => el.Id !== e) && arr.indexOf(e) === i)
-                if (relDataIds.length) {
+                if (relDataIds?.length) {
                     dataController.getByListId(relDataIds).then(relRes => {
                         if (relRes.code === 200) methods.setValue(`_${k}`, [...currentTmp, ...relRes.data.filter((e: any) => !!e)])
                     })

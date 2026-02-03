@@ -157,11 +157,11 @@ export const SearchFilterData = ({ columns = [], fields = [], searchRaw = "*", o
                 ev.target.blur()
             }}
         />
-        <Button
-            prefix={<Winicon src='outline/user interface/setup-tools' color={activeFilter?.length ? "var(--primary-main-color)" : undefined} />}
+        {filterColumns.length > 1 && <Button
+            prefix={<Winicon src='outline/user interface/setup-tools' size={14} color={activeFilter?.length ? "var(--primary-main-color)" : undefined} />}
             label={`${t("filter")}${activeFilter?.length ? `: ${activeFilter.length}` : ""}`}
             style={activeFilter?.length ? { backgroundColor: "var(--primary-background)", color: "var(--primary-main-color)" } : undefined}
-            suffix={activeFilter?.length ? <Winicon src={"outline/user interface/e-remove"} size={"1.4rem"} className="icon-button light" onClick={(ev: any) => {
+            suffix={activeFilter?.length ? <Winicon src={"outline/user interface/e-remove"} size={14} className="icon-button light" onClick={(ev: any) => {
                 ev.preventDefault()
                 ev.stopPropagation()
                 const btn = ev.target.closest("button")
@@ -194,7 +194,7 @@ export const SearchFilterData = ({ columns = [], fields = [], searchRaw = "*", o
                     />
                 })
             }}
-        />
+        />}
     </>
 }
 

@@ -187,19 +187,27 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
             else return setData(result)
         }
         const pattern: any = {
-            returns: ["Id", ...columns.map(e => e.Name.split(".").shift())],
+            returns: ["Id", ...columns.map(e => e.Name.split(".").shift())].filter((k, i, a) => a.indexOf(k) === i),
         }
-        if ((tbName === "User" || tbName === "Customer") && columns.some(e => e.Type === ColDataType.people) && !pattern.returns.includes("AvatarUrl")) pattern.returns.push("AvatarUrl")
         const { searchRaw, sortby } = configMethods.getValues()
         let querySearch = searchRaw
         if (staticSearch.length) querySearch = `${staticSearch} ${querySearch !== "*" ? querySearch : ""}`
         if (treeData) pattern[tbName] = { searchRaw: "*", reducers: "GROUPBY 1 @ParentId REDUCE COUNT 0 AS _totalChild" }
+        if (filterData.pattern?.returns) {
+            const pkKeysByPattern = filterData.pattern.returns.filter((pk: string) => pk.split(".").length > 1);
+            pkKeysByPattern.forEach((k) => {
+                const tmp = k.split(".")
+                pattern[tmp[0]] ??= ["Id"]
+                if (!pattern[tmp[0]].includes(tmp[1])) pattern[tmp[0]].push(tmp[1])
+                if (!pattern.returns.includes(tmp[0])) pattern.returns.push(tmp[0])
+            })
+            filterData.pattern.returns = [...pattern.returns, ...filterData.pattern.returns].filter((k: string) => k.split(".").length === 1).filter((k, i, a) => a.indexOf(k) === i)
+        }
         const pkKeys = columns.filter(e => e.Name.split(".").length > 1);
         pkKeys.forEach((e) => {
             const tmp = e.Name.split(".")
             pattern[tmp[0]] ??= ["Id"]
             if (!pattern[tmp[0]].includes(tmp[1])) pattern[tmp[0]].push(tmp[1])
-            if (e.Type === ColDataType.people) pattern[tmp[0]].push("AvatarUrl")
         });
         const finalSearchRaw = treeData ? `@ParentId:{empty} ${querySearch !== "*" ? querySearch : ""}` : querySearch
         const res = await dataController.patternList({

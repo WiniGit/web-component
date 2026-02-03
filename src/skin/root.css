@@ -115,13 +115,13 @@ html {
     --neutral-main-border: 1px solid #EAEAEC;
     --neutral-lighter-border: 1px solid #F4F4F5;
     /* neutral-border-color reverse */
-    --neutral-bolder-reverse-border-color: #242428;
-    --neutral-main-reverse-border-color: #313135;
-    --neutral-lighter-reverse-border-color: #494950;
+    --neutral-bolder-reverse-border-color: #18181B;
+    --neutral-main-reverse-border-color: #242428;
+    --neutral-lighter-reverse-border-color: #313135;
     /* neutral-border reverse */
-    --neutral-bolder-reverse-border: 1px solid #242428;
-    --neutral-main-reverse-border: 1px solid #313135;
-    --neutral-lighter-reverse-border: 1px solid #494950;
+    --neutral-bolder-reverse-border: 1px solid #18181B;
+    --neutral-main-reverse-border: 1px solid #242428;
+    --neutral-lighter-reverse-border: 1px solid #313135;
 
     --shadow-top: 0px -1px 6px 0px #2D32390F;
     --shadow-bottom: 0px 1px 6px 0px #2D32390F;
@@ -138,8 +138,8 @@ html {
         --primary-main-color: #287CF0;
         --primary-lighter-color: light-dark(#5899F3, #0F62D7);
         --primary-tag-color: light-dark(#B7D3FA, #5899F3);
-        --primary-border-color: light-dark(#B7D3FA, #072C5F);
-        --primary-background: light-dark(#ECF3FE, #031630);
+        --primary-border-color: light-dark(#B7D3FA, #0F62D7);
+        --primary-background: light-dark(#ECF3FE, #072C5F);
         /* secondary 1 */
         --secondary1-bolder-color: light-dark(#22C3AE, #67E4D4);
         --secondary1-main-color: #3CDDC7;
@@ -173,8 +173,8 @@ html {
         --secondary5-main-color: #943CDD;
         --secondary5-lighter-color: light-dark(#AC67E4, #7B22C3);
         --secondary5-tag-color: light-dark(#DBBEF4, #AC67E4);
-        --secondary5-border-color: light-dark(#DBBEF4, #1F085E);
-        --secondary5-background: light-dark(#F6EEFC, #0F042F);
+        --secondary5-border-color: light-dark(#DBBEF4, #7B22C3);
+        --secondary5-background: light-dark(#F6EEFC, #1F085E);
         /* secondary 6 */
         --secondary6-bolder-color: light-dark(#C8291E, #E86D64);
         --secondary6-main-color: #E14337;
@@ -194,8 +194,8 @@ html {
         --infor-main-color: #287CF0;
         --infor-lighter-color: light-dark(#5899F3, #0F62D7);
         --infor-tag-color: light-dark(#B7D3FA, #5899F3);
-        --infor-border-color: light-dark(#B7D3FA, #072C5F);
-        --infor-background: light-dark(#ECF3FE, #031630);
+        --infor-border-color: light-dark(#B7D3FA, #0F62D7);
+        --infor-background: light-dark(#ECF3FE, #072C5F);
         /* warning */
         --warning-bolder-color: light-dark(#E36003, #FD974F);
         --warning-main-color: #FC7A1C;
@@ -211,12 +211,13 @@ html {
         --error-border-color: light-dark(#F5C0BC, #59120D);
         --error-background: light-dark(#FCEEED, #2C0907);
         /* neutral-background */
-        --neutral-bolder-background-color: light-dark(#EAEAEC, #242428);
-        --neutral-absolute-background-color: light-dark(#FFFFFF, #14181b);
-        --neutral-main-background-color: light-dark(#EFEFF0, #313135);
-        --neutral-lighter-background-color: light-dark(#F4F4F5, #494950);
+        --neutral-stable-background-color: light-dark(#FFFFFF, #FFFFFF);
+        --neutral-absolute-background-color: light-dark(#FFFFFF, #000000);
+        --neutral-bolder-background-color: light-dark(#EAEAEC, #18181B);
+        --neutral-main-background-color: light-dark(#EFEFF0, #242428);
+        --neutral-lighter-background-color: light-dark(#F4F4F5, #313135);
+        --neutral-disable-background-color: light-dark(#F4F4F5, #313135);
         --neutral-overlay-background-color: light-dark(#000000B3, #FFFFFFB3);
-        --neutral-disable-background-color: light-dark(#F4F4F5, #494950);
         --neutral-selected-background-color: light-dark(#18181B14, #FFFFFF14);
         --neutral-hover-background-color: light-dark(#18181B0A, #FFFFFF0A);
         /* reverse */
@@ -233,6 +234,7 @@ html {
         --neutral-text-placeholder-color: #878792;
         --neutral-text-disabled-color: light-dark(#A2A2AA, #61616B);
         --neutral-text-stable-color: #FFFFFF;
+        --neutral-text-selected-color: light-dark(#18181B, #F4F4F5);
         /* reverse */
         --neutral-text-title-reverse-color: light-dark(#F4F4F5, #18181B);
         --neutral-text-subtitle-reverse-color: light-dark(#A2A2AA, #61616B);
@@ -242,13 +244,13 @@ html {
         --neutral-text-disabled-reverse-color: light-dark(#61616B, #A2A2AA);
         --neutral-text-stable-reverse-color: #000000;
         /* neutral-border-color */
-        --neutral-bolder-border-color: light-dark(#D7D7DB, #494950);
-        --neutral-main-border-color: light-dark(#EAEAEC, #313135);
-        --neutral-lighter-border-color: light-dark(#F4F4F5, #242428);
+        --neutral-bolder-border-color: light-dark(#D7D7DB, #313135);
+        --neutral-main-border-color: light-dark(#EAEAEC, #242428);
+        --neutral-lighter-border-color: light-dark(#F4F4F5, #18181B);
         /* neutral-border */
-        --neutral-bolder-border: 1px solid light-dark(#D7D7DB, #494950);
-        --neutral-main-border: 1px solid light-dark(#EAEAEC, #313135);
-        --neutral-lighter-border: 1px solid light-dark(#F4F4F5, #242428);
+        --neutral-bolder-border: 1px solid light-dark(#D7D7DB, #313135);
+        --neutral-main-border: 1px solid light-dark(#EAEAEC, #242428);
+        --neutral-lighter-border: 1px solid light-dark(#F4F4F5, #18181B);
         /* neutral-border-color reverse */
         --neutral-bolder-reverse-border-color: #242428;
         --neutral-main-reverse-border-color: #313135;
