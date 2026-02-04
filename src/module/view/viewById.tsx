@@ -18,7 +18,7 @@ interface Props {
     itemData?: { [p: string]: ReactNode },
     onUnMount?: () => void
     onGetViewError?: (e: { [p: string]: any }) => void;
-    controller?: { searchRaw?: string, filter?: string, sortby?: Array<{ prop: string, direction?: "ASC" | "DESC" }>, pattern?: { returns: Array<string>, [p: string]: Array<string> | { searchRaw?: string, reducers: string } } },
+    controller?: { searchRaw?: string, filter?: string, sortby?: Array<{ prop: string, direction?: "ASC" | "DESC" }>, pattern?: { returns: Array<string>, [p: string]: Array<string> | { searchRaw?: string, reducers: string } } } | { ids: string, maxLength?: number | "none" },
     /** Listen view state */
     onChange?: (ev: { data?: { [p: string]: any }, state: { [p: string]: any } }) => void
 }
@@ -29,8 +29,13 @@ export const ViewById = (props: Props) => {
     const layers = useMemo(() => viewItem?.Props ?? [], [viewItem])
     const _colController = new TableController("column")
     const _relController = new TableController("rel")
+    const [controller, setController] = useState<any>(undefined)
     const keyNames = useMemo<string[]>(() => layers.filter((e: any) => e.NameField?.length).map((e: any) => e.NameField), [layers.length])
     const [indexItem, setIndexItem] = useState<{ [p: string]: any } | undefined>(props.data)
+
+    useEffect(() => {
+        if (JSON.stringify(controller) !== JSON.stringify(props.controller)) setController(props.controller)
+    }, [props.controller])
 
     useEffect(() => {
         if (props.id) {
@@ -78,15 +83,26 @@ export const ViewById = (props: Props) => {
         }
     }, [keyNames])
 
-    useEffect(() => {
+    const getInitData = async () => {
         if (props.data) setIndexItem(props.data)
-        else if (props.controller && viewItem?.TbName) {
-            const dataController = new DataController(viewItem.TbName)
-            dataController.patternList({ ...props.controller, page: 1, size: 1 }).then(res => {
-                if (res.code === 200 && res.data[0]) setIndexItem(res.data[0])
-            })
+        else if (controller) {
+            const dataController = new DataController(viewItem!.TbName)
+            if (controller.searchRaw) {
+                dataController.patternList({ ...controller, page: 1, size: 1, searchRaw: controller!.searchRaw ?? "*" }).then(res => {
+                    if (res.code === 200 && res.data[0]) setIndexItem(res.data[0])
+                })
+            } else { // get by ids
+                let listIds = controller.ids.split(",")
+                if (controller.maxLength && controller.maxLength !== "none") listIds = listIds.slice(0, controller.maxLength)
+                const res = await dataController.getByListId(listIds)
+                if (res.code === 200 && res.data.length) setIndexItem(res.data.find((e: any) => !!e))
+            }
         }
-    }, [props.data, props.controller, viewItem?.TbName])
+    }
+
+    useEffect(() => {
+        if (viewItem?.TbName) getInitData()
+    }, [props.data, controller, viewItem?.TbName])
 
     useEffect(() => {
         const fileCols = methods.getValues("_cols")?.filter((e: any) => e.DataType === FEDataType.FILE && keyNames.includes(e.Name)) ?? []
