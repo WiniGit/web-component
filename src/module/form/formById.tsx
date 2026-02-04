@@ -186,7 +186,7 @@ export const FormById = forwardRef<FormByIdRef, Props>((props, ref) => {
                                 if (_col.Form.ComponentType === ComponentType.radio) methods.setValue(prop, `${dataItem[prop]}`)
                                 break;
                             case FEDataType.NUMBER:
-                                methods.setValue(prop, typeof dataItem[prop] === 'string' ? parseFloat(dataItem[prop]) : dataItem[prop])
+                                methods.setValue(prop, typeof dataItem[prop] === 'string' ? Number(dataItem[prop]) : dataItem[prop])
                                 break;
                             case FEDataType.DATE:
                             case FEDataType.DATETIME:

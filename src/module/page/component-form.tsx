@@ -276,7 +276,7 @@ export const FSelect1 = ({ methods, ...props }: FSelect1Props) => {
             const _covertErrors = convertErrors(methods.formState.errors, props.name!)
             return <Select1
                 {...props}
-                value={field.value}
+                value={field.value ?? methods.watch(props.name!)}
                 onChange={(ev) => {
                     field.onChange(ev?.id);
                     props.onChange?.(ev);
@@ -316,7 +316,7 @@ export const FSelectMultiple = ({ methods, ...props }: FSelectMultipleProps) => 
             const _covertErrors = convertErrors(methods.formState.errors, props.name!)
             return <SelectMultiple
                 {...props}
-                value={field.value}
+                value={field.value ?? methods.watch(props.name!)}
                 onChange={(ev) => {
                     field.onChange(ev);
                     props.onChange?.(ev);
