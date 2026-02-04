@@ -153,11 +153,11 @@ export const CardById = forwardRef<CardRef, CardProps>((props, ref) => {
     }
 
     useEffect(() => {
-        if (keyNames.length) {
+        if (cardItem?.TbName) {
             mapColumnData()
             mapRelativeData()
         }
-    }, [keyNames])
+    }, [cardItem?.TbName])
 
     useEffect(() => {
         const fileCols = methods.getValues("_cols")?.filter((e: any) => e.DataType === FEDataType.FILE && keyNames.includes(e.Name)) ?? []

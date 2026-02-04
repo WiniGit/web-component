@@ -72,16 +72,16 @@ export const ViewById = (props: Props) => {
     }
 
     const mapColumnData = async () => {
-        const _colRes = await _colController.getListSimple({ page: 1, size: 200, query: `@TableName:{${viewItem!.TbName}} @Name:{${keyNames.filter((e: string) => e.split(".").length === 1).join(" | ")}}` })
+        const _colRes = await _colController.getListSimple({ page: 1, size: 200, query: `@TableName:{${viewItem!.TbName}}` })
         if (_colRes.code === 200) methods.setValue("_cols", _colRes.data.map((c: any) => ({ ...c, Form: JSON.parse(c.Form) })))
     }
 
     useEffect(() => {
-        if (keyNames.length) {
+        if (viewItem?.TbName) {
             mapColumnData()
             mapRelativeData()
         }
-    }, [keyNames])
+    }, [viewItem?.TbName])
 
     const getInitData = async () => {
         if (props.data) setIndexItem(props.data)
@@ -168,14 +168,15 @@ const RenderView = (props: RenderViewProps) => {
             else tmp[p] = props.extendData[p]
         })
         if (Object.keys(tmp).length) setExtendData(tmp)
+        console.log("render view", props.extendData)
     }, [props.extendData])
 
     const viewStateData = useMemo(() => methods.watch(), [JSON.stringify(methods.watch())])
     const finalStateData = useDeferredValue(viewStateData)
 
     useEffect(() => {
-        if (props.onChange) props.onChange({ data: props.data, state: finalStateData })
-    }, [finalStateData, props.data])
+        if (props.onChange) props.onChange({ data: props.indexItem, state: finalStateData })
+    }, [finalStateData, props.indexItem])
 
     return props.layers.filter((e: any) => !e.ParentId).map((e: any) => {
         return <RenderLayerElement
@@ -188,7 +189,7 @@ const RenderView = (props: RenderViewProps) => {
             cols={cols}
             rels={rels}
             methods={methods}
-            indexItem={props.data}
+            indexItem={props.indexItem}
             propsData={props.propsData}
             childrenData={props.childrenData}
             itemData={props.itemData}
