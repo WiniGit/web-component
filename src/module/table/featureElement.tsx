@@ -699,7 +699,7 @@ const FilterValueOptionsDropdown = ({ onClose, onSelect, style = {}, selected, i
     const [search, setSearch] = useState("")
     const searchDefer = useDeferredValue(search)
     const { t } = useTranslation()
-    const totalCountAll = useRef<number>(0)
+    const totalCountAll = useRef<number>(undefined)
 
     useEffect(() => {
         return () => { if (onClose) onClose() }
@@ -731,7 +731,7 @@ const FilterValueOptionsDropdown = ({ onClose, onSelect, style = {}, selected, i
             if (onLoadMore && options.totalCount && options.data.length < options.totalCount) await getData(Math.floor(options.data.length / 20) + 1)
         }}
         className="col dropdown-popup popup-actions" style={{ maxHeight: "32rem", overflow: "hidden auto", ...style }}>
-        {totalCountAll.current > 20 && <div className="row" style={{ padding: 4, backgroundColor: "var(--neutral-absolute-background-color, #fff)", position: "sticky", top: 0, zIndex: 2, transform: "translateY(-4px)" }}>
+        {!!totalCountAll.current && totalCountAll.current > 20 && <div className="row" style={{ padding: 4, backgroundColor: "var(--neutral-absolute-background-color, #fff)", position: "sticky", top: 0, zIndex: 2, transform: "translateY(-4px)" }}>
             <TextField
                 autoFocus
                 placeholder={t("search")}
@@ -750,11 +750,11 @@ const FilterValueOptionsDropdown = ({ onClose, onSelect, style = {}, selected, i
                 }}
             />
         </div>}
-        {totalCountAll.current === 0 && <div className="col" style={{ gap: "0.8rem", alignItems: "inherit" }}>
+        {totalCountAll.current === 0 && <div className="col" style={{ gap: "0.8rem", alignItems: "center" }}>
             <Winicon src="color/files/archive-doc" size={"2.8rem"} />
             <Text className="heading-7">No data</Text>
         </div>}
-        {options.totalCount === 0 && !totalCountAll.current && <div className="col" style={{ gap: "0.8rem", alignItems: "inherit" }}>
+        {options.totalCount === 0 && !!totalCountAll.current && <div className="col" style={{ gap: "0.8rem", alignItems: "center" }}>
             <Winicon src="color/files/archive-doc" size={"2.8rem"} />
             <Text className="heading-7">No result</Text>
         </div>}
