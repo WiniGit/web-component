@@ -81,7 +81,7 @@ interface DataTableProps {
     customFilterOptions?: { [k: string]: { query?: string, options?: OptionsItem[] } };
     hideActionColumn?: boolean;
     /** allow: "add" | "total" | "divider" | "search" | "export" | "import" | ReactNode | undefined */
-    features?: Array<"add" | "total" | "divider" | "search" | "export" | "import" | ReactNode | undefined>;
+    features?: Array<"add" | "total" | "divider" | "search" | "filter" | "export" | "import" | ReactNode | undefined>;
     /** toolbars = false OR an array allow: "total" | "export" | "duplicate" | "delete" | ReactNode | undefined */
     toolbars?: Array<"total" | "export" | "duplicate" | "delete" | ReactNode | undefined> | false;
     /** default: true */
@@ -126,7 +126,7 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
     actions = [],
     onChangeActions,
     onEditColumn,
-    features = ["add", "total", <div key={"space"} style={{ flex: 1 }} />, "search", "divider", "export"],
+    features = ["add", "total", <div key={"space"} style={{ flex: 1 }} />, "search", "filter", "divider", "export"],
     toolbars = ["total", <div key={"space"} style={{ flex: 1 }} />, "export", "duplicate", "delete"],
     customFormId, onSelectCustomForm,
     formTitle, onChangeFormTitle,
@@ -356,8 +356,10 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
                         case "total":
                             return !!data.totalCount && <span key={"total"} className="label-3">{data.totalCount ?? 0} totals</span>
                         case "search":
+                        case "filter":
                             return <SearchFilterData
-                                key={"search"}
+                                key={f + "-" + i}
+                                type={f as any}
                                 columns={columns}
                                 fields={props.customFilterOptions ? fields.map((f: any) => {
                                     const tmpCustom = props.customFilterOptions![f.Column ?? f.Name]

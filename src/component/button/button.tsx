@@ -93,7 +93,7 @@ export function Button({ tooltip, disabled, linkTo, className, type = "button", 
 }
 
 export function SimpleButton(props: ButtonProps) {
-    return <button id={props.id} type={"button"} disabled={props.disabled} className={`row ${props.className ?? ""}`} style={props.style}
+    return <button id={props.id} type={"button"} disabled={props.disabled} className={`${props.className ?? "row"}`} style={props.style}
         onClick={async (ev: any) => {
             const btn = ev.target.closest("button")
             btn.disabled = true

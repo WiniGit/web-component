@@ -14,10 +14,11 @@ interface SearchFilterDataProps {
     searchRaw?: string
     onChange?: (searchRaw: string) => void
     initFilterList?: Array<string>
-    onChangeFilterData?: (filterList: Array<string>) => void
+    onChangeFilterData?: (filterList: Array<string>) => void,
+    type?: "search" | "filter" | "both"
 }
 
-export const SearchFilterData = ({ columns = [], fields = [], searchRaw = "*", onChange, initFilterList = [], onChangeFilterData }: SearchFilterDataProps) => {
+export const SearchFilterData = ({ columns = [], fields = [], searchRaw = "*", onChange, initFilterList = [], onChangeFilterData, type = "both" }: SearchFilterDataProps) => {
     const inputRef = useRef<any>(null)
     const popupRef = useRef<Popup>(null)
     const { t } = useTranslation()
@@ -125,7 +126,7 @@ export const SearchFilterData = ({ columns = [], fields = [], searchRaw = "*", o
 
     return <>
         <Popup ref={popupRef} />
-        <TextField
+        {(type === "both" || type === "search") && <TextField
             ref={inputRef}
             placeholder={t("search")}
             prefix={<Winicon src={"fill/development/zoom"} size={14} />}
@@ -156,8 +157,8 @@ export const SearchFilterData = ({ columns = [], fields = [], searchRaw = "*", o
                 _onChange(ev.target.value.trim(), data.nameFields.length ? data.nameFields : searchinColumns.length ? searchinColumns.map(c => c.Name) : [])
                 ev.target.blur()
             }}
-        />
-        {filterColumns.length > 1 && <Button
+        />}
+        {(type === "both" || type === "filter") && filterColumns.length > 1 && <Button
             prefix={<Winicon src='outline/user interface/setup-tools' size={14} color={activeFilter?.length ? "var(--primary-main-color)" : undefined} />}
             label={`${t("filter")}${activeFilter?.length ? `: ${activeFilter.length}` : ""}`}
             style={activeFilter?.length ? { backgroundColor: "var(--primary-background)", color: "var(--primary-main-color)" } : undefined}
