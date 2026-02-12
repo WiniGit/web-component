@@ -264,7 +264,9 @@ const OptionDropList = (props: OptionDropListProps) => {
             <>
                 {!props.hiddenSearchOptions && initTotal.current && initTotal.current > 10 && <div className={`col ${styles["search-options"]}`}>
                     <TextField
-                        autoFocus
+                        ref={(r) => {
+                            if (r) r.inputElement?.focus({ preventScroll: true })
+                        }}
                         className={`body-3 size32`}
                         placeholder={t("search")}
                         prefix={<Winicon src={"outline/development/zoom"} size={14} />}

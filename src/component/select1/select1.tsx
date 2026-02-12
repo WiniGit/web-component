@@ -226,7 +226,9 @@ const OptionDropList = (props: { onClose: () => void, style: CSSProperties, clas
             <>
                 {!props.hiddenSearchOptions && initTotal.current && initTotal.current > 10 && <div className={`col ${styles["search-options"]}`}>
                     <TextField
-                        autoFocus
+                        ref={(r) => {
+                            if (r) r.inputElement?.focus({ preventScroll: true })
+                        }}
                         className={`body-3 ${divRef.current!.offsetWidth > 88 ? "size32" : "size24"}`}
                         placeholder={t("search")}
                         prefix={<Winicon src={"outline/development/zoom"} size={14} />}
@@ -252,8 +254,7 @@ const OptionDropList = (props: { onClose: () => void, style: CSSProperties, clas
                         optionStyle={props.optionStyle}
                         getOptions={(params) => props.getOptions?.({ ...params, search: searchValue })}
                     />)}
-            </>
-        }
+            </>}
     </div>
 }
 

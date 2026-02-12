@@ -321,7 +321,7 @@ const ElementUI = ({ findId, children, watchForCustomProps, replaceThisVariables
                                         location,
                                         () => winiContextData
                                     )
-                                    if (!asyncFuncResponse) return;
+                                    if (asyncFuncResponse === false) return;
                                 }
                                 break;
                             case ActionType.loadMore:
