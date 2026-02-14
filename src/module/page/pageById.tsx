@@ -398,6 +398,11 @@ const ElementUI = ({ findId, children, watchForCustomProps, replaceThisVariables
                             _props.onBlur = (ev: any) => handleEvent(triggerActions, ev)
                         }
                         break;
+                    case TriggerType.submit:
+                        if (triggerActions.length) {
+                            _props.onSubmit = (ev: any) => handleEvent(triggerActions, ev)
+                        }
+                        break;
                     case TriggerType.scroll:
                         if (triggerActions.length) {
                             _props.onScroll = (ev: any) => handleEvent(triggerActions, ev)

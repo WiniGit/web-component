@@ -93,6 +93,7 @@ export enum TriggerType {
     focus = "focus",
     change = "change",
     blur = "blur",
+    submit = "submit",
     scroll = "scroll",
     loaded = "loaded",
 }
