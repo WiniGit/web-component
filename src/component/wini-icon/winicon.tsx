@@ -1745,6 +1745,7 @@ export type WiniIconName = "color/accessibility/accessibility-lift" |
     "outline/user interface/bookmark-delete" |
     "outline/user interface/bookmark" |
     "outline/user interface/bookmarks" |
+    "outline/user interface/box-archive" |
     "outline/user interface/bullet-list" |
     "outline/user interface/buzz" |
     "outline/user interface/c-add" |
@@ -1988,6 +1989,7 @@ export type WiniIconName = "color/accessibility/accessibility-lift" |
     "outline/user interface/setup-tools" |
     "outline/user interface/share" |
     "outline/user interface/sharing" |
+    "outline/user interface/shield-check" |
     "outline/user interface/shop" |
     "outline/user interface/shopping-bag" |
     "outline/user interface/shopping-cart-2" |
@@ -4988,6 +4990,7 @@ export type WiniIconName = "color/accessibility/accessibility-lift" |
     "outline/technology/baby-monitor" |
     "outline/technology/battery-level" |
     "outline/technology/binary-code" |
+    "outline/technology/block-chain" |
     "outline/technology/block" |
     "outline/technology/blockchain" |
     "outline/technology/cable" |
@@ -4995,6 +4998,7 @@ export type WiniIconName = "color/accessibility/accessibility-lift" |
     "outline/technology/cd-reader" |
     "outline/technology/charger-cable" |
     "outline/technology/chat-bot" |
+    "outline/technology/chip" |
     "outline/technology/cloud-mining" |
     "outline/technology/computer-monitor" |
     "outline/technology/computer" |
@@ -5008,6 +5012,7 @@ export type WiniIconName = "color/accessibility/accessibility-lift" |
     "outline/technology/cpu" |
     "outline/technology/cryptography" |
     "outline/technology/cyborg" |
+    "outline/technology/database" |
     "outline/technology/decentralize" |
     "outline/technology/decision-process" |
     "outline/technology/device-connection" |
@@ -5037,6 +5042,7 @@ export type WiniIconName = "color/accessibility/accessibility-lift" |
     "outline/technology/headset" |
     "outline/technology/humanoid" |
     "outline/technology/hybrid-car" |
+    "outline/technology/intelligence-driven" |
     "outline/technology/keyboard-hide" |
     "outline/technology/keyboard-mouse" |
     "outline/technology/keyboard-wired" |
@@ -5055,6 +5061,7 @@ export type WiniIconName = "color/accessibility/accessibility-lift" |
     "outline/technology/laptop" |
     "outline/technology/laptop-1" |
     "outline/technology/laptop-2" |
+    "outline/technology/laptop-setting" |
     "outline/technology/license-key" |
     "outline/technology/live-streaming" |
     "outline/technology/lock-landscape" |
@@ -5079,6 +5086,7 @@ export type WiniIconName = "color/accessibility/accessibility-lift" |
     "outline/technology/offline" |
     "outline/technology/online-banking" |
     "outline/technology/open-ai" |
+    "outline/technology/optimize" |
     "outline/technology/p-add" |
     "outline/technology/p-check" |
     "outline/technology/p-edit" |
@@ -5150,9 +5158,11 @@ export type WiniIconName = "color/accessibility/accessibility-lift" |
     "outline/technology/traffic" |
     "outline/technology/transactions" |
     "outline/technology/translation" |
+    "outline/technology/tv-3" |
     "outline/technology/tv-stand" |
     "outline/technology/tv" |
     "outline/technology/usb" |
+    "outline/technology/users-chat" |
     "outline/technology/video-off" |
     "outline/technology/video-player" |
     "outline/technology/vintage-computer" |
