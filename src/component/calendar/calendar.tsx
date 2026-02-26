@@ -76,7 +76,6 @@ export const Calendar = (props: CalendarProps) => {
 
     useEffect(() => {
         const getState = stateValue(minDate, maxDate, props.value, props.range)
-        console.log(getState)
         setValue(getState.value)
         setSelectMonth(getState.selectMonth)
         setSelectYear(getState.selectYear)

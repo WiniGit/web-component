@@ -196,7 +196,7 @@ export const WiniProvider = ({ loadResources = true, ...props }: Props) => {
                     } else setLoadedResources(true)
                 })
             } else {
-                console.log("Project resources not found")
+                console.error("Project resources not found")
                 setLoadedResources(true)
             }
         } else setLoadedResources(true)

@@ -364,7 +364,6 @@ function OptionsItemTile({ item, children, selected, onChange, getOptions }: Opt
             </label>}
         {isOpen && <>
             {options.data.map((child, i) => {
-                console.log(child.id)
                 return <label key={child.id + "-" + i} style={{ paddingLeft: `calc(max(0.8rem, 5px) + max(0.8rem, 5px) + 20px)` }} className={`row label-4 ${styles["select-tile"]} ${child.disabled ? styles["disabled"] : ""}`}>
                     <div className='row' style={{ padding: 2 }}>
                         <Checkbox

@@ -177,7 +177,6 @@ const RenderView = (props: RenderViewProps) => {
             else tmp[p] = props.extendData[p]
         })
         if (Object.keys(tmp).length) setExtendData(tmp)
-        console.log("render view", props.extendData)
     }, [props.extendData])
 
     const viewStateData = useMemo(() => methods.watch(), [JSON.stringify(methods.watch())])
