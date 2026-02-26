@@ -1,5 +1,5 @@
 import ReactDOM from "react-dom";
-import React, { CSSProperties, ReactNode, useEffect, useRef, useState } from 'react';
+import React, { CSSProperties, forwardRef, ReactNode, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { Text } from '../text/text';
 import styles from './button.module.css'
 import { showTooltipElement } from "../wini-icon/winicon";
@@ -28,7 +28,7 @@ interface ButtonProps {
     tooltip?: { message: string, position?: "top" | "bottom" | "left" | "right", textStyle?: CSSProperties },
 }
 
-export function Button({ tooltip, disabled, linkTo, className, type = "button", prefix, suffix, label, target, onClick, ...props }: ButtonProps) {
+export const Button = forwardRef<HTMLButtonElement | null, ButtonProps>(({ tooltip, disabled, linkTo, className, type = "button", prefix, suffix, label, target, onClick, ...props }, ref) => {
     const btnRef = useRef<HTMLButtonElement>(null)
     const [showTooltip, setShowTooltip] = useState<boolean>(false)
     const timoutRef = useRef<NodeJS.Timeout>(null)
@@ -53,6 +53,8 @@ export function Button({ tooltip, disabled, linkTo, className, type = "button", 
             }
         }
     }, [type, btnRef.current])
+
+    useImperativeHandle(ref, () => (btnRef.current as any), [btnRef.current])
 
     const onMouseOver = () => {
         timoutRef.current = setTimeout(() => {
@@ -90,10 +92,10 @@ export function Button({ tooltip, disabled, linkTo, className, type = "button", 
         </button>}
         {tooltip && showTooltip && ReactDOM.createPortal(showTooltipElement({ element: btnRef.current, tooltip: tooltip }), document.body)}
     </>
-}
+})
 
-export function SimpleButton(props: ButtonProps) {
-    return <button id={props.id} type={"button"} disabled={props.disabled} className={`${props.className ?? "row"}`} style={props.style}
+export const SimpleButton = forwardRef<HTMLButtonElement | null, ButtonProps>((props, ref) => {
+    return <button ref={ref} id={props.id} type={"button"} disabled={props.disabled} className={`${props.className ?? "row"}`} style={props.style}
         onClick={async (ev: any) => {
             const btn = ev.target.closest("button")
             btn.disabled = true
@@ -104,4 +106,4 @@ export function SimpleButton(props: ButtonProps) {
         <Text maxLine={1} className={styles['button-label']}>{props.label}</Text>
         {props.suffix}
     </button>
-}
+})

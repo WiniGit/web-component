@@ -18,28 +18,14 @@ export class DataController {
     }
 
     async getProperties() {
-        const res = await BaseDA.get(ConfigData.url + `setting/getProperties?name=${this.module}`, {
-            headers: {
-                pid: ConfigData.pid,
-                module: 'column'
-            }
+        const res = await BaseDA.get(ConfigData.url + `data/getProperties?name=${this.module}`, {
+            headers: { pid: ConfigData.pid }
         })
         return res
     }
 
     async aggregateList(options: { page?: number, size?: number, searchRaw?: string, filter?: string, sortby?: Array<{ prop: string, direction?: "ASC" | "DESC" }>, returns?: Array<string>, exact?: boolean }) {
         const res = await BaseDA.post(ConfigData.url + 'data/aggregateList', {
-            headers: {
-                pid: ConfigData.pid,
-                module: this.module,
-            },
-            body: options
-        })
-        return res
-    }
-
-    async filterByEmptyKey(options: { page?: number, size?: number, searchRaw?: string, key: string, notEmpty?: boolean, sortby?: Array<{ prop: string, direction?: "ASC" | "DESC" }> } | undefined) {
-        const res = await BaseDA.post(ConfigData.url + 'data/filterByEmptyKey', {
             headers: {
                 pid: ConfigData.pid,
                 module: this.module,
@@ -84,7 +70,7 @@ export class DataController {
     }
 
     async getById(id: string) {
-        const res = await BaseDA.post(ConfigData.url + `data/getById?id=${id}`, {
+        const res = await BaseDA.get(ConfigData.url + `data/getById?id=${id}`, {
             headers: {
                 pid: ConfigData.pid,
                 module: this.module,
@@ -99,7 +85,7 @@ export class DataController {
                 pid: ConfigData.pid,
                 module: this.module,
             },
-            body: { ids: ids }
+            body: { ids }
         })
         return res
     }
@@ -110,7 +96,7 @@ export class DataController {
                 pid: ConfigData.pid,
                 module: this.module
             },
-            body: { data: data, type }
+            body: { data, type }
         })
         return res
     }
@@ -121,7 +107,7 @@ export class DataController {
                 pid: ConfigData.pid,
                 module: this.module
             },
-            body: { data: data, type }
+            body: { data, type }
         })
         return res
     }
@@ -181,7 +167,7 @@ export class SettingDataController {
     async getByIds(ids: Array<string>) {
         const res = await BaseDA.post(ConfigData.url + `data/${this.setting}/getByIds`, {
             headers: { pid: ConfigData.pid },
-            body: { ids: ids }
+            body: { ids }
         })
         return res
     }

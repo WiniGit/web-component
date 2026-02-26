@@ -259,15 +259,18 @@ const OptionDropList = (props: OptionDropListProps) => {
         className={`col ${styles["select-multi-popup"]} ${props.className ?? ''}`} style={props.style}>
         {options.totalCount === 0 && !initTotal.current ? <div className='col' style={{ alignItems: "center" }}>
             <Winicon src='color/files/archive-file' size={28} />
-            <h6 className='heading-7' style={{ margin: "0.8rem" }}>{t("noResultFound")}</h6>
+        <h6 className='heading-7' style={{ margin: "0.8rem" }}>{t("noResultFound")}</h6>
         </div> :
             <>
                 {!props.hiddenSearchOptions && initTotal.current && initTotal.current > 10 && <div className={`col ${styles["search-options"]}`}>
                     <TextField
                         ref={(r) => {
-                            if (r) r.inputElement?.focus({ preventScroll: true })
+                            if (r) {
+                                r.inputElement?.focus({ preventScroll: true })
+                                setTimeout(() => { divRef.current?.scrollTo({ top: 0 }) }, 100)
+                            }
                         }}
-                        className={`body-3 size32`}
+                        className={`body-3 ${divRef.current!.offsetWidth > 88 ? "size32" : "size24"}`}
                         placeholder={t("search")}
                         prefix={<Winicon src={"outline/development/zoom"} size={14} />}
                         onChange={(ev) => {

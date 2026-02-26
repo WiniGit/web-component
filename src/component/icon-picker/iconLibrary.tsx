@@ -1,11 +1,7 @@
 import styles from './iconLibrary.module.css'
 import { CSSProperties, useDeferredValue, useEffect, useRef, useState } from "react";
 import { useTranslation } from 'react-i18next';
-import { BaseDA } from '../../controller/config';
-import { TextField } from '../text-field/text-field';
-import { Winicon } from '../wini-icon/winicon';
-import { Button } from '../button/button';
-import { Text } from '../text/text';
+import { BaseDA, TextField, Winicon, Button, Text } from '../../index';
 
 interface IconLibraryProps {
     onSelect: (src: { [p: string]: any }) => void;
@@ -71,16 +67,12 @@ export function IconLibrary({ onSelect, style = {}, onClose, className }: IconLi
         <div className={`row ${styles['search-container']}`}>
             <TextField
                 ref={inputRef}
+                autoFocus
                 placeholder={t("search")}
                 className={`body-3 size32 ${styles['search-input']}`}
                 prefix={<Winicon src="outline/user interface/zoom" size={14} />}
-                onChange={(ev) => {
-                    if (ev.target.value.trim().length % 2 === 0) setSearchValue(ev.target.value.trim())
-                }}
+                onChange={(ev) => { setSearchValue(ev.target.value.trim()) }}
                 onComplete={(ev: any) => ev.target.blur()}
-                onBlur={(ev) => {
-                    if (ev.target.value.trim().length >= 2) setSearchValue(ev.target.value.trim())
-                }}
             />
             <Button
                 prefix={<Winicon src='outline/user interface/setup-tools' color={filter ? "var(--primary-main-color)" : undefined} size={14} />}
@@ -118,6 +110,7 @@ export function IconLibrary({ onSelect, style = {}, onClose, className }: IconLi
                 </div>
             </div>
         })}
+        {!categories.length && <div style={{ flex: 1 }} />}
         {(preview || staticPreview) && <div className={`row ${styles["preview-container"]}`}>
             <Winicon src={`${(staticPreview ?? preview!).type}/${(staticPreview ?? preview!).category}/${(staticPreview ?? preview!).name}` as any} size={"3.2rem"} />
             <div className='label-3' style={{ width: "100%", wordBreak: "break-all" }}>{`${(staticPreview ?? preview!).type}/${(staticPreview ?? preview!).category}/${(staticPreview ?? preview!).name}`}</div>

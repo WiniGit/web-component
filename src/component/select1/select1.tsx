@@ -227,7 +227,10 @@ const OptionDropList = (props: { onClose: () => void, style: CSSProperties, clas
                 {!props.hiddenSearchOptions && initTotal.current && initTotal.current > 10 && <div className={`col ${styles["search-options"]}`}>
                     <TextField
                         ref={(r) => {
-                            if (r) r.inputElement?.focus({ preventScroll: true })
+                            if (r) {
+                                r.inputElement?.focus({ preventScroll: true })
+                                setTimeout(() => { divRef.current?.scrollTo({ top: 0 }) }, 100)
+                            }
                         }}
                         className={`body-3 ${divRef.current!.offsetWidth > 88 ? "size32" : "size24"}`}
                         placeholder={t("search")}

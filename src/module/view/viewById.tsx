@@ -21,6 +21,7 @@ interface Props {
     controller?: { searchRaw?: string, filter?: string, sortby?: Array<{ prop: string, direction?: "ASC" | "DESC" }>, pattern?: { returns: Array<string>, [p: string]: Array<string> | { searchRaw?: string, reducers: string } } } | { ids: string, maxLength?: number | "none" },
     /** Listen view state */
     onChange?: (ev: { data?: { [p: string]: any }, state: { [p: string]: any } }) => void
+    onLoaded?: (ev: { data: { [p: string]: any } }) => void,
 }
 
 export const ViewById = (props: Props) => {
@@ -84,18 +85,26 @@ export const ViewById = (props: Props) => {
     }, [viewItem?.TbName])
 
     const getInitData = async () => {
-        if (props.data) setIndexItem(props.data)
-        else if (controller) {
+        if (props.data) {
+            setIndexItem(props.data)
+            if (props.onLoaded) props.onLoaded({ data: props.data })
+        } else if (controller) {
             const dataController = new DataController(viewItem!.TbName)
             if (controller.searchRaw) {
                 dataController.patternList({ ...controller, page: 1, size: 1, searchRaw: controller!.searchRaw ?? "*" }).then(res => {
-                    if (res.code === 200 && res.data[0]) setIndexItem(res.data[0])
+                    if (res.code === 200 && res.data[0]) {
+                        setIndexItem(res.data[0])
+                        if (props.onLoaded) props.onLoaded({ data: res.data[0] })
+                    }
                 })
             } else { // get by ids
                 let listIds = controller.ids.split(",")
                 if (controller.maxLength && controller.maxLength !== "none") listIds = listIds.slice(0, controller.maxLength)
                 const res = await dataController.getByListId(listIds)
-                if (res.code === 200 && res.data.length) setIndexItem(res.data.find((e: any) => !!e))
+                if (res.code === 200 && res.data.length) {
+                    setIndexItem(res.data[0])
+                    if (props.onLoaded) props.onLoaded({ data: res.data[0] })
+                }
             }
         }
     }

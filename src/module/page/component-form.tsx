@@ -380,7 +380,6 @@ export const FGroupCheckbox = ({ labelPosition = "right", shape = "rectangle", .
 interface FColorPickerProps {
     id?: string;
     placeholder?: string;
-    type?: "input" | "select";
     disabled?: boolean;
     readOnly?: boolean;
     className?: string;
@@ -392,7 +391,7 @@ interface FColorPickerProps {
     methods: UseFormReturn<FieldValues, any, undefined>;
 }
 
-export const FColorPicker = ({ type = "input", methods, ...props }: FColorPickerProps) => {
+export const FColorPicker = ({ methods, ...props }: FColorPickerProps) => {
     const _covertErrors = useMemo(() => props.name ? convertErrors(methods.formState.errors, props.name) : undefined, [props.name, methods.formState.errors?.[props.name!]])
     const { t } = useTranslation()
 
@@ -403,6 +402,7 @@ export const FColorPicker = ({ type = "input", methods, ...props }: FColorPicker
         render={({ field }) => {
             return <ColorPicker
                 {...props}
+                type="select"
                 value={field.value}
                 onChange={(ev) => {
                     field.onChange(ev)
@@ -412,7 +412,7 @@ export const FColorPicker = ({ type = "input", methods, ...props }: FColorPicker
                 simpleStyle
             />
         }}
-    /> : <ColorPicker {...props} simpleStyle />
+    /> : <ColorPicker {...props} type="select" simpleStyle />
 }
 
 interface FNumberPickerProps {
