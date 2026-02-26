@@ -25,7 +25,9 @@ interface Props {
     imgUrlId: string,
     onInvalidToken?: () => void,
     children?: React.ReactNode,
-    theme?: "light" | "dark"
+    theme?: "light" | "dark",
+    /** default true */
+    loadResources?: boolean
 }
 
 const appendDesignTokens = (list: Array<{ [p: string]: any }>) => {
@@ -126,7 +128,7 @@ interface WiniContextProps {
 
 const WiniContext = createContext<WiniContextProps | undefined>(undefined)
 
-export const WiniProvider = (props: Props) => {
+export const WiniProvider = ({ loadResources = true, ...props }: Props) => {
     ConfigData.pid = props.pid
     ConfigData.url = props.url
     ConfigData.imgUrlId = props.imgUrlId
@@ -142,13 +144,13 @@ export const WiniProvider = (props: Props) => {
     useEffect(() => {
         const rootLink = document.createElement("link")
         rootLink.rel = "stylesheet"
-        rootLink.href = "https://cdn.jsdelivr.net/gh/WiniGit/web-component@df0b81b/src/skin/root.css"
+        rootLink.href = "https://cdn.jsdelivr.net/gh/WiniGit/web-component@942e096/src/skin/root.css"
         const typoLink = document.createElement("link")
         typoLink.rel = "stylesheet"
-        typoLink.href = "https://cdn.jsdelivr.net/gh/WiniGit/web-component@df0b81b/src/skin/typography.css"
+        typoLink.href = "https://cdn.jsdelivr.net/gh/WiniGit/web-component@942e096/src/skin/typography.css"
         const layoutLink = document.createElement("link")
         layoutLink.rel = "stylesheet"
-        layoutLink.href = "https://cdn.jsdelivr.net/gh/WiniGit/web-component@df0b81b/src/skin/layout.css"
+        layoutLink.href = "https://cdn.jsdelivr.net/gh/WiniGit/web-component@942e096/src/skin/layout.css"
         document.head.children[0].before(rootLink, typoLink, layoutLink)
         return () => {
             rootLink.remove()
@@ -168,34 +170,36 @@ export const WiniProvider = (props: Props) => {
 
     useEffect(() => {
         ConfigData.pid = props.pid
-        if (props.pid.length === 32) {
-            const _desginTokenController = new TableController("designtoken")
-            _desginTokenController.getAll().then(res => {
-                if (res.code === 200 && res.data.length) appendDesignTokens(res.data)
-            })
-            const projectController = new WiniController("Project")
-            projectController.getById(props.pid).then(res => {
-                if (res.code === 200 && res.data[0]) {
-                    if (res.data[0].LogoId) (document.head.querySelector(`:scope > link[rel="icon"]`) as HTMLLinkElement)!.href = getValidLink(res.data[0].LogoId);
-                    (document.head.querySelector(`:scope > title`) as HTMLTitleElement)!.innerHTML = res.data[0].Name;
-                    setProjectData(res.data[0])
-                    ConfigData.fileUrl = res.data[0].FileDomain
-                }
-            })
-            const languageController = new DataController("Language")
-            languageController.getAll().then(async (res) => {
-                if (res.code === 200 && res.data.length) {
-                    const languages = await Promise.all(res.data.map((e: any) => BaseDA.get(ConfigData.imgUrlId + e.Json)))
-                    languages.forEach((lngData, i) => {
-                        if (lngData) i18n.addResourceBundle(res.data[i].Lng, "translation", lngData, true, true)
-                    })
-                    setLoadedResources(true)
-                } else setLoadedResources(true)
-            })
-        } else {
-            console.log("Project not found")
-            setLoadedResources(true)
-        }
+        if (loadResources) {
+            if (props.pid.length === 32) {
+                const _desginTokenController = new TableController("designtoken")
+                _desginTokenController.getAll().then(res => {
+                    if (res.code === 200 && res.data.length) appendDesignTokens(res.data)
+                })
+                const projectController = new WiniController("Project")
+                projectController.getById(props.pid).then(res => {
+                    if (res.code === 200 && res.data[0]) {
+                        if (res.data[0].LogoId) (document.head.querySelector(`:scope > link[rel="icon"]`) as HTMLLinkElement)!.href = getValidLink(res.data[0].LogoId);
+                        (document.head.querySelector(`:scope > title`) as HTMLTitleElement)!.innerHTML = res.data[0].Name;
+                        setProjectData(res.data[0])
+                        ConfigData.fileUrl = res.data[0].FileDomain
+                    }
+                })
+                const languageController = new DataController("Language")
+                languageController.getAll().then(async (res) => {
+                    if (res.code === 200 && res.data.length) {
+                        const languages = await Promise.all(res.data.map((e: any) => BaseDA.get(ConfigData.imgUrlId + e.Json)))
+                        languages.forEach((lngData, i) => {
+                            if (lngData) i18n.addResourceBundle(res.data[i].Lng, "translation", lngData, true, true)
+                        })
+                        setLoadedResources(true)
+                    } else setLoadedResources(true)
+                })
+            } else {
+                console.log("Project resources not found")
+                setLoadedResources(true)
+            }
+        } else setLoadedResources(true)
     }, [props.pid])
 
     return <WiniContext.Provider value={{ projectData, theme, setTheme, i18n, userData, setUserData, globalData, setGlobalData }}>
