@@ -178,11 +178,11 @@ export const WiniProvider = ({ loadResources = true, ...props }: Props) => {
                 })
                 const projectController = new WiniController("Project")
                 projectController.getById(props.pid).then(res => {
-                    if (res.code === 200 && res.data[0]) {
-                        if (res.data[0].LogoId) (document.head.querySelector(`:scope > link[rel="icon"]`) as HTMLLinkElement)!.href = getValidLink(res.data[0].LogoId);
-                        (document.head.querySelector(`:scope > title`) as HTMLTitleElement)!.innerHTML = res.data[0].Name;
-                        setProjectData(res.data[0])
-                        ConfigData.fileUrl = res.data[0].FileDomain
+                    if (res.code === 200 && res.data) {
+                        if (res.data.LogoId) (document.head.querySelector(`:scope > link[rel="icon"]`) as HTMLLinkElement)!.href = getValidLink(res.data.LogoId);
+                        (document.head.querySelector(`:scope > title`) as HTMLTitleElement)!.innerHTML = res.data.Name;
+                        setProjectData(res.data)
+                        ConfigData.fileUrl = res.data.FileDomain
                     }
                 })
                 const languageController = new DataController("Language")

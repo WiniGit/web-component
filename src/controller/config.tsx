@@ -54,7 +54,7 @@ export class BaseDA {
         const loadTimeout = setTimeout(() => {
             loader.className = "loader"
             document.body.appendChild(loader)
-        }, 1500)
+        }, 1200)
         try {
             let _headers: { [k: string]: any } = url.startsWith(ConfigData.url) ? (await getHeaders()) : { 'Content-Type': 'application/json' }
             if (!_headers) _headers = { 'Content-Type': 'application/json' }
