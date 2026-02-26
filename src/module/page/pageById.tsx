@@ -467,7 +467,7 @@ const ElementUI = ({ findId, children, watchForCustomProps, replaceThisVariables
                                 if (ConfigData.regexGuid.test(fid)) {
                                     const tmpF = _options?.find((f: any) => f.Id === fid)
                                     if (!tmpF) return undefined;
-                                    return { id: tmpF.Id, name: tmpF.Name, size: tmpF.Size, type: tmpF.Type, url: ConfigData.fileUrl + tmpF.Url }
+                                    return { id: tmpF.Id, name: tmpF.Name, size: tmpF.Size, type: tmpF.Type, url: tmpF.Url }
                                 } else {
                                     const _url = getValidLink(fid)
                                     const _type = fid.split(".").pop()?.toLowerCase()
@@ -519,7 +519,7 @@ const ElementUI = ({ findId, children, watchForCustomProps, replaceThisVariables
                                 if (ConfigData.regexGuid.test(fid)) {
                                     const tmpF = _options?.find((f: any) => f.Id === fid)
                                     if (!tmpF) return undefined;
-                                    return { id: tmpF.Id, name: tmpF.Name, size: tmpF.Size, type: tmpF.Type, url: ConfigData.fileUrl + tmpF.Url }
+                                    return { id: tmpF.Id, name: tmpF.Name, size: tmpF.Size, type: tmpF.Type, url: tmpF.Url }
                                 } else {
                                     const _url = getValidLink(fid)
                                     const _type = fid.split(".").pop()?.toLowerCase()

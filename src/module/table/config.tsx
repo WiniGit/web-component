@@ -253,7 +253,7 @@ export const AutoCellContent = ({ colItem, data, fields = [], files = [], style 
                 {sliceList.map((f, fIndex, arr) => {
                     const tmp: any = {}
                     if (arr.length - 1 === fIndex && mapValue.split(",").length > 2 && f.Type?.includes("image")) tmp["img-length"] = `+${mapValue.split(",").length - 2}`
-                    return <NavLink key={f.Id + "-" + fIndex} to={f.Url.startsWith("https") ? f.Url : (ConfigData.fileUrl + f.Url)} target='_blank' className={styles["table-img"]} style={style} {...tmp}>
+                    return <NavLink key={f.Id + "-" + fIndex} to={f.Url} target='_blank' className={styles["table-img"]} style={style} {...tmp}>
                         {f.Type?.includes("image") ?
                             <img alt={f.Name} src={f.Url.startsWith("https") ? f.Url : getValidLink(f.Id)} /> :
                             <Text className='body-3' maxLine={2} style={{ color: "var(--primary-main-color)", flex: 1 }}>{f.Name},</Text>}
@@ -371,7 +371,7 @@ export const cellValue = (colItem: { [p: string]: any }, data: any, fields: { [p
 
     switch (colItem.Type) {
         case ColDataType.files:
-            return files.filter(f => tmp.includes(f.Id)).map((f) => ConfigData.fileUrl + f.Url).join(", ")
+            return files.filter(f => tmp.includes(f.Id)).map((f) => f.Url).join(", ")
         default:
             return tmp
     }
