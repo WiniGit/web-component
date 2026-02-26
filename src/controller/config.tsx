@@ -54,7 +54,7 @@ export class BaseDA {
         const loadTimeout = setTimeout(() => {
             loader.className = "loader"
             document.body.appendChild(loader)
-        }, 500)
+        }, 1500)
         try {
             let _headers: { [k: string]: any } = url.startsWith(ConfigData.url) ? (await getHeaders()) : { 'Content-Type': 'application/json' }
             if (!_headers) _headers = { 'Content-Type': 'application/json' }
@@ -113,11 +113,18 @@ export class BaseDA {
     }
 
     static get = async (url: string, options?: { headers?: { [k: string]: any } }) => {
+        const loader = document.createElement("div")
+        const loadTimeout = setTimeout(() => {
+            loader.className = "loader"
+            document.body.appendChild(loader)
+        }, 1500)
         try {
             let _headers: { [k: string]: any } = url.startsWith(ConfigData.url) ? (await getHeaders()) : { 'Content-Type': 'application/json' }
             if (!_headers) _headers = { 'Content-Type': 'application/json' }
             if (options?.headers) _headers = { ..._headers, ...options.headers }
             const response = await axios.get(url, { headers: _headers })
+            clearTimeout(loadTimeout)
+            loader.remove()
             if (response.status === 200 || response.status === 201) {
                 return response.data
             } else if (response.status === 204) {
