@@ -24,6 +24,17 @@ export class DataController {
         return res
     }
 
+    async buildIndex(properties: { [p: string]: string }) {
+        const res = await BaseDA.post(ConfigData.url + 'data/buildIndex', {
+            headers: {
+                pid: ConfigData.pid,
+                module: this.module
+            },
+            body: { properties }
+        })
+        return res
+    }
+
     async aggregateList(options: { page?: number, size?: number, searchRaw?: string, filter?: string, sortby?: Array<{ prop: string, direction?: "ASC" | "DESC" }>, returns?: Array<string>, exact?: boolean }) {
         const res = await BaseDA.post(ConfigData.url + 'data/aggregateList', {
             headers: {
