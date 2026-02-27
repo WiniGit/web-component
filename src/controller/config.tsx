@@ -185,7 +185,7 @@ export class BaseDA {
         const headersObj: any = {}
         const response = await BaseDA.post(ConfigData.url + 'file/getFilesInfor', {
             headers: headersObj,
-            body: { ids: ids },
+            body: { ids },
         })
         return response
     }
@@ -194,7 +194,7 @@ export class BaseDA {
         const headersObj: any = {}
         const response = await BaseDA.post(ConfigData.url + 'file/editFileInfor', {
             headers: headersObj,
-            body: { data: data },
+            body: { data },
         })
         return response
     }
