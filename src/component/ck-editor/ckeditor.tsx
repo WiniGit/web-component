@@ -424,11 +424,11 @@ export function CustomCkEditor5({ style = { width: "100%", height: 400, maxHeigh
                             ],
                         },
                         fontFamily: {
-                            options: ["Default", "Arial", "Courier New", "Inter", "Roboto", "Times New Roman", "Source Serif 4", "Noto Sans JP"],
+                            options: ["Default", "Arial", "Courier New", "Inter", "Roboto", "Times New Roman", "Source Serif 4", "Poltawski Nowy", "Noto Sans JP"],
                             supportAllValues: true
                         },
                         fontSize: {
-                            options: [10, 12, 14, 'default', 18, 20, 22, 24],
+                            options: [10, 12, 14, 'default', 18, 20, 22, 24, 28, 32, 46, 56],
                             supportAllValues: true,
                         },
                         fontColor: {
