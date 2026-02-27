@@ -890,6 +890,7 @@ const CustomText = ({ type = "div", ...props }: { type?: "div" | "p" | "span" | 
         if (type && type !== "div") _props.className = `${props.maxLine ? "comp-text" : ""}${props.html ? "-innerhtml" : ""} ${props.className ?? ""}`
         else _props.className = props.className
         delete _props.type
+        delete _props.html
         return _props
     }, [props.html, props.className, props])
 
