@@ -142,21 +142,16 @@ export const WiniProvider = ({ loadResources = true, ...props }: Props) => {
     const [globalData, setGlobalData] = useState<{ [k: string]: any } | undefined>(undefined)
 
     useEffect(() => {
-        const rootLink = document.createElement("link")
-        rootLink.rel = "stylesheet"
-        rootLink.href = "https://cdn.jsdelivr.net/gh/WiniGit/web-component@942e096/src/skin/root.css"
-        const typoLink = document.createElement("link")
-        typoLink.rel = "stylesheet"
-        typoLink.href = "https://cdn.jsdelivr.net/gh/WiniGit/web-component@942e096/src/skin/typography.css"
-        const layoutLink = document.createElement("link")
-        layoutLink.rel = "stylesheet"
-        layoutLink.href = "https://cdn.jsdelivr.net/gh/WiniGit/web-component@942e096/src/skin/layout.css"
-        document.head.children[0].before(rootLink, typoLink, layoutLink)
-        return () => {
-            rootLink.remove()
-            typoLink.remove()
-            layoutLink.remove()
-        }
+        const tmp = document.createElement("div")
+        tmp.innerHTML = `
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/WiniGit/web-component@b3985a2/src/skin/root.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/WiniGit/web-component@b3985a2/src/skin/layout.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/WiniGit/web-component@b3985a2/src/skin/typography.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/WiniGit/web-component@b3985a2/src/skin/toast-noti.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/WiniGit/web-component@b3985a2/src/skin/style.css">
+        `
+        document.head.children[0].before(...tmp.childNodes)
+        tmp.remove()
     }, [])
 
     useEffect(() => {
