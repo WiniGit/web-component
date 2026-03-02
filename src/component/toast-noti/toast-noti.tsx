@@ -1,5 +1,4 @@
 import { Slide, toast, ToastOptions } from 'react-toastify';
-import './toast-noti.css';
 import { ReactNode } from 'react';
 
 const defaultOptions: ToastOptions = {
