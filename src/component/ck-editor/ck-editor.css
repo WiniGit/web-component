@@ -1,110 +1,3 @@
-/* ========================= */
-/* ROOT CSS VARIABLES - Light & Dark Theme */
-/* ========================= */
-
-:root {
-    /* ===== CUSTOM HELPER VARIABLES ===== */
-    --ck-custom-foreground-light: #18181B;
-    --ck-custom-foreground-dark: #1a1f24;
-    --ck-custom-border-light: #D7D7DB;
-    --ck-custom-border-dark: #494950;
-    --ck-custom-white: #F4F4F5;
-    --ck-custom-black: #18181B;
-
-    /* ===== BASE COLORS ===== */
-    --ck-content-font-color: light-dark(#18181B, #F4F4F5);
-    --ck-color-base-background: light-dark(#FFFFFF, #14181b);
-    --ck-color-base-border: light-dark(#D7D7DB, #494950);
-    --ck-color-focus-border: light-dark(#287CF0, #5CA3FF);
-    --ck-color-text: light-dark(#18181B, #F4F4F5);
-    --ck-color-shadow-drop: light-dark(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3));
-    --ck-color-shadow-inner: light-dark(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.2));
-
-    /* ===== BUTTON COLORS ===== */
-    --ck-color-button-default-background: light-dark(#FFFFFF, #1a1f24);
-    --ck-color-button-default-border: light-dark(#D7D7DB, #494950);
-    --ck-color-button-default-hover-background: light-dark(#F4F4F5, #242428);
-    --ck-color-button-default-active-background: light-dark(#EAEAEC, #1F2327);
-    --ck-color-button-default-active-shadow: light-dark(#D7D7DB, #313135);
-    --ck-color-button-default-text: light-dark(#18181B, #F4F4F5);
-
-    --ck-color-button-on-background: light-dark(#287CF0, #3d7fd9);
-    --ck-color-button-on-hover-background: light-dark(#1f60cc, #2d6ab8);
-    --ck-color-button-on-active-background: light-dark(#1a52b3, #27599a);
-    --ck-color-button-on-active-shadow: light-dark(#0d3d7a, #1a3a5c);
-    --ck-color-button-on-disabled-background: light-dark(#EAEAEC, #242428);
-    --ck-color-button-on-text: light-dark(#FFFFFF, #FFFFFF);
-
-    --ck-color-button-action-background: light-dark(#3AAC6D, #2d8b56);
-    --ck-color-button-action-hover-background: light-dark(#2d9b5c, #267a48);
-    --ck-color-button-action-active-background: light-dark(#208a4b, #206940);
-    --ck-color-button-action-active-shadow: light-dark(#1a6e3d, #184d31);
-    --ck-color-button-action-disabled-background: light-dark(#3AAC6D, #2d8b56);
-    --ck-color-button-action-text: light-dark(#FFFFFF, #FFFFFF);
-
-    --ck-color-button-save: light-dark(#3AAC6D, #2d8b56);
-    --ck-color-button-cancel: light-dark(#E14337, #c9372b);
-
-    /* ===== DROPDOWN & PANEL COLORS ===== */
-    --ck-color-dropdown-panel-background: light-dark(#FFFFFF, #14181b);
-    --ck-color-dropdown-panel-border: light-dark(#D7D7DB, #494950);
-
-    /* ===== DIALOG COLORS ===== */
-    --ck-color-dialog-frame-background: light-dark(#FFFFFF, #14181b);
-    --ck-color-dialog-form-header-background: light-dark(#F4F4F5, #1a1f24);
-    --ck-color-dialog-form-header-border: light-dark(#D7D7DB, #494950);
-
-    /* ===== SPLIT BUTTON COLORS ===== */
-    --ck-color-split-button-hover-background: light-dark(#F4F4F5, #242428);
-    --ck-color-split-button-hover-border: light-dark(#D7D7DB, #494950);
-
-    /* ===== INPUT COLORS ===== */
-    --ck-color-input-background: light-dark(#FFFFFF, #0F1315);
-    --ck-color-input-border: light-dark(#D7D7DB, #494950);
-    --ck-color-input-text: light-dark(#18181B, #F4F4F5);
-    --ck-color-input-disabled-background: light-dark(#F4F4F5, #1a1f24);
-    --ck-color-input-disabled-border: light-dark(#EAEAEC, #313135);
-    --ck-color-input-disabled-text: light-dark(#A2A2AA, #757575);
-
-    /* ===== LIST COLORS ===== */
-    --ck-color-list-background: light-dark(#FFFFFF, #14181b);
-    --ck-color-list-button-hover-background: light-dark(#F4F4F5, #242428);
-    --ck-color-list-button-on-background: light-dark(#287CF0, #3d7fd9);
-    --ck-color-list-button-on-text: light-dark(#FFFFFF, #FFFFFF);
-
-    /* ===== PANEL COLORS ===== */
-    --ck-color-panel-background: light-dark(#FFFFFF, #14181b);
-    --ck-color-panel-border: light-dark(#D7D7DB, #494950);
-
-    /* ===== TOOLBAR COLORS ===== */
-    --ck-color-toolbar-background: light-dark(#FFFFFF, #14181b);
-    --ck-color-toolbar-border: light-dark(#D7D7DB, #494950);
-
-    /* ===== TOOLTIP COLORS ===== */
-    --ck-color-tooltip-background: light-dark(#18181B, #242428);
-    --ck-color-tooltip-text: light-dark(#FFFFFF, #F4F4F5);
-    --ck-color-tooltip-border: light-dark(#D7D7DB, #494950);
-
-    /* ===== CONTENT COLORS ===== */
-    --ck-content-color-image-caption-background: light-dark(#F4F4F5, #1a1f24);
-    --ck-content-color-image-caption-text: light-dark(#18181B, #F4F4F5);
-
-    /* ===== WIDGET COLORS ===== */
-    --ck-color-widget-blurred-border: light-dark(#D7D7DB, #494950);
-    --ck-color-widget-hover-border: light-dark(#287CF0, #5CA3FF);
-    --ck-color-widget-editable-focus-background: light-dark(#FFFFFF, #0F1315);
-
-    /* ===== LINK COLORS ===== */
-    --ck-color-link-default: light-dark(#287CF0, #5CA3FF);
-
-    /* ===== FONT AND SIZES ===== */
-    --ck-font-size-base: 16px;
-}
-
-/* ========================= */
-/* EDITOR CONTAINER */
-/* ========================= */
-
 .editor-container {
     position: relative;
     --ck-color-text: var(--neutral-text-title-color, light-dark(#18181B, #F4F4F5));
@@ -140,7 +33,42 @@
     transform: translateY(100%);
 }
 
+.ck-content {
+    font-family: 'Inter';
+    line-height: 1.6;
+    word-break: break-word;
+}
+
+.ck-content h3.category {
+    font-family: 'Inter';
+    font-size: 20px;
+    font-weight: bold;
+    color: #555;
+    letter-spacing: 10px;
+    margin: 0;
+    padding: 0;
+}
+
+.ck-content h2.document-title {
+    font-family: 'Inter';
+    font-size: 50px;
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+.ck-content h3.document-subtitle {
+    font-family: 'Inter';
+    font-size: 20px;
+    color: #555;
+    margin: 0 0 1em;
+    font-weight: bold;
+    padding: 0;
+}
+
 .ck-content blockquote.side-quote {
+    font-family: 'Inter';
     font-style: normal;
     float: right;
     width: 35%;
@@ -152,15 +80,40 @@
 }
 
 .ck-content blockquote.side-quote::before {
-    content: '"';
+    content: '“';
     position: absolute;
     top: -37px;
     left: -10px;
     display: block;
     font-size: 200px;
-    color: light-dark(#e7e7e7, #333333);
+    color: #e7e7e7;
     z-index: -1;
     line-height: 1;
+}
+
+.ck-content blockquote.side-quote p {
+    font-size: 2em;
+    line-height: 1;
+}
+
+.ck-content blockquote.side-quote p:last-child:not(:first-child) {
+    font-size: 1.3em;
+    text-align: right;
+    color: #555;
+}
+
+.ck-content span.marker {
+    background: yellow;
+}
+
+.ck-content span.spoiler {
+    background: #000;
+    color: #000;
+}
+
+.ck-content span.spoiler:hover {
+    background: #000;
+    color: #fff;
 }
 
 .ck-content pre.fancy-code {
@@ -179,19 +132,25 @@
     background-repeat: no-repeat;
 }
 
+.ck-content pre.fancy-code-dark {
+    background: #272822;
+    color: #fff;
+    box-shadow: 5px 5px 0 #0000001f;
+}
 
-/* Dark theme support for fancy code */
-@media (prefers-color-scheme: dark) {
-    .ck-content pre.fancy-code {
-        background-color: light-dark(#f5f5f5, #272822);
-        color: light-dark(#333, #fff);
-    }
+.ck-content pre.fancy-code-bright {
+    background: #dddfe0;
+    color: #000;
+    box-shadow: 5px 5px 0 #b3b3b3;
 }
 
 .editor-container_classic-editor .editor-container__editor .ck-editor .ck-editor__editable {
     border-radius: 0;
 }
 
+.ck-editor-container {
+    --ck-font-size-base: 1.4rem;
+}
 
 .editor-container__editor {
     flex: 1;
@@ -215,6 +174,7 @@
 }
 
 .ck.ck-toolbar {
+    background-color: var(--neutral-absolute-background-color, light-dark(#FFFFFF, #14181b)) !important;
     border-radius: 0.8rem 0.8rem 0 0 !important;
 }
 
@@ -246,368 +206,33 @@
     border-radius: 0.4rem !important;
 }
 
-
-/* ========================= */
-/* DARK THEME ENHANCEMENTS */
-/* ========================= */
-
-/* Dark theme for editor content headings */
-@media (prefers-color-scheme: dark) {
-    .ck-content h2.document-title {
-        color: light-dark(#18181B, #F4F4F5);
-    }
-    
-    .ck-content h3.category {
-        color: light-dark(#555, #BBB);
-    }
-    
-    .ck-content h3.document-subtitle {
-        color: light-dark(#555, #BBB);
-    }
-    
-    .ck-content blockquote.side-quote p:last-child:not(:first-child) {
-        color: light-dark(#555, #CCC);
-    }
+.ck.ck-button:not(.ck-disabled):hover,
+a.ck.ck-button:not(.ck-disabled):hover,
+.ck.ck-splitbutton.ck-splitbutton_open>.ck-button:not(.ck-on):not(.ck-disabled):not(:hover),
+.ck.ck-splitbutton:hover>.ck-button:not(.ck-on):not(.ck-disabled):not(:hover) {
+    background-color: var(--neutral-hover-background-color, light-dark(#18181B0A, #FFFFFF0A)) !important;
 }
 
-/* Dark theme for list and panel backgrounds */
-@media (prefers-color-scheme: dark) {
-    .ck.ck-button.ck-list-item-button,
-    .ck.ck-button.ck-list-item-button.ck-on,
-    .ck.ck-list,
-    .ck.ck-dropdown__panel {
-        background-color: light-dark(#FFFFFF, #1a1f24) !important;
-        border-color: light-dark(#D7D7DB, #494950) !important;
-    }
-    
-    .ck.ck-button.ck-list-item-button:not(.ck-disabled):hover {
-        background-color: light-dark(#18181B0A, #FFFFFF15) !important;
-    }
-}
-
-/* Dark theme for toolbar and panels */
-@media (prefers-color-scheme: dark) {
-    .ck.ck-toolbar {
-        background-color: light-dark(#FFFFFF, #1a1f24) !important;
-        border-color: light-dark(#D7D7DB, #494950) !important;
-    }
-    
-    .ck.ck-editor__top .ck-sticky-panel .ck-sticky-panel__content {
-        border-color: light-dark(#D7D7DB, #494950) !important;
-    }
-}
-
-/* Dark theme for color grid buttons */
-@media (prefers-color-scheme: dark) {
-    .ck.ck-color-grid>button {
-        border: 1px solid light-dark(#D7D7DB, #494950);
-        background-color: light-dark(#FFFFFF, #242428);
-    }
-    
-    .ck.ck-color-grid>button:not(.ck-disabled):hover {
-        background-color: light-dark(#F4F4F5, #313135);
-    }
-}
-
-/* Dark theme for text in CKEditor */
-@media (prefers-color-scheme: dark) {
-    .ck.ck-reset_all,
-    .ck-reset_all *:not(.ck-reset_all-excluded *, .ck-tooltip__text) {
-        color: light-dark(#61616B, #BBBBC4) !important;
-    }
-    
-    .ck.ck-editor__editable:not(.ck-read-only) {
-        color: light-dark(#18181B, #F4F4F5);
-        background-color: light-dark(#FFFFFF, #14181b);
-    }
-}
-
-/* Dark theme for editor main area */
-@media (prefers-color-scheme: dark) {
-    .ck.ck-editor__main>div {
-        background-color: light-dark(#FFFFFF, #14181b) !important;
-        color: light-dark(#18181B, #F4F4F5);
-    }
-}
-
-/* Dark theme for fullscreen mode */
-@media (prefers-color-scheme: dark) {
-    .ck.ck-fullscreen__main-wrapper {
-        background-color: light-dark(#F4F4F5, #0F1315);
-    }
-    
-    .ck-fullscreen__main-wrapper .ck-fullscreen__editable-wrapper {
-        background-color: light-dark(#F4F4F5, #0F1315);
-    }
-}
-
-/* Dark theme for spoiler spans */
-@media (prefers-color-scheme: dark) {
-    .ck-content span.spoiler {
-        background: light-dark(#000, #222);
-        color: light-dark(#000, #222);
-    }
-    
-    .ck-content span.spoiler:hover {
-        background: light-dark(#000, #333);
-        color: light-dark(#fff, #FFF);
-    }
-}
-
-/* ========================= */
-/* CKEDITOR5 UI CUSTOMIZATION */
-/* ========================= */
-
-/* Toolbar styling with dark mode support */
-.ck.ck-toolbar {
-    background-color: var(--ck-color-toolbar-background) !important;
-    border-color: var(--ck-color-toolbar-border) !important;
-    border-radius: 0.8rem 0.8rem 0 0 !important;
-    box-shadow: var(--ck-color-shadow-drop) !important;
-}
-
-/* Toolbar in fullscreen mode */
-.ck-fullscreen__toolbar .ck.ck-toolbar {
-    border-radius: var(--ck-border-radius) !important;
-}
-
-/* Sticky panel in editor top */
-.ck.ck-editor__top .ck-sticky-panel .ck-sticky-panel__content {
-    height: 40px;
-    border: none !important;
-    border-radius: 0.8rem 0.8rem 0 0 !important;
-    border-bottom: 1px solid var(--ck-color-toolbar-border) !important;
-    background-color: var(--ck-color-toolbar-background) !important;
-}
-
-/* Editor main container */
-.ck.ck-editor__main {
-    flex: 1;
-    height: 100% !important;
-    overflow: hidden auto !important;
-}
-
-.ck.ck-editor__main>div {
-    background-color: var(--ck-color-base-background) !important;
-    border: none !important;
-    font-size: 16px !important;
-    color: var(--ck-color-text) !important;
-}
-
-/* Editable content area */
-.ck.ck-editor__editable {
-    background-color: var(--ck-color-base-background) !important;
-    color: var(--ck-color-text) !important;
-    border-color: var(--ck-color-base-border) !important;
-}
-
-.ck.ck-editor__editable:not(.ck-read-only) {
-    color: var(--ck-color-text) !important;
-}
-
-/* Button styling */
-.ck.ck-button:not(.ck-disabled):not(.ck-on) {
-    background-color: var(--ck-color-button-default-background) !important;
-    color: var(--ck-color-button-default-text) !important;
-    border-color: var(--ck-color-button-default-border) !important;
-}
-
-.ck.ck-button:not(.ck-disabled):hover {
-    background-color: var(--ck-color-button-default-hover-background) !important;
-}
-
-.ck.ck-button.ck-on,
-.ck.ck-button.ck-on:hover {
-    background-color: var(--ck-color-button-on-background) !important;
-    color: var(--ck-color-button-on-text) !important;
-    border-color: var(--ck-color-button-on-background) !important;
-}
-
-/* Split button */
-.ck.ck-splitbutton:hover>.ck-button:not(.ck-on):not(.ck-disabled) {
-    background-color: var(--ck-color-button-default-hover-background) !important;
-}
-
-/* List item buttons */
 .ck.ck-button.ck-list-item-button,
-.ck.ck-button.ck-list-item-button.ck-on {
-    background-color: var(--ck-color-list-background) !important;
-    color: var(--ck-color-text) !important;
-}
-
-.ck.ck-button.ck-list-item-button:not(.ck-disabled):hover {
-    background-color: var(--ck-color-list-button-hover-background) !important;
-}
-
-.ck.ck-button.ck-list-item-button.ck-on {
-    background-color: var(--ck-color-list-button-on-background) !important;
-    color: var(--ck-color-list-button-on-text) !important;
-}
-
-/* Dropdown panel */
+.ck.ck-button.ck-list-item-button.ck-on,
 .ck.ck-list,
 .ck.ck-dropdown__panel {
-    background-color: var(--ck-color-dropdown-panel-background) !important;
-    border-color: var(--ck-color-dropdown-panel-border) !important;
-    box-shadow: var(--ck-color-shadow-drop) !important;
+    background-color: var(--neutral-absolute-background-color, light-dark(#FFFFFF, #14181b)) !important;
 }
 
-/* Color grid buttons */
-.ck.ck-color-grid>button {
-    border: 1px solid var(--ck-color-base-border) !important;
-    background-color: var(--ck-color-button-default-background) !important;
-    border-radius: 0.4rem !important;
-}
-
-.ck.ck-color-grid>button:not(.ck-disabled):hover {
-    background-color: var(--ck-color-button-default-hover-background) !important;
-    border-color: var(--ck-color-focus-border) !important;
-}
-
-/* Input fields */
-.ck.ck-input {
-    background-color: var(--ck-color-input-background) !important;
-    color: var(--ck-color-input-text) !important;
-    border-color: var(--ck-color-input-border) !important;
-}
-
-.ck.ck-input:focus {
-    border-color: var(--ck-color-focus-border) !important;
-    box-shadow: 0 0 0 2px var(--ck-color-focus-border) !important;
-}
-
-/* Disabled input */
-.ck.ck-input:disabled {
-    background-color: var(--ck-color-input-disabled-background) !important;
-    color: var(--ck-color-input-disabled-text) !important;
-    border-color: var(--ck-color-input-disabled-border) !important;
-}
-
-/* Tooltip */
-.ck.ck-tooltip {
-    background-color: var(--ck-color-tooltip-background) !important;
-    color: var(--ck-color-tooltip-text) !important;
-    border: 1px solid var(--ck-color-tooltip-border) !important;
-}
-
-/* Reset all CKEditor text colors */
 .ck.ck-reset_all,
 .ck-reset_all *:not(.ck-reset_all-excluded *, .ck-tooltip__text) {
-    color: var(--ck-color-text) !important;
+    color: var(--neutral-text-subtitle-color, light-dark(#61616B, #A2A2AA)) !important;
 }
 
-/* Dialog styling */
-.ck.ck-dialog {
-    background-color: var(--ck-color-dialog-frame-background) !important;
-    border-color: var(--ck-color-base-border) !important;
-}
-
-.ck.ck-dialog__header {
-    background-color: var(--ck-color-dialog-form-header-background) !important;
-    border-color: var(--ck-color-dialog-form-header-border) !important;
-}
-
-/* Fullscreen mode */
 .ck.ck-fullscreen__main-wrapper {
-    background-color: var(--ck-color-base-background) !important;
-    color: var(--ck-color-text) !important;
+    --ck-color-base-background: var(--neutral-lighter-background-color);
 }
 
 .ck-fullscreen__main-wrapper .ck-fullscreen__editable-wrapper {
-    background-color: var(--ck-color-base-background) !important;
+    background-color: var(--neutral-lighter-background-color);
 }
 
 .ck-fullscreen__editable .ck.ck-editor__editable {
-    background-color: var(--ck-color-base-background) !important;
-    color: var(--ck-color-text) !important;
-}
-
-/* ========================= */
-/* CKEDITOR5 CONTENT STYLING */
-/* ========================= */
-
-/* Links in editor */
-.ck.ck-editor__editable a {
-    color: var(--ck-color-link-default) !important;
-    text-decoration: underline;
-}
-
-.ck.ck-editor__editable a:hover {
-    opacity: 0.8;
-}
-
-/* Code blocks */
-.ck-content pre {
-    color: var(--ck-color-text) !important;
-    background-color: light-dark(#f5f5f5, #1a1f24) !important;
-    border-color: var(--ck-color-base-border) !important;
-}
-
-.ck-content code {
-    background-color: light-dark(#f0f0f0, #242428) !important;
-    color: light-dark(#d63384, #ff85d0) !important;
-    padding: 2px 6px;
-    border-radius: 3px;
-}
-
-/* Image captions */
-.ck-content figcaption {
-    color: var(--ck-content-color-image-caption-text) !important;
-    background-color: var(--ck-content-color-image-caption-background) !important;
-}
-
-/* Blockquotes */
-.ck-content blockquote {
-    border-color: var(--ck-color-focus-border) !important;
-    color: var(--ck-color-text) !important;
-}
-
-/* Tables */
-.ck-content table {
-    border-collapse: collapse;
-}
-
-.ck-content table td,
-.ck-content table th {
-    border-color: var(--ck-color-base-border) !important;
-    color: var(--ck-color-text) !important;
-}
-
-.ck-content table th {
-    background-color: light-dark(#F4F4F5, #1a1f24) !important;
-}
-
-/* ========================= */
-/* CUSTOM CONTENT CLASSES */
-/* ========================= */
-
-/* Marker highlight */
-.ck-content span.marker {
-    background: light-dark(yellow, #FFD700);
-    color: light-dark(#000, #000);
-    padding: 2px 4px;
-    border-radius: 2px;
-}
-
-/* Fancy code styling */
-.ck-content pre.fancy-code {
-    background-color: light-dark(#f5f5f5, #272822) !important;
-    color: light-dark(#333, #fff) !important;
-    border: 0;
-    margin-left: 2em;
-    margin-right: 2em;
-    border-radius: 10px;
-    box-shadow: var(--ck-color-shadow-drop) !important;
-}
-
-.ck-content pre.fancy-code-dark {
-    background: #272822;
-    color: #fff;
-    box-shadow: 5px 5px 0 #0000001f;
-}
-
-.ck-content pre.fancy-code-bright {
-    background: #dddfe0;
-    color: #000;
-    box-shadow: 5px 5px 0 #b3b3b3;
+    background-color: var(--neutral-absolute-background-color) !important;
 }
