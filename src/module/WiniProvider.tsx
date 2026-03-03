@@ -144,11 +144,11 @@ export const WiniProvider = ({ loadResources = true, ...props }: Props) => {
     useEffect(() => {
         const tmp = document.createElement("div")
         tmp.innerHTML = `
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/WiniGit/web-component@b3985a2/src/skin/root.min.css">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/WiniGit/web-component@b3985a2/src/skin/layout.min.css">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/WiniGit/web-component@b3985a2/src/skin/typography.min.css">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/WiniGit/web-component@b3985a2/src/skin/toast-noti.min.css">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/WiniGit/web-component@b3985a2/src/skin/style.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/WiniGit/web-component@a752346/src/skin/root.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/WiniGit/web-component@a752346/src/skin/layout.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/WiniGit/web-component@a752346/src/skin/typography.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/WiniGit/web-component@a752346/src/skin/toast-noti.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/WiniGit/web-component@a752346/src/skin/style.css">
         `
         document.head.children[0].before(...tmp.childNodes)
         tmp.remove()
