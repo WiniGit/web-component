@@ -1,4 +1,4 @@
-import { CSSProperties, forwardRef, ReactNode, useDeferredValue, useEffect, useImperativeHandle, useMemo, useState } from "react"
+import { CSSProperties, forwardRef, ReactNode, useDeferredValue, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react"
 import { FieldValues, useForm, UseFormReturn } from "react-hook-form"
 import { CustomHTMLProps, getValidLink, RenderLayerElement } from "../page/pageById"
 import { AccountController, BaseDA, DataController, OptionsItem, randomGID, SettingDataController, urlToFileType, Util } from "../../index"
@@ -50,99 +50,11 @@ export const FormById = forwardRef<FormByIdRef, Props>((props, ref) => {
     const [rels, setRels] = useState<Array<{ [p: string]: any }>>([])
     const [relativeCols, setRelativeCols] = useState<Array<{ [p: string]: any }>>([])
     const accountController = new AccountController()
-    const regexGuid = /^[0-9a-fA-F]{32}$/;
+    const htmlContent = useRef<{ [k: string]: string }>({})
 
     useEffect(() => {
         if (JSON.stringify(controller) !== JSON.stringify(props.controller)) setController(props.controller)
     }, [props.controller])
-
-    const onSubmit = async (ev: any) => {
-        let dataItem = { ...ev }
-        delete dataItem.id
-        dataItem.DateCreated ??= Date.now()
-        let validateDataForm: { [k: string]: any } = {}
-        Object.keys(dataItem).forEach((key) => {
-            if (typeof dataItem[key] === "string") validateDataForm[key] = dataItem[key].trim()
-        })
-        const _val = await validateForm({
-            list: inputLayers.filter((e: any) => e.Setting.validate?.length).map((e: any) => {
-                return {
-                    Name: e.NameField,
-                    Validate: e.Setting.validate
-                }
-            }) as any,
-            formdata: validateDataForm
-        })
-        // Cập nhật lỗi vào React Hook Form
-        if (_val && Object.keys(_val).length > 0) {
-            Object.keys(_val).forEach((field: any) => {
-                methods.setError(field, { message: _val[field]?.[0] });
-            });
-            return;
-        }
-        // Nếu có lỗi, dừng lại không thực hiện submit
-        for (let _col of cols) {
-            if (_col.Name === "DateCreated") {
-                dataItem[_col.Name] ??= Date.now()
-            } else if (dataItem[_col.Name] != undefined) {
-                if (!_col.Query) {
-                    switch (_col.DataType) {
-                        case FEDataType.GID:
-                            break;
-                        case FEDataType.STRING:
-                            if (Array.isArray(dataItem[_col.Name])) {
-                                dataItem[_col.Name] = dataItem[_col.Name].join(",")
-                            } else if (typeof dataItem[_col.Name] !== 'string') {
-                                dataItem[_col.Name] = `${dataItem[_col.Name]}`
-                            }
-                            break;
-                        case FEDataType.BOOLEAN:
-                            dataItem[_col.Name] = [true, 1, "true"].includes(dataItem[_col.Name]) ? true : false
-                            break;
-                        case FEDataType.NUMBER:
-                            dataItem[_col.Name] = typeof dataItem[_col.Name] === 'string' ? parseFloat(dataItem[_col.Name]) : dataItem[_col.Name]
-                            break;
-                        case FEDataType.DATE:
-                        case FEDataType.DATETIME:
-                            dataItem[_col.Name] = dataItem[_col.Name].getTime()
-                            break;
-                        case FEDataType.MONEY:
-                            if (dataItem[_col.Name].replace(/,/g, '').length)
-                                dataItem[_col.Name] = parseInt(dataItem[_col.Name].replace(/,/g, ''))
-                            else delete dataItem[_col.Name]
-                            break;
-                        case FEDataType.PASSWORD:
-                            if (props.autoBcrypt && dataItem[_col.Name]?.length && dataItem[_col.Name] !== props.data?.[_col.Name]) {
-                                const getHashPassword = await accountController.hashPassword(dataItem[_col.Name])
-                                dataItem[_col.Name] = getHashPassword.data
-                            }
-                            break;
-                        case FEDataType.FILE:
-                            if (ev[_col.Name] && Array.isArray(ev[_col.Name])) {
-                                const uploadFiles = ev[_col.Name].filter((e: any) => !!e?.file)
-                                if (uploadFiles.length) {
-                                    const res = await BaseDA.uploadFiles(uploadFiles.map((e: any) => e.file))
-                                    if (res?.length) dataItem[_col.Name] = ev[_col.Name].map((e: any) => e.file ? res.shift().Id : e.exactUrl).filter(Boolean).join(",")
-                                } else {
-                                    dataItem[_col.Name] = ev[_col.Name].map((e: any) => e.exactUrl ?? e.id).join(",")
-                                }
-                            }
-                            break;
-                        default:
-                            break;
-                    }
-                }
-            }
-        }
-        for (let _rel of rels) {
-            if (dataItem[_rel.Column] && Array.isArray(dataItem[_rel.Column]))
-                dataItem[_rel.Column] = dataItem[_rel.Column].join(",")
-        }
-        Object.keys(dataItem).forEach(p => {
-            if (![...cols, ...rels].find(e => e.Name === p || e.Column === p)) delete dataItem[p]
-        })
-        props.onSubmit?.(dataItem)
-    }
 
     const getInitData = async () => {
         let initData = props.data
@@ -170,13 +82,18 @@ export const FormById = forwardRef<FormByIdRef, Props>((props, ref) => {
                     if (_col) {
                         switch (_col.DataType) {
                             case FEDataType.GID:
-                            case FEDataType.HTML:
+                            case FEDataType.STRING:
                             case FEDataType.PASSWORD:
                                 methods.setValue(prop, dataItem[prop])
                                 break;
-                            case FEDataType.STRING:
-                                if (_col.Form.Options?.length) {
-                                    methods.setValue(prop, (dataItem[prop] ?? "").split(","))
+                            case FEDataType.HTML:
+                                if (ConfigData.regexGuid.test(dataItem[prop])) {
+                                    BaseDA.get(`${ConfigData.ebigCdn}/${ConfigData.pid}/${dataItem[prop]}`).then((result) => {
+                                        if (typeof result === 'string') {
+                                            htmlContent.current[prop] = dataItem[prop]
+                                            methods.setValue(prop, result)
+                                        } else methods.setValue(prop, dataItem[prop])
+                                    })
                                 } else {
                                     methods.setValue(prop, dataItem[prop])
                                 }
@@ -223,8 +140,8 @@ export const FormById = forwardRef<FormByIdRef, Props>((props, ref) => {
             })
             if (_fileIds.length) {
                 let filesInfor = _fileIds.map(e => e.id?.split(",")).flat(Infinity)
-                const fileGuids = filesInfor.filter((id, i, arr) => !!id?.length && regexGuid.test(id) && arr.indexOf(id) === i)
-                filesInfor = filesInfor.filter((id, i, arr) => !!id?.length && !regexGuid.test(id) && arr.indexOf(id) === i).map((url) => ({ id: randomGID(), name: url.split(/[\\/]/).pop(), type: urlToFileType(url), exactUrl: url, url: url.startsWith("https") ? url : getValidLink(url) }))
+                const fileGuids = filesInfor.filter((id, i, arr) => !!id?.length && ConfigData.regexGuid.test(id) && arr.indexOf(id) === i)
+                filesInfor = filesInfor.filter((id, i, arr) => !!id?.length && !ConfigData.regexGuid.test(id) && arr.indexOf(id) === i).map((url) => ({ id: randomGID(), name: url.split(/[\\/]/).pop(), type: urlToFileType(url), exactUrl: url, url: url.startsWith("https") ? url : getValidLink(url) }))
                 if (fileGuids.length) {
                     BaseDA.getFilesInfor(fileGuids).then(res => {
                         if (res.code === 200) _fileIds.forEach(e => {
@@ -240,17 +157,22 @@ export const FormById = forwardRef<FormByIdRef, Props>((props, ref) => {
                 }
             }
         } else {
-            inputLayers.filter(e => e.Setting.default !== undefined && e.Setting.default !== null).forEach((tmpLayer) => {
+            inputLayers.filter(e => !!e.Setting.default).forEach((tmpLayer) => {
                 const _col = cols.find(e => tmpLayer.NameField === e.Name)
                 switch (_col?.DataType) {
                     case FEDataType.GID:
-                    case FEDataType.HTML:
+                    case FEDataType.STRING:
                     case FEDataType.PASSWORD:
                         methods.setValue(_col.Name, _col.Form.DefaultValue)
                         break;
-                    case FEDataType.STRING:
-                        if (_col.Form.Options?.length) {
-                            methods.setValue(_col.Name, _col.Form.DefaultValue.split(","))
+                    case FEDataType.HTML:
+                        if (ConfigData.regexGuid.test(_col.Form.DefaultValue)) {
+                            BaseDA.get(`${ConfigData.ebigCdn}/${ConfigData.pid}/${_col.Form.DefaultValue}`).then((result) => {
+                                if (typeof result === 'string') {
+                                    htmlContent.current[_col.Name] = _col.Form.DefaultValue
+                                    methods.setValue(_col.Name, result)
+                                } else methods.setValue(_col.Name, _col.Form.DefaultValue)
+                            })
                         } else {
                             methods.setValue(_col.Name, _col.Form.DefaultValue)
                         }
@@ -281,6 +203,106 @@ export const FormById = forwardRef<FormByIdRef, Props>((props, ref) => {
             getInitData()
         }
     }, [props.data, cols.length, controller])
+
+    const onSubmit = async (ev: any) => {
+        let dataItem = { ...ev }
+        delete dataItem.id
+        dataItem.DateCreated ??= Date.now()
+        let validateDataForm: { [k: string]: any } = {}
+        Object.keys(dataItem).forEach((key) => {
+            if (typeof dataItem[key] === "string") validateDataForm[key] = dataItem[key].trim()
+        })
+        const _val = await validateForm({
+            list: inputLayers.filter((e: any) => e.Setting.validate?.length).map((e: any) => {
+                return {
+                    Name: e.NameField,
+                    Validate: e.Setting.validate
+                }
+            }) as any,
+            formdata: validateDataForm
+        })
+        // Cập nhật lỗi vào React Hook Form
+        if (_val && Object.keys(_val).length > 0) {
+            Object.keys(_val).forEach((field: any) => {
+                methods.setError(field, { message: _val[field]?.[0] });
+            });
+            return;
+        }
+        // Nếu có lỗi, dừng lại không thực hiện submit
+        for (let _col of cols) {
+            switch (_col.Name) {
+                case "DateCreated":
+                    dataItem[_col.Name] ??= Date.now()
+                    break;
+                default:
+                    if (dataItem[_col.Name] === undefined || dataItem[_col.Name] === null) {
+                        dataItem[_col.Name] = null
+                        continue;
+                    }
+                    if (_col.Query) continue;
+                    // handle other columns value
+                    switch (_col.DataType) {
+                        case FEDataType.STRING:
+                            if (Array.isArray(dataItem[_col.Name])) {
+                                dataItem[_col.Name] = dataItem[_col.Name].join(",")
+                            } else if (typeof dataItem[_col.Name] !== 'string') {
+                                dataItem[_col.Name] = `${dataItem[_col.Name]}`
+                            }
+                            break;
+                        case FEDataType.BOOLEAN:
+                            dataItem[_col.Name] = [true, 1, "true"].includes(dataItem[_col.Name]) ? true : false
+                            break;
+                        case FEDataType.NUMBER:
+                            dataItem[_col.Name] = typeof dataItem[_col.Name] === 'string' ? parseFloat(dataItem[_col.Name]) : dataItem[_col.Name]
+                            break;
+                        case FEDataType.DATE:
+                        case FEDataType.DATETIME:
+                            dataItem[_col.Name] = dataItem[_col.Name].getTime()
+                            break;
+                        case FEDataType.MONEY:
+                            if (dataItem[_col.Name].replace(/,/g, '').length)
+                                dataItem[_col.Name] = parseInt(dataItem[_col.Name].replace(/,/g, ''))
+                            else delete dataItem[_col.Name]
+                            break;
+                        case FEDataType.PASSWORD:
+                            if (props.autoBcrypt && dataItem[_col.Name]?.length && dataItem[_col.Name] !== props.data?.[_col.Name]) {
+                                const getHashPassword = await accountController.hashPassword(dataItem[_col.Name])
+                                dataItem[_col.Name] = getHashPassword.data
+                            }
+                            break;
+                        case FEDataType.HTML:
+                            if (dataItem[_col.Name].length || htmlContent.current[_col.Name]) {
+                                const createHtmlFile = Util.stringToFile(dataItem[_col.Name], `${dataItem.Name}'s ${_col.Name}.txt`)
+                                const res = await BaseDA.uploadFiles(htmlContent.current[_col.Name] ? [{ id: htmlContent.current[_col.Name], file: createHtmlFile }] : [createHtmlFile])
+                                if (res?.length) dataItem[_col.Name] = res[0].Id
+                            }
+                            break;
+                        case FEDataType.FILE:
+                            if (ev[_col.Name] && Array.isArray(ev[_col.Name])) {
+                                const uploadFiles = ev[_col.Name].filter((e: any) => !!e?.file)
+                                if (uploadFiles.length) {
+                                    const res = await BaseDA.uploadFiles(uploadFiles.map((e: any) => e.file))
+                                    if (res?.length) dataItem[_col.Name] = ev[_col.Name].map((e: any) => e.file ? res.shift().Id : e.exactUrl).filter(Boolean).join(",")
+                                } else {
+                                    dataItem[_col.Name] = ev[_col.Name].map((e: any) => e.exactUrl ?? e.id).join(",")
+                                }
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+            }
+        }
+        for (let _rel of rels) {
+            if (dataItem[_rel.Column] && Array.isArray(dataItem[_rel.Column]))
+                dataItem[_rel.Column] = dataItem[_rel.Column].join(",")
+        }
+        Object.keys(dataItem).forEach(p => {
+            if (![...cols, ...rels].find(e => e.Name === p || e.Column === p)) delete dataItem[p]
+        })
+        props.onSubmit?.(dataItem)
+    }
 
     useEffect(() => {
         if (props.id) {

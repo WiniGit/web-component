@@ -9,7 +9,6 @@ import { Util } from "../controller/utils"
 import { useTranslation } from "react-i18next"
 import { DataController } from "../controller/data"
 import { encodeClassName, LayoutElement } from "./page/config"
-import { getValidLink } from "./page/pageById"
 import { i18n } from "i18next"
 
 interface Props {
@@ -165,6 +164,9 @@ export const WiniProvider = ({ loadResources = true, ...props }: Props) => {
 
     useEffect(() => {
         ConfigData.pid = props.pid
+        ConfigData.url = props.url
+        ConfigData.imgUrlId = props.imgUrlId
+        ConfigData.fileUrl = props.fileUrl
         if (loadResources) {
             if (props.pid.length === 32) {
                 const _desginTokenController = new TableController("designtoken")
@@ -174,7 +176,7 @@ export const WiniProvider = ({ loadResources = true, ...props }: Props) => {
                 const projectController = new WiniController("Project")
                 projectController.getById(props.pid).then(res => {
                     if (res.code === 200 && res.data) {
-                        if (res.data.LogoId) (document.head.querySelector(`:scope > link[rel="icon"]`) as HTMLLinkElement)!.href = getValidLink(res.data.LogoId);
+                        if (res.data.LogoId) (document.head.querySelector(`:scope > link[rel="icon"]`) as HTMLLinkElement)!.href = res.data.LogoId.startsWith("http") ? res.data.LogoId : `https://cdn.ebig.co/wini/${res.data.LogoId}`;
                         (document.head.querySelector(`:scope > title`) as HTMLTitleElement)!.innerHTML = res.data.Name;
                         setProjectData(res.data)
                         ConfigData.fileUrl = res.data.FileDomain
@@ -195,9 +197,7 @@ export const WiniProvider = ({ loadResources = true, ...props }: Props) => {
                 setLoadedResources(true)
             }
         } else setLoadedResources(true)
-    }, [props.pid])
-    useEffect(() => { ConfigData.imgUrlId = props.imgUrlId }, [props.imgUrlId])
-    useEffect(() => { ConfigData.fileUrl = props.fileUrl }, [props.fileUrl])
+    }, [props.pid, props.imgUrlId, props.fileUrl])
 
     return <WiniContext.Provider value={{ projectData, theme, setTheme, i18n, userData, setUserData, globalData, setGlobalData }}>
         <BrowserRouter>

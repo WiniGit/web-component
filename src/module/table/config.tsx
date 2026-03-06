@@ -313,7 +313,7 @@ export const cellValue = (colItem: { [p: string]: any }, data: any, fields: { [p
         const fieldItem = fields.find(e => e.Name === colItem.Name.split(".").pop())
         if (!fieldItem) return undefined
         const listData = Array.isArray(data) ? data : [data]
-        return listData.filter(e => e !== undefined && e !== null).map(item => {
+        return listData.filter(Boolean).map(item => {
             let tmp = item[fieldItem.Name]
             switch (fieldItem.DataType) {
                 case FEDataType.DATE:
@@ -377,21 +377,27 @@ export const cellValue = (colItem: { [p: string]: any }, data: any, fields: { [p
     }
 }
 
-function ContentView({ content, maxLength = 100 }: { content: string, maxLength?: number }) {
-    const divRef = useRef<any>(null)
+function ContentView({ content = "", maxLength = 120 }) {
+    const divRef = useRef<HTMLDivElement>(null)
+    const [convertContent, setConvertContent] = useState("")
     const [contentInnerText, setContentInnerText] = useState("")
 
     useEffect(() => {
-        if (divRef.current && maxLength) {
+        if (ConfigData.regexGuid.test(content)) {
+            BaseDA.get(`${ConfigData.ebigCdn}/${ConfigData.pid}/${content}`).then((result) => {
+                if (typeof result === 'string') setConvertContent(result)
+                else setConvertContent(content)
+            })
+        } else setConvertContent(content)
+    }, [content.length])
+
+    useEffect(() => {
+        if (convertContent.length && divRef.current && maxLength) {
             setContentInnerText(divRef.current.innerText.slice(0, maxLength) + "...")
         }
-    }, [content])
+    }, [convertContent])
 
-    return (!!content?.length && !!contentInnerText.length) ?
+    return (!!convertContent?.length && !!contentInnerText.length) ?
         <p className="comp-text body-3" style={{ "--max-line": 2, margin: 0, flex: 1 } as any}>{contentInnerText}</p> :
-        <div
-            ref={divRef}
-            className="body-3"
-            dangerouslySetInnerHTML={{ __html: content }}
-        />
+        <div ref={divRef} className="body-3" dangerouslySetInnerHTML={{ __html: convertContent }} />
 }

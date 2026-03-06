@@ -88,7 +88,7 @@ export const SearchFilterData = ({ columns = [], fields = [], searchRaw = "*", o
     const _onChangeFilter = (fList: any[] = []) => {
         let currentSearch = searchRaw
         const numberFilter = [FEDataType.NUMBER, FEDataType.DATE, FEDataType.DATETIME, FEDataType.MONEY]
-        const currentFilter = filterData?.filter(f => f.value !== undefined && f.value !== null)
+        const currentFilter = filterData?.filter(f => !!f.value)
         if (currentSearch !== "*" && currentFilter?.length) {
             currentFilter.forEach(f => {
                 const tmp = fields.find(e => e.Name === f.name) as any
@@ -104,7 +104,7 @@ export const SearchFilterData = ({ columns = [], fields = [], searchRaw = "*", o
                 }
             })
         }
-        const tmpFList = fList.filter(f => f.value !== undefined && f.value !== null)
+        const tmpFList = fList.filter(f => !!f.value)
         const queryFilter = tmpFList.length ? tmpFList.map(f => {
             const tmp = fields.find(e => e.Name === f.name) as any
             if (numberFilter.includes(tmp?.DataType)) {
@@ -122,7 +122,7 @@ export const SearchFilterData = ({ columns = [], fields = [], searchRaw = "*", o
         onChange?.(finalSearchRaw.length ? finalSearchRaw : "*")
     }
 
-    const activeFilter = filterData?.filter(f => f.value !== undefined && f.value !== null)
+    const activeFilter = filterData?.filter(f => !!f.value)
 
     return <>
         <Popup ref={popupRef} />

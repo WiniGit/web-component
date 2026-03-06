@@ -71,7 +71,7 @@ export const UploadFiles = forwardRef<UploadFilesRef, UploadFilesProps>(({ class
                 files={files}
                 multiple={props.multiple}
                 allowType={props.allowType}
-                linkDomain={props.linkDomain ?? ConfigData.fileUrl}
+                linkDomain={props.linkDomain ?? ""}
                 onChange={(files) => {
                     const tmpFiles = files.filter(e => {
                         if (e.file) {

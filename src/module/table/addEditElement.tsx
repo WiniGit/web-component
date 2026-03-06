@@ -205,97 +205,7 @@ const FormView = ({ cols = [], rels = [], item, tbName, onCancel, onSuccess, exp
     const watchRel = useMemo(() => rels.filter(e => e.Query && e.Query.match(regexGetVariableByThis)?.length), [rels.length])
     const methodsOptions = useForm<any>({ shouldFocusError: false })
     const { t } = useTranslation()
-    const regexGuid = /^[0-9a-fA-F]{32}$/;
-
-    const onSubmit = async (ev: any) => {
-        let dataItem = { ...ev }
-        dataItem.DateCreated ??= Date.now()
-        let validateDataForm: any = {}
-        Object.keys(dataItem).forEach((key) => {
-            if (typeof dataItem[key] === "string") validateDataForm[key] = dataItem[key].trim()
-        })
-        const _val = await validateForm({
-            list: cols.filter(e => e.Form.Validate?.length).map(e => {
-                return {
-                    Name: e.Name,
-                    Validate: e.Form.Validate
-                }
-            }),
-            formdata: validateDataForm
-        })
-        // Cập nhật lỗi vào React Hook Form
-        if (_val && Object.keys(_val).length > 0) {
-            Object.keys(_val).forEach((field) => {
-                methods.setError(field, { message: _val[field].join(', ') });
-            });
-            return;
-        }
-        // Nếu có lỗi, dừng lại không thực hiện submit
-        for (let _col of cols) {
-            if (_col.Name === "DateCreated") {
-                dataItem[_col.Name] ??= Date.now()
-            } else if (dataItem[_col.Name] != undefined) {
-                if (!_col.Query) {
-                    switch (_col.DataType) {
-                        case FEDataType.STRING:
-                            if (Array.isArray(dataItem[_col.Name])) {
-                                dataItem[_col.Name] = dataItem[_col.Name].join(",")
-                            } else if (typeof dataItem[_col.Name] !== 'string') {
-                                dataItem[_col.Name] = `${dataItem[_col.Name]}`
-                            }
-                            break;
-                        case FEDataType.BOOLEAN:
-                            dataItem[_col.Name] = [true, 1, "true"].includes(dataItem[_col.Name]) ? true : false
-                            break;
-                        case FEDataType.NUMBER:
-                            dataItem[_col.Name] = typeof dataItem[_col.Name] === 'string' ? parseFloat(dataItem[_col.Name]) : dataItem[_col.Name]
-                            if (isNaN(dataItem[_col.Name])) delete dataItem[_col.Name]
-                            break;
-                        case FEDataType.DATE:
-                        case FEDataType.DATETIME:
-                            dataItem[_col.Name] = dataItem[_col.Name].getTime()
-                            break;
-                        case FEDataType.MONEY:
-                            dataItem[_col.Name] = dataItem[_col.Name] ? parseInt(dataItem[_col.Name].replaceAll(',', '')) : null
-                            break;
-                        case FEDataType.PASSWORD:
-                            if (dataItem[_col.Name] !== item?.[_col.Name]) {
-                                const intergrationController = new AccountController()
-                                const getHashPassword = await intergrationController.hashPassword(dataItem[_col.Name])
-                                dataItem[_col.Name] = getHashPassword.data
-                            }
-                            break;
-                        case FEDataType.FILE:
-                            if (ev[_col.Name] && Array.isArray(ev[_col.Name])) {
-                                const uploadFiles = ev[_col.Name].filter((e: any) => !!e?.file)
-                                if (uploadFiles.length) {
-                                    const res = await BaseDA.uploadFiles(uploadFiles.map((e: any) => e.file))
-                                    if (res?.length) dataItem[_col.Name] = ev[_col.Name].map((e: any) => e.file ? res.shift().Id : (e.exactUrl ?? e.id)).filter(Boolean).join(",")
-                                } else {
-                                    dataItem[_col.Name] = ev[_col.Name].map((e: any) => e.exactUrl ?? e.id).join(",")
-                                }
-                            }
-                            break;
-                        default:
-                            break;
-                    }
-                }
-            }
-        }
-        if (dataItem.DateCreated instanceof Date) dataItem.DateCreated = dataItem.DateCreated.getTime()
-        for (let _rel of rels) {
-            if (dataItem[_rel.Column] && Array.isArray(dataItem[_rel.Column]))
-                dataItem[_rel.Column] = dataItem[_rel.Column].join(",")
-        }
-        if (handleSubmit) await handleSubmit({ item: dataItem, initItem: item, methods, onSuccess })
-        else {
-            const res = await dataController.add([dataItem])
-            if (res.code !== 200) return ToastMessage.errors(res.message)
-            onSuccess?.()
-        }
-    }
-
-    const onError = () => { }
+    const htmlContent = useRef<{ [k: string]: string }>({})
 
     useEffect(() => {
         if (cols.length) {
@@ -307,13 +217,18 @@ const FormView = ({ cols = [], rels = [], item, tbName, onCancel, onSuccess, exp
                     if (_col) {
                         switch (_col.DataType) {
                             case FEDataType.GID:
-                            case FEDataType.HTML:
+                            case FEDataType.STRING:
                             case FEDataType.PASSWORD:
                                 methods.setValue(prop, item[prop])
                                 break;
-                            case FEDataType.STRING:
-                                if (_col.Form.Options?.length) {
-                                    methods.setValue(prop, (item[prop] ?? "").split(","))
+                            case FEDataType.HTML:
+                                if (ConfigData.regexGuid.test(item[prop])) {
+                                    BaseDA.get(`${ConfigData.ebigCdn}/${ConfigData.pid}/${item[prop]}`).then((result) => {
+                                        if (typeof result === 'string') {
+                                            htmlContent.current[prop] = item[prop]
+                                            methods.setValue(prop, result)
+                                        } else methods.setValue(prop, item[prop])
+                                    })
                                 } else {
                                     methods.setValue(prop, item[prop])
                                 }
@@ -354,8 +269,8 @@ const FormView = ({ cols = [], rels = [], item, tbName, onCancel, onSuccess, exp
                 })
                 if (_fileIds.length) {
                     let filesInfor = _fileIds.map(e => e.id?.split(",")).flat(Infinity)
-                    const fileGuids = filesInfor.filter((id, i, arr) => !!id?.length && regexGuid.test(id) && arr.indexOf(id) === i)
-                    filesInfor = filesInfor.filter((id, i, arr) => !!id?.length && !regexGuid.test(id) && arr.indexOf(id) === i).map((url) => ({ id: randomGID(), name: url.split(/[\\/]/).pop(), type: urlToFileType(url), exactUrl: url, url: url.startsWith("https") ? url : getValidLink(url) }))
+                    const fileGuids = filesInfor.filter((id, i, arr) => !!id?.length && ConfigData.regexGuid.test(id) && arr.indexOf(id) === i)
+                    filesInfor = filesInfor.filter((id, i, arr) => !!id?.length && !ConfigData.regexGuid.test(id) && arr.indexOf(id) === i).map((url) => ({ id: randomGID(), name: url.split(/[\\/]/).pop(), type: urlToFileType(url), exactUrl: url, url: url.startsWith("https") ? url : getValidLink(url) }))
                     if (fileGuids.length) {
                         BaseDA.getFilesInfor(fileGuids).then(res => {
                             if (res.code === 200) _fileIds.forEach(e => {
@@ -374,13 +289,18 @@ const FormView = ({ cols = [], rels = [], item, tbName, onCancel, onSuccess, exp
                 cols.filter((e) => e.Form?.DefaultValue != undefined && e.Form?.DefaultValue !== "").forEach((_col) => {
                     switch (_col.DataType) {
                         case FEDataType.GID:
-                        case FEDataType.HTML:
+                        case FEDataType.STRING:
                         case FEDataType.PASSWORD:
                             methods.setValue(_col.Name, _col.Form.DefaultValue)
                             break;
-                        case FEDataType.STRING:
-                            if (_col.Form.Options?.length) {
-                                methods.setValue(_col.Name, _col.Form.DefaultValue.split(","))
+                        case FEDataType.HTML:
+                            if (ConfigData.regexGuid.test(_col.Form.DefaultValue)) {
+                                BaseDA.get(`${ConfigData.ebigCdn}/${ConfigData.pid}/${_col.Form.DefaultValue}`).then((result) => {
+                                    if (typeof result === 'string') {
+                                        htmlContent.current[_col.Name] = _col.Form.DefaultValue
+                                        methods.setValue(_col.Name, result)
+                                    } else methods.setValue(_col.Name, _col.Form.DefaultValue)
+                                })
                             } else {
                                 methods.setValue(_col.Name, _col.Form.DefaultValue)
                             }
@@ -406,6 +326,110 @@ const FormView = ({ cols = [], rels = [], item, tbName, onCancel, onSuccess, exp
         }
         if (props.parentId) methods.setValue("ParentId", props.parentId)
     }, [item, cols.length, props.parentId])
+
+    const onSubmit = async (ev: any) => {
+        let dataItem = { ...ev }
+        dataItem.DateCreated ??= Date.now()
+        let validateDataForm: any = {}
+        Object.keys(dataItem).forEach((key) => {
+            if (typeof dataItem[key] === "string") validateDataForm[key] = dataItem[key].trim()
+        })
+        const _val = await validateForm({
+            list: cols.filter(e => e.Form.Validate?.length).map(e => {
+                return {
+                    Name: e.Name,
+                    Validate: e.Form.Validate
+                }
+            }),
+            formdata: validateDataForm
+        })
+        // Cập nhật lỗi vào React Hook Form
+        if (_val && Object.keys(_val).length > 0) {
+            Object.keys(_val).forEach((field) => {
+                methods.setError(field, { message: _val[field].join(', ') });
+            });
+            return;
+        }
+        // Nếu có lỗi, dừng lại không thực hiện submit
+        for (let _col of cols) {
+            switch (_col.Name) {
+                case "DateCreated":
+                    dataItem[_col.Name] ??= Date.now()
+                    break;
+                default:
+                    if (dataItem[_col.Name] === undefined || dataItem[_col.Name] === null) {
+                        dataItem[_col.Name] = null
+                        continue;
+                    }
+                    if (_col.Query) continue;
+                    // handle other columns value
+                    switch (_col.DataType) {
+                        case FEDataType.STRING:
+                            if (Array.isArray(dataItem[_col.Name])) {
+                                dataItem[_col.Name] = dataItem[_col.Name].join(",")
+                            } else if (typeof dataItem[_col.Name] !== 'string') {
+                                dataItem[_col.Name] = `${dataItem[_col.Name]}`
+                            }
+                            break;
+                        case FEDataType.BOOLEAN:
+                            dataItem[_col.Name] = [true, 1, "true"].includes(dataItem[_col.Name]) ? true : false
+                            break;
+                        case FEDataType.NUMBER:
+                            dataItem[_col.Name] = typeof dataItem[_col.Name] === 'string' ? parseFloat(dataItem[_col.Name]) : dataItem[_col.Name]
+                            if (isNaN(dataItem[_col.Name])) delete dataItem[_col.Name]
+                            break;
+                        case FEDataType.DATE:
+                        case FEDataType.DATETIME:
+                            dataItem[_col.Name] = dataItem[_col.Name].getTime()
+                            break;
+                        case FEDataType.MONEY:
+                            dataItem[_col.Name] = dataItem[_col.Name] ? parseInt(dataItem[_col.Name].replaceAll(',', '')) : null
+                            break;
+                        case FEDataType.PASSWORD:
+                            if (dataItem[_col.Name] !== item?.[_col.Name]) {
+                                const intergrationController = new AccountController()
+                                const getHashPassword = await intergrationController.hashPassword(dataItem[_col.Name])
+                                dataItem[_col.Name] = getHashPassword.data
+                            }
+                            break;
+                        case FEDataType.HTML:
+                            if (dataItem[_col.Name].length || htmlContent.current[_col.Name]) {
+                                const createHtmlFile = Util.stringToFile(dataItem[_col.Name], `${dataItem.Name}'s ${_col.Name}.txt`)
+                                const res = await BaseDA.uploadFiles(htmlContent.current[_col.Name] ? [{ id: htmlContent.current[_col.Name], file: createHtmlFile }] : [createHtmlFile])
+                                if (res?.length) dataItem[_col.Name] = res[0].Id
+                            }
+                            break;
+                        case FEDataType.FILE:
+                            if (ev[_col.Name] && Array.isArray(ev[_col.Name])) {
+                                const uploadFiles = ev[_col.Name].filter((e: any) => !!e?.file)
+                                if (uploadFiles.length) {
+                                    const res = await BaseDA.uploadFiles(uploadFiles.map((e: any) => e.file))
+                                    if (res?.length) dataItem[_col.Name] = ev[_col.Name].map((e: any) => e.file ? res.shift().Id : (e.exactUrl ?? e.id)).filter(Boolean).join(",")
+                                } else {
+                                    dataItem[_col.Name] = ev[_col.Name].map((e: any) => e.exactUrl ?? e.id).join(",")
+                                }
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+            }
+        }
+        if (dataItem.DateCreated instanceof Date) dataItem.DateCreated = dataItem.DateCreated.getTime()
+        for (let _rel of rels) {
+            if (dataItem[_rel.Column] && Array.isArray(dataItem[_rel.Column]))
+                dataItem[_rel.Column] = dataItem[_rel.Column].join(",")
+        }
+        if (handleSubmit) await handleSubmit({ item: dataItem, initItem: item, methods, onSuccess })
+        else {
+            const res = await dataController.add([dataItem])
+            if (res.code !== 200) return ToastMessage.errors(res.message)
+            onSuccess?.()
+        }
+    }
+
+    const onError = () => { }
 
     const getOptions = async ({ length, search, parentId, _rel }: { length: number, search?: string, parentId?: string | number, _rel: { [p: string]: any } }) => {
         const pkTableController = new TableController("rel")

@@ -23,6 +23,11 @@ export class Util {
 
     static dateDefault = new Date('01/01/2021').getTime();
 
+    static stringToFile = (content: string, fileName: string) => {
+        const blob = new Blob([content], { type: "text/plain" });
+        return new File([blob], fileName, { type: "text/plain" });
+    }
+
     static set_timeRefreshToken() {
         const result = new Date(Date.now());
         result.setDate(result.getDate() + 30);
@@ -144,7 +149,7 @@ export class Util {
     /** date: dd/mm/yyyy | yyyy/mm/dd | dd/mm | mm/yyyy
         time: hh:mm:ss | hh:mm */
     static datetoString(x = new Date(), y = "dd/mm/yyyy") {
-        if(!x) return ""
+        if (!x) return ""
         if (typeof x === "number") x = new Date(x)
         let splitDateTime = y.toLowerCase().split(" ");
         let dateConvert = splitDateTime[0]
@@ -463,7 +468,7 @@ export class Util {
         for (const interval of intervals) {
             const count = Math.floor(seconds / interval.seconds);
             if (count >= 1) {
-                if(seconds === 86400 && count === 1) {
+                if (seconds === 86400 && count === 1) {
                     return translate ? translate("yesterday").toLowerCase() : "hôm qua";
                 }
                 return `${count} ${count > 1 ? interval.multitipleLabel : interval.label} ${translate ? translate("ago").toLowerCase() : "trước"}`;

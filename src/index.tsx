@@ -29,7 +29,6 @@ export { Tag } from './component/tag/tag'
 export { Winicon, showTooltipElement } from './component/wini-icon/winicon'
 export { NumberPicker } from './component/number-picker/number-picker'
 export { InputOtp } from './component/input-otp/input-otp'
-export { WLoginView } from './form/login/view'
 export { CustomCkEditor5 } from './component/ck-editor/ckeditor'
 export { Slider } from './component/slider/slider'
 export { ColorPicker } from './component/color-picker/color-picker'
@@ -52,7 +51,8 @@ import { OptionsItem } from './component/select1/select1'
 export type { OptionsItem }
 
 export { useTranslation } from './language/i18n';
-export { Routes, Route, useNavigate, useParams, useLocation, useSearchParams, Navigate, NavLink, Outlet } from 'react-router'
+import { Routes, Route, useNavigate, useParams, useLocation, useSearchParams, Navigate, NavLink, Outlet } from 'react-router'
+export type { Routes, Route, useNavigate, useParams, useLocation, useSearchParams, Navigate, NavLink, Outlet }
 
 import { WiniProvider, useWiniContext } from './module/WiniProvider'
 export { useWiniContext }

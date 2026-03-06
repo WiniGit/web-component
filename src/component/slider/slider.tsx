@@ -108,7 +108,7 @@ export function Slider({ min = 0, max = 100, formatter, className, rangeBarWidth
     }, [min, max, step, value, range, onChange, onChangeComplete, isDragging]);
 
     useEffect(() => {
-        if (defaultValue !== undefined && defaultValue !== null) {
+        if (!!defaultValue) {
             if (typeof defaultValue === "number") {
                 if (range) {
                     if (defaultValue > max || defaultValue < min) setValue([min, max])

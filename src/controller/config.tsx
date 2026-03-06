@@ -9,6 +9,7 @@ export class ConfigData {
     static imgUrlId = "";
     static regexGuid = /^[0-9a-fA-F]{32}$/;
     static extraPlugins = undefined;
+    static ebigCdn = "https://cdn.ebig.co"
     static onInvalidToken = () => Util.clearCookie();
 }
 
