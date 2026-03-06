@@ -142,13 +142,13 @@ export class BaseDA {
         }
     }
 
-    static uploadFiles = async (listFile: File[]) => {
+    static uploadFiles = async (listFile: File[], headers?: { [k: string]: any }) => {
         const loader = document.createElement("div")
         loader.className = "loader"
         document.body.appendChild(loader)
         listFile = [...listFile];
-        // const headersObj: any = await getHeaders()
-        const headersObj: any = { pid: ConfigData.pid, "Content-Type": "multipart/form-data" }
+        let _headers: { [k: string]: any } = await getHeaders()
+        const headersObj: any = { ..._headers, pid: ConfigData.pid, "Content-Type": "multipart/form-data", ...headers }
         const listRequest: Array<File[]> = [[]]
         for (const file of listFile) {
             if (file.size > maxFileSize) {
@@ -228,14 +228,17 @@ export class CkEditorUploadAdapter {
     }
 
     // Initializes the XMLHttpRequest object using the URL passed to the constructor.
-    _initRequest() {
+    async _initRequest() {
         const xhr = this.xhr = new XMLHttpRequest();
         // Note that your request may look different. It is up to you and your editor
         // integration to choose the right communication channel. This example uses
         // a POST request with JSON as a data structure but your configuration
         // could be different.
+        let _headers: any = await getHeaders()
+        xhr.setRequestHeader("Authorization", _headers.Authorization);
+        xhr.setRequestHeader("pid", ConfigData.pid);
+        xhr.setRequestHeader("Content-Type", "multipart/form-data");
         xhr.open('POST', ConfigData.url + 'file/uploadfiles', true);
-        // xhr.setRequestHeader("Authorization", 'Bearer ' + localStorage.getItem("token"));
         xhr.responseType = 'json';
     }
 

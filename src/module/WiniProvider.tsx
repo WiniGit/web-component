@@ -196,6 +196,8 @@ export const WiniProvider = ({ loadResources = true, ...props }: Props) => {
             }
         } else setLoadedResources(true)
     }, [props.pid])
+    useEffect(() => { ConfigData.imgUrlId = props.imgUrlId }, [props.imgUrlId])
+    useEffect(() => { ConfigData.fileUrl = props.fileUrl }, [props.fileUrl])
 
     return <WiniContext.Provider value={{ projectData, theme, setTheme, i18n, userData, setUserData, globalData, setGlobalData }}>
         <BrowserRouter>
