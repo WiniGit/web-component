@@ -143,11 +143,11 @@ export const WiniProvider = ({ loadResources = true, ...props }: Props) => {
     useEffect(() => {
         const tmp = document.createElement("div")
         tmp.innerHTML = `
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/WiniGit/web-component@a752346/src/skin/root.min.css">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/WiniGit/web-component@a752346/src/skin/layout.min.css">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/WiniGit/web-component@a752346/src/skin/typography.min.css">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/WiniGit/web-component@a752346/src/skin/toast-noti.min.css">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/WiniGit/web-component@a752346/src/skin/style.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/WiniGit/web-component@39a5ae9/src/skin/root.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/WiniGit/web-component@39a5ae9/src/skin/layout.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/WiniGit/web-component@39a5ae9/src/skin/typography.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/WiniGit/web-component@39a5ae9/src/skin/toast-noti.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/WiniGit/web-component@39a5ae9/src/skin/style.css">
         `
         document.head.children[0].before(...tmp.childNodes)
         tmp.remove()
@@ -176,7 +176,7 @@ export const WiniProvider = ({ loadResources = true, ...props }: Props) => {
                 const projectController = new WiniController("Project")
                 projectController.getById(props.pid).then(res => {
                     if (res.code === 200 && res.data) {
-                        if (res.data.LogoId) (document.head.querySelector(`:scope > link[rel="icon"]`) as HTMLLinkElement)!.href = res.data.LogoId.startsWith("http") ? res.data.LogoId : `https://cdn.ebig.co/wini/${res.data.LogoId}`;
+                        if (res.data.LogoId) (document.head.querySelector(`:scope > link[rel="icon"]`) as HTMLLinkElement)!.href = res.data.LogoId.startsWith("http") ? res.data.LogoId : `${ConfigData.ebigCdn}/wini/${res.data.LogoId}`;
                         (document.head.querySelector(`:scope > title`) as HTMLTitleElement)!.innerHTML = res.data.Name;
                         setProjectData(res.data)
                         ConfigData.fileUrl = res.data.FileDomain

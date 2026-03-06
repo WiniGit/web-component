@@ -2,7 +2,6 @@ import styles from "./upload.module.css"
 import { CSSProperties, forwardRef, ReactNode, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react"
 import { Button, closePopup, NavLink, Popup, randomGID, showPopup, Text, TextField, ToastMessage, Winicon } from "../../index"
 import { useTranslation } from "react-i18next"
-import { ConfigData } from "../../controller/config";
 import { formatFileSize } from "./import-file";
 
 interface FilePreview {

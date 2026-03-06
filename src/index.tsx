@@ -51,8 +51,7 @@ import { OptionsItem } from './component/select1/select1'
 export type { OptionsItem }
 
 export { useTranslation } from './language/i18n';
-import { Routes, Route, useNavigate, useParams, useLocation, useSearchParams, Navigate, NavLink, Outlet } from 'react-router'
-export type { Routes, Route, useNavigate, useParams, useLocation, useSearchParams, Navigate, NavLink, Outlet }
+export { Routes, Route, useNavigate, useParams, useLocation, useSearchParams, Navigate, NavLink, Outlet } from 'react-router-dom'
 
 import { WiniProvider, useWiniContext } from './module/WiniProvider'
 export { useWiniContext }
