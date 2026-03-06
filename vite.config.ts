@@ -22,7 +22,7 @@ export default defineConfig({
       formats: ["es", "cjs"],
     },
     rollupOptions: {
-      external: ["react", "react-dom"],
+      external: ["react", "react-dom", "react-router-dom"],
       output: {
         assetFileNames: (assetInfo) => {
           if (assetInfo.name?.endsWith(".css")) {

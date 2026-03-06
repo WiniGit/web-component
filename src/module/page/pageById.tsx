@@ -877,8 +877,19 @@ const FileName = ({ file, index, ...props }: { type?: "div" | "p" | "span" | "h1
 }
 
 const CustomText = ({ type = "div", ...props }: { type?: "div" | "p" | "span" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6", html?: string, maxLine?: number, className?: string, style?: CSSProperties, value?: string, [k: string]: any }) => {
-    if (!props.value && !props.html) return null
+    const [convertContentHtml, setConvertContentHtml] = useState<string>("")
+
+    useEffect(() => {
+        if (props.html && ConfigData.regexGuid.test(props.html)) {
+            BaseDA.get(`${ConfigData.ebigCdn}/${ConfigData.pid}/${props.html}`).then((result: any) => {
+                if (typeof result === 'string') setConvertContentHtml(result)
+                else setConvertContentHtml(props.html!)
+            })
+        } else if (props.html) setConvertContentHtml(props.html)
+    }, [props.html])
+
     const customProps = useMemo(() => {
+        if (!props.value && !props.html) return null
         let _props: any = { ...props, style: { ...(props.style ?? {}) } }
         delete _props.value
         _props.style ??= {}
@@ -886,43 +897,45 @@ const CustomText = ({ type = "div", ...props }: { type?: "div" | "p" | "span" | 
             _props.style['--max-line'] = props.maxLine
             delete _props.maxLine
         }
-        if (props.html) _props.dangerouslySetInnerHTML = { __html: props.html }
+        if (props.html) _props.dangerouslySetInnerHTML = { __html: convertContentHtml }
         if (type && type !== "div") _props.className = `${props.maxLine ? "comp-text" : ""}${props.html ? "-innerhtml" : ""} ${props.className ?? ""}`
         else _props.className = props.className
         delete _props.type
         delete _props.html
         return _props
-    }, [props.html, props.className, props])
+    }, [convertContentHtml, props.className, props])
 
-    switch (type) {
-        case "p":
-            if (props.html) return <p {...customProps} />
-            else return <p {...customProps}>{props.value}</p>
-        case "span":
-            if (props.html) return <span {...customProps} />
-            else return <span {...customProps}>{props.value}</span>
-        case "h1":
-            if (props.html) return <h1 {...customProps} />
-            else return <h1 {...customProps}>{props.value}</h1>
-        case "h2":
-            if (props.html) return <h2 {...customProps} />
-            else return <h2 {...customProps}>{props.value}</h2>
-        case "h3":
-            if (props.html) return <h3 {...customProps} />
-            else return <h3 {...customProps}>{props.value}</h3>
-        case "h4":
-            if (props.html) return <h4 {...customProps} />
-            else return <h4 {...customProps}>{props.value}</h4>
-        case "h5":
-            if (props.html) return <h5 {...customProps} />
-            else return <h5 {...customProps}>{props.value}</h5>
-        case "h6":
-            if (props.html) return <h6 {...customProps} />
-            else return <h6 {...customProps}>{props.value}</h6>
-        default:
-            const { onMouseOver, ...tmpProps } = customProps
-            return <Text {...tmpProps} onHover={onMouseOver}>{props.value}</Text>
-    }
+    if (!props.value && !props.html) return null
+    else
+        switch (type) {
+            case "p":
+                if (props.html) return <p {...customProps} />
+                else return <p {...customProps}>{props.value}</p>
+            case "span":
+                if (props.html) return <span {...customProps} />
+                else return <span {...customProps}>{props.value}</span>
+            case "h1":
+                if (props.html) return <h1 {...customProps} />
+                else return <h1 {...customProps}>{props.value}</h1>
+            case "h2":
+                if (props.html) return <h2 {...customProps} />
+                else return <h2 {...customProps}>{props.value}</h2>
+            case "h3":
+                if (props.html) return <h3 {...customProps} />
+                else return <h3 {...customProps}>{props.value}</h3>
+            case "h4":
+                if (props.html) return <h4 {...customProps} />
+                else return <h4 {...customProps}>{props.value}</h4>
+            case "h5":
+                if (props.html) return <h5 {...customProps} />
+                else return <h5 {...customProps}>{props.value}</h5>
+            case "h6":
+                if (props.html) return <h6 {...customProps} />
+                else return <h6 {...customProps}>{props.value}</h6>
+            default:
+                const { onMouseOver, ...tmpProps } = customProps
+                return <Text {...tmpProps} onHover={onMouseOver}>{props.value}</Text>
+        }
 }
 
 interface PageByIdProps extends Props {
