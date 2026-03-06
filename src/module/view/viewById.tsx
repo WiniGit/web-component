@@ -120,7 +120,7 @@ export const ViewById = (props: Props) => {
             const fileIds = fileCols.map((col: any) => indexItem![col.Name]?.split(",")).flat(Infinity).filter((e: string | undefined, i: number, arr: Array<string>) => e?.length && ConfigData.regexGuid.test(e) && currentFiles.every((el: any) => el.Id !== e) && arr.indexOf(e) === i)
             if (fileIds.length) {
                 BaseDA.getFilesInfor(fileIds).then(fileRes => {
-                    if (fileRes.code === 200) methods.setValue("_files", [...currentFiles, ...fileRes.data.filter((e: any) => !!e)])
+                    if (fileRes.code === 200) methods.setValue("_files", [...currentFiles, ...fileRes.data.filter(Boolean)])
                 })
             }
         }
@@ -139,7 +139,7 @@ export const ViewById = (props: Props) => {
                 const relDataIds = indexItem![k]?.split(",").flat(Infinity).filter((e: string | undefined, i: number, arr: Array<string>) => e?.length && currentTmp.every((el: any) => el.Id !== e) && arr.indexOf(e) === i)
                 if (relDataIds?.length) {
                     dataController.getByListId(relDataIds).then(relRes => {
-                        if (relRes.code === 200) methods.setValue(`_${k}`, [...currentTmp, ...relRes.data.filter((e: any) => !!e)])
+                        if (relRes.code === 200) methods.setValue(`_${k}`, [...currentTmp, ...relRes.data.filter(Boolean)])
                     })
                 }
             }

@@ -37,7 +37,7 @@ export const AutoCellContent = ({ colItem, data, fields = [], files = [], style 
         const listData = Array.isArray(data) ? data : [data]
         switch (colItem.Type) {
             case ColDataType.people:
-                return listData.filter(e => !!e);
+                return listData.filter(Boolean);
             // @ts-ignore
             case ColDataType.label:
                 if (fieldItem.Form?.Options?.length) {

@@ -510,7 +510,7 @@ const InputValueTile = ({ fieldItem, filterItem, colData, onChange }: InputValue
             </div>
         default:
             if (fieldItem.Column) {
-                const labels = data.value?.split(",").map((id: string) => relativeValue.find((f: any) => f.Id === id)).filter((e: any) => !!e) ?? []
+                const labels = data.value?.split(",").map((id: string) => relativeValue.find((f: any) => f.Id === id)).filter(Boolean) ?? []
                 return <>
                     <Popup ref={popupRef} />
                     <button type="button" className={`row ${styles["button-filter"]}`}
@@ -839,7 +839,7 @@ export const ButtonImportData = ({ onImport }: { onImport?: (result: { [key: str
                     const getRelative = await Promise.all(Object.keys(relativeTmp).map((r) => {
                         const splitFields = r.split(".")
                         const kController = new DataController(splitFields[0])
-                        const relTmpIds = relativeTmp[r].map((e: any) => e?.split(",")).flat(Infinity).filter((e: any) => !!e)
+                        const relTmpIds = relativeTmp[r].map((e: any) => e?.split(",")).flat(Infinity).filter(Boolean)
                         const size = relTmpIds.length
                         return kController.getListSimple({
                             page: 1, size: size,
@@ -853,7 +853,7 @@ export const ButtonImportData = ({ onImport }: { onImport?: (result: { [key: str
                             result = result.map(e => {
                                 const splitFields = r.split(".")
                                 const tmp = { ...e }
-                                const relEIds = e[r]?.split(",").map((el: any) => relativeResult.find((rel: any) => rel[splitFields[1]] === el.trim())).filter((el: any) => !!el).map((el: any) => el.Id)
+                                const relEIds = e[r]?.split(",").map((el: any) => relativeResult.find((rel: any) => rel[splitFields[1]] === el.trim())).filter(Boolean).map((el: any) => el.Id)
                                 if (relEIds?.length) tmp[`${splitFields[0]}Id`] = relEIds.join(",")
                                 delete tmp[r]
                                 return tmp

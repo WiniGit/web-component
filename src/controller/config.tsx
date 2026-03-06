@@ -142,36 +142,60 @@ export class BaseDA {
         }
     }
 
-    static uploadFiles = async (listFile: File[], headers?: { [k: string]: any }) => {
+    static uploadFiles = async (listFile: File[] | { id: string, file: File }[], headers?: { [k: string]: any }) => {
         const loader = document.createElement("div")
         loader.className = "loader"
         document.body.appendChild(loader)
-        listFile = [...listFile];
+
+        // Extract files and IDs
+        const files = listFile.map(e => e instanceof File ? e : e.file);
+        const ids = listFile.map(e => e instanceof File ? null : e.id).filter(Boolean);
+
         let _headers: { [k: string]: any } = await getHeaders()
-        const headersObj: any = { ..._headers, pid: ConfigData.pid, "Content-Type": "multipart/form-data", ...headers }
-        const listRequest: Array<File[]> = [[]]
-        for (const file of listFile) {
+        const headersObj: any = { ..._headers, pid: ConfigData.pid, ...headers }
+        // Remove Content-Type - browser will set it with boundary for multipart
+
+        const listRequest: Array<{ files: File[], ids: string[] }> = [{ files: [], ids: [] }]
+
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            const id = ids[i] || null;
+
             if (file.size > maxFileSize) {
                 ToastMessage.errors('File size must be not more than 200MB')
                 loader.remove()
                 return null
             } else {
-                const tmp = listRequest[0]
-                if (tmp.length > 12 || [...tmp, file].map(f => f.size).reduce((a, b) => a + b, 0) > maxFileSize) {
-                    listRequest.unshift([file])
-                } else listRequest[0].push(file)
+                const tmp = listRequest[listRequest.length - 1];
+                const totalSize = [...tmp.files, file].map(f => f.size).reduce((a, b) => a + b, 0);
+
+                // Check if need to create new batch
+                if (tmp.files.length >= 12 || totalSize > maxFileSize) {
+                    listRequest.push({ files: [file], ids: id ? [id] : [] })
+                } else {
+                    tmp.files.push(file);
+                    if (id) tmp.ids.push(id);
+                }
             }
         }
+
         const response = await Promise.all(listRequest.map(rq => {
             const formData = new FormData();
-            rq.forEach(e => {
+            rq.files.forEach(e => {
                 formData.append("files", e);
             })
+            // Add IDs if provided
+            if (rq.ids.length > 0) {
+                rq.ids.forEach(id => {
+                    formData.append("ids", id);
+                })
+            }
             return BaseDA.postFile(ConfigData.url + 'file/uploadfiles', {
                 headers: headersObj,
                 body: formData,
             })
         }))
+
         loader.remove()
         if (response.every(r => r.code === 200)) {
             return response.map(r => r.data).flat(Infinity)
@@ -182,18 +206,16 @@ export class BaseDA {
     }
 
     static getFilesInfor = async (ids: Array<string>) => {
-        const headersObj: any = {}
         const response = await BaseDA.post(ConfigData.url + 'file/getFilesInfor', {
-            headers: headersObj,
+            headers: { pid: ConfigData.pid, 'Content-Type': 'application/json' },
             body: { ids },
         })
         return response
     }
 
     static updateFilesInfor = async (data: Array<{ [p: string]: any }>) => {
-        const headersObj: any = {}
         const response = await BaseDA.post(ConfigData.url + 'file/editFileInfor', {
-            headers: headersObj,
+            headers: { pid: ConfigData.pid, 'Content-Type': 'application/json' },
             body: { data },
         })
         return response

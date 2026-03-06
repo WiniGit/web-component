@@ -270,7 +270,7 @@ const FormView = ({ cols = [], rels = [], item, tbName, onCancel, onSuccess, exp
                                 const uploadFiles = ev[_col.Name].filter((e: any) => !!e?.file)
                                 if (uploadFiles.length) {
                                     const res = await BaseDA.uploadFiles(uploadFiles.map((e: any) => e.file))
-                                    if (res?.length) dataItem[_col.Name] = ev[_col.Name].map((e: any) => e.file ? res.shift().Id : (e.exactUrl ?? e.id)).filter((id: string) => !!id?.length).join(",")
+                                    if (res?.length) dataItem[_col.Name] = ev[_col.Name].map((e: any) => e.file ? res.shift().Id : (e.exactUrl ?? e.id)).filter(Boolean).join(",")
                                 } else {
                                     dataItem[_col.Name] = ev[_col.Name].map((e: any) => e.exactUrl ?? e.id).join(",")
                                 }
@@ -345,7 +345,7 @@ const FormView = ({ cols = [], rels = [], item, tbName, onCancel, onSuccess, exp
                         const _tmpParse = item[prop]?.length ? item[prop].split(",") : []
                         const pkController = new DataController(_rel.TablePK)
                         pkController.getByListId(_tmpParse).then(pkRes => {
-                            if (pkRes.code === 200) methodsOptions.setValue(`${_rel.Column}_Options`, pkRes.data?.filter((e: any) => !!e) ?? [])
+                            if (pkRes.code === 200) methodsOptions.setValue(`${_rel.Column}_Options`, pkRes.data?.filter(Boolean) ?? [])
                         })
                         methods.setValue(prop, _rel.Form.ComponentType === ComponentType.selectMultiple ? _tmpParse : _tmpParse[0])
                     } else {

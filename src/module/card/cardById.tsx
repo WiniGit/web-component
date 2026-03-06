@@ -131,7 +131,7 @@ export const CardById = forwardRef<CardRef, CardProps>((props, ref) => {
             let listIds = controller.ids.split(",")
             if (controller.maxLength && controller.maxLength !== "none") listIds = listIds.slice(0, controller.maxLength)
             const res = await dataController.getByListId(listIds)
-            const listData = res.data.filter((e: any) => !!e)
+            const listData = res.data.filter(Boolean)
             if (res.code === 200) tmp = { data: listData, totalCount: listData.length }
         }
         if (!tmp) return undefined
@@ -144,7 +144,7 @@ export const CardById = forwardRef<CardRef, CardProps>((props, ref) => {
             const relDataIds = tmp.data.map((e: any) => e[k]?.split(",")).flat(Infinity).filter((e: string | undefined, i: number, arr: Array<string>) => e?.length && currentTmp.every((el: any) => el.Id !== e) && arr.indexOf(e) === i)
             if (relDataIds.length) {
                 dataController.getByListId(relDataIds).then(relRes => {
-                    if (relRes.code === 200) methods.setValue(`_${k}`, [...currentTmp, ...relRes.data.filter((e: any) => !!e)])
+                    if (relRes.code === 200) methods.setValue(`_${k}`, [...currentTmp, ...relRes.data.filter(Boolean)])
                 })
             }
         }
@@ -166,7 +166,7 @@ export const CardById = forwardRef<CardRef, CardProps>((props, ref) => {
             const fileIds = data.data.map((e: any) => fileCols.map((col: any) => e[col.Name]?.split(","))).flat(Infinity).filter((e: string | undefined, i: number, arr: Array<string>) => e?.length && ConfigData.regexGuid.test(e) && currentFiles.every((el: any) => el.Id !== e) && arr.indexOf(e) === i)
             if (fileIds.length) {
                 BaseDA.getFilesInfor(fileIds).then(fileRes => {
-                    if (fileRes.code === 200) methods.setValue("_files", [...currentFiles, ...fileRes.data.filter((e: any) => !!e)])
+                    if (fileRes.code === 200) methods.setValue("_files", [...currentFiles, ...fileRes.data.filter(Boolean)])
                 })
             }
         }

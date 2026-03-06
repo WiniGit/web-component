@@ -122,7 +122,7 @@ export const FormById = forwardRef<FormByIdRef, Props>((props, ref) => {
                                 const uploadFiles = ev[_col.Name].filter((e: any) => !!e?.file)
                                 if (uploadFiles.length) {
                                     const res = await BaseDA.uploadFiles(uploadFiles.map((e: any) => e.file))
-                                    if (res?.length) dataItem[_col.Name] = ev[_col.Name].map((e: any) => e.file ? res.shift().Id : e.exactUrl).filter((id: string) => !!id?.length).join(",")
+                                    if (res?.length) dataItem[_col.Name] = ev[_col.Name].map((e: any) => e.file ? res.shift().Id : e.exactUrl).filter(Boolean).join(",")
                                 } else {
                                     dataItem[_col.Name] = ev[_col.Name].map((e: any) => e.exactUrl ?? e.id).join(",")
                                 }
@@ -156,7 +156,7 @@ export const FormById = forwardRef<FormByIdRef, Props>((props, ref) => {
                 let listIds = controller.ids.split(",")
                 if (controller.maxLength && controller.maxLength !== "none") listIds = listIds.slice(0, controller.maxLength)
                 const res = await dataController.getByListId(listIds)
-                if (res.code === 200 && res.data.length) initData = res.data.find((e: any) => !!e)
+                if (res.code === 200 && res.data.length) initData = res.data.find(Boolean)
             }
         }
         if (initData) {
@@ -212,7 +212,7 @@ export const FormById = forwardRef<FormByIdRef, Props>((props, ref) => {
                         } else {
                             const pkController = new DataController(_rel.TablePK)
                             pkController.getByListId(_tmpParse).then(pkRes => {
-                                if (pkRes.code === 200) methodOptions.setValue(`${_rel.Column}_Options`, pkRes.data?.filter((e: any) => !!e)?.map((e: any) => ({ id: e.Id, name: e.Name, prefix: (_rel.TablePK === "Customer" || _rel.TablePK === "User") ? <CustomerAvatar data={e} /> : undefined, ...e })) ?? [])
+                                if (pkRes.code === 200) methodOptions.setValue(`${_rel.Column}_Options`, pkRes.data?.filter(Boolean)?.map((e: any) => ({ id: e.Id, name: e.Name, prefix: (_rel.TablePK === "Customer" || _rel.TablePK === "User") ? <CustomerAvatar data={e} /> : undefined, ...e })) ?? [])
                             })
                         }
                         methods.setValue(prop, _rel.Form.ComponentType === ComponentType.selectMultiple ? _tmpParse : _tmpParse[0])
