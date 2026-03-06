@@ -187,9 +187,7 @@ export class BaseDA {
             })
             // Add IDs if provided
             if (rq.ids.length > 0) {
-                rq.ids.forEach(id => {
-                    formData.append("ids", id);
-                })
+                formData.append("ids", rq.ids.join(","));
             }
             return BaseDA.postFile(ConfigData.url + 'file/uploadfiles', {
                 headers: headersObj,
