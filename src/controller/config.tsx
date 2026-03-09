@@ -51,18 +51,11 @@ export const imgFileTypes = [".png", ".svg", ".jpg", "jpeg", ".webp", ".gif"]
 const maxFileSize = 200 * 1024 * 1024
 export class BaseDA {
     static post = async (url: string, options?: { headers?: { [k: string]: any }, body?: any }) => {
-        const loader = document.createElement("div")
-        const loadTimeout = setTimeout(() => {
-            loader.className = "loader"
-            document.body.appendChild(loader)
-        }, 1200)
         try {
             let _headers: { [k: string]: any } = url.startsWith(ConfigData.url) ? (await getHeaders()) : { 'Content-Type': 'application/json' }
             if (!_headers) _headers = { 'Content-Type': 'application/json' }
             if (options?.headers) _headers = { ..._headers, ...options.headers }
             const response = await axios.post(url, options?.body, { headers: _headers })
-            clearTimeout(loadTimeout)
-            loader.remove()
             if (response.status === 200 || response.status === 201) {
                 return response.data
             } else if (response.status === 204) {
@@ -78,8 +71,6 @@ export class BaseDA {
                 return { status: response.status, message: response.statusText };
             }
         } catch (error) {
-            clearTimeout(loadTimeout)
-            loader.remove()
             ToastMessage.errors(error?.toString() as string)
             throw error;
         }
@@ -114,18 +105,11 @@ export class BaseDA {
     }
 
     static get = async (url: string, options?: { headers?: { [k: string]: any } }) => {
-        const loader = document.createElement("div")
-        const loadTimeout = setTimeout(() => {
-            loader.className = "loader"
-            document.body.appendChild(loader)
-        }, 1500)
         try {
             let _headers: { [k: string]: any } = url.startsWith(ConfigData.url) ? (await getHeaders()) : { 'Content-Type': 'application/json' }
             if (!_headers) _headers = { 'Content-Type': 'application/json' }
             if (options?.headers) _headers = { ..._headers, ...options.headers }
             const response = await axios.get(url, { headers: _headers })
-            clearTimeout(loadTimeout)
-            loader.remove()
             if (response.status === 200 || response.status === 201) {
                 return response.data
             } else if (response.status === 204) {
