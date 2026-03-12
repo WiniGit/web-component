@@ -1,7 +1,7 @@
 import { CSSProperties, forwardRef, MouseEventHandler, useDeferredValue, useEffect, useMemo, useRef, useState } from "react"
 import styles from "./table.module.css";
 import { useTranslation } from "react-i18next"
-import { Button, Checkbox, closePopup, DateTimePicker, InfiniteScroll, Popup, RadioButton, showPopup, Slider, Switch, Tag, Text, TextField, Util, Winicon, showDialog, DialogAlignment, randomGID, DataController } from "../../index"
+import { Button, Checkbox, closePopup, DateTimePicker, InfiniteScroll, Popup, RadioButton, showPopup, Slider, Switch, Tag, Text, TextField, Util, Winicon, showDialog, DialogAlignment, DataController } from "../../index"
 import { handleGoogleSheetFetch } from "./exportXlsx"
 import { DataTable } from "./tableById"
 import { ColDataType, ColDataTypeIcon, FEDataType } from "../da";
@@ -472,13 +472,15 @@ const InputValueTile = ({ fieldItem, filterItem, colData, onChange }: InputValue
             }
         case FEDataType.DATE:
         case FEDataType.DATETIME:
+            const tmpValues = data.value?.split(",") ?? []
             return <DateTimePicker
-                className={fieldItem.value ? "body-3" : "placeholder-2"}
+                className={"body-3"}
                 pickerType={fieldItem.DataType === FEDataType.DATE ? "daterange" : "datetimerange"}
                 placeholder={`${t("select")} ${(colData?.Title ?? fieldItem.Form.Label ?? data.name).toLowerCase()}`}
                 style={{ width: "100%", padding: "0 1.2rem", height: "3.2rem", border: "var(--neutral-main-border)" }}
                 prefix={<Winicon src="outline/user interface/calendar-date-2" style={{ marginRight: "0.4rem" }} size={"1.2rem"} />}
-                value={data.value?.split(",").map((e: string) => new Date(parseInt(e))) ?? []}
+                value={tmpValues[0] ? new Date(Number(tmpValues[0])) : undefined}
+                endValue={tmpValues[1] ? new Date(Number(tmpValues[1])) : undefined}
                 onChange={({ start, end }: any) => {
                     onChangeData(`${start.getTime()},${end.getTime()}`)
                 }}
@@ -823,45 +825,9 @@ export const ButtonImportData = ({ onImport }: { onImport?: (result: { [key: str
             if (by instanceof File) {
 
             } else if (typeof by === "string") {
-                const res = await handleGoogleSheetFetch(by)
-                if (res?.length) {
-                    const findRelativeName = Object.keys(res[0]).map((k => k)).filter(k => k.split(".").length > 1)
-                    const relativeTmp: any = {}
-                    let result: { [key: string]: any }[] = []
-                    for (const dataItem of res) {
-                        const tmp = { Id: randomGID(), DateCreated: Date.now(), ...dataItem, Name: `${dataItem.Name ?? ""}` }
-                        findRelativeName.forEach((r) => {
-                            relativeTmp[r] ??= []
-                            if (!relativeTmp[r].includes(tmp[r])) relativeTmp[r].push(tmp[r])
-                        })
-                        result.push(tmp)
-                    }
-                    const getRelative = await Promise.all(Object.keys(relativeTmp).map((r) => {
-                        const splitFields = r.split(".")
-                        const kController = new DataController(splitFields[0])
-                        const relTmpIds = relativeTmp[r].map((e: any) => e?.split(",")).flat(Infinity).filter(Boolean)
-                        const size = relTmpIds.length
-                        return kController.getListSimple({
-                            page: 1, size: size,
-                            query: `@${splitFields[1]}:(${relTmpIds.map((e: any) => `"${e.trim()}"`).join(" | ")})`,
-                            returns: ["Id", splitFields[1]]
-                        })
-                    }))
-                    if (getRelative.every(e => e.code === 200)) {
-                        Object.keys(relativeTmp).map((r, i) => {
-                            const relativeResult = getRelative[i].data
-                            result = result.map(e => {
-                                const splitFields = r.split(".")
-                                const tmp = { ...e }
-                                const relEIds = e[r]?.split(",").map((el: any) => relativeResult.find((rel: any) => rel[splitFields[1]] === el.trim())).filter(Boolean).map((el: any) => el.Id)
-                                if (relEIds?.length) tmp[`${splitFields[0]}Id`] = relEIds.join(",")
-                                delete tmp[r]
-                                return tmp
-                            })
-                        })
-                    }
-                    return result
-                }
+                const res = await handleGoogleSheetFetch(by) as any
+                if (!res?.length) return []
+                return res
             }
         }
     }

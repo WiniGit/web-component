@@ -1,5 +1,5 @@
 import styles from "./table.module.css";
-import { BaseDA, Button, DataController, DialogAlignment, imgFileTypes, OptionsItem, Pagination, Popup, SettingDataController, showDialog, showPopup, TableController, Text, ToastMessage, Winicon } from "../../index";
+import { BaseDA, Button, DataController, DialogAlignment, imgFileTypes, OptionsItem, Pagination, Popup, randomGID, SettingDataController, showDialog, showPopup, TableController, Text, ToastMessage, Winicon } from "../../index";
 import { CSSProperties, Dispatch, forwardRef, ReactNode, SetStateAction, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useForm, UseFormReturn } from "react-hook-form";
@@ -96,6 +96,8 @@ interface DataTableProps {
     customFormId?: { formAdd?: string, formEdit?: string };
     formTitle?: { formAdd?: string, formEdit?: string };
     onChangeFormTitle?: (params: { formAdd?: string | null, formEdit?: string | null }) => void;
+    handleImport?: (data: { [p: string]: any }[]) => Promise<{ [p: string]: any }[]>;
+    handleExport?: (data: { [p: string]: any }[]) => Promise<{ [p: string]: any }[]>;
 }
 
 interface DataTableRef {
@@ -130,6 +132,7 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
     toolbars = ["total", <div key={"space"} style={{ flex: 1 }} />, "export", "duplicate", "delete"],
     customFormId, onSelectCustomForm,
     formTitle, onChangeFormTitle,
+    handleImport, handleExport,
     ...props }, ref) => {
     // static variables
     const configMethods = useForm<any>({ shouldFocusError: false, defaultValues: { columns: [], searchRaw: "*", sortby: [], TbName: tbName } })
@@ -394,7 +397,7 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
                                             const tmp = _col.Name.split(".")
                                             if (tmp.length > 1) {
                                                 if (relativeFields?.[tmp[0]]?.find((e: any) => e.Name === tmp[1] && e.DataType === FEDataType.FILE))
-                                                    dataFileIds.push(...res[tmp[0].substring(0, tmp[0].lastIndexOf("Id"))].map((e: any) => e[tmp[1]]?.split(",").slice(0, 4)).flat(Infinity).filter((id: string, i: number, arr: Array<string>) => !!id && arr.indexOf(id) === i))
+                                                    dataFileIds.push(...res[tmp[0].substring(0, tmp[0].lastIndexOf("Id"))].map((e: any) => e[tmp[1]]?.split(",").slice(0, 4)).flat(Infinity).filter((id: string, i: number, arr: string[]) => !!id && arr.indexOf(id) === i))
                                             } else if (fields.find(e => e.Name === _col.Name && e.DataType === FEDataType.FILE)) {
                                                 dataFileIds.push(...res.data.map((e: any) => e[_col.Name]?.split(",").slice(0, 2)).flat(Infinity).filter((id: string, i: number, arr: string[]) => !!id && arr.indexOf(id) === i))
                                             } else if (fields.find(e => e.Name === _col.Name && e.DataType === FEDataType.HTML)) activeColumns = activeColumns.filter((e: any) => e.Id !== _col.Id)
@@ -402,7 +405,7 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
                                         let getFiles: any = []
                                         if (dataFileIds.length) {
                                             getFiles = await BaseDA.getFilesInfor(dataFileIds.filter((id, i, arr) => arr.indexOf(id) === i))
-                                            getFiles = getFiles.data.filter((f: any) => f !== undefined && f !== null)
+                                            getFiles = getFiles.data.filter(Boolean)
                                         }
                                         return res.data.map((item: any) => {
                                             let result: any = {}
@@ -425,8 +428,30 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
                                 key={"import"}
                                 onImport={async (result) => {
                                     if (result.length) {
-                                        const response = await dataController.add(result.map(e => ({ ...e, ...props })))
-                                        if (response.code !== 200) return ToastMessage.errors(response.message)
+                                        const newDataItems = handleImport ? await handleImport(result) : result.map((it: any) => {
+                                            const tmp: any = { Id: randomGID(), DateCreated: Date.now() }
+                                            for (const fd of fields) {
+                                                if (fd.Column) {
+                                                    if (typeof it[fd.Column] === "string") tmp[fd.Column] = it[fd.Column]
+                                                } else {
+                                                    switch (fd.DataType) {
+                                                        case FEDataType.NUMBER:
+                                                            if (!isNaN(Number(it[fd.Name]))) tmp[fd.Name] = Number(it[fd.Name])
+                                                            break;
+                                                        default:
+                                                            if (it[fd.Name] || typeof it[fd.Name] === "boolean" || typeof it[fd.Name] === "number") tmp[fd.Name] = it[fd.Name]
+                                                            break;
+                                                    }
+                                                }
+                                            }
+                                            return tmp
+                                        })
+                                        if (!newDataItems?.length) return;
+                                        const response = await dataController.add(newDataItems)
+                                        if (response.code !== 200) {
+                                            ToastMessage.errors("Failed to import data")
+                                            return console.error("Failed to import data: " + response.message)
+                                        }
                                         getData()
                                     }
                                 }}
