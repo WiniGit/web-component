@@ -240,10 +240,10 @@ export class CkEditorUploadAdapter {
         // a POST request with JSON as a data structure but your configuration
         // could be different.
         let _headers: any = await getHeaders()
+        xhr.open('POST', ConfigData.url + 'file/uploadfiles', true);
         xhr.setRequestHeader("Authorization", _headers.Authorization);
         xhr.setRequestHeader("pid", ConfigData.pid);
         xhr.setRequestHeader("Content-Type", "multipart/form-data");
-        xhr.open('POST', ConfigData.url + 'file/uploadfiles', true);
         xhr.responseType = 'json';
     }
 
