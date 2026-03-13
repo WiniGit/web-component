@@ -1,6 +1,5 @@
 import { CSSProperties, ReactNode } from "react";
 import * as XLSX from 'xlsx';
-import Papa from "papaparse";
 import { Button } from "../../component/button/button";
 
 // enum ExcelCol {
