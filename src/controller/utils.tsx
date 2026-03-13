@@ -5,42 +5,11 @@ export class Util {
         return new Date(stringDate).getTime() / 1000;
     }
 
-    static tryParseInt(input: string) {
-        if (input != null && input !== undefined && input !== "") {
-            return parseInt(`${input}`.replaceAll(",", ""));
-        } else {
-            return 0;
-        }
-    }
-
-    static tryParseFloat(input: string) {
-        if (input != null && input !== undefined && input !== "") {
-            return parseFloat(`${input}`.replaceAll(",", ""));
-        } else {
-            return 0;
-        }
-    }
-
     static dateDefault = new Date('01/01/2021').getTime();
 
     static stringToFile = (content: string, fileName: string) => {
         const blob = new Blob([content], { type: "text/plain" });
         return new File([blob], fileName, { type: "text/plain" });
-    }
-
-    static set_timeRefreshToken() {
-        const result = new Date(Date.now());
-        result.setDate(result.getDate() + 30);
-        result.setMinutes(result.getMinutes() - 10);
-        localStorage.setItem('time_tokenRefresh', `${result}`);
-    }
-
-    static get_timeRefreshToken() {
-        if (localStorage.getItem('time_tokenRefresh')) {
-            let time = new Date(parseInt(localStorage.getItem('time_tokenRefresh')!)).getTime();
-            return time;
-        }
-        return undefined
     }
 
     static calculateAge = (birthdate: string) => {
@@ -131,24 +100,9 @@ export class Util {
     }
 
 
-    //stringToDate("17/9/2014", "dd/MM/yyyy", "/");
-    //stringToDate("9/17/2014", "mm/dd/yyyy", "/")
-    //stringToDate("9-17-2014", "mm-dd-yyyy", "-")
-    //stringToDate("9-17-2014 14:20:20", "mm-dd-yyyy HH:mm:ss", "-")
-    //stringToDate("9-17-2014 02:30:30", "mm-dd-yyyy hh:mm:ss", "-")
-    static datetoStringDefault() {
-        const currentDate = new Date();
-        const day = String(currentDate.getDate()).padStart(2, '0');
-        const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // Months are zero-based
-        const year = currentDate.getFullYear();
-
-        const formattedDate = `${day}/${month}/${year}`;
-        return formattedDate;
-    }
-
     /** date: dd/mm/yyyy | yyyy/mm/dd | dd/mm | mm/yyyy
         time: hh:mm:ss | hh:mm */
-    static datetoString(x = new Date(), y = "dd/mm/yyyy") {
+    static dateToString(x = new Date(), y = "dd/mm/yyyy") {
         if (!x) return ""
         if (typeof x === "number") x = new Date(x)
         let splitDateTime = y.toLowerCase().split(" ");
@@ -650,17 +604,6 @@ export function formatNumberConvert(num: number) {
         return (num / 1e3).toFixed(1).replace(/\.0$/, '') + 'K';
     }
     return num.toString();
-}
-
-export function inputMoneyPattern(ev: any) {
-    let num = ev.target.value.replaceAll(",", "").length % 3;
-    if (num > 0) {
-        let newV = ev.target.value.replaceAll(",", "").substring(num).split("");
-        ev.target.value = ev.target.value.replaceAll(",", "").substring(0, num) + newV.map((v: string, i: number) => i % 3 === 0 ? `, ${v} ` : v).join("");
-    } else {
-        let newV = ev.target.value.replaceAll(",", "").split("");
-        ev.target.value = newV.map((v: string, i: number) => i > 0 && i % 3 === 0 ? `, ${v} ` : v).join("");
-    }
 }
 
 export const randomGID = () => crypto.randomUUID().replaceAll("-", "")

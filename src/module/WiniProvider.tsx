@@ -26,7 +26,8 @@ interface Props {
     children?: React.ReactNode,
     theme?: "light" | "dark",
     /** default true */
-    loadResources?: boolean
+    loadResources?: boolean,
+    mode?: "dev" | "prod"
 }
 
 const appendDesignTokens = (list: Array<{ [p: string]: any }>) => {
@@ -127,7 +128,7 @@ interface WiniContextProps {
 
 const WiniContext = createContext<WiniContextProps | undefined>(undefined)
 
-export const WiniProvider = ({ loadResources = true, ...props }: Props) => {
+export const WiniProvider = ({ loadResources = true, mode = "dev", ...props }: Props) => {
     ConfigData.pid = props.pid
     ConfigData.url = props.url
     ConfigData.imgUrlId = props.imgUrlId
@@ -141,16 +142,18 @@ export const WiniProvider = ({ loadResources = true, ...props }: Props) => {
     const [globalData, setGlobalData] = useState<{ [k: string]: any } | undefined>(undefined)
 
     useEffect(() => {
-        const tmp = document.createElement("div")
-        tmp.innerHTML = `
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/WiniGit/web-component@39a5ae9/src/skin/root.min.css">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/WiniGit/web-component@39a5ae9/src/skin/layout.min.css">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/WiniGit/web-component@39a5ae9/src/skin/typography.min.css">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/WiniGit/web-component@39a5ae9/src/skin/toast-noti.min.css">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/WiniGit/web-component@39a5ae9/src/skin/style.css">
-        `
-        document.head.children[0].before(...tmp.childNodes)
-        tmp.remove()
+        if (loadResources) {
+            const tmp = document.createElement("div")
+            tmp.innerHTML = `
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/WiniGit/web-component@39a5ae9/src/skin/root.min.css">
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/WiniGit/web-component@39a5ae9/src/skin/layout.min.css">
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/WiniGit/web-component@39a5ae9/src/skin/typography.min.css">
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/WiniGit/web-component@39a5ae9/src/skin/toast-noti.min.css">
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/WiniGit/web-component@39a5ae9/src/skin/style.css">
+            `
+            document.head.children[0].before(...tmp.childNodes)
+            tmp.remove()
+        }
     }, [])
 
     useEffect(() => {
@@ -169,19 +172,25 @@ export const WiniProvider = ({ loadResources = true, ...props }: Props) => {
         ConfigData.fileUrl = props.fileUrl
         if (loadResources) {
             if (props.pid.length === 32) {
-                const _desginTokenController = new TableController("designtoken")
-                _desginTokenController.getAll().then(res => {
-                    if (res.code === 200 && res.data.length) appendDesignTokens(res.data)
-                })
-                const projectController = new WiniController("Project")
-                projectController.getById(props.pid).then(res => {
-                    if (res.code === 200 && res.data) {
-                        if (res.data.LogoId) (document.head.querySelector(`:scope > link[rel="icon"]`) as HTMLLinkElement)!.href = res.data.LogoId.startsWith("http") ? res.data.LogoId : `${ConfigData.ebigCdn}/wini/${res.data.LogoId}`;
-                        (document.head.querySelector(`:scope > title`) as HTMLTitleElement)!.innerHTML = res.data.Name;
-                        setProjectData(res.data)
-                        ConfigData.fileUrl = res.data.FileDomain
-                    }
-                })
+                switch (mode) {
+                    case "prod":
+                        break;
+                    default:
+                        const _desginTokenController = new TableController("designtoken")
+                        _desginTokenController.getAll().then(res => {
+                            if (res.code === 200 && res.data.length) appendDesignTokens(res.data)
+                        })
+                        const projectController = new WiniController("Project")
+                        projectController.getById(props.pid).then(res => {
+                            if (res.code === 200 && res.data) {
+                                if (res.data.LogoId) (document.head.querySelector(`:scope > link[rel="icon"]`) as HTMLLinkElement)!.href = res.data.LogoId.startsWith("http") ? res.data.LogoId : `${ConfigData.ebigCdn}/wini/${res.data.LogoId}`;
+                                (document.head.querySelector(`:scope > title`) as HTMLTitleElement)!.innerHTML = res.data.Name;
+                                setProjectData(res.data)
+                                ConfigData.fileUrl = res.data.FileDomain
+                            }
+                        })
+                        break;
+                }
                 const languageController = new DataController("Language")
                 languageController.getAll().then(async (res) => {
                     if (res.code === 200 && res.data.length) {

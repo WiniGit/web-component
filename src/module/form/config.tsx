@@ -271,16 +271,16 @@ function validateByType({ list = [] }: { list?: Array<{ [p: string]: any }> }) {
                 //     eValidateConfig.customDate = { message: el.message ?? `Không đúng định dạng dd/mm/yyyy hh:mm` }
                 //     break;
                 // case ValidateType.earliestDate:
-                //     eValidateConfig.customDate = { dateOnly: true, earliest: el.value, tooEarly: el.message ?? `Không được trước ${Util.datetoString(new Date(el.value))}` }
+                //     eValidateConfig.customDate = { dateOnly: true, earliest: el.value, tooEarly: el.message ?? `Không được trước ${Util.dateToString(new Date(el.value))}` }
                 //     break;
                 // case ValidateType.latestDate:
-                //     eValidateConfig.customDate = { dateOnly: true, latest: el.value, tooLate: el.message ?? `Không được sau ${Util.datetoString(new Date(el.value))}` }
+                //     eValidateConfig.customDate = { dateOnly: true, latest: el.value, tooLate: el.message ?? `Không được sau ${Util.dateToString(new Date(el.value))}` }
                 //     break;
                 // case ValidateType.earliestTime:
-                //     eValidateConfig.customDate = { earliest: el.value, tooEarly: el.message ?? `Không được trước ${Util.datetoString(new Date(el.value))}` }
+                //     eValidateConfig.customDate = { earliest: el.value, tooEarly: el.message ?? `Không được trước ${Util.dateToString(new Date(el.value))}` }
                 //     break;
                 // case ValidateType.latestTime:
-                //     eValidateConfig.customDate = { latest: el.value, tooLate: el.message ?? `Không được sau ${Util.datetoString(new Date(el.value))}` }
+                //     eValidateConfig.customDate = { latest: el.value, tooLate: el.message ?? `Không được sau ${Util.dateToString(new Date(el.value))}` }
                 //     break;
                 case ValidateType.greaterThan:
                     eValidateConfig.numericality = { ...(eValidateConfig.numericality ?? {}), greaterThan: el.value, notGreaterThan: el.message ?? `Value must be greater than ${el.value}` }

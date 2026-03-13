@@ -71,7 +71,7 @@ export class BaseDA {
                 return { status: response.status, message: response.statusText };
             }
         } catch (error) {
-            ToastMessage.errors(error?.toString() as string)
+            console.error("Failed to POST data:", error);
             throw error;
         }
     }
@@ -100,7 +100,7 @@ export class BaseDA {
             }
         } catch (error) {
             console.error("Failed to POST data:", error);
-            throw error;
+            return undefined;
         }
     }
 
@@ -123,7 +123,7 @@ export class BaseDA {
             }
         } catch (error) {
             console.error("Failed to GET data:", error);
-            throw error;
+            return undefined;
         }
     }
 

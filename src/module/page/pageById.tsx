@@ -484,10 +484,10 @@ const ElementUI = ({ findId, children, watchForCustomProps, replaceThisVariables
                     tmpValue = tmpValue ? Util.money(tmpValue) : undefined
                     break;
                 case FEDataType.DATE:
-                    tmpValue = tmpValue ? Util.datetoString(new Date(typeof tmpValue === 'string' ? parseInt(tmpValue) : tmpValue)) : undefined
+                    tmpValue = tmpValue ? Util.dateToString(new Date(typeof tmpValue === 'string' ? parseInt(tmpValue) : tmpValue)) : undefined
                     break;
                 case FEDataType.DATETIME:
-                    tmpValue = tmpValue ? Util.datetoString(new Date(typeof tmpValue === 'string' ? parseInt(tmpValue) : tmpValue), "dd/mm/yyyy hh:mm") : undefined
+                    tmpValue = tmpValue ? Util.dateToString(new Date(typeof tmpValue === 'string' ? parseInt(tmpValue) : tmpValue), "dd/mm/yyyy hh:mm") : undefined
                     break;
                 default:
                     if (_rel.Form?.Options?.length) {
@@ -536,10 +536,10 @@ const ElementUI = ({ findId, children, watchForCustomProps, replaceThisVariables
                     tmpValue = tmpValue ? Util.money(tmpValue) : undefined
                     break;
                 case FEDataType.DATE:
-                    tmpValue = tmpValue ? Util.datetoString((tmpValue instanceof Date) ? tmpValue : new Date(typeof tmpValue === 'string' ? parseInt(tmpValue) : tmpValue)) : undefined
+                    tmpValue = tmpValue ? Util.dateToString((tmpValue instanceof Date) ? tmpValue : new Date(typeof tmpValue === 'string' ? parseInt(tmpValue) : tmpValue)) : undefined
                     break;
                 case FEDataType.DATETIME:
-                    tmpValue = tmpValue ? Util.datetoString((tmpValue instanceof Date) ? tmpValue : new Date(typeof tmpValue === 'string' ? parseInt(tmpValue) : tmpValue), "dd/mm/yyyy hh:mm") : undefined
+                    tmpValue = tmpValue ? Util.dateToString((tmpValue instanceof Date) ? tmpValue : new Date(typeof tmpValue === 'string' ? parseInt(tmpValue) : tmpValue), "dd/mm/yyyy hh:mm") : undefined
                     break;
                 default:
                     if (_col.Form?.Options?.length) {

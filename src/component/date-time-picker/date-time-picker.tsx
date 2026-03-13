@@ -56,12 +56,12 @@ export function DateTimePicker({ style = {}, pickerType = "auto", ...props }: Da
     const [value, setValue] = useState<Date | ValueProps>()
     const txtValue = useMemo(() => {
         if (!value) return <Text className={styles["value"]} style={{ opacity: 0.6 }}>{props.placeholder ?? ""}</Text>
-        if (value instanceof Date) return <Text className={styles["value"]}>{Util.datetoString(value, props.format ?? `dd/mm/yyyy${pickerType?.includes("time") || (pickerType === "auto" && value.getSeconds() === 59) ? " hh:mm" : ""}`)}</Text>
+        if (value instanceof Date) return <Text className={styles["value"]}>{Util.dateToString(value, props.format ?? `dd/mm/yyyy${pickerType?.includes("time") || (pickerType === "auto" && value.getSeconds() === 59) ? " hh:mm" : ""}`)}</Text>
         else {
             const tmpStart = value.start ?? new Date()
             return <>
                 <span className={styles["value"]} style={{ flex: "none", width: "fit-content" }}>
-                    {Util.datetoString(tmpStart, props.format ?? `dd/mm/yyyy${(pickerType.includes("time") || (pickerType === "auto" && tmpStart.getSeconds() === 1)) ? " hh:mm" : ""}`)} - {Util.datetoString(value.end ?? new Date(), props.format ?? `dd/mm/yyyy${(pickerType?.includes("time") || (pickerType === "auto" && tmpStart.getSeconds() === 1)) ? " hh:mm" : ""}`)}
+                    {Util.dateToString(tmpStart, props.format ?? `dd/mm/yyyy${(pickerType.includes("time") || (pickerType === "auto" && tmpStart.getSeconds() === 1)) ? " hh:mm" : ""}`)} - {Util.dateToString(value.end ?? new Date(), props.format ?? `dd/mm/yyyy${(pickerType?.includes("time") || (pickerType === "auto" && tmpStart.getSeconds() === 1)) ? " hh:mm" : ""}`)}
                 </span>
                 {value.repeatData && <Winicon src="outline/arrows/loop-2" size={13} />}
             </>
@@ -73,7 +73,7 @@ export function DateTimePicker({ style = {}, pickerType = "auto", ...props }: Da
 
     useEffect(() => {
         if (inputRef.current) {
-            if (value && value instanceof Date) inputRef.current.value = Util.datetoString(value, props.format ?? `dd/mm/yyyy`)
+            if (value && value instanceof Date) inputRef.current.value = Util.dateToString(value, props.format ?? `dd/mm/yyyy`)
             else inputRef.current.value = ""
         }
     }, [value, inputRef.current])
@@ -260,10 +260,10 @@ const PopupDateTimePicker = ({ value, style, endValue, repeatValue, onApply, pic
         if (value) {
             const initStart = typeof value === "number" ? (new Date(value)) : value
             methods.setValue('date-start', initStart)
-            inputStartRef.current!.inputElement!.value = Util.datetoString(initStart)
+            inputStartRef.current!.inputElement!.value = Util.dateToString(initStart)
             if (pickerType.includes("time") || initStart.getSeconds() === 1) {
                 setSelectTime(true)
-                methods.setValue('time-start', Util.datetoString(initStart, "hh:mm"))
+                methods.setValue('time-start', Util.dateToString(initStart, "hh:mm"))
             }
         } else inputStartRef.current!.inputElement!.value = ""
     }
@@ -273,10 +273,10 @@ const PopupDateTimePicker = ({ value, style, endValue, repeatValue, onApply, pic
             if (endValue) {
                 const initEnd = typeof endValue === "number" ? (new Date(endValue)) : endValue
                 methods.setValue('date-end', initEnd)
-                inputEndRef.current.inputElement!.value = Util.datetoString(initEnd)
+                inputEndRef.current.inputElement!.value = Util.dateToString(initEnd)
                 if (pickerType.includes("time") || initEnd.getSeconds() === 59) {
                     setSelectTime(true)
-                    methods.setValue('time-end', Util.datetoString(initEnd, "hh:mm"))
+                    methods.setValue('time-end', Util.dateToString(initEnd, "hh:mm"))
                 }
             } else inputEndRef.current.inputElement!.value = ""
         }
@@ -354,10 +354,10 @@ const PopupDateTimePicker = ({ value, style, endValue, repeatValue, onApply, pic
                             const dateValue = Util.stringToDate(inputValue, 'dd/mm/yyyy', '/')
                             if ((pickerType.includes("range") || pickerType === "auto") && differenceInCalendarDays(methods.getValues('date-end'), dateValue) < 0) {
                                 methods.setValue('date-end', dateValue)
-                                inputEndRef.current!.inputElement!.value = Util.datetoString(dateValue)
+                                inputEndRef.current!.inputElement!.value = Util.dateToString(dateValue)
                             }
                             methods.setValue('date-start', dateValue)
-                        } else ev.target.value = methods.getValues('date-start') ? Util.datetoString(methods.getValues('date-start')) : ""
+                        } else ev.target.value = methods.getValues('date-start') ? Util.dateToString(methods.getValues('date-start')) : ""
                     }}
                 /> : <Button
                     label="Start date"
@@ -368,7 +368,7 @@ const PopupDateTimePicker = ({ value, style, endValue, repeatValue, onApply, pic
                         const tmp = methods.watch('date-end') ? new Date(methods.watch('date-end')?.getTime()) : new Date()
                         tmp.setHours(1, 0, 1)
                         methods.setValue('date-start', tmp)
-                        setTimeout(() => { inputStartRef.current!.inputElement!.value = Util.datetoString(tmp) }, 150)
+                        setTimeout(() => { inputStartRef.current!.inputElement!.value = Util.dateToString(tmp) }, 150)
                     }}
                 />}
                 {(pickerType.includes("range") || pickerType === "auto") &&
@@ -385,10 +385,10 @@ const PopupDateTimePicker = ({ value, style, endValue, repeatValue, onApply, pic
                                 const dateValue = Util.stringToDate(inputValue, 'dd/mm/yyyy', '/')
                                 if (differenceInCalendarDays(dateValue, methods.getValues('date-start')) < 0) {
                                     methods.setValue('date-start', dateValue)
-                                    inputStartRef.current!.inputElement!.value = Util.datetoString(dateValue)
+                                    inputStartRef.current!.inputElement!.value = Util.dateToString(dateValue)
                                 }
                                 methods.setValue('date-end', dateValue)
-                            } else ev.target.value = methods.getValues('date-end') ? Util.datetoString(methods.getValues('date-end')) : ""
+                            } else ev.target.value = methods.getValues('date-end') ? Util.dateToString(methods.getValues('date-end')) : ""
                         }}
                     />}
                 {selectTime && <>
@@ -434,7 +434,7 @@ const PopupDateTimePicker = ({ value, style, endValue, repeatValue, onApply, pic
                             const tmp = endValue ? new Date(endValue?.getTime()) : new Date()
                             tmp.setHours(1, 0, 1)
                             methods.setValue('date-start', tmp)
-                            setTimeout(() => { inputStartRef.current!.inputElement!.value = Util.datetoString(tmp) }, 150)
+                            setTimeout(() => { inputStartRef.current!.inputElement!.value = Util.dateToString(tmp) }, 150)
                         }}
                     />}
                     {(pickerType.includes("range") || pickerType === "auto") &&
@@ -636,7 +636,7 @@ const PopupDateTimePicker = ({ value, style, endValue, repeatValue, onApply, pic
                                     const tmp = endValue ? new Date(endValue?.getTime()) : new Date()
                                     tmp.setHours(1, 0, 1)
                                     methods.setValue('date-start', tmp)
-                                    setTimeout(() => { inputStartRef.current!.inputElement!.value = Util.datetoString(tmp) }, 150)
+                                    setTimeout(() => { inputStartRef.current!.inputElement!.value = Util.dateToString(tmp) }, 150)
                                 }
                                 setIsRepeat(!isRepeat)
                             }}
@@ -690,17 +690,17 @@ const PopupDateTimePicker = ({ value, style, endValue, repeatValue, onApply, pic
                     if (ev instanceof Date) {
                         if (pickerType === "auto" && !methods.watch("date-start")) {
                             methods.setValue('date-end', ev)
-                            if (inputEndRef.current) inputEndRef.current.inputElement!.value = Util.datetoString(ev)
+                            if (inputEndRef.current) inputEndRef.current.inputElement!.value = Util.dateToString(ev)
                         } else {
                             methods.setValue('date-start', ev)
-                            if (inputStartRef.current) inputStartRef.current.inputElement!.value = Util.datetoString(ev)
+                            if (inputStartRef.current) inputStartRef.current.inputElement!.value = Util.dateToString(ev)
                         }
                     } else {
                         methods.setValue('date-start', ev.sTime)
-                        if (inputStartRef.current) inputStartRef.current.inputElement!.value = Util.datetoString(ev.sTime)
+                        if (inputStartRef.current) inputStartRef.current.inputElement!.value = Util.dateToString(ev.sTime)
                         if (pickerType.includes("range") || pickerType === "auto") {
                             methods.setValue('date-end', ev.eTime)
-                            if (inputEndRef.current) inputEndRef.current.inputElement!.value = Util.datetoString(ev.eTime)
+                            if (inputEndRef.current) inputEndRef.current.inputElement!.value = Util.dateToString(ev.eTime)
                         }
                     }
                 } else if (onApply) {

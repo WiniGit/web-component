@@ -64,7 +64,7 @@ export const AutoCellContent = ({ colItem, data, fields = [], files = [], style 
                     let tmp = item[fieldItem.Name]
                     switch (fieldItem.DataType) {
                         case FEDataType.DATE:
-                            if (tmp) tmp = Util.datetoString(new Date(tmp))
+                            if (tmp) tmp = Util.dateToString(new Date(tmp))
                             break;
                         case FEDataType.DATETIME:
                             switch (colItem.Type) {
@@ -86,7 +86,7 @@ export const AutoCellContent = ({ colItem, data, fields = [], files = [], style 
                                             else tmp = `${day} ${month} ${year}`;
                                             break;
                                         default:
-                                            if (tmp) tmp = Util.datetoString(new Date(tmp), colItem.Format?.toLowerCase() ?? "dd/mm/yyyy hh:mm")
+                                            if (tmp) tmp = Util.dateToString(new Date(tmp), colItem.Format?.toLowerCase() ?? "dd/mm/yyyy hh:mm")
                                             break;
                                     }
                                     break;
@@ -317,7 +317,7 @@ export const cellValue = (colItem: { [p: string]: any }, data: any, fields: { [p
             let tmp = item[fieldItem.Name]
             switch (fieldItem.DataType) {
                 case FEDataType.DATE:
-                    if (tmp) tmp = Util.datetoString(new Date(tmp))
+                    if (tmp) tmp = Util.dateToString(new Date(tmp))
                     break;
                 case FEDataType.DATETIME:
                     switch (colItem.Type) {
@@ -339,7 +339,7 @@ export const cellValue = (colItem: { [p: string]: any }, data: any, fields: { [p
                                     else tmp = `${day} ${month} ${year}`;
                                     break;
                                 default:
-                                    if (tmp) tmp = Util.datetoString(new Date(tmp), colItem.Format ?? "dd/mm/yyyy hh:mm")
+                                    if (tmp) tmp = Util.dateToString(new Date(tmp), colItem.Format ?? "dd/mm/yyyy hh:mm")
                                     break;
                             }
                             break;
