@@ -148,15 +148,16 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
             try {
                 getValue = new Function(
                     "indexItem",
-                    "user",
                     "Util",
                     "watch",
                     "location",
                     "query",
                     "params",
+                    "user",
+                    "lang",
                     "t",
                     `return ${p1.replace(/this/g, "indexItem")}`
-                )({ ...(props.indexItem ?? {}), index: props.index }, winiContextData.userData, Util, props.methods!.watch, location, query, params, winiContextData.i18n.t)
+                )({ ...(props.indexItem ?? {}), index: props.index }, Util, props.methods!.watch, location, query, params, winiContextData.userData, winiContextData.i18n.language, winiContextData.i18n.t)
             } catch (error) {
                 console.error("item: ", props.item, " --- match: ", m, " --- p1: ", p1, " --- error: ", error)
                 getValue = m
