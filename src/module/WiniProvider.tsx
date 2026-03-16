@@ -230,7 +230,7 @@ export const initializeProject = async (winiDomain: string, props: { pid?: strin
     } else {
         const res = await winiController.getListSimple({
             page: 1, size: 1,
-            query: `Domain:{${props.domain!.replace(/[^a-zA-Z0-9]/g, (m) => `\\${m}`)}}`
+            query: `@Domain:{${props.domain!.replace(/[^a-zA-Z0-9]/g, (m) => `\\${m}`)}}`
         })
         if (res.code === 200 && res.data[0]) projectData = res.data[0]
     }
