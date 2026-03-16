@@ -27,7 +27,6 @@ interface Props {
     theme?: "light" | "dark",
     /** default true */
     loadResources?: boolean,
-    mode?: "dev" | "prod"
 }
 
 const appendDesignTokens = (list: Array<{ [p: string]: any }>) => {
@@ -128,7 +127,7 @@ interface WiniContextProps {
 
 const WiniContext = createContext<WiniContextProps | undefined>(undefined)
 
-export const WiniProvider = ({ loadResources = true, mode = "dev", ...props }: Props) => {
+export const WiniProvider = ({ loadResources = true, ...props }: Props) => {
     ConfigData.pid = props.pid
     ConfigData.url = props.url
     ConfigData.imgUrlId = props.imgUrlId
@@ -172,25 +171,19 @@ export const WiniProvider = ({ loadResources = true, mode = "dev", ...props }: P
         ConfigData.fileUrl = props.fileUrl
         if (loadResources) {
             if (props.pid.length === 32) {
-                switch (mode) {
-                    case "prod":
-                        break;
-                    default:
-                        const _desginTokenController = new TableController("designtoken")
-                        _desginTokenController.getAll().then(res => {
-                            if (res.code === 200 && res.data.length) appendDesignTokens(res.data)
-                        })
-                        const projectController = new WiniController("Project")
-                        projectController.getById(props.pid).then(res => {
-                            if (res.code === 200 && res.data) {
-                                if (res.data.LogoId) (document.head.querySelector(`:scope > link[rel="icon"]`) as HTMLLinkElement)!.href = res.data.LogoId.startsWith("http") ? res.data.LogoId : `${ConfigData.ebigCdn}/wini/${res.data.LogoId}`;
-                                (document.head.querySelector(`:scope > title`) as HTMLTitleElement)!.innerHTML = res.data.Name;
-                                setProjectData(res.data)
-                                ConfigData.fileUrl = res.data.FileDomain
-                            }
-                        })
-                        break;
-                }
+                const _desginTokenController = new TableController("designtoken")
+                _desginTokenController.getAll().then(res => {
+                    if (res.code === 200 && res.data.length) appendDesignTokens(res.data)
+                })
+                const projectController = new WiniController("Project")
+                projectController.getById(props.pid).then(res => {
+                    if (res.code === 200 && res.data) {
+                        if (res.data.LogoId) (document.head.querySelector(`:scope > link[rel="icon"]`) as HTMLLinkElement)!.href = res.data.LogoId.startsWith("http") ? res.data.LogoId : `${ConfigData.ebigCdn}/wini/${res.data.LogoId}`;
+                        (document.head.querySelector(`:scope > title`) as HTMLTitleElement)!.innerHTML = res.data.Name;
+                        setProjectData(res.data)
+                        ConfigData.fileUrl = res.data.FileDomain
+                    }
+                })
                 const languageController = new DataController("Language")
                 languageController.getAll().then(async (res) => {
                     if (res.code === 200 && res.data.length) {
@@ -225,4 +218,28 @@ export const useWiniContext = () => {
         );
     }
     return context;
+}
+
+export const initializeProject = async (props: { pid?: string, domain?: string }) => {
+    const winiController = new WiniController("Project")
+    if (!props.pid && props.domain) {
+        console.error("Failed to load project: missing project id or domain")
+        throw new Error("Failed to load project: missing project id or domain")
+    }
+    let projectData: { [k: string]: any } | undefined = undefined
+    if (props.pid) {
+        const res = await winiController.getById(props.pid)
+        if (res.code === 200 && res.data) projectData = res.data
+    } else {
+        const res = await winiController.getListSimple({
+            page: 1, size: 1,
+            query: `Domain:{${props.domain!.replace(/[^a-zA-Z0-9]/g, "\\/")}}`
+        })
+        if (res.code === 200 && res.data[0]) projectData = res.data[0]
+    }
+    if (!projectData) {
+        console.error("Failed to load project: project not found")
+        throw new Error("Failed to load project: project not found")
+    }
+    return projectData
 }

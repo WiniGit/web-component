@@ -23,7 +23,6 @@ export { AudioPlayer } from './component/audio/audio'
 export { IframePlayer } from './component/iframe/iframe'
 export { ProgressCircle } from './component/progress-circle/progress-circle'
 export { Carousel } from './component/carousel/carousel'
-export { ToastContainer } from 'react-toastify'
 export { Button, SimpleButton } from './component/button/button'
 export { Tag } from './component/tag/tag'
 export { Winicon, showTooltipElement } from './component/wini-icon/winicon'
@@ -39,7 +38,7 @@ export { EmptyPage } from './component/empty-page'
 export * from './controller/config'
 export * from './controller/utils'
 export * from './controller/data'
-export * from './controller/setting'
+export { TableController, IntergrationController } from './controller/setting'
 export { CardById } from './module/card/cardById'
 export { ChartById, ChartByType } from './module/chart/chartById'
 export { FormById } from './module/form/formById'
@@ -51,8 +50,8 @@ import { OptionsItem } from './component/select1/select1'
 export type { OptionsItem }
 
 export { useTranslation } from './language/i18n';
-export { Routes, Route, useNavigate, useParams, useLocation, useSearchParams, Navigate, NavLink, Outlet } from 'react-router-dom'
+export { Route, useNavigate, useParams, useLocation, useSearchParams, Navigate, NavLink, Outlet } from 'react-router-dom'
 
-import { WiniProvider, useWiniContext } from './module/WiniProvider'
-export { useWiniContext }
+import { WiniProvider, useWiniContext, initializeProject } from './module/WiniProvider'
+export { useWiniContext, initializeProject }
 export default WiniProvider

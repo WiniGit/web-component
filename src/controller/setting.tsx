@@ -93,6 +93,14 @@ export class WiniController {
         const res = await BaseDA.get(ConfigData.url + `wini/getById?id=${id}`, { headers: { module: this.module } })
         return res
     }
+
+    async getListSimple(options?: { page?: number, size?: number, query?: string, returns?: Array<string>, sortby?: { BY: string, DIRECTION?: "ASC" | "DESC" } }) {
+        const res = await BaseDA.post(ConfigData.url + 'wini/getListSimple', {
+            headers: { module: this.module },
+            body: { searchRaw: options?.query ?? "*", page: options?.page ?? 1, size: options?.size ?? 10, returns: options?.returns, sortby: options?.sortby }
+        })
+        return res
+    }
 }
 
 export class IntergrationController {
