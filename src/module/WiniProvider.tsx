@@ -141,19 +141,14 @@ export const WiniProvider = ({ loadResources = true, ...props }: Props) => {
     const [globalData, setGlobalData] = useState<{ [k: string]: any } | undefined>(undefined)
 
     useEffect(() => {
-        if (loadResources) {
-            const tmp = document.createElement("div")
-            tmp.innerHTML = `
-            <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/WiniGit/web-component@39a5ae9/src/skin/root.min.css">
-            <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/WiniGit/web-component@39a5ae9/src/skin/layout.min.css">
-            <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/WiniGit/web-component@39a5ae9/src/skin/typography.min.css">
-            <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/WiniGit/web-component@39a5ae9/src/skin/toast-noti.min.css">
-            <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/WiniGit/web-component@39a5ae9/src/skin/style.css">
-            `
-            document.head.children[0].before(...tmp.childNodes)
-            tmp.remove()
-        }
-    }, [])
+        if (loadResources)
+            initializeProject({ pid: props.pid }).then((res) => {
+                if (res.LogoId) (document.head.querySelector(`:scope > link[rel="icon"]`) as HTMLLinkElement)!.href = res.LogoId.startsWith("http") ? res.LogoId : `${ConfigData.ebigCdn}/wini/${res.LogoId}`;
+                (document.head.querySelector(`:scope > title`) as HTMLTitleElement)!.innerHTML = res.Name;
+                if (res.FileDomain && !props.fileUrl) ConfigData.fileUrl = res.FileDomain
+                setProjectData(res)
+            })
+    }, [props.pid])
 
     useEffect(() => {
         setTheme(props.theme ?? "light")
@@ -174,15 +169,6 @@ export const WiniProvider = ({ loadResources = true, ...props }: Props) => {
                 const _desginTokenController = new TableController("designtoken")
                 _desginTokenController.getAll().then(res => {
                     if (res.code === 200 && res.data.length) appendDesignTokens(res.data)
-                })
-                const projectController = new WiniController("Project")
-                projectController.getById(props.pid).then(res => {
-                    if (res.code === 200 && res.data) {
-                        if (res.data.LogoId) (document.head.querySelector(`:scope > link[rel="icon"]`) as HTMLLinkElement)!.href = res.data.LogoId.startsWith("http") ? res.data.LogoId : `${ConfigData.ebigCdn}/wini/${res.data.LogoId}`;
-                        (document.head.querySelector(`:scope > title`) as HTMLTitleElement)!.innerHTML = res.data.Name;
-                        setProjectData(res.data)
-                        ConfigData.fileUrl = res.data.FileDomain
-                    }
                 })
                 const languageController = new DataController("Language")
                 languageController.getAll().then(async (res) => {
@@ -221,8 +207,18 @@ export const useWiniContext = () => {
 }
 
 export const initializeProject = async (props: { pid?: string, domain?: string }) => {
+    const tmp = document.createElement("div")
+    tmp.innerHTML = `
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/WiniGit/web-component@39a5ae9/src/skin/root.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/WiniGit/web-component@39a5ae9/src/skin/layout.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/WiniGit/web-component@39a5ae9/src/skin/typography.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/WiniGit/web-component@39a5ae9/src/skin/toast-noti.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/WiniGit/web-component@39a5ae9/src/skin/style.css">
+    `
+    document.head.children[0].before(...tmp.childNodes)
+    tmp.remove()
     const winiController = new WiniController("Project")
-    if (!props.pid && props.domain) {
+    if (!props.pid && !props.domain) {
         console.error("Failed to load project: missing project id or domain")
         throw new Error("Failed to load project: missing project id or domain")
     }
@@ -241,5 +237,5 @@ export const initializeProject = async (props: { pid?: string, domain?: string }
         console.error("Failed to load project: project not found")
         throw new Error("Failed to load project: project not found")
     }
-    return projectData
+    return projectData as ProjectItem
 }

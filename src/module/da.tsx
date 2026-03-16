@@ -119,7 +119,8 @@ export interface ProjectItem {
     LogoId: string,
     Sort?: number,
     Domain: string,
-    Sologan?: string
+    FileDomain: string,
+    GGClientId: string,
 }
 
 export enum DesignTokenType {
