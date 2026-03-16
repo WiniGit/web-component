@@ -1050,7 +1050,7 @@ export const PageByUrl = ({ childrenData, ...props }: PageByUrlProps) => {
     useEffect(() => {
         if (!loading) setLoading(true)
         const pageController = new TableController("page")
-        pageController.getListSimple({ page: 1, size: 1, query: `@Url:{${props.url.length ? props.url.replace(/[\-\/]/g, m => ("\\" + m)) : "\\/"}}` }).then(async (res) => {
+        pageController.getListSimple({ page: 1, size: 1, query: `@Url:{${props.url.length ? props.url.replace(/[^a-zA-Z0-9]/g, (m) => `\\${m}`) : "\\/"}}` }).then(async (res) => {
             if (res.code === 200 && res.data[0]) {
                 const thisPage = res.data[0]
                 setPageItem(thisPage)
