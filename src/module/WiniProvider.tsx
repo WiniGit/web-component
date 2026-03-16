@@ -142,7 +142,7 @@ export const WiniProvider = ({ loadResources = true, ...props }: Props) => {
 
     useEffect(() => {
         if (loadResources)
-            initializeProject({ pid: props.pid }).then((res) => {
+            initializeProject(props.url, { pid: props.pid }).then((res) => {
                 if (res.LogoId) (document.head.querySelector(`:scope > link[rel="icon"]`) as HTMLLinkElement)!.href = res.LogoId.startsWith("http") ? res.LogoId : `${ConfigData.ebigCdn}/wini/${res.LogoId}`;
                 (document.head.querySelector(`:scope > title`) as HTMLTitleElement)!.innerHTML = res.Name;
                 if (res.FileDomain && !props.fileUrl) ConfigData.fileUrl = res.FileDomain
@@ -206,7 +206,8 @@ export const useWiniContext = () => {
     return context;
 }
 
-export const initializeProject = async (props: { pid?: string, domain?: string }) => {
+export const initializeProject = async (winiDomain: string, props: { pid?: string, domain?: string }) => {
+    ConfigData.url = winiDomain
     const tmp = document.createElement("div")
     tmp.innerHTML = `
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/WiniGit/web-component@39a5ae9/src/skin/root.min.css">
