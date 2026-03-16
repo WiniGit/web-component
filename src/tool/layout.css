@@ -825,8 +825,3 @@ textarea::placeholder {
         opacity: 0;
     }
 }
-
-@import url("https://cdn.jsdelivr.net/gh/WiniGit/web-component@39a5ae9/src/skin/root.min.css");
-@import url("https://cdn.jsdelivr.net/gh/WiniGit/web-component@39a5ae9/src/skin/typography.min.css");
-@import url("https://cdn.jsdelivr.net/gh/WiniGit/web-component@39a5ae9/src/skin/toast-noti.min.css");
-@import url("https://cdn.jsdelivr.net/gh/WiniGit/web-component@39a5ae9/src/skin/style.css");
