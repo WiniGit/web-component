@@ -8,7 +8,6 @@ export class ConfigData {
     static fileUrl = "";
     static imgUrlId = "";
     static regexGuid = /^[0-9a-fA-F]{32}$/;
-    static extraPlugins = undefined;
     static ebigCdn = "https://cdn.ebig.co"
     static onInvalidToken = () => Util.clearCookie();
 }
@@ -132,6 +131,7 @@ export class BaseDA {
         loader.className = "loader"
         document.body.appendChild(loader)
 
+        listFile = [...listFile] as any
         // Extract files and IDs
         const files = listFile.map(e => e instanceof File ? e : e.file);
         const ids = listFile.map(e => e instanceof File ? null : e.id).filter(Boolean);

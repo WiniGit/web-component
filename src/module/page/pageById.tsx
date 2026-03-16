@@ -1,4 +1,4 @@
-import { CSSProperties, HTMLAttributes, ReactNode, useDeferredValue, useEffect, useMemo, useRef, useState } from "react"
+import { CSSProperties, forwardRef, HTMLAttributes, ReactNode, useDeferredValue, useEffect, useMemo, useRef, useState } from "react"
 import { useForm, UseFormReturn } from "react-hook-form"
 import { NavLink, useLocation, useNavigate, useParams } from "react-router-dom"
 import { handleErrorImgSrc, LayoutElement, supportProperties } from "./config"
@@ -683,8 +683,10 @@ const ElementUI = ({ findId, children, watchForCustomProps, replaceThisVariables
         return tmpProps
     }, [customProps, props.item.Type, dataValue, children, winiContextData.i18n.language])
 
+    const htmlElementRef = useRef<any | any[]>(null)
+
     useEffect(() => {
-        if (customProps.onInit) customProps.onInit(pageAllRefs[findId]?.current)
+        if (customProps.onInit) customProps.onInit(pageAllRefs[findId]?.current ?? htmlElementRef.current)
     }, [customProps.onInit])
 
     switch (props.item.Type) {
@@ -697,9 +699,17 @@ const ElementUI = ({ findId, children, watchForCustomProps, replaceThisVariables
             delete dataValueProps.onLoaded
             const getType = props.item.Type === ComponentType.navLink ? "a" : (props.type === "form" && !props.item.ParentId) ? "form" : dataValueProps.type
             if (Array.isArray(dataValue)) {
+                htmlElementRef.current = []
                 return dataValue.map((dataValueItem, i) => {
                     dataValueProps.indexItem = { ...props.indexItem, [props.item.NameField.split(".").length > 1 ? props.item.NameField.split(".")[1] : props.item.NameField]: dataValueItem }
-                    return <RenderContainer key={`${dataValueItem}-${i}`} {...dataValueProps} type={getType}>
+                    return <RenderContainer
+                        key={`${dataValueItem}-${i}`}
+                        ref={r => {
+                            if (r && Array.isArray(htmlElementRef.current)) htmlElementRef.current.push(r)
+                        }}
+                        {...dataValueProps}
+                        type={getType}
+                    >
                         {childComponent ??
                             (typeProps.className?.includes(LayoutElement.body) ?
                                 <>
@@ -711,7 +721,7 @@ const ElementUI = ({ findId, children, watchForCustomProps, replaceThisVariables
                     </RenderContainer>
                 })
             } else {
-                return <RenderContainer {...dataValueProps} type={getType}>
+                return <RenderContainer ref={htmlElementRef} {...dataValueProps} type={getType}>
                     {childComponent ??
                         (typeProps.className?.includes(LayoutElement.body) ?
                             <>
@@ -734,8 +744,12 @@ const ElementUI = ({ findId, children, watchForCustomProps, replaceThisVariables
             if (!typeProps.src?.length) typeProps.src = handleErrorImgSrc
             if (props.item.NameField && !!dataValue?.length) {
                 if (Array.isArray(dataValue)) {
+                    htmlElementRef.current = []
                     return dataValue.map((f, i) => <img
                         key={f.id + "-" + i}
+                        ref={r => {
+                            if (r && Array.isArray(htmlElementRef.current)) htmlElementRef.current.push(r)
+                        }}
                         alt=""
                         referrerPolicy="no-referrer"
                         onError={(ev) => { ev.currentTarget.src = handleErrorImgSrc }}
@@ -744,21 +758,36 @@ const ElementUI = ({ findId, children, watchForCustomProps, replaceThisVariables
                     />)
                 } else typeProps.src = getValidLink(dataValue)
             }
-            return <img alt="" referrerPolicy="no-referrer" onError={(ev) => { ev.currentTarget.src = handleErrorImgSrc }} {...typeProps} />
+            return <img ref={htmlElementRef} alt="" referrerPolicy="no-referrer" onError={(ev) => { ev.currentTarget.src = handleErrorImgSrc }} {...typeProps} />
         case ComponentType.video:
             if (props.item.NameField && !!dataValue?.length) {
                 if (Array.isArray(dataValue)) {
-                    return dataValue.map((f, i) => <VideoPlayer key={f.id + "-" + i} {...typeProps} src={f.url} />)
+                    htmlElementRef.current = []
+                    return dataValue.map((f, i) => <VideoPlayer
+                        key={f.id + "-" + i}
+                        ref={r => {
+                            if (r && Array.isArray(htmlElementRef.current)) htmlElementRef.current.push(r)
+                        }}
+                        {...typeProps}
+                        src={f.url}
+                    />)
                 } else typeProps.src = getValidLink(dataValue)
             }
-            return <VideoPlayer {...typeProps} />
+            return <VideoPlayer ref={htmlElementRef} {...typeProps} />
         case ComponentType.audio:
             if (props.item.NameField && !!dataValue?.length) {
                 if (Array.isArray(dataValue)) {
-                    return dataValue.map((f, i) => <AudioPlayer key={f.id + "-" + i} {...typeProps} src={f.url} />)
+                    return dataValue.map((f, i) => <AudioPlayer
+                        key={f.id + "-" + i}
+                        ref={r => {
+                            if (r && Array.isArray(htmlElementRef.current)) htmlElementRef.current.push(r)
+                        }}
+                        {...typeProps}
+                        src={f.url}
+                    />)
                 } else typeProps.src = getValidLink(dataValue)
             }
-            return <AudioPlayer {...typeProps} />
+            return <AudioPlayer ref={htmlElementRef} {...typeProps} />
         case ComponentType.iframe:
             if (props.item.NameField && !!dataValue?.length) {
                 if (Array.isArray(dataValue)) {
@@ -800,7 +829,7 @@ const ElementUI = ({ findId, children, watchForCustomProps, replaceThisVariables
             if (props.propsData) typeProps.propsData = typeProps.propsData ? { ...props.propsData, ...typeProps.propsData } : props.propsData
             return <ViewById {...typeProps} id={typeProps.viewId} />
         case ComponentType.button:
-            return <SimpleButton {...typeProps} />
+            return <SimpleButton ref={htmlElementRef} {...typeProps} />
         case ComponentType.textField:
             const { IsPassword, ...typeProps2 } = typeProps
             if (IsPassword)
@@ -831,19 +860,18 @@ const ElementUI = ({ findId, children, watchForCustomProps, replaceThisVariables
         case ComponentType.upload:
             return <FUploadMultipleFileType {...typeProps} methods={props.methods} name={props.item.NameField} />
         case ComponentType.ckEditor:
-            return <CustomCkEditor5 {...typeProps}
+            return <CustomCkEditor5
+                {...typeProps}
                 methods={props.methods}
                 extraPlugins={[
-                    function (editor: { plugins: { get: (arg0: string) => { (): any; new(): any; createUploadAdapter: (loader: any) => CkEditorUploadAdapter; }; }; }) {
-                        editor.plugins.get('FileRepository').createUploadAdapter = (loader: any) => {
-                            return new CkEditorUploadAdapter(loader);
-                        };
+                    function (editor: any) {
+                        editor.plugins.get('FileRepository').createUploadAdapter = (loader: any) => new CkEditorUploadAdapter(loader)
                     }
                 ]}
-                value={props.methods?.watch(props.item.NameField)}
+                value={props.item.NameField ? props.methods?.watch(props.item.NameField) : typeProps.value}
                 onBlur={(_: any, editor: any) => {
                     const editorData = editor.getData()
-                    props.methods?.setValue(props.item.NameField, editorData)
+                    if (props.item.NameField) props.methods?.setValue(props.item.NameField, editorData)
                     if (typeProps.onBlur) typeProps.onBlur(editorData)
                 }}
             />
@@ -854,21 +882,21 @@ const ElementUI = ({ findId, children, watchForCustomProps, replaceThisVariables
     }
 }
 
-const RenderContainer = ({ type, children, indexItem, ...props }: { type: "label" | "p" | "form" | "a" | "div", children: ReactNode, [key: string]: any }) => {
+const RenderContainer = forwardRef<any, { type: "label" | "p" | "form" | "a" | "div", children: ReactNode, [key: string]: any }>(({ type, children, indexItem, ...props }, ref) => {
     switch (type) {
         case "label":
-            return <label {...props}>{children}</label>
+            return <label ref={ref} {...props}>{children}</label>
         case "p":
-            return <p {...props}>{children}</p>
+            return <p ref={ref} {...props}>{children}</p>
         case "form":
-            return <form {...props}>{children}</form>
+            return <form ref={ref} {...props}>{children}</form>
         case "a":
-            return <NavLink {...(props as any)}>{children}</NavLink>
+            return <NavLink ref={ref} {...(props as any)}>{children}</NavLink>
         case "div":
         default:
-            return <div {...props}>{children}</div>
+            return <div ref={ref} {...props}>{children}</div>
     }
-}
+})
 
 const FileName = ({ file, index, ...props }: { type?: "div" | "p" | "span" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6", file: { [k: string]: any }, index: number, maxLine?: number, className?: string, style?: CSSProperties, value?: string, [k: string]: any }) => {
     return <>
@@ -877,7 +905,7 @@ const FileName = ({ file, index, ...props }: { type?: "div" | "p" | "span" | "h1
     </>
 }
 
-const CustomText = ({ type = "div", ...props }: { type?: "div" | "p" | "span" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6", html?: string, maxLine?: number, className?: string, style?: CSSProperties, value?: string, [k: string]: any }) => {
+const CustomText = forwardRef<any, { type?: "div" | "p" | "span" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6", html?: string, maxLine?: number, className?: string, style?: CSSProperties, value?: string, [k: string]: any }>(({ type = "div", ...props }, ref) => {
     const [convertContentHtml, setConvertContentHtml] = useState<string>("")
 
     useEffect(() => {
@@ -910,34 +938,34 @@ const CustomText = ({ type = "div", ...props }: { type?: "div" | "p" | "span" | 
     else
         switch (type) {
             case "p":
-                if (props.html) return <p {...customProps} />
-                else return <p {...customProps}>{props.value}</p>
+                if (props.html) return <p ref={ref} {...customProps} />
+                else return <p ref={ref} {...customProps}>{props.value}</p>
             case "span":
-                if (props.html) return <span {...customProps} />
-                else return <span {...customProps}>{props.value}</span>
+                if (props.html) return <span ref={ref} {...customProps} />
+                else return <span ref={ref} {...customProps}>{props.value}</span>
             case "h1":
-                if (props.html) return <h1 {...customProps} />
-                else return <h1 {...customProps}>{props.value}</h1>
+                if (props.html) return <h1 ref={ref} {...customProps} />
+                else return <h1 ref={ref} {...customProps}>{props.value}</h1>
             case "h2":
-                if (props.html) return <h2 {...customProps} />
-                else return <h2 {...customProps}>{props.value}</h2>
+                if (props.html) return <h2 ref={ref} {...customProps} />
+                else return <h2 ref={ref} {...customProps}>{props.value}</h2>
             case "h3":
-                if (props.html) return <h3 {...customProps} />
-                else return <h3 {...customProps}>{props.value}</h3>
+                if (props.html) return <h3 ref={ref} {...customProps} />
+                else return <h3 ref={ref} {...customProps}>{props.value}</h3>
             case "h4":
-                if (props.html) return <h4 {...customProps} />
-                else return <h4 {...customProps}>{props.value}</h4>
+                if (props.html) return <h4 ref={ref} {...customProps} />
+                else return <h4 ref={ref} {...customProps}>{props.value}</h4>
             case "h5":
-                if (props.html) return <h5 {...customProps} />
-                else return <h5 {...customProps}>{props.value}</h5>
+                if (props.html) return <h5 ref={ref} {...customProps} />
+                else return <h5 ref={ref} {...customProps}>{props.value}</h5>
             case "h6":
-                if (props.html) return <h6 {...customProps} />
-                else return <h6 {...customProps}>{props.value}</h6>
+                if (props.html) return <h6 ref={ref} {...customProps} />
+                else return <h6 ref={ref} {...customProps}>{props.value}</h6>
             default:
                 const { onMouseOver, ...tmpProps } = customProps
-                return <Text {...tmpProps} onHover={onMouseOver}>{props.value}</Text>
+                return <Text ref={ref} {...tmpProps} onHover={onMouseOver}>{props.value}</Text>
         }
-}
+})
 
 interface PageByIdProps extends Props {
     id: string,

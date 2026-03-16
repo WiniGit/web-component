@@ -246,10 +246,8 @@ export function CKEditorForm({ ckEditorStyle = { width: "100%", height: 400, max
                     disabled={params.disabled}
                     customConfig={params.customConfig as any}
                     extraPlugins={params.ckEditorUploadPlugin ?? [
-                        function (editor: { plugins: { get: (arg0: string) => { (): any; new(): any; createUploadAdapter: (loader: any) => CkEditorUploadAdapter; }; }; }) {
-                            editor.plugins.get('FileRepository').createUploadAdapter = (loader: any) => {
-                                return new CkEditorUploadAdapter(loader);
-                            };
+                        function (editor: any) {
+                            editor.plugins.get('FileRepository').createUploadAdapter = (loader: any) => new CkEditorUploadAdapter(loader)
                         }
                     ]}
                     onBlur={(_: any, editor: any) => { field.onChange(editor.getData()) }}
