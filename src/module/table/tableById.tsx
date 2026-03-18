@@ -1,5 +1,5 @@
 import styles from "./table.module.css";
-import { BaseDA, Button, DataController, DialogAlignment, imgFileTypes, OptionsItem, Pagination, Popup, randomGID, SettingDataController, showDialog, showPopup, TableController, Text, ToastMessage, Winicon } from "../../index";
+import { BaseDA, Button, DataController, DialogAlignment, imgFileTypes, OptionsItem, Pagination, Popup, randomGID, SettingDataController, showDialog, showPopup, TableController, Text, ToastMessage, useParams, useWiniContext, Util, Winicon } from "../../index";
 import { CSSProperties, Dispatch, forwardRef, ReactNode, SetStateAction, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useForm, UseFormReturn } from "react-hook-form";
@@ -9,12 +9,13 @@ import { ButtonImportData, SearchFilterData } from "./featureElement";
 import { ColDataType, FEDataType } from "../da";
 import { cellValue } from "./config";
 import AddEditElementForm from "./addEditElement";
-import { getValidLink } from "../page/pageById";
+import { AsyncFunction, getValidLink } from "../page/pageById";
 
 export function TableById({ id, ...props }: { id: string, className?: string, style?: CSSProperties }) {
     const [reportItem, setReportItem] = useState<{ [p: string]: any }>()
     const settingDataController = new SettingDataController("report")
     const [filterSearch, setFilterSearch] = useState<any>({ searchRaw: "*", sortby: [] })
+    const params = useParams()
 
     useEffect(() => {
         if (id) {
@@ -27,6 +28,21 @@ export function TableById({ id, ...props }: { id: string, className?: string, st
             })
         }
     }, [id])
+
+    const [handleRequired, setHandleRequired] = useState()
+    useEffect(() => {
+        if (reportItem) {
+            const updateRequired = async () => {
+                const tmp = await (new AsyncFunction(
+                    "Util", "DataController", "randomGID", "ToastMessage", "useWiniContext", "useParams",
+                    reportItem.Props.requiredSearchRaw
+                ))(Util, DataController, randomGID, ToastMessage, useWiniContext, () => params)
+                return tmp
+            }
+            if (reportItem.Props.requiredSearchRaw?.length) updateRequired().then(setHandleRequired)
+            else setHandleRequired(undefined)
+        }
+    }, [reportItem?.Props?.requiredSearchRaw])
 
     return reportItem && <>
         {reportItem.Props && <DataTable
@@ -43,7 +59,7 @@ export function TableById({ id, ...props }: { id: string, className?: string, st
             formTitle={{ formAdd: reportItem.Props.FormTitle, formEdit: reportItem.Props.EditFormTitle }}
             customFormId={{ formAdd: reportItem.Props.FormId, formEdit: reportItem.Props.EditFormId }}
             filterData={{
-                required: reportItem.Props.requiredSearchRaw,
+                required: handleRequired,
                 ...filterSearch
             }}
             className={props.className}
