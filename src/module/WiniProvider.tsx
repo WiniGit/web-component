@@ -129,7 +129,7 @@ const WiniContext = createContext<WiniContextProps | undefined>(undefined)
 
 export const WiniProvider = ({ loadResources = true, ...props }: Props) => {
     ConfigData.pid = props.pid
-    if (!loadResources) refreshTokenHeaders.pid = props.pid
+    if (loadResources) refreshTokenHeaders.pid = props.pid
     ConfigData.url = props.url
     ConfigData.imgUrlId = props.imgUrlId
     ConfigData.fileUrl = props.fileUrl
@@ -142,14 +142,15 @@ export const WiniProvider = ({ loadResources = true, ...props }: Props) => {
     const [globalData, setGlobalData] = useState<{ [k: string]: any } | undefined>(undefined)
 
     useEffect(() => {
-        if (loadResources)
+        if (loadResources) {
+            refreshTokenHeaders.pid = props.pid
             initializeProject(props.url, { pid: props.pid }).then((res) => {
                 if (res.LogoId) (document.head.querySelector(`:scope > link[rel="icon"]`) as HTMLLinkElement)!.href = res.LogoId.startsWith("http") ? res.LogoId : `${ConfigData.ebigCdn}/wini/${res.LogoId}`;
                 (document.head.querySelector(`:scope > title`) as HTMLTitleElement)!.innerHTML = res.Name;
                 if (res.FileDomain && !props.fileUrl) ConfigData.fileUrl = res.FileDomain
                 setProjectData(res)
             })
-        else refreshTokenHeaders.pid = props.pid
+        } else refreshTokenHeaders.pid = "wini"
     }, [props.pid])
 
     useEffect(() => {
