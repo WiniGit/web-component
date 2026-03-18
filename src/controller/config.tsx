@@ -12,6 +12,8 @@ export class ConfigData {
     static onInvalidToken = () => Util.clearCookie();
 }
 
+export const refreshTokenHeaders = { 'Content-Type': 'application/json', pid: "wini" }
+
 const getHeaders = async () => {
     let timeRefresh: any = Util.getCookie("timeRefresh")
     if (typeof timeRefresh === "string") timeRefresh = parseInt(timeRefresh)
@@ -19,7 +21,7 @@ const getHeaders = async () => {
     if (timeRefresh && timeRefresh > 0 && timeRefresh <= now) {
         const res = await fetch(ConfigData.url + 'data/refreshToken', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: refreshTokenHeaders,
             body: JSON.stringify({ 'refreshToken': Util.getCookie("refreshToken") }),
         })
         if (res.status === 200 || res.status === 201) {

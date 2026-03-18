@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react"
 import { BrowserRouter, Routes } from "react-router-dom"
-import { BaseDA, ConfigData } from "../controller/config"
+import { BaseDA, ConfigData, refreshTokenHeaders } from "../controller/config"
 import { TableController, WiniController } from "../controller/setting"
 import { Dialog } from "../component/dialog/dialog"
 import { ToastContainer } from 'react-toastify'
@@ -129,6 +129,7 @@ const WiniContext = createContext<WiniContextProps | undefined>(undefined)
 
 export const WiniProvider = ({ loadResources = true, ...props }: Props) => {
     ConfigData.pid = props.pid
+    if (!loadResources) refreshTokenHeaders.pid = props.pid
     ConfigData.url = props.url
     ConfigData.imgUrlId = props.imgUrlId
     ConfigData.fileUrl = props.fileUrl
@@ -148,6 +149,7 @@ export const WiniProvider = ({ loadResources = true, ...props }: Props) => {
                 if (res.FileDomain && !props.fileUrl) ConfigData.fileUrl = res.FileDomain
                 setProjectData(res)
             })
+        else refreshTokenHeaders.pid = props.pid
     }, [props.pid])
 
     useEffect(() => {
