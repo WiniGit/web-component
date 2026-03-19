@@ -56,7 +56,7 @@ interface CardRef {
 export const CardById = forwardRef<CardRef, CardProps>((props, ref) => {
     const methods = useForm({ shouldFocusError: false })
     const [cardItem, setCardItem] = useState<{ [p: string]: any }>()
-    const layers = useMemo(() => cardItem?.Props ?? [], [cardItem])
+    const layers = useMemo(() => (cardItem?.Props ?? []).sort((a: any, b: any) => (a.Setting.style?.order ?? 0) - (b.Setting.style?.order ?? 0)), [cardItem])
     const _colController = new TableController("column")
     const _relController = new TableController("rel")
     const keyNames = useMemo<Array<string>>(() => layers.filter((e: any) => e.NameField?.length).map((e: any) => e.NameField), [layers.length])

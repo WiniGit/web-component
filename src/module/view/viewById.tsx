@@ -27,7 +27,7 @@ interface Props {
 export const ViewById = (props: Props) => {
     const methods = useForm({ shouldFocusError: false })
     const [viewItem, setViewItem] = useState<{ [p: string]: any }>()
-    const layers = useMemo(() => viewItem?.Props ?? [], [viewItem])
+    const layers = useMemo(() => (viewItem?.Props ?? []).sort((a: any, b: any) => (a.Setting.style?.order ?? 0) - (b.Setting.style?.order ?? 0)), [viewItem])
     const _colController = new TableController("column")
     const _relController = new TableController("rel")
     const [controller, setController] = useState<any>(undefined)

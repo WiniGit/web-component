@@ -991,8 +991,10 @@ interface PageByIdProps extends Props {
 export const PageById = (props: PageByIdProps) => {
     const methods = useForm({ shouldFocusError: false })
     const [pageItem, setPageItem] = useState<{ [p: string]: any }>()
-    const [layout, setLayout] = useState<Array<{ [p: string]: any }>>([])
-    const [layers, setLayers] = useState<Array<{ [p: string]: any }>>([])
+    const [memoLayout, setLayout] = useState<{ [p: string]: any }[]>([])
+    const layout = useMemo(() => memoLayout.sort((a: any, b: any) => (a.Setting.style?.order ?? 0) - (b.Setting.style?.order ?? 0)), [memoLayout])
+    const [memoLayers, setLayers] = useState<{ [p: string]: any }[]>([])
+    const layers = useMemo(() => memoLayers.sort((a: any, b: any) => (a.Setting.style?.order ?? 0) - (b.Setting.style?.order ?? 0)), [memoLayers])
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {

@@ -472,63 +472,66 @@ const FormView = ({ cols = [], rels = [], item, tbName, onCancel, onSuccess, exp
         } else return { data: [], totalCount: 0 }
     }
 
+    const sortFields = useMemo(() => cols.concat(rels).sort((a, b) => (a.Form.Sort ?? 0) - (b.Form.Sort ?? 0)), [cols.length, rels.length])
+
     return <form className="col" style={{ flex: 1, width: '100%', height: '100%' }}>
         <div className="col" style={{ flex: 1, animation: "loading-change-view 0.5s ease-in-out", height: '100%', padding: '1.6rem 2.4rem', gap: '2.4rem', overflow: 'hidden auto', scrollbarWidth: "thin" }}>
-            {cols.map((e) => {
-                const checkCustom = customFields?.[e.Name]
-                if (checkCustom) return checkCustom(methods)
-                const tmpFieldItem = (item?.Id && e.Form.Uneditable) ? { ...e, Form: { ...e.Form, Disabled: true } } : e
-                return <RenderComponentByType key={e.Id} fieldItem={tmpFieldItem} methods={methods} style={{ order: e.Form.Sort }} />;
-            })}
-            {rels.map((_rel, _) => {
-                const checkCustom = customFields?.[_rel.Column]
-                if (checkCustom) return checkCustom(methods)
-                const _options = methodsOptions.watch(`${_rel.Column}_Options`) ?? []
-                let _mapOptions = _options.map((e: any) => {
-                    return {
-                        id: e.Id,
-                        name: e.Name,
-                        prefix: (_rel.TablePK === "Customer" || _rel.TablePK === "User") ? <CustomerAvatar data={e} /> : undefined,
-                        parentId: e.ParentId,
+            {sortFields.map((sf) => {
+                if (sf.Column) {
+                    const checkCustom = customFields?.[sf.Column]
+                    if (checkCustom) return checkCustom(methods)
+                    const _options = methodsOptions.watch(`${sf.Column}_Options`) ?? []
+                    let _mapOptions = _options.map((e: any) => {
+                        return {
+                            id: e.Id,
+                            name: e.Name,
+                            prefix: (sf.TablePK === "Customer" || sf.TablePK === "User") ? <CustomerAvatar data={e} /> : undefined,
+                            parentId: e.ParentId,
+                        }
+                    })
+                    switch (sf.Form.ComponentType) {
+                        case ComponentType.selectMultiple:
+                            return <SelectMultipleForm
+                                methods={methods}
+                                key={sf.Id}
+                                required={sf.Form.Required}
+                                disabled={(item?.Id && sf.Form.Uneditable) || sf.Form.Disabled}
+                                name={sf.Column}
+                                label={sf.Form.Label ?? sf.Column}
+                                placeholder={sf.Form.Placeholder}
+                                style={{ order: sf.Form.Sort }}
+                                options={_mapOptions}
+                                getOptions={(params) => getOptions({ ...params, _rel: sf })}
+                                onChange={() => {
+                                    watchRel.forEach((wRel) => {
+                                        if (wRel.Id !== sf.Id && wRel.Query.includes(`\${this.${sf.Column}}`)) methods.setValue(wRel.Column, null)
+                                    })
+                                }}
+                            />
+                        default:
+                            return <Select1Form
+                                methods={methods}
+                                key={sf.Id}
+                                required={sf.Form.Required}
+                                disabled={(item?.Id && sf.Form.Uneditable) || sf.Form.Disabled}
+                                name={sf.Column}
+                                label={sf.Form.Label ?? sf.Column}
+                                placeholder={sf.Form.Placeholder}
+                                style={{ order: sf.Form.Sort }}
+                                options={_mapOptions}
+                                getOptions={(params) => getOptions({ ...params, _rel: sf })}
+                                onChange={() => {
+                                    watchRel.forEach((wRel) => {
+                                        if (wRel.Id !== sf.Id && wRel.Query.includes(`\${this.${sf.Column}}`)) methods.setValue(wRel.Column, null)
+                                    })
+                                }}
+                            />
                     }
-                })
-                switch (_rel.Form.ComponentType) {
-                    case ComponentType.selectMultiple:
-                        return <SelectMultipleForm
-                            methods={methods}
-                            key={_rel.Id}
-                            required={_rel.Form.Required}
-                            disabled={(item?.Id && _rel.Form.Uneditable) || _rel.Form.Disabled}
-                            name={_rel.Column}
-                            label={_rel.Form.Label ?? _rel.Column}
-                            placeholder={_rel.Form.Placeholder}
-                            style={{ order: _rel.Form.Sort }}
-                            options={_mapOptions}
-                            getOptions={(params) => getOptions({ ...params, _rel })}
-                            onChange={() => {
-                                watchRel.forEach((wRel) => {
-                                    if (wRel.Id !== _rel.Id && wRel.Query.includes(`\${this.${_rel.Column}}`)) methods.setValue(wRel.Column, null)
-                                })
-                            }}
-                        />
-                    default:
-                        return <Select1Form
-                            methods={methods}
-                            key={_rel.Id}
-                            required={_rel.Form.Required}
-                            disabled={(item?.Id && _rel.Form.Uneditable) || _rel.Form.Disabled}
-                            name={_rel.Column}
-                            label={_rel.Form.Label ?? _rel.Column}
-                            placeholder={_rel.Form.Placeholder}
-                            style={{ order: _rel.Form.Sort }}
-                            options={_mapOptions}
-                            getOptions={(params) => getOptions({ ...params, _rel })}
-                            onChange={() => {
-                                watchRel.forEach((wRel) => {
-                                    if (wRel.Id !== _rel.Id && wRel.Query.includes(`\${this.${_rel.Column}}`)) methods.setValue(wRel.Column, null)
-                                })
-                            }}
-                        />
+                } else {
+                    const checkCustom = customFields?.[sf.Name]
+                    if (checkCustom) return checkCustom(methods)
+                    const tmpFieldItem = (item?.Id && sf.Form.Uneditable) ? { ...sf, Form: { ...sf.Form, Disabled: true } } : sf
+                    return <RenderComponentByType key={sf.Id} fieldItem={tmpFieldItem} methods={methods} style={{ order: sf.Form.Sort }} />;
                 }
             })}
             {expandForm?.(methods)}
