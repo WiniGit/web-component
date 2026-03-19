@@ -424,6 +424,7 @@ const ElementUI = ({ findId, children, watchForCustomProps, replaceThisVariables
             _props.style = { ..._props.style, ...watchForCustomProps.style }
             delete watchForCustomProps.style
         }
+        delete _props.style.order
         if (props.className) _props.className = [..._props.className.split(" "), ...props.className.split(" ")].filter((cls, i, arr) => cls.length && arr.indexOf(cls) === i).join(" ")
         if (watchForCustomProps?.className) {
             _props.className = [..._props.className.split(" "), ...watchForCustomProps.className.split(" ")].filter((cls, i, arr) => cls.length && arr.indexOf(cls) === i).join(" ")
@@ -560,7 +561,10 @@ const ElementUI = ({ findId, children, watchForCustomProps, replaceThisVariables
         let tmpProps = { ...customProps }
         delete tmpProps.onInit
         if (regexGetVariables.test(tmpProps.id)) tmpProps.id = replaceThisVariables(tmpProps.id)
-        if (regexGetVariables.test(tmpProps.className)) tmpProps.className = replaceThisVariables(tmpProps.className)
+        if (regexGetVariables.test(tmpProps.className)) {
+            if (props.item.Id === "0319a6acb1ab49018d0b26eb5670ce3f") debugger
+            tmpProps.className = replaceThisVariables(tmpProps.className)
+        }
         if (props.item.NameField && tmpProps.validate?.some((v: any) => v.type === ValidateType.required)) tmpProps.required = true
         switch (props.item.Type) {
             case ComponentType.form:
@@ -1074,8 +1078,10 @@ interface PageByUrlProps extends Props {
 export const PageByUrl = ({ childrenData, ...props }: PageByUrlProps) => {
     const methods = useForm({ shouldFocusError: false })
     const [pageItem, setPageItem] = useState<{ [p: string]: any }>()
-    const [layout, setLayout] = useState<Array<{ [p: string]: any }>>([])
-    const [layers, setLayers] = useState<Array<{ [p: string]: any }>>([])
+    const [memoLayout, setLayout] = useState<{ [p: string]: any }[]>([])
+    const layout = useMemo(() => memoLayout.sort((a: any, b: any) => (a.Setting.style?.order ?? 0) - (b.Setting.style?.order ?? 0)), [memoLayout])
+    const [memoLayers, setLayers] = useState<{ [p: string]: any }[]>([])
+    const layers = useMemo(() => memoLayers.sort((a: any, b: any) => (a.Setting.style?.order ?? 0) - (b.Setting.style?.order ?? 0)), [memoLayers])
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
