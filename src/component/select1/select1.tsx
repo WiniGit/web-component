@@ -280,7 +280,7 @@ function OptionsItemTile({ item, children, selected, onClick, getOptions, option
     }, [children])
 
     useEffect(() => {
-        if (isOpen && !options.totalCount) getOptions?.({ length: 0, parentId: item.id }).then(res => setOptions(res))
+        if (isOpen && !options.totalCount) getOptions?.({ length: 0, parentId: item.id }).then(setOptions)
     }, [isOpen])
 
     const returnUIByStyle = (optItem: OptionsItem) => {
@@ -324,7 +324,7 @@ function OptionsItemTile({ item, children, selected, onClick, getOptions, option
             })}
             {options.data.length < options.totalCount && <div className={`button-text-5 ${styles["see-more"]}`}
                 onClick={() => {
-                    getOptions?.({ length: options.data.length, parentId: item.id }).then(res => setOptions(res))
+                    getOptions?.({ length: options.data.length, parentId: item.id }).then(setOptions)
                 }}>{t("seemore")}</div>}
 
         </>}

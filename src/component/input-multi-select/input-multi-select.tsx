@@ -323,7 +323,7 @@ function OptionsItemTile({ item, children, selected, onChange, getOptions }: Opt
 
     useEffect(() => {
         if (isOpen && !options.totalCount) {
-            getOptions?.({ length: 0, parentId: item.id }).then(res => setOptions(res))
+            getOptions?.({ length: 0, parentId: item.id }).then(setOptions)
         }
     }, [isOpen])
 
@@ -382,7 +382,7 @@ function OptionsItemTile({ item, children, selected, onChange, getOptions }: Opt
                 </label>
             })}
             {options.data.length < options.totalCount && <div className={`button-text-5 ${styles["see-more"]}`} onClick={() => {
-                getOptions?.({ length: options.data.length, parentId: item.id }).then(res => setOptions(res))
+                getOptions?.({ length: options.data.length, parentId: item.id }).then(setOptions)
             }}>{t("seemore")}</div>}
         </>}
     </>
