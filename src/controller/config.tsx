@@ -13,6 +13,7 @@ export class ConfigData {
 }
 
 export const refreshTokenHeaders = { 'Content-Type': 'application/json', pid: "wini" }
+export const specialCharsRegex = /[^a-zA-Z0-9]/g;
 
 const getHeaders = async () => {
     let timeRefresh: any = Util.getCookie("timeRefresh")

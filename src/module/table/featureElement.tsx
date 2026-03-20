@@ -1,7 +1,7 @@
 import { CSSProperties, forwardRef, MouseEventHandler, useDeferredValue, useEffect, useMemo, useRef, useState } from "react"
 import styles from "./table.module.css";
 import { useTranslation } from "react-i18next"
-import { Button, Checkbox, closePopup, DateTimePicker, InfiniteScroll, Popup, RadioButton, showPopup, Slider, Switch, Tag, Text, TextField, Util, Winicon, showDialog, DialogAlignment, DataController } from "../../index"
+import { Button, Checkbox, closePopup, DateTimePicker, InfiniteScroll, Popup, RadioButton, showPopup, Slider, Switch, Tag, Text, TextField, Util, Winicon, showDialog, DialogAlignment, DataController, specialCharsRegex } from "../../index"
 import { handleGoogleSheetFetch } from "./exportXlsx"
 import { DataTable } from "./tableById"
 import { ColDataType, ColDataTypeIcon, FEDataType } from "../da";
@@ -667,7 +667,9 @@ const FilterValueOptionsDropdown = ({ onClose, onSelect, style = {}, selected, i
         if (controlName === "User" || controlName === "Customer") returns.push("AvatarUrl")
         let querySearch = searchRaw;
         if (searchDefer.length) {
-            querySearch = querySearch === "*" ? `(@Name:("${searchDefer}")${controlName === "User" || controlName === "Customer" ? ` | @Email:("${searchDefer}") | @Mobile:("${searchDefer}")` : ""})` : `${querySearch} (@Name:("${searchDefer}")${controlName === "User" || controlName === "Customer" ? ` | @Email:("${searchDefer}") | @Mobile:("${searchDefer}")` : ""})`
+            querySearch = querySearch === "*" ?
+                `(@Name:("${searchDefer}")${controlName === "User" || controlName === "Customer" ? ` | @Email:{*${searchDefer.replace(specialCharsRegex, (m: string) => `\\${m}`)}*} | @Mobile:{*${searchDefer.replace(specialCharsRegex, (m: string) => `\\${m}`)}*}` : ""})` :
+                `${querySearch} (@Name:("${searchDefer}")${controlName === "User" || controlName === "Customer" ? ` | @Email:{*${searchDefer.replace(specialCharsRegex, (m: string) => `\\${m}`)}*} | @Mobile:{*${searchDefer.replace(specialCharsRegex, (m: string) => `\\${m}`)}*}` : ""})`
         }
         const res = await controller.aggregateList({ page: page ?? 1, size: 20, searchRaw: querySearch, returns: returns })
         if (res.code === 200) {
