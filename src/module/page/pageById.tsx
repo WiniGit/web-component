@@ -200,7 +200,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
             }
         }
         return tmp
-    }, [props.item.State, location.pathname, location.search, params, JSON.stringify(location.state), props.indexItem, defferWatch, winiContextData.i18n.language, winiContextData.userData])
+    }, [location.pathname, location.search, params, JSON.stringify(location.state), props.indexItem, defferWatch, winiContextData])
     // 
     const watchForCustomProps = useDeferredValue(stateCustomProps)
     /** Check unmounted */
@@ -210,6 +210,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
         watchForCustomProps={watchForCustomProps}
         findId={findId}
         children={children}
+        defferWatch={defferWatch}
         replaceThisVariables={replaceThisVariables}
     />
 }
@@ -217,17 +218,18 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
 interface ElementUIProps extends RenderLayerElementProps {
     findId: string,
     watchForCustomProps: { [p: string]: any },
+    defferWatch: string,
     children: { [p: string]: any }[],
     replaceThisVariables: (content: string) => any,
     [p: string]: any
 }
 
-const ElementUI = ({ findId, children, watchForCustomProps, replaceThisVariables, ...props }: ElementUIProps) => {
+const ElementUI = ({ findId, children, watchForCustomProps, replaceThisVariables, defferWatch, ...props }: ElementUIProps) => {
     const winiContextData = useWiniContext()
     const location = useLocation()
     const navigate = useNavigate()
     const params = useParams()
-    const customProps = useMemo(() => {
+    const memeCustomProps = useMemo(() => {
         let _props = { ...props.item.Setting }
         _props.style ??= {}
         _props.className ??= ""
@@ -438,7 +440,8 @@ const ElementUI = ({ findId, children, watchForCustomProps, replaceThisVariables
             _props = { ..._props, ...extendProps }
         }
         return watchForCustomProps ? { ..._props, ...watchForCustomProps } : _props
-    }, [props.item, props.propsData, props.indexItem, JSON.stringify(watchForCustomProps), winiContextData?.userData, location.pathname, location.search, params, JSON.stringify(location.state)])
+    }, [props.item, props.propsData, props.indexItem, defferWatch, winiContextData, location.pathname, location.search, params, JSON.stringify(location.state)])
+    const customProps = useDeferredValue(memeCustomProps)
     const _options = useMemo(() => {
         if (!props.options || !props.item.NameField?.length) return undefined
         const keys = props.item.NameField.split(".")
@@ -685,7 +688,7 @@ const ElementUI = ({ findId, children, watchForCustomProps, replaceThisVariables
                 break;
         }
         return tmpProps
-    }, [customProps, props.item.Type, dataValue, children, winiContextData.i18n.language])
+    }, [JSON.stringify(customProps), props.item.Type, dataValue, children, winiContextData])
 
     const htmlElementRef = useRef<any | any[]>(null)
 
