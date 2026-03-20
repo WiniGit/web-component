@@ -564,10 +564,7 @@ const ElementUI = ({ findId, children, watchForCustomProps, replaceThisVariables
         let tmpProps = { ...customProps }
         delete tmpProps.onInit
         if (regexGetVariables.test(tmpProps.id)) tmpProps.id = replaceThisVariables(tmpProps.id)
-        if (regexGetVariables.test(tmpProps.className)) {
-            if (props.item.Id === "0319a6acb1ab49018d0b26eb5670ce3f") debugger
-            tmpProps.className = replaceThisVariables(tmpProps.className)
-        }
+        if (regexGetVariables.test(tmpProps.className)) tmpProps.className = replaceThisVariables(tmpProps.className)
         if (props.item.NameField && tmpProps.validate?.some((v: any) => v.type === ValidateType.required)) tmpProps.required = true
         switch (props.item.Type) {
             case ComponentType.form:
@@ -688,7 +685,7 @@ const ElementUI = ({ findId, children, watchForCustomProps, replaceThisVariables
                 break;
         }
         return tmpProps
-    }, [JSON.stringify(customProps), props.item.Type, dataValue, children, winiContextData])
+    }, [JSON.stringify(customProps), props.item.Type, dataValue, children, winiContextData, defferWatch, location.pathname, location.search, params, JSON.stringify(location.state)])
 
     const htmlElementRef = useRef<any | any[]>(null)
 
@@ -995,6 +992,7 @@ interface PageByIdProps extends Props {
     onlyBody?: boolean
 }
 
+export const globalTableCache = new Map()
 export const PageById = (props: PageByIdProps) => {
     const methods = useForm({ shouldFocusError: false })
     const [pageItem, setPageItem] = useState<{ [p: string]: any }>()
@@ -1007,9 +1005,9 @@ export const PageById = (props: PageByIdProps) => {
     useEffect(() => {
         if (!loading) setLoading(true)
         const pageController = new TableController("page")
-        pageController.getByListId([props.id]).then(async (res) => {
-            if (res.code === 200 && res.data[0]) {
-                const thisPage = res.data[0]
+        pageController.getById(props.id).then(async (res) => {
+            if (res.code === 200 && res.data) {
+                const thisPage = res.data
                 setPageItem(thisPage)
                 const layerController = new TableController("layer")
                 if (props.onlyLayout) {

@@ -1,6 +1,6 @@
 import { CSSProperties, forwardRef, ReactNode, useDeferredValue, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react"
-import { FieldValues, useForm, UseFormReturn } from "react-hook-form"
-import { CustomHTMLProps, getValidLink, RenderLayerElement } from "../page/pageById"
+import { FieldValues, Form, useForm, UseFormReturn } from "react-hook-form"
+import { CustomHTMLProps, getValidLink, globalTableCache, RenderLayerElement } from "../page/pageById"
 import { AccountController, BaseDA, DataController, OptionsItem, randomGID, SettingDataController, urlToFileType, Util } from "../../index"
 import { regexGetVariableByThis } from "../card/config"
 import { ComponentType, FEDataType } from "../da"
@@ -35,6 +35,7 @@ interface FormByIdRef {
     rels: Array<{ [p: string]: any }>,
 }
 
+const globalFormCache = new Map()
 export const FormById = forwardRef<FormByIdRef, Props>((props, ref) => {
     const methods = useForm({ shouldFocusError: false })
     const methodOptions = useForm({ shouldFocusError: false })
@@ -51,6 +52,29 @@ export const FormById = forwardRef<FormByIdRef, Props>((props, ref) => {
     const [relativeCols, setRelativeCols] = useState<Array<{ [p: string]: any }>>([])
     const accountController = new AccountController()
     const htmlContent = useRef<{ [k: string]: string }>({})
+
+    useEffect(() => {
+        if (props.id) {
+            if (globalFormCache.has(props.id)) {
+                setFormItem(globalFormCache.get(props.id))
+            } else {
+                const controller = new SettingDataController("form")
+                controller.getByIds([props.id]).then(async (res) => {
+                    if (res.code === 200 && res.data[0]) {
+                        let _formItem = res.data[0]
+                        if (_formItem.Props && typeof _formItem.Props === "string") _formItem.Props = JSON.parse(_formItem.Props)
+                        if (!Array.isArray(_formItem.Props)) _formItem.Props = []
+                        setFormItem(_formItem)
+                        globalFormCache.set(props.id, _formItem)
+                    } else if (props.onGetFormError) props.onGetFormError(res)
+                })
+            }
+        }
+        return () => {
+            if (globalFormCache.size > 20) globalFormCache.clear()
+            props.onUnMount?.()
+        }
+    }, [props.id])
 
     useEffect(() => {
         if (JSON.stringify(controller) !== JSON.stringify(props.controller)) setController(props.controller)
@@ -305,38 +329,25 @@ export const FormById = forwardRef<FormByIdRef, Props>((props, ref) => {
     }
 
     useEffect(() => {
-        if (props.id) {
-            const controller = new SettingDataController("form")
-            controller.getByIds([props.id]).then(async (res) => {
-                if (res.code === 200 && res.data[0]) {
-                    let _formItem = res.data[0]
-                    if (_formItem.Props && typeof _formItem.Props === "string") _formItem.Props = JSON.parse(_formItem.Props)
-                    if (!Array.isArray(_formItem.Props)) _formItem.Props = []
-                    setFormItem(_formItem)
-                } else if (props.onGetFormError) props.onGetFormError(res)
-            })
-        }
-        return () => props.onUnMount?.()
-    }, [props.id])
-
-    useEffect(() => {
         if (formItem) {
-            _relController.getListSimple({ page: 1, size: 100, query: `@TableFK:{${formItem.TbName}}` }).then(res => {
-                if (res.code === 200) setRels(res.data.map((e: any) => {
-                    let _tmp = { ...e, Form: e.Form ? typeof e.Form === "string" ? JSON.parse(e.Form) : { ...e.Form } : { Required: true } }
-                    _tmp.Form.Sort = (formItem.Props as any)[e.Column]
-                    return _tmp
-                }))
-            })
-            _colController.getListSimple({ page: 1, size: 100, query: `@TableName:{${formItem.TbName}}` }).then(res => {
-                if (res.code === 200) {
-                    setCols(res.data.map((e: any) => {
-                        let _tmp = { ...e, Form: e.Form ? typeof e.Form === "string" ? JSON.parse(e.Form) : { ...e.Form } : { Required: true } }
-                        _tmp.Form.Sort = (formItem.Props as any)[e.Name]
-                        return _tmp
-                    }))
-                }
-            })
+            if (globalTableCache.has(formItem.TbName)) {
+                const cacheTable = globalTableCache.get(formItem.TbName)
+                setCols(cacheTable.cols)
+                setRels(cacheTable.rels)
+            } else {
+                Promise.all([
+                    _relController.getListSimple({ page: 1, size: 100, query: `@TableFK:{${formItem.TbName}}` }),
+                    _colController.getListSimple({ page: 1, size: 100, query: `@TableName:{${formItem.TbName}}` })
+                ]).then(res => {
+                    if (res.every((e: any) => e.code === 200)) {
+                        const relTmp = res[0].data.map((e: any) => ({ ...e, Form: JSON.parse(e.Form) }))
+                        const colTmp = res[1].data.map((e: any) => ({ ...e, Form: JSON.parse(e.Form) }))
+                        setCols(colTmp)
+                        setRels(relTmp)
+                        globalTableCache.set(formItem.TbName, { cols: colTmp, rels: relTmp })
+                    }
+                })
+            }
         }
     }, [formItem])
 

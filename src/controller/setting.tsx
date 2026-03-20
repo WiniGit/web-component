@@ -16,6 +16,16 @@ export class TableController {
         return res
     }
 
+    async getById(id: string) {
+        const res = await BaseDA.get(ConfigData.url + `setting/getById?id=${id}`, {
+            headers: {
+                pid: ConfigData.pid,
+                module: this.module,
+            },
+        })
+        return res
+    }
+
     async getByListId(ids: Array<string>) {
         const res = await BaseDA.post(ConfigData.url + 'setting/getByIds', {
             headers: {

@@ -24,6 +24,7 @@ interface Props {
     onLoaded?: (ev: { data: { [p: string]: any } }) => void,
 }
 
+const globalViewCache = new Map()
 export const ViewById = (props: Props) => {
     const methods = useForm({ shouldFocusError: false })
     const [viewItem, setViewItem] = useState<{ [p: string]: any }>()
@@ -40,16 +41,24 @@ export const ViewById = (props: Props) => {
 
     useEffect(() => {
         if (props.id) {
-            const controller = new SettingDataController("view")
-            controller.getByIds([props.id]).then(async (res) => {
-                if (res.code === 200 && res.data[0]) {
-                    let _viewItem = res.data[0]
-                    if (_viewItem.Props && typeof _viewItem.Props === "string") _viewItem.Props = JSON.parse(_viewItem.Props)
-                    setViewItem(_viewItem)
-                } else if (props.onGetViewError) props.onGetViewError(res)
-            })
+            if (globalViewCache.has(props.id)) {
+                setViewItem(globalViewCache.get(props.id))
+            } else {
+                const controller = new SettingDataController("view")
+                controller.getByIds([props.id]).then(async (res) => {
+                    if (res.code === 200 && res.data[0]) {
+                        let _viewItem = res.data[0]
+                        if (_viewItem.Props && typeof _viewItem.Props === "string") _viewItem.Props = JSON.parse(_viewItem.Props)
+                        setViewItem(_viewItem)
+                        globalViewCache.set(props.id, _viewItem)
+                    } else if (props.onGetViewError) props.onGetViewError(res)
+                })
+            }
         }
-        return () => props.onUnMount?.()
+        return () => {
+            if (globalViewCache.size > 20) globalViewCache.clear()
+            props.onUnMount?.()
+        }
     }, [props.id])
 
     const mapRelativeData = async () => {

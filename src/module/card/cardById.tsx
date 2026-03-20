@@ -3,7 +3,7 @@ import { DataController, SettingDataController } from "../../controller/data"
 import { useForm, UseFormReturn } from "react-hook-form"
 import { TableController } from "../../controller/setting"
 import { EmptyPage } from "../../component/empty-page"
-import { CustomHTMLProps, RenderLayerElement } from "../page/pageById"
+import { CustomHTMLProps, globalTableCache, RenderLayerElement } from "../page/pageById"
 import { regexGetVariableByThis } from "./config"
 import { ComponentType, FEDataType } from "../da"
 import { useTranslation } from "react-i18next"
@@ -53,6 +53,7 @@ interface CardRef {
     relativeData?: { [p: string]: Array<{ [p: string]: any }> }
 }
 
+const globalCardCache = new Map()
 export const CardById = forwardRef<CardRef, CardProps>((props, ref) => {
     const methods = useForm({ shouldFocusError: false })
     const [cardItem, setCardItem] = useState<{ [p: string]: any }>()
@@ -66,16 +67,24 @@ export const CardById = forwardRef<CardRef, CardProps>((props, ref) => {
 
     useEffect(() => {
         if (props.id) {
-            const _settingDataController = new SettingDataController("card")
-            _settingDataController.getByIds([props.id]).then(async (res) => {
-                if (res.code === 200 && res.data[0]) {
-                    let _cardItem = res.data[0]
-                    if (_cardItem.Props && typeof _cardItem.Props === "string") _cardItem.Props = JSON.parse(_cardItem.Props)
-                    setCardItem(_cardItem)
-                } else if (props.onGetCardError) props.onGetCardError(res)
-            })
+            if (globalCardCache.has(props.id)) {
+                setCardItem(globalCardCache.get(props.id))
+            } else {
+                const _settingDataController = new SettingDataController("card")
+                _settingDataController.getByIds([props.id]).then(async (res) => {
+                    if (res.code === 200 && res.data[0]) {
+                        let _cardItem = res.data[0]
+                        if (_cardItem.Props && typeof _cardItem.Props === "string") _cardItem.Props = JSON.parse(_cardItem.Props)
+                        setCardItem(_cardItem)
+                        globalCardCache.set(props.id, _cardItem)
+                    } else if (props.onGetCardError) props.onGetCardError(res)
+                })
+            }
         }
-        return () => props.onUnMount?.()
+        return () => {
+            if (globalCardCache.size > 20) globalCardCache.clear()
+            props.onUnMount?.()
+        }
     }, [props.id])
 
     useEffect(() => {
@@ -86,30 +95,46 @@ export const CardById = forwardRef<CardRef, CardProps>((props, ref) => {
         }
     }, [props.controller])
 
-    const mapRelativeData = async () => {
-        const relKeys = keyNames.filter((e: string) => e.split(".").length > 1)
-        if (!relKeys.length) return methods.setValue("_rels", [])
-        const _rels = await _relController.getListSimple({
-            page: 1, size: 100,
-            query: `@TableFK:{${cardItem!.TbName}} @Column:{${relKeys.map((e: any) => e.split(".")[0]).filter((k: string, i: number, arr: Array<string>) => arr.indexOf(k) === i).join(" | ")}}`,
-            returns: ["Id", "Column", "TablePK"]
-        })
-        if (_rels.code === 200) {
-            const relRes = await _colController.getListSimple({
-                page: 1, size: _rels.data.length * 50,
-                query: `@TableName:{${_rels.data.map((e: any) => e.TablePK).join(" | ")}} @Name:{${_rels.data.map((relItem: any) => {
-                    const relKeyFilter = relKeys.filter((e: any) => e.split(".")[0] === relItem.Column).map((e: any) => e.split(".")[1])
-                    return relKeyFilter
-                }).flat(Infinity).join(" | ")}}`
-            })
-            if (relRes.code === 200) methods.setValue("_rels", relRes.data.map((r: any) => ({ ...r, Form: JSON.parse(r.Form) })))
+    const mapColumnData = async () => {
+        if (keyNames.length) {
+            const usingCols = []
+            const usingRels = []
+            if (globalTableCache.has(cardItem!.TbName)) {
+                const tbFieldsData = globalTableCache.get(cardItem!.TbName)
+                usingCols.push(...tbFieldsData.cols.filter((c: any) => keyNames.includes(c.Name)))
+                usingRels.push(...tbFieldsData.rels.filter((r: any) => keyNames.some(k => k.startsWith(r.Column + "."))))
+            }
+            if (!usingCols.length) {
+                const res = await Promise.all([
+                    _relController.getListSimple({ page: 1, size: 100, query: `@TableFK:{${cardItem!.TbName}}` }),
+                    _colController.getListSimple({ page: 1, size: 200, query: `@TableName:{${cardItem!.TbName}}` }),
+                ])
+                if (res.every((r: any) => r.code === 200)) {
+                    const relTmp = res[0].data.map((r: any) => ({ ...r, Form: JSON.parse(r.Form) }))
+                    const colTmp = res[1].data.map((c: any) => ({ ...c, Form: JSON.parse(c.Form) }))
+                    globalTableCache.set(cardItem!.TbName, { cols: colTmp, rels: relTmp })
+                    usingCols.push(...colTmp.filter((c: any) => keyNames.includes(c.Name)))
+                    usingRels.push(...relTmp.filter((r: any) => keyNames.some(k => k.startsWith(r.Column + "."))))
+                }
+            }
+            if (usingRels.length) {
+                const relKeys = keyNames.filter((e: string) => e.split(".").length > 1)
+                const getDataRelPKName = usingRels.filter((r: any) => !globalTableCache.has(r.TablePK))
+                const finalRels = usingRels.filter((r: any) => globalTableCache.has(r.TablePK)).map((r: any) => globalTableCache.get(r.TablePK).cols.filter((c: any) => relKeys.includes(r.Column + "." + c.Name))).flat(Infinity)
+                if (getDataRelPKName.length) {
+                    const relRes = await _colController.getListSimple({
+                        page: 1, size: getDataRelPKName.length * 50,
+                        query: `@TableName:{${getDataRelPKName.map((e: any) => e.TablePK).join(" | ")}} @Name:{${relKeys.map((e: string) => e.split(".").pop()).join(" | ")}}`
+                    })
+                    if (relRes.code === 200)
+                        finalRels.concat(relRes.data.filter((rc: any) => relKeys.includes(`${rc.TableName}Id.${rc.Name}`)))
+                }
+                methods.setValue("_rels", finalRels)
+            } else methods.setValue("_rels", [])
+            methods.setValue("_cols", usingCols)
         }
     }
 
-    const mapColumnData = async () => {
-        const _colRes = await _colController.getListSimple({ page: 1, size: 200, query: `@TableName:{${cardItem!.TbName}} @Name:{${keyNames.filter((e: string) => e.split(".").length === 1).join(" | ")}}` })
-        if (_colRes.code === 200) methods.setValue("_cols", _colRes.data.map((c: any) => ({ ...c, Form: JSON.parse(c.Form) })))
-    }
 
     const getData = async (page?: number) => {
         const dataController = new DataController(cardItem!.TbName)
@@ -137,11 +162,11 @@ export const CardById = forwardRef<CardRef, CardProps>((props, ref) => {
         if (!tmp) return undefined
         let relKeys = layers.filter((e: any) => e.Type === ComponentType.card && e.Setting.controller?.ids && regexGetVariableByThis.test(e.Setting.controller.ids)).map((e: any) => regexGetVariableByThis.exec(e.Setting.controller.ids)![1])
         relKeys.push(...keyNames.filter((e: string) => e.split(".").length > 1).map((e: string) => e.split(".")[0]))
-        relKeys = relKeys.filter((e: string, i: number, arr: Array<string>) => arr.indexOf(e) === i)
+        relKeys = relKeys.filter((e: string, i: number, arr: string[]) => arr.indexOf(e) === i)
         for (const k of relKeys) {
             const currentTmp = methods.getValues(`_${k}`) ?? []
             const dataController = new DataController(k.replace("Id", ""))
-            const relDataIds = tmp.data.map((e: any) => e[k]?.split(",")).flat(Infinity).filter((e: string | undefined, i: number, arr: Array<string>) => e?.length && currentTmp.every((el: any) => el.Id !== e) && arr.indexOf(e) === i)
+            const relDataIds = tmp.data.map((e: any) => e[k]?.split(",")).flat(Infinity).filter((e: string | undefined, i: number, arr: string[]) => e?.length && currentTmp.every((el: any) => el.Id !== e) && arr.indexOf(e) === i)
             if (relDataIds.length) {
                 dataController.getByListId(relDataIds).then(relRes => {
                     if (relRes.code === 200) methods.setValue(`_${k}`, [...currentTmp, ...relRes.data.filter(Boolean)])
@@ -153,10 +178,7 @@ export const CardById = forwardRef<CardRef, CardProps>((props, ref) => {
     }
 
     useEffect(() => {
-        if (cardItem?.TbName) {
-            mapColumnData()
-            mapRelativeData()
-        }
+        if (cardItem?.TbName) mapColumnData()
     }, [cardItem?.TbName])
 
     useEffect(() => {
