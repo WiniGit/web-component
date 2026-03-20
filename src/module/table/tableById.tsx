@@ -333,6 +333,7 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
     const showAddEditPopup = (id?: string) => {
         showPopup({
             ref: popupRef as any,
+            clickOverlayClosePopup: true,
             content: <AddEditElementForm
                 ref={popupRef}
                 tbName={tbName}

@@ -307,7 +307,7 @@ export const TableRow = ({ item, setItem, onEditActionColumn, index, methods, fi
         return _contains ? true : tmp ? undefined : false
     }, [selected?.length, totalChild, children.length])
 
-    const getData = async (page = 1) => {
+    const getData = async ({ page = 1, ...rest }: { page?: number; id?: string }) => {
         const pattern: any = {
             returns: ["Id", "ParentId", ...columns.map(e => e.Name.split(".").shift())],
         }
@@ -321,12 +321,13 @@ export const TableRow = ({ item, setItem, onEditActionColumn, index, methods, fi
         });
         const res = await dataController.patternList({
             page: page, size: 20,
-            searchRaw: `@ParentId:{${item.Id}} ${searchRaw !== "*" ? searchRaw : ""}`,
+            searchRaw: rest.id ? `@Id:{${rest.id}}` : `@ParentId:{${item.Id}} ${searchRaw !== "*" ? searchRaw : ""}`,
             sortby: sortby?.length ? sortby.map((s: any) => (s.prop.includes(".") ? { prop: s.prop.split(".").shift(), direction: s.direction } : s)) : [{ prop: "DateCreated", direction: "DESC" }],
             pattern: pattern
         })
         if (res.code === 200) {
-            setChildren(page > 1 ? [...children, ...res.data] : res.data)
+            if (rest.id) setChildren(prev => prev.map(e => e.Id === rest.id ? { ...e, ...res.data[0] } : e))
+            else setChildren(page > 1 ? [...children, ...res.data] : res.data)
             delete res.data
             delete res.totalCount
             delete res.code
@@ -338,7 +339,7 @@ export const TableRow = ({ item, setItem, onEditActionColumn, index, methods, fi
     }
 
     useEffect(() => {
-        if (isOpen && totalChild && columns.length) getData()
+        if (isOpen && totalChild && columns.length) getData({})
     }, [isOpen, JSON.stringify(methods.watch("sortby")), methods.watch("searchRaw"), totalChild, columns.length])
 
     const mapLocalRelativeData = useMemo(() => {
@@ -372,7 +373,7 @@ export const TableRow = ({ item, setItem, onEditActionColumn, index, methods, fi
         })
         if (dataFileIds.length) {
             BaseDA.getFilesInfor(dataFileIds.filter((id, i, arr) => arr.indexOf(id) === i)).then(res => {
-                if (res.code === 200) setLocalFiles(res.data.filter((f: any) => f !== undefined && f !== null))
+                if (res.code === 200) setLocalFiles(res.data.filter(Boolean))
             })
         } else setLocalFiles([])
     }, [children, localRelativeData, relativeFields])
@@ -380,6 +381,7 @@ export const TableRow = ({ item, setItem, onEditActionColumn, index, methods, fi
     const showAddEditChildPopup = (id?: string) => {
         showPopup({
             ref: popupRef as any,
+            clickOverlayClosePopup: true,
             content: <AddEditElementForm
                 ref={popupRef}
                 tbName={tbName}
@@ -393,9 +395,9 @@ export const TableRow = ({ item, setItem, onEditActionColumn, index, methods, fi
                 } : undefined}
                 activeColumns={columns}
                 onSuccess={() => {
-                    if (id) getData(Math.max(Math.floor(children.length / 20), 1))
+                    if (id) getData({ id })
                     else {
-                        getData().then(() => {
+                        getData({}).then(() => {
                             setItem({ ...item, _totalChild: (totalChild ?? 0) + 1 })
                         })
                     }
@@ -492,7 +494,7 @@ export const TableRow = ({ item, setItem, onEditActionColumn, index, methods, fi
                     onDelete={enableEdit ? (() => {
                         dataController.delete([childItem.Id]).then(res => {
                             if (res.code === 200) {
-                                getData(Math.max(Math.floor(children.length / 20), 1))
+                                getData({ page: Math.max(Math.floor(children.length / 20), 1) })
                                 setItem({ ...item, _totalChild: totalChild! - 1 })
                             }
                         })
@@ -501,7 +503,7 @@ export const TableRow = ({ item, setItem, onEditActionColumn, index, methods, fi
                         dataController.duplicate([childItem.Id]).then(res => {
                             if (res.code !== 200) return ToastMessage.errors(res.message)
                             setItem({ ...item, _totalChild: (totalChild ?? 0) + 1 })
-                            getData(Math.max(Math.floor(children.length / 20), 1))
+                            getData({ page: Math.max(Math.floor(children.length / 20), 1) })
                             ToastMessage.success(`${t("duplicate")} ${tbName?.toLowerCase()} ${t("successfully").toLowerCase()}!`)
                         })
                     } : undefined}
@@ -515,7 +517,7 @@ export const TableRow = ({ item, setItem, onEditActionColumn, index, methods, fi
                     onClick={() => { showAddEditChildPopup() }}
                 />}
                 {!!totalChild && !!children.length && totalChild > children.length &&
-                    <span className="button-text-5" style={{ marginTop: "1.1rem" }} onClick={() => { getData(Math.floor(children.length / 20) + 1) }}>{t("seemore")}</span>}
+                    <span className="button-text-5" style={{ marginTop: 8 }} onClick={() => { getData({ page: Math.floor(children.length / 20) + 1 }) }}>{t("seemore")}</span>}
             </div>}
         </>
         }
