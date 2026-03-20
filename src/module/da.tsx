@@ -43,7 +43,7 @@ export enum ComponentType {
 }
 
 export enum FEDataType {
-    GID = "GID",
+    UNIQUE = "UNIQUE",
     STRING = "STRING",
     NUMBER = "NUMBER",
     BOOLEAN = "BOOLEAN",

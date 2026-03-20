@@ -6,7 +6,7 @@ import { useForm, UseFormReturn } from "react-hook-form";
 import { TableHeader, TableRow } from "./tableElement";
 import ExportXlsx from "./exportXlsx";
 import { ButtonImportData, SearchFilterData } from "./featureElement";
-import { ColDataType, FEDataType } from "../da";
+import { FEDataType } from "../da";
 import { cellValue } from "./config";
 import AddEditElementForm from "./addEditElement";
 import { AsyncFunction, getValidLink } from "../page/pageById";
@@ -86,7 +86,7 @@ interface DataTableProps {
     };
     filterList?: Array<string>;
     onChangeFilterList?: (filterList: Array<string>) => void;
-    onChangeFilterData?: (params: { searchRaw: string; sortby: Array<{ prop: string, direction: string }> }) => void;
+    onChangeFilterData?: (params: { searchRaw: string; sortby: Array<{ prop: string, direction: string }>; searchData?: { name: string, value: any }[] }) => void;
     showIndex?: boolean;
     hideCheckbox?: boolean;
     enableEdit?: boolean;
@@ -117,7 +117,9 @@ interface DataTableProps {
 }
 
 interface DataTableRef {
-    getData: (page?: number, size?: number, exportData?: boolean) => Promise<any>;
+    parseSearchDataToSearchRaw: (searchData: { name: string, value: any }[]) => { searchRaw: string, searchData: { name: string, value: any }[] },
+    getData: (params: { page?: number, size?: number, exportData?: boolean, id?: string }) => Promise<any>;
+    fields: Array<{ [p: string]: any }>,
     data: { data: Array<{ [p: string]: any }>, totalCount?: number };
     setData: Dispatch<SetStateAction<{ data: Array<{ [p: string]: any }>, totalCount?: number }>>;
     selected: string[];
@@ -176,9 +178,7 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
             colController.getListSimple({ page: 1, size: 1000, query: `@TableName:{${tbName}} -@Name:{Id}`, returns: ["Id", "Name", "DataType", "Query", "Form", "TableName"], sortby: { BY: "DateCreated" } })
         ])
         if (res.every((e: any) => e.code === 200)) {
-            setFields(res.map((e: any) => e.data).flat(Infinity).map((e: any) => {
-                return { ...e, Form: e.Form ? typeof e.Form === "string" ? JSON.parse(e.Form) : e.Form : { Required: true } }
-            }))
+            setFields(res.map((e: any) => e.data).flat(Infinity).map((e: any) => ({ ...e, Form: JSON.parse(e.Form) })))
         }
     }
 
@@ -196,10 +196,10 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
         const { searchRaw, sortby } = configMethods.watch()
         if (onChangeFilterData && (searchRaw !== filterData.searchRaw || JSON.stringify(sortby) !== JSON.stringify(filterData.sortby)))
             onChangeFilterData({ searchRaw, sortby })
-    }, [configMethods.watch("searchRaw"), JSON.stringify(configMethods.watch("sortby"))])
+    }, [JSON.stringify(configMethods.watch("sortby"))])
 
     // get data
-    const getData = async (page = 1, size = 20, exportData = false) => {
+    const getData = async ({ page = 1, size = 20, exportData = false, ...rest }: { page?: number, size?: number, exportData?: boolean, id?: string }) => {
         if (props.getData) {
             const result = await props.getData(page, size, exportData)
             if (exportData) return result
@@ -231,13 +231,13 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
         const finalSearchRaw = treeData ? `@ParentId:{empty} ${querySearch !== "*" ? querySearch : ""}` : querySearch
         const res = await dataController.patternList({
             page: page, size: size,
-            searchRaw: filterData.required?.length ? `${filterData.required}${finalSearchRaw !== "*" ? finalSearchRaw : ""}` : finalSearchRaw,
+            searchRaw: rest.id ? `@Id:{${rest.id}}` : filterData.required?.length ? `${filterData.required}${finalSearchRaw !== "*" ? finalSearchRaw : ""}` : finalSearchRaw,
             sortby: sortby?.length ? sortby.map((s: any) => (s.prop.includes(".") ? { prop: s.prop.split(".").shift(), direction: s.direction } : s)) : [{ prop: "DateCreated", direction: "DESC" }],
             pattern: filterData.pattern ? { ...pattern, ...filterData.pattern, returns: pattern.returns } : pattern
         })
         if (res.code === 200) {
             if (exportData) return res
-            setData({ data: res.data, totalCount: res.totalCount })
+            if (rest.id) setData(prev => ({ data: prev.data.map(e => e.Id === rest.id ? (res.data[0] ?? e) : e), totalCount: res.totalCount }))
             delete res.data
             delete res.totalCount
             delete res.code
@@ -248,10 +248,8 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
         }
     }
 
-    useImperativeHandle(ref, () => ({ getData, data, setData, selected, setSelected, showAddEditPopup }), [columns, staticSearch, tbName, filterData, configMethods.watch(), data, selected])
-
     useEffect(() => {
-        if (columns.length && fields.length) getData(pageDetails.page, pageDetails.size)
+        if (columns.length && fields.length) getData(pageDetails)
     }, [columns, configMethods.watch("searchRaw"), configMethods.watch("sortby"), filterData.required, fields, filterData.pattern])
 
     useEffect(() => {
@@ -348,8 +346,8 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
                 } : undefined}
                 activeColumns={columns}
                 onSuccess={() => {
-                    if (id) getData(pageDetails.page, pageDetails.size)
-                    else getData()
+                    if (id) getData({ id })
+                    else getData({})
                 }}
                 formId={customFormId}
                 onSelectCustomForm={onSelectCustomForm}
@@ -357,6 +355,57 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
             />
         })
     }
+
+    const parseSearchDataToSearchRaw = (searchData: { name: string, value: any }[]) => {
+        let convertToSearchRaw = "*"
+        const activeSearchs = searchData.filter(s => s.value !== undefined && s.value !== null && s.value !== "")
+        if (activeSearchs.length) {
+            const orList: string[] = []
+            const andList: string[] = []
+            activeSearchs.forEach((s) => {
+                const findField = fields.find((f) => (f.Column ?? f.Name) === s.name)
+                if (findField) {
+                    if (findField.Column) {
+                        andList.push(`@${findField.Column}:{${s.value.split(",").map((v: string) => `*${v}*`).join(" | ")}}`)
+                    } else {
+                        switch (findField.DataType) {
+                            case FEDataType.STRING:
+                            case FEDataType.HTML:
+                                if (findField.Form?.Options?.length) {
+                                    andList.push(`@${s.name}:(${s.value.split(",").map((v: string) => `"${v}"`).join(" | ")})`)
+                                } else {
+                                    orList.push(`@${s.name}:("${s.value}")`)
+                                }
+                                break;
+                            case FEDataType.UNIQUE:
+                            case FEDataType.BOOLEAN:
+                                orList.push(`@${s.name}:{*${s.value}*}`)
+                                break;
+                            case FEDataType.NUMBER:
+                            case FEDataType.MONEY:
+                                if (findField.Form?.Options?.length) {
+                                    const tmp = s.value.split(",").map((v: string) => `@${s.name}:[${v}]`).join(" | ")
+                                    andList.push(s.value.includes(",") ? `(${tmp})` : tmp)
+                                } else {
+                                    andList.push(`@${s.name}:[${s.value.replace(",", " ")}]`)
+                                }
+                                break;
+                            case FEDataType.DATE:
+                            case FEDataType.DATETIME:
+                                andList.push(`@${s.name}:[${s.value.replace(",", " ")}]`)
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+            })
+            convertToSearchRaw = (andList.join(" ") + ` ${orList.length ? `(${orList.join(" | ")})` : ""}`).trim()
+        }
+        return { searchRaw: convertToSearchRaw, searchData: activeSearchs }
+    }
+
+    useImperativeHandle(ref, () => ({ getData, data, setData, selected, setSelected, showAddEditPopup, parseSearchDataToSearchRaw, fields }), [columns, staticSearch, tbName, filterData, configMethods.watch(), data, selected, fields])
 
     return <>
         <div className={`col ${className ?? ""}`} style={{ padding: !!data.totalCount && data.totalCount > 20 ? "0 2.4rem" : "0 2.4rem 1.6rem", flex: 1, ...style }}>
@@ -390,10 +439,10 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
                                 }) : fields}
                                 initFilterList={filterList}
                                 onChangeFilterData={enableEdit ? onChangeFilterList : undefined}
-                                searchRaw={configMethods.watch("searchRaw")}
-                                onChange={(searchValue: string) => {
-                                    configMethods.setValue("searchRaw", searchValue)
-                                    onChangeFilterData?.({ searchRaw: searchValue, sortby: configMethods.watch("sortby") })
+                                searchData={parseRedisQuery(configMethods.watch("searchRaw"))}
+                                onChange={(searchValue: any[]) => {
+                                    const { searchRaw, searchData } = parseSearchDataToSearchRaw(searchValue)
+                                    onChangeFilterData?.({ searchRaw, sortby: configMethods.watch("sortby"), searchData })
                                 }}
                             />
                         case "divider":
@@ -404,7 +453,7 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
                                 label={t("export")}
                                 disabled={!data.totalCount}
                                 getData={async () => {
-                                    const res = await getData(1, 2000, true)
+                                    const res = await getData({ size: 2000, exportData: true })
                                     if (res.code === 200 && res.data.length) {
                                         const dataFileIds: Array<string> = []
                                         let activeColumns = configMethods.getValues("columns");
@@ -468,7 +517,7 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
                                             ToastMessage.errors("Failed to import data")
                                             return console.error("Failed to import data: " + response.message)
                                         }
-                                        getData()
+                                        getData({})
                                     }
                                 }}
                             />
@@ -520,13 +569,13 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
                             actions={actions}
                             onDelete={enableEdit ? (() => {
                                 dataController.delete([item.Id]).then((res: any) => {
-                                    if (res.code === 200) getData(pageDetails.page, pageDetails.size)
+                                    if (res.code === 200) getData(pageDetails)
                                 })
                             }) : undefined}
                             onDuplicate={enableEdit ? (() => {
                                 dataController.duplicate([item.Id]).then((res: any) => {
                                     if (res.code !== 200) return ToastMessage.errors(res.message)
-                                    getData(pageDetails.page, pageDetails.size)
+                                    getData(pageDetails)
                                     ToastMessage.success(`${t("duplicated")} ${tbName.toLowerCase()} ${t("successfully").toLowerCase()}!`)
                                 })
                             }) : undefined}
@@ -548,7 +597,7 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
                 onChange={({ page, size }) => {
                     if (pageDetails.page !== page || pageDetails.size !== size) {
                         setPageDetails({ page: page, size: size });
-                        getData(page, size);
+                        getData({ page, size });
                     }
                 }} />
         </div>}
@@ -614,7 +663,7 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
                             onClick={() => {
                                 dataController.duplicate(selected).then((res: any) => {
                                     if (res.code !== 200) return ToastMessage.errors(res.message)
-                                    getData(pageDetails.page, pageDetails.size)
+                                    getData(pageDetails)
                                     ToastMessage.success(`${t("duplicate")} these ${tbName.toLowerCase()} ${t("successfully").toLowerCase()}!`)
                                     setSelected([])
                                 })
@@ -636,7 +685,7 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
                                     onSubmit: () => {
                                         dataController.delete(selected).then((res: any) => {
                                             if (res.code !== 200) return ToastMessage.errors(res.message)
-                                            getData(pageDetails.page, pageDetails.size)
+                                            getData(pageDetails)
                                             setSelected([])
                                         })
                                     }
@@ -657,5 +706,59 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
         </div>}
     </>
 })
+
+const parseRedisQuery = (query: string) => {
+    if (query === "*") return [];
+    const results: { name: string, value: any }[] = [];
+
+    const patterns = [
+        // TAG: @field:{*value1* | *value2* | ...}
+        {
+            regex: /@(\w+):\{([^}]*)\}/g,
+            getValue: (match: RegExpExecArray) => {
+                const values = match[2]
+                    .split("|")
+                    .map((v) => v.replace(/\*/g, "").trim())
+                    .filter(Boolean);
+                return values.length === 1 ? values[0] : values;
+            },
+        },
+        // TEXT: @field:("value1" | "value2" | ...)
+        {
+            regex: /@(\w+):\(([^)]*)\)/g,
+            getValue: (match: RegExpExecArray) => {
+                const values = match[2]
+                    .split("|")
+                    .map((v) => v.replace(/"/g, "").trim())
+                    .filter(Boolean);
+                return values.length === 1 ? values[0] : values;
+            },
+        },
+        // NUMERIC: @field:[num1 num2]
+        {
+            regex: /@(\w+):\[([^\]]+)\]/g,
+            getValue: (match: RegExpExecArray) => {
+                const values = match[2].trim().split(/\s+/);
+                return values.join(",");
+            },
+        },
+    ];
+
+    for (const { regex, getValue } of patterns) {
+        let match: RegExpExecArray | null;
+        while ((match = regex.exec(query)) !== null) {
+            if (match?.[1]) {
+                const findExisting = results.find(r => r.name === match![1])
+                if (findExisting) {
+                    results.push({ name: match[1], value: Array.isArray(findExisting.value) ? findExisting.value.concat(getValue(match)) : [findExisting.value, getValue(match)] });
+                } else {
+                    results.push({ name: match[1], value: getValue(match) });
+                }
+            }
+        }
+    }
+
+    return results;
+}
 
 export { TableHeader, TableRow, ExportXlsx, ButtonImportData, SearchFilterData }

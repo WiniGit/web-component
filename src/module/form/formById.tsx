@@ -105,7 +105,7 @@ export const FormById = forwardRef<FormByIdRef, Props>((props, ref) => {
                     const _rel = rels.find(e => e.Column === prop)
                     if (_col) {
                         switch (_col.DataType) {
-                            case FEDataType.GID:
+                            case FEDataType.UNIQUE:
                             case FEDataType.STRING:
                             case FEDataType.PASSWORD:
                                 methods.setValue(prop, dataItem[prop])
@@ -184,7 +184,7 @@ export const FormById = forwardRef<FormByIdRef, Props>((props, ref) => {
             inputLayers.filter(e => !!e.Setting.default).forEach((tmpLayer) => {
                 const _col = cols.find(e => tmpLayer.NameField === e.Name)
                 switch (_col?.DataType) {
-                    case FEDataType.GID:
+                    case FEDataType.UNIQUE:
                     case FEDataType.STRING:
                     case FEDataType.PASSWORD:
                         methods.setValue(_col.Name, _col.Form.DefaultValue)

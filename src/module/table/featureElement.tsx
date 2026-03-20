@@ -11,115 +11,67 @@ import { CustomerAvatar } from "./config";
 interface SearchFilterDataProps {
     columns: Array<{ [p: string]: any }>
     fields: Array<{ [p: string]: any }>
-    searchRaw?: string
-    onChange?: (searchRaw: string) => void
+    searchData?: { name: string, value: any }[]
+    onChange?: (searchData: { name: string, value: any }[]) => void
     initFilterList?: Array<string>
     onChangeFilterData?: (filterList: Array<string>) => void,
     type?: "search" | "filter" | "both"
 }
 
-export const SearchFilterData = ({ columns = [], fields = [], searchRaw = "*", onChange, initFilterList = [], onChangeFilterData, type = "both" }: SearchFilterDataProps) => {
+export const SearchFilterData = ({ columns = [], fields = [], searchData = [], onChange, initFilterList = [], onChangeFilterData, type = "both" }: SearchFilterDataProps) => {
     const inputRef = useRef<any>(null)
     const popupRef = useRef<Popup>(null)
     const { t } = useTranslation()
-    const searchinColumns = useMemo<{ [p: string]: any }[]>(() => columns.filter(c => {
-        if (c.Name.split(".").length > 1) return false
-        const tmp = fields.find(f => f.Name === c.Name)
-        return tmp?.DataType === FEDataType.STRING
-    }), [columns.length, fields.length])
-    const filterColumns = useMemo<{ [p: string]: any }[]>(() => columns.filter(c => {
-        if (c.Name.split(".").length > 1) return false
-        const tmp = fields.find(f => f.Name === c.Name)
-        return [FEDataType.NUMBER, FEDataType.DATE, FEDataType.DATETIME, FEDataType.MONEY, FEDataType.BOOLEAN].includes(tmp?.DataType)
-    }), [columns.length, fields.length])
+    const searchinColumns = useMemo<{ [p: string]: any }[]>(() => {
+        return columns.filter(c => {
+            if (c.Name.split(".").length > 1) return false;
+            const tmp = fields.find(f => f.Name === c.Name);
+            return (tmp?.DataType === FEDataType.STRING || tmp?.DataType === FEDataType.UNIQUE) && !tmp?.Form?.Options?.length;
+        });
+    }, [columns.length, fields.length])
+    const filterColumns = useMemo<{ [p: string]: any }[]>(() => {
+        return columns.filter(c => {
+            if (c.Name.split(".").length > 1) return false;
+            const tmp = fields.find(f => f.Name === c.Name);
+            return tmp?.Form?.Options?.length || [FEDataType.NUMBER, FEDataType.DATE, FEDataType.DATETIME, FEDataType.MONEY, FEDataType.BOOLEAN].includes(tmp?.DataType);
+        });
+    }, [columns.length, fields.length])
     const relativeCols = useMemo(() => columns.filter(e => e.Name.split(".").length > 1), [columns.length])
-    const [data, setData] = useState<{ searchValue: string, nameFields: Array<string> }>({ searchValue: "", nameFields: [] })
+    const [data, setData] = useState<{ searchValue: string, nameFields: string[] }>({ searchValue: "", nameFields: [] })
     const [filterData, setFilterData] = useState<{ name: string, value: any }[]>(initFilterList.map(f => ({ name: f, value: undefined })))
-    const searchinPattern = /@[\w]+:\((?:"[^"]*"|\*[^*]*\*|"%[^%]*%")\)/g;
-    const getSearchinValueRegex = /@[\w]+:\(\s*(?:"%?([^"%*()]+)%?"|\*([^*()]+)\*)\s*\)/;
-    const filterPattern = /@(\w+):\{([^{}]+)\}|@(\w+):\[([^\[\]]+)\]/g;
+
 
     useEffect(() => {
-        if (searchRaw !== "*") {
-            const nFields = searchinColumns.filter(c => searchRaw.includes(`@${c.Name}:`)).map(c => c.Name)
-            const getSearch = searchRaw.match(searchinPattern)?.find(m => m.includes(`@${nFields[0]}:`))
+        if (searchData.length) {
+            const searchNames = searchData.map(c => c.name)
+            const nFields = searchinColumns.filter(sin => searchNames.includes(sin.Name)).map(s => s.Name)
             setData({
-                searchValue: getSearch ? getSearchinValueRegex.exec(getSearch)![1] : "",
+                searchValue: nFields.length ? searchData.find(s => s.name === nFields[0])?.value ?? "" : "",
                 nameFields: nFields
             })
         } else setData({ searchValue: "", nameFields: [] })
-    }, [searchRaw, searchinColumns.length])
+    }, [searchData, searchinColumns.length])
 
     useEffect(() => {
-        if (searchRaw !== "*") {
-            let match;
-            const parsed: any[] = [];
-            while ((match = filterPattern.exec(searchRaw)) !== null) {
-                const name = match[1] || match[3];
-                const value = match[2] || match[4];
-                const prevParsed = parsed.find(p => p.name === name);
-                if (prevParsed) prevParsed.value += ` ${value}`
-                else if (name.endsWith("Id")) {
-                    parsed.push({ name, value: value.replace(/\*/g, "").split("|").map((id: string) => id.trim()).join(",") });
-                } else parsed.push({ name, value });
-            }
-            setFilterData(prev => prev.map(f => ({ name: f.name, value: parsed.find(p => p.name === f.name)?.value.split(" ").join(",") })))
+        if (searchData.length) {
+            setFilterData(prev => prev.map(f => ({ name: f.name, value: searchData.find(s => s.name === f.name)?.value })))
         } else if (filterData) setFilterData(prev => prev.map(f => ({ name: f.name, value: undefined })))
-    }, [searchRaw, filterColumns.length])
+    }, [searchData, filterColumns.length])
 
     useEffect(() => {
         if (inputRef.current && inputRef.current.inputElement!.value !== data.searchValue && data.nameFields.length) inputRef.current.inputElement!.value = data.searchValue
     }, [data.searchValue])
 
-    const _onChange = (searchValue: string, nameFields: Array<string>) => {
-        let currentSearch = searchRaw
-        if (currentSearch !== "*" && data.searchValue.length && data.nameFields.length) {
-            data.nameFields.forEach(n => {
-                const replaceSearch = `(@${n}:("${data.searchValue}"))`
-                currentSearch = currentSearch.replace(`${replaceSearch} | `, "").replace(replaceSearch, "");
-            })
-            currentSearch = currentSearch.replace(/\(/g, "").replace(/\)/g, "").trim()
-        }
-        const querySearch = (searchValue.length && nameFields.length) ? `(${nameFields.map(n => `(@${n}:("${searchValue}"))`).join(" | ")})` : ""
-        const finalSearchRaw = `${querySearch} ${currentSearch === "*" ? "" : currentSearch}`.trim()
-        onChange?.(finalSearchRaw.length ? finalSearchRaw : "*")
+    const _onChange = (searchValue: string, nameFields: string[]) => {
+        const searchInNames = searchinColumns.map(c => c.Name)
+        let currentSearch = searchData.filter(s => !searchInNames.includes(s.name))
+        onChange?.(currentSearch.concat(nameFields.map(n => ({ name: n, value: searchValue }))))
     }
 
     const _onChangeFilter = (fList: any[] = []) => {
-        let currentSearch = searchRaw
-        const numberFilter = [FEDataType.NUMBER, FEDataType.DATE, FEDataType.DATETIME, FEDataType.MONEY]
-        const currentFilter = filterData?.filter(f => !!f.value)
-        if (currentSearch !== "*" && currentFilter?.length) {
-            currentFilter.forEach(f => {
-                const tmp = fields.find(e => e.Name === f.name) as any
-                if (numberFilter.includes(tmp?.DataType)) {
-                    if (tmp.Form?.Options?.length) {
-                        currentSearch = currentSearch.replace(`(${f.value.split(",").map((vl: any) => `(@${f.name}:[${vl}])`).join(" | ")})`, "")
-                    }
-                    else currentSearch = currentSearch.replace(`@${f.name}:[${f.value.split(",").join(" ")}]`, "")
-                } else if (tmp?.DataType === FEDataType.BOOLEAN) {
-                    currentSearch = currentSearch.replace(`@${f.name}:{${f.value}}`, "")
-                } else {
-                    currentSearch = currentSearch.replace(`@${f.name}:{${f.value.split(",").map((id: string) => `*${id}*`).join(" | ")}}`, "")
-                }
-            })
-        }
-        const tmpFList = fList.filter(f => !!f.value)
-        const queryFilter = tmpFList.length ? tmpFList.map(f => {
-            const tmp = fields.find(e => e.Name === f.name) as any
-            if (numberFilter.includes(tmp?.DataType)) {
-                if (tmp.Form?.Options?.length) {
-                    return `(${f.value.split(",").map((vl: any) => `(@${f.name}:[${vl}])`).join(" | ")})`
-                }
-                return `@${f.name}:[${f.value.split(",").join(" ")}]`
-            } else if (tmp?.DataType === FEDataType.BOOLEAN) {
-                return `@${f.name}:{${f.value}}`
-            } else {
-                return `@${f.name}:{${f.value.split(",").map((id: any) => `*${id}*`).join(" | ")}}`
-            }
-        }).join(" ") : ""
-        const finalSearchRaw = `${queryFilter} ${currentSearch === "*" ? "" : currentSearch}`.trim()
-        onChange?.(finalSearchRaw.length ? finalSearchRaw : "*")
+        const filterNames = filterColumns.map(c => c.Name)
+        let currentSearch = searchData.filter(s => !filterNames.includes(s.name) && relativeCols.every(rc => rc.Name.split(".")[0] !== s.name))
+        onChange?.(currentSearch.concat(fList))
     }
 
     const activeFilter = filterData?.filter(f => !!f.value)
@@ -130,7 +82,7 @@ export const SearchFilterData = ({ columns = [], fields = [], searchRaw = "*", o
             ref={inputRef}
             placeholder={t("search")}
             prefix={<Winicon src={"fill/development/zoom"} size={14} />}
-            style={{ flex: 1, maxWidth: '26.8rem' }}
+            style={{ flex: 1, maxWidth: searchinColumns.length > 1 ? "26.8rem" : "24rem" }}
             className="body-3 size32"
             suffix={searchinColumns.length > 1 && <Winicon src={"fill/arrows/down-arrow"} size={12} onClick={(ev: any) => {
                 const inputContainer = ev.target.closest("label")
@@ -144,7 +96,7 @@ export const SearchFilterData = ({ columns = [], fields = [], searchRaw = "*", o
                         columns={searchinColumns}
                         nameFields={data.nameFields}
                         onChange={(vl) => {
-                            _onChange(data.searchValue, vl)
+                            if (data.searchValue.length) _onChange(data.searchValue, vl)
                             setData({ ...data, nameFields: vl })
                         }}
                         style={{ top: rect.bottom + 2, right: `calc(100dvw - ${rect.right}px)`, width: rect.width }}
@@ -153,8 +105,9 @@ export const SearchFilterData = ({ columns = [], fields = [], searchRaw = "*", o
                 })
             }} />}
             onComplete={(ev: any) => {
-                setData({ ...data, searchValue: ev.target.value.trim() })
-                _onChange(ev.target.value.trim(), data.nameFields.length ? data.nameFields : searchinColumns.length ? searchinColumns.map(c => c.Name) : [])
+                ev.target.value = ev.target.value.trim()
+                setData(prev => ({ ...prev, searchValue: ev.target.value }))
+                _onChange(ev.target.value, data.nameFields.length ? data.nameFields : searchinColumns.length ? searchinColumns.map(c => c.Name) : [])
                 ev.target.blur()
             }}
         />}

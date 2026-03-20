@@ -216,7 +216,7 @@ const FormView = ({ cols = [], rels = [], item, tbName, onCancel, onSuccess, exp
                     const _rel = rels.find(e => e.Column === prop)
                     if (_col) {
                         switch (_col.DataType) {
-                            case FEDataType.GID:
+                            case FEDataType.UNIQUE:
                             case FEDataType.STRING:
                             case FEDataType.PASSWORD:
                                 methods.setValue(prop, item[prop])
@@ -288,7 +288,7 @@ const FormView = ({ cols = [], rels = [], item, tbName, onCancel, onSuccess, exp
             } else {
                 cols.filter((e) => e.Form?.DefaultValue != undefined && e.Form?.DefaultValue !== "").forEach((_col) => {
                     switch (_col.DataType) {
-                        case FEDataType.GID:
+                        case FEDataType.UNIQUE:
                         case FEDataType.STRING:
                         case FEDataType.PASSWORD:
                             methods.setValue(_col.Name, _col.Form.DefaultValue)
