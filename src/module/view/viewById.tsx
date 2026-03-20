@@ -1,6 +1,6 @@
 import { CSSProperties, ReactNode, useDeferredValue, useEffect, useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
-import { CustomHTMLProps, RenderLayerElement } from "../page/pageById"
+import { CustomHTMLProps, globalTableCache, RenderLayerElement } from "../page/pageById"
 import { DataController, SettingDataController } from "../../controller/data"
 import { TableController } from "../../controller/setting"
 import { ComponentType, FEDataType } from "../da"
@@ -61,36 +61,48 @@ export const ViewById = (props: Props) => {
         }
     }, [props.id])
 
-    const mapRelativeData = async () => {
-        const relKeys = keyNames.filter((e: string) => e.split(".").length > 1)
-        if (!relKeys.length) return methods.setValue("_rels", [])
-        const _rels = await _relController.getListSimple({
-            page: 1, size: 100,
-            query: `@TableFK:{${viewItem!.TbName}} @Column:{${relKeys.map((e: any) => e.split(".")[0]).filter((k: string, i: number, arr: Array<string>) => arr.indexOf(k) === i).join(" | ")}}`,
-            returns: ["Id", "Column", "TablePK"]
-        })
-        if (_rels.code === 200) {
-            const relRes = await _colController.getListSimple({
-                page: 1, size: _rels.data.length * 50,
-                query: `@TableName:{${_rels.data.map((e: any) => e.TablePK).join(" | ")}} @Name:{${_rels.data.map((relItem: any) => {
-                    const relKeyFilter = relKeys.filter((e: any) => e.split(".")[0] === relItem.Column).map((e: any) => e.split(".")[1])
-                    return relKeyFilter
-                }).flat(Infinity).join(" | ")}}`
-            })
-            if (relRes.code === 200) methods.setValue("_rels", relRes.data.map((r: any) => ({ ...r, Form: JSON.parse(r.Form) })))
-        }
-    }
-
     const mapColumnData = async () => {
-        const _colRes = await _colController.getListSimple({ page: 1, size: 200, query: `@TableName:{${viewItem!.TbName}}` })
-        if (_colRes.code === 200) methods.setValue("_cols", _colRes.data.map((c: any) => ({ ...c, Form: JSON.parse(c.Form) })))
+        if (keyNames.length) {
+            const usingCols = []
+            const usingRels = []
+            if (globalTableCache.has(viewItem!.TbName)) {
+                const tbFieldsData = globalTableCache.get(viewItem!.TbName)
+                usingCols.push(...tbFieldsData.cols.filter((c: any) => keyNames.includes(c.Name)))
+                usingRels.push(...tbFieldsData.rels.filter((r: any) => keyNames.some(k => k.startsWith(r.Column + "."))))
+            }
+            if (!usingCols.length) {
+                const res = await Promise.all([
+                    _relController.getListSimple({ page: 1, size: 100, query: `@TableFK:{${viewItem!.TbName}}` }),
+                    _colController.getListSimple({ page: 1, size: 200, query: `@TableName:{${viewItem!.TbName}}` }),
+                ])
+                if (res.every((r: any) => r.code === 200)) {
+                    const relTmp = res[0].data.map((r: any) => ({ ...r, Form: JSON.parse(r.Form) }))
+                    const colTmp = res[1].data.map((c: any) => ({ ...c, Form: JSON.parse(c.Form) }))
+                    globalTableCache.set(viewItem!.TbName, { cols: colTmp, rels: relTmp })
+                    usingCols.push(...colTmp.filter((c: any) => keyNames.includes(c.Name)))
+                    usingRels.push(...relTmp.filter((r: any) => keyNames.some(k => k.startsWith(r.Column + "."))))
+                }
+            }
+            if (usingRels.length) {
+                const relKeys = keyNames.filter((e: string) => e.split(".").length > 1)
+                const getDataRelPKName = usingRels.filter((r: any) => !globalTableCache.has(r.TablePK))
+                const finalRels = usingRels.filter((r: any) => globalTableCache.has(r.TablePK)).map((r: any) => globalTableCache.get(r.TablePK).cols.filter((c: any) => relKeys.includes(r.Column + "." + c.Name))).flat(Infinity)
+                if (getDataRelPKName.length) {
+                    const relRes = await _colController.getListSimple({
+                        page: 1, size: getDataRelPKName.length * 50,
+                        query: `@TableName:{${getDataRelPKName.map((e: any) => e.TablePK).join(" | ")}} @Name:{${relKeys.map((e: string) => e.split(".").pop()).join(" | ")}}`
+                    })
+                    if (relRes.code === 200)
+                        finalRels.concat(relRes.data.filter((rc: any) => relKeys.includes(`${rc.TableName}Id.${rc.Name}`)))
+                }
+                methods.setValue("_rels", finalRels)
+            } else methods.setValue("_rels", [])
+            methods.setValue("_cols", usingCols)
+        }
     }
 
     useEffect(() => {
-        if (viewItem?.TbName) {
-            mapColumnData()
-            mapRelativeData()
-        }
+        if (viewItem?.TbName) mapColumnData()
     }, [viewItem?.TbName])
 
     const getInitData = async () => {

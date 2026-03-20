@@ -175,6 +175,14 @@ export class SettingDataController {
         return res
     }
 
+    async group(options: { searchRaw?: string, reducers: string }) {
+        const res = await BaseDA.post(ConfigData.url + `data/${this.setting}/group`, {
+            headers: { pid: ConfigData.pid },
+            body: options
+        })
+        return res
+    }
+
     async getByIds(ids: Array<string>) {
         const res = await BaseDA.post(ConfigData.url + `data/${this.setting}/getByIds`, {
             headers: { pid: ConfigData.pid },

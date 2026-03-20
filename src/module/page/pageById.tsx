@@ -685,7 +685,7 @@ const ElementUI = ({ findId, children, watchForCustomProps, replaceThisVariables
                 break;
         }
         return tmpProps
-    }, [JSON.stringify(customProps), props.item.Type, dataValue, children, winiContextData, defferWatch, location.pathname, location.search, params, JSON.stringify(location.state)])
+    }, [JSON.stringify(customProps), props.indexItem, dataValue, children, winiContextData, defferWatch, location.pathname, location.search, params, JSON.stringify(location.state)])
 
     const htmlElementRef = useRef<any | any[]>(null)
 
@@ -1033,6 +1033,9 @@ export const PageById = (props: PageByIdProps) => {
                 setLoading(false)
             } else setPageItem(undefined)
         })
+        return () => {
+            if (globalTableCache.size > 50) globalTableCache.clear()
+        }
     }, [props.id])
 
     if (pageItem) {
@@ -1116,6 +1119,9 @@ export const PageByUrl = ({ childrenData, ...props }: PageByUrlProps) => {
                 setLoading(false)
             } else setPageItem(undefined)
         })
+        return () => {
+            if (globalTableCache.size > 50) globalTableCache.clear()
+        }
     }, [props.url])
 
     if (pageItem) {
