@@ -23,7 +23,7 @@ const getHeaders = async () => {
         const res = await fetch(ConfigData.url + 'data/refreshToken', {
             method: 'POST',
             headers: refreshTokenHeaders,
-            body: JSON.stringify({ 'refreshToken': Util.getCookie("refreshToken") }),
+            body: JSON.stringify({ 'refreshToken': `Bearer ${Util.getCookie("refreshToken")}` }),
         })
         if (res.status === 200 || res.status === 201) {
             const jsonData = await res.json()
@@ -31,7 +31,7 @@ const getHeaders = async () => {
                 Util.setCookie("accessToken", jsonData.accessToken)
                 Util.setCookie("timeRefresh", Date.now() / 1000 + 9 * 60)
                 return {
-                    'refreshToken': Util.getCookie("refreshToken"),
+                    'refreshToken': `Bearer ${Util.getCookie("refreshToken")}`,
                     'Authorization': `Bearer ${Util.getCookie("accessToken")}`,
                     'Content-Type': 'application/json'
                 }
