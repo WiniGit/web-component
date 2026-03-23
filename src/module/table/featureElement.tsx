@@ -1,11 +1,12 @@
 import { CSSProperties, forwardRef, MouseEventHandler, useDeferredValue, useEffect, useMemo, useRef, useState } from "react"
 import styles from "./table.module.css";
 import { useTranslation } from "react-i18next"
-import { Button, Checkbox, closePopup, DateTimePicker, InfiniteScroll, Popup, RadioButton, showPopup, Slider, Switch, Tag, Text, TextField, Util, Winicon, showDialog, DialogAlignment, DataController, specialCharsRegex } from "../../index"
+import { Button, Checkbox, closePopup, DateTimePicker, InfiniteScroll, Popup, RadioButton, showPopup, Slider, Switch, Tag, Text, TextField, Util, Winicon, showDialog, DialogAlignment, DataController } from "../../index"
 import { handleGoogleSheetFetch } from "./exportXlsx"
 import { DataTable } from "./tableById"
 import { ColDataType, ColDataTypeIcon, FEDataType } from "../da";
 import { CustomerAvatar } from "./config";
+import { specialCharsRegex } from "../../controller/config";
 
 // #region search & filter
 interface SearchFilterDataProps {
