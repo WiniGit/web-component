@@ -128,7 +128,8 @@ html {
     --shadow-right: 1px 0px 6px 0px #2D32390F;
     --shadow-left: -1px 0px 6px 0px #2D32390F;
     --shadow-dropdown: 2px 0px 16px 0px #0000000A;
-    --shadow-card: 0px 3px 4px 0px rgba(0, 0, 0, .03)
+    --shadow-card: 0px 3px 4px 0px rgba(0, 0, 0, .03);
+    --opacity-loading: loading-change-view 0.25s ease-in-out;
 }
 
 @supports (color: light-dark(black, white)) {

@@ -1,12 +1,11 @@
 import { CSSProperties, forwardRef, ReactNode, useDeferredValue, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react"
-import { FieldValues, Form, useForm, UseFormReturn } from "react-hook-form"
+import { FieldValues, useForm, UseFormReturn } from "react-hook-form"
 import { CustomHTMLProps, getValidLink, globalTableCache, RenderLayerElement } from "../page/pageById"
 import { AccountController, BaseDA, DataController, OptionsItem, randomGID, SettingDataController, urlToFileType, Util } from "../../index"
-import { regexGetVariableByThis } from "../card/config"
 import { ComponentType, FEDataType } from "../da"
 import { validateForm } from "./config"
 import { TableController } from "../../controller/setting"
-import { ConfigData } from "../../controller/config"
+import { ConfigData, specialCharsRegex } from "../../controller/config"
 import { CustomerAvatar } from "../table/config"
 
 interface Props {
@@ -375,19 +374,23 @@ export const FormById = forwardRef<FormByIdRef, Props>((props, ref) => {
         if (keyNames.length) mapRelativeData()
     }, [keyNames])
 
+    const cacheCheckTree = useRef<{ [table: string]: boolean }>({})
     const getOptions = async ({ length, search, parentId, _rel }: { length: number, search?: string, parentId?: string | number, _rel: { [p: string]: any } }) => {
         if (props.customOptions?.[_rel.Column]) {
             let _opt = props.customOptions?.[_rel.Column] ?? []
             if (search?.length) _opt = _opt.filter(e => typeof e.name === "string" ? (e.name.toLowerCase().includes(search.toLowerCase()) || search.toLowerCase().includes(e.name.toLowerCase())) : true)
             return { data: _opt, totalCount: _opt.length }
         }
-        const pkTableController = new TableController("rel")
-        let checkTree: any = await pkTableController.getListSimple({ page: 1, size: 1, query: `@Column:{ParentId} @TablePK:{${_rel.TablePK}} @TableFK:{${_rel.TablePK}}` })
-        if (checkTree.data?.length) checkTree = true
-        else checkTree = false
-        let querySearch: string = _rel.Query?.replace(regexGetVariableByThis, (m: string) => methods.getValues((regexGetVariableByThis.exec(m) ?? [])[1])) ?? ""
-        if (search?.length) querySearch += ` ((@Name:("${search}")) | (@Name:("%${search}%")))`
-        else if (checkTree) querySearch += ` @ParentId:{${parentId ?? "empty"}}`
+        let checkTree = cacheCheckTree.current[_rel.TablePK];
+        if (typeof checkTree !== "boolean") {
+            const pkTableController = new TableController("rel")
+            const checkPKTree: any = await pkTableController.getListSimple({ page: 1, size: 1, query: `@Column:{ParentId} @TablePK:{${_rel.TablePK}} @TableFK:{${_rel.TablePK}}` })
+            cacheCheckTree.current[_rel.TablePK] = checkPKTree.code === 200 && checkPKTree.totalCount > 0
+            checkTree = cacheCheckTree.current[_rel.TablePK]
+        }
+        let querySearch: string = ""
+        if (checkTree) querySearch += ` @ParentId:{${parentId ?? "empty"}}`
+        if (search?.length) querySearch += _rel.TablePK === "Customer" || _rel.TablePK === "User" ? ` (@Name:("${search}") | @Email:{*${search.replace(specialCharsRegex, (m: string) => `\\${m}`)}*})` : ` @Name:("${search}")`
         querySearch = querySearch.trim().length ? querySearch : "*"
         const pkDataController = new DataController(_rel.TablePK)
         const pattern: any = { returns: ["Id", "Name"] }

@@ -113,6 +113,7 @@ interface DataTableProps {
     onChangeFormTitle?: (params: { formAdd?: string | null, formEdit?: string | null }) => void;
     handleImport?: (data: { [p: string]: any }[]) => Promise<{ [p: string]: any }[]>;
     handleExport?: (data: { [p: string]: any }[]) => Promise<{ [p: string]: any }[]>;
+    customTablePKOptions?: { [pk: string]: string }
 }
 
 interface DataTableRef {
@@ -217,7 +218,7 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
                 if (!pattern[tmp[0]].includes(tmp[1])) pattern[tmp[0]].push(tmp[1])
                 if (!pattern.returns.includes(tmp[0])) pattern.returns.push(tmp[0])
             })
-            pattern.returns = [...pattern.returns, ...filterData.pattern.returns].filter((k: string) => k.split(".").length === 1).filter((k, i, a) => a.indexOf(k) === i)
+            pattern.returns = pattern.returns.concat(filterData.pattern.returns).filter((k: string) => k.split(".").length === 1).filter((k: string, i: number, a: string[]) => a.indexOf(k) === i)
         }
         const pkKeys = columns.filter(e => e.Name.split(".").length > 1);
         pkKeys.forEach((e) => {
@@ -412,7 +413,7 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
                 {features.map((f, i) => {
                     switch (f) {
                         case "add":
-                            return <Button
+                            return enableEdit && <Button
                                 key={"add"}
                                 label={`${t("add")} ${t("new").toLowerCase()}`}
                                 prefix={<Winicon src={"outline/user interface/e-add"} size={12} />}
@@ -487,11 +488,11 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
                                 }}
                             />
                         case "import":
-                            return <ButtonImportData
+                            return enableEdit && <ButtonImportData
                                 key={"import"}
                                 onImport={async (result) => {
                                     if (result.length) {
-                                        const newDataItems = handleImport ? await handleImport(result) : result.map((it: any) => {
+                                        const newDataItems = handleImport ? (await handleImport(result)) : result.map((it: any) => {
                                             const tmp: any = { Id: randomGID(), DateCreated: Date.now() }
                                             for (const fd of fields) {
                                                 if (fd.Column) {
@@ -565,17 +566,23 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
                             onChangeActions={enableEdit ? onChangeActions : undefined}
                             showAddEditPopup={enableEdit ? showAddEditPopup : undefined}
                             actions={actions}
-                            onDelete={enableEdit ? (() => {
-                                dataController.delete([item.Id]).then((res: any) => {
-                                    if (res.code === 200) getData(pageDetails)
-                                })
+                            onDelete={enableEdit ? (async () => {
+                                const res = await dataController.delete([item.Id])
+                                if (res.code === 200) getData(pageDetails)
+                                else {
+                                    ToastMessage.errors("Failed to delete this item")
+                                    console.error("Failed to delete this item: " + res.message)
+                                }
                             }) : undefined}
-                            onDuplicate={enableEdit ? (() => {
-                                dataController.duplicate([item.Id]).then((res: any) => {
-                                    if (res.code !== 200) return ToastMessage.errors(res.message)
+                            onDuplicate={enableEdit ? (async () => {
+                                const res = await dataController.duplicate([item.Id])
+                                if (res.code === 200) {
                                     getData(pageDetails)
-                                    ToastMessage.success(`${t("duplicated")} ${tbName.toLowerCase()} ${t("successfully").toLowerCase()}!`)
-                                })
+                                    ToastMessage.success(`Duplicate element successfully!`)
+                                } else {
+                                    ToastMessage.errors("Failed to duplicate this item")
+                                    console.error("Failed to duplicate this item: " + res.message)
+                                }
                             }) : undefined}
                             customFormId={customFormId}
                             onSelectCustomForm={enableEdit ? onSelectCustomForm : undefined}
@@ -652,7 +659,7 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
                             }}
                         />
                     case "duplicate":
-                        return <Button
+                        return enableEdit && <Button
                             key={tl + "-" + i}
                             className="button-text-5 size24"
                             label={t("duplicate")}
@@ -668,7 +675,7 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
                             }}
                         />
                     case "delete":
-                        return <Button
+                        return enableEdit && <Button
                             key={tl + "-" + i}
                             className="button-text-5 size24"
                             label={t("delete")}

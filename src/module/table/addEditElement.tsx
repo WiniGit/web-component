@@ -3,7 +3,7 @@ import { useForm, UseFormReturn } from "react-hook-form";
 import { BaseDA, Select1Form, SelectMultipleForm, randomGID, Util, Button, closePopup, ComponentStatus, DialogAlignment, showDialog, ToastMessage, Winicon, DataController, TableController, AccountController, urlToFileType, FormById } from "../../index";
 import { useTranslation } from 'react-i18next';
 import { regexGetVariableByThis, RenderComponentByType, validateForm } from "../form/config";
-import { ConfigData } from "../../controller/config";
+import { ConfigData, specialCharsRegex } from "../../controller/config";
 import { ComponentType, FEDataType } from "../da";
 import { CustomerAvatar } from "./config";
 import { getValidLink } from "../page/pageById";
@@ -20,9 +20,10 @@ interface AddEditElementFormProps {
     customFields?: { [key: string]: (methods: UseFormReturn) => ReactNode };
     formId?: { formAdd?: string, formEdit?: string };
     onSelectCustomForm?: (params: { formAdd?: string | null, formEdit?: string | null }) => void;
+    customTablePKOptions?: { [pk: string]: string }
 }
 
-const AddEditElementForm = forwardRef(({ tbName = "", title, activeColumns = [], id, onSuccess, expandForm, handleSubmit, customFields, formId, onChangeTitle, onSelectCustomForm, ...props }: AddEditElementFormProps, ref: any) => {
+const AddEditElementForm = forwardRef(({ tbName = "", title, activeColumns = [], id, onSuccess, expandForm, handleSubmit, customFields, formId, onChangeTitle, onSelectCustomForm, customTablePKOptions, ...props }: AddEditElementFormProps, ref: any) => {
     const dataController = new DataController(tbName)
     const [item, setItem] = useState<{ [p: string]: any }>()
     const [column, setColumn] = useState<{ [p: string]: any }[]>([])
@@ -161,6 +162,7 @@ const AddEditElementForm = forwardRef(({ tbName = "", title, activeColumns = [],
                         item={initFormItem}
                         parentId={(props as any).ParentId}
                         tbName={tbName}
+                        customTablePKOptions={customTablePKOptions}
                         expandForm={expandForm}
                         onCancel={() => {
                             showDialog({
@@ -196,10 +198,11 @@ interface FormViewProps {
     expandForm?: (methods: UseFormReturn) => ReactNode;
     handleSubmit?: (params: { item: { [k: string]: any }, initItem?: { [k: string]: any }, methods: UseFormReturn, onSuccess?: () => void }) => Promise<any>;
     customFields?: { [key: string]: (methods: UseFormReturn) => ReactNode },
-    parentId?: string
+    parentId?: string,
+    customTablePKOptions?: { [pk: string]: string },
 }
 
-const FormView = ({ cols = [], rels = [], item, tbName, onCancel, onSuccess, expandForm, handleSubmit, customFields, ...props }: FormViewProps) => {
+const FormView = ({ cols = [], rels = [], item, tbName, onCancel, onSuccess, expandForm, handleSubmit, customFields, customTablePKOptions, ...props }: FormViewProps) => {
     const dataController = new DataController(tbName)
     const methods = useForm<any>({ shouldFocusError: false, defaultValues: { Id: randomGID() } })
     const watchRel = useMemo(() => rels.filter(e => e.Query && e.Query.match(regexGetVariableByThis)?.length), [rels.length])
@@ -431,14 +434,18 @@ const FormView = ({ cols = [], rels = [], item, tbName, onCancel, onSuccess, exp
 
     const onError = () => { }
 
+    const cacheCheckTree = useRef<{ [table: string]: boolean }>({})
     const getOptions = async ({ length, search, parentId, _rel }: { length: number, search?: string, parentId?: string | number, _rel: { [p: string]: any } }) => {
-        const pkTableController = new TableController("rel")
-        let checkTree: any = await pkTableController.getListSimple({ page: 1, size: 1, query: `@Column:{ParentId} @TablePK:{${_rel.TablePK}} @TableFK:{${_rel.TablePK}}` })
-        if (checkTree.data?.length) checkTree = true
-        else checkTree = false
-        let querySearch: string = _rel.Query?.replace(regexGetVariableByThis, (m: string) => methods.getValues((regexGetVariableByThis.exec(m) ?? [])[1])) ?? ""
-        if (search?.length) querySearch += ` @Name:("${search}")`
-        else if (checkTree) querySearch += ` @ParentId:{${parentId ?? "empty"}}`
+        let checkTree = cacheCheckTree.current[_rel.TablePK];
+        if (typeof checkTree !== "boolean") {
+            const pkTableController = new TableController("rel")
+            const checkPKTree: any = await pkTableController.getListSimple({ page: 1, size: 1, query: `@Column:{ParentId} @TablePK:{${_rel.TablePK}} @TableFK:{${_rel.TablePK}}` })
+            cacheCheckTree.current[_rel.TablePK] = checkPKTree.code === 200 && checkPKTree.totalCount > 0
+            checkTree = cacheCheckTree.current[_rel.TablePK]
+        }
+        let querySearch: string = customTablePKOptions?.[_rel.TablePK] ?? ""
+        if (checkTree) querySearch += ` @ParentId:{${parentId ?? "empty"}}`
+        if (search?.length) querySearch += _rel.TablePK === "Customer" || _rel.TablePK === "User" ? ` (@Name:("${search}") | @Email:{*${search.replace(specialCharsRegex, (m: string) => `\\${m}`)}*})` : ` @Name:("${search}")`
         querySearch = querySearch.trim().length ? querySearch : "*"
         const pkDataController = new DataController(_rel.TablePK)
         const pattern: any = { returns: ["Id", "Name"] }

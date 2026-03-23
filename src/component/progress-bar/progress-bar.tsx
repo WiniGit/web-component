@@ -1,8 +1,8 @@
-import { CSSProperties, ReactNode, useState } from 'react'
+import { CSSProperties, forwardRef, ReactNode, useState } from 'react'
 import styles from './progress-bar.module.css'
 import { ComponentStatus, getStatusIcon, Winicon } from '../../index'
 
-export function ProgressBar({ id, status = ComponentStatus.INFOR, percent = 80, titleText, title, hideTitle = false, progressBarOnly = false, fullColor, percentColor, style, progressBarStyle, className = "" }: {
+interface ProgressBarProps {
     id?: string,
     percent: number,
     titleText?: string,
@@ -15,12 +15,13 @@ export function ProgressBar({ id, status = ComponentStatus.INFOR, percent = 80, 
     className?: string,
     status?: ComponentStatus,
     progressBarStyle?: CSSProperties
-}) {
+}
+export const ProgressBar = forwardRef<HTMLDivElement, ProgressBarProps>(({ id, status = ComponentStatus.INFOR, percent = 80, titleText, title, hideTitle = false, progressBarOnly = false, fullColor, percentColor, style, progressBarStyle, className = "" }, ref) => {
     const [openDetails, setOpenDetails] = useState(true)
 
     return progressBarOnly ?
-        <div id={id} className={`${styles["progress-bar-value"]} ${className}`} style={{ '--percent-color': percentColor, '--full-color': fullColor, '--percent': `${percent}%`, minWidth: "16rem", ...(style ?? {}) } as CSSProperties} /> :
-        <div id={id} className={`col ${styles["progress-bar-container"]} ${className}`} style={style ? { padding: '1.6rem 2.4rem', ...style } : { padding: '1.6rem 2.4rem' }}>
+        <div id={id} ref={ref} className={`${styles["progress-bar-value"]} ${className}`} style={{ '--percent-color': percentColor, '--full-color': fullColor, '--percent': `${percent}%`, minWidth: "16rem", ...(style ?? {}) } as CSSProperties} /> :
+        <div id={id} ref={ref} className={`col ${styles["progress-bar-container"]} ${className}`} style={style ? { padding: '1.6rem 2.4rem', ...style } : { padding: '1.6rem 2.4rem' }}>
             {hideTitle ? null : (title ?? <div className={`row ${styles["progress-bar-title"]}`}>
                 <div className="heading-8">{titleText}</div>
                 <Winicon src={openDetails ? "fill/arrows/down-arrow" : "fill/arrows/up-arrow"} onClick={() => { setOpenDetails(!openDetails) }} />
@@ -31,4 +32,4 @@ export function ProgressBar({ id, status = ComponentStatus.INFOR, percent = 80, 
                 <div className='label-4'>{percent}/100</div>
             </div> : null}
         </div>
-}
+})

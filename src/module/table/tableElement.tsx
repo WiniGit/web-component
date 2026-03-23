@@ -277,6 +277,7 @@ interface TableRowProps {
 
 export const TableRow = ({ item, setItem, onEditActionColumn, index, methods, fields = [], files = [], relativeData, relativeFields, showIndex = false, hideCheckbox = false, showAddEditPopup, onDelete, actions = [], onChangeActions, selected, setSelected, onDuplicate, customFormId, formTitle, onChangeFormTitle, ...props }: TableRowProps) => {
     const popupRef = useRef<Popup>(null)
+    const tableRowRef = useRef<HTMLDivElement>(null)
     const tbName = methods.getValues("TbName")
     const dataController = new DataController(tbName)
     const { t } = useTranslation()
@@ -409,10 +410,23 @@ export const TableRow = ({ item, setItem, onEditActionColumn, index, methods, fi
     }
 
     const showActions = (ev: any) => {
-        const btn = ev.target.closest("div")
-        if (btn.isOpen) return closePopup(popupRef as any)
-        const rect = btn.getBoundingClientRect()
-        btn.isOpen = true
+        ev.stopPropagation()
+        ev.preventDefault()
+        const btn = ev.target.closest(".icon-button")
+        const tableRowElement = tableRowRef.current
+        if (!tableRowElement) return;
+        let offset: any = { top: ev.clientY, left: ev.clientX - 64 }
+        if (btn) {
+            if (btn.isOpen) return closePopup(popupRef as any)
+            const rect = btn.getBoundingClientRect()
+            offset = { top: rect.bottom + 2, right: `calc(100dvw - ${rect.right}px)` }
+            btn.isOpen = true
+        }
+        tableRowElement.style.backgroundColor = "light-dark(#dcdcdc, #373b3d)"
+        if (offset.top + 240 > window.innerHeight) {
+            delete offset.top
+            offset.bottom = `calc(100vh - ${ev.clientY}px)`
+        }
         showPopup({
             ref: popupRef as any,
             hideOverlay: true,
@@ -421,8 +435,11 @@ export const TableRow = ({ item, setItem, onEditActionColumn, index, methods, fi
                 actions={actions}
                 onChangeActions={onChangeActions}
                 onEditActionColumn={onEditActionColumn}
-                style={{ top: rect.bottom + 2, right: `calc(100dvw - ${rect.right}px)`, minWidth: "14rem" }}
-                onClose={() => { setTimeout(() => { btn.isOpen = false }, 150) }}
+                style={{ ...offset, minWidth: "14rem" }}
+                onClose={() => {
+                    if (btn) setTimeout(() => { btn.isOpen = false }, 150)
+                    tableRowElement.style.backgroundColor = ""
+                }}
                 onEdit={enableEdit ? (() => showAddEditPopup(item.Id)) : undefined}
                 onDuplicate={onDuplicate}
                 onDelete={onDelete}
@@ -434,7 +451,7 @@ export const TableRow = ({ item, setItem, onEditActionColumn, index, methods, fi
 
     return <>
         <Popup ref={popupRef} />
-        <div className={`row ${styles["table-row"]} ${props.onClickRow ? styles["clickable"] : ""}`} onContextMenu={props.onContextMenu ? ((ev) => { props.onContextMenu!({ item, index, event: ev as any }) }) : undefined} onClick={props.onClickRow ? ((ev) => { props.onClickRow!({ item, index, event: ev as any }) }) : undefined}>
+        <div ref={tableRowRef} className={`row ${styles["table-row"]} ${props.onClickRow ? styles["clickable"] : ""}`} onContextMenu={props.onContextMenu ? ((ev) => { props.onContextMenu!({ item, index, event: ev as any }) }) : showActions} onClick={props.onClickRow ? ((ev) => { props.onClickRow!({ item, index, event: ev as any }) }) : undefined}>
             {(!hideCheckbox || showIndex) && <div className={`row ${styles["cell"]}`}>
                 <div className={`row ${styles["content"]}`}>
                     <Checkbox size={'1.6rem'} value={checkValue}
@@ -509,16 +526,19 @@ export const TableRow = ({ item, setItem, onEditActionColumn, index, methods, fi
                     } : undefined}
                 />
             })}
-            {(enableEdit || (!!totalChild && !!children.length && totalChild > children.length)) && <div className={`row ${styles["add-child-table-row"]}`}>
-                {enableEdit && <Button
-                    prefix={<Winicon src="outline/user interface/e-add" size={12} />}
-                    label={`${t("add")} ${t("new").toLowerCase()}`}
-                    className="button-text-5"
-                    onClick={() => { showAddEditChildPopup() }}
-                />}
-                {!!totalChild && !!children.length && totalChild > children.length &&
-                    <span className="button-text-5" style={{ marginTop: 8 }} onClick={() => { getData({ page: Math.floor(children.length / 20) + 1 }) }}>{t("seemore")}</span>}
-            </div>}
+            {(enableEdit || (!!totalChild && !!children.length && totalChild > children.length)) &&
+                <div className={`row ${styles["add-child-table-row"]}`} style={{ paddingLeft: (!hideCheckbox && showIndex) ? "10rem" : (showIndex ? "8rem" : (hideCheckbox ? "2rem" : "6rem")) }}>
+                    {enableEdit && <Button
+                        prefix={<Winicon src="outline/user interface/e-add" size={12} />}
+                        label={`${t("add")} ${t("new").toLowerCase()}`}
+                        className="button-text-5"
+                        onClick={() => { showAddEditChildPopup() }}
+                    />}
+                    {!!totalChild && !!children.length && totalChild > children.length &&
+                        <span className="button-text-5" onClick={() => { getData({ page: Math.floor(children.length / 20) + 1 }) }}>{t("seemore")}</span>
+                    }
+                </div>
+            }
         </>
         }
     </>

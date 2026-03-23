@@ -63,9 +63,16 @@ export const Winicon = forwardRef<WiniconRef, WiniconProps>(({ id, src, link, cl
     }), [divRef.current]);
 
     useEffect(() => {
-        if (showTooltip) {
-            return () => { setShowTooltip(false) }
+        if (showTooltip && divRef.current) {
+            const handleMouseMove = (ev: MouseEvent) => {
+                if (divRef.current !== ev.target && !divRef.current!.contains(ev.target as Node)) setShowTooltip(false)
+            }
+            document.addEventListener("mousemove", handleMouseMove)
+            return () => {
+                document.removeEventListener("mousemove", handleMouseMove)
+            }
         }
+        return () => { setShowTooltip(false) }
     }, [showTooltip])
 
     return <>

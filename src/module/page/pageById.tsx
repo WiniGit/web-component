@@ -200,7 +200,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
             }
         }
         return tmp
-    }, [location.pathname, location.search, params, JSON.stringify(location.state), props.indexItem, defferWatch, winiContextData])
+    }, [location.pathname, location.search, params, JSON.stringify(location.state), props.indexItem, defferWatch, winiContextData.globalData, winiContextData.userData, winiContextData.i18n])
     // 
     const watchForCustomProps = useDeferredValue(stateCustomProps)
     /** Check unmounted */
@@ -340,84 +340,56 @@ const ElementUI = ({ findId, children, watchForCustomProps, replaceThisVariables
                         }
                     }
                 }
-                switch (trigger) {
-                    case TriggerType.init:
-                        if (triggerActions.length) {
+                if (triggerActions.length) {
+                    switch (trigger) {
+                        case TriggerType.init:
                             _props.onInit = (ev: any) => handleEvent(triggerActions, ev)
-                        }
-                        break;
-                    case TriggerType.click:
-                        if (triggerActions.length) {
+                            break;
+                        case TriggerType.click:
                             _props.onClick = (ev: any) => handleEvent(triggerActions, ev)
-                        }
-                        break;
-                    case TriggerType.rightClick:
-                        if (triggerActions.length) {
+                            break;
+                        case TriggerType.rightClick:
                             _props.onContextMenu = (ev: any) => handleEvent(triggerActions, ev)
-                        }
-                        break;
-                    case TriggerType.hover:
-                        if (triggerActions.length) {
+                            break;
+                        case TriggerType.hover:
                             _props.onMouseOver = (ev: any) => handleEvent(triggerActions, ev)
-                        }
-                        break;
-                    case TriggerType.keydown:
-                        if (triggerActions.length) {
+                            break;
+                        case TriggerType.keydown:
                             _props.onKeyDown = (ev: any) => handleEvent(triggerActions, ev)
-                        }
-                        break;
-                    case TriggerType.mouseenter:
-                        if (triggerActions.length) {
+                            break;
+                        case TriggerType.mouseenter:
                             _props.onMouseEnter = (ev: any) => handleEvent(triggerActions, ev)
-                        }
-                        break;
-                    case TriggerType.mouseleave:
-                        if (triggerActions.length) {
+                            break;
+                        case TriggerType.mouseleave:
                             _props.onMouseLeave = (ev: any) => handleEvent(triggerActions, ev)
-                        }
-                        break;
-                    case TriggerType.mousedown:
-                        if (triggerActions.length) {
+                            break;
+                        case TriggerType.mousedown:
                             _props.onMouseDown = (ev: any) => handleEvent(triggerActions, ev)
-                        }
-                        break;
-                    case TriggerType.mouseup:
-                        if (triggerActions.length) {
+                            break;
+                        case TriggerType.mouseup:
                             _props.onMouseUp = (ev: any) => handleEvent(triggerActions, ev)
-                        }
-                        break;
-                    case TriggerType.focus:
-                        if (triggerActions.length) {
+                            break;
+                        case TriggerType.focus:
                             _props.onFocus = (ev: any) => handleEvent(triggerActions, ev)
-                        }
-                        break;
-                    case TriggerType.change:
-                        if (triggerActions.length) {
+                            break;
+                        case TriggerType.change:
                             _props.onChange = (ev: any) => handleEvent(triggerActions, ev)
-                        }
-                        break;
-                    case TriggerType.blur:
-                        if (triggerActions.length) {
+                            break;
+                        case TriggerType.blur:
                             _props.onBlur = (ev: any) => handleEvent(triggerActions, ev)
-                        }
-                        break;
-                    case TriggerType.submit:
-                        if (triggerActions.length) {
+                            break;
+                        case TriggerType.submit:
                             _props.onSubmit = (ev: any) => handleEvent(triggerActions, ev)
-                        }
-                        break;
-                    case TriggerType.scroll:
-                        if (triggerActions.length) {
+                            break;
+                        case TriggerType.scroll:
                             _props.onScroll = (ev: any) => handleEvent(triggerActions, ev)
-                        }
-                        break;
-                    case TriggerType.loaded:
-                        if (triggerActions.length) {
+                            break;
+                        case TriggerType.loaded:
                             _props.onLoaded = (ev: any) => handleEvent(triggerActions, ev)
-                        }
-                        break;
-                    default:
-                        break;
+                            break;
+                        default:
+                            break;
+                    }
                 }
             })
         }
@@ -440,7 +412,7 @@ const ElementUI = ({ findId, children, watchForCustomProps, replaceThisVariables
             _props = { ..._props, ...extendProps }
         }
         return watchForCustomProps ? { ..._props, ...watchForCustomProps } : _props
-    }, [props.item, props.propsData, props.indexItem, defferWatch, winiContextData, location.pathname, location.search, params, JSON.stringify(location.state)])
+    }, [props.item, props.propsData, props.indexItem, defferWatch, location.pathname, location.search, params, JSON.stringify(location.state), winiContextData.globalData, winiContextData.userData, winiContextData.i18n])
     const customProps = useDeferredValue(memeCustomProps)
     const _options = useMemo(() => {
         if (!props.options || !props.item.NameField?.length) return undefined
@@ -685,12 +657,16 @@ const ElementUI = ({ findId, children, watchForCustomProps, replaceThisVariables
                 break;
         }
         return tmpProps
-    }, [JSON.stringify(customProps), props.indexItem, dataValue, children, winiContextData, defferWatch, location.pathname, location.search, params, JSON.stringify(location.state)])
+    }, [JSON.stringify(customProps), props.indexItem, dataValue, children, defferWatch, location.pathname, location.search, params, JSON.stringify(location.state), winiContextData.globalData, winiContextData.userData, winiContextData.i18n])
 
     const htmlElementRef = useRef<any | any[]>(null)
+    const isInitDone = useRef(false)
 
     useEffect(() => {
-        if (customProps.onInit) customProps.onInit(pageAllRefs[findId]?.current ?? htmlElementRef.current)
+        if (customProps.onInit && !isInitDone.current) {
+            customProps.onInit(pageAllRefs[findId]?.current ?? htmlElementRef.current)
+            isInitDone.current = true
+        }
     }, [customProps.onInit])
 
     switch (props.item.Type) {
@@ -781,6 +757,7 @@ const ElementUI = ({ findId, children, watchForCustomProps, replaceThisVariables
         case ComponentType.audio:
             if (props.item.NameField && !!dataValue?.length) {
                 if (Array.isArray(dataValue)) {
+                    htmlElementRef.current = []
                     return dataValue.map((f, i) => <AudioPlayer
                         key={f.id + "-" + i}
                         ref={r => {
@@ -795,23 +772,31 @@ const ElementUI = ({ findId, children, watchForCustomProps, replaceThisVariables
         case ComponentType.iframe:
             if (props.item.NameField && !!dataValue?.length) {
                 if (Array.isArray(dataValue)) {
-                    return dataValue.map((f, i) => <IframePlayer key={f.id + "-" + i} referrerPolicy="no-referrer" {...typeProps} src={f.url} />)
+                    htmlElementRef.current = []
+                    return dataValue.map((f, i) => {
+                        return <IframePlayer
+                            key={f.id + "-" + i}
+                            ref={r => {
+                                if (r && Array.isArray(htmlElementRef.current)) htmlElementRef.current.push(r)
+                            }}
+                            referrerPolicy="no-referrer" {...typeProps} src={f.url} />
+                    })
                 } else typeProps.src = getValidLink(dataValue)
             }
-            return <IframePlayer referrerPolicy="no-referrer" {...typeProps} />
+            return <IframePlayer ref={htmlElementRef} referrerPolicy="no-referrer" {...typeProps} />
         case ComponentType.rate:
-            if (props.item.NameField) return <Rating {...typeProps} value={dataValue} />
-            else return <Rating {...typeProps} />
+            if (props.item.NameField) return <Rating ref={htmlElementRef} {...typeProps} value={dataValue} />
+            else return <Rating ref={htmlElementRef} {...typeProps} />
         case ComponentType.progressBar:
-            if (props.item.NameField) return <ProgressBar {...typeProps} progressBarOnly percent={dataValue} />
-            else return <ProgressBar {...typeProps} progressBarOnly />
+            if (props.item.NameField) return <ProgressBar ref={htmlElementRef} {...typeProps} progressBarOnly percent={dataValue} />
+            else return <ProgressBar ref={htmlElementRef} {...typeProps} progressBarOnly />
         case ComponentType.progressCircle:
-            if (props.item.NameField) return <ProgressCircle {...typeProps} percent={dataValue} />
-            return <ProgressCircle {...typeProps} />
+            if (props.item.NameField) return <ProgressCircle ref={htmlElementRef} {...typeProps} percent={dataValue} />
+            return <ProgressCircle ref={htmlElementRef} {...typeProps} />
         case ComponentType.icon:
-            if (dataValue) return <Winicon {...typeProps} src={dataValue} />
+            if (dataValue) return <Winicon ref={htmlElementRef} {...typeProps} src={dataValue} />
             else if (props.item.NameField) return null
-            else return <Winicon {...typeProps} />
+            else return <Winicon ref={htmlElementRef} {...typeProps} />
         case ComponentType.chart:
             return <ChartById {...typeProps} id={typeProps.chartId} ref={pageAllRefs[findId]} />
         case "form":
