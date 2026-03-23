@@ -96,6 +96,7 @@ export enum TriggerType {
     submit = "submit",
     scroll = "scroll",
     loaded = "loaded",
+    locationChange = "locationChange",
 }
 
 export enum ActionType {
