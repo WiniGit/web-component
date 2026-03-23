@@ -415,7 +415,7 @@ const ElementUI = ({ findId, children, watchForCustomProps, replaceThisVariables
             _props = { ..._props, ...extendProps }
         }
         return watchForCustomProps ? { ..._props, ...watchForCustomProps } : _props
-    }, [props.item, props.propsData, props.indexItem, defferWatch, location.pathname, location.search, params, JSON.stringify(location.state), winiContextData.globalData, winiContextData.userData, winiContextData.i18n.language])
+    }, [props.item, props.propsData, props.indexItem, watchForCustomProps, defferWatch, location.pathname, location.search, params, JSON.stringify(location.state), winiContextData.globalData, winiContextData.userData, winiContextData.i18n.language])
     const customProps = useDeferredValue(memeCustomProps)
     const _options = useMemo(() => {
         if (!props.options || !props.item.NameField?.length) return undefined
@@ -586,6 +586,7 @@ const ElementUI = ({ findId, children, watchForCustomProps, replaceThisVariables
             case ComponentType.video:
             case ComponentType.audio:
             case ComponentType.iframe:
+            case ComponentType.icon:
                 if (regexGetVariables.test(tmpProps.src)) tmpProps.src = replaceThisVariables(tmpProps.src)
                 break;
             case ComponentType.pagination:
