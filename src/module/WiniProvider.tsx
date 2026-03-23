@@ -213,11 +213,11 @@ export const initializeProject = async (winiDomain: string, props: { pid?: strin
     ConfigData.url = winiDomain
     const tmp = document.createElement("div")
     tmp.innerHTML = `
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/WiniGit/web-component@bbfd19d/src/skin/root.min.css">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/WiniGit/web-component@bbfd19d/src/skin/layout.min.css">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/WiniGit/web-component@bbfd19d/src/skin/typography.min.css">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/WiniGit/web-component@bbfd19d/src/skin/toast-noti.min.css">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/WiniGit/web-component@bbfd19d/src/skin/style.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/WiniGit/web-component@c9f9b6d/src/skin/root.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/WiniGit/web-component@c9f9b6d/src/skin/layout.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/WiniGit/web-component@c9f9b6d/src/skin/typography.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/WiniGit/web-component@c9f9b6d/src/skin/toast-noti.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/WiniGit/web-component@c9f9b6d/src/skin/style.css">
     `
     document.head.children[0].before(...tmp.childNodes)
     tmp.remove()
