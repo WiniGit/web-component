@@ -73,7 +73,6 @@ interface DataTableProps {
     className?: string;
     style?: CSSProperties;
     tbName: string;
-    staticSearch?: string;
     title?: string;
     columns: Array<{ [p: string]: any }>,
     onChangeConfigData?: (params: Array<{ [p: string]: any }>) => void;
@@ -132,7 +131,6 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
     className,
     style = {},
     tbName,
-    staticSearch = "",
     columns = [],
     onChangeConfigData,
     filterData = { searchRaw: "*", sortby: [] },
@@ -210,7 +208,6 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
         }
         const { searchRaw, sortby } = configMethods.getValues()
         let querySearch = searchRaw
-        if (staticSearch.length) querySearch = `${staticSearch} ${querySearch !== "*" ? querySearch : ""}`
         if (treeData) pattern[tbName] = { searchRaw: "*", reducers: "GROUPBY 1 @ParentId REDUCE COUNT 0 AS _totalChild" }
         if (filterData.pattern?.returns) {
             const pkKeysByPattern = filterData.pattern.returns.filter((pk: string) => pk.split(".").length > 1);
@@ -406,7 +403,7 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
         return { searchRaw: convertToSearchRaw, searchData: activeSearchs }
     }
 
-    useImperativeHandle(ref, () => ({ getData, data, setData, selected, setSelected, showAddEditPopup, parseSearchDataToSearchRaw, fields }), [columns, staticSearch, tbName, filterData, configMethods.watch(), data, selected, fields])
+    useImperativeHandle(ref, () => ({ getData, data, setData, selected, setSelected, showAddEditPopup, parseSearchDataToSearchRaw, fields }), [columns, tbName, filterData, configMethods.watch(), data, selected, fields])
 
     return <>
         <div className={`col ${className ?? ""}`} style={{ padding: !!data.totalCount && data.totalCount > 20 ? "0 2.4rem" : "0 2.4rem 1.6rem", flex: 1, ...style }}>
