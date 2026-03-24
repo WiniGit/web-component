@@ -266,21 +266,45 @@ class ExportPdfPlugin {
         editor.commands.add('exportPdf', command);
 
         editor.ui.componentFactory.add('exportPdf', (locale: any) => {
-            const { ButtonView } = (window as any).CKEDITOR.ui;
-            const { createIcon } = (window as any).CKEDITOR.icons;
-            const view = new ButtonView(locale);
+            try {
+                // Try to get ButtonView from the editor's module system
+                const ButtonView = editor.ui.view.constructor.prototype.constructor.ButtonView || 
+                                   (window as any).CKEDITOR?.ui?.ButtonView ||
+                                   editor.ui.componentFactory.create?.('button');
+                
+                if (!ButtonView) {
+                    console.warn('ButtonView not found, using simple button implementation');
+                    // Fallback: create a simple button element
+                    const button = document.createElement('button');
+                    button.textContent = 'Export PDF';
+                    button.title = 'Export PDF';
+                    button.onclick = () => command.execute();
+                    return button;
+                }
 
-            view.set({
-                label: 'Export PDF',
-                icon: createIcon('download'),
-                tooltip: true
-            });
+                const view = new ButtonView(locale);
 
-            view.on('execute', () => {
-                command.execute();
-            });
+                view.set({
+                    label: 'Export PDF',
+                    tooltip: true
+                });
 
-            return view;
+                view.on('execute', () => {
+                    command.execute();
+                });
+
+                return view;
+            } catch (error) {
+                console.error('Failed to create Export PDF button:', error);
+                // Fallback implementation
+                const button = document.createElement('button');
+                button.textContent = 'Export PDF';
+                button.title = 'Export PDF';
+                button.style.padding = '8px 12px';
+                button.style.cursor = 'pointer';
+                button.onclick = () => command.execute();
+                return button;
+            }
         });
     }
 }
