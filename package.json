@@ -2,7 +2,7 @@
   "name": "wini-web-components",
   "private": false,
   "description": "A simple ui library for React",
-  "version": "8.4.89",
+  "version": "8.4.91",
   "main": "dist/index.umd.js",
   "module": "dist/index.es.js",
   "types": "dist/index.d.ts",
@@ -16,7 +16,7 @@
   "dependencies": {
     "@ckeditor/ckeditor5-react": "^11.0.1",
     "axios": "^1.13.5",
-    "ckeditor5": "^47.5.0",
+    "ckeditor5": "^47.2.0",
     "date-fns": "^4.1.0",
     "emoji-picker-react": "^4.18.0",
     "i18next": "^25.8.13",
