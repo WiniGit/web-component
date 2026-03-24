@@ -1,92 +1,6 @@
-import { CSSProperties, useEffect, useMemo, useState } from 'react';
+import { CSSProperties, useEffect, useState } from 'react';
 import { useRef } from 'react';
-import { CKEditor } from '@ckeditor/ckeditor5-react';
-import {
-    ClassicEditor,
-    Alignment,
-    Autoformat,
-    AutoImage,
-    AutoLink,
-    Autosave,
-    BalloonToolbar,
-    BlockQuote,
-    Bold,
-    Bookmark,
-    Code,
-    CodeBlock,
-    Essentials,
-    FindAndReplace,
-    FontBackgroundColor,
-    FontColor,
-    FontFamily,
-    FontSize,
-    FullPage,
-    GeneralHtmlSupport,
-    Heading,
-    Highlight,
-    HorizontalLine,
-    HtmlComment,
-    HtmlEmbed,
-    ImageBlock,
-    ImageCaption,
-    ImageInline,
-    ImageInsert,
-    ImageInsertViaUrl,
-    ImageResize,
-    ImageStyle,
-    ImageTextAlternative,
-    ImageToolbar,
-    ImageUpload,
-    Indent,
-    IndentBlock,
-    Italic,
-    Link,
-    LinkImage,
-    List,
-    ListProperties,
-    // Markdown,
-    MediaEmbed,
-    Mention,
-    PageBreak,
-    Paragraph,
-    PasteFromMarkdownExperimental,
-    PasteFromOffice,
-    PictureEditing,
-    RemoveFormat,
-    ShowBlocks,
-    SourceEditing,
-    SpecialCharacters,
-    SpecialCharactersArrows,
-    SpecialCharactersCurrency,
-    SpecialCharactersEssentials,
-    SpecialCharactersLatin,
-    SpecialCharactersMathematical,
-    SpecialCharactersText,
-    Strikethrough,
-    Style,
-    Subscript,
-    Superscript,
-    Table,
-    TableCaption,
-    TableCellProperties,
-    TableColumnResize,
-    TableProperties,
-    TableToolbar,
-    TextPartLanguage,
-    TextTransformation,
-    // Title,
-    TodoList,
-    Underline,
-    WordCount,
-    EventInfo,
-    Fullscreen,
-    IconExportPdf,
-    ButtonView,
-    Plugin,
-    Command
-} from 'ckeditor5';
 import './ck-editor.css';
-import 'ckeditor5/ckeditor5.css';
 
 /**
  * Create a free account with a trial: https://portal.ckeditor.com/checkout?plan=free
@@ -98,7 +12,10 @@ const LICENSE_KEY = 'GPL'; // or <YOUR_LICENSE_KEY>.
  * Instructions on how to obtain them: https://ckeditor.com/docs/trial/latest/guides/real-time/quick-start.html
  */
 
-// wordCount = editor.plugins.get('WordCount');
+// Type definitions for CDN-based CKEditor5
+type Editor = any;
+type EventInfo = any;
+
 interface Props {
     id?: string,
     style?: CSSProperties,
@@ -107,15 +24,17 @@ interface Props {
     placeholder?: string,
     disabled?: boolean,
     menuBar?: boolean,
-    onChange?: (event: EventInfo, editor: ClassicEditor) => void,
-    onFocus?: (event: EventInfo, editor: ClassicEditor) => void,
-    onBlur?: (event: EventInfo, editor: ClassicEditor) => void,
+    onChange?: (event: EventInfo, editor: Editor) => void,
+    onFocus?: (event: EventInfo, editor: Editor) => void,
+    onBlur?: (event: EventInfo, editor: Editor) => void,
     onError?: (error: Error, details: any) => void,
-    onReady?: (editor: ClassicEditor) => void,
-    onAfterDestroy?: (editor: ClassicEditor) => void,
+    onReady?: (editor: Editor) => void,
+    onAfterDestroy?: (editor: Editor) => void,
     extraPlugins?: Array<any>,
     helperText?: string,
     helperTextColor?: string,
+    uploadImageUrl?: string, // Your backend image upload endpoint
+    uploadImageHeaders?: { [key: string]: string }, // Custom headers for upload
     customConfig?: {
         toolbar: { item?: Array<string>, shouldNotGroupWhenFull?: boolean, [p: string]: any },
         balloonToolbar?: Array<string>,
@@ -126,13 +45,124 @@ interface Props {
         fontBackgroundColor?: { columns?: number, colors?: Array<{ color: string, label: string }> },
         [p: string]: any
     },
-    handleExportPdf?: (editor: ClassicEditor) => void,
+    handleExportPdf?: (editor: Editor) => void,
 }
 
-class ExportPdfCommand extends Command {
+// Custom Image Upload Adapter for CDN version
+class CustomImageUploadAdapter {
+    loader: any;
+    uploadUrl: string;
+    headers?: { [key: string]: string };
+
+    constructor(loader: any, uploadUrl: string, headers?: { [key: string]: string }) {
+        this.loader = loader;
+        this.uploadUrl = uploadUrl;
+        this.headers = headers;
+    }
+
+    upload(): Promise<{ default: string }> {
+        return this.loader.file.then((file: File) => {
+            return new Promise((resolve, reject) => {
+                const formData = new FormData();
+                formData.append('file', file);
+
+                const xhr = new XMLHttpRequest();
+
+                // Handle upload progress
+                xhr.upload.addEventListener('progress', (evt: ProgressEvent) => {
+                    if (evt.lengthComputable) {
+                        const percentComplete = (evt.loaded / evt.total) * 100;
+                        this.loader.uploadTotal = evt.total;
+                        this.loader.uploaded = evt.loaded;
+                    }
+                });
+
+                // Handle upload completion
+                xhr.addEventListener('load', () => {
+                    if (xhr.status === 200 || xhr.status === 201) {
+                        try {
+                            const response = JSON.parse(xhr.responseText);
+                            // Adjust the response path based on your backend response structure
+                            // Common formats: response.url, response.data.url, response.default
+                            const imageUrl = response.url || response.data?.url || response.default;
+                            
+                            if (!imageUrl) {
+                                reject(new Error('Invalid response: no image URL provided'));
+                                return;
+                            }
+                            
+                            resolve({ default: imageUrl });
+                        } catch (error) {
+                            reject(new Error('Failed to parse upload response'));
+                        }
+                    } else {
+                        reject(new Error(`Upload failed with status ${xhr.status}`));
+                    }
+                });
+
+                // Handle upload error
+                xhr.addEventListener('error', () => {
+                    reject(new Error('Upload request failed'));
+                });
+
+                xhr.addEventListener('abort', () => {
+                    reject(new Error('Upload was aborted'));
+                });
+
+                // Set custom headers if provided
+                xhr.open('POST', this.uploadUrl);
+                if (this.headers) {
+                    Object.entries(this.headers).forEach(([key, value]) => {
+                        xhr.setRequestHeader(key, value);
+                    });
+                }
+
+                xhr.send(formData);
+            });
+        });
+    }
+
+    abort(): void {
+        // Handle abort if needed
+    }
+}
+
+// Custom Upload Plugin to register the adapter
+class CustomImageUploadPlugin {
+    editor: Editor;
+    uploadUrl: string;
+    headers?: { [key: string]: string };
+
+    constructor(editor: Editor, uploadUrl: string, headers?: { [key: string]: string }) {
+        this.editor = editor;
+        this.uploadUrl = uploadUrl;
+        this.headers = headers;
+    }
+
+    static get pluginName() {
+        return 'CustomImageUpload';
+    }
+
+    init() {
+        const { FileRepository } = (window as any).CKEDITOR.plugins;
+        
+        // Register the adapter
+        this.editor.plugins.get('FileRepository').createUploadAdapter = (loader: any) => {
+            return new CustomImageUploadAdapter(loader, this.uploadUrl, this.headers);
+        };
+    }
+}
+
+// Custom Export PDF Plugin for CDN version
+class ExportPdfCommand {
+    editor: Editor;
+
+    constructor(editor: Editor) {
+        this.editor = editor;
+    }
+
     execute() {
-        const editor = this.editor;
-        const content = editor.getData();
+        const content = this.editor.getData();
 
         const printWindow = window.open("", "_blank", "width=800,height=900");
         if (!printWindow) return;
@@ -214,34 +244,40 @@ class ExportPdfCommand extends Command {
 
     refresh() {
         // This ensures the button is clickable
-        this.isEnabled = true;
     }
 }
 
-// 2. Your Plugin Class
-class ExportPdfPlugin extends Plugin {
+// Custom Export PDF Plugin
+class ExportPdfPlugin {
+    editor: Editor;
+
+    constructor(editor: Editor) {
+        this.editor = editor;
+    }
+
     static get pluginName() {
         return 'ExportPdf';
     }
 
     init() {
         const editor = this.editor;
+        const command = new ExportPdfCommand(editor);
 
-        // CORRECT: Instantiate the class. 
-        // The Command class parent automatically handles .destroy() logic.
-        editor.commands.add('exportPdf', new ExportPdfCommand(editor));
+        editor.commands.add('exportPdf', command);
 
-        editor.ui.componentFactory.add('exportPdf', (locale) => {
+        editor.ui.componentFactory.add('exportPdf', (locale: any) => {
+            const { ButtonView } = (window as any).CKEDITOR.ui;
+            const { createIcon } = (window as any).CKEDITOR.icons;
             const view = new ButtonView(locale);
 
             view.set({
                 label: 'Export PDF',
-                icon: IconExportPdf,
+                icon: createIcon('download'),
                 tooltip: true
             });
 
             view.on('execute', () => {
-                editor.execute('exportPdf');
+                command.execute();
             });
 
             return view;
@@ -249,11 +285,9 @@ class ExportPdfPlugin extends Plugin {
     }
 }
 
-
 export function CustomCkEditor5({ style = { width: "100%", height: 400, maxHeight: 600, borderRadius: 8 }, extraPlugins = [], ...props }: Props) {
-    const editorContainerRef = useRef(null);
-    const editorRef = useRef(null);
-    // const editorWordCountRef = useRef(null);
+    const editorContainerRef = useRef<any>(null);
+    const editorInstanceRef = useRef<Editor | null>(null);
 
     const [isLayoutReady, setIsLayoutReady] = useState(false);
 
@@ -263,334 +297,272 @@ export function CustomCkEditor5({ style = { width: "100%", height: 400, maxHeigh
         return () => setIsLayoutReady(false);
     }, []);
 
-    const editorConfig = useMemo(() => {
-        if (!isLayoutReady) return undefined
+    // Initialize CKEditor when layout is ready
+    useEffect(() => {
+        if (!isLayoutReady || !editorContainerRef.current) return;
 
-        return {
-            toolbar: {
-                items: [
-                    'exportPdf',
-                    'fullscreen',
-                    'heading',
-                    '|',
-                    // 'sourceEditing',
-                    // 'showBlocks',
-                    // 'findAndReplace',
-                    // 'textPartLanguage',
-                    'fontSize',
-                    'fontFamily',
-                    'fontColor',
-                    'fontBackgroundColor',
-                    '|',
-                    'bold',
-                    'italic',
-                    'underline',
-                    'strikethrough',
-                    // 'subscript',
-                    // 'superscript',
-                    // 'code',
-                    // 'removeFormat',
-                    '|',
-                    'insertImage',
-                    'specialCharacters',
-                    'horizontalLine',
-                    'pageBreak',
-                    'link',
-                    // 'bookmark',
-                    // 'insertImageViaUrl',
-                    // 'ckbox',
-                    'mediaEmbed',
-                    'insertTable',
-                    'highlight',
-                    // 'blockQuote',
-                    // 'codeBlock',
-                    'htmlEmbed',
-                    '|',
-                    'alignment',
-                    '|',
-                    'bulletedList',
-                    'numberedList',
-                    'todoList',
-                    'outdent',
-                    'indent'
-                ],
-                shouldNotGroupWhenFull: false,
-            },
-            plugins: [
-                Fullscreen,
-                Alignment,
-                Autoformat,
-                AutoImage,
-                AutoLink,
-                Autosave,
-                BalloonToolbar,
-                BlockQuote,
-                Bold,
-                Bookmark,
-                Code,
-                CodeBlock,
-                Essentials,
-                FindAndReplace,
-                FontBackgroundColor,
-                FontColor,
-                FontFamily,
-                FontSize,
-                FullPage,
-                GeneralHtmlSupport,
-                Heading,
-                Highlight,
-                HorizontalLine,
-                HtmlComment,
-                HtmlEmbed,
-                ImageBlock,
-                ImageCaption,
-                ImageInline,
-                ImageInsert,
-                ImageInsertViaUrl,
-                ImageResize,
-                ImageStyle,
-                ImageTextAlternative,
-                ImageToolbar,
-                ImageUpload,
-                Indent,
-                IndentBlock,
-                Italic,
-                Link,
-                LinkImage,
-                List,
-                ListProperties,
-                // Markdown,
-                MediaEmbed,
-                Mention,
-                PageBreak,
-                Paragraph,
-                PasteFromMarkdownExperimental,
-                PasteFromOffice,
-                PictureEditing,
-                RemoveFormat,
-                ShowBlocks,
-                SourceEditing,
-                SpecialCharacters,
-                SpecialCharactersArrows,
-                SpecialCharactersCurrency,
-                SpecialCharactersEssentials,
-                SpecialCharactersLatin,
-                SpecialCharactersMathematical,
-                SpecialCharactersText,
-                Strikethrough,
-                Style,
-                Subscript,
-                Superscript,
-                Table,
-                TableCaption,
-                TableCellProperties,
-                TableColumnResize,
-                TableProperties,
-                TableToolbar,
-                TextPartLanguage,
-                TextTransformation,
-                // Title,
-                TodoList,
-                Underline,
-                WordCount,
-            ],
-            balloonToolbar: ['bold', 'italic', '|', 'link', 'insertImage', '|', 'bulletedList', 'numberedList'],
-            extraPlugins: [
-                ExportPdfPlugin, ...extraPlugins
-            ],
-            mediaEmbed: {
-                previewsInData: true,
-                providers: [
-                    {
-                        name: "youtube",
-                        url: /^https:\/\/www\.youtube\.com\/watch\?v=([\w-]+)/,
-                        html: (match: any) => {
-                            const id = match[1];
-                            return (
-                                '<div style="position: relative; padding-bottom: 56.25%; height: 0;">' +
-                                `<iframe src="https://www.youtube.com/embed/${id}" ` +
-                                'style="position: absolute; width: 100%; height: 100%; left: 0;" ' +
-                                'frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>' +
-                                "</div>"
-                            );
-                        },
-                    },
-                ],
-            },
-            fontFamily: {
-                options: ["Default", "Arial", "Courier New", "Inter", "Roboto", "Times New Roman", "Source Serif 4", "Poltawski Nowy", "Noto Sans JP"],
-                supportAllValues: true
-            },
-            fontSize: {
-                options: [10, 12, 14, 'default', 18, 20, 22, 24, 28, 32, 46, 56],
-                supportAllValues: true,
-            },
-            fontColor: {
-                columns: 6,
-                colors: [
-                    {
-                        color: 'var(--neutral-text-title-color)',
-                        label: 'title'
-                    },
-                    {
-                        color: 'var(--neutral-text-subtitle-color)',
-                        label: 'subtitle'
-                    },
-                    {
-                        color: 'var(--neutral-text-body-color)',
-                        label: 'body'
-                    },
-                    {
-                        color: 'var(--neutral-text-placeholder-color)',
-                        label: 'placeholder'
-                    },
-                    {
-                        color: 'var(--neutral-text-disabled-color)',
-                        label: 'disabled'
-                    },
-                    {
-                        color: 'var(--neutral-text-stable-color)',
-                        label: 'stable'
-                    },
-                    {
-                        color: '#287CF0',
-                        label: 'primay'
-                    },
-                    {
-                        color: '#FC7A1C',
-                        label: 'warning'
-                    },
-                    {
-                        color: '#3AAC6D',
-                        label: 'success'
-                    },
-                    {
-                        color: '#FAAD1E',
-                        label: 'secondary3'
-                    },
-                    {
-                        color: '#943CDD',
-                        label: 'secondary5'
-                    },
-                ],
-            },
-            // fontBackgroundColor: {
-            //     columns: 6,
-            //     colors: [],
-            // },
-            heading: {
-                options: [
-                    {
-                        model: 'paragraph',
-                        title: 'Paragraph',
-                        class: 'ck-heading_paragraph'
-                    },
-                    {
-                        model: 'heading1',
-                        view: 'h1',
-                        title: 'Heading 1',
-                        class: 'ck-heading_heading1'
-                    },
-                    {
-                        model: 'heading2',
-                        view: 'h2',
-                        title: 'Heading 2',
-                        class: 'ck-heading_heading2'
-                    },
-                    {
-                        model: 'heading3',
-                        view: 'h3',
-                        title: 'Heading 3',
-                        class: 'ck-heading_heading3'
-                    },
-                    {
-                        model: 'heading4',
-                        view: 'h4',
-                        title: 'Heading 4',
-                        class: 'ck-heading_heading4'
-                    },
-                    {
-                        model: 'heading5',
-                        view: 'h5',
-                        title: 'Heading 5',
-                        class: 'ck-heading_heading5'
-                    },
-                    {
-                        model: 'heading6',
-                        view: 'h6',
-                        title: 'Heading 6',
-                        class: 'ck-heading_heading6'
-                    }
-                ]
-            },
-            htmlSupport: {
-                allow: [
-                    {
-                        name: /^.*$/,
-                        styles: true,
-                        attributes: true,
-                        classes: true
-                    }
-                ]
-            },
-            image: {
-                toolbar: [
-                    'toggleImageCaption',
-                    'imageTextAlternative',
-                    '|',
-                    'imageStyle:inline',
-                    'imageStyle:wrapText',
-                    'imageStyle:breakText',
-                    '|',
-                    'resizeImage'
-                ]
-            },
-            language: "vi",
-            licenseKey: LICENSE_KEY,
-            link: {
-                addTargetToExternalLinks: true,
-                defaultProtocol: 'https://',
-                decorators: {
-                    toggleDownloadable: {
-                        mode: 'manual',
-                        label: 'Downloadable',
-                        attributes: {
-                            download: 'file'
-                        }
-                    }
+        const initializeEditor = async () => {
+            try {
+                const { ClassicEditor } = (window as any).CKEDITOR;
+
+                if (!ClassicEditor) {
+                    console.error('CKEditor5 not loaded from CDN');
+                    props.onError?.(new Error('CKEditor5 not loaded'), {});
+                    return;
                 }
-            },
-            menuBar: { isVisible: props.menuBar },
-            table: {
-                contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells', 'tableProperties', 'tableCellProperties']
-            },
-            ...(props.customConfig ?? {}),
-            placeholder: props.placeholder,
-        }
-    }, [isLayoutReady, props.customConfig, extraPlugins.length]);
+
+                const editor = await ClassicEditor.create(editorContainerRef.current, {
+                    extraPlugins: [
+                        ExportPdfPlugin,
+                        ...(props.uploadImageUrl ? [
+                            (editor: Editor) => new CustomImageUploadPlugin(editor, props.uploadImageUrl!, props.uploadImageHeaders)
+                        ] : []),
+                        ...extraPlugins
+                    ],
+                    toolbar: {
+                        items: [
+                            'exportPdf',
+                            'heading',
+                            '|',
+                            'fontSize',
+                            'fontFamily',
+                            'fontColor',
+                            'fontBackgroundColor',
+                            '|',
+                            'bold',
+                            'italic',
+                            'underline',
+                            'strikethrough',
+                            '|',
+                            ...(props.uploadImageUrl ? ['insertImage'] : []),
+                            'specialCharacters',
+                            'horizontalLine',
+                            'pageBreak',
+                            'link',
+                            'mediaEmbed',
+                            'insertTable',
+                            'highlight',
+                            'htmlEmbed',
+                            '|',
+                            'alignment',
+                            '|',
+                            'bulletedList',
+                            'numberedList',
+                            'todoList',
+                            'outdent',
+                            'indent'
+                        ],
+                        shouldNotGroupWhenFull: false,
+                    },
+                    balloonToolbar: [
+                        'bold',
+                        'italic',
+                        '|',
+                        'link',
+                        ...(props.uploadImageUrl ? ['insertImage'] : []),
+                        '|',
+                        'bulletedList',
+                        'numberedList'
+                    ],
+                    mediaEmbed: {
+                        previewsInData: true,
+                        providers: [
+                            {
+                                name: "youtube",
+                                url: /^https:\/\/www\.youtube\.com\/watch\?v=([\w-]+)/,
+                                html: (match: any) => {
+                                    const id = match[1];
+                                    return (
+                                        '<div style="position: relative; padding-bottom: 56.25%; height: 0;">' +
+                                        `<iframe src="https://www.youtube.com/embed/${id}" ` +
+                                        'style="position: absolute; width: 100%; height: 100%; left: 0;" ' +
+                                        'frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>' +
+                                        "</div>"
+                                    );
+                                },
+                            },
+                        ],
+                    },
+                    fontFamily: {
+                        options: ["Default", "Arial", "Courier New", "Inter", "Roboto", "Times New Roman", "Source Serif 4", "Poltawski Nowy", "Noto Sans JP"],
+                        supportAllValues: true
+                    },
+                    fontSize: {
+                        options: [10, 12, 14, 'default', 18, 20, 22, 24, 28, 32, 46, 56],
+                        supportAllValues: true,
+                    },
+                    fontColor: {
+                        columns: 6,
+                        colors: [
+                            {
+                                color: 'var(--neutral-text-title-color)',
+                                label: 'title'
+                            },
+                            {
+                                color: 'var(--neutral-text-subtitle-color)',
+                                label: 'subtitle'
+                            },
+                            {
+                                color: 'var(--neutral-text-body-color)',
+                                label: 'body'
+                            },
+                            {
+                                color: 'var(--neutral-text-placeholder-color)',
+                                label: 'placeholder'
+                            },
+                            {
+                                color: 'var(--neutral-text-disabled-color)',
+                                label: 'disabled'
+                            },
+                            {
+                                color: 'var(--neutral-text-stable-color)',
+                                label: 'stable'
+                            },
+                            {
+                                color: '#287CF0',
+                                label: 'primay'
+                            },
+                            {
+                                color: '#FC7A1C',
+                                label: 'warning'
+                            },
+                            {
+                                color: '#3AAC6D',
+                                label: 'success'
+                            },
+                            {
+                                color: '#FAAD1E',
+                                label: 'secondary3'
+                            },
+                            {
+                                color: '#943CDD',
+                                label: 'secondary5'
+                            },
+                        ],
+                    },
+                    heading: {
+                        options: [
+                            {
+                                model: 'paragraph',
+                                title: 'Paragraph',
+                                class: 'ck-heading_paragraph'
+                            },
+                            {
+                                model: 'heading1',
+                                view: 'h1',
+                                title: 'Heading 1',
+                                class: 'ck-heading_heading1'
+                            },
+                            {
+                                model: 'heading2',
+                                view: 'h2',
+                                title: 'Heading 2',
+                                class: 'ck-heading_heading2'
+                            },
+                            {
+                                model: 'heading3',
+                                view: 'h3',
+                                title: 'Heading 3',
+                                class: 'ck-heading_heading3'
+                            },
+                            {
+                                model: 'heading4',
+                                view: 'h4',
+                                title: 'Heading 4',
+                                class: 'ck-heading_heading4'
+                            },
+                            {
+                                model: 'heading5',
+                                view: 'h5',
+                                title: 'Heading 5',
+                                class: 'ck-heading_heading5'
+                            },
+                            {
+                                model: 'heading6',
+                                view: 'h6',
+                                title: 'Heading 6',
+                                class: 'ck-heading_heading6'
+                            }
+                        ]
+                    },
+                    htmlSupport: {
+                        allow: [
+                            {
+                                name: /^.*$/,
+                                styles: true,
+                                attributes: true,
+                                classes: true
+                            }
+                        ]
+                    },
+                    language: "vi",
+                    licenseKey: LICENSE_KEY,
+                    link: {
+                        addTargetToExternalLinks: true,
+                        defaultProtocol: 'https://',
+                        decorators: {
+                            toggleDownloadable: {
+                                mode: 'manual',
+                                label: 'Downloadable',
+                                attributes: {
+                                    download: 'file'
+                                }
+                            }
+                        }
+                    },
+                    menuBar: { isVisible: props.menuBar },
+                    table: {
+                        contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells', 'tableProperties', 'tableCellProperties']
+                    },
+                    ...(props.customConfig ?? {}),
+                    placeholder: props.placeholder,
+                });
+
+                // Set initial data
+                if (props.value) {
+                    editor.setData(props.value);
+                }
+
+                // Store editor instance
+                editorInstanceRef.current = editor;
+
+                // Attach event listeners
+                editor.model.document.on('change:data', () => {
+                    props.onChange?.({} as EventInfo, editor);
+                });
+
+                editor.editing.view.document.on('focus', (event: any) => {
+                    props.onFocus?.(event, editor);
+                });
+
+                editor.editing.view.document.on('blur', (event: any) => {
+                    props.onBlur?.(event, editor);
+                });
+
+                props.onReady?.(editor);
+            } catch (error: any) {
+                console.error('CKEditor initialization error:', error);
+                props.onError?.(error, {});
+            }
+        };
+
+        initializeEditor();
+
+        // Cleanup on unmount
+        return () => {
+            if (editorInstanceRef.current) {
+                editorInstanceRef.current.destroy().catch(() => { });
+                editorInstanceRef.current = null;
+            }
+        };
+    }, [isLayoutReady, props.value, props.placeholder, props.customConfig]);
 
     return <div
         id={props.id}
         ref={editorContainerRef}
         className={`col editor-container editor-container_classic-editor editor-container_include-style ${props.className ?? ""} ${props.helperText?.length ? 'helper-text' : ""}`}
-        helper-text={props.helperText}
+        data-helper-text={props.helperText}
         style={{ '--helper-text-color': props.helperTextColor ?? '#e14337', ...style } as CSSProperties}
     >
-        <div className="editor-container__editor">
-            <div ref={editorRef}>
-                {editorConfig && <CKEditor
-                    onReady={props.onReady}
-                    onAfterDestroy={props.onAfterDestroy}
-                    onFocus={props.onFocus}
-                    onChange={props.onChange}
-                    onBlur={props.onBlur}
-                    editor={ClassicEditor}
-                    onError={props.onError}
-                    config={editorConfig as any}
-                    disabled={props.disabled}
-                    data={props.value}
-                />}
-            </div>
-        </div>
     </div>
 }

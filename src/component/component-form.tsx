@@ -242,7 +242,7 @@ export function CKEditorForm({ ckEditorStyle = { width: "100%", height: 400, max
                 </div> : null)}
                 <CustomCkEditor5
                     style={params.className?.includes("row") ? { flex: 1, overflow: "hidden visible", ...ckEditorStyle } : ckEditorStyle}
-                    value={field.value ?? null}
+                    value={field.value ?? ""}
                     disabled={params.disabled}
                     customConfig={params.customConfig as any}
                     extraPlugins={params.ckEditorUploadPlugin ?? [

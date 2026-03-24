@@ -218,6 +218,8 @@ export const initializeProject = async (winiDomain: string, props: { pid?: strin
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/WiniGit/web-component@b55e9e1/src/skin/typography.min.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/WiniGit/web-component@b55e9e1/src/skin/toast-noti.min.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/WiniGit/web-component@b55e9e1/src/skin/style.css">
+        <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/47.6.1/ckeditor5.css" />
+        <script src="https://cdn.ckeditor.com/ckeditor5/47.6.1/ckeditor5.umd.js"></script>
     `
     document.head.children[0].before(...tmp.childNodes)
     tmp.remove()
