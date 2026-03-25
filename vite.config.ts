@@ -9,9 +9,6 @@ const __dirname = path.dirname(__filename);
 
 export default defineConfig({
   plugins: [react(), dts()],
-  optimizeDeps: {
-    exclude: ["@ckeditor/ckeditor5-react", "ckeditor5"],
-  },
   build: {
     cssCodeSplit: true,
     lib: {
@@ -21,26 +18,23 @@ export default defineConfig({
       formats: ["es", "cjs"],
     },
     rollupOptions: {
-      // ✅ Externalize ckeditor so it's NOT bundled into your lib
       external: [
         "react",
         "react-dom",
         "react-router-dom",
-        "ckeditor5",
+        "ckeditor5",           // ✅ externalize the whole package
         "@ckeditor/ckeditor5-react",
+        /^ckeditor5\/.*/,      // ✅ externalize ALL ckeditor5 sub-paths including ckeditor5/ckeditor5.css
       ],
       output: {
-        // ✅ Map externals to globals for UMD/CDN usage
         globals: {
           react: "React",
           "react-dom": "ReactDOM",
           ckeditor5: "CKEDITOR",
-          "@ckeditor/ckeditor5-react": "CKEditor",
+          "@ckeditor/ckeditor5-react": "CKEditorReact",
         },
         assetFileNames: (assetInfo) => {
-          if (assetInfo.name?.endsWith(".css")) {
-            return "style.css";
-          }
+          if (assetInfo.name?.endsWith(".css")) return "style.css";
           return assetInfo.name!;
         },
       },
