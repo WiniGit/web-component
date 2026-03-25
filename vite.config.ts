@@ -3,7 +3,6 @@ import react from "@vitejs/plugin-react";
 import dts from "vite-plugin-dts";
 import path from "path";
 import { fileURLToPath } from "url";
-import cssInjectedByJsPlugin from "vite-plugin-css-injected-by-js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -11,7 +10,7 @@ const __dirname = path.dirname(__filename);
 export default defineConfig({
   plugins: [react(), dts()],
   optimizeDeps: {
-    exclude: ["@ckeditor/ckeditor5-react", "@ckeditor/ckeditor5-build-classic", "ckeditor5"],
+    exclude: ["@ckeditor/ckeditor5-react", "ckeditor5"],
   },
   build: {
     cssCodeSplit: true,
@@ -22,8 +21,22 @@ export default defineConfig({
       formats: ["es", "cjs"],
     },
     rollupOptions: {
-      external: ["react", "react-dom", "react-router-dom"],
+      // ✅ Externalize ckeditor so it's NOT bundled into your lib
+      external: [
+        "react",
+        "react-dom",
+        "react-router-dom",
+        "ckeditor5",
+        "@ckeditor/ckeditor5-react",
+      ],
       output: {
+        // ✅ Map externals to globals for UMD/CDN usage
+        globals: {
+          react: "React",
+          "react-dom": "ReactDOM",
+          ckeditor5: "CKEDITOR",
+          "@ckeditor/ckeditor5-react": "CKEditor",
+        },
         assetFileNames: (assetInfo) => {
           if (assetInfo.name?.endsWith(".css")) {
             return "style.css";
