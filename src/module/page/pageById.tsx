@@ -665,18 +665,14 @@ const ElementUI = ({ findId, children, watchForCustomProps, replaceThisVariables
     }, [JSON.stringify(customProps), props.indexItem, dataValue, children, defferWatch, location.pathname, location.search, params, JSON.stringify(location.state), winiContextData.globalData, winiContextData.userData, winiContextData.i18n.language])
 
     const htmlElementRef = useRef<any | any[]>(null)
-    const isInitDone = useRef(false)
 
     useEffect(() => {
-        if (customProps.onInit && !isInitDone.current) {
-            customProps.onInit(pageAllRefs[findId]?.current ?? htmlElementRef.current)
-            isInitDone.current = true
-        }
-    }, [customProps.onInit])
+        if (customProps.onInit) customProps.onInit(pageAllRefs[findId]?.current ?? htmlElementRef.current)
+    }, [!!customProps.onInit])
 
     useEffect(() => {
         if (customProps.onLocationChange) customProps.onLocationChange(pageAllRefs[findId]?.current ?? htmlElementRef.current)
-    }, [customProps.onLocationChange, location.pathname, location.search, params, JSON.stringify(location.state)])
+    }, [!!customProps.onLocationChange, location.pathname, location.search, params, JSON.stringify(location.state)])
 
     switch (props.item.Type) {
         case ComponentType.navLink:
