@@ -7,9 +7,9 @@ export class Util {
 
     static dateDefault = new Date('01/01/2021').getTime();
 
-    static stringToFile = (content: string, fileName: string) => {
-        const blob = new Blob([content], { type: "text/plain" });
-        return new File([blob], fileName, { type: "text/plain" });
+    static stringToFile = (content: string, fileName: string, type = "text/plain") => {
+        const blob = new Blob([content], { type });
+        return new File([blob], fileName, { type });
     }
 
     static calculateAge = (birthdate: string) => {
