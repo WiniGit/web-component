@@ -985,6 +985,8 @@ interface PageByIdProps extends Props {
 export const globalTableCache = new Map()
 export const PageById = (props: PageByIdProps) => {
     const methods = useForm({ shouldFocusError: false })
+    const pageController = new TableController("page")
+    const layoutController = new TableController("layout")
     const [pageItem, setPageItem] = useState<{ [p: string]: any }>()
     const [memoLayout, setLayout] = useState<{ [p: string]: any }[]>([])
     const layout = useMemo(() => memoLayout.sort((a: any, b: any) => (a.Setting.style?.order ?? 0) - (b.Setting.style?.order ?? 0)), [memoLayout])
@@ -994,32 +996,10 @@ export const PageById = (props: PageByIdProps) => {
 
     useEffect(() => {
         if (!loading) setLoading(true)
-        const pageController = new TableController("page")
         pageController.getById(props.id).then(async (res) => {
             if (res.code === 200 && res.data) {
                 const thisPage = res.data
                 setPageItem(thisPage)
-                const layerController = new TableController("layer")
-                if (props.onlyLayout) {
-                    const resLayer = await layerController.getListSimple({ page: 1, size: 10000, query: `(@Id:{${thisPage.LayoutId}}) | (@LayoutId:{${thisPage.LayoutId}})` })
-                    if (resLayer.code === 200) setLayout(resLayer.data.map((e: any) => ({ ...e, Setting: JSON.parse(e.Setting), State: e.State ? JSON.parse(e.State) : undefined })))
-                } else if (props.onlyBody || thisPage.LayoutId === pageItem?.LayoutId) {
-                    const resLayer = await layerController.getListSimple({ page: 1, size: 10000, query: `@PageId:{${thisPage!.Id}}` })
-                    if (resLayer.code === 200) setLayers(resLayer.data.map((e: any, _: number, arr: any[]) => {
-                        const tmp = { ...e, Setting: JSON.parse(e.Setting), State: e.State ? JSON.parse(e.State) : undefined }
-                        if (e.ParentId && !arr.some(el => el.Id === e.ParentId)) delete tmp.ParentId
-                        return tmp
-                    }))
-                } else {
-                    const resLayer = await Promise.all([
-                        layerController.getListSimple({ page: 1, size: 10000, query: `(@Id:{${thisPage.LayoutId}}) | (@LayoutId:{${thisPage.LayoutId}})` }),
-                        layerController.getListSimple({ page: 1, size: 10000, query: `@PageId:{${thisPage!.Id}}` })
-                    ])
-                    if (resLayer[0].code === 200 && resLayer[1].code === 200) {
-                        setLayout(resLayer[0].data.map((e: any) => ({ ...e, Setting: JSON.parse(e.Setting), State: e.State ? JSON.parse(e.State) : undefined })))
-                        setLayers(resLayer[1].data.map((e: any) => ({ ...e, Setting: JSON.parse(e.Setting), State: e.State ? JSON.parse(e.State) : undefined })))
-                    }
-                }
                 setLoading(false)
             } else setPageItem(undefined)
         })
@@ -1027,6 +1007,26 @@ export const PageById = (props: PageByIdProps) => {
             if (globalTableCache.size > 50) globalTableCache.clear()
         }
     }, [props.id])
+
+    useEffect(() => {
+        if (pageItem && !props.onlyLayout) setLayers(pageItem.Setting ? JSON.parse(pageItem.Setting) : [])
+    }, [pageItem, props.onlyLayout])
+
+    useEffect(() => {
+        if (pageItem?.LayoutId && !props.onlyBody) {
+            layoutController.getById(pageItem.LayoutId).then((res) => {
+                if (res.code === 200 && res.data) {
+                    const layoutData = res.data
+                    setLayout(layoutData?.Setting ? JSON.parse(layoutData.Setting) : [])
+                    setLoading(false)
+                } else {
+                    methods.reset()
+                    ToastMessage.errors("Failed to load layout data")
+                    console.error("Failed to load layout data:", res.message)
+                }
+            })
+        }
+    }, [pageItem?.LayoutId, props.onlyBody])
 
     if (pageItem) {
         if (props.onlyLayout) {
@@ -1071,6 +1071,8 @@ interface PageByUrlProps extends Props {
 
 export const PageByUrl = ({ childrenData, ...props }: PageByUrlProps) => {
     const methods = useForm({ shouldFocusError: false })
+    const pageController = new TableController("page")
+    const layoutController = new TableController("layout")
     const [pageItem, setPageItem] = useState<{ [p: string]: any }>()
     const [memoLayout, setLayout] = useState<{ [p: string]: any }[]>([])
     const layout = useMemo(() => memoLayout.sort((a: any, b: any) => (a.Setting.style?.order ?? 0) - (b.Setting.style?.order ?? 0)), [memoLayout])
@@ -1080,32 +1082,15 @@ export const PageByUrl = ({ childrenData, ...props }: PageByUrlProps) => {
 
     useEffect(() => {
         if (!loading) setLoading(true)
-        const pageController = new TableController("page")
-        pageController.getListSimple({ page: 1, size: 1, query: `@Url:{${props.url.length ? props.url.replace(/[^a-zA-Z0-9]/g, (m) => `\\${m}`) : "\\/"}}` }).then(async (res) => {
+        pageController.getListSimple({
+            size: 1,
+            query: `@Url:{${props.url.length ? props.url.replace(/[^a-zA-Z0-9]/g, (m) => `\\${m}`) : "\\/"}}`,
+            returns: props.onlyLayout ? ["Id", "LayoutId", "Sort"] : ["Id", "LayoutId", "Sort", "Setting"],
+            sortby: { BY: "Sort", DIRECTION: "ASC" },
+        }).then(async (res) => {
             if (res.code === 200 && res.data[0]) {
                 const thisPage = res.data[0]
                 setPageItem(thisPage)
-                const layerController = new TableController("layer")
-                if (props.onlyLayout) {
-                    const resLayer = await layerController.getListSimple({ page: 1, size: 10000, query: `(@Id:{${thisPage.LayoutId}}) | (@LayoutId:{${thisPage.LayoutId}})` })
-                    if (resLayer.code === 200) setLayout(resLayer.data.map((e: any) => ({ ...e, Setting: JSON.parse(e.Setting), State: e.State ? JSON.parse(e.State) : undefined })))
-                } else if (props.onlyBody || thisPage.LayoutId === pageItem?.LayoutId) {
-                    const resLayer = await layerController.getListSimple({ page: 1, size: 10000, query: `@PageId:{${thisPage!.Id}}` })
-                    if (resLayer.code === 200) setLayers(resLayer.data.map((e: any, _: number, arr: any[]) => {
-                        const tmp = { ...e, Setting: JSON.parse(e.Setting), State: e.State ? JSON.parse(e.State) : undefined }
-                        if (e.ParentId && !arr.some(el => el.Id === e.ParentId)) delete tmp.ParentId
-                        return tmp
-                    }))
-                } else {
-                    const resLayer = await Promise.all([
-                        layerController.getListSimple({ page: 1, size: 10000, query: `(@Id:{${thisPage.LayoutId}}) | (@LayoutId:{${thisPage.LayoutId}})` }),
-                        layerController.getListSimple({ page: 1, size: 10000, query: `@PageId:{${thisPage!.Id}}` })
-                    ])
-                    if (resLayer[0].code === 200 && resLayer[1].code === 200) {
-                        setLayout(resLayer[0].data.map((e: any) => ({ ...e, Setting: JSON.parse(e.Setting), State: e.State ? JSON.parse(e.State) : undefined })))
-                        setLayers(resLayer[1].data.map((e: any) => ({ ...e, Setting: JSON.parse(e.Setting), State: e.State ? JSON.parse(e.State) : undefined })))
-                    }
-                }
                 setLoading(false)
             } else setPageItem(undefined)
         })
@@ -1113,6 +1098,26 @@ export const PageByUrl = ({ childrenData, ...props }: PageByUrlProps) => {
             if (globalTableCache.size > 50) globalTableCache.clear()
         }
     }, [props.url])
+
+    useEffect(() => {
+        if (pageItem && !props.onlyLayout) setLayers(pageItem.Setting ? JSON.parse(pageItem.Setting) : [])
+    }, [pageItem, props.onlyLayout])
+
+    useEffect(() => {
+        if (pageItem?.LayoutId && !props.onlyBody) {
+            layoutController.getById(pageItem.LayoutId).then((res) => {
+                if (res.code === 200 && res.data) {
+                    const layoutData = res.data
+                    setLayout(layoutData?.Setting ? JSON.parse(layoutData.Setting) : [])
+                    setLoading(false)
+                } else {
+                    methods.reset()
+                    ToastMessage.errors("Failed to load layout data")
+                    console.error("Failed to load layout data:", res.message)
+                }
+            })
+        }
+    }, [pageItem?.LayoutId, props.onlyBody])
 
     if (pageItem) {
         if (props.onlyLayout) {
