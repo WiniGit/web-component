@@ -85,8 +85,8 @@ import {
     Plugin,
     Command
 } from 'ckeditor5';
-import './ck-editor.css';
 import 'ckeditor5/ckeditor5.css';
+import './ck-editor.css';
 
 /**
  * Create a free account with a trial: https://portal.ckeditor.com/checkout?plan=free

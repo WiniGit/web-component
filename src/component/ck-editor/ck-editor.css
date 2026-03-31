@@ -1,238 +1,121 @@
-.editor-container {
-    position: relative;
-    --ck-color-text: var(--neutral-text-title-color, light-dark(#18181B, #F4F4F5));
-    --ck-color-base-background: var(--neutral-absolute-background-color, light-dark(#FFFFFF, #14181b));
-    border: 1px solid var(--neutral-bolder-border-color, light-dark(#D7D7DB, #494950));
-    overflow: hidden visible;
-}
+:root {
+    /* === Base colors mapped to Wini design tokens === */
 
-.editor-container:has(.ck-read-only) {
-    background-color: var(--neutral-disable-background-color, light-dark(#F4F4F5, #494950)) !important;
-    pointer-events: none !important;
-}
+    --ck-color-base-foreground: var(--neutral-lighter-background-color);
+    --ck-color-base-background: var(--neutral-absolute-background-color);
+    --ck-color-base-border: var(--neutral-bolder-border-color);
+    --ck-color-base-action: var(--secondary2-main-color);
+    --ck-color-base-focus: var(--primary-lighter-color);
+    --ck-color-base-text: var(--neutral-text-body-color);
+    --ck-color-base-active: var(--primary-main-color);
+    --ck-color-base-active-focus: var(--primary-bolder-color);
+    --ck-color-base-error: var(--error-main-color);
 
-.editor-container:focus-within {
-    border-color: var(--primary-main-color, #287CF0);
-}
+    --ck-content-color-mention-background: color-mix(in srgb, var(--secondary6-main-color) 10%, transparent);
+    --ck-content-color-mention-text: var(--secondary6-bolder-color);
 
-.editor-container.helper-text {
-    overflow: visible !important;
-    border-color: var(--helper-text-color, #E14337) !important;
-}
+    /* -- Generic colors ------------------------------------------------------------------------ */
 
-.editor-container.helper-text::after {
-    content: attr(helper-text);
-    color: var(--helper-text-color, #E14337);
-    position: absolute;
-    left: 0;
-    bottom: -0.4rem;
-    width: max-content;
-    font-size: 1.2rem;
-    line-height: 1.6rem;
-    font-family: inherit;
-    transform: translateY(100%);
-}
+    --ck-color-focus-border: var(--primary-main-color);
+    --ck-color-focus-outer-shadow: var(--primary-background);
+    --ck-color-focus-disabled-shadow: color-mix(in srgb, var(--primary-lighter-color) 30%, transparent);
+    --ck-color-focus-error-shadow: color-mix(in srgb, var(--error-main-color) 30%, transparent);
+    --ck-color-text: var(--ck-color-base-text);
+    --ck-color-shadow-drop: hsla(0, 0%, 0%, 0.15);
+    --ck-color-shadow-drop-active: hsla(0, 0%, 0%, 0.2);
+    --ck-color-shadow-inner: hsla(0, 0%, 0%, 0.1);
 
-.ck-content {
-    font-family: 'Inter';
-    line-height: 1.6;
-    word-break: break-word;
-}
+    /* -- Buttons ------------------------------------------------------------------------------- */
 
-.ck-content h3.category {
-    font-family: 'Inter';
-    font-size: 20px;
-    font-weight: bold;
-    color: #555;
-    letter-spacing: 10px;
-    margin: 0;
-    padding: 0;
-}
+    --ck-color-button-default-background: transparent;
+    --ck-color-button-default-hover-background: var(--neutral-hover-background-color);
+    --ck-color-button-default-active-background: var(--neutral-selected-background-color);
+    --ck-color-button-default-disabled-background: transparent;
 
-.ck-content h2.document-title {
-    font-family: 'Inter';
-    font-size: 50px;
-    font-weight: bold;
-    margin: 0;
-    padding: 0;
-    border: 0;
-}
+    --ck-color-button-on-background: var(--primary-background);
+    --ck-color-button-on-hover-background: var(--primary-border-color);
+    --ck-color-button-on-active-background: var(--primary-border-color);
+    --ck-color-button-on-disabled-background: var(--neutral-disable-background-color);
+    --ck-color-button-on-color: var(--primary-main-color);
 
-.ck-content h3.document-subtitle {
-    font-family: 'Inter';
-    font-size: 20px;
-    color: #555;
-    margin: 0 0 1em;
-    font-weight: bold;
-    padding: 0;
-}
+    --ck-color-button-action-background: var(--ck-color-base-action);
+    --ck-color-button-action-hover-background: var(--secondary2-bolder-color);
+    --ck-color-button-action-active-background: var(--secondary2-bolder-color);
+    --ck-color-button-action-disabled-background: var(--secondary2-lighter-color);
+    --ck-color-button-action-text: var(--ck-color-base-background);
 
-.ck-content blockquote.side-quote {
-    font-family: 'Inter';
-    font-style: normal;
-    float: right;
-    width: 35%;
-    position: relative;
-    border: 0;
-    overflow: visible;
-    z-index: 1;
-    margin-left: 1em;
-}
+    --ck-color-button-save: var(--secondary2-bolder-color);
+    --ck-color-button-cancel: var(--error-main-color);
 
-.ck-content blockquote.side-quote::before {
-    content: '“';
-    position: absolute;
-    top: -37px;
-    left: -10px;
-    display: block;
-    font-size: 200px;
-    color: #e7e7e7;
-    z-index: -1;
-    line-height: 1;
-}
+    --ck-color-switch-button-off-background: var(--neutral-text-placeholder-color);
+    --ck-color-switch-button-off-hover-background: var(--neutral-text-subtitle-color);
+    --ck-color-switch-button-on-background: var(--ck-color-button-action-background);
+    --ck-color-switch-button-on-hover-background: var(--secondary2-bolder-color);
+    --ck-color-switch-button-inner-background: var(--ck-color-base-background);
+    --ck-color-switch-button-inner-shadow: hsla(0, 0%, 0%, 0.1);
 
-.ck-content blockquote.side-quote p {
-    font-size: 2em;
-    line-height: 1;
-}
+    /* -- Dropdown ------------------------------------------------------------------------------ */
 
-.ck-content blockquote.side-quote p:last-child:not(:first-child) {
-    font-size: 1.3em;
-    text-align: right;
-    color: #555;
-}
+    --ck-color-dropdown-panel-background: var(--ck-color-base-background);
+    --ck-color-dropdown-panel-border: var(--ck-color-base-border);
 
-.ck-content span.marker {
-    background: yellow;
-}
+    /* -- Dialog -------------------------------------------------------------------------------- */
 
-.ck-content span.spoiler {
-    background: #000;
-    color: #000;
-}
+    --ck-color-dialog-background: var(--neutral-absolute-background-color);
+    --ck-color-dialog-form-header-border: var(--neutral-bolder-border-color);
 
-.ck-content span.spoiler:hover {
-    background: #000;
-    color: #fff;
-}
+    /* -- Input --------------------------------------------------------------------------------- */
 
-.ck-content pre.fancy-code {
-    border: 0;
-    margin-left: 2em;
-    margin-right: 2em;
-    border-radius: 10px;
-}
+    --ck-color-input-background: var(--ck-color-base-background);
+    --ck-color-input-border: var(--ck-color-base-border);
+    --ck-color-input-error-border: var(--ck-color-base-error);
+    --ck-color-input-text: var(--ck-color-base-text);
+    --ck-color-input-disabled-background: var(--neutral-disable-background-color);
+    --ck-color-input-disabled-border: var(--ck-color-base-border);
+    --ck-color-input-disabled-text: var(--neutral-text-disabled-color);
 
-.ck-content pre.fancy-code::before {
-    content: '';
-    display: block;
-    height: 13px;
-    background: url(data:image/svg+xml;base64,PHN2ZyBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1NCAxMyI+CiAgPGNpcmNsZSBjeD0iNi41IiBjeT0iNi41IiByPSI2LjUiIGZpbGw9IiNGMzZCNUMiLz4KICA8Y2lyY2xlIGN4PSIyNi41IiBjeT0iNi41IiByPSI2LjUiIGZpbGw9IiNGOUJFNEQiLz4KICA8Y2lyY2xlIGN4PSI0Ny41IiBjeT0iNi41IiByPSI2LjUiIGZpbGw9IiM1NkM0NTMiLz4KPC9zdmc+Cg==);
-    margin-bottom: 8px;
-    background-repeat: no-repeat;
-}
+    /* -- List ---------------------------------------------------------------------------------- */
 
-.ck-content pre.fancy-code-dark {
-    background: #272822;
-    color: #fff;
-    box-shadow: 5px 5px 0 #0000001f;
-}
+    --ck-color-list-background: var(--ck-color-base-background);
+    --ck-color-list-button-hover-background: var(--ck-color-button-default-hover-background);
+    --ck-color-list-button-on-background: var(--ck-color-button-on-color);
+    --ck-color-list-button-on-background-focus: var(--ck-color-button-on-color);
+    --ck-color-list-button-on-text: var(--ck-color-base-background);
 
-.ck-content pre.fancy-code-bright {
-    background: #dddfe0;
-    color: #000;
-    box-shadow: 5px 5px 0 #b3b3b3;
-}
+    /* -- Panel --------------------------------------------------------------------------------- */
 
-.editor-container_classic-editor .editor-container__editor .ck-editor .ck-editor__editable {
-    border-radius: 0;
-}
+    --ck-color-panel-background: var(--ck-color-base-background);
+    --ck-color-panel-border: var(--ck-color-base-border);
 
-.ck-editor-container {
-    --ck-font-size-base: 1.4rem;
-}
+    /* -- Toolbar ------------------------------------------------------------------------------- */
 
-.editor-container__editor {
-    flex: 1;
-    height: 100%;
-    overflow: hidden !important;
-    display: flex;
-    flex-direction: column;
-}
+    --ck-color-toolbar-background: var(--ck-color-base-background);
+    --ck-color-toolbar-border: var(--ck-color-base-border);
 
-.editor-container__editor>div,
-.ck.ck-reset.ck-editor.ck-rounded-corners {
-    flex: 1;
-    height: 100%;
-    overflow: hidden !important;
-    display: flex;
-    flex-direction: column;
-}
+    /* -- Tooltip ------------------------------------------------------------------------------- */
 
-.ck.ck-editor__main>.ck.ck-content.ck-rounded-corners {
-    min-height: 100%;
-}
+    --ck-color-tooltip-background: var(--neutral-text-title-color);
+    --ck-color-tooltip-text: var(--neutral-absolute-background-color);
 
-.ck.ck-toolbar {
-    background-color: var(--neutral-absolute-background-color, light-dark(#FFFFFF, #14181b)) !important;
-    border-radius: 0.8rem 0.8rem 0 0 !important;
-}
+    /* -- Engine -------------------------------------------------------------------------------- */
 
-.ck-fullscreen__toolbar .ck.ck-toolbar {
-    border-radius: var(--ck-border-radius) !important;
-}
+    --ck-color-engine-placeholder-text: var(--neutral-text-placeholder-color);
 
-.ck.ck-editor__top .ck-sticky-panel .ck-sticky-panel__content {
-    height: 40px;
-    border: none !important;
-    border-radius: 0.8rem 0.8rem 0 0 !important;
-    border-bottom: 1px solid var(--neutral-bolder-border-color, light-dark(#D7D7DB, #494950)) !important;
-}
+    /* -- Upload -------------------------------------------------------------------------------- */
 
-.ck.ck-editor__main {
-    flex: 1;
-    height: 100% !important;
-    overflow: hidden auto !important;
-}
+    --ck-color-upload-bar-background: var(--primary-lighter-color);
 
-.ck.ck-editor__main>div {
-    background-color: transparent !important;
-    border: none !important;
-    font-size: 16px !important;
-}
+    /* -- Link ---------------------------------------------------------------------------------- */
 
-.ck.ck-color-grid>button {
-    border: 1px solid var(--neutral-bolder-border-color, light-dark(#D7D7DB, #494950));
-    border-radius: 0.4rem !important;
-}
+    --ck-color-link-default: var(--primary-bolder-color);
+    --ck-color-link-selected-background: color-mix(in srgb, var(--primary-main-color) 10%, transparent);
+    --ck-color-link-fake-selection: color-mix(in srgb, var(--primary-main-color) 30%, transparent);
 
-.ck.ck-button:not(.ck-disabled):hover,
-a.ck.ck-button:not(.ck-disabled):hover,
-.ck.ck-splitbutton.ck-splitbutton_open>.ck-button:not(.ck-on):not(.ck-disabled):not(:hover),
-.ck.ck-splitbutton:hover>.ck-button:not(.ck-on):not(.ck-disabled):not(:hover) {
-    background-color: var(--neutral-hover-background-color, light-dark(#18181B0A, #FFFFFF0A)) !important;
-}
+    /* -- Search result highlight ---------------------------------------------------------------- */
 
-.ck.ck-button.ck-list-item-button,
-.ck.ck-button.ck-list-item-button.ck-on,
-.ck.ck-list,
-.ck.ck-dropdown__panel {
-    background-color: var(--neutral-absolute-background-color, light-dark(#FFFFFF, #14181b)) !important;
-}
+    --ck-color-highlight-background: var(--secondary3-tag-color);
 
-.ck.ck-reset_all,
-.ck-reset_all *:not(.ck-reset_all-excluded *, .ck-tooltip__text) {
-    color: var(--neutral-text-subtitle-color, light-dark(#61616B, #A2A2AA)) !important;
-}
+    /* -- Generic colors ------------------------------------------------------------------------- */
 
-.ck.ck-fullscreen__main-wrapper {
-    --ck-color-base-background: var(--neutral-lighter-background-color);
-}
-
-.ck-fullscreen__main-wrapper .ck-fullscreen__editable-wrapper {
-    background-color: var(--neutral-lighter-background-color);
-}
-
-.ck-fullscreen__editable .ck.ck-editor__editable {
-    background-color: var(--neutral-absolute-background-color) !important;
+    --ck-color-light-red: var(--error-background);
 }
