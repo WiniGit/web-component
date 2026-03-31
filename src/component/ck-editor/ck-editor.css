@@ -120,6 +120,12 @@
     --ck-color-light-red: var(--error-background) !important;
 }
 
+.editor-container {
+    position: relative;
+    border: 1px solid var(--neutral-bolder-border-color, light-dark(#D7D7DB, #494950));
+    overflow: hidden visible;
+}
+
 .editor-container:has(.ck-read-only) {
     background-color: var(--neutral-disable-background-color, light-dark(#F4F4F5, #494950)) !important;
     pointer-events: none !important;
@@ -192,6 +198,14 @@
     line-height: 1;
 }
 
+.editor-container__editor {
+    flex: 1;
+    height: 100%;
+    overflow: hidden !important;
+    display: flex;
+    flex-direction: column;
+}
+
 .editor-container__editor>div,
 .ck.ck-reset.ck-editor.ck-rounded-corners {
     flex: 1;
@@ -223,4 +237,34 @@
 
 .ck.ck-editor__main>.ck.ck-content.ck-rounded-corners {
     min-height: 100%;
+}
+
+.ck.ck-toolbar {
+    border-radius: 8px 8px 0 0 !important;
+}
+
+.ck-fullscreen__toolbar .ck.ck-toolbar {
+    border-radius: var(--ck-border-radius) !important;
+}
+
+.ck.ck-editor__top .ck-sticky-panel .ck-sticky-panel__content {
+    height: 40px;
+    border: none !important;
+    border-radius: 8px 8px 0 0 !important;
+}
+
+.ck.ck-editor__main {
+    flex: 1;
+    height: 100% !important;
+    overflow: hidden auto !important;
+}
+
+.ck.ck-editor__main>div {
+    background-color: transparent !important;
+    border: none !important;
+    font-size: 16px !important;
+}
+
+.ck.ck-color-grid>button {
+    border-radius: 4px !important;
 }
