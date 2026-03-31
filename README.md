@@ -10,7 +10,6 @@ A modern, lightweight React TypeScript UI component library with 35+ ready-to-us
 ## Table of Contents
 
 - [Installation](#installation)
-- [Setup: Add Global Styles](#setup-add-global-styles)
 - [Setup: Wrap Your App with WiniProvider](#setup-wrap-your-app-with-winiprovider)
 - [Layout System](#layout-system)
 - [Components](#components)
