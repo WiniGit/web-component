@@ -61,28 +61,12 @@ A modern, lightweight React TypeScript UI component library with 35+ ready-to-us
 npm install wini-web-components
 ```
 
-> **Peer dependencies** — install these in your project if not already present:
-> ```bash
-> npm install react react-dom react-router-dom
-> ```
-> For CKEditor support: `npm install ckeditor5 @ckeditor/ckeditor5-react`
-
 ---
 
-## Setup: Add Global Styles
-
-Add these imports at the top of your root CSS file (e.g. `App.css` or `index.css`):
-
-```css
-@import url(https://cdn.jsdelivr.net/gh/WiniGit/web-component@latest/src/skin/root.css);
-@import url(https://cdn.jsdelivr.net/gh/WiniGit/web-component@latest/src/skin/typography.css);
-@import url(https://cdn.jsdelivr.net/gh/WiniGit/web-component@latest/src/skin/layout.css);
-```
-
 These provide:
-- **`root.css`** — CSS design token variables (colors, borders, shadows)
-- **`typography.css`** — text utility classes (`heading-1` → `heading-8`, `body-1` → `body-3`, etc.)
-- **`layout.css`** — `row`, `col`, and responsive grid classes
+- **`root.css`** — CSS design token variables (colors, borders, shadows) through https://cdn.jsdelivr.net/gh/WiniGit/web-component@latest/src/skin/root.css
+- **`typography.css`** — text utility classes (`heading-1` → `heading-8`, `body-1` → `body-3`, etc.) through https://cdn.jsdelivr.net/gh/WiniGit/web-component@latest/src/skin/typography.css
+- **`layout.css`** — `row`, `col`, and responsive grid classes through https://cdn.jsdelivr.net/gh/WiniGit/web-component@latest/src/skin/layout.css
 
 ---
 
@@ -117,7 +101,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 import { useWiniContext } from 'wini-web-components'
 
 function MyComponent() {
-  const { theme, setTheme, userData, setUserData } = useWiniContext()
+  const { theme, setTheme, userData, setUserData, globalData, setGlobalData, i18n } = useWiniContext()
   return <button onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}>Toggle theme</button>
 }
 ```
@@ -788,7 +772,7 @@ const cardRef = useRef(null)
 // With query controller (search + pagination)
 <CardById
   id="CARD_ID"
-  controller={{ page: 1, size: 10, searchRaw: '@Status:{active}', sortby: [{ prop: 'Name', direction: 'ASC' }] }}
+  controller={{ page: 1, size: 10, searchRaw: '@Status:[0 1]', sortby: [{ prop: 'Name', direction: 'ASC' }] }}
   onLoaded={({ data, totalCount }) => setTotal(totalCount)}
 />
 
@@ -882,8 +866,8 @@ The layout system uses a **24-column grid**. Add these classes to children insid
 ```tsx
 // 2-column on desktop, stacks on mobile
 <div className="row" style={{ gap: 16 }}>
-  <div className="col24 col12-lg">Left panel</div>
-  <div className="col24 col12-lg">Right panel</div>
+  <div className="col24 col12-lg" style={{ "--gutter": "16px" }}>Left panel</div>
+  <div className="col24 col12-lg" style={{ "--gutter": "16px" }}>Right panel</div>
 </div>
 ```
 

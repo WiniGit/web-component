@@ -2,7 +2,7 @@
   "name": "wini-web-components",
   "private": false,
   "description": "A simple ui library for React",
-  "version": "8.4.97",
+  "version": "8.4.99",
   "main": "dist/index.umd.js",
   "module": "dist/index.es.js",
   "types": "dist/index.d.ts",
@@ -70,7 +70,11 @@
     "url": "git+https://github.com/WiniGit/web-component.git"
   },
   "keywords": [
-    "wini"
+    "wini",
+    "web",
+    "components",
+    "react",
+    "ui"
   ],
   "author": "thunt",
   "license": "MIT",
