@@ -65,14 +65,20 @@ export const Winicon = forwardRef<WiniconRef, WiniconProps>(({ id, src, link, cl
     useEffect(() => {
         if (showTooltip && divRef.current) {
             const handleMouseMove = (ev: MouseEvent) => {
-                if (divRef.current !== ev.target && !divRef.current!.contains(ev.target as Node)) setShowTooltip(false)
+                if (divRef.current !== ev.target && !divRef.current!.contains(ev.target as Node)) {
+                    if (timoutRef.current) clearTimeout(timoutRef.current)
+                    timoutRef.current = null
+                    setShowTooltip(false)
+                }
             }
             document.addEventListener("mousemove", handleMouseMove)
             return () => {
+                if (timoutRef.current) clearTimeout(timoutRef.current)
+                timoutRef.current = null
+                setShowTooltip(false)
                 document.removeEventListener("mousemove", handleMouseMove)
             }
         }
-        return () => { setShowTooltip(false) }
     }, [showTooltip])
 
     return <>
@@ -84,21 +90,16 @@ export const Winicon = forwardRef<WiniconRef, WiniconProps>(({ id, src, link, cl
             onMouseDown={onMouseDown}
             className={`${styles['wini-icon']} ${simpleStyle ? styles["simple-icon"] : ""} ${onClick ? styles['clickable'] : ''} ${className ?? ''} ${src ? `${src.split("/")[0]}-icon` : ''}${link ? ' link-icon' : ""}`}
             style={{ ...style, fontSize: size, color: color }} dangerouslySetInnerHTML={{ __html: svgData ?? '' }}
-            onMouseEnter={tooltip ? () => {
-                timoutRef.current = setTimeout(() => {
-                    if (timoutRef.current) setShowTooltip(true)
-                }, 600)
-            } : undefined}
-            onMouseOut={tooltip ? () => {
-                if (timoutRef.current) clearTimeout(timoutRef.current)
-                timoutRef.current = null
-                setShowTooltip(false)
-            } : undefined}
-            onMouseLeave={tooltip ? () => {
-                if (timoutRef.current) clearTimeout(timoutRef.current)
-                timoutRef.current = null
-                setShowTooltip(false)
-            } : undefined}
+            onMouseMove={() => {
+                if (tooltip && !timoutRef.current) timoutRef.current = setTimeout(() => { setShowTooltip(true) }, 800)
+            }}
+            onMouseOut={() => {
+                if (tooltip || timoutRef.current) {
+                    if (timoutRef.current) clearTimeout(timoutRef.current)
+                    timoutRef.current = null
+                    setShowTooltip(false)
+                }
+            }}
         />
         {tooltip && showTooltip && ReactDOM.createPortal(showTooltipElement({ element: divRef.current, tooltip: tooltip }), document.body)}
     </>
