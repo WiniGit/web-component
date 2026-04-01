@@ -56,8 +56,8 @@ const appendDesignTokens = (list: Array<{ [p: string]: any }>) => {
         }
 
         #root>.${LayoutElement.main} { 
-            width: 100%;
-            height: 100%;
+            width: 100dvw;
+            height: 100dvh;
             overflow: hidden auto;
         }
 

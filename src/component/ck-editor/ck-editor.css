@@ -198,6 +198,16 @@
     line-height: 1;
 }
 
+.ck-content p:has(>code),
+.ck-content span:has(>code) {
+    line-height: 1.8em;
+}
+
+.ck-content li {
+    margin: 0 0 0.4em;
+    line-height: 1.8em;
+}
+
 .editor-container__editor {
     flex: 1;
     height: 100%;
