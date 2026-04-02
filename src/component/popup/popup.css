@@ -112,11 +112,13 @@
     animation: open-drawer-right-to-left 0.5s ease-in-out;
     animation-fill-mode: forwards;
     box-shadow: var(--shadow-left, 1px 0px 6px 0px #2D32390F);
+    border-left: var(--neutral-main-border, 1px solid light-dark(#EAEAEC, #313135));
 }
 
 .right-drawer-collapse {
     animation: collapse-drawer-right 0.5s ease-in-out;
     animation-fill-mode: forwards;
+    border-left: var(--neutral-main-border, 1px solid light-dark(#EAEAEC, #313135));
 }
 
 @keyframes open-drawer-left-to-right {
@@ -159,6 +161,7 @@
 .left-drawer-collapse {
     animation: collapse-drawer-left 0.5s ease-in-out;
     animation-fill-mode: forwards;
+    border-right: var(--neutral-main-border, 1px solid light-dark(#EAEAEC, #313135));
 }
 
 .left-drawer {
@@ -166,6 +169,7 @@
     animation: open-drawer-left-to-right 0.5s ease-in-out;
     animation-fill-mode: forwards;
     box-shadow: var(--shadow-right, 1px 0px 6px 0px #2D32390F);
+    border-right: var(--neutral-main-border, 1px solid light-dark(#EAEAEC, #313135));
 }
 
 @keyframes show-dropdown-popup {
