@@ -77,6 +77,15 @@ button.file-preview:last-child * {
     flex: 1;
 }
 
+.upload-popup {
+    border-radius: 8px;
+    max-height: 80%;
+    width: 100%;
+    max-width: 594px;
+    border: 1px solid var(--neutral-main-border-color, light-dark(#EAEAEC, #313135));
+    transition: all 0.2s
+}
+
 .upload-container {
     margin: 2.4rem;
     padding: 2.4rem;

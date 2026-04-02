@@ -216,7 +216,7 @@ const UploadFilesDetailPopup = forwardRef((props: { files: FilePreview[], onChan
         inputElement.value = "";
     }
 
-    return <div className="col" style={{ maxHeight: "80%", width: "100%", maxWidth: 594, transition: "all 0.2s" }}>
+    return <div className={`col ${styles["upload-popup"]}`}>
         <div className="row" style={{ padding: "1.6rem 2.4rem", borderBottom: "var(--neutral-main-border)" }}>
             <Text className="heading-6" style={{ flex: 1 }}>{t("uploadFile")}</Text>
             <Winicon src="outline/user interface/e-remove" size={14} className="icon-button size24" onClick={() => { closePopup(ref) }} />

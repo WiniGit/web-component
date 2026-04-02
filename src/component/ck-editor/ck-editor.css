@@ -10,6 +10,7 @@
     --ck-color-base-active: var(--primary-main-color) !important;
     --ck-color-base-active-focus: var(--primary-bolder-color) !important;
     --ck-color-base-error: var(--error-main-color) !important;
+    --ck-content-font-color: var(--neutral-text-body-color) !important;
 
     --ck-content-color-mention-background: color-mix(in srgb, var(--secondary6-main-color) 10%, transparent) !important;
     --ck-content-color-mention-text: var(--secondary6-bolder-color) !important;
