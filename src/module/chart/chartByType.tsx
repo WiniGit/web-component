@@ -31,6 +31,7 @@ const barStyle = { height: 314, width: "100%" }
 
 export const ChartByType = ({ xAxisConfig, yAxisConfig, legend = "none", ...props }: Props) => {
     const { theme } = useWiniContext()
+
     const grid = useMemo(() => {
         let _left = 24;
         let _right = 24;
@@ -52,9 +53,67 @@ export const ChartByType = ({ xAxisConfig, yAxisConfig, legend = "none", ...prop
         }
         return { left: Math.max(0, _left), right: Math.max(0, _right) }
     }, [xAxisConfig?.unit, yAxisConfig?.unit, props.type]);
+
+    const axisThemeStyle = useMemo(() => ({
+        splitLine: {
+            lineStyle: {
+                type: 'dashed',
+                color: theme === "dark" ? "#494950" : "#D7D7DB"
+            }
+        },
+        axisLine: {
+            lineStyle: {
+                color: theme === "dark" ? "#494950" : "#D7D7DB",
+                width: 1,
+            }
+        },
+        nameTextStyle: {
+            color: theme === "dark" ? "#A2A2AA" : "#61616B",
+            fontSize: 12,
+        },
+        axisLabel: {
+            color: theme === "dark" ? "#A2A2AA" : "#61616B",
+            fontSize: 12,
+            lineHeight: 16,
+        }
+    }), [theme]);
+
+    const buildCategoryAxis = (config?: typeof xAxisConfig, withBoundaryGap = true) => ({
+        type: 'category',
+        boundaryGap: withBoundaryGap,
+        data: config?.name?.map((n: string | { name: string, color?: string }) =>
+            typeof n === "string" ? n : { value: n.name, textStyle: { color: n.color } }
+        ),
+        name: config?.unit,
+        nameLocation: 'end' as const,
+        nameGap: 8,
+        ...axisThemeStyle,
+        axisLabel: {
+            ...axisThemeStyle.axisLabel,
+            ...config?.label
+        }
+    });
+
+    const buildValueAxis = (config?: typeof yAxisConfig, withFormatter = false) => ({
+        type: 'value',
+        data: config?.name?.map((n: string | { name: string, color?: string }) =>
+            typeof n === "string" ? n : { value: n.name, textStyle: { color: n.color } }
+        ),
+        name: config?.unit,
+        nameLocation: 'end' as const,
+        nameGap: 20,
+        splitLine: axisThemeStyle.splitLine,
+        nameTextStyle: axisThemeStyle.nameTextStyle,
+        axisLabel: {
+            ...(withFormatter ? { formatter: props.formatter } : {}),
+            ...axisThemeStyle.axisLabel,
+            ...(config?.label ?? {})
+        }
+    });
+
     const option = useMemo(() => {
         const tmp: any = {
-            backgroundColor: theme === "dark" ? "#14181b" : "#FFFFFF",
+            backgroundColor: "#00000000",
             responsive: true,
             tooltip: {
                 trigger: 'item',
@@ -64,236 +123,140 @@ export const ChartByType = ({ xAxisConfig, yAxisConfig, legend = "none", ...prop
             },
             grid,
         }
+
         switch (props.type) {
-            case 'line':
+            // ─────────────────────────────────────────────
+            case "line":
                 return {
                     ...tmp,
-                    yAxis: {
-                        type: 'value',
-                        splitLine: {
-                            lineStyle: {
-                                type: 'dashed',
-                                color: theme === "dark" ? "#494950" : "#D7D7DB"
-                            }
-                        },
-                        data: yAxisConfig?.name?.map((n: string | { name: string, color?: string }) => (typeof n === "string" ? n : { value: n.name, textStyle: { color: n.color } })),
-                        name: yAxisConfig?.unit,
-                        nameLocation: 'end',
-                        nameGap: 20,
-                        nameTextStyle: {
-                            color: theme === "dark" ? "#A2A2AA" : "#61616B",
-                            fontSize: 12,
-                        },
-                        axisLabel: {
-                            formatter: props.formatter,
-                            color: theme === "dark" ? "#A2A2AA" : "#61616B",
-                            fontSize: 12,
-                            lineHeight: 16,
-                            ...yAxisConfig?.label
-                        }
-                    },
-                    xAxis: {
-                        type: 'category',
-                        boundaryGap: false,
-                        data: xAxisConfig?.name?.map((n: string | { name: string, color?: string }) => (typeof n === "string" ? n : { value: n.name, textStyle: { color: n.color } })),
-                        name: xAxisConfig?.unit,
-                        nameLocation: 'end',
-                        nameGap: 20,
-                        nameTextStyle: {
-                            color: theme === "dark" ? "#A2A2AA" : "#61616B",
-                            fontSize: 12,
-                        },
-                        axisLine: {
-                            lineStyle: {
-                                color: theme === "dark" ? "#494950" : "#D7D7DB",
-                                width: 1,
-                            }
-                        },
-                        axisLabel: {
-                            color: theme === "dark" ? "#A2A2AA" : "#61616B",
-                            fontSize: 12,
-                            lineHeight: 16,
-                            ...xAxisConfig?.label
-                        }
-                    },
-                    series: props.datasets.map((c) => {
-                        return {
-                            ...c,
-                            stack: 'Total',
-                            name: c.title ?? c.name,
-                            type: props.type,
-                            data: Array.isArray(c.value) ? c.value : [c.value],
-                            itemStyle: { color: c.color },
-                            areaStyle: c.backgroundColor ? { color: c.backgroundColor } : undefined,
-                        }
-                    }),
+                    yAxis: buildValueAxis(yAxisConfig, true),
+                    xAxis: { ...buildCategoryAxis(xAxisConfig, false), axisLine: axisThemeStyle.axisLine },
+                    series: props.datasets.map((c) => ({
+                        ...c,
+                        stack: 'Total',
+                        name: c.title ?? c.name,
+                        type: 'line',
+                        smooth: false,
+                        data: Array.isArray(c.value) ? c.value : [c.value],
+                        itemStyle: { color: c.color },
+                        lineStyle: { color: c.color },
+                        areaStyle: undefined,
+                        symbol: 'circle',
+                        symbolSize: 6,
+                    })),
                 };
-            case 'bar':
+
+            // ─────────────────────────────────────────────
+            case "area":
                 return {
                     ...tmp,
-                    yAxis: {
-                        type: 'value',
-                        splitLine: {
-                            lineStyle: {
-                                type: 'dashed',
-                                color: theme === "dark" ? "#494950" : "#D7D7DB"
-                            }
+                    yAxis: buildValueAxis(yAxisConfig, true),
+                    xAxis: { ...buildCategoryAxis(xAxisConfig, false), axisLine: axisThemeStyle.axisLine },
+                    series: props.datasets.map((c) => ({
+                        ...c,
+                        stack: 'Total',
+                        name: c.title ?? c.name,
+                        type: 'line',
+                        smooth: true,
+                        data: Array.isArray(c.value) ? c.value : [c.value],
+                        itemStyle: { color: c.color },
+                        lineStyle: { color: c.color },
+                        symbol: 'circle',
+                        symbolSize: 6,
+                        areaStyle: {
+                            color: c.backgroundColor ?? c.color,
+                            opacity: c.backgroundColor ? 1 : 0.25,
                         },
-                        data: yAxisConfig?.name?.map((n: string | { name: string, color?: string }) => (typeof n === "string" ? n : { value: n.name, textStyle: { color: n.color } })),
-                        name: yAxisConfig?.unit,
-                        nameLocation: 'end',
-                        nameGap: 20,
-                        nameTextStyle: {
-                            color: theme === "dark" ? "#A2A2AA" : "#61616B",
-                            fontSize: 12,
-                        },
-                        axisLabel: {
-                            formatter: props.formatter,
-                            color: theme === "dark" ? "#A2A2AA" : "#61616B",
-                            fontSize: 12,
-                            lineHeight: 16,
-                            ...yAxisConfig?.label
-                        }
-                    },
-                    xAxis: {
-                        type: 'category',
-                        boundaryGap: true,
-                        data: xAxisConfig?.name?.map((n: string | { name: string, color?: string }) => (typeof n === "string" ? n : { value: n.name, textStyle: { color: n.color } })),
-                        name: xAxisConfig?.unit,
-                        nameLocation: 'end',
-                        nameGap: 8,
-                        nameTextStyle: {
-                            color: theme === "dark" ? "#A2A2AA" : "#61616B",
-                            fontSize: 12,
-                        },
-                        axisLine: {
-                            lineStyle: {
-                                color: theme === "dark" ? "#494950" : "#D7D7DB",
-                                width: 1,
-                            }
-                        },
-                        axisLabel: {
-                            color: theme === "dark" ? "#A2A2AA" : "#61616B",
-                            fontSize: 12,
-                            lineHeight: 16,
-                            ...xAxisConfig?.label
-                        }
-                    },
-                    series: props.datasets?.map((c) => {
-                        return {
-                            ...c,
-                            data: Array.isArray(c.value) ? c.value : [c.value],
-                            type: props.type,
-                            itemStyle: { color: c.color, borderRadius: [2, 2, 0, 0] },
-                            radius: '50%',
-                            barMinWidth: 8,
-                            barMaxWidth: 80,
-                            barGap: 0.2,
-                            emphasis: {
-                                itemStyle: {
-                                    shadowBlur: 10,
-                                    shadowOffsetX: 0,
-                                    shadowColor: 'rgba(0, 0, 0, 0.5)'
-                                }
-                            },
-                        }
-                    }),
+                    })),
                 };
-            case 'horizontal bar':
+
+            // ─────────────────────────────────────────────
+            case "bar":
                 return {
                     ...tmp,
-                    xAxis: {
-                        type: 'value',
-                        splitLine: {
-                            lineStyle: {
-                                type: 'dashed',
-                                color: theme === "dark" ? "#494950" : "#D7D7DB"
+                    yAxis: buildValueAxis(yAxisConfig, true),
+                    xAxis: { ...buildCategoryAxis(xAxisConfig, true), axisLine: axisThemeStyle.axisLine },
+                    series: props.datasets.map((c) => ({
+                        ...c,
+                        name: c.title ?? c.name,
+                        data: Array.isArray(c.value) ? c.value : [c.value],
+                        type: 'bar',
+                        itemStyle: { color: c.color, borderRadius: [2, 2, 0, 0] },
+                        barMinWidth: 8,
+                        barMaxWidth: 80,
+                        barGap: '20%',
+                        emphasis: {
+                            itemStyle: {
+                                shadowBlur: 10,
+                                shadowOffsetX: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
                             }
                         },
-                        data: xAxisConfig?.name?.map((n: string | { name: string, color?: string }) => (typeof n === "string" ? n : { value: n.name, textStyle: { color: n.color } })),
-                        name: xAxisConfig?.unit,
-                        nameLocation: 'end',
-                        nameGap: 20,
-                        nameTextStyle: {
-                            color: theme === "dark" ? "#A2A2AA" : "#61616B",
-                            fontSize: 12,
-                        },
-                        axisLabel: {
-                            formatter: props.formatter,
-                            color: theme === "dark" ? "#A2A2AA" : "#61616B",
-                            fontSize: 12,
-                            lineHeight: 16,
-                            ...xAxisConfig?.label
-                        }
-                    },
-                    yAxis: {
-                        type: 'category',
-                        boundaryGap: true,
-                        data: yAxisConfig?.name?.map((n: string | { name: string, color?: string }) => (typeof n === "string" ? n : { value: n.name, textStyle: { color: n.color } })),
-                        name: yAxisConfig?.unit,
-                        nameLocation: 'end',
-                        nameGap: 8,
-                        nameTextStyle: {
-                            color: theme === "dark" ? "#A2A2AA" : "#61616B",
-                            fontSize: 12,
-                        },
-                        axisLine: {
-                            lineStyle: {
-                                color: theme === "dark" ? "#494950" : "#D7D7DB",
-                                width: 1,
-                            }
-                        },
-                        axisLabel: {
-                            color: theme === "dark" ? "#A2A2AA" : "#61616B",
-                            fontSize: 12,
-                            lineHeight: 16,
-                            ...yAxisConfig?.label
-                        }
-                    },
-                    series: props.datasets?.map((c) => {
-                        return {
-                            ...c,
-                            data: Array.isArray(c.value) ? c.value : [c.value],
-                            type: 'bar',
-                            itemStyle: { color: c.color, borderRadius: [2, 2, 0, 0] },
-                            radius: '50%',
-                            barMinWidth: 8,
-                            barMaxWidth: 80,
-                            barGap: 0.2,
-                            emphasis: {
-                                itemStyle: {
-                                    shadowBlur: 10,
-                                    shadowOffsetX: 0,
-                                    shadowColor: 'rgba(0, 0, 0, 0.5)'
-                                }
-                            },
-                        }
-                    }),
+                    })),
                 };
-            case 'pie':
+
+            // ─────────────────────────────────────────────
+            case "horizontal bar":
+                return {
+                    ...tmp,
+                    xAxis: { ...buildValueAxis(xAxisConfig, true), ...{ splitLine: axisThemeStyle.splitLine } },
+                    yAxis: { ...buildCategoryAxis(yAxisConfig, true), axisLine: axisThemeStyle.axisLine },
+                    series: props.datasets.map((c) => ({
+                        ...c,
+                        name: c.title ?? c.name,
+                        data: Array.isArray(c.value) ? c.value : [c.value],
+                        type: 'bar',
+                        itemStyle: { color: c.color, borderRadius: [0, 2, 2, 0] },
+                        barMinHeight: 8,
+                        barMaxWidth: 80,
+                        barGap: '20%',
+                        emphasis: {
+                            itemStyle: {
+                                shadowBlur: 10,
+                                shadowOffsetX: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
+                        },
+                    })),
+                };
+
+            // ─────────────────────────────────────────────
+            case "pie":
                 tmp.tooltip.formatter = props.formatter || '{b}: {c} ({d}%)'
                 if (!props.datasets.length) delete tmp.tooltip
                 return {
                     ...tmp,
                     series: [
                         {
-                            type: props.type,
+                            type: 'pie',
                             avoidLabelOverlap: false,
                             radius: '100%',
                             padAngle: props.datasets.length ? 2 : 0,
                             label: { show: false, position: 'center' },
                             emphasis: { label: false },
-                            data: props.datasets.length ? props.datasets.map(e => ({ ...e, value: e.value, itemStyle: { color: e.color, borderRadius: 4 } })) : [{ value: 1, label: "empty", name: "empty", itemStyle: { color: theme === "dark" ? "313135" : "#EFEFF0" } }]
+                            data: props.datasets.length
+                                ? props.datasets.map(e => ({
+                                    ...e,
+                                    name: e.title ?? e.name,
+                                    value: e.value,
+                                    itemStyle: { color: e.color, borderRadius: 4 }
+                                }))
+                                : [{ value: 1, label: "empty", name: "empty", itemStyle: { color: theme === "dark" ? "#313135" : "#EFEFF0" } }]
                         },
                     ],
                 }
-            case 'doughnut':
+
+            // ─────────────────────────────────────────────
+            case "doughnut":
                 tmp.tooltip.formatter = props.formatter || '{b}: {c} ({d}%)'
                 if (!props.datasets.length) delete tmp.tooltip
+                const total = props.datasets
+                    .map(e => typeof e.value === 'number' ? e.value : e.value.reduce((a, b) => a + b, 0))
+                    .reduce((a, b) => a + b, 0)
                 return {
                     ...tmp,
                     title: {
-                        text: props.datasets.map(e => typeof e.value === 'number' ? e.value : e.value.reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0),
+                        text: total,
                         left: 'center',
                         top: 'center',
                         textStyle: {
@@ -312,98 +275,235 @@ export const ChartByType = ({ xAxisConfig, yAxisConfig, legend = "none", ...prop
                             padAngle: props.datasets.length ? 2 : 0,
                             label: { show: false, position: 'center' },
                             emphasis: { label: false },
-                            data: props.datasets.length ? props.datasets.map(e => ({ ...e, value: e.value, itemStyle: { color: e.color, borderRadius: 4 } })) : [{ value: 1, label: "empty", name: "empty", itemStyle: { color: theme === "dark" ? "313135" : "#EFEFF0" } }]
+                            data: props.datasets.length
+                                ? props.datasets.map(e => ({
+                                    ...e,
+                                    name: e.title ?? e.name,
+                                    value: e.value,
+                                    itemStyle: { color: e.color, borderRadius: 4 }
+                                }))
+                                : [{ value: 1, label: "empty", name: "empty", itemStyle: { color: theme === "dark" ? "#313135" : "#EFEFF0" } }]
                         },
                     ],
                 }
-            case 'radar':
+
+            // ─────────────────────────────────────────────
+            case "radar":
                 return {
                     ...tmp,
+                    tooltip: { ...tmp.tooltip, trigger: 'item' },
                     radar: {
-                        // shape: 'circle',
-                        indicator: props.indicator
-                    },
-                    series: props.datasets?.map((c) => {
-                        return {
-                            ...c,
-                            value: Array.isArray(c.value) ? c.value : [c.value],
-                            itemStyle: { color: c.color },
-                            areaStyle: { color: c.backgroundColor },
-                            label: { show: false, position: 'center' },
-                            emphasis: { label: false },
+                        indicator: props.indicator,
+                        splitLine: {
+                            lineStyle: {
+                                color: theme === "dark" ? "#494950" : "#D7D7DB"
+                            }
+                        },
+                        splitArea: { show: false },
+                        axisLine: {
+                            lineStyle: {
+                                color: theme === "dark" ? "#494950" : "#D7D7DB"
+                            }
+                        },
+                        axisName: {
+                            color: theme === "dark" ? "#A2A2AA" : "#61616B",
+                            fontSize: 12,
                         }
-                    }),
+                    },
+                    series: [
+                        {
+                            type: 'radar',
+                            data: props.datasets.map((c) => ({
+                                name: c.title ?? c.name,
+                                value: Array.isArray(c.value) ? c.value : [c.value],
+                                itemStyle: { color: c.color },
+                                lineStyle: { color: c.color },
+                                areaStyle: {
+                                    color: c.backgroundColor ?? c.color,
+                                    opacity: c.backgroundColor ? 1 : 0.2,
+                                },
+                                label: { show: false },
+                            })),
+                        }
+                    ],
                 };
-            case 'scatter':
-            case 'bubble':
-            default:
-                return {}
-        }
-    }, [grid, props.datasets, xAxisConfig, yAxisConfig, props.formatter, theme]);
 
+            // ─────────────────────────────────────────────
+            case "scatter":
+                return {
+                    ...tmp,
+                    tooltip: {
+                        ...tmp.tooltip,
+                        trigger: 'item',
+                        formatter: props.formatter || ((p: any) => `${p.seriesName}<br/>(${p.value[0]}, ${p.value[1]})`)
+                    },
+                    xAxis: {
+                        type: 'value',
+                        scale: true,
+                        ...axisThemeStyle,
+                        axisLabel: {
+                            ...axisThemeStyle.axisLabel,
+                            ...xAxisConfig?.label
+                        },
+                        name: xAxisConfig?.unit,
+                        nameLocation: 'end' as const,
+                        nameTextStyle: axisThemeStyle.nameTextStyle,
+                    },
+                    yAxis: {
+                        type: 'value',
+                        scale: true,
+                        ...axisThemeStyle,
+                        axisLabel: {
+                            ...axisThemeStyle.axisLabel,
+                            ...yAxisConfig?.label
+                        },
+                        name: yAxisConfig?.unit,
+                        nameLocation: 'end' as const,
+                        nameTextStyle: axisThemeStyle.nameTextStyle,
+                    },
+                    series: props.datasets.map((c) => ({
+                        name: c.title ?? c.name,
+                        type: 'scatter',
+                        data: Array.isArray(c.value) ? c.value : [[c.value, c.value]],
+                        itemStyle: { color: c.color, opacity: 0.8 },
+                        symbolSize: 10,
+                        emphasis: {
+                            itemStyle: {
+                                shadowBlur: 10,
+                                shadowOffsetX: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
+                        },
+                    })),
+                };
+
+            // ─────────────────────────────────────────────
+            case "bubble":
+                return {
+                    ...tmp,
+                    tooltip: {
+                        ...tmp.tooltip,
+                        trigger: 'item',
+                        formatter: props.formatter || ((p: any) => `${p.seriesName}<br/>(${p.value[0]}, ${p.value[1]}) — size: ${p.value[2]}`)
+                    },
+                    xAxis: {
+                        type: 'value',
+                        scale: true,
+                        ...axisThemeStyle,
+                        axisLabel: {
+                            ...axisThemeStyle.axisLabel,
+                            ...xAxisConfig?.label
+                        },
+                        name: xAxisConfig?.unit,
+                        nameLocation: 'end' as const,
+                        nameTextStyle: axisThemeStyle.nameTextStyle,
+                    },
+                    yAxis: {
+                        type: 'value',
+                        scale: true,
+                        ...axisThemeStyle,
+                        axisLabel: {
+                            ...axisThemeStyle.axisLabel,
+                            ...yAxisConfig?.label
+                        },
+                        name: yAxisConfig?.unit,
+                        nameLocation: 'end' as const,
+                        nameTextStyle: axisThemeStyle.nameTextStyle,
+                    },
+                    series: props.datasets.map((c) => ({
+                        name: c.title ?? c.name,
+                        type: 'scatter',
+                        // value format: [x, y, bubbleSize]
+                        data: Array.isArray(c.value) ? c.value : [[c.value, c.value, c.value]],
+                        itemStyle: { color: c.color, opacity: 0.7 },
+                        symbolSize: (val: number[]) => {
+                            const size = Array.isArray(val) && val.length >= 3 ? val[2] : 10;
+                            return Math.max(8, Math.min(80, size));
+                        },
+                        emphasis: {
+                            itemStyle: {
+                                shadowBlur: 10,
+                                shadowOffsetX: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
+                        },
+                    })),
+                };
+
+            // ─────────────────────────────────────────────
+            default:
+                return undefined
+        }
+    }, [grid, props.datasets, props.type, xAxisConfig, yAxisConfig, props.formatter, theme, props.indicator, axisThemeStyle]);
+
+    const isBarOrLine = ["bar", "horizontal bar", "line", "area"].includes(props.type);
+
+    const renderChart = () => {
+        if (!option) return null;
+        return (
+            <ReactEcharts
+                key={props.type}
+                onEvents={{ click: props.handleChartClick as any }}
+                theme={theme}
+                notMerge={true}
+                lazyUpdate={true}
+                option={option}
+                style={props.chartStyle ?? (isBarOrLine ? barStyle : pieStyle)}
+            />
+        )
+    }
+
+    const renderLegend = (direction: "row" | "col") => {
+        if (!props.datasets.length) return null;
+        return (
+            <div
+                className={`${direction} ${styles["legend"]}`}
+                style={direction === "col"
+                    ? { flex: isBarOrLine ? undefined : 1, maxHeight: "100%", columnGap: "2rem" }
+                    : { rowGap: "2rem" }
+                }
+            >
+                <CustomLegend datasets={props.datasets as any} type={props.type} />
+            </div>
+        )
+    }
 
     switch (legend) {
         case "top":
-            return <div className={`${styles["chart-block"]} ${props.className ?? ''}`} style={{ flexDirection: "column", ...props.style }}>
-                {!!props.datasets.length && <div className={`row ${styles["legend"]}`} style={{ rowGap: "2rem" }}>
-                    <CustomLegend datasets={props.datasets as any} type={props.type} />
-                </div>}
-                <ReactEcharts
-                    key={props.type}
-                    onEvents={{ click: props.handleChartClick as any }}
-                    theme={theme}
-                    notMerge={true}
-                    lazyUpdate={true}
-                    option={option}
-                    style={props.chartStyle ?? (["bar", "horizontal bar", "line"].includes(props.type) ? barStyle : pieStyle)}
-                />
-            </div>
+            return (
+                <div className={`${styles["chart-block"]} ${props.className ?? ''}`} style={{ flexDirection: "column", ...props.style }}>
+                    {renderLegend("row")}
+                    {renderChart()}
+                </div>
+            )
         case "bottom":
-            return <div className={`${styles["chart-block"]} ${props.className ?? ''}`} style={{ flexDirection: "column", ...props.style }}>
-                <ReactEcharts
-                    key={props.type}
-                    onEvents={{ click: props.handleChartClick as any }}
-                    theme={theme}
-                    notMerge={true}
-                    lazyUpdate={true}
-                    option={option}
-                    style={props.chartStyle ?? (["bar", "horizontal bar", "line"].includes(props.type) ? barStyle : pieStyle)}
-                />
-                {!!props.datasets.length && <div className={`row ${styles["legend"]}`} style={{ rowGap: "2rem" }}>
-                    <CustomLegend datasets={props.datasets as any} type={props.type} />
-                </div>}
-            </div>
+            return (
+                <div className={`${styles["chart-block"]} ${props.className ?? ''}`} style={{ flexDirection: "column", ...props.style }}>
+                    {renderChart()}
+                    {renderLegend("row")}
+                </div>
+            )
         case "left":
-            return <div className={`${styles["chart-block"]} ${props.className ?? ''}`} style={{ alignItems: "center", ...props.style }}>
-                {!!props.datasets.length && <div className={`col ${styles["legend"]}`} style={{ flex: ["bar", "horizontal bar", "line"].includes(props.type) ? undefined : 1, maxHeight: "100%", columnGap: "2rem" }}>
-                    <CustomLegend datasets={props.datasets as any} type={props.type} />
-                </div>}
-                <ReactEcharts
-                    key={props.type}
-                    onEvents={{ click: props.handleChartClick as any }}
-                    theme={theme}
-                    notMerge={true}
-                    lazyUpdate={true}
-                    option={option}
-                    style={props.chartStyle ?? (["bar", "horizontal bar", "line"].includes(props.type) ? { ...barStyle, flex: 1 } : pieStyle)}
-                />
-            </div>
+            return (
+                <div className={`${styles["chart-block"]} ${props.className ?? ''}`} style={{ alignItems: "center", ...props.style }}>
+                    {renderLegend("col")}
+                    {renderChart()}
+                </div>
+            )
         case "right":
+            return (
+                <div className={`${styles["chart-block"]} ${props.className ?? ''}`} style={{ alignItems: "center", ...props.style }}>
+                    {renderChart()}
+                    {renderLegend("col")}
+                </div>
+            )
+        case "none":
         default:
-            return <div className={`${styles["chart-block"]} ${props.className ?? ''}`} style={{ alignItems: "center", ...props.style }}>
-                <ReactEcharts
-                    key={props.type}
-                    onEvents={{ click: props.handleChartClick as any }}
-                    theme={theme}
-                    notMerge={true}
-                    lazyUpdate={true}
-                    option={option}
-                    style={props.chartStyle ?? (["bar", "horizontal bar", "line"].includes(props.type) ? { ...barStyle, flex: 1 } : pieStyle)}
-                />
-                {legend === "right" && !!props.datasets.length && <div className={`col ${styles["legend"]}`} style={{ flex: ["bar", "horizontal bar", "line"].includes(props.type) ? undefined : 1, maxHeight: "100%", columnGap: "2rem" }}>
-                    <CustomLegend datasets={props.datasets as any} type={props.type} />
-                </div>}
-            </div>
+            return (
+                <div className={`${styles["chart-block"]} ${props.className ?? ''}`} style={{ alignItems: "center", ...props.style }}>
+                    {renderChart()}
+                </div>
+            )
     }
 }
 

@@ -362,6 +362,35 @@ const InputValueTile = ({ fieldItem, filterItem, colData, onChange }: InputValue
     }
 
     switch (fieldItem.DataType) {
+        case FEDataType.UNIQUE:
+            const tmpDataValue = Array.isArray(data.value) ? data.value : data.value?.split(",") ?? []
+            let label = fieldItem.Form.Options.filter((e: any) => tmpDataValue.includes(e.id))
+            if (label.length) label = label.map((e: any) => e.name).join(", ")
+            else label = undefined
+            return <>
+                <Popup ref={popupRef} />
+                <button type="button" className={`row ${styles["button-filter"]}`}
+                    onClick={(ev: any) => {
+                        const btn = ev.target.closest("button")
+                        if (btn.isOpen) return closePopup(popupRef as any)
+                        btn.isOpen = true
+                        const rect = btn.getBoundingClientRect()
+                        showPopup({
+                            ref: popupRef as any,
+                            hideOverlay: true,
+                            content: <FilterValueOptionsDropdown
+                                onClose={() => { setTimeout(() => { btn.isOpen = false; }, 150); }}
+                                style={{ top: rect.bottom + 2, left: rect.x, width: rect.width }}
+                                initData={fieldItem.Form.Options}
+                                selected={tmpDataValue.join(",")}
+                                isMulti
+                                onSelect={onChangeData} />
+                        })
+                    }}
+                >
+                    <Text className={label ? "body-3" : "placeholder-2"}>{label ?? `${t("select")} ${(colData?.Title ?? fieldItem.Form.Label ?? data.name).toLowerCase()}`}</Text>
+                </button>
+            </>
         case FEDataType.NUMBER:
         case FEDataType.MONEY:
             if (fieldItem.Form.Options?.length) {

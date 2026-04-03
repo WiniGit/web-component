@@ -620,7 +620,7 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
                             className="button-text-5 size24"
                             label={t("export")}
                             style={{ color: "var(--neutral-text-body-reverse-color)" }}
-                            prefix={<Winicon src="outline/user interface/data-download" color="var(--neutral-text-body-reverse-color)" size={12} />}
+                            prefix={<Winicon src="outline/user interface/data-download" color="var(--neutral-text-body-reverse-color)" size={13} />}
                             config={{
                                 title: configMethods.watch("columns").filter((e: any) => !fields.find(c => c.Name === e.Name && c.DataType === FEDataType.HTML)).map((e: any) => e.Title)
                             }}
@@ -664,7 +664,7 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
                             className="button-text-5 size24"
                             label={t("duplicate")}
                             style={{ color: "var(--neutral-text-body-reverse-color)" }}
-                            prefix={<Winicon src="outline/layout/copy-2" color="var(--neutral-text-body-reverse-color)" size={12} />}
+                            prefix={<Winicon src="outline/layout/copy-2" color="var(--neutral-text-body-reverse-color)" size={13} />}
                             onClick={() => {
                                 dataController.duplicate(selected).then((res: any) => {
                                     if (res.code !== 200) return ToastMessage.errors(res.message)
@@ -680,7 +680,7 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
                             className="button-text-5 size24"
                             label={t("delete")}
                             style={{ color: "var(--neutral-text-body-reverse-color)" }}
-                            prefix={<Winicon src="outline/user interface/trash-can" color="var(--neutral-text-body-reverse-color)" size={12} />}
+                            prefix={<Winicon src="outline/user interface/trash-can" color="var(--neutral-text-body-reverse-color)" size={13} />}
                             onClick={() => {
                                 showDialog({
                                     alignment: DialogAlignment.center,
@@ -705,7 +705,7 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
                 className="button-text-5 size24"
                 label={t("close")}
                 style={{ color: "var(--error-lighter-color)" }}
-                prefix={<Winicon src="outline/user interface/e-remove" color="var(--error-lighter-color)" size={12} />}
+                prefix={<Winicon src="outline/user interface/e-remove" color="var(--error-lighter-color)" size={13} />}
                 onClick={() => setSelected([])}
             />
         </div>}
