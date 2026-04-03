@@ -27,7 +27,7 @@ interface Props {
     /**
      * list json object data. Ex: {Id: 1, Name: "Example", ...}
      * */
-    cardData?: Array<{ [p: string]: any }>,
+    data?: { data: Array<{ [p: string]: any }>, totalCount?: number },
     controller?: "all" | { page?: number, size?: number, searchRaw?: string, filter?: string, sortby?: Array<{ prop: string, direction?: "ASC" | "DESC" }>, pattern?: { returns: Array<string>, [p: string]: Array<string> | { searchRaw?: string, reducers: string } } } | { ids: string, maxLength?: number | "none" },
     emptyLink?: string,
     emptyMessage?: string,
@@ -196,10 +196,10 @@ export const CardById = forwardRef<CardRef, CardProps>((props, ref) => {
 
     useEffect(() => {
         if (cardItem) {
-            if (controller && !props.cardData) getData()
-            else if (props.cardData) setData({ data: props.cardData, totalCount: props.cardData.length })
+            if (controller && !props.data) getData()
+            else if (props.data) setData(props.data)
         }
-    }, [cardItem, controller, props.cardData?.length])
+    }, [cardItem, controller, JSON.stringify(props.data)])
 
     const extendData = useMemo(() => methods.watch(), [JSON.stringify(methods.watch())])
     const finalExtendData = useDeferredValue(extendData)

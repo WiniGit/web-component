@@ -546,7 +546,7 @@ const ElementUI = ({ findId, children, watchForCustomProps, replaceThisVariables
             case ComponentType.form:
             case ComponentType.view:
             case ComponentType.card:
-                if (tmpProps.controller && tmpProps.controller !== "all") {
+                if (!tmpProps.data && tmpProps.controller && tmpProps.controller !== "all") {
                     let newController = { ...tmpProps.controller }
                     if (newController.searchRaw && regexGetVariables.test(newController.searchRaw)) {
                         const newSearchRaw = replaceThisVariables(newController.searchRaw)
@@ -673,6 +673,47 @@ const ElementUI = ({ findId, children, watchForCustomProps, replaceThisVariables
     useEffect(() => {
         if (customProps.onLocationChange) customProps.onLocationChange(pageAllRefs[findId]?.current ?? htmlElementRef.current)
     }, [!!customProps.onLocationChange, location.pathname, location.search, JSON.stringify(params), JSON.stringify(location.state)])
+
+    const [handleFormCardViewData, setHandleFormCardViewData] = useState<any>(null)
+
+    useEffect(() => {
+        if (customProps.data) {
+            switch (props.item.Type) {
+                case ComponentType.form:
+                case ComponentType.view:
+                case ComponentType.card:
+                    const getDataFunc = async () => {
+                        let asyncFuncResponse = await (new AsyncFunction(
+                            "entityData", "entityIndex", "tableName", "tableTitle", "Util", "DataController", "randomGID", "ToastMessage", "uploadFiles", "getFilesInfor", "showDialog", "ComponentStatus", "methods", "useParams", "useNavigate", "location", "useWiniContext",
+                            `${customProps.data}` // This string can now safely contain the 'await' keyword
+                        ))(
+                            props.indexItem ?? props.methods?.getValues(),
+                            props.index,
+                            props.tbName,
+                            props.tbName?.split("_").map((e, i) => (i ? e.toLowerCase() : e)).join(" "),
+                            Util,
+                            DataController,
+                            randomGID,
+                            ToastMessage,
+                            BaseDA.uploadFiles,
+                            BaseDA.getFilesInfor,
+                            showDialog,
+                            ComponentStatus,
+                            props.methods,
+                            () => params,
+                            () => navigate,
+                            location,
+                            () => winiContextData
+                        )
+                        return asyncFuncResponse
+                    }
+                    getDataFunc().then(setHandleFormCardViewData)
+                    break;
+                default:
+                    break;
+            }
+        }
+    }, [customProps.data])
 
     switch (props.item.Type) {
         case ComponentType.navLink:
@@ -809,18 +850,21 @@ const ElementUI = ({ findId, children, watchForCustomProps, replaceThisVariables
             if (props.itemData) typeProps.itemData = typeProps.itemData ? { ...props.itemData, ...typeProps.itemData } : props.itemData
             if (props.childrenData) typeProps.childrenData = typeProps.childrenData ? { ...props.childrenData, ...typeProps.childrenData } : props.childrenData
             if (props.propsData) typeProps.propsData = typeProps.propsData ? { ...props.propsData, ...typeProps.propsData } : props.propsData
+            if (customProps.data) typeProps.data = handleFormCardViewData
             return <FormById  {...typeProps} id={typeProps.formId} ref={pageAllRefs[findId]} />
         case "card":
         case ComponentType.card:
             if (props.itemData) typeProps.itemData = typeProps.itemData ? { ...props.itemData, ...typeProps.itemData } : props.itemData
             if (props.childrenData) typeProps.childrenData = typeProps.childrenData ? { ...props.childrenData, ...typeProps.childrenData } : props.childrenData
             if (props.propsData) typeProps.propsData = typeProps.propsData ? { ...props.propsData, ...typeProps.propsData } : props.propsData
+            if (customProps.data) typeProps.data = handleFormCardViewData ?? { data: [] }
             return <CardById {...typeProps} id={typeProps.cardId} ref={pageAllRefs[findId]} />
         case "view":
         case ComponentType.view:
             if (props.itemData) typeProps.itemData = typeProps.itemData ? { ...props.itemData, ...typeProps.itemData } : props.itemData
             if (props.childrenData) typeProps.childrenData = typeProps.childrenData ? { ...props.childrenData, ...typeProps.childrenData } : props.childrenData
             if (props.propsData) typeProps.propsData = typeProps.propsData ? { ...props.propsData, ...typeProps.propsData } : props.propsData
+            if (customProps.data) typeProps.data = handleFormCardViewData
             return <ViewById {...typeProps} id={typeProps.viewId} />
         case ComponentType.button:
             return <SimpleButton ref={htmlElementRef} {...typeProps} />
