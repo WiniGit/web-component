@@ -16,8 +16,8 @@ export function EmptyPage({ imgUrl = defaultUrl, className = "", style = {}, img
     return <div className={`col ${className ?? ''}`} style={{ alignItems: "center", ...style }}>
         <img
             alt=""
-            src={imgUrl ?? "https://cdn.jsdelivr.net/gh/WiniGit/icon-library@latest/error-file.png"}
-            style={{ aspectRatio: "1/1", width: "100%", maxWidth: "35rem", ...imgStyle }}
+            src={imgUrl ?? "https://cdn.jsdelivr.net/gh/WiniGit/icon-library@latest/color/files/archive-file.svg"}
+            style={{ aspectRatio: "1/1", width: "100%", maxWidth: "30rem", ...imgStyle }}
         />
         {props.title && (
             typeof props.title === "string" ?
