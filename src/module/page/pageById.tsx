@@ -200,7 +200,7 @@ const CaculateLayer = (props: RenderLayerElementProps) => {
             }
         }
         return tmp
-    }, [location.pathname, location.search, params, JSON.stringify(location.state), props.indexItem, defferWatch, winiContextData.globalData, winiContextData.userData, winiContextData.i18n.language])
+    }, [location.pathname, location.search, JSON.stringify(params), JSON.stringify(location.state), props.indexItem, defferWatch, winiContextData.globalData, winiContextData.userData, winiContextData.i18n.language])
     // 
     const watchForCustomProps = useDeferredValue(stateCustomProps)
     /** Check unmounted */
@@ -415,7 +415,7 @@ const ElementUI = ({ findId, children, watchForCustomProps, replaceThisVariables
             _props = { ..._props, ...extendProps }
         }
         return watchForCustomProps ? { ..._props, ...watchForCustomProps } : _props
-    }, [props.item, props.propsData, props.indexItem, watchForCustomProps, defferWatch, location.pathname, location.search, params, JSON.stringify(location.state), winiContextData.globalData, winiContextData.userData, winiContextData.i18n.language])
+    }, [props.item, props.propsData, props.indexItem, watchForCustomProps, defferWatch, location.pathname, location.search, JSON.stringify(params), JSON.stringify(location.state), winiContextData.globalData, winiContextData.userData, winiContextData.i18n.language])
     const customProps = useDeferredValue(memeCustomProps)
     const _options = useMemo(() => {
         if (!props.options || !props.item.NameField?.length) return undefined
@@ -662,7 +662,7 @@ const ElementUI = ({ findId, children, watchForCustomProps, replaceThisVariables
                 break;
         }
         return tmpProps
-    }, [JSON.stringify(customProps), props.indexItem, dataValue, children, defferWatch, location.pathname, location.search, params, JSON.stringify(location.state), winiContextData.globalData, winiContextData.userData, winiContextData.i18n.language])
+    }, [JSON.stringify(customProps), props.indexItem, JSON.stringify(dataValue), defferWatch, location.pathname, location.search, JSON.stringify(params), JSON.stringify(location.state), winiContextData.globalData, winiContextData.userData, winiContextData.i18n.language])
 
     const htmlElementRef = useRef<any | any[]>(null)
 
@@ -672,7 +672,7 @@ const ElementUI = ({ findId, children, watchForCustomProps, replaceThisVariables
 
     useEffect(() => {
         if (customProps.onLocationChange) customProps.onLocationChange(pageAllRefs[findId]?.current ?? htmlElementRef.current)
-    }, [!!customProps.onLocationChange, location.pathname, location.search, params, JSON.stringify(location.state)])
+    }, [!!customProps.onLocationChange, location.pathname, location.search, JSON.stringify(params), JSON.stringify(location.state)])
 
     switch (props.item.Type) {
         case ComponentType.navLink:
