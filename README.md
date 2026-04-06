@@ -43,6 +43,16 @@ A modern, lightweight React TypeScript UI component library with 35+ ready-to-us
   - [CustomCkEditor5](#customckeditor5)
   - [WiniEditor](#winieditor)
   - [IconPicker](#iconpicker)
+- [Utility Functions (`Util` class)](#utility-functions-util-class)
+  - [Date & Time](#-date--time)
+  - [Number & Currency Formatting](#-number--currency-formatting)
+  - [Color Utilities](#-color-utilities)
+  - [String Utilities](#-string-utilities)
+  - [File Utilities](#-file-utilities)
+  - [Storage Utilities](#-storage-utilities)
+  - [Auth & Encoding](#-auth--encoding)
+  - [JSON Formatting](#-json-formatting)
+  - [ID & Random Generation](#-id--random-generation)
 - [Backend-Driven Modules](#backend-driven-modules)
   - [PageById](#pagebyid)
   - [PageByUrl](#pagebyurl)
@@ -608,6 +618,620 @@ import { IconPicker } from 'wini-web-components'
 ```
 
 ---
+
+---
+
+## Utility Functions (`Util` class)
+
+The `Util` class provides a comprehensive collection of static helper methods for date/time, number formatting, color conversion, string manipulation, browser storage, cookies, and more.
+
+```tsx
+import { Util, formatNumberConvert, randomGID } from 'wini-web-components'
+```
+
+---
+
+### 📅 Date & Time
+
+#### `Util.dateTime_stringToDecimal(stringDate: string): number`
+
+Converts a date string to a **Unix timestamp in seconds**.
+
+```ts
+Util.dateTime_stringToDecimal('2024-01-15T10:30:00')
+// => 1705311000
+```
+
+| Param | Type | Description |
+|-------|------|-------------|
+| `stringDate` | `string` | Any valid JS date string |
+| **Returns** | `number` | Unix timestamp in **seconds** |
+
+---
+
+#### `Util.dateDefault`
+
+Static constant — the timestamp of `01/01/2021`. Useful as a fallback or baseline.
+
+```ts
+Util.dateDefault  // => 1609459200000 (milliseconds)
+```
+
+---
+
+#### `Util.calculateAge(birthdate: string): number`
+
+Calculates a person's current age from a `dd/MM/yyyy` birthdate string.
+
+```ts
+Util.calculateAge('15/06/1995')  // => 30 (as of 2026)
+Util.calculateAge('invalid')     // => 0
+```
+
+| Param | Type | Description |
+|-------|------|-------------|
+| `birthdate` | `string` | Date in `dd/MM/yyyy` format |
+| **Returns** | `number` | Age in full years, or `0` if invalid |
+
+---
+
+#### `Util.getStringDateNow(): string`
+
+Returns today's date as a formatted string `DD -MM -YYYY`.
+
+```ts
+Util.getStringDateNow()  // => "06 -04 -2026"
+```
+
+---
+
+#### `Util.stringToDate(_date, _format?, _delimiter?): Date`
+
+Parses a date string into a `Date` object with flexible format and optional time support.
+
+```ts
+Util.stringToDate('15/06/2024')
+// => Date: June 15, 2024
+
+Util.stringToDate('15/06/2024 14:30:00', 'dd/mm/yyyy HH:mm:ss')
+// => Date: June 15, 2024 at 14:30:00
+
+Util.stringToDate('2024-06-15', 'yyyy-mm-dd', '-')
+// => Date: June 15, 2024
+```
+
+| Param | Type | Default | Description |
+|-------|------|---------|-------------|
+| `_date` | `string` | — | The date string to parse |
+| `_format` | `string` | `"dd/mm/yyyy"` | Format pattern. Date parts: `dd`, `mm`, `yyyy`. Time parts: `HH`/`hh`, `mm`, `ss` |
+| `_delimiter` | `string` | `"/"` | Delimiter between date parts |
+| **Returns** | `Date` | | Parsed `Date` object |
+
+---
+
+#### `Util.dateToString(x?, y?): string`
+
+Converts a `Date` object (or timestamp number) to a formatted string. Supports date-only, time-only, date+time, and time+date formats.
+
+```ts
+Util.dateToString(new Date(), 'dd/mm/yyyy')
+// => "06/04/2026"
+
+Util.dateToString(new Date(), 'yyyy-mm-dd hh:mm:ss')
+// => "2026-04-06 14:30:00"
+
+Util.dateToString(new Date(), 'hh:mm dd/mm/yyyy')
+// => "14:30 06/04/2026"
+
+Util.dateToString(new Date(), 'mm/yyyy')
+// => "04/2026"
+
+Util.dateToString(new Date(), 'dd/mm')
+// => "06/04"
+
+Util.dateToString(1712419200000, 'dd/mm/yyyy')
+// => "06/04/2024"
+```
+
+| Param | Type | Default | Description |
+|-------|------|---------|-------------|
+| `x` | `Date \| number` | `new Date()` | Date object or timestamp in ms |
+| `y` | `string` | `"dd/mm/yyyy"` | Format: `dd/mm/yyyy`, `yyyy-mm-dd`, `hh:mm:ss`, `dd/mm/yyyy hh:mm`, etc. |
+| **Returns** | `string` | | Formatted date/time string, or `""` if input is falsy |
+
+**Supported format tokens:** `dd`, `mm`, `yyyy`, `hh`, `mm` (minute), `ss`  
+**Supported separators:** `/` and `-` for dates, `:` for time
+
+---
+
+#### `Util.timeSince(dateCreate, translate?): string`
+
+Returns a human-readable relative time string (e.g. "5 minutes ago"). Defaults to **Vietnamese**; pass a `translate` function for other languages.
+
+```ts
+// Vietnamese (default)
+Util.timeSince(Date.now() - 3600000)       // => "1 giờ trước"
+Util.timeSince(Date.now() - 120000)        // => "2 phút trước"
+Util.timeSince(Date.now() - 86400000)      // => "hôm qua"
+Util.timeSince(Date.now() - 500)           // => "vừa xong"
+
+// English (with translate function)
+const t = (key: string) => ({
+  year: 'year', years: 'years',
+  month: 'month', months: 'months',
+  day: 'day', days: 'days',
+  hour: 'hour', hours: 'hours',
+  minute: 'minute', minutes: 'minutes',
+  yesterday: 'yesterday',
+  ago: 'ago', now: 'just now'
+}[key] || key)
+
+Util.timeSince(Date.now() - 7200000, t)   // => "2 hours ago"
+```
+
+| Param | Type | Description |
+|-------|------|-------------|
+| `dateCreate` | `number` | Timestamp in milliseconds |
+| `translate` | `(key: string) => string` | Optional i18n function. Keys: `year`, `years`, `month`, `months`, `day`, `days`, `hour`, `hours`, `minute`, `minutes`, `yesterday`, `ago`, `now` |
+| **Returns** | `string` | Relative time string |
+
+---
+
+### 💰 Number & Currency Formatting
+
+#### `Util.money(number): string`
+
+Formats a number or numeric string into **money format** with comma separators.
+
+```ts
+Util.money(1999999)      // => "1,999,999"
+Util.money("1999999")    // => "1,999,999"
+Util.money(1234.56)      // => "1,234.56"
+Util.money(1234.00)      // => "1,234"  (removes trailing .00)
+Util.money(0)            // => "0"
+Util.money(null)         // => "0"
+```
+
+| Param | Type | Description |
+|-------|------|-------------|
+| `number` | `number \| string` | Value to format |
+| **Returns** | `string` | Comma-separated string, or `"0"` if falsy |
+
+---
+
+#### `Util.moneytmp(number, a): string`
+
+Formats a number with a **fixed number of decimal places** and comma separators.
+
+```ts
+Util.moneytmp(1999999.5, 2)   // => "1,999,999.50"
+Util.moneytmp(1234, 0)        // => "1,234"
+Util.moneytmp(0.123, 3)       // => "0.123"
+```
+
+| Param | Type | Description |
+|-------|------|-------------|
+| `number` | `number` | Value to format |
+| `a` | `number` | Number of decimal places |
+| **Returns** | `string` | Formatted string |
+
+---
+
+#### `Util.to_vietnamese(number): string`
+
+Converts a number to its **Vietnamese word representation** (e.g. for invoices, contracts, checks).
+
+```ts
+Util.to_vietnamese(1500000)
+// => "Một triệu năm trăm nghìn"
+
+Util.to_vietnamese(42)
+// => "Bốn mươi hai"
+
+Util.to_vietnamese(1001)
+// => "Một nghìn lẻ một"
+```
+
+| Param | Type | Description |
+|-------|------|-------------|
+| `number` | `number \| string` | Number to convert |
+| **Returns** | `string` | Vietnamese words (first letter capitalized), or `''` if NaN |
+
+---
+
+#### `Util.numberToAlphabet(n?): string`
+
+Converts a **1-based number** to alphabetical column letters (like Excel columns: A, B, ... Z, AA, AB, ...).
+
+```ts
+Util.numberToAlphabet(1)    // => "A"
+Util.numberToAlphabet(3)    // => "C"
+Util.numberToAlphabet(26)   // => "Z"
+Util.numberToAlphabet(27)   // => "AA"
+Util.numberToAlphabet(703)  // => "AAA"
+Util.numberToAlphabet(0)    // => ""
+```
+
+| Param | Type | Description |
+|-------|------|-------------|
+| `n` | `number` | 1-based index |
+| **Returns** | `string` | Alphabetical string, or `''` if n ≤ 0 or undefined |
+
+---
+
+#### `formatNumberConvert(num): string` *(standalone export)*
+
+Formats large numbers into **compact notation** (K, M, B).
+
+```ts
+formatNumberConvert(999)          // => "999"
+formatNumberConvert(1500)         // => "1.5K"
+formatNumberConvert(2500000)      // => "2.5M"
+formatNumberConvert(3000000000)   // => "3B"
+formatNumberConvert(10000)        // => "10K"
+```
+
+| Param | Type | Description |
+|-------|------|-------------|
+| `num` | `number` | Number to format |
+| **Returns** | `string` | Compact string with K/M/B suffix |
+
+---
+
+### 🎨 Color Utilities
+
+#### `Util.hexToRGB(hex): string`
+
+Converts a hex color string to `rgb()` or `rgba()` format. Supports 3-char, 6-char, and 8-char (with alpha) hex strings, with or without `#`.
+
+```ts
+Util.hexToRGB('#ff5733')     // => "rgb(255, 87, 51)"
+Util.hexToRGB('#ff573380')   // => "rgba(255, 87, 51, 128)"
+Util.hexToRGB('f00')         // => "rgb(255, 0, 0)"
+Util.hexToRGB('00ff00')      // => "rgb(0, 255, 0)"
+```
+
+---
+
+#### `Util.rgbToHex(rgba): string`
+
+Converts an `rgb()` or `rgba()` string to hex format. Always returns 8-character hex (with alpha).
+
+```ts
+Util.rgbToHex('rgb(255, 87, 51)')        // => "#ff5733ff"
+Util.rgbToHex('rgba(255, 87, 51, 0.5)')  // => "#ff573380"
+Util.rgbToHex('rgba(0, 0, 0, 1)')        // => "#000000ff"
+```
+
+> Throws `Error` if the input string is not a valid RGB/RGBA format.
+
+---
+
+#### `Util.colorNameToHex(color): string`
+
+Converts a CSS **named color** to its hex value (without `#` prefix). Supports 140+ standard CSS color names.
+
+```ts
+Util.colorNameToHex('tomato')       // => "ff6347"
+Util.colorNameToHex('dodgerblue')   // => "1e90ff"
+Util.colorNameToHex('coral')        // => "ff7f50"
+Util.colorNameToHex('black')        // => "000000"
+```
+
+---
+
+#### `Util.percentToHex(p): string`
+
+Converts a percentage (0–100) to a **2-digit hex string** (00–FF). Useful for alpha channel values.
+
+```ts
+Util.percentToHex(100)  // => "FF"
+Util.percentToHex(50)   // => "80"
+Util.percentToHex(0)    // => "00"
+Util.percentToHex(75)   // => "BF"
+```
+
+---
+
+#### `Util.hexToPercent(h): number`
+
+Converts a 2-digit hex string back to a **percentage** (0–100).
+
+```ts
+Util.hexToPercent('FF')  // => 100
+Util.hexToPercent('80')  // => 50
+Util.hexToPercent('00')  // => 0
+```
+
+---
+
+#### `Util.generateRandomColor(): string`
+
+Generates a random hex color string.
+
+```ts
+Util.generateRandomColor()  // => "#a3f29b" (random each call)
+```
+
+---
+
+#### `Util.generateLightColorRgb(): string`
+
+Generates a random **light/pastel** color in `rgb()` format (each channel between 230–255).
+
+```ts
+Util.generateLightColorRgb()  // => "rgb(240,235,245)" (random light color)
+```
+
+---
+
+#### `Util.generateDarkColorRgb(id?): string`
+
+Generates a **dark** color in HSL format. If an `id` is provided, the color is **deterministic** — the same id always produces the same color. Great for assigning consistent avatar/badge colors.
+
+```ts
+// Random dark color
+Util.generateDarkColorRgb()
+// => "hsl(142, 80%, 25%)"
+
+// Deterministic from number
+Util.generateDarkColorRgb(42)
+// => "hsl(42, 80%, 25%)"
+
+// Deterministic from string (hashed)
+Util.generateDarkColorRgb('user-abc')
+// => "hsl(237, 80%, 25%)"
+
+// Same id = same color every time
+Util.generateDarkColorRgb('user-abc') === Util.generateDarkColorRgb('user-abc')
+// => true
+```
+
+| Param | Type | Description |
+|-------|------|-------------|
+| `id` | `number \| string` | Optional. Seed for deterministic color |
+| **Returns** | `string` | HSL color string with 80% saturation, 25% lightness |
+
+---
+
+#### `Util.getRandomGradient(seed): string`
+
+Generates a **deterministic CSS linear gradient** from a seed string. Same seed = same gradient every time. Produces light/pastel colors suitable for backgrounds.
+
+```ts
+Util.getRandomGradient('project-123')
+// => "linear-gradient(90deg, rgb(230, 210, 245), rgb(240, 235, 220))"
+
+Util.getRandomGradient('user-abc')
+// => "linear-gradient(90deg, rgb(245, 232, 228), rgb(230, 240, 235))"
+
+// Use as inline style
+<div style={{ background: Util.getRandomGradient(user.id) }} />
+```
+
+| Param | Type | Description |
+|-------|------|-------------|
+| `seed` | `string` | Seed value for deterministic output |
+| **Returns** | `string` | CSS `linear-gradient(90deg, ...)` string |
+
+---
+
+### 📝 String Utilities
+
+#### `Util.toSlug(input): string`
+
+Converts a string to a **URL-friendly slug**. Handles Vietnamese diacritics, accents, and special characters.
+
+```ts
+Util.toSlug('Xin Chào Thế Giới!')     // => "xin-chao-the-gioi"
+Util.toSlug('Hello World 2024')         // => "hello-world-2024"
+Util.toSlug('Đây là Tiếng Việt')       // => "day-la-tieng-viet"
+Util.toSlug('  Multiple   Spaces  ')    // => "multiple-spaces"
+```
+
+---
+
+#### `Util.convertToKebabCase(str): string`
+
+Converts a camelCase, PascalCase, or space/underscore-separated string to **kebab-case**.
+
+```ts
+Util.convertToKebabCase('myComponentName')  // => "my-component-name"
+Util.convertToKebabCase('Hello World')       // => "hello-world"
+Util.convertToKebabCase('some_value')        // => "some-value"
+Util.convertToKebabCase('backgroundColor')   // => "background-color"
+```
+
+---
+
+#### `Util.kebabToCamelCase(str): string`
+
+Converts a kebab-case string to **camelCase**.
+
+```ts
+Util.kebabToCamelCase('my-component-name')  // => "myComponentName"
+Util.kebabToCamelCase('background-color')    // => "backgroundColor"
+Util.kebabToCamelCase('font-size')           // => "fontSize"
+```
+
+---
+
+#### `Util.randomString(length): string`
+
+Generates a random **alphanumeric** string (a-z, A-Z, 0-9) of the given length.
+
+```ts
+Util.randomString(8)    // => "aB3kZ9mQ" (random)
+Util.randomString(16)   // => "xR4pL2nW8vK1jM6q" (random)
+Util.randomString(32)   // => 32-character random string
+```
+
+---
+
+#### `Util.extractHashtags(content): string[]`
+
+Extracts all **hashtags** from a string (also works with HTML content).
+
+```ts
+Util.extractHashtags('Hello #world and #react developers')
+// => ["#world", "#react"]
+
+Util.extractHashtags('<p>Check out #typescript and #vite</p>')
+// => ["#typescript", "#vite"]
+
+Util.extractHashtags('No hashtags here')
+// => []
+```
+
+---
+
+### 🗂 File Utilities
+
+#### `Util.stringToFile(content, fileName, type?): File`
+
+Creates a `File` object from a string. Useful for generating downloadable files or preparing upload payloads.
+
+```ts
+const jsonFile = Util.stringToFile('{"key":"value"}', 'data.json', 'application/json')
+// => File { name: "data.json", type: "application/json", ... }
+
+const csvFile = Util.stringToFile('name,age\nAlice,30', 'users.csv', 'text/csv')
+// => File { name: "users.csv", type: "text/csv", ... }
+
+const textFile = Util.stringToFile('Hello world', 'note.txt')
+// => File { name: "note.txt", type: "text/plain", ... }
+```
+
+| Param | Type | Default | Description |
+|-------|------|---------|-------------|
+| `content` | `string` | — | File content as string |
+| `fileName` | `string` | — | Name of the file |
+| `type` | `string` | `"text/plain"` | MIME type |
+| **Returns** | `File` | | A `File` object |
+
+---
+
+### 💾 Storage Utilities
+
+Convenience wrappers around the browser's `localStorage`, `sessionStorage`, and `document.cookie` APIs.
+
+#### localStorage
+
+| Method | Signature | Description |
+|--------|-----------|-------------|
+| `Util.setStorage` | `(key: string, value: string) => void` | Store a value |
+| `Util.getStorage` | `(key: string) => string \| null` | Retrieve a value |
+| `Util.removeStorage` | `(key: string) => void` | Remove a specific key |
+| `Util.clearStorage` | `() => void` | Clear all localStorage |
+
+```ts
+Util.setStorage('theme', 'dark')
+Util.getStorage('theme')       // => "dark"
+Util.removeStorage('theme')
+Util.getStorage('theme')       // => null
+Util.clearStorage()            // clears everything
+```
+
+#### sessionStorage
+
+Data is automatically deleted when the **browser tab is closed**.
+
+| Method | Signature | Description |
+|--------|-----------|-------------|
+| `Util.setSession` | `(key: string, value: string) => void` | Store a value |
+| `Util.getSession` | `(key: string) => string \| null` | Retrieve a value |
+| `Util.removeSession` | `(key: string) => void` | Remove a specific key |
+| `Util.clearSession` | `() => void` | Clear all sessionStorage |
+
+```ts
+Util.setSession('tempData', JSON.stringify({ step: 3 }))
+Util.getSession('tempData')    // => '{"step":3}'
+Util.removeSession('tempData')
+Util.clearSession()
+```
+
+#### Cookies
+
+| Method | Signature | Description |
+|--------|-----------|-------------|
+| `Util.setCookie` | `(cname: string, cvalue: number \| string, exdays?: number) => void` | Set a cookie (default **30 days** expiry) |
+| `Util.getCookie` | `(cname: string) => string` | Get a cookie value (returns `""` if not found) |
+| `Util.deleteCookie` | `(cname: string) => void` | Delete a specific cookie |
+| `Util.clearCookie` | `(exceptCookie?: string[]) => void` | Clear **all** cookies, optionally keeping specified ones |
+
+```ts
+Util.setCookie('token', 'abc123', 7)      // expires in 7 days
+Util.setCookie('session', 'xyz', 1)       // expires in 1 day
+Util.getCookie('token')                   // => "abc123"
+Util.deleteCookie('token')
+Util.getCookie('token')                   // => ""
+Util.clearCookie(['session'])              // clears all cookies EXCEPT 'session'
+Util.clearCookie()                         // clears ALL cookies
+```
+
+---
+
+### 🔐 Auth & Encoding
+
+#### `Util.decodeJwtResponse(token): object`
+
+Decodes a JWT token and returns the **parsed payload** as a JavaScript object. Does **not** verify the signature — use for client-side display only.
+
+```ts
+const payload = Util.decodeJwtResponse('eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ...')
+// => { sub: "1234567890", name: "John Doe", iat: 1516239022 }
+```
+
+| Param | Type | Description |
+|-------|------|-------------|
+| `token` | `string` | A JWT token string |
+| **Returns** | `object` | Parsed payload object |
+
+> ⚠️ **Security note:** This only decodes, it does not validate. Always verify tokens server-side.
+
+---
+
+### 🖨 JSON Formatting
+
+#### `Util.prettyJsonToString(data): string`
+
+Converts a JSON object to a **pretty-printed HTML string** with `<br>` for newlines and `&nbsp;` for indentation. Useful for rendering formatted JSON inside HTML elements.
+
+```ts
+Util.prettyJsonToString({ name: "John", age: 30 })
+// => '{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"name": "John",<br>...'
+```
+
+---
+
+#### `Util.syntaxHighlight(json): string`
+
+Converts a JSON object to a **syntax-highlighted HTML string** with `<span>` wrappers for each value type. Useful for building JSON viewers/debuggers.
+
+```ts
+Util.syntaxHighlight({ active: true, count: 42, name: "test" })
+// Returns HTML with:
+//   <span className="boolean">true</span>
+//   <span className="number">42</span>
+//   <span className="string">"test"</span>
+```
+
+**CSS class types:** `number`, `string`, `boolean`, `null`, `key`
+
+---
+
+### 🆔 ID & Random Generation
+
+#### `randomGID(): string` *(standalone export)*
+
+Generates a random **globally-unique ID** using `crypto.randomUUID()` with dashes removed. Returns a 32-character hex string.
+
+```ts
+import { randomGID } from 'wini-web-components'
+
+randomGID()  // => "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6"
+randomGID()  // => "f7e8d9c0b1a2f3e4d5c6b7a8f9e0d1c2" (different each call)
+```
 
 ---
 
