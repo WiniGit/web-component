@@ -10,6 +10,7 @@ import { FEDataType } from "../da";
 import { cellValue } from "./config";
 import AddEditElementForm from "./addEditElement";
 import { AsyncFunction, getValidLink } from "../page/pageById";
+import { specialCharsRegex } from "../../controller/config";
 
 export function TableById({ id, ...props }: { id: string, className?: string, style?: CSSProperties }) {
     const [reportItem, setReportItem] = useState<{ [p: string]: any }>()
@@ -73,6 +74,7 @@ interface DataTableProps {
     className?: string;
     style?: CSSProperties;
     tbName: string;
+    staticSearch?: string;
     title?: string;
     columns: Array<{ [p: string]: any }>,
     onChangeConfigData?: (params: Array<{ [p: string]: any }>) => void;
@@ -131,6 +133,7 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
     id,
     className,
     style = {},
+    staticSearch = "",
     tbName,
     columns = [],
     onChangeConfigData,
@@ -173,8 +176,8 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
     // initData
     const getFields = async () => {
         const res = await Promise.all([
-            relController.getListSimple({ page: 1, size: 1000, query: `@TableFK:{${tbName}}`, returns: ["Id", "Column", "TablePK", "TableFK", "Query", "Form"] }),
-            colController.getListSimple({ page: 1, size: 1000, query: `@TableName:{${tbName}} -@Name:{Id}`, returns: ["Id", "Name", "DataType", "Query", "Form", "TableName"], sortby: { BY: "DateCreated" } })
+            relController.getListSimple({ size: 1000, query: `@TableFK:{${tbName}}`, returns: ["Id", "Column", "TablePK", "TableFK", "Query", "Form"] }),
+            colController.getListSimple({ size: 1000, query: `@TableName:{${tbName}} -@Name:{Id}`, returns: ["Id", "Name", "DataType", "Query", "Form", "TableName"], sortby: { BY: "DateCreated" } })
         ])
         if (res.every((e: any) => e.code === 200)) {
             setFields(res.map((e: any) => e.data).flat(Infinity).map((e: any) => ({ ...e, Form: JSON.parse(e.Form) })))
@@ -209,6 +212,8 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
         }
         const { searchRaw, sortby } = configMethods.getValues()
         let querySearch = searchRaw
+        if (staticSearch.length) querySearch = `${staticSearch} ${querySearch !== "*" ? querySearch : ""}`
+        querySearch = escapeRedisTagValue(querySearch)
         if (treeData) pattern[tbName] = { searchRaw: "*", reducers: "GROUPBY 1 @ParentId REDUCE COUNT 0 AS _totalChild" }
         if (filterData.pattern?.returns) {
             const pkKeysByPattern = filterData.pattern.returns.filter((pk: string) => pk.split(".").length > 1);
@@ -228,7 +233,7 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
         });
         const finalSearchRaw = treeData ? `@ParentId:{empty} ${querySearch !== "*" ? querySearch : ""}` : querySearch
         const res = await dataController.patternList({
-            page: page, size: size,
+            page, size,
             searchRaw: rest.id ? `@Id:{${rest.id}}` : filterData.required?.length ? `${filterData.required}${finalSearchRaw !== "*" ? finalSearchRaw : ""}` : finalSearchRaw,
             sortby: sortby?.length ? sortby.map((s: any) => (s.prop.includes(".") ? { prop: s.prop.split(".").shift(), direction: s.direction } : s)) : [{ prop: "DateCreated", direction: "DESC" }],
             pattern: filterData.pattern ? { ...pattern, ...filterData.pattern, returns: pattern.returns } : pattern
@@ -404,7 +409,10 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
         return { searchRaw: convertToSearchRaw, searchData: activeSearchs }
     }
 
-    useImperativeHandle(ref, () => ({ getData, data, setData, selected, setSelected, showAddEditPopup, parseSearchDataToSearchRaw, fields }), [columns, tbName, filterData, configMethods.watch(), data, selected, fields])
+    useImperativeHandle(ref, () => ({
+        getData, data, setData, selected, setSelected,
+        showAddEditPopup, parseSearchDataToSearchRaw, fields
+    }), [columns, tbName, filterData, configMethods.watch(), data, selected, fields])
 
     return <>
         <div className={`col ${className ?? ""}`} style={{ padding: !!data.totalCount && data.totalCount > 20 ? "0 2.4rem" : "0 2.4rem 1.6rem", flex: 1, ...style }}>
@@ -765,5 +773,21 @@ const parseRedisQuery = (query: string) => {
 
     return results;
 }
+
+const escapeRedisTagValue = (query: string): string => {
+    return query.replace(
+        /@(\w+):\{\*([^}]*?)\*\}/g,
+        (_, field, innerContent) => {
+            // Split by " | " to handle multiple values like *val1* | *val2*
+            const escaped = innerContent
+                .split(/\s*\|\s*/)
+                .map((val: string) =>
+                    val.replace(specialCharsRegex, '\\$1')
+                )
+                .join(' | ');
+            return `@${field}:{*${escaped}*}`;
+        }
+    );
+};
 
 export { TableHeader, TableRow, ExportXlsx, ButtonImportData, SearchFilterData }

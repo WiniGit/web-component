@@ -40,13 +40,13 @@ export class TableController {
         return res
     }
 
-    async getListSimple(options?: { page?: number, size?: number, query?: string, returns?: Array<string>, sortby?: { BY: string, DIRECTION?: "ASC" | "DESC" } }) {
+    async getListSimple({ page = 1, size, query = "*", returns, sortby }: { page?: number, size?: number, query?: string, returns?: Array<string>, sortby?: { BY: string, DIRECTION?: "ASC" | "DESC" } }) {
         const res = await BaseDA.post(ConfigData.url + 'setting/getListSimple', {
             headers: {
                 pid: ConfigData.pid,
                 module: this.module,
             },
-            body: { searchRaw: options?.query ?? "*", page: options?.page ?? 1, size: options?.size ?? 10, returns: options?.returns, sortby: options?.sortby }
+            body: { searchRaw: query, page, size, returns, sortby }
         })
         return res
     }
