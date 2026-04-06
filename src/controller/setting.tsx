@@ -116,7 +116,7 @@ export class WiniController {
     }
 }
 
-export class IntergrationController {
+export class IntegrationController {
     async sendEmail(props: { templateId?: string, templateParams: { to: string, [p: string]: any } | Array<{ to: string, [p: string]: any }> }) {
         const res = await BaseDA.post(ConfigData.url + 'intergration/sendEmail', {
             body: props

@@ -5,7 +5,7 @@ export const supportProperties = ["Icon", "Selector", "Layout", "Position", "Dim
 export enum LayoutElement {
     main = "_wini-main-layout_axts4_37",
     header = "_wini-header-layout_axts4_37",
-    siderbar = "_wini-siderbar-layout_axts4_37",
+    siderbar = "_wini-sidebar-layout_axts4_37",
     body = "_wini-body-layout_axts4_37",
 }
 

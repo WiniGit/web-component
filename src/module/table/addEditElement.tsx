@@ -390,8 +390,8 @@ const FormView = ({ cols = [], rels = [], item, tbName, onCancel, onSuccess, exp
                             break;
                         case FEDataType.PASSWORD:
                             if (dataItem[_col.Name] !== item?.[_col.Name]) {
-                                const intergrationController = new AccountController()
-                                const getHashPassword = await intergrationController.hashPassword(dataItem[_col.Name])
+                                const IntegrationController = new AccountController()
+                                const getHashPassword = await IntegrationController.hashPassword(dataItem[_col.Name])
                                 dataItem[_col.Name] = getHashPassword.data
                             }
                             break;
