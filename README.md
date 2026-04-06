@@ -779,41 +779,100 @@ Util.timeSince(Date.now() - 7200000, t)   // => "2 hours ago"
 
 ### 💰 Number & Currency Formatting
 
-#### `Util.money(number): string`
+#### `Util.formatCurrency(amount, currency?, options?): string`
 
-Formats a number or numeric string into **money format** with comma separators.
+Formats a number into a **currency string** with the correct symbol, position, and locale formatting. Supports 5 currencies out of the box.
 
 ```ts
-Util.money(1999999)      // => "1,999,999"
-Util.money("1999999")    // => "1,999,999"
-Util.money(1234.56)      // => "1,234.56"
-Util.money(1234.00)      // => "1,234"  (removes trailing .00)
-Util.money(0)            // => "0"
-Util.money(null)         // => "0"
+// Vietnamese Dong (default)
+Util.formatCurrency(1500000)                    // => "1,500,000.00 ₫"
+Util.formatCurrency(1500000, 'VND')             // => "1,500,000.00 ₫"
+
+// US Dollar
+Util.formatCurrency(1999.99, 'USD')             // => "$1,999.99"
+
+// Japanese Yen
+Util.formatCurrency(150000, 'JPY')              // => "¥150,000.00"
+
+// Chinese Yuan
+Util.formatCurrency(6800, 'CNY')                // => "¥6,800.00"
+
+// Indian Rupee
+Util.formatCurrency(50000, 'INR')               // => "₹50,000.00"
+
+// Custom decimal places
+Util.formatCurrency(1500000, 'VND', { decimals: 0 })  // => "1,500,000 ₫"
+Util.formatCurrency(19.9, 'USD', { decimals: 3 })     // => "$19.900"
+
+// Invalid input
+Util.formatCurrency('invalid')                  // => "0"
 ```
 
-| Param | Type | Description |
-|-------|------|-------------|
-| `number` | `number \| string` | Value to format |
-| **Returns** | `string` | Comma-separated string, or `"0"` if falsy |
+| Param | Type | Default | Description |
+|-------|------|---------|-------------|
+| `amount` | `number \| string` | — | The value to format |
+| `currency` | `'VND' \| 'USD' \| 'JPY' \| 'CNY' \| 'INR'` | `'VND'` | Currency code |
+| `options.decimals` | `number` | `2` | Number of decimal places |
+| `options.symbol` | `boolean` | — | Reserved for future use |
+| **Returns** | `string` | | Formatted currency string with symbol |
+
+**Supported currencies:**
+
+| Currency | Symbol | Position | Example |
+|----------|--------|----------|---------|
+| `VND` | `₫` | After (with space) | `1,500,000.00 ₫` |
+| `USD` | `$` | Before | `$1,999.99` |
+| `JPY` | `¥` | Before | `¥150,000.00` |
+| `CNY` | `¥` | Before | `¥6,800.00` |
+| `INR` | `₹` | Before | `₹50,000.00` |
 
 ---
 
-#### `Util.moneytmp(number, a): string`
+#### `Util.convertCurrency(amount, fromCurrency, toCurrency, rates?): number`
 
-Formats a number with a **fixed number of decimal places** and comma separators.
+Converts an amount from one currency to another using exchange rates. Uses built-in default rates (base: USD) or accepts custom rates.
 
 ```ts
-Util.moneytmp(1999999.5, 2)   // => "1,999,999.50"
-Util.moneytmp(1234, 0)        // => "1,234"
-Util.moneytmp(0.123, 3)       // => "0.123"
+// USD to VND (default rates)
+Util.convertCurrency(100, 'USD', 'VND')
+// => 2450000
+
+// VND to USD
+Util.convertCurrency(2450000, 'VND', 'USD')
+// => 100
+
+// JPY to VND
+Util.convertCurrency(10000, 'JPY', 'VND')
+// => 2227272.73
+
+// With custom exchange rates
+Util.convertCurrency(100, 'USD', 'VND', { USD: 1, VND: 25000, JPY: 115, CNY: 7.2, INR: 83 })
+// => 2500000
+
+// Unknown currency returns the original amount
+Util.convertCurrency(100, 'USD', 'EUR' as any)
+// => 100
 ```
 
-| Param | Type | Description |
-|-------|------|-------------|
-| `number` | `number` | Value to format |
-| `a` | `number` | Number of decimal places |
-| **Returns** | `string` | Formatted string |
+| Param | Type | Default | Description |
+|-------|------|---------|-------------|
+| `amount` | `number` | — | Amount to convert |
+| `fromCurrency` | `'VND' \| 'USD' \| 'JPY' \| 'CNY' \| 'INR'` | — | Source currency |
+| `toCurrency` | `'VND' \| 'USD' \| 'JPY' \| 'CNY' \| 'INR'` | — | Target currency |
+| `rates` | `{ [key: string]: number }` | See below | Custom exchange rates (base: USD = 1) |
+| **Returns** | `number` | | Converted amount (2 decimal places) |
+
+**Default exchange rates (base: USD = 1):**
+
+| Currency | Rate |
+|----------|------|
+| `USD` | `1` |
+| `VND` | `24,500` |
+| `JPY` | `110` |
+| `CNY` | `6.5` |
+| `INR` | `74.5` |
+
+> 💡 Pass your own `rates` object with live exchange rates for production use.
 
 ---
 

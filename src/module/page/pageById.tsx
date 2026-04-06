@@ -461,7 +461,7 @@ const ElementUI = ({ findId, children, watchForCustomProps, replaceThisVariables
                     tmpValue = { __html: tmpValue }
                     break;
                 case FEDataType.MONEY:
-                    tmpValue = tmpValue ? Util.money(tmpValue) : undefined
+                    tmpValue = tmpValue ? Util.formatCurrency(tmpValue) : undefined
                     break;
                 case FEDataType.DATE:
                     tmpValue = tmpValue ? Util.dateToString(new Date(typeof tmpValue === 'string' ? parseInt(tmpValue) : tmpValue)) : undefined
@@ -513,7 +513,7 @@ const ElementUI = ({ findId, children, watchForCustomProps, replaceThisVariables
                     tmpValue = { __html: tmpValue }
                     break;
                 case FEDataType.MONEY:
-                    tmpValue = tmpValue ? Util.money(tmpValue) : undefined
+                    tmpValue = tmpValue ? Util.formatCurrency(tmpValue) : undefined
                     break;
                 case FEDataType.DATE:
                     tmpValue = tmpValue ? Util.dateToString((tmpValue instanceof Date) ? tmpValue : new Date(typeof tmpValue === 'string' ? parseInt(tmpValue) : tmpValue)) : undefined

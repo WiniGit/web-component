@@ -36,26 +36,49 @@ export class Util {
         return `${day} -${month} -${year} `;
     }
 
-    /** 
-     * number to money format.\ 
-     * ex: 199999 => 1,999,999 
-     * */
-    static money(number: number | string) {
-        if (number) {
-            if (typeof number === "string") {
-                return number.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-            } else if (!isNaN(number)) {
-                number = number.toFixed(2);
-                return number.toString().replace(".00", "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-            }
-        }
-        return "0";
+    /** Currency formatter with symbol and locale support */
+    static formatCurrency(amount: number | string, currency: 'VND' | 'USD' | 'JPY' | 'CNY' | 'INR' = 'VND', options?: { decimals?: number, symbol?: boolean }): string {
+        const num = typeof amount === 'string' ? parseFloat(amount) : amount;
+        if (isNaN(num)) return '0';
+
+        const currencySymbols: { [key: string]: { symbol: string; position: 'before' | 'after'; space: boolean } } = {
+            VND: { symbol: '₫', position: 'after', space: true },
+            USD: { symbol: '$', position: 'before', space: false },
+            JPY: { symbol: '¥', position: 'before', space: false },
+            CNY: { symbol: '¥', position: 'before', space: false },
+            INR: { symbol: '₹', position: 'before', space: false },
+        };
+
+        const config = currencySymbols[currency];
+        const decimals = options?.decimals ?? 2;
+        const formatted = num.toFixed(decimals).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        const space = config.space ? ' ' : '';
+
+        return config.position === 'before'
+            ? `${config.symbol}${space}${formatted}`
+            : `${formatted}${space}${config.symbol}`;
     }
 
-    static moneytmp(number: number, a: number) {
-        // if (typeof number === "string") number = parseFloat(number);
-        let val = (number / 1).toFixed(a)
-        return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    /** Currency converter with exchange rates */
+    static convertCurrency(amount: number, fromCurrency: 'VND' | 'USD' | 'JPY' | 'CNY' | 'INR', toCurrency: 'VND' | 'USD' | 'JPY' | 'CNY' | 'INR', rates?: { [key: string]: number }): number {
+        // Default exchange rates (base: USD = 1)
+        const defaultRates: { [key: string]: number } = {
+            USD: 1,
+            VND: 24500,
+            JPY: 110,
+            CNY: 6.5,
+            INR: 74.5,
+        };
+
+        const exchangeRates = rates || defaultRates;
+
+        if (!exchangeRates[fromCurrency] || !exchangeRates[toCurrency]) {
+            return amount;
+        }
+
+        // Convert to USD first, then to target currency
+        const amountInUSD = amount / exchangeRates[fromCurrency];
+        return parseFloat((amountInUSD * exchangeRates[toCurrency]).toFixed(2));
     }
 
     static stringToDate(_date: string, _format = "dd/mm/yyyy", _delimiter = "/") {

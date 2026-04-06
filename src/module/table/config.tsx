@@ -93,7 +93,7 @@ export const AutoCellContent = ({ colItem, data, fields = [], files = [], style 
                             }
                             break;
                         case FEDataType.MONEY:
-                            if (tmp) tmp = Util.money(tmp)
+                            if (tmp) tmp = Util.formatCurrency(tmp)
                             break;
                         case FEDataType.PASSWORD:
                             if (tmp) tmp = "************"
@@ -346,7 +346,7 @@ export const cellValue = (colItem: { [p: string]: any }, data: any, fields: { [p
                     }
                     break;
                 case FEDataType.MONEY:
-                    if (tmp) tmp = Util.money(tmp)
+                    if (tmp) tmp = Util.formatCurrency(tmp)
                     break;
                 case FEDataType.PASSWORD:
                     if (tmp) tmp = "************"

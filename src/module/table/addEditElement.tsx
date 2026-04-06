@@ -2,11 +2,12 @@ import { forwardRef, MouseEventHandler, ReactNode, useEffect, useMemo, useRef, u
 import { useForm, UseFormReturn } from "react-hook-form";
 import { BaseDA, Select1Form, SelectMultipleForm, randomGID, Util, Button, closePopup, ComponentStatus, DialogAlignment, showDialog, ToastMessage, Winicon, DataController, TableController, AccountController, urlToFileType, FormById } from "../../index";
 import { useTranslation } from 'react-i18next';
-import { regexGetVariableByThis, RenderComponentByType, validateForm } from "../form/config";
+import { RenderComponentByType, validateForm } from "../form/config";
 import { ConfigData, specialCharsRegex } from "../../controller/config";
 import { ComponentType, FEDataType } from "../da";
 import { CustomerAvatar } from "./config";
 import { getValidLink } from "../page/pageById";
+import { regexGetVariableByThis } from "../card/config";
 
 interface AddEditElementFormProps {
     id?: string;
@@ -248,7 +249,7 @@ const FormView = ({ cols = [], rels = [], item, tbName, onCancel, onSuccess, exp
                                 methods.setValue(prop, new Date(typeof item[prop] === 'string' ? parseInt(item[prop]) : item[prop]))
                                 break;
                             case FEDataType.MONEY:
-                                methods.setValue(prop, Util.money(item[prop]))
+                                methods.setValue(prop, Util.formatCurrency(item[prop]))
                                 break;
                             case FEDataType.FILE:
                                 if (item[prop]) {
@@ -319,7 +320,7 @@ const FormView = ({ cols = [], rels = [], item, tbName, onCancel, onSuccess, exp
                             methods.setValue(_col.Name, new Date(typeof _col.Form.DefaultValue === 'string' ? parseInt(_col.Form.DefaultValue) : _col.Form.DefaultValue))
                             break;
                         case FEDataType.MONEY:
-                            methods.setValue(_col.Name, Util.money(_col.Form.DefaultValue))
+                            methods.setValue(_col.Name, Util.formatCurrency(_col.Form.DefaultValue))
                             break;
                         default:
                             break;

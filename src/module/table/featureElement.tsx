@@ -446,7 +446,7 @@ const InputValueTile = ({ fieldItem, filterItem, colData, onChange }: InputValue
                     }}>
                         <Text className={data.value ? "body-3" : "placeholder-2"}>{data.value ?
                             fieldItem.DataType === FEDataType.MONEY ?
-                                data.value.split(",").map((e: any) => Util.money(e)).join(" - ") :
+                                data.value.split(",").map((e: any) => Util.formatCurrency(e)).join(" - ") :
                                 data.value.split(",").join(" - ") :
                             `${t("select")} ${(colData?.Title ?? fieldItem.Form.Label ?? data.name).toLowerCase()}`
                         }</Text>
@@ -574,8 +574,8 @@ const FilterRangeDropdown = ({ onClose, style = {}, onApply, fieldItem, filterIt
 
     useEffect(() => {
         if (minInputRef.current && maxInputRef.current) {
-            minInputRef.current.inputElement!.value = value ? fieldItem.DataType === FEDataType.MONEY ? Util.money(value.split(",")[0]) : value.split(",")[0] : ""
-            maxInputRef.current.inputElement!.value = value ? fieldItem.DataType === FEDataType.MONEY ? Util.money(value.split(",")[1]) : value.split(",")[1] : ""
+            minInputRef.current.inputElement!.value = value ? fieldItem.DataType === FEDataType.MONEY ? Util.formatCurrency(value.split(",")[0]) : value.split(",")[0] : ""
+            maxInputRef.current.inputElement!.value = value ? fieldItem.DataType === FEDataType.MONEY ? Util.formatCurrency(value.split(",")[1]) : value.split(",")[1] : ""
         }
     }, [value, minInputRef.current, maxInputRef.current])
 
@@ -591,7 +591,7 @@ const FilterRangeDropdown = ({ onClose, style = {}, onApply, fieldItem, filterIt
                         ref={minInputRef}
                         className="body-3 size32"
                         placeholder={t("min")}
-                        defaultValue={value?.length ? fieldItem.DataType === FEDataType.MONEY ? Util.money(value.split(",")[0]) : value.split(",")[0] : ""}
+                        defaultValue={value?.length ? fieldItem.DataType === FEDataType.MONEY ? Util.formatCurrency(value.split(",")[0]) : value.split(",")[0] : ""}
                         onFocus={(ev) => {
                             if (fieldItem.DataType === FEDataType.MONEY) ev.target.value = ev.target.value.replace(/,/g, "")
                             ev.target.select()
@@ -611,7 +611,7 @@ const FilterRangeDropdown = ({ onClose, style = {}, onApply, fieldItem, filterIt
                         ref={maxInputRef}
                         className="body-3 size32"
                         placeholder={t("max")}
-                        defaultValue={value?.length ? fieldItem.DataType === FEDataType.MONEY ? Util.money(value.split(",")[1]) : value.split(",")[1] : ""}
+                        defaultValue={value?.length ? fieldItem.DataType === FEDataType.MONEY ? Util.formatCurrency(value.split(",")[1]) : value.split(",")[1] : ""}
                         onFocus={(ev) => {
                             if (fieldItem.DataType === FEDataType.MONEY) ev.target.value = ev.target.value.replace(/,/g, "")
                             ev.target.select()
@@ -627,7 +627,7 @@ const FilterRangeDropdown = ({ onClose, style = {}, onApply, fieldItem, filterIt
                 </div>
             </div>
             <Slider
-                formatter={(fieldItem.DataType === FEDataType.MONEY ? Util.money : undefined) as any}
+                formatter={(fieldItem.DataType === FEDataType.MONEY ? Util.formatCurrency : undefined) as any}
                 style={{ width: "calc(100% - 2.4rem)", height: "1.6rem" }}
                 range
                 tooltip
@@ -645,8 +645,8 @@ const FilterRangeDropdown = ({ onClose, style = {}, onApply, fieldItem, filterIt
                     return <label key={i} className="row default-hover" style={{ gap: "1rem", width: "100%", padding: "0.5rem", cursor: "pointer", borderRadius: "0.8rem" }}>
                         <RadioButton name="range" size={"1.6rem"} value={`${num},${numMax}`} checked={value === `${num},${numMax}`} onChange={() => setValue(`${num},${numMax}`)} />
                         <Text className="label-4" style={{ flex: 1 }}>{fieldItem.DataType === FEDataType.MONEY ?
-                            Util.money(Math.floor(num)) : Math.floor(num)} - {fieldItem.DataType === FEDataType.MONEY ?
-                                Util.money(numMax) : numMax}</Text>
+                            Util.formatCurrency(Math.floor(num)) : Math.floor(num)} - {fieldItem.DataType === FEDataType.MONEY ?
+                                Util.formatCurrency(numMax) : numMax}</Text>
                     </label>
                 })}
             </div>

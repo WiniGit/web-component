@@ -84,7 +84,7 @@ export function TextFieldForm({ style = {}, textFieldStyle = {}, ...params }: Te
                     let newPrice = ev.target.value.trim().replaceAll(',', '')
                     ev.target.type = "text"
                     if (!isNaN(parseFloat(newPrice))) {
-                        ev.target.value = Util.money(parseFloat(newPrice))
+                        ev.target.value = Util.formatCurrency(parseFloat(newPrice))
                     } else {
                         ev.target.value = ''
                     }
@@ -582,7 +582,7 @@ export function RangeForm(params: RangeFormProps) {
                                             params.methods.setError(params.name, { message: 'From value must be less than To value' })
                                         }
                                     }
-                                    if (params.type === 'money') ev.target.value = Util.money(newValue)
+                                    if (params.type === 'money') ev.target.value = Util.formatCurrency(newValue)
                                 } else {
                                     ev.target.value = ""
                                 }
@@ -616,7 +616,7 @@ export function RangeForm(params: RangeFormProps) {
                                             params.methods.setError(params.name, { message: 'From value must be less than To value' })
                                         }
                                     }
-                                    if (params.type === 'money') ev.target.value = Util.money(newValue)
+                                    if (params.type === 'money') ev.target.value = Util.formatCurrency(newValue)
                                 } else {
                                     ev.target.value = ""
                                 }

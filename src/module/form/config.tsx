@@ -359,5 +359,3 @@ async function myAsyncValidator(value: any, options: any) {
     }
     return undefined
 }
-
-export const regexGetVariableByThis = /\${this\.(\w+)}/g;
