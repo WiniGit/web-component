@@ -399,5 +399,5 @@ function ContentView({ content = "", maxLength = 120 }) {
 
     return (!!convertContent?.length && !!contentInnerText.length) ?
         <p className="comp-text body-3" style={{ "--max-line": 2, margin: 0, flex: 1 } as any}>{contentInnerText}</p> :
-        <div ref={divRef} className="body-3" dangerouslySetInnerHTML={{ __html: convertContent }} />
+        <div ref={divRef} style={{ display: "none" }} className="body-3" dangerouslySetInnerHTML={{ __html: convertContent }} />
 }
