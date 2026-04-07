@@ -18,12 +18,13 @@ interface AutoCellContentProps {
     rowItem?: { [p: string]: any };
     rowIndex?: number;
     relativeData?: { [p: string]: any[] };
-    tbName: string
+    tbName: string;
+    isParent?: boolean;
 }
 
 const regexGetVariables = /\${([^}]*)}/;
 const replaceVariables = /\${([^}]*)}/g;
-export const AutoCellContent = ({ colItem, data, fields = [], files = [], style = {}, rowItem, rowIndex, relativeData, tbName }: AutoCellContentProps) => {
+export const AutoCellContent = ({ colItem, data, fields = [], files = [], style = {}, rowItem, rowIndex, relativeData, tbName, isParent = false }: AutoCellContentProps) => {
     const winiContextData = useWiniContext()
     const { t } = useTranslation()
     const location = useLocation()
@@ -191,14 +192,14 @@ export const AutoCellContent = ({ colItem, data, fields = [], files = [], style 
 
     switch (colItem.Type) {
         case ColDataType.formula:
-            return <div className="body-3" style={{ width: "100%", height: "100%" }} dangerouslySetInnerHTML={{ __html: formulaValue } as any} suppressHydrationWarning />
+            return <div className={isParent ? "label-1" : "body-3"} style={{ width: "100%", height: "100%" }} dangerouslySetInnerHTML={{ __html: formulaValue } as any} suppressHydrationWarning />
         case ColDataType.text:
             if (typeof mapValue === "string")
-                return <p className="comp-text body-3" style={{ "--max-line": 2, margin: 0, flex: 1, ...style } as any}>{mapValue}</p>
+                return <p className={`comp-text ${isParent ? "label-1" : "body-3"}`} style={{ "--max-line": 2, margin: 0, flex: 1, ...style } as any}>{mapValue}</p>
             else return mapValue
         case ColDataType.label:
             if (typeof mapValue === "string")
-                return <p className="comp-text body-3" style={{ "--max-line": 2, margin: 0, flex: 1, ...style } as any}>{mapValue}</p>
+                return <p className={`comp-text ${isParent ? "label-1" : "body-3"}`} style={{ "--max-line": 2, margin: 0, flex: 1, ...style } as any}>{mapValue}</p>
             else
                 return mapValue?.map((item: any, i: number) => {
                     switch (colItem.Style) {
@@ -225,7 +226,7 @@ export const AutoCellContent = ({ colItem, data, fields = [], files = [], style 
         case ColDataType.icon:
             if (mapValue && (mapValue.startsWith("color/") || mapValue.startsWith("fill/") || mapValue.startsWith("outline/")))
                 return <Winicon src={mapValue} size={20} />
-            else return <p className="comp-text body-3" style={{ "--max-line": 2, margin: 0, flex: 1, ...style } as any}>{mapValue}</p>
+            else return <p className={`comp-text ${isParent ? "label-1" : "body-3"}`} style={{ "--max-line": 2, margin: 0, flex: 1, ...style } as any}>{mapValue}</p>
         case ColDataType.website:
             const listData = Array.isArray(data) ? data : [data]
             return listData.map((item, i) => {
@@ -262,7 +263,7 @@ export const AutoCellContent = ({ colItem, data, fields = [], files = [], style 
                 {sliceList[1] && !sliceList[1].Type?.includes("image") && mapValue.split(",").length > 2 && <Text className='body-3' maxLine={1}>{`+${mapValue.split(",").length - 2}...`}</Text>}
             </>
         default:
-            return <p className="comp-text body-3" style={{ "--max-line": 2, margin: 0, flex: 1, ...style } as any}>{mapValue}</p>
+            return <p className={`comp-text ${isParent ? "label-1" : "body-3"}`} style={{ "--max-line": 2, margin: 0, flex: 1, ...style } as any}>{mapValue}</p>
     }
 }
 

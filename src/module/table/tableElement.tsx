@@ -475,7 +475,7 @@ export const TableRow = ({ item, setItem, onEditActionColumn, index, methods, fi
                 contentProps.rowIndex = index
                 contentProps.relativeData = relativeData
                 contentProps.tbName = tbName
-                const cellContent = props.customCell?.[_col.Name]?.({ item, index }) ?? <AutoCellContent colItem={_col} files={files} {...contentProps} />
+                const cellContent = props.customCell?.[_col.Name]?.({ item, index }) ?? <AutoCellContent colItem={_col} files={files} {...contentProps} isParent={treeData && !i && !item.ParentId} />
                 if (treeData && !i) {
                     return <Cell key={_col.Id} colItem={_col} style={{ gap: "0.8rem" }}>
                         {totalChild ? <Winicon src={`fill/arrows/triangle-${isOpen ? "down" : "right"}`} size={12} onClick={() => setIsOpen(!isOpen)} /> : <div style={{ width: 16 }} />}
@@ -558,7 +558,10 @@ const Cell = ({ colItem, style, children }: CellProps) => {
             </div>
         default:
             return <div style={{ width: colItem.Width, ...style }} className={`row ${styles["cell"]}`}>
-                <div className={`row ${styles["content"]}`}>
+                <div ref={r => {
+                    if (r)
+                        setTimeout(() => { r.parentElement!.style.maxHeight = r.parentElement!.offsetHeight + "px" }, 500)
+                }} className={`row ${styles["content"]}`}>
                     {children}
                 </div>
             </div>

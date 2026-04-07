@@ -247,6 +247,10 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
             if (Object.keys(res).length) {
                 Object.keys(res).forEach(p => methodsRelative.setValue(p, res[p]))
             } else methodsRelative.reset()
+        } else {
+            setData({ data: [], totalCount: 0 })
+            ToastMessage.errors("Failed to get data")
+            console.error("Get data error:", res)
         }
     }
 

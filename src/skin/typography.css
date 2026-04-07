@@ -1,6 +1,6 @@
 .regular0,
 .subtitle-5 {
-    line-height: 1.4rem;
+    line-height: normal;
     font-size: 10px;
     color: var(--neutral-text-title-color, light-dark(#18181B, #F4F4F5));
 }
@@ -27,7 +27,7 @@
 .heading-8,
 .button-text-3,
 .label-3 {
-    line-height: max(2.2rem, normal);
+    line-height: max(2.2rem, 18px);
     font-size: 14px;
     color: var(--neutral-text-title-color, light-dark(#18181B, #F4F4F5));
 }
