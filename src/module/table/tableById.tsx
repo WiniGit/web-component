@@ -10,7 +10,6 @@ import { FEDataType } from "../da";
 import { cellValue } from "./config";
 import AddEditElementForm from "./addEditElement";
 import { AsyncFunction, getValidLink } from "../page/pageById";
-import { specialCharsRegex } from "../../controller/config";
 
 export function TableById({ id, ...props }: { id: string, className?: string, style?: CSSProperties }) {
     const [reportItem, setReportItem] = useState<{ [p: string]: any }>()
@@ -382,8 +381,14 @@ export const DataTable = forwardRef<DataTableRef, DataTableProps>(({
                                 }
                                 break;
                             case FEDataType.UNIQUE:
+                                if (findField.Form?.Options?.length) {
+                                    andList.push(`@${s.name}:{${s.value.split(",").filter((v: string) => !!v.length).join(" | ")}}`)
+                                } else {
+                                    orList.push(`@${s.name}:{${s.value.split(",").filter((v: string) => !!v.length).map((v: string) => `*${v}*`).join(" | ")}}`)
+                                }
+                                break;
                             case FEDataType.BOOLEAN:
-                                orList.push(`@${s.name}:{*${s.value}*}`)
+                                andList.push(`@${s.name}:{${s.value}}`)
                                 break;
                             case FEDataType.NUMBER:
                             case FEDataType.MONEY:
@@ -782,7 +787,7 @@ const escapeRedisTagValue = (query: string): string => {
             const escaped = innerContent
                 .split(/\s*\|\s*/)
                 .map((val: string) =>
-                    val.replace(specialCharsRegex, '\\$1')
+                    val.replace(/([,.<>{}\[\]"':;!@#$%^&()\-=+~`\\\/])/g, '\\$1')
                 )
                 .join(' | ');
             return `@${field}:{*${escaped}*}`;
