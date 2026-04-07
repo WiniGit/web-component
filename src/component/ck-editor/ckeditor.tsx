@@ -409,15 +409,208 @@ export function CustomCkEditor5({ style = { width: "100%", height: 400, maxHeigh
                             providers: [
                                 {
                                     name: "youtube",
-                                    url: /^https:\/\/www\.youtube\.com\/watch\?v=([\w-]+)/,
+                                    url: [
+                                        /^(?:m\.)?youtube\.com\/watch\?v=([\w-]+)(?:&t=(\d+))?/,
+                                        /^(?:m\.)?youtube\.com\/v\/([\w-]+)(?:\?t=(\d+))?/,
+                                        /^youtube\.com\/embed\/([\w-]+)(?:\?start=(\d+))?/,
+                                        /^youtu\.be\/([\w-]+)(?:\?t=(\d+))?/,
+                                        /^youtube\.com\/shorts\/([\w-]+)/,
+                                    ],
+                                    html: (match: any) => {
+                                        const id = match[1];
+                                        const time = match[2] ? `?start=${match[2]}` : '';
+                                        return (
+                                            '<div style="position: relative; padding-bottom: 56.25%; height: 0;">' +
+                                            `<iframe src="https://www.youtube.com/embed/${id}${time}" ` +
+                                            'style="position: absolute; width: 100%; height: 100%; left: 0; top: 0;" ' +
+                                            'frameborder="0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>' +
+                                            '</div>'
+                                        );
+                                    },
+                                },
+                                {
+                                    name: "vimeo",
+                                    url: [
+                                        /^vimeo\.com\/(\d+)/,
+                                        /^vimeo\.com\/channels\/[\w]+\/(\d+)/,
+                                        /^vimeo\.com\/groups\/[\w]+\/videos\/(\d+)/,
+                                        /^player\.vimeo\.com\/video\/(\d+)/,
+                                    ],
                                     html: (match: any) => {
                                         const id = match[1];
                                         return (
                                             '<div style="position: relative; padding-bottom: 56.25%; height: 0;">' +
-                                            `<iframe src="https://www.youtube.com/embed/${id}" ` +
-                                            'style="position: absolute; width: 100%; height: 100%; left: 0;" ' +
+                                            `<iframe src="https://player.vimeo.com/video/${id}" ` +
+                                            'style="position: absolute; width: 100%; height: 100%; left: 0; top: 0;" ' +
+                                            'frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>' +
+                                            '</div>'
+                                        );
+                                    },
+                                },
+                                {
+                                    name: "dailymotion",
+                                    url: [
+                                        /^dailymotion\.com\/video\/([\w]+)/,
+                                        /^dai\.ly\/([\w]+)/,
+                                    ],
+                                    html: (match: any) => {
+                                        const id = match[1];
+                                        return (
+                                            '<div style="position: relative; padding-bottom: 56.25%; height: 0;">' +
+                                            `<iframe src="https://www.dailymotion.com/embed/video/${id}" ` +
+                                            'style="position: absolute; width: 100%; height: 100%; left: 0; top: 0;" ' +
+                                            'frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>' +
+                                            '</div>'
+                                        );
+                                    },
+                                },
+                                {
+                                    name: "spotify",
+                                    url: [
+                                        /^open\.spotify\.com\/(track|album|playlist|episode|show)\/([\w]+)/,
+                                    ],
+                                    html: (match: any) => {
+                                        const type = match[1];
+                                        const id = match[2];
+                                        const height = (type === 'track') ? 80 : 380;
+                                        return (
+                                            `<div style="position: relative; height: ${height}px;">` +
+                                            `<iframe src="https://open.spotify.com/embed/${type}/${id}" ` +
+                                            'style="position: absolute; width: 100%; height: 100%; left: 0; top: 0;" ' +
+                                            'frameborder="0" allow="encrypted-media" allowtransparency="true"></iframe>' +
+                                            '</div>'
+                                        );
+                                    },
+                                },
+                                {
+                                    name: "twitter",
+                                    url: [
+                                        /^(?:twitter|x)\.com\/([\w]+)\/status\/(\d+)/,
+                                    ],
+                                    html: (match: any) => {
+                                        const user = match[1];
+                                        const id = match[2];
+                                        return (
+                                            '<div style="display: flex; justify-content: center;">' +
+                                            `<blockquote class="twitter-tweet"><a href="https://x.com/${user}/status/${id}"></a></blockquote>` +
+                                            '<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>' +
+                                            '</div>'
+                                        );
+                                    },
+                                },
+                                {
+                                    name: "instagram",
+                                    url: [
+                                        /^instagram\.com\/(?:p|reel)\/([\w-]+)/,
+                                    ],
+                                    html: (match: any) => {
+                                        const id = match[1];
+                                        return (
+                                            '<div style="display: flex; justify-content: center;">' +
+                                            `<iframe src="https://www.instagram.com/p/${id}/embed" ` +
+                                            'style="width: 400px; height: 480px; max-width: 100%; border: none;" ' +
+                                            'frameborder="0" scrolling="no" allowtransparency="true"></iframe>' +
+                                            '</div>'
+                                        );
+                                    },
+                                },
+                                {
+                                    name: "google-maps",
+                                    url: [
+                                        /^google\.com\/maps\/(?:place|embed|search|dir)\/([^\s]+)/,
+                                        /^goo\.gl\/maps\/([\w]+)/,
+                                        /^maps\.google\.com\/([^\s]+)/,
+                                        /^google\.com\/maps\?([^\s]+)/,
+                                    ],
+                                    html: (match: any) => {
+                                        const query = encodeURIComponent(match[0]);
+                                        return (
+                                            '<div style="position: relative; padding-bottom: 56.25%; height: 0;">' +
+                                            `<iframe src="https://maps.google.com/maps?q=${query}&output=embed" ` +
+                                            'style="position: absolute; width: 100%; height: 100%; left: 0; top: 0;" ' +
+                                            'frameborder="0" allowfullscreen></iframe>' +
+                                            '</div>'
+                                        );
+                                    },
+                                },
+                                {
+                                    name: "facebook-video",
+                                    url: [
+                                        /^facebook\.com\/(?:[\w.]+)\/videos\/(\d+)/,
+                                        /^fb\.watch\/([\w]+)/,
+                                    ],
+                                    html: (match: any) => {
+                                        const url = encodeURIComponent(`https://www.${match[0]}`);
+                                        return (
+                                            '<div style="position: relative; padding-bottom: 56.25%; height: 0;">' +
+                                            `<iframe src="https://www.facebook.com/plugins/video.php?href=${url}&show_text=false" ` +
+                                            'style="position: absolute; width: 100%; height: 100%; left: 0; top: 0; border: none; overflow: hidden;" ' +
+                                            'frameborder="0" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" allowfullscreen></iframe>' +
+                                            '</div>'
+                                        );
+                                    },
+                                },
+                                {
+                                    name: "tiktok",
+                                    url: [
+                                        /^tiktok\.com\/@([\w.]+)\/video\/(\d+)/,
+                                    ],
+                                    html: (match: any) => {
+                                        const id = match[2];
+                                        return (
+                                            '<div style="display: flex; justify-content: center;">' +
+                                            `<iframe src="https://www.tiktok.com/embed/v2/${id}" ` +
+                                            'style="width: 325px; height: 580px; border: none;" ' +
                                             'frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>' +
-                                            "</div>"
+                                            '</div>'
+                                        );
+                                    },
+                                },
+                                {
+                                    name: "soundcloud",
+                                    url: [
+                                        /^soundcloud\.com\/([\w-]+)\/([\w-]+)/,
+                                    ],
+                                    html: (match: any) => {
+                                        const url = encodeURIComponent(`https://${match[0]}`);
+                                        return (
+                                            '<div style="height: 166px;">' +
+                                            `<iframe src="https://w.soundcloud.com/player/?url=${url}&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true" ` +
+                                            'style="width: 100%; height: 100%;" ' +
+                                            'frameborder="0" allow="autoplay" scrolling="no"></iframe>' +
+                                            '</div>'
+                                        );
+                                    },
+                                },
+                                {
+                                    name: "codepen",
+                                    url: [
+                                        /^codepen\.io\/([\w-]+)\/pen\/([\w]+)/,
+                                    ],
+                                    html: (match: any) => {
+                                        const user = match[1];
+                                        const id = match[2];
+                                        return (
+                                            '<div style="position: relative; padding-bottom: 56.25%; height: 0;">' +
+                                            `<iframe src="https://codepen.io/${user}/embed/${id}?default-tab=result" ` +
+                                            'style="position: absolute; width: 100%; height: 100%; left: 0; top: 0;" ' +
+                                            'frameborder="0" loading="lazy" allowtransparency="true" allowfullscreen></iframe>' +
+                                            '</div>'
+                                        );
+                                    },
+                                },
+                                {
+                                    // CDN links and any other URL - renders in a sandboxed iframe
+                                    name: "generic",
+                                    url: /^.+/,
+                                    html: (match: any) => {
+                                        const url = match[0].startsWith('http') ? match[0] : `https://${match[0]}`;
+                                        return (
+                                            '<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border: 1px solid #ccc; border-radius: 4px;">' +
+                                            `<iframe src="${url}" ` +
+                                            'style="position: absolute; width: 100%; height: 100%; left: 0; top: 0;" ' +
+                                            'frameborder="0" sandbox="allow-scripts allow-same-origin allow-popups" loading="lazy"></iframe>' +
+                                            '</div>'
                                         );
                                     },
                                 },
