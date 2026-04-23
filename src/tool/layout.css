@@ -463,7 +463,7 @@
 }
 
 /* Extra large devices (large laptops and desktops, 1200px and up) X-large (xl)*/
-@media only screen and (min-width: 1200px) {
+@media only screen and (min-width: 1200px) and (max-width: 1600px) {
     :root {
         font-size: 9.8px !important;
     }
